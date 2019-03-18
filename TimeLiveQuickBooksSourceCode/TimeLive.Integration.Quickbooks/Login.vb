@@ -48,6 +48,7 @@ Public Class Login
             Throw New Exception("URL, Username and Password are required fields. Please provide the information and continue.")
         End If
     End Sub
+
     Public Sub ValidateURL(ByVal objServices As Services.TimeLiveServices)
         Try
             objServices.Url = txtURL.Text & "/Services/TimeLiveServices.asmx"
@@ -55,9 +56,12 @@ Public Class Login
             Throw New Exception("Could not connect to TimeLive QuickBooks. Please check URL.")
         End Try
     End Sub
+
     Private Sub btnCancel_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnCancel.Click
         Me.Close()
     End Sub
+
+    'Not used - Should probably delete
     Public Sub ValidateQBSession()
         Dim sessManager As QBSessionManager
         Try
@@ -72,7 +76,6 @@ Public Class Login
     End Sub
 
     Private Sub Login_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
-
         SetValues()
     End Sub
 
@@ -82,8 +85,8 @@ Public Class Login
         My.Settings.Username = txtUsername.Text
         My.Settings.Password = txtPassword.Text
         My.Settings.Save()
-
     End Sub
+
     Public Sub SetValues()
         If My.Settings.WebServiceURL = "" Then
             txtURL.Text = ""
@@ -102,14 +105,13 @@ Public Class Login
             txtPassword.Text = My.Settings.Password
         End If
 
-
         If My.Settings.AutoRunTime = "" Then
             My.Settings.AutoRunTime = Now.Date.ToString()
         Else
             LastRunDateAndTime = My.Settings.AutoRunTime
         End If
-
     End Sub
+
     '-------------------------------------------------------------------------------------------------------
     '---------------------------   https://myaccount.google.com/lesssecureapps   ---------------------------
     '-------------------------------------------------------------------------------------------------------

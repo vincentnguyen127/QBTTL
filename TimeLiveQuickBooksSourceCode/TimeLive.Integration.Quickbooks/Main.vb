@@ -27,8 +27,6 @@ Public Class MAIN
 
             Dim ChargingRelationship As New ChargingRelationship
 
-
-
             'SPIN OFF THREAD FOR TIMER
             TIMERTHREAD()
             Dim NextRunDateTime As Date = Convert.ToDateTime(My.Settings.AutoRunTime)
@@ -48,12 +46,10 @@ Public Class MAIN
     End Sub
 
     Public Sub TIMERMULTITHREADING()
-
         While True
             SETTEXT()
             Thread.Sleep(61000)
         End While
-
     End Sub
 
 
@@ -94,7 +90,8 @@ Public Class MAIN
         'Dim SESSMANAGER As QBSessionManager ' Made global
         Try
             SESSMANAGER = New QBSessionManagerClass()
-            SESSMANAGER.OpenConnection("APP", "TIMELIVE QUICKBOOKS")
+            'SESSMANAGER.OpenConnection("APP", "TIMELIVE QUICKBOOKS") 
+            SESSMANAGER.OpenConnection("App", "Timelive Quickbooks")
             SESSMANAGER.BeginSession("", ENOpenMode.omDontCare)
         Catch EX As Exception
             Throw New Exception("QUICKBOOKS IS NOT OPEN. PLEASE OPEN IT AND THEN TRY AGAIN.")

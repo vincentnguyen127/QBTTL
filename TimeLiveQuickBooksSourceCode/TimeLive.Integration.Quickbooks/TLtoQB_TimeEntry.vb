@@ -62,10 +62,10 @@ Public Class TLtoQB_TimeEntry
             ServiceItem_TypeName = ServiceItem_TypeName_in
             ServiceItem = ServiceItem_in
             If Not PayrollName_in Is Nothing Then
-                PayrollName = PayrollName_in
+                PayrollName = PayrollName_in.Trim
             End If
             If Not ServiceName_in Is Nothing Then
-                ServiceName = ServiceName_in
+                ServiceName = ServiceName_in.Trim
             End If
         End Sub
     End Class
@@ -136,10 +136,10 @@ Public Class TLtoQB_TimeEntry
                     Dim PayrollItem_TypeName As Boolean = False
                     Dim ServiceItem_TypeName As Boolean = False
 
-                    Dim ItemName As String = Nothing
+                    Dim ItemName As String = get_QB_Name_ForTL_ItemName(Item_SubItemID) 'exception
 
                     If Item_SubItemID.Trim = "" Then
-                        Item_SubItemID = "<None>"
+                        Item_SubItemID = ItemName '"<None>"
                         ServiceItem_TypeName = True
                     End If
 
@@ -154,7 +154,7 @@ Public Class TLtoQB_TimeEntry
                                                      .TotalTime, .TimeEntryDate,
                                                      IIf(My.Settings.TransferToPayroll = True, GetClass(objTimeEntry), "<None>"),
                                                      PayrollItem_TypeName, Payroll_Item_SubItemID, ServiceItem_TypeName,
-                                                     Item_SubItemID, PayrollName))
+                                                     Item_SubItemID, PayrollName, ItemName))
 
                 End With
 
@@ -334,6 +334,12 @@ Public Class TLtoQB_TimeEntry
         Return result
     End Function
 
+    Public Function get_QB_Name_ForTL_ItemName(ByVal ItemID As String) As String
+        Dim ItemAdapter As New QB_TL_IDsTableAdapters.Items_SubItemsTableAdapter
+        Dim ItemsQBID As String = ItemAdapter.GetItemNamefromID(ItemID)
+        Return ItemsQBID
+    End Function
+
     Public Function Get_QB_ID_ForTL_ItemName(ByVal EmployeeQBID As String, ByVal jobQBID As String) As String
         Dim result As String
         ' check this to get Item Id
@@ -511,6 +517,7 @@ Public Class TLtoQB_TimeEntry
             'End If
         End Try
     End Function
+
     Public Function AddTimeEntryInQBItemSubItem(ByVal CustomerName As String, ByVal EmployeeName As String, ByVal IsBillable As Boolean,
                                            ByVal ProjectName As String, ByVal ServiceItemName As String, ByVal TotalTime As DateTime,
                                            ByVal TimeEntryDate As Date, ByVal TimeEntryClass As String, ByVal PayrollItem As String) As String
@@ -571,6 +578,7 @@ Public Class TLtoQB_TimeEntry
             'End If
         End Try
     End Function
+
     Public Function AddTimeEntryInQBJobSubJob(ByVal CustomerName As String, ByVal EmployeeName As String, ByVal IsBillable As Boolean,
                                          ByVal ProjectName As String, ByVal ServiceItemName As String, ByVal TotalTime As DateTime,
                                          ByVal TimeEntryDate As Date, ByVal TimeEntryClass As String, ByVal PayrollItem_TypeName As Boolean,
@@ -645,7 +653,6 @@ Public Class TLtoQB_TimeEntry
         End Try
     End Function
 
-    ' 
     Public Sub AddNoneItemInQB(ByVal ItemName As String, ByVal ServiceItemAccount As String)
         'step1: create QBFC session manager and prepare the request
         'Dim sessManager As QBSessionManager
@@ -802,6 +809,7 @@ Public Class TLtoQB_TimeEntry
             '    End If
         End Try
     End Sub
+
     Public Function GetWageType(ByVal val As String) As ENWageType
         If val = "Bonus" Then
             Return ENWageType.wtBonus

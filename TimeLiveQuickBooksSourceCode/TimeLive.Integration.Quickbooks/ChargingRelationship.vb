@@ -286,9 +286,9 @@ Public Class ChargingRelationship
                 For i As Integer = 0 To ptRetList.Count - 1
                     ptRet = ptRetList.GetAt(i)
                     With ptRet
-                        'If Not .ParentRef Is Nothing Then
-                        ItemsSubItemsQBData.Rows.Add(.FullName.GetValue, .ListID.GetValue) 'Exception: Not Found
-                        'End If
+                        If Not .ParentRef Is Nothing Then
+                            ItemsSubItemsQBData.Rows.Add(.FullName.GetValue, .ListID.GetValue) 'Exception: Not Found
+                        End If
                     End With
                 Next
             End If

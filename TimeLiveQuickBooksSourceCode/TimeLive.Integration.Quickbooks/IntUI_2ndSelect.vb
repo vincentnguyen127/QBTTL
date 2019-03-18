@@ -78,7 +78,6 @@ Public Class IntUI_2ndSelect
             col9.Name = "Item SubItem ID"
             DataGridView1.Columns.Add(col9)
 
-
             'look for first selected employee
             'NOTE - Prior to processing make sure user has selected entries
             For Each element As TLtoQB_TimeEntry.Employee In selectedEmployeeData.DataArray
@@ -101,7 +100,6 @@ Public Class IntUI_2ndSelect
         System.Threading.Thread.Sleep(500)
         System.Windows.Forms.Application.DoEvents()
 
-
         ' Select all
         SelectAll = True
 
@@ -110,59 +108,39 @@ Public Class IntUI_2ndSelect
                 row.Cells("ckBox").Value = True
             End If
         Next
-
     End Sub
 
     Public Sub LoadSelectedTmeEntryItems(AccountEmployeeId As String, EmployeeName As String)
         Dim temp As New TLtoQB_TimeEntry.TimeEntryDataStructureQB
-
-
         TimeEntryData = timeentry_tltoqb.GetTimeEntryTLData(AccountEmployeeId, StartDate, EndDate,
                                        Me, p_token, False)
         Dim TotalHour As Integer
         Dim TotalMin As Double
         If TimeEntryData IsNot Nothing Then
-
             For Each element As TLtoQB_TimeEntry.TimeEntry In TimeEntryData.DataArray
                 With element
                     Dim Item_SubItemID As String = Nothing
 
-                    If .TotalTime.ToString.Contains("AM") Then
-
-                        TotalHour = .TotalTime.ToString("%h")
-
-                        TotalMin = .TotalTime.ToString("%m")
-                        TotalMin = (TotalMin / 60).ToString("00.00")
-                        If TotalHour = 12 Then
-                            TotalHour = 0
-                        End If
-                    Else
-                        TotalHour = .TotalTime.ToString("%h")
-                        If TotalHour = 12 Then
-                            TotalHour = 12
-                        Else
-                            TotalHour = TotalHour + 12
-                        End If
-
-                        TotalMin = .TotalTime.ToString("%m")
-                        TotalMin = (TotalMin / 60).ToString("00.00")
-
+                    TotalHour = .TotalTime.ToString("%h")
+                    'Turn hour to 24 hour time
+                    TotalHour = TotalHour Mod 12
+                    If Not .TotalTime.ToString.Contains("AM") Then
+                        TotalHour += 12
                     End If
+
+                    TotalMin = .TotalTime.ToString("%m")
+                    TotalMin = (TotalMin / 60).ToString("00.00")
 
                     Dim payrollDisp As String = If(.PayrollName Is Nothing, .PayrollItem, .PayrollName)
                     Dim ServiceDisp As String = If(.ServiceName Is Nothing, .ServiceItem, .ServiceName)
 
                     DataGridView1.Rows.Add(.RecSelect, .TimeEntryDate.ToString("MM/dd/yyyy"), .CustomerName.ToString(),
                                            .ProjectName.ToString(), .TaskWithParent.ToString(), (TotalHour + TotalMin).ToString,
-                                           .TimeEntryClass, payrollDisp, .ServiceItem)
-
+                                           .TimeEntryClass, payrollDisp, ServiceDisp)
                     element.RecSelect = True
-
                 End With
             Next
-
             Lbel_processing.Text = EmployeeName.ToString()
-
         End If
 
         'Select All
@@ -173,10 +151,7 @@ Public Class IntUI_2ndSelect
         Next
 
         'MsgBox(" at the end " + TimeEntryData.NoItems.ToString)
-
     End Sub
-
-
 
     Private Sub btnclose_Click(sender As Object, e As EventArgs) Handles bntclose.Click
         Me.DialogResult = DialogResult.Cancel
@@ -187,15 +162,12 @@ Public Class IntUI_2ndSelect
         Dim ItemsProcessed As Integer = 0
 
         If Type = 201 Then
-
             Reset_Checked_TimeEntry_Value(TimeEntryData)
-
             Set_Selected_TimeEntry()
             ' need to set selected data
 
             Dim element As New TLtoQB_TimeEntry.EmployeeDataStructure
             element = selectedEmployeeData
-
             timeentry_tltoqb.TLTransferTimeToQB(TimeEntryData, p_token, Me, True)
 
             'wait for one second so user can see progress bar
@@ -211,7 +183,6 @@ Public Class IntUI_2ndSelect
             For Each element1 As TLtoQB_TimeEntry.Employee In selectedEmployeeData.DataArray
                 With element1
                     If element1.RecSelect = True Then
-
                         'Dim IntUI_2ndSelect As New IntUI_2ndSelect
                         'IntUI_2ndSelect.Owner = Me.Parent
                         'IntUI_2ndSelect.Show(p_token, p_AccountId, selectedEmployeeData,
@@ -233,9 +204,7 @@ Public Class IntUI_2ndSelect
                 Me.Close()
             End If
         End If
-
     End Sub
-
 
     Private Sub Reset_Checked_TimeEntry_Value(ByRef TimeEntryObj As TLtoQB_TimeEntry.TimeEntryDataStructureQB)
         ' reset the check value to zero
@@ -258,7 +227,6 @@ Public Class IntUI_2ndSelect
     End Sub
 
     Private Sub btnselectall_Click(sender As Object, e As EventArgs) Handles btnselectall.Click
-
         If SelectAll = False Then
             For Each row As DataGridViewRow In DataGridView1.Rows
                 If row.Cells("Name").Value IsNot Nothing Then
@@ -274,9 +242,7 @@ Public Class IntUI_2ndSelect
             Next
             SelectAll = False
         End If
-
     End Sub
-
 
     Private Sub DataGridView1_CellValueChanged(sender As Object, e As DataGridViewCellEventArgs) Handles DataGridView1.CellValueChanged
         Dim TotalTime As Double = 0.0
@@ -291,5 +257,4 @@ Public Class IntUI_2ndSelect
             Lbel_TotalHours.Text = TotalTime.ToString("F2")
         End If
     End Sub
-
 End Class

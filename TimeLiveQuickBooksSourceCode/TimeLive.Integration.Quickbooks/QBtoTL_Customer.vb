@@ -80,71 +80,42 @@ Public Class QBtoTL_Customer
             Dim custRetList As ICustomerRetList
                 custRetList = resp.Detail
 
-                '------------------------------3-----------------------------------
-                Dim custRet As ICustomerRet
-                'sets status bar; If no, UI skip
-                If UI = True Then
-                    Dim pblenth As Integer = custRetList.Count
-                    If pblenth >= 0 Then
-                        IntegratedUIForm.ProgressBar1.Maximum = pblenth - 1
-                    End If
+            '------------------------------3-----------------------------------
+            Dim custRet As ICustomerRet
+            'sets status bar; If no, UI skip
+            If UI = True Then
+                Dim pblength As Integer = custRetList.Count
+                If pblength >= 0 Then
+                    IntegratedUIForm.ProgressBar1.Maximum = pblength - 1
                 End If
+            End If
 
-                For i As Integer = 0 To custRetList.Count - 1
-                    custRet = custRetList.GetAt(i)
+            For i As Integer = 0 To custRetList.Count - 1
+                custRet = custRetList.GetAt(i)
+                With custRet
+                    If .ParentRef Is Nothing Then
+                        EmailAddress = If(.Email Is Nothing, "", .Email.GetValue)
+                        Telephone1 = If(.Phone Is Nothing, "", .Phone.GetValue)
+                        Fax = If(.Fax Is Nothing, "", .Fax.GetValue)
+                        CreateTime = If(.TimeCreated Is Nothing, "", .TimeCreated.GetValue.ToString)
+                        ModTime = If(.TimeModified Is Nothing, CreateTime, .TimeModified.GetValue.ToString)
 
-                    With custRet
-                        If .ParentRef Is Nothing Then
-                            If .Email Is Nothing Then
-                                EmailAddress = ""
-                            Else
-                                EmailAddress = .Email.GetValue
-                            End If
-                            If .Phone Is Nothing Then
-                                Telephone1 = ""
-                            Else
-                                Telephone1 = .Phone.GetValue
-                            End If
-
-                            If .Fax Is Nothing Then
-                                Fax = ""
-                            Else
-                                Fax = .Fax.GetValue
-                            End If
-
-                            If .TimeModified Is Nothing Then
-                                ModTime = .TimeCreated.GetValue.ToString
-                            Else
-                                ModTime = .TimeModified.GetValue.ToString()
-                            End If
-
-                            If .TimeCreated Is Nothing Then
-                                CreateTime = .TimeCreated.GetValue.ToString
-                            Else
-                                CreateTime = .TimeModified.GetValue.ToString()
-                            End If
-
-                            ' will check which type data should be added 
-                            CustomerData.NoItems = CustomerData.NoItems + 1
+                        ' will check which type data should be added 
+                        CustomerData.NoItems = CustomerData.NoItems + 1
                         'Check if newlyadded
                         'Dim TL_ID_Count As Int16 = 0 ' Delete
-                        Dim TL_ID_Count = ISQBID_In_DataTable(.Name.GetValue, .ListID.GetValue)
+                        Dim TL_ID_Count = ISQBID_In_DataTable(.Name.GetValue, .ListID.GetValue) 'Timeouts
 
-                        If TL_ID_Count <> 0 Then
-                            NewlyAdd = ""
-                        Else
-                                NewlyAdd = "N"
-                            End If
-                            CustomerData.DataArray.Add(New Customer(NewlyAdd, .Name.GetValue, EmailAddress, .ListID.GetValue, Telephone1, Fax, ModTime, CreateTime))
-
-                        End If
-                    End With
-                    If UI = True Then
-                        IntegratedUIForm.ProgressBar1.Value = i
+                        NewlyAdd = If(TL_ID_Count = 0, "N", "")
+                        CustomerData.DataArray.Add(New Customer(NewlyAdd, .Name.GetValue, EmailAddress, .ListID.GetValue, Telephone1, Fax, ModTime, CreateTime))
                     End If
-                Next
-                'End If
-                If msgSetRs.ResponseList.GetAt(0).StatusSeverity = "Error" Then
+                End With
+                If UI = True Then
+                    IntegratedUIForm.ProgressBar1.Value = i
+                End If
+            Next
+            'End If
+            If msgSetRs.ResponseList.GetAt(0).StatusSeverity = "Error" Then
                 My.Forms.MAIN.History(msgSetRs.ResponseList.GetAt(0).StatusMessage, "C")
                 Throw New Exception(msgSetRs.ResponseList.GetAt(0).StatusMessage)
             End If
@@ -171,13 +142,12 @@ Public Class QBtoTL_Customer
         authentication.AuthenticatedToken = token
         objClientServices.SecuredWebServiceHeaderValue = authentication
 
-
         'sets status bar. If no, UI skip
         Dim incrementbar As Integer = 0
         If UI = True Then
-            Dim pblenth As Integer = objData.DataArray.Count - 1
-            If pblenth >= 0 Then
-                IntegratedUIForm.ProgressBar1.Maximum = pblenth
+            Dim pblength As Integer = objData.DataArray.Count - 1
+            If pblength >= 0 Then
+                IntegratedUIForm.ProgressBar1.Maximum = pblength
                 IntegratedUIForm.ProgressBar1.Value = 0
             End If
         End If
@@ -190,14 +160,11 @@ Public Class QBtoTL_Customer
             If element.RecSelect = True Then
                 'Check number of QB records that match ID
                 My.Forms.MAIN.History("Processing:  " + element.QB_Name, "n")
-
                 Dim TL_ID_Return = ISQBID_In_DataTable(element.QB_Name, element.QB_ID)
 
                 'if none create
                 If TL_ID_Return = 0 Then
-
                     If MsgBox("New customer found: " + element.QB_Name + ". Create?", MsgBoxStyle.YesNo, "Warning!") = MsgBoxResult.Yes Then
-
                         NoRecordsCreatedorUpdated = NoRecordsCreatedorUpdated + 1
 
                         ' if it does not exist create a new record on both the sync database and on TL
@@ -217,40 +184,34 @@ Public Class QBtoTL_Customer
                             My.Forms.MAIN.History("Error creating record in TimeLive", "N")
                         End If
                     End If
-
                 End If
 
-                    'if it exist check that the TL_ID is not empty ---> 1
-                    'if not empty, just update
-                    'if empty, informed the user of a potential error as a record has been created in the sync database without a corresponding TL pointer
+                'if it exist check that the TL_ID is not empty ---> 1
+                'if not empty, just update
+                'if empty, informed the user of a potential error as a record has been created in the sync database without a corresponding TL pointer
 
-                    If TL_ID_Return = 1 Then
+                If TL_ID_Return = 1 Then
 
                     Dim TL_ID As String = ISTLID_In_DataTable(element.QB_ID)
                     If TL_ID Is Nothing Then
                         My.Forms.MAIN.History("Detected empty sync record (No TL ID). Needs to be manually sync or deleted." + element.QB_Name, "i")
-
                     Else
                         NoRecordsCreatedorUpdated = NoRecordsCreatedorUpdated + 1
                         My.Forms.MAIN.History("Updating TL record for: " + element.QB_Name, "i")
-
-
                         '-----------------------------------------------------------------------------------------------------------------------------------------------------------------
                         ' ----------------------------------------------this part is the update--------------------------------------------------------------------------------------------. 
                         '-----------------------------------------------------------------------------------------------------------------------------------------------------------------
                     End If
                 End If
             End If
-            'if no, UI skip
+            'if no UI, skip
             If UI = True Then
                 IntegratedUIForm.ProgressBar1.Value = incrementbar
                 incrementbar = incrementbar + 1
             End If
-
         Next
 
         Return NoRecordsCreatedorUpdated
-
     End Function
 
     ''' <summary>
@@ -269,7 +230,7 @@ Public Class QBtoTL_Customer
         '    End If
         'Next
         Dim CustomerAdapter As New QB_TL_IDsTableAdapters.CustomersTableAdapter()
-        Dim TimeLiveIDs As QB_TL_IDs.CustomersDataTable = CustomerAdapter.GetCorrespondingTL_ID(myqbID)
+        Dim TimeLiveIDs As QB_TL_IDs.CustomersDataTable = CustomerAdapter.GetCorrespondingTL_ID(myqbID) 'Timeouts
 
         If TimeLiveIDs.Count = 1 Then
             result = 1
@@ -319,7 +280,6 @@ Public Class QBtoTL_Customer
         End If
         Return str
     End Function
-
 
 End Class
 
