@@ -1,0 +1,61 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="My" GeneratedClassName="MySettings" UseMySettingsClassName="true">
+  <Profiles />
+  <Settings>
+    <Setting Name="TimeLive_Integration_Quickbooks_Services_TimeLiveServices" Roaming="true" Type="(Web Service URL)" Scope="User">
+      <Value Profile="(Default)">http://demo.livetecs.com/Services/TimeLiveServices.asmx</Value>
+    </Setting>
+    <Setting Name="TimeLive_Integration_Quickbooks_Services_TimeLive_Employees_Employees" Roaming="true" Type="(Web Service URL)" Scope="User">
+      <Value Profile="(Default)">http://demo.livetecs.com/Services/Employees.asmx</Value>
+    </Setting>
+    <Setting Name="TimeLive_Integration_Quickbooks_Services_TimeLive_Clients_Clients" Roaming="true" Type="(Web Service URL)" Scope="User">
+      <Value Profile="(Default)">http://demo.livetecs.com/Services/Clients.asmx</Value>
+    </Setting>
+    <Setting Name="TimeLive_Integration_Quickbooks_Services_TimeLive_Projects_Projects" Roaming="true" Type="(Web Service URL)" Scope="User">
+      <Value Profile="(Default)">http://demo.livetecs.com/Services/Projects.asmx</Value>
+    </Setting>
+    <Setting Name="TimeLive_Integration_Quickbooks_Services_TimeLive_Tasks_Tasks" Roaming="true" Type="(Web Service URL)" Scope="User">
+      <Value Profile="(Default)">http://demo.livetecs.com/Services/Tasks.asmx</Value>
+    </Setting>
+    <Setting Name="TimeLive_Integration_Quickbooks_Services_TimeLive_TimeEntries_TimeEntries" Roaming="true" Type="(Web Service URL)" Scope="User">
+      <Value Profile="(Default)">http://demo.livetecs.com/Services/TimeEntries.asmx</Value>
+    </Setting>
+    <Setting Name="TimeLive_Integration_Quickbooks_Services_TimeLive_ExpenseEntries_ExpenseEntries" Roaming="true" Type="(Web Service URL)" Scope="User">
+      <Value Profile="(Default)">http://demo.livetecs.com/Services/ExpenseEntries.asmx</Value>
+    </Setting>
+    <Setting Name="WebServiceURL" Roaming="true" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="Username" Roaming="true" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="Password" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="JobHierarchy" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="QBPayrollItem" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="TransferToPayroll" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="TimeLiveConnectionString" Type="(Connection string)" Scope="Application">
+      <DesignTimeValue Profile="(Default)">&lt;?xml version="1.0" encoding="utf-16"?&gt;
+&lt;SerializableConnectionString xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"&gt;
+  &lt;ConnectionString&gt;Data Source=TIMELIVEDEV\TIMELIVE;Initial Catalog=TimeLive;User ID=sa;Password=$baseline00&lt;/ConnectionString&gt;
+  &lt;ProviderName&gt;System.Data.SqlClient&lt;/ProviderName&gt;
+&lt;/SerializableConnectionString&gt;</DesignTimeValue>
+      <Value Profile="(Default)">Data Source=TIMELIVEDEV\TIMELIVE;Initial Catalog=TimeLive;User ID=sa;Password=$baseline00</Value>
+    </Setting>
+    <Setting Name="TL_QB_RelationshipConnectionString" Type="(Connection string)" Scope="Application">
+      <DesignTimeValue Profile="(Default)">&lt;?xml version="1.0" encoding="utf-16"?&gt;
+&lt;SerializableConnectionString xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"&gt;
+  &lt;ConnectionString&gt;Data Source=TELTRIUMSRV3;Initial Catalog=TL_QB_Relationship_Dev;User ID=sa;Password=$baseline00&lt;/ConnectionString&gt;
+  &lt;ProviderName&gt;System.Data.SqlClient&lt;/ProviderName&gt;
+&lt;/SerializableConnectionString&gt;</DesignTimeValue>
+      <Value Profile="(Default)">Data Source=TELTRIUMSRV3;Initial Catalog=TL_QB_Relationship_Dev;User ID=sa;Password=$baseline00</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>

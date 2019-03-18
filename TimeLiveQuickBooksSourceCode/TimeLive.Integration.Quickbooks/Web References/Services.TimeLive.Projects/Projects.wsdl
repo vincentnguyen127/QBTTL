@@ -1,0 +1,782 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="http://tempuri.org/" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" targetNamespace="http://tempuri.org/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://tempuri.org/">
+      <s:element name="AddProject">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="objProject" type="tns:Project" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="Project">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="ProjectID" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="ProjectCode" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="ProjectName" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="ClientId" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="ClientName" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="AddProjectResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="AddProjectResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SecuredWebServiceHeader" type="tns:SecuredWebServiceHeader" />
+      <s:complexType name="SecuredWebServiceHeader">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Username" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Password" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="AuthenticatedToken" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="AccountId" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="AccountEmployeeId" type="s:int" />
+        </s:sequence>
+        <s:anyAttribute />
+      </s:complexType>
+      <s:element name="GetProjects">
+        <s:complexType />
+      </s:element>
+      <s:element name="GetProjectsResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetProjectsResult" type="tns:ArrayOfAnyType" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfAnyType">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="anyType" nillable="true" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="GetAssignedProjects">
+        <s:complexType />
+      </s:element>
+      <s:element name="GetAssignedProjectsResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetAssignedProjectsResult" type="tns:ArrayOfAnyType" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetAssignedProjectsByClient">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="AccountClientId" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetAssignedProjectsByClientResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetAssignedProjectsByClientResult" type="tns:ArrayOfAnyType" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetProjectNameByProjectId">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="AccountProjectId" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetProjectNameByProjectIdResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetProjectNameByProjectIdResult" type="tns:ArrayOfAnyType" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetAccountEmployeeId">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Username" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Password" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetAccountEmployeeIdResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="GetAccountEmployeeIdResult" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="InsertProject">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="AccountProjectTypeId" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="AccountClientId" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="AccountPartyContactId" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="AccountPartyDepartmentId" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="ProjectBillingTypeId" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="ProjectName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="ProjectDescription" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="StartDate" type="s:dateTime" />
+            <s:element minOccurs="1" maxOccurs="1" name="DeadLine" type="s:dateTime" />
+            <s:element minOccurs="1" maxOccurs="1" name="ProjectStatusId" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="LeaderEmployeeId" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="ProjectManagerEmployeeId" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="TimesheetApprovalTypeId" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="ExpenseApprovalTypeId" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="EstimatedDuration" type="s:double" />
+            <s:element minOccurs="0" maxOccurs="1" name="EstimatedDurationUnit" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="ProjectCode" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="DefaultBillingRate" type="s:decimal" />
+            <s:element minOccurs="1" maxOccurs="1" name="ProjectBillingRateTypeId" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="IsTemplate" type="s:boolean" />
+            <s:element minOccurs="1" maxOccurs="1" name="IsProject" type="s:boolean" />
+            <s:element minOccurs="1" maxOccurs="1" name="AccountProjectTemplateId" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="CreatedOn" type="s:dateTime" />
+            <s:element minOccurs="1" maxOccurs="1" name="CreatedByEmployeeId" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="ModifiedOn" type="s:dateTime" />
+            <s:element minOccurs="1" maxOccurs="1" name="ModifiedByEmployeeId" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="Completed" type="s:boolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="InsertProjectResponse">
+        <s:complexType />
+      </s:element>
+      <s:element name="GetProjectId">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ProjectName" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetProjectIdResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="GetProjectIdResult" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetProjectTypeId">
+        <s:complexType />
+      </s:element>
+      <s:element name="GetProjectTypeIdResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="GetProjectTypeIdResult" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetProjectBillingTypeId">
+        <s:complexType />
+      </s:element>
+      <s:element name="GetProjectBillingTypeIdResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="GetProjectBillingTypeIdResult" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetProjectStatusId">
+        <s:complexType />
+      </s:element>
+      <s:element name="GetProjectStatusIdResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="GetProjectStatusIdResult" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetTeamLeadId">
+        <s:complexType />
+      </s:element>
+      <s:element name="GetTeamLeadIdResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="GetTeamLeadIdResult" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetProjectManagerId">
+        <s:complexType />
+      </s:element>
+      <s:element name="GetProjectManagerIdResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="GetProjectManagerIdResult" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetProjectBillingRateTypeId">
+        <s:complexType />
+      </s:element>
+      <s:element name="GetProjectBillingRateTypeIdResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="GetProjectBillingRateTypeIdResult" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetProjectMilestoneId">
+        <s:complexType />
+      </s:element>
+      <s:element name="GetProjectMilestoneIdResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="GetProjectMilestoneIdResult" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetProjectMilestoneIdByProjectId">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="AccountProjectId" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetProjectMilestoneIdByProjectIdResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="GetProjectMilestoneIdByProjectIdResult" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+    </s:schema>
+  </wsdl:types>
+  <wsdl:message name="AddProjectSoapIn">
+    <wsdl:part name="parameters" element="tns:AddProject" />
+  </wsdl:message>
+  <wsdl:message name="AddProjectSoapOut">
+    <wsdl:part name="parameters" element="tns:AddProjectResponse" />
+  </wsdl:message>
+  <wsdl:message name="AddProjectSecuredWebServiceHeader">
+    <wsdl:part name="SecuredWebServiceHeader" element="tns:SecuredWebServiceHeader" />
+  </wsdl:message>
+  <wsdl:message name="GetProjectsSoapIn">
+    <wsdl:part name="parameters" element="tns:GetProjects" />
+  </wsdl:message>
+  <wsdl:message name="GetProjectsSoapOut">
+    <wsdl:part name="parameters" element="tns:GetProjectsResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetProjectsSecuredWebServiceHeader">
+    <wsdl:part name="SecuredWebServiceHeader" element="tns:SecuredWebServiceHeader" />
+  </wsdl:message>
+  <wsdl:message name="GetAssignedProjectsSoapIn">
+    <wsdl:part name="parameters" element="tns:GetAssignedProjects" />
+  </wsdl:message>
+  <wsdl:message name="GetAssignedProjectsSoapOut">
+    <wsdl:part name="parameters" element="tns:GetAssignedProjectsResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetAssignedProjectsSecuredWebServiceHeader">
+    <wsdl:part name="SecuredWebServiceHeader" element="tns:SecuredWebServiceHeader" />
+  </wsdl:message>
+  <wsdl:message name="GetAssignedProjectsByClientSoapIn">
+    <wsdl:part name="parameters" element="tns:GetAssignedProjectsByClient" />
+  </wsdl:message>
+  <wsdl:message name="GetAssignedProjectsByClientSoapOut">
+    <wsdl:part name="parameters" element="tns:GetAssignedProjectsByClientResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetAssignedProjectsByClientSecuredWebServiceHeader">
+    <wsdl:part name="SecuredWebServiceHeader" element="tns:SecuredWebServiceHeader" />
+  </wsdl:message>
+  <wsdl:message name="GetProjectNameByProjectIdSoapIn">
+    <wsdl:part name="parameters" element="tns:GetProjectNameByProjectId" />
+  </wsdl:message>
+  <wsdl:message name="GetProjectNameByProjectIdSoapOut">
+    <wsdl:part name="parameters" element="tns:GetProjectNameByProjectIdResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetProjectNameByProjectIdSecuredWebServiceHeader">
+    <wsdl:part name="SecuredWebServiceHeader" element="tns:SecuredWebServiceHeader" />
+  </wsdl:message>
+  <wsdl:message name="GetAccountEmployeeIdSoapIn">
+    <wsdl:part name="parameters" element="tns:GetAccountEmployeeId" />
+  </wsdl:message>
+  <wsdl:message name="GetAccountEmployeeIdSoapOut">
+    <wsdl:part name="parameters" element="tns:GetAccountEmployeeIdResponse" />
+  </wsdl:message>
+  <wsdl:message name="InsertProjectSoapIn">
+    <wsdl:part name="parameters" element="tns:InsertProject" />
+  </wsdl:message>
+  <wsdl:message name="InsertProjectSoapOut">
+    <wsdl:part name="parameters" element="tns:InsertProjectResponse" />
+  </wsdl:message>
+  <wsdl:message name="InsertProjectSecuredWebServiceHeader">
+    <wsdl:part name="SecuredWebServiceHeader" element="tns:SecuredWebServiceHeader" />
+  </wsdl:message>
+  <wsdl:message name="GetProjectIdSoapIn">
+    <wsdl:part name="parameters" element="tns:GetProjectId" />
+  </wsdl:message>
+  <wsdl:message name="GetProjectIdSoapOut">
+    <wsdl:part name="parameters" element="tns:GetProjectIdResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetProjectIdSecuredWebServiceHeader">
+    <wsdl:part name="SecuredWebServiceHeader" element="tns:SecuredWebServiceHeader" />
+  </wsdl:message>
+  <wsdl:message name="GetProjectTypeIdSoapIn">
+    <wsdl:part name="parameters" element="tns:GetProjectTypeId" />
+  </wsdl:message>
+  <wsdl:message name="GetProjectTypeIdSoapOut">
+    <wsdl:part name="parameters" element="tns:GetProjectTypeIdResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetProjectTypeIdSecuredWebServiceHeader">
+    <wsdl:part name="SecuredWebServiceHeader" element="tns:SecuredWebServiceHeader" />
+  </wsdl:message>
+  <wsdl:message name="GetProjectBillingTypeIdSoapIn">
+    <wsdl:part name="parameters" element="tns:GetProjectBillingTypeId" />
+  </wsdl:message>
+  <wsdl:message name="GetProjectBillingTypeIdSoapOut">
+    <wsdl:part name="parameters" element="tns:GetProjectBillingTypeIdResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetProjectBillingTypeIdSecuredWebServiceHeader">
+    <wsdl:part name="SecuredWebServiceHeader" element="tns:SecuredWebServiceHeader" />
+  </wsdl:message>
+  <wsdl:message name="GetProjectStatusIdSoapIn">
+    <wsdl:part name="parameters" element="tns:GetProjectStatusId" />
+  </wsdl:message>
+  <wsdl:message name="GetProjectStatusIdSoapOut">
+    <wsdl:part name="parameters" element="tns:GetProjectStatusIdResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetProjectStatusIdSecuredWebServiceHeader">
+    <wsdl:part name="SecuredWebServiceHeader" element="tns:SecuredWebServiceHeader" />
+  </wsdl:message>
+  <wsdl:message name="GetTeamLeadIdSoapIn">
+    <wsdl:part name="parameters" element="tns:GetTeamLeadId" />
+  </wsdl:message>
+  <wsdl:message name="GetTeamLeadIdSoapOut">
+    <wsdl:part name="parameters" element="tns:GetTeamLeadIdResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetTeamLeadIdSecuredWebServiceHeader">
+    <wsdl:part name="SecuredWebServiceHeader" element="tns:SecuredWebServiceHeader" />
+  </wsdl:message>
+  <wsdl:message name="GetProjectManagerIdSoapIn">
+    <wsdl:part name="parameters" element="tns:GetProjectManagerId" />
+  </wsdl:message>
+  <wsdl:message name="GetProjectManagerIdSoapOut">
+    <wsdl:part name="parameters" element="tns:GetProjectManagerIdResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetProjectManagerIdSecuredWebServiceHeader">
+    <wsdl:part name="SecuredWebServiceHeader" element="tns:SecuredWebServiceHeader" />
+  </wsdl:message>
+  <wsdl:message name="GetProjectBillingRateTypeIdSoapIn">
+    <wsdl:part name="parameters" element="tns:GetProjectBillingRateTypeId" />
+  </wsdl:message>
+  <wsdl:message name="GetProjectBillingRateTypeIdSoapOut">
+    <wsdl:part name="parameters" element="tns:GetProjectBillingRateTypeIdResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetProjectBillingRateTypeIdSecuredWebServiceHeader">
+    <wsdl:part name="SecuredWebServiceHeader" element="tns:SecuredWebServiceHeader" />
+  </wsdl:message>
+  <wsdl:message name="GetProjectMilestoneIdSoapIn">
+    <wsdl:part name="parameters" element="tns:GetProjectMilestoneId" />
+  </wsdl:message>
+  <wsdl:message name="GetProjectMilestoneIdSoapOut">
+    <wsdl:part name="parameters" element="tns:GetProjectMilestoneIdResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetProjectMilestoneIdSecuredWebServiceHeader">
+    <wsdl:part name="SecuredWebServiceHeader" element="tns:SecuredWebServiceHeader" />
+  </wsdl:message>
+  <wsdl:message name="GetProjectMilestoneIdByProjectIdSoapIn">
+    <wsdl:part name="parameters" element="tns:GetProjectMilestoneIdByProjectId" />
+  </wsdl:message>
+  <wsdl:message name="GetProjectMilestoneIdByProjectIdSoapOut">
+    <wsdl:part name="parameters" element="tns:GetProjectMilestoneIdByProjectIdResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetProjectMilestoneIdByProjectIdSecuredWebServiceHeader">
+    <wsdl:part name="SecuredWebServiceHeader" element="tns:SecuredWebServiceHeader" />
+  </wsdl:message>
+  <wsdl:portType name="ProjectsSoap">
+    <wsdl:operation name="AddProject">
+      <wsdl:input message="tns:AddProjectSoapIn" />
+      <wsdl:output message="tns:AddProjectSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetProjects">
+      <wsdl:input message="tns:GetProjectsSoapIn" />
+      <wsdl:output message="tns:GetProjectsSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetAssignedProjects">
+      <wsdl:input message="tns:GetAssignedProjectsSoapIn" />
+      <wsdl:output message="tns:GetAssignedProjectsSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetAssignedProjectsByClient">
+      <wsdl:input message="tns:GetAssignedProjectsByClientSoapIn" />
+      <wsdl:output message="tns:GetAssignedProjectsByClientSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetProjectNameByProjectId">
+      <wsdl:input message="tns:GetProjectNameByProjectIdSoapIn" />
+      <wsdl:output message="tns:GetProjectNameByProjectIdSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetAccountEmployeeId">
+      <wsdl:input message="tns:GetAccountEmployeeIdSoapIn" />
+      <wsdl:output message="tns:GetAccountEmployeeIdSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="InsertProject">
+      <wsdl:input message="tns:InsertProjectSoapIn" />
+      <wsdl:output message="tns:InsertProjectSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetProjectId">
+      <wsdl:input message="tns:GetProjectIdSoapIn" />
+      <wsdl:output message="tns:GetProjectIdSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetProjectTypeId">
+      <wsdl:input message="tns:GetProjectTypeIdSoapIn" />
+      <wsdl:output message="tns:GetProjectTypeIdSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetProjectBillingTypeId">
+      <wsdl:input message="tns:GetProjectBillingTypeIdSoapIn" />
+      <wsdl:output message="tns:GetProjectBillingTypeIdSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetProjectStatusId">
+      <wsdl:input message="tns:GetProjectStatusIdSoapIn" />
+      <wsdl:output message="tns:GetProjectStatusIdSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetTeamLeadId">
+      <wsdl:input message="tns:GetTeamLeadIdSoapIn" />
+      <wsdl:output message="tns:GetTeamLeadIdSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetProjectManagerId">
+      <wsdl:input message="tns:GetProjectManagerIdSoapIn" />
+      <wsdl:output message="tns:GetProjectManagerIdSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetProjectBillingRateTypeId">
+      <wsdl:input message="tns:GetProjectBillingRateTypeIdSoapIn" />
+      <wsdl:output message="tns:GetProjectBillingRateTypeIdSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetProjectMilestoneId">
+      <wsdl:input message="tns:GetProjectMilestoneIdSoapIn" />
+      <wsdl:output message="tns:GetProjectMilestoneIdSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetProjectMilestoneIdByProjectId">
+      <wsdl:input message="tns:GetProjectMilestoneIdByProjectIdSoapIn" />
+      <wsdl:output message="tns:GetProjectMilestoneIdByProjectIdSoapOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="ProjectsSoap" type="tns:ProjectsSoap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="AddProject">
+      <soap:operation soapAction="http://tempuri.org/AddProject" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:AddProjectSecuredWebServiceHeader" part="SecuredWebServiceHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetProjects">
+      <soap:operation soapAction="http://tempuri.org/GetProjects" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:GetProjectsSecuredWebServiceHeader" part="SecuredWebServiceHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetAssignedProjects">
+      <soap:operation soapAction="http://tempuri.org/GetAssignedProjects" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:GetAssignedProjectsSecuredWebServiceHeader" part="SecuredWebServiceHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetAssignedProjectsByClient">
+      <soap:operation soapAction="http://tempuri.org/GetAssignedProjectsByClient" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:GetAssignedProjectsByClientSecuredWebServiceHeader" part="SecuredWebServiceHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetProjectNameByProjectId">
+      <soap:operation soapAction="http://tempuri.org/GetProjectNameByProjectId" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:GetProjectNameByProjectIdSecuredWebServiceHeader" part="SecuredWebServiceHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetAccountEmployeeId">
+      <soap:operation soapAction="http://tempuri.org/GetAccountEmployeeId" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="InsertProject">
+      <soap:operation soapAction="http://tempuri.org/InsertProject" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:InsertProjectSecuredWebServiceHeader" part="SecuredWebServiceHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetProjectId">
+      <soap:operation soapAction="http://tempuri.org/GetProjectId" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:GetProjectIdSecuredWebServiceHeader" part="SecuredWebServiceHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetProjectTypeId">
+      <soap:operation soapAction="http://tempuri.org/GetProjectTypeId" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:GetProjectTypeIdSecuredWebServiceHeader" part="SecuredWebServiceHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetProjectBillingTypeId">
+      <soap:operation soapAction="http://tempuri.org/GetProjectBillingTypeId" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:GetProjectBillingTypeIdSecuredWebServiceHeader" part="SecuredWebServiceHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetProjectStatusId">
+      <soap:operation soapAction="http://tempuri.org/GetProjectStatusId" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:GetProjectStatusIdSecuredWebServiceHeader" part="SecuredWebServiceHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetTeamLeadId">
+      <soap:operation soapAction="http://tempuri.org/GetTeamLeadId" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:GetTeamLeadIdSecuredWebServiceHeader" part="SecuredWebServiceHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetProjectManagerId">
+      <soap:operation soapAction="http://tempuri.org/GetProjectManagerId" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:GetProjectManagerIdSecuredWebServiceHeader" part="SecuredWebServiceHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetProjectBillingRateTypeId">
+      <soap:operation soapAction="http://tempuri.org/GetProjectBillingRateTypeId" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:GetProjectBillingRateTypeIdSecuredWebServiceHeader" part="SecuredWebServiceHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetProjectMilestoneId">
+      <soap:operation soapAction="http://tempuri.org/GetProjectMilestoneId" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:GetProjectMilestoneIdSecuredWebServiceHeader" part="SecuredWebServiceHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetProjectMilestoneIdByProjectId">
+      <soap:operation soapAction="http://tempuri.org/GetProjectMilestoneIdByProjectId" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:GetProjectMilestoneIdByProjectIdSecuredWebServiceHeader" part="SecuredWebServiceHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="ProjectsSoap12" type="tns:ProjectsSoap">
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="AddProject">
+      <soap12:operation soapAction="http://tempuri.org/AddProject" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:AddProjectSecuredWebServiceHeader" part="SecuredWebServiceHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetProjects">
+      <soap12:operation soapAction="http://tempuri.org/GetProjects" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:GetProjectsSecuredWebServiceHeader" part="SecuredWebServiceHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetAssignedProjects">
+      <soap12:operation soapAction="http://tempuri.org/GetAssignedProjects" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:GetAssignedProjectsSecuredWebServiceHeader" part="SecuredWebServiceHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetAssignedProjectsByClient">
+      <soap12:operation soapAction="http://tempuri.org/GetAssignedProjectsByClient" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:GetAssignedProjectsByClientSecuredWebServiceHeader" part="SecuredWebServiceHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetProjectNameByProjectId">
+      <soap12:operation soapAction="http://tempuri.org/GetProjectNameByProjectId" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:GetProjectNameByProjectIdSecuredWebServiceHeader" part="SecuredWebServiceHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetAccountEmployeeId">
+      <soap12:operation soapAction="http://tempuri.org/GetAccountEmployeeId" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="InsertProject">
+      <soap12:operation soapAction="http://tempuri.org/InsertProject" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:InsertProjectSecuredWebServiceHeader" part="SecuredWebServiceHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetProjectId">
+      <soap12:operation soapAction="http://tempuri.org/GetProjectId" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:GetProjectIdSecuredWebServiceHeader" part="SecuredWebServiceHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetProjectTypeId">
+      <soap12:operation soapAction="http://tempuri.org/GetProjectTypeId" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:GetProjectTypeIdSecuredWebServiceHeader" part="SecuredWebServiceHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetProjectBillingTypeId">
+      <soap12:operation soapAction="http://tempuri.org/GetProjectBillingTypeId" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:GetProjectBillingTypeIdSecuredWebServiceHeader" part="SecuredWebServiceHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetProjectStatusId">
+      <soap12:operation soapAction="http://tempuri.org/GetProjectStatusId" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:GetProjectStatusIdSecuredWebServiceHeader" part="SecuredWebServiceHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetTeamLeadId">
+      <soap12:operation soapAction="http://tempuri.org/GetTeamLeadId" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:GetTeamLeadIdSecuredWebServiceHeader" part="SecuredWebServiceHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetProjectManagerId">
+      <soap12:operation soapAction="http://tempuri.org/GetProjectManagerId" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:GetProjectManagerIdSecuredWebServiceHeader" part="SecuredWebServiceHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetProjectBillingRateTypeId">
+      <soap12:operation soapAction="http://tempuri.org/GetProjectBillingRateTypeId" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:GetProjectBillingRateTypeIdSecuredWebServiceHeader" part="SecuredWebServiceHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetProjectMilestoneId">
+      <soap12:operation soapAction="http://tempuri.org/GetProjectMilestoneId" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:GetProjectMilestoneIdSecuredWebServiceHeader" part="SecuredWebServiceHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetProjectMilestoneIdByProjectId">
+      <soap12:operation soapAction="http://tempuri.org/GetProjectMilestoneIdByProjectId" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:GetProjectMilestoneIdByProjectIdSecuredWebServiceHeader" part="SecuredWebServiceHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="Projects">
+    <wsdl:port name="ProjectsSoap" binding="tns:ProjectsSoap">
+      <soap:address location="http://demo.livetecs.com/Services/Projects.asmx" />
+    </wsdl:port>
+    <wsdl:port name="ProjectsSoap12" binding="tns:ProjectsSoap12">
+      <soap12:address location="http://demo.livetecs.com/Services/Projects.asmx" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

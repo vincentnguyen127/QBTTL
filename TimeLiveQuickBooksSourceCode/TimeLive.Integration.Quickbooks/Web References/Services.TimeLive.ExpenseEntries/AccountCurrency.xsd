@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns="http://tempuri.org/AccountCurrency.xsd" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" xmlns:msprop="urn:schemas-microsoft-com:xml-msprop" xmlns:mstns="http://tempuri.org/AccountCurrency.xsd" attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://tempuri.org/AccountCurrency.xsd" id="AccountCurrency" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element msdata:IsDataSet="true" msdata:UseCurrentLocale="true" name="AccountCurrency">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element msprop:Generator_UserTableName="AccountCurrency" msprop:Generator_TablePropName="_AccountCurrency" name="AccountCurrency">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element msdata:ReadOnly="true" msdata:AutoIncrement="true" name="AccountCurrencyId" type="xs:int" />
+              <xs:element minOccurs="0" name="AccountCurrencyExchangeRateId" type="xs:int" />
+              <xs:element name="SystemCurrencyId" type="xs:int" />
+              <xs:element name="AccountId" type="xs:int" />
+              <xs:element name="Disabled" type="xs:boolean" />
+              <xs:element minOccurs="0" name="MasterAccountCurrencyId" type="xs:short" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="vueAccountCurrency">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element minOccurs="0" name="CurrencyCode">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="15" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element minOccurs="0" name="Currency">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="100" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="Disabled" type="xs:boolean" />
+              <xs:element name="AccountId" type="xs:int" />
+              <xs:element name="AccountCurrencyId" type="xs:int" />
+              <xs:element name="AccountCurrencyExchangeRateId" type="xs:int" />
+              <xs:element minOccurs="0" name="ExchangeRate" type="xs:double" />
+              <xs:element minOccurs="0" name="ExchangeRateEffectiveStartDate" type="xs:dateTime" />
+              <xs:element minOccurs="0" name="ExchangeRateEffectiveEndDate" type="xs:dateTime" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:choice>
+    </xs:complexType>
+    <xs:unique msdata:PrimaryKey="true" name="Constraint1">
+      <xs:selector xpath=".//mstns:AccountCurrency" />
+      <xs:field xpath="mstns:AccountCurrencyId" />
+    </xs:unique>
+  </xs:element>
+</xs:schema>

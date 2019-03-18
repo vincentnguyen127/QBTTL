@@ -1,0 +1,43 @@
+C:\Users\ywang\Teltrium\Development - Documents\TimeLiveQuickBooksSourceCode (2)\TimeLive.Integration.Quickbooks\bin\Debug\Interop.QBFC10.dll
+C:\Users\ywang\Teltrium\Development - Documents\TimeLiveQuickBooksSourceCode (2)\TimeLive.Integration.Quickbooks\obj\Debug\TimeLive.Integration.Quickbooks.StatusWindow.resources
+C:\Users\ywang\Teltrium\Development - Documents\TimeLiveQuickBooksSourceCode (2)\TimeLive.Integration.Quickbooks\obj\Debug\TimeLive.Integration.Quickbooks.TLVendor.resources
+C:\Users\ywang\Teltrium\Development - Documents\TimeLiveQuickBooksSourceCode (2)\TimeLive.Integration.Quickbooks\obj\Debug\TimeLive.Integration.Quickbooks.Main.resources
+C:\Users\ywang\Teltrium\Development - Documents\TimeLiveQuickBooksSourceCode (2)\TimeLive.Integration.Quickbooks\obj\Debug\TimeLive.Integration.Quickbooks.QBAccount.resources
+C:\Users\ywang\Teltrium\Development - Documents\TimeLiveQuickBooksSourceCode (2)\TimeLive.Integration.Quickbooks\obj\Debug\TimeLive.Integration.Quickbooks.TLProjectAndTask.resources
+C:\Users\ywang\Teltrium\Development - Documents\TimeLiveQuickBooksSourceCode (2)\TimeLive.Integration.Quickbooks\obj\Debug\TimeLive.Integration.Quickbooks.TLEmployee.resources
+C:\Users\ywang\Teltrium\Development - Documents\TimeLiveQuickBooksSourceCode (2)\TimeLive.Integration.Quickbooks\obj\Debug\TimeLive.Integration.Quickbooks.QBVendorBill.resources
+C:\Users\ywang\Teltrium\Development - Documents\TimeLiveQuickBooksSourceCode (2)\TimeLive.Integration.Quickbooks\obj\Debug\TimeLive.Integration.Quickbooks.QBJobOrItem.resources
+C:\Users\ywang\Teltrium\Development - Documents\TimeLiveQuickBooksSourceCode (2)\TimeLive.Integration.Quickbooks\obj\Debug\TimeLive.Integration.Quickbooks.QBEmployee.resources
+C:\Users\ywang\Teltrium\Development - Documents\TimeLiveQuickBooksSourceCode (2)\TimeLive.Integration.Quickbooks\obj\Debug\TimeLive.Integration.Quickbooks.QBCustomer.resources
+C:\Users\ywang\Teltrium\Development - Documents\TimeLiveQuickBooksSourceCode (2)\TimeLive.Integration.Quickbooks\obj\Debug\TimeLive.Integration.Quickbooks.Login.resources
+C:\Users\ywang\Teltrium\Development - Documents\TimeLiveQuickBooksSourceCode (2)\TimeLive.Integration.Quickbooks\obj\Debug\TimeLive.Integration.Quickbooks.MainMenu.resources
+C:\Users\ywang\Teltrium\Development - Documents\TimeLiveQuickBooksSourceCode (2)\TimeLive.Integration.Quickbooks\obj\Debug\TimeLive.Integration.Quickbooks.Resources.resources
+C:\Users\ywang\Teltrium\Development - Documents\TimeLiveQuickBooksSourceCode (2)\TimeLive.Integration.Quickbooks\obj\Debug\TimeLive.Integration.Quickbooks.TLClient.resources
+C:\Users\ywang\Teltrium\Development - Documents\TimeLiveQuickBooksSourceCode (2)\TimeLive.Integration.Quickbooks\obj\Debug\TimeLive.Integration.Quickbooks.QBTimeTracking.resources
+C:\Users\ywang\Teltrium\Development - Documents\TimeLiveQuickBooksSourceCode (2)\TimeLive.Integration.Quickbooks\obj\Debug\TimeLive.Integration.Quickbooks.QBVendor.resources
+C:\Users\ywang\Teltrium\Development - Documents\TimeLiveQuickBooksSourceCode (2)\TimeLive.Integration.Quickbooks\obj\Debug\TimeLive.Integration.Quickbooks.teltrium.vbproj.GenerateResource.Cache
+C:\Users\ywang\Teltrium\Development - Documents\TimeLiveQuickBooksSourceCode (2)\TimeLive.Integration.Quickbooks\bin\Debug\TimeLive Quickbooks Integrator.exe.config
+C:\Users\ywang\Teltrium\Development - Documents\TimeLiveQuickBooksSourceCode (2)\TimeLive.Integration.Quickbooks\bin\Debug\TimeLive Quickbooks Integrator.exe
+C:\Users\ywang\Teltrium\Development - Documents\TimeLiveQuickBooksSourceCode (2)\TimeLive.Integration.Quickbooks\bin\Debug\TimeLive Quickbooks Integrator.pdb
+C:\Users\ywang\Teltrium\Development - Documents\TimeLiveQuickBooksSourceCode (2)\TimeLive.Integration.Quickbooks\bin\Debug\TimeLive Quickbooks Integrator.xml
+C:\Users\ywang\Teltrium\Development - Documents\TimeLiveQuickBooksSourceCode (2)\TimeLive.Integration.Quickbooks\obj\Debug\TimeLive.Integration.Quickbooks.teltrium.vbprojResolveAssemblyReference.cache
+C:\Users\ywang\Teltrium\Development - Documents\TimeLiveQuickBooksSourceCode (2)\TimeLive.Integration.Quickbooks\obj\Debug\TimeLive Quickbooks Integrator.exe
+C:\Users\ywang\Teltrium\Development - Documents\TimeLiveQuickBooksSourceCode (2)\TimeLive.Integration.Quickbooks\obj\Debug\TimeLive Quickbooks Integrator.xml
+C:\Users\ywang\Teltrium\Development - Documents\TimeLiveQuickBooksSourceCode (2)\TimeLive.Integration.Quickbooks\obj\Debug\TimeLive Quickbooks Integrator.pdb
+C:\Users\ywang\Teltrium\Development - Documents\TimeLiveQuickBooksSourceCode (2)\TimeLive.Integration.Quickbooks\obj\Debug\TimeLive.Quickbooks.Integrator.StatusWindow.resources
+C:\Users\ywang\Teltrium\Development - Documents\TimeLiveQuickBooksSourceCode (2)\TimeLive.Integration.Quickbooks\obj\Debug\TimeLive.Quickbooks.Integrator.TLVendor.resources
+C:\Users\ywang\Teltrium\Development - Documents\TimeLiveQuickBooksSourceCode (2)\TimeLive.Integration.Quickbooks\obj\Debug\TimeLive.Quickbooks.Integrator.Main.resources
+C:\Users\ywang\Teltrium\Development - Documents\TimeLiveQuickBooksSourceCode (2)\TimeLive.Integration.Quickbooks\obj\Debug\TimeLive.Quickbooks.Integrator.QBAccount.resources
+C:\Users\ywang\Teltrium\Development - Documents\TimeLiveQuickBooksSourceCode (2)\TimeLive.Integration.Quickbooks\obj\Debug\TimeLive.Quickbooks.Integrator.TLProjectAndTask.resources
+C:\Users\ywang\Teltrium\Development - Documents\TimeLiveQuickBooksSourceCode (2)\TimeLive.Integration.Quickbooks\obj\Debug\TimeLive.Quickbooks.Integrator.TLEmployee.resources
+C:\Users\ywang\Teltrium\Development - Documents\TimeLiveQuickBooksSourceCode (2)\TimeLive.Integration.Quickbooks\obj\Debug\TimeLive.Quickbooks.Integrator.QBVendorBill.resources
+C:\Users\ywang\Teltrium\Development - Documents\TimeLiveQuickBooksSourceCode (2)\TimeLive.Integration.Quickbooks\obj\Debug\TimeLive.Quickbooks.Integrator.QBJobOrItem.resources
+C:\Users\ywang\Teltrium\Development - Documents\TimeLiveQuickBooksSourceCode (2)\TimeLive.Integration.Quickbooks\obj\Debug\TimeLive.Quickbooks.Integrator.QBEmployee.resources
+C:\Users\ywang\Teltrium\Development - Documents\TimeLiveQuickBooksSourceCode (2)\TimeLive.Integration.Quickbooks\obj\Debug\TimeLive.Quickbooks.Integrator.QBCustomer.resources
+C:\Users\ywang\Teltrium\Development - Documents\TimeLiveQuickBooksSourceCode (2)\TimeLive.Integration.Quickbooks\obj\Debug\TimeLive.Quickbooks.Integrator.Login.resources
+C:\Users\ywang\Teltrium\Development - Documents\TimeLiveQuickBooksSourceCode (2)\TimeLive.Integration.Quickbooks\obj\Debug\TimeLive.Quickbooks.Integrator.MainMenu.resources
+C:\Users\ywang\Teltrium\Development - Documents\TimeLiveQuickBooksSourceCode (2)\TimeLive.Integration.Quickbooks\obj\Debug\TimeLive.Quickbooks.Integrator.Resources.resources
+C:\Users\ywang\Teltrium\Development - Documents\TimeLiveQuickBooksSourceCode (2)\TimeLive.Integration.Quickbooks\obj\Debug\TimeLive.Quickbooks.Integrator.TLClient.resources
+C:\Users\ywang\Teltrium\Development - Documents\TimeLiveQuickBooksSourceCode (2)\TimeLive.Integration.Quickbooks\obj\Debug\TimeLive.Quickbooks.Integrator.QBTimeTracking.resources
+C:\Users\ywang\Teltrium\Development - Documents\TimeLiveQuickBooksSourceCode (2)\TimeLive.Integration.Quickbooks\obj\Debug\TimeLive.Quickbooks.Integrator.QBVendor.resources
+C:\Users\ywang\Teltrium\Development - Documents\TimeLiveQuickBooksSourceCode (2)\TimeLive.Integration.Quickbooks\bin\Debug\TimeLive.Quickbooks.Integrator.exe.config

@@ -1,0 +1,46 @@
+SCC = This is a Source Code Control file.
+
+[TimeLive4.sln]
+SCC_Aux_Path = host.livetecs.com:8877:Livetecs
+SCC_Project_Name = $/TimeLive4
+
+[TimeLive.FileHelpers.2005.csproj]
+SCC_Aux_Path = host.livetecs.com:8877:Livetecs
+SCC_Project_Name = $/TimeLive4/FileHelpers
+
+[TimeLive.UI.LiveTools.vbproj]
+SCC_Aux_Path = host.livetecs.com:8877:Livetecs
+SCC_Project_Name = $/TimeLive4/LiveTools
+
+[TimeLive.SmartMassEmail.EntLibHelper.csproj]
+SCC_Aux_Path = host.livetecs.com:8877:Livetecs
+SCC_Project_Name = $/TimeLive4/SmartMassEMail/EntLibHelper
+
+[TimeLIve.SmartMassEmail.Providers.csproj]
+SCC_Aux_Path = host.livetecs.com:8877:Livetecs
+SCC_Project_Name = $/TimeLive4/SmartMassEMail/Providers
+
+[TimeLive.SmartMassEmail.Data.csproj]
+SCC_Aux_Path = host.livetecs.com:8877:Livetecs
+SCC_Project_Name = $/TimeLive4/SmartMassEMail/SmartMassEmail.Data
+
+[TimeLive.SmartMassEmail.Data.SqlClient.csproj]
+SCC_Aux_Path = host.livetecs.com:8877:Livetecs
+SCC_Project_Name = $/TimeLive4/SmartMassEMail/SmartMassEmail.Data.SqlClient
+
+[TimeLive.SmartMassEmail.Entities.csproj]
+SCC_Aux_Path = host.livetecs.com:8877:Livetecs
+SCC_Project_Name = $/TimeLive4/SmartMassEMail/SmartMassEmail.Entities
+
+[TimeLive.SmartMassEmail.ImplementedProviders.csproj]
+SCC_Aux_Path = host.livetecs.com:8877:Livetecs
+SCC_Project_Name = $/TimeLive4/SmartMassEMail/SmartMassEmail.ImplementedProviders
+
+[TimeLive.APIAuthentication.vbproj]
+SCC_Aux_Path = host.livetecs.com:8877:Livetecs
+SCC_Project_Name = $/TimeLive4/TimeLive.APIAuthentication
+
+[TimeLive.Integration.Quickbooks.vbproj]
+SCC_Aux_Path = host.livetecs.com:8877:Livetecs
+SCC_Project_Name = $/TimeLive4/TimeLive.Integration.Quickbooks
+

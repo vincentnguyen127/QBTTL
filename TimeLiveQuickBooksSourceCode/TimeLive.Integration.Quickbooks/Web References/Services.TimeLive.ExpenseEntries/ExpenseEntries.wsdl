@@ -1,0 +1,2034 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="http://tempuri.org/" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:s1="http://microsoft.com/wsdl/types/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" targetNamespace="http://tempuri.org/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://tempuri.org/">
+      <s:import namespace="http://microsoft.com/wsdl/types/" />
+      <s:import namespace="http://tempuri.org/AccountCurrency.xsd" />
+      <s:import schemaLocation="http://demo.livetecs.com/Services/ExpenseEntries.asmx?schema=AccountCurrency" namespace="http://tempuri.org/AccountCurrency.xsd" />
+      <s:element name="AddExpenseEntry">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="objExpenseEntry" type="tns:ExpenseEntry" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ExpenseEntry">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="EmployeeName" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="ClientWithProject" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="ExpenseEntryDate" type="s:dateTime" />
+          <s:element minOccurs="1" maxOccurs="1" name="Amount" type="s:double" />
+          <s:element minOccurs="0" maxOccurs="1" name="ExpenseName" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="ExpenseType" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="AccountExpenseId" type="s:int" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="AddExpenseEntryResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="AddExpenseEntryResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SecuredWebServiceHeader" type="tns:SecuredWebServiceHeader" />
+      <s:complexType name="SecuredWebServiceHeader">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Username" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Password" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="AuthenticatedToken" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="AccountId" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="AccountEmployeeId" type="s:int" />
+        </s:sequence>
+        <s:anyAttribute />
+      </s:complexType>
+      <s:element name="ExpenseEntryForMobileObject">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="objExpenseEntry" type="tns:ExpenseEntryListForMobile" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ExpenseEntryListForMobile">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="AccountEmployeeExpenseSheetId" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="AccountExpenseEntryId" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="AccountExpenseId" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="AccountExpenseName" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="ExpenseEntryDescription" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="ExpenseEntryAmount" type="s:double" />
+          <s:element minOccurs="0" maxOccurs="1" name="ExpenseEntryCurrencyCode" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="AccountTaxCodeId" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="AccountTaxZoneId" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="AccountPaymentMethodId" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="AccountClientId" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="AccountProjectId" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="AccountProjectTaskId" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="NetAmount" type="s:double" />
+          <s:element minOccurs="1" maxOccurs="1" name="Reimburse" type="s:boolean" />
+          <s:element minOccurs="1" maxOccurs="1" name="Billable" type="s:boolean" />
+          <s:element minOccurs="1" maxOccurs="1" name="Quantity" type="s:double" />
+          <s:element minOccurs="1" maxOccurs="1" name="Rate" type="s:double" />
+          <s:element minOccurs="1" maxOccurs="1" name="TaxAmount" type="s:double" />
+          <s:element minOccurs="1" maxOccurs="1" name="IsShowClient" type="s:boolean" />
+          <s:element minOccurs="1" maxOccurs="1" name="IsShowTask" type="s:boolean" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="ExpenseEntryForMobileObjectResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ExpenseEntryForMobileObjectResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="AccountCurrencyForMobileObject">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ObjCurrency" type="tns:ReimbursementCurrencyForMobile" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ReimbursementCurrencyForMobile">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="ExchangeRateId" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="AccountCurrencyId" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="CurrencyCode" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="AccountCurrencyForMobileObjectResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="AccountCurrencyForMobileObjectResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="AccountPaymentMethodForMobileObject">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="objPaymentMethodList" type="tns:PaymentMethodForMobile" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="PaymentMethodForMobile">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="AccountPaymentMethodId" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="PaymentMethod" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="AccountPaymentMethodForMobileObjectResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="AccountPaymentMethodForMobileObjectResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="TaxZoneForMobileObject">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ObjTaxZone" type="tns:TaxZoneForMobile" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="TaxZoneForMobile">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="TaxZoneId" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="TaxZone" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="TaxZoneForMobileObjectResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="TaxZoneForMobileObjectResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="CurrencyExchangeForMobileObject">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ObjCurrency" type="tns:AccountCurrencyForMobile" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="AccountCurrencyForMobile">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="ExchangeRateId" type="s:int" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="CurrencyExchangeForMobileObjectResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="CurrencyExchangeForMobileObjectResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="AccountExpenseEntryForMobileObject">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="objExpenseEntry" type="tns:AccountExpenseEntryForMobile" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="AccountExpenseEntryForMobile">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="AccountEmployeeExpenseSheetId" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="AccountExpenseEntryId" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="ExpenseSheetDescription" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="AccountId" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="AccountEmployeeId" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="AccountClientId" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="AccountProjectId" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="AccountProjectTaskId" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="AccountExpenseId" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="ExpenseEntryDescription" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="AccountExpenseEntryDate" type="s:dateTime" />
+          <s:element minOccurs="1" maxOccurs="1" name="PaymentMethodId" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="AccountCurrencyId" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="NetAmount" type="s:double" />
+          <s:element minOccurs="1" maxOccurs="1" name="Amount" type="s:double" />
+          <s:element minOccurs="1" maxOccurs="1" name="Reimburse" type="s:boolean" />
+          <s:element minOccurs="1" maxOccurs="1" name="Billable" type="s:boolean" />
+          <s:element minOccurs="1" maxOccurs="1" name="AccountTaxZoneId" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="Quantity" type="s:double" />
+          <s:element minOccurs="1" maxOccurs="1" name="Rate" type="s:double" />
+          <s:element minOccurs="1" maxOccurs="1" name="TaxAmount" type="s:double" />
+          <s:element minOccurs="1" maxOccurs="1" name="IsShowClient" type="s:boolean" />
+          <s:element minOccurs="1" maxOccurs="1" name="IsShowTask" type="s:boolean" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="AccountExpenseEntryForMobileObjectResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="AccountExpenseEntryForMobileObjectResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ExpenseSheetForMobileObject">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="objExpenseSheet" type="tns:ExpenseSheetListForMobile" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ExpenseSheetListForMobile">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="AccountEmployeeExpenseSheetId" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="ExpenseSheetDate" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Description" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="CurrencyCode" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Amount" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Status" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="AccountEmployeeId" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="IsShowClient" type="s:boolean" />
+          <s:element minOccurs="1" maxOccurs="1" name="IsShowTask" type="s:boolean" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="ExpenseSheetForMobileObjectResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ExpenseSheetForMobileObjectResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ShowFieldsByExpenseNameForMobileObject">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ObjShowFieldsByExpenseName" type="tns:ShowFieldsByExpenseNameForMobile" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ShowFieldsByExpenseNameForMobile">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="ShowQuantity" type="s:boolean" />
+          <s:element minOccurs="0" maxOccurs="1" name="ShowQuantityCaption" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="ShowRate" type="s:boolean" />
+          <s:element minOccurs="1" maxOccurs="1" name="ShowTaxCode" type="s:boolean" />
+          <s:element minOccurs="0" maxOccurs="1" name="TaxCodeCaption" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="ShowNetAmount" type="s:boolean" />
+          <s:element minOccurs="1" maxOccurs="1" name="ShowTaxZone" type="s:boolean" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="ShowFieldsByExpenseNameForMobileObjectResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ShowFieldsByExpenseNameForMobileObjectResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="CalculateAmountByExpenseForMobileObject">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ObjCalculateAmount" type="tns:CalculateAmountByExpenseForMobile" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="CalculateAmountByExpenseForMobile">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="TaxAmount" type="s:double" />
+          <s:element minOccurs="1" maxOccurs="1" name="NetAmount" type="s:double" />
+          <s:element minOccurs="1" maxOccurs="1" name="Amount" type="s:double" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="CalculateAmountByExpenseForMobileObjectResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="CalculateAmountByExpenseForMobileObjectResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetAllExpenseEntriesByDateRange">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="StartDate" type="s:dateTime" />
+            <s:element minOccurs="1" maxOccurs="1" name="EndDate" type="s:dateTime" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetAllExpenseEntriesByDateRangeResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetAllExpenseEntriesByDateRangeResult" type="tns:ArrayOfAnyType" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfAnyType">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="anyType" nillable="true" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="GetExpenseEntriesByEmployeeIdAndDateRange">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="AccountEmployeeId" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="StartDate" type="s:dateTime" />
+            <s:element minOccurs="1" maxOccurs="1" name="EndDate" type="s:dateTime" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetExpenseEntriesByEmployeeIdAndDateRangeResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetExpenseEntriesByEmployeeIdAndDateRangeResult" type="tns:ArrayOfAnyType" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="AddExpenseName">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="objExpenseName" type="tns:ExpenseName" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ExpenseName">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="ExpenseName" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="AddExpenseNameResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="AddExpenseNameResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetExpenseNames">
+        <s:complexType />
+      </s:element>
+      <s:element name="GetExpenseNamesResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetExpenseNamesResult" type="tns:ArrayOfAnyType" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetExpenseApprovalTypeId">
+        <s:complexType />
+      </s:element>
+      <s:element name="GetExpenseApprovalTypeIdResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="GetExpenseApprovalTypeIdResult" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetExpenseSheetByDateForMobile">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="YearWS" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="MonthWS" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="DayWS" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetExpenseSheetByDateForMobileResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetExpenseSheetByDateForMobileResult" type="tns:ArrayOfAnyType" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetExpenseEntriesByExpenseSheetIdForMobile">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="AccountEmployeeExpenseSheetId" type="s1:guid" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetExpenseEntriesByExpenseSheetIdForMobileResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetExpenseEntriesByExpenseSheetIdForMobileResult" type="tns:ArrayOfAnyType" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetExpenseEntriesByExpenseEntryIdForMobile">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="AccountExpenseEntryId" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetExpenseEntriesByExpenseEntryIdForMobileResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetExpenseEntriesByExpenseEntryIdForMobileResult" type="tns:ArrayOfAnyType" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetExpenseNameByAccountIdForMobile">
+        <s:complexType />
+      </s:element>
+      <s:element name="GetExpenseNameByAccountIdForMobileResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetExpenseNameByAccountIdForMobileResult" type="tns:ArrayOfAnyType" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetPaymentMethodsByAccountIdForMobile">
+        <s:complexType />
+      </s:element>
+      <s:element name="GetPaymentMethodsByAccountIdForMobileResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetPaymentMethodsByAccountIdForMobileResult" type="tns:ArrayOfAnyType" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetAccountCurrenciesByAccountIdForMobile">
+        <s:complexType />
+      </s:element>
+      <s:element name="GetAccountCurrenciesByAccountIdForMobileResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetAccountCurrenciesByAccountIdForMobileResult" type="tns:ArrayOfAnyType" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetTaxZoneByAccountId">
+        <s:complexType />
+      </s:element>
+      <s:element name="GetTaxZoneByAccountIdResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetTaxZoneByAccountIdResult" type="tns:ArrayOfAnyType" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetExpenseTypeNameByExpenseTypeIdForMobile">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="AccountExpenseTypeId" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetExpenseTypeNameByExpenseTypeIdForMobileResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetExpenseTypeNameByExpenseTypeIdForMobileResult" type="tns:ArrayOfAnyType" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetTaxZoneByTaxZoneId">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="AccountId" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="AccountTaxZoneId" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetTaxZoneByTaxZoneIdResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetTaxZoneByTaxZoneIdResult" type="tns:ArrayOfAnyType" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetTaxCodeByTaxCodeId">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="AccountId" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetTaxCodeByTaxCodeIdResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetTaxCodeByTaxCodeIdResult" type="tns:ArrayOfAnyType" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetExpenseNameByExpenseIdForMobile">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="AccountExpenseId" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetExpenseNameByExpenseIdForMobileResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetExpenseNameByExpenseIdForMobileResult" type="tns:ArrayOfAnyType" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetReimbursementCurrencyByAccountIdForMobile">
+        <s:complexType />
+      </s:element>
+      <s:element name="GetReimbursementCurrencyByAccountIdForMobileResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetReimbursementCurrencyByAccountIdForMobileResult" type="tns:ArrayOfAnyType" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetAccountCurrencyByAccountCurrencyIdForMobile">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="AccountCurrencyId" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetAccountCurrencyByAccountCurrencyIdForMobileResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetAccountCurrencyByAccountCurrencyIdForMobileResult" type="tns:ArrayOfAnyType" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetvueAccountCurrencyByAccountIdAndDisabled">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="AccountId" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="AccountCurrencyId" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetvueAccountCurrencyByAccountIdAndDisabledResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetvueAccountCurrencyByAccountIdAndDisabledResult">
+              <s:complexType>
+                <s:sequence>
+                  <s:any minOccurs="0" maxOccurs="unbounded" namespace="http://www.w3.org/2001/XMLSchema" processContents="lax" />
+                  <s:any minOccurs="1" namespace="urn:schemas-microsoft-com:xml-diffgram-v1" processContents="lax" />
+                </s:sequence>
+                <s:attribute fixed="http://tempuri.org/AccountCurrency.xsd" name="namespace" />
+                <s:attribute fixed="vueAccountCurrencyDataTable" name="tableTypeName" />
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="AddExpenseSheetForMobile">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Description" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="ExpenseSheetDate" type="s:dateTime" />
+            <s:element minOccurs="1" maxOccurs="1" name="Approved" type="s:boolean" />
+            <s:element minOccurs="1" maxOccurs="1" name="Rejected" type="s:boolean" />
+            <s:element minOccurs="1" maxOccurs="1" name="Submitted" type="s:boolean" />
+            <s:element minOccurs="1" maxOccurs="1" name="InApproval" type="s:boolean" />
+            <s:element minOccurs="1" maxOccurs="1" name="SubmittedDate" type="s:dateTime" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="AddExpenseSheetForMobileResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="AddExpenseSheetForMobileResult" type="s1:guid" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="UpdateExpenseSheetForMobile">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Description" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="ExpenseSheetDate" type="s:dateTime" />
+            <s:element minOccurs="1" maxOccurs="1" name="Original_AccountEmployeeExpenseSheetId" type="s1:guid" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="UpdateExpenseSheetForMobileResponse">
+        <s:complexType />
+      </s:element>
+      <s:element name="AddExpenseEntryForMobile">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="YearWS" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="MonthWS" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="DayWS" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="AccountClientId" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="AccountProjectId" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="AccountProjectTaskId" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="AccountExpenseId" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="Amount" type="s:double" />
+            <s:element minOccurs="0" maxOccurs="1" name="Description" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="IsBillable" type="s:boolean" />
+            <s:element minOccurs="1" maxOccurs="1" name="Reimburse" type="s:boolean" />
+            <s:element minOccurs="1" maxOccurs="1" name="AccountCurrencyId" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="Quantity" type="s:double" />
+            <s:element minOccurs="1" maxOccurs="1" name="Rate" type="s:double" />
+            <s:element minOccurs="1" maxOccurs="1" name="AmountBeforeTax" type="s:double" />
+            <s:element minOccurs="1" maxOccurs="1" name="TaxAmount" type="s:double" />
+            <s:element minOccurs="1" maxOccurs="1" name="AccountPaymentMethodId" nillable="true" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="ExchangeRate" type="s:double" />
+            <s:element minOccurs="1" maxOccurs="1" name="AccountTaxZoneId" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="Submitted" type="s:boolean" />
+            <s:element minOccurs="0" maxOccurs="1" name="AccountEmployeeExpenseSheetId" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="AddExpenseEntryForMobileResponse">
+        <s:complexType />
+      </s:element>
+      <s:element name="UpdateExpenseEntryForMobile">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="YearWS" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="MonthWS" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="DayWS" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="Original_AccountExpenseEntryId" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="AccountClientId" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="AccountProjectId" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="AccountProjectTaskId" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="AccountExpenseId" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="Amount" type="s:double" />
+            <s:element minOccurs="1" maxOccurs="1" name="ModifiedOn" type="s:dateTime" />
+            <s:element minOccurs="1" maxOccurs="1" name="ModifiedByEmployeeId" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="Description" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="IsBillable" type="s:boolean" />
+            <s:element minOccurs="1" maxOccurs="1" name="Reimburse" type="s:boolean" />
+            <s:element minOccurs="1" maxOccurs="1" name="AccountCurrencyId" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="Quantity" type="s:double" />
+            <s:element minOccurs="1" maxOccurs="1" name="Rate" type="s:double" />
+            <s:element minOccurs="1" maxOccurs="1" name="AmountBeforeTax" type="s:double" />
+            <s:element minOccurs="1" maxOccurs="1" name="TaxAmount" type="s:double" />
+            <s:element minOccurs="1" maxOccurs="1" name="AccountPaymentMethodId" nillable="true" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="AccountTaxZoneId" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="AccountEmployeeExpenseSheetId" type="s1:guid" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="UpdateExpenseEntryForMobileResponse">
+        <s:complexType />
+      </s:element>
+      <s:element name="ShowFieldsByExpenseForMobile">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="AccountExpenseId" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ShowFieldsByExpenseForMobileResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ShowFieldsByExpenseForMobileResult" type="tns:ArrayOfAnyType" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="CalculateAmountByExpenseForMobile">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="AccountExpenseId" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="AccountTaxZoneId" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="Quantity" type="s:double" />
+            <s:element minOccurs="1" maxOccurs="1" name="Rate" type="s:double" />
+            <s:element minOccurs="1" maxOccurs="1" name="TaxAmount" type="s:double" />
+            <s:element minOccurs="1" maxOccurs="1" name="NetAmount" type="s:double" />
+            <s:element minOccurs="1" maxOccurs="1" name="Amount" type="s:double" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="CalculateAmountByExpenseForMobileResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="CalculateAmountByExpenseForMobileResult" type="tns:ArrayOfAnyType" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SubmitExpenseSheetAndEntry">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="AccountEmployeeExpenseSheetId" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SubmitExpenseSheetAndEntryResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="SubmitExpenseSheetAndEntryResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="AddAttachment">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="AccountExpenseEntryId" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="ExpenseAttachment" type="s:base64Binary" />
+            <s:element minOccurs="0" maxOccurs="1" name="FileName" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="AddAttachmentResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="AddAttachmentResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetExpenseApprovalEntries">
+        <s:complexType />
+      </s:element>
+      <s:element name="GetExpenseApprovalEntriesResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetExpenseApprovalEntriesResult" type="tns:ArrayOfAnyType" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="UpdateExpenseApprovals">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ApprovalList" type="tns:ArrayOfAnyType" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="UpdateExpenseApprovalsResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="UpdateExpenseApprovalsResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+    </s:schema>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://microsoft.com/wsdl/types/">
+      <s:simpleType name="guid">
+        <s:restriction base="s:string">
+          <s:pattern value="[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}" />
+        </s:restriction>
+      </s:simpleType>
+    </s:schema>
+  </wsdl:types>
+  <wsdl:message name="AddExpenseEntrySoapIn">
+    <wsdl:part name="parameters" element="tns:AddExpenseEntry" />
+  </wsdl:message>
+  <wsdl:message name="AddExpenseEntrySoapOut">
+    <wsdl:part name="parameters" element="tns:AddExpenseEntryResponse" />
+  </wsdl:message>
+  <wsdl:message name="AddExpenseEntrySecuredWebServiceHeader">
+    <wsdl:part name="SecuredWebServiceHeader" element="tns:SecuredWebServiceHeader" />
+  </wsdl:message>
+  <wsdl:message name="ExpenseEntryForMobileObjectSoapIn">
+    <wsdl:part name="parameters" element="tns:ExpenseEntryForMobileObject" />
+  </wsdl:message>
+  <wsdl:message name="ExpenseEntryForMobileObjectSoapOut">
+    <wsdl:part name="parameters" element="tns:ExpenseEntryForMobileObjectResponse" />
+  </wsdl:message>
+  <wsdl:message name="ExpenseEntryForMobileObjectSecuredWebServiceHeader">
+    <wsdl:part name="SecuredWebServiceHeader" element="tns:SecuredWebServiceHeader" />
+  </wsdl:message>
+  <wsdl:message name="AccountCurrencyForMobileObjectSoapIn">
+    <wsdl:part name="parameters" element="tns:AccountCurrencyForMobileObject" />
+  </wsdl:message>
+  <wsdl:message name="AccountCurrencyForMobileObjectSoapOut">
+    <wsdl:part name="parameters" element="tns:AccountCurrencyForMobileObjectResponse" />
+  </wsdl:message>
+  <wsdl:message name="AccountCurrencyForMobileObjectSecuredWebServiceHeader">
+    <wsdl:part name="SecuredWebServiceHeader" element="tns:SecuredWebServiceHeader" />
+  </wsdl:message>
+  <wsdl:message name="AccountPaymentMethodForMobileObjectSoapIn">
+    <wsdl:part name="parameters" element="tns:AccountPaymentMethodForMobileObject" />
+  </wsdl:message>
+  <wsdl:message name="AccountPaymentMethodForMobileObjectSoapOut">
+    <wsdl:part name="parameters" element="tns:AccountPaymentMethodForMobileObjectResponse" />
+  </wsdl:message>
+  <wsdl:message name="AccountPaymentMethodForMobileObjectSecuredWebServiceHeader">
+    <wsdl:part name="SecuredWebServiceHeader" element="tns:SecuredWebServiceHeader" />
+  </wsdl:message>
+  <wsdl:message name="TaxZoneForMobileObjectSoapIn">
+    <wsdl:part name="parameters" element="tns:TaxZoneForMobileObject" />
+  </wsdl:message>
+  <wsdl:message name="TaxZoneForMobileObjectSoapOut">
+    <wsdl:part name="parameters" element="tns:TaxZoneForMobileObjectResponse" />
+  </wsdl:message>
+  <wsdl:message name="TaxZoneForMobileObjectSecuredWebServiceHeader">
+    <wsdl:part name="SecuredWebServiceHeader" element="tns:SecuredWebServiceHeader" />
+  </wsdl:message>
+  <wsdl:message name="CurrencyExchangeForMobileObjectSoapIn">
+    <wsdl:part name="parameters" element="tns:CurrencyExchangeForMobileObject" />
+  </wsdl:message>
+  <wsdl:message name="CurrencyExchangeForMobileObjectSoapOut">
+    <wsdl:part name="parameters" element="tns:CurrencyExchangeForMobileObjectResponse" />
+  </wsdl:message>
+  <wsdl:message name="CurrencyExchangeForMobileObjectSecuredWebServiceHeader">
+    <wsdl:part name="SecuredWebServiceHeader" element="tns:SecuredWebServiceHeader" />
+  </wsdl:message>
+  <wsdl:message name="AccountExpenseEntryForMobileObjectSoapIn">
+    <wsdl:part name="parameters" element="tns:AccountExpenseEntryForMobileObject" />
+  </wsdl:message>
+  <wsdl:message name="AccountExpenseEntryForMobileObjectSoapOut">
+    <wsdl:part name="parameters" element="tns:AccountExpenseEntryForMobileObjectResponse" />
+  </wsdl:message>
+  <wsdl:message name="AccountExpenseEntryForMobileObjectSecuredWebServiceHeader">
+    <wsdl:part name="SecuredWebServiceHeader" element="tns:SecuredWebServiceHeader" />
+  </wsdl:message>
+  <wsdl:message name="ExpenseSheetForMobileObjectSoapIn">
+    <wsdl:part name="parameters" element="tns:ExpenseSheetForMobileObject" />
+  </wsdl:message>
+  <wsdl:message name="ExpenseSheetForMobileObjectSoapOut">
+    <wsdl:part name="parameters" element="tns:ExpenseSheetForMobileObjectResponse" />
+  </wsdl:message>
+  <wsdl:message name="ExpenseSheetForMobileObjectSecuredWebServiceHeader">
+    <wsdl:part name="SecuredWebServiceHeader" element="tns:SecuredWebServiceHeader" />
+  </wsdl:message>
+  <wsdl:message name="ShowFieldsByExpenseNameForMobileObjectSoapIn">
+    <wsdl:part name="parameters" element="tns:ShowFieldsByExpenseNameForMobileObject" />
+  </wsdl:message>
+  <wsdl:message name="ShowFieldsByExpenseNameForMobileObjectSoapOut">
+    <wsdl:part name="parameters" element="tns:ShowFieldsByExpenseNameForMobileObjectResponse" />
+  </wsdl:message>
+  <wsdl:message name="ShowFieldsByExpenseNameForMobileObjectSecuredWebServiceHeader">
+    <wsdl:part name="SecuredWebServiceHeader" element="tns:SecuredWebServiceHeader" />
+  </wsdl:message>
+  <wsdl:message name="CalculateAmountByExpenseForMobileObjectSoapIn">
+    <wsdl:part name="parameters" element="tns:CalculateAmountByExpenseForMobileObject" />
+  </wsdl:message>
+  <wsdl:message name="CalculateAmountByExpenseForMobileObjectSoapOut">
+    <wsdl:part name="parameters" element="tns:CalculateAmountByExpenseForMobileObjectResponse" />
+  </wsdl:message>
+  <wsdl:message name="CalculateAmountByExpenseForMobileObjectSecuredWebServiceHeader">
+    <wsdl:part name="SecuredWebServiceHeader" element="tns:SecuredWebServiceHeader" />
+  </wsdl:message>
+  <wsdl:message name="GetAllExpenseEntriesByDateRangeSoapIn">
+    <wsdl:part name="parameters" element="tns:GetAllExpenseEntriesByDateRange" />
+  </wsdl:message>
+  <wsdl:message name="GetAllExpenseEntriesByDateRangeSoapOut">
+    <wsdl:part name="parameters" element="tns:GetAllExpenseEntriesByDateRangeResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetAllExpenseEntriesByDateRangeSecuredWebServiceHeader">
+    <wsdl:part name="SecuredWebServiceHeader" element="tns:SecuredWebServiceHeader" />
+  </wsdl:message>
+  <wsdl:message name="GetExpenseEntriesByEmployeeIdAndDateRangeSoapIn">
+    <wsdl:part name="parameters" element="tns:GetExpenseEntriesByEmployeeIdAndDateRange" />
+  </wsdl:message>
+  <wsdl:message name="GetExpenseEntriesByEmployeeIdAndDateRangeSoapOut">
+    <wsdl:part name="parameters" element="tns:GetExpenseEntriesByEmployeeIdAndDateRangeResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetExpenseEntriesByEmployeeIdAndDateRangeSecuredWebServiceHeader">
+    <wsdl:part name="SecuredWebServiceHeader" element="tns:SecuredWebServiceHeader" />
+  </wsdl:message>
+  <wsdl:message name="AddExpenseNameSoapIn">
+    <wsdl:part name="parameters" element="tns:AddExpenseName" />
+  </wsdl:message>
+  <wsdl:message name="AddExpenseNameSoapOut">
+    <wsdl:part name="parameters" element="tns:AddExpenseNameResponse" />
+  </wsdl:message>
+  <wsdl:message name="AddExpenseNameSecuredWebServiceHeader">
+    <wsdl:part name="SecuredWebServiceHeader" element="tns:SecuredWebServiceHeader" />
+  </wsdl:message>
+  <wsdl:message name="GetExpenseNamesSoapIn">
+    <wsdl:part name="parameters" element="tns:GetExpenseNames" />
+  </wsdl:message>
+  <wsdl:message name="GetExpenseNamesSoapOut">
+    <wsdl:part name="parameters" element="tns:GetExpenseNamesResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetExpenseNamesSecuredWebServiceHeader">
+    <wsdl:part name="SecuredWebServiceHeader" element="tns:SecuredWebServiceHeader" />
+  </wsdl:message>
+  <wsdl:message name="GetExpenseApprovalTypeIdSoapIn">
+    <wsdl:part name="parameters" element="tns:GetExpenseApprovalTypeId" />
+  </wsdl:message>
+  <wsdl:message name="GetExpenseApprovalTypeIdSoapOut">
+    <wsdl:part name="parameters" element="tns:GetExpenseApprovalTypeIdResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetExpenseApprovalTypeIdSecuredWebServiceHeader">
+    <wsdl:part name="SecuredWebServiceHeader" element="tns:SecuredWebServiceHeader" />
+  </wsdl:message>
+  <wsdl:message name="GetExpenseSheetByDateForMobileSoapIn">
+    <wsdl:part name="parameters" element="tns:GetExpenseSheetByDateForMobile" />
+  </wsdl:message>
+  <wsdl:message name="GetExpenseSheetByDateForMobileSoapOut">
+    <wsdl:part name="parameters" element="tns:GetExpenseSheetByDateForMobileResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetExpenseSheetByDateForMobileSecuredWebServiceHeader">
+    <wsdl:part name="SecuredWebServiceHeader" element="tns:SecuredWebServiceHeader" />
+  </wsdl:message>
+  <wsdl:message name="GetExpenseEntriesByExpenseSheetIdForMobileSoapIn">
+    <wsdl:part name="parameters" element="tns:GetExpenseEntriesByExpenseSheetIdForMobile" />
+  </wsdl:message>
+  <wsdl:message name="GetExpenseEntriesByExpenseSheetIdForMobileSoapOut">
+    <wsdl:part name="parameters" element="tns:GetExpenseEntriesByExpenseSheetIdForMobileResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetExpenseEntriesByExpenseSheetIdForMobileSecuredWebServiceHeader">
+    <wsdl:part name="SecuredWebServiceHeader" element="tns:SecuredWebServiceHeader" />
+  </wsdl:message>
+  <wsdl:message name="GetExpenseEntriesByExpenseEntryIdForMobileSoapIn">
+    <wsdl:part name="parameters" element="tns:GetExpenseEntriesByExpenseEntryIdForMobile" />
+  </wsdl:message>
+  <wsdl:message name="GetExpenseEntriesByExpenseEntryIdForMobileSoapOut">
+    <wsdl:part name="parameters" element="tns:GetExpenseEntriesByExpenseEntryIdForMobileResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetExpenseEntriesByExpenseEntryIdForMobileSecuredWebServiceHeader">
+    <wsdl:part name="SecuredWebServiceHeader" element="tns:SecuredWebServiceHeader" />
+  </wsdl:message>
+  <wsdl:message name="GetExpenseNameByAccountIdForMobileSoapIn">
+    <wsdl:part name="parameters" element="tns:GetExpenseNameByAccountIdForMobile" />
+  </wsdl:message>
+  <wsdl:message name="GetExpenseNameByAccountIdForMobileSoapOut">
+    <wsdl:part name="parameters" element="tns:GetExpenseNameByAccountIdForMobileResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetExpenseNameByAccountIdForMobileSecuredWebServiceHeader">
+    <wsdl:part name="SecuredWebServiceHeader" element="tns:SecuredWebServiceHeader" />
+  </wsdl:message>
+  <wsdl:message name="GetPaymentMethodsByAccountIdForMobileSoapIn">
+    <wsdl:part name="parameters" element="tns:GetPaymentMethodsByAccountIdForMobile" />
+  </wsdl:message>
+  <wsdl:message name="GetPaymentMethodsByAccountIdForMobileSoapOut">
+    <wsdl:part name="parameters" element="tns:GetPaymentMethodsByAccountIdForMobileResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetPaymentMethodsByAccountIdForMobileSecuredWebServiceHeader">
+    <wsdl:part name="SecuredWebServiceHeader" element="tns:SecuredWebServiceHeader" />
+  </wsdl:message>
+  <wsdl:message name="GetAccountCurrenciesByAccountIdForMobileSoapIn">
+    <wsdl:part name="parameters" element="tns:GetAccountCurrenciesByAccountIdForMobile" />
+  </wsdl:message>
+  <wsdl:message name="GetAccountCurrenciesByAccountIdForMobileSoapOut">
+    <wsdl:part name="parameters" element="tns:GetAccountCurrenciesByAccountIdForMobileResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetAccountCurrenciesByAccountIdForMobileSecuredWebServiceHeader">
+    <wsdl:part name="SecuredWebServiceHeader" element="tns:SecuredWebServiceHeader" />
+  </wsdl:message>
+  <wsdl:message name="GetTaxZoneByAccountIdSoapIn">
+    <wsdl:part name="parameters" element="tns:GetTaxZoneByAccountId" />
+  </wsdl:message>
+  <wsdl:message name="GetTaxZoneByAccountIdSoapOut">
+    <wsdl:part name="parameters" element="tns:GetTaxZoneByAccountIdResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetTaxZoneByAccountIdSecuredWebServiceHeader">
+    <wsdl:part name="SecuredWebServiceHeader" element="tns:SecuredWebServiceHeader" />
+  </wsdl:message>
+  <wsdl:message name="GetExpenseTypeNameByExpenseTypeIdForMobileSoapIn">
+    <wsdl:part name="parameters" element="tns:GetExpenseTypeNameByExpenseTypeIdForMobile" />
+  </wsdl:message>
+  <wsdl:message name="GetExpenseTypeNameByExpenseTypeIdForMobileSoapOut">
+    <wsdl:part name="parameters" element="tns:GetExpenseTypeNameByExpenseTypeIdForMobileResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetExpenseTypeNameByExpenseTypeIdForMobileSecuredWebServiceHeader">
+    <wsdl:part name="SecuredWebServiceHeader" element="tns:SecuredWebServiceHeader" />
+  </wsdl:message>
+  <wsdl:message name="GetTaxZoneByTaxZoneIdSoapIn">
+    <wsdl:part name="parameters" element="tns:GetTaxZoneByTaxZoneId" />
+  </wsdl:message>
+  <wsdl:message name="GetTaxZoneByTaxZoneIdSoapOut">
+    <wsdl:part name="parameters" element="tns:GetTaxZoneByTaxZoneIdResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetTaxZoneByTaxZoneIdSecuredWebServiceHeader">
+    <wsdl:part name="SecuredWebServiceHeader" element="tns:SecuredWebServiceHeader" />
+  </wsdl:message>
+  <wsdl:message name="GetTaxCodeByTaxCodeIdSoapIn">
+    <wsdl:part name="parameters" element="tns:GetTaxCodeByTaxCodeId" />
+  </wsdl:message>
+  <wsdl:message name="GetTaxCodeByTaxCodeIdSoapOut">
+    <wsdl:part name="parameters" element="tns:GetTaxCodeByTaxCodeIdResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetTaxCodeByTaxCodeIdSecuredWebServiceHeader">
+    <wsdl:part name="SecuredWebServiceHeader" element="tns:SecuredWebServiceHeader" />
+  </wsdl:message>
+  <wsdl:message name="GetExpenseNameByExpenseIdForMobileSoapIn">
+    <wsdl:part name="parameters" element="tns:GetExpenseNameByExpenseIdForMobile" />
+  </wsdl:message>
+  <wsdl:message name="GetExpenseNameByExpenseIdForMobileSoapOut">
+    <wsdl:part name="parameters" element="tns:GetExpenseNameByExpenseIdForMobileResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetExpenseNameByExpenseIdForMobileSecuredWebServiceHeader">
+    <wsdl:part name="SecuredWebServiceHeader" element="tns:SecuredWebServiceHeader" />
+  </wsdl:message>
+  <wsdl:message name="GetReimbursementCurrencyByAccountIdForMobileSoapIn">
+    <wsdl:part name="parameters" element="tns:GetReimbursementCurrencyByAccountIdForMobile" />
+  </wsdl:message>
+  <wsdl:message name="GetReimbursementCurrencyByAccountIdForMobileSoapOut">
+    <wsdl:part name="parameters" element="tns:GetReimbursementCurrencyByAccountIdForMobileResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetReimbursementCurrencyByAccountIdForMobileSecuredWebServiceHeader">
+    <wsdl:part name="SecuredWebServiceHeader" element="tns:SecuredWebServiceHeader" />
+  </wsdl:message>
+  <wsdl:message name="GetAccountCurrencyByAccountCurrencyIdForMobileSoapIn">
+    <wsdl:part name="parameters" element="tns:GetAccountCurrencyByAccountCurrencyIdForMobile" />
+  </wsdl:message>
+  <wsdl:message name="GetAccountCurrencyByAccountCurrencyIdForMobileSoapOut">
+    <wsdl:part name="parameters" element="tns:GetAccountCurrencyByAccountCurrencyIdForMobileResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetAccountCurrencyByAccountCurrencyIdForMobileSecuredWebServiceHeader">
+    <wsdl:part name="SecuredWebServiceHeader" element="tns:SecuredWebServiceHeader" />
+  </wsdl:message>
+  <wsdl:message name="GetvueAccountCurrencyByAccountIdAndDisabledSoapIn">
+    <wsdl:part name="parameters" element="tns:GetvueAccountCurrencyByAccountIdAndDisabled" />
+  </wsdl:message>
+  <wsdl:message name="GetvueAccountCurrencyByAccountIdAndDisabledSoapOut">
+    <wsdl:part name="parameters" element="tns:GetvueAccountCurrencyByAccountIdAndDisabledResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetvueAccountCurrencyByAccountIdAndDisabledSecuredWebServiceHeader">
+    <wsdl:part name="SecuredWebServiceHeader" element="tns:SecuredWebServiceHeader" />
+  </wsdl:message>
+  <wsdl:message name="AddExpenseSheetForMobileSoapIn">
+    <wsdl:part name="parameters" element="tns:AddExpenseSheetForMobile" />
+  </wsdl:message>
+  <wsdl:message name="AddExpenseSheetForMobileSoapOut">
+    <wsdl:part name="parameters" element="tns:AddExpenseSheetForMobileResponse" />
+  </wsdl:message>
+  <wsdl:message name="AddExpenseSheetForMobileSecuredWebServiceHeader">
+    <wsdl:part name="SecuredWebServiceHeader" element="tns:SecuredWebServiceHeader" />
+  </wsdl:message>
+  <wsdl:message name="UpdateExpenseSheetForMobileSoapIn">
+    <wsdl:part name="parameters" element="tns:UpdateExpenseSheetForMobile" />
+  </wsdl:message>
+  <wsdl:message name="UpdateExpenseSheetForMobileSoapOut">
+    <wsdl:part name="parameters" element="tns:UpdateExpenseSheetForMobileResponse" />
+  </wsdl:message>
+  <wsdl:message name="UpdateExpenseSheetForMobileSecuredWebServiceHeader">
+    <wsdl:part name="SecuredWebServiceHeader" element="tns:SecuredWebServiceHeader" />
+  </wsdl:message>
+  <wsdl:message name="AddExpenseEntryForMobileSoapIn">
+    <wsdl:part name="parameters" element="tns:AddExpenseEntryForMobile" />
+  </wsdl:message>
+  <wsdl:message name="AddExpenseEntryForMobileSoapOut">
+    <wsdl:part name="parameters" element="tns:AddExpenseEntryForMobileResponse" />
+  </wsdl:message>
+  <wsdl:message name="AddExpenseEntryForMobileSecuredWebServiceHeader">
+    <wsdl:part name="SecuredWebServiceHeader" element="tns:SecuredWebServiceHeader" />
+  </wsdl:message>
+  <wsdl:message name="UpdateExpenseEntryForMobileSoapIn">
+    <wsdl:part name="parameters" element="tns:UpdateExpenseEntryForMobile" />
+  </wsdl:message>
+  <wsdl:message name="UpdateExpenseEntryForMobileSoapOut">
+    <wsdl:part name="parameters" element="tns:UpdateExpenseEntryForMobileResponse" />
+  </wsdl:message>
+  <wsdl:message name="UpdateExpenseEntryForMobileSecuredWebServiceHeader">
+    <wsdl:part name="SecuredWebServiceHeader" element="tns:SecuredWebServiceHeader" />
+  </wsdl:message>
+  <wsdl:message name="ShowFieldsByExpenseForMobileSoapIn">
+    <wsdl:part name="parameters" element="tns:ShowFieldsByExpenseForMobile" />
+  </wsdl:message>
+  <wsdl:message name="ShowFieldsByExpenseForMobileSoapOut">
+    <wsdl:part name="parameters" element="tns:ShowFieldsByExpenseForMobileResponse" />
+  </wsdl:message>
+  <wsdl:message name="ShowFieldsByExpenseForMobileSecuredWebServiceHeader">
+    <wsdl:part name="SecuredWebServiceHeader" element="tns:SecuredWebServiceHeader" />
+  </wsdl:message>
+  <wsdl:message name="CalculateAmountByExpenseForMobileSoapIn">
+    <wsdl:part name="parameters" element="tns:CalculateAmountByExpenseForMobile" />
+  </wsdl:message>
+  <wsdl:message name="CalculateAmountByExpenseForMobileSoapOut">
+    <wsdl:part name="parameters" element="tns:CalculateAmountByExpenseForMobileResponse" />
+  </wsdl:message>
+  <wsdl:message name="CalculateAmountByExpenseForMobileSecuredWebServiceHeader">
+    <wsdl:part name="SecuredWebServiceHeader" element="tns:SecuredWebServiceHeader" />
+  </wsdl:message>
+  <wsdl:message name="SubmitExpenseSheetAndEntrySoapIn">
+    <wsdl:part name="parameters" element="tns:SubmitExpenseSheetAndEntry" />
+  </wsdl:message>
+  <wsdl:message name="SubmitExpenseSheetAndEntrySoapOut">
+    <wsdl:part name="parameters" element="tns:SubmitExpenseSheetAndEntryResponse" />
+  </wsdl:message>
+  <wsdl:message name="SubmitExpenseSheetAndEntrySecuredWebServiceHeader">
+    <wsdl:part name="SecuredWebServiceHeader" element="tns:SecuredWebServiceHeader" />
+  </wsdl:message>
+  <wsdl:message name="AddAttachmentSoapIn">
+    <wsdl:part name="parameters" element="tns:AddAttachment" />
+  </wsdl:message>
+  <wsdl:message name="AddAttachmentSoapOut">
+    <wsdl:part name="parameters" element="tns:AddAttachmentResponse" />
+  </wsdl:message>
+  <wsdl:message name="AddAttachmentSecuredWebServiceHeader">
+    <wsdl:part name="SecuredWebServiceHeader" element="tns:SecuredWebServiceHeader" />
+  </wsdl:message>
+  <wsdl:message name="GetExpenseApprovalEntriesSoapIn">
+    <wsdl:part name="parameters" element="tns:GetExpenseApprovalEntries" />
+  </wsdl:message>
+  <wsdl:message name="GetExpenseApprovalEntriesSoapOut">
+    <wsdl:part name="parameters" element="tns:GetExpenseApprovalEntriesResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetExpenseApprovalEntriesSecuredWebServiceHeader">
+    <wsdl:part name="SecuredWebServiceHeader" element="tns:SecuredWebServiceHeader" />
+  </wsdl:message>
+  <wsdl:message name="UpdateExpenseApprovalsSoapIn">
+    <wsdl:part name="parameters" element="tns:UpdateExpenseApprovals" />
+  </wsdl:message>
+  <wsdl:message name="UpdateExpenseApprovalsSoapOut">
+    <wsdl:part name="parameters" element="tns:UpdateExpenseApprovalsResponse" />
+  </wsdl:message>
+  <wsdl:message name="UpdateExpenseApprovalsSecuredWebServiceHeader">
+    <wsdl:part name="SecuredWebServiceHeader" element="tns:SecuredWebServiceHeader" />
+  </wsdl:message>
+  <wsdl:portType name="ExpenseEntriesSoap">
+    <wsdl:operation name="AddExpenseEntry">
+      <wsdl:input message="tns:AddExpenseEntrySoapIn" />
+      <wsdl:output message="tns:AddExpenseEntrySoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ExpenseEntryForMobileObject">
+      <wsdl:input message="tns:ExpenseEntryForMobileObjectSoapIn" />
+      <wsdl:output message="tns:ExpenseEntryForMobileObjectSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="AccountCurrencyForMobileObject">
+      <wsdl:input message="tns:AccountCurrencyForMobileObjectSoapIn" />
+      <wsdl:output message="tns:AccountCurrencyForMobileObjectSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="AccountPaymentMethodForMobileObject">
+      <wsdl:input message="tns:AccountPaymentMethodForMobileObjectSoapIn" />
+      <wsdl:output message="tns:AccountPaymentMethodForMobileObjectSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="TaxZoneForMobileObject">
+      <wsdl:input message="tns:TaxZoneForMobileObjectSoapIn" />
+      <wsdl:output message="tns:TaxZoneForMobileObjectSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="CurrencyExchangeForMobileObject">
+      <wsdl:input message="tns:CurrencyExchangeForMobileObjectSoapIn" />
+      <wsdl:output message="tns:CurrencyExchangeForMobileObjectSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="AccountExpenseEntryForMobileObject">
+      <wsdl:input message="tns:AccountExpenseEntryForMobileObjectSoapIn" />
+      <wsdl:output message="tns:AccountExpenseEntryForMobileObjectSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ExpenseSheetForMobileObject">
+      <wsdl:input message="tns:ExpenseSheetForMobileObjectSoapIn" />
+      <wsdl:output message="tns:ExpenseSheetForMobileObjectSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ShowFieldsByExpenseNameForMobileObject">
+      <wsdl:input message="tns:ShowFieldsByExpenseNameForMobileObjectSoapIn" />
+      <wsdl:output message="tns:ShowFieldsByExpenseNameForMobileObjectSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="CalculateAmountByExpenseForMobileObject">
+      <wsdl:input message="tns:CalculateAmountByExpenseForMobileObjectSoapIn" />
+      <wsdl:output message="tns:CalculateAmountByExpenseForMobileObjectSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetAllExpenseEntriesByDateRange">
+      <wsdl:input message="tns:GetAllExpenseEntriesByDateRangeSoapIn" />
+      <wsdl:output message="tns:GetAllExpenseEntriesByDateRangeSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetExpenseEntriesByEmployeeIdAndDateRange">
+      <wsdl:input message="tns:GetExpenseEntriesByEmployeeIdAndDateRangeSoapIn" />
+      <wsdl:output message="tns:GetExpenseEntriesByEmployeeIdAndDateRangeSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="AddExpenseName">
+      <wsdl:input message="tns:AddExpenseNameSoapIn" />
+      <wsdl:output message="tns:AddExpenseNameSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetExpenseNames">
+      <wsdl:input message="tns:GetExpenseNamesSoapIn" />
+      <wsdl:output message="tns:GetExpenseNamesSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetExpenseApprovalTypeId">
+      <wsdl:input message="tns:GetExpenseApprovalTypeIdSoapIn" />
+      <wsdl:output message="tns:GetExpenseApprovalTypeIdSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetExpenseSheetByDateForMobile">
+      <wsdl:input message="tns:GetExpenseSheetByDateForMobileSoapIn" />
+      <wsdl:output message="tns:GetExpenseSheetByDateForMobileSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetExpenseEntriesByExpenseSheetIdForMobile">
+      <wsdl:input message="tns:GetExpenseEntriesByExpenseSheetIdForMobileSoapIn" />
+      <wsdl:output message="tns:GetExpenseEntriesByExpenseSheetIdForMobileSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetExpenseEntriesByExpenseEntryIdForMobile">
+      <wsdl:input message="tns:GetExpenseEntriesByExpenseEntryIdForMobileSoapIn" />
+      <wsdl:output message="tns:GetExpenseEntriesByExpenseEntryIdForMobileSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetExpenseNameByAccountIdForMobile">
+      <wsdl:input message="tns:GetExpenseNameByAccountIdForMobileSoapIn" />
+      <wsdl:output message="tns:GetExpenseNameByAccountIdForMobileSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetPaymentMethodsByAccountIdForMobile">
+      <wsdl:input message="tns:GetPaymentMethodsByAccountIdForMobileSoapIn" />
+      <wsdl:output message="tns:GetPaymentMethodsByAccountIdForMobileSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetAccountCurrenciesByAccountIdForMobile">
+      <wsdl:input message="tns:GetAccountCurrenciesByAccountIdForMobileSoapIn" />
+      <wsdl:output message="tns:GetAccountCurrenciesByAccountIdForMobileSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetTaxZoneByAccountId">
+      <wsdl:input message="tns:GetTaxZoneByAccountIdSoapIn" />
+      <wsdl:output message="tns:GetTaxZoneByAccountIdSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetExpenseTypeNameByExpenseTypeIdForMobile">
+      <wsdl:input message="tns:GetExpenseTypeNameByExpenseTypeIdForMobileSoapIn" />
+      <wsdl:output message="tns:GetExpenseTypeNameByExpenseTypeIdForMobileSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetTaxZoneByTaxZoneId">
+      <wsdl:input message="tns:GetTaxZoneByTaxZoneIdSoapIn" />
+      <wsdl:output message="tns:GetTaxZoneByTaxZoneIdSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetTaxCodeByTaxCodeId">
+      <wsdl:input message="tns:GetTaxCodeByTaxCodeIdSoapIn" />
+      <wsdl:output message="tns:GetTaxCodeByTaxCodeIdSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetExpenseNameByExpenseIdForMobile">
+      <wsdl:input message="tns:GetExpenseNameByExpenseIdForMobileSoapIn" />
+      <wsdl:output message="tns:GetExpenseNameByExpenseIdForMobileSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetReimbursementCurrencyByAccountIdForMobile">
+      <wsdl:input message="tns:GetReimbursementCurrencyByAccountIdForMobileSoapIn" />
+      <wsdl:output message="tns:GetReimbursementCurrencyByAccountIdForMobileSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetAccountCurrencyByAccountCurrencyIdForMobile">
+      <wsdl:input message="tns:GetAccountCurrencyByAccountCurrencyIdForMobileSoapIn" />
+      <wsdl:output message="tns:GetAccountCurrencyByAccountCurrencyIdForMobileSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetvueAccountCurrencyByAccountIdAndDisabled">
+      <wsdl:input message="tns:GetvueAccountCurrencyByAccountIdAndDisabledSoapIn" />
+      <wsdl:output message="tns:GetvueAccountCurrencyByAccountIdAndDisabledSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="AddExpenseSheetForMobile">
+      <wsdl:input message="tns:AddExpenseSheetForMobileSoapIn" />
+      <wsdl:output message="tns:AddExpenseSheetForMobileSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="UpdateExpenseSheetForMobile">
+      <wsdl:input message="tns:UpdateExpenseSheetForMobileSoapIn" />
+      <wsdl:output message="tns:UpdateExpenseSheetForMobileSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="AddExpenseEntryForMobile">
+      <wsdl:input message="tns:AddExpenseEntryForMobileSoapIn" />
+      <wsdl:output message="tns:AddExpenseEntryForMobileSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="UpdateExpenseEntryForMobile">
+      <wsdl:input message="tns:UpdateExpenseEntryForMobileSoapIn" />
+      <wsdl:output message="tns:UpdateExpenseEntryForMobileSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ShowFieldsByExpenseForMobile">
+      <wsdl:input message="tns:ShowFieldsByExpenseForMobileSoapIn" />
+      <wsdl:output message="tns:ShowFieldsByExpenseForMobileSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="CalculateAmountByExpenseForMobile">
+      <wsdl:input message="tns:CalculateAmountByExpenseForMobileSoapIn" />
+      <wsdl:output message="tns:CalculateAmountByExpenseForMobileSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="SubmitExpenseSheetAndEntry">
+      <wsdl:input message="tns:SubmitExpenseSheetAndEntrySoapIn" />
+      <wsdl:output message="tns:SubmitExpenseSheetAndEntrySoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="AddAttachment">
+      <wsdl:input message="tns:AddAttachmentSoapIn" />
+      <wsdl:output message="tns:AddAttachmentSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetExpenseApprovalEntries">
+      <wsdl:input message="tns:GetExpenseApprovalEntriesSoapIn" />
+      <wsdl:output message="tns:GetExpenseApprovalEntriesSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="UpdateExpenseApprovals">
+      <wsdl:input message="tns:UpdateExpenseApprovalsSoapIn" />
+      <wsdl:output message="tns:UpdateExpenseApprovalsSoapOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="ExpenseEntriesSoap" type="tns:ExpenseEntriesSoap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="AddExpenseEntry">
+      <soap:operation soapAction="http://tempuri.org/AddExpenseEntry" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:AddExpenseEntrySecuredWebServiceHeader" part="SecuredWebServiceHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ExpenseEntryForMobileObject">
+      <soap:operation soapAction="http://tempuri.org/ExpenseEntryForMobileObject" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:ExpenseEntryForMobileObjectSecuredWebServiceHeader" part="SecuredWebServiceHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AccountCurrencyForMobileObject">
+      <soap:operation soapAction="http://tempuri.org/AccountCurrencyForMobileObject" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:AccountCurrencyForMobileObjectSecuredWebServiceHeader" part="SecuredWebServiceHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AccountPaymentMethodForMobileObject">
+      <soap:operation soapAction="http://tempuri.org/AccountPaymentMethodForMobileObject" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:AccountPaymentMethodForMobileObjectSecuredWebServiceHeader" part="SecuredWebServiceHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="TaxZoneForMobileObject">
+      <soap:operation soapAction="http://tempuri.org/TaxZoneForMobileObject" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:TaxZoneForMobileObjectSecuredWebServiceHeader" part="SecuredWebServiceHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CurrencyExchangeForMobileObject">
+      <soap:operation soapAction="http://tempuri.org/CurrencyExchangeForMobileObject" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:CurrencyExchangeForMobileObjectSecuredWebServiceHeader" part="SecuredWebServiceHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AccountExpenseEntryForMobileObject">
+      <soap:operation soapAction="http://tempuri.org/AccountExpenseEntryForMobileObject" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:AccountExpenseEntryForMobileObjectSecuredWebServiceHeader" part="SecuredWebServiceHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ExpenseSheetForMobileObject">
+      <soap:operation soapAction="http://tempuri.org/ExpenseSheetForMobileObject" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:ExpenseSheetForMobileObjectSecuredWebServiceHeader" part="SecuredWebServiceHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ShowFieldsByExpenseNameForMobileObject">
+      <soap:operation soapAction="http://tempuri.org/ShowFieldsByExpenseNameForMobileObject" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:ShowFieldsByExpenseNameForMobileObjectSecuredWebServiceHeader" part="SecuredWebServiceHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CalculateAmountByExpenseForMobileObject">
+      <soap:operation soapAction="http://tempuri.org/CalculateAmountByExpenseForMobileObject" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:CalculateAmountByExpenseForMobileObjectSecuredWebServiceHeader" part="SecuredWebServiceHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetAllExpenseEntriesByDateRange">
+      <soap:operation soapAction="http://tempuri.org/GetAllExpenseEntriesByDateRange" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:GetAllExpenseEntriesByDateRangeSecuredWebServiceHeader" part="SecuredWebServiceHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetExpenseEntriesByEmployeeIdAndDateRange">
+      <soap:operation soapAction="http://tempuri.org/GetExpenseEntriesByEmployeeIdAndDateRange" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:GetExpenseEntriesByEmployeeIdAndDateRangeSecuredWebServiceHeader" part="SecuredWebServiceHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AddExpenseName">
+      <soap:operation soapAction="http://tempuri.org/AddExpenseName" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:AddExpenseNameSecuredWebServiceHeader" part="SecuredWebServiceHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetExpenseNames">
+      <soap:operation soapAction="http://tempuri.org/GetExpenseNames" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:GetExpenseNamesSecuredWebServiceHeader" part="SecuredWebServiceHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetExpenseApprovalTypeId">
+      <soap:operation soapAction="http://tempuri.org/GetExpenseApprovalTypeId" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:GetExpenseApprovalTypeIdSecuredWebServiceHeader" part="SecuredWebServiceHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetExpenseSheetByDateForMobile">
+      <soap:operation soapAction="http://tempuri.org/GetExpenseSheetByDateForMobile" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:GetExpenseSheetByDateForMobileSecuredWebServiceHeader" part="SecuredWebServiceHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetExpenseEntriesByExpenseSheetIdForMobile">
+      <soap:operation soapAction="http://tempuri.org/GetExpenseEntriesByExpenseSheetIdForMobile" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:GetExpenseEntriesByExpenseSheetIdForMobileSecuredWebServiceHeader" part="SecuredWebServiceHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetExpenseEntriesByExpenseEntryIdForMobile">
+      <soap:operation soapAction="http://tempuri.org/GetExpenseEntriesByExpenseEntryIdForMobile" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:GetExpenseEntriesByExpenseEntryIdForMobileSecuredWebServiceHeader" part="SecuredWebServiceHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetExpenseNameByAccountIdForMobile">
+      <soap:operation soapAction="http://tempuri.org/GetExpenseNameByAccountIdForMobile" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:GetExpenseNameByAccountIdForMobileSecuredWebServiceHeader" part="SecuredWebServiceHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetPaymentMethodsByAccountIdForMobile">
+      <soap:operation soapAction="http://tempuri.org/GetPaymentMethodsByAccountIdForMobile" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:GetPaymentMethodsByAccountIdForMobileSecuredWebServiceHeader" part="SecuredWebServiceHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetAccountCurrenciesByAccountIdForMobile">
+      <soap:operation soapAction="http://tempuri.org/GetAccountCurrenciesByAccountIdForMobile" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:GetAccountCurrenciesByAccountIdForMobileSecuredWebServiceHeader" part="SecuredWebServiceHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetTaxZoneByAccountId">
+      <soap:operation soapAction="http://tempuri.org/GetTaxZoneByAccountId" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:GetTaxZoneByAccountIdSecuredWebServiceHeader" part="SecuredWebServiceHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetExpenseTypeNameByExpenseTypeIdForMobile">
+      <soap:operation soapAction="http://tempuri.org/GetExpenseTypeNameByExpenseTypeIdForMobile" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:GetExpenseTypeNameByExpenseTypeIdForMobileSecuredWebServiceHeader" part="SecuredWebServiceHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetTaxZoneByTaxZoneId">
+      <soap:operation soapAction="http://tempuri.org/GetTaxZoneByTaxZoneId" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:GetTaxZoneByTaxZoneIdSecuredWebServiceHeader" part="SecuredWebServiceHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetTaxCodeByTaxCodeId">
+      <soap:operation soapAction="http://tempuri.org/GetTaxCodeByTaxCodeId" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:GetTaxCodeByTaxCodeIdSecuredWebServiceHeader" part="SecuredWebServiceHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetExpenseNameByExpenseIdForMobile">
+      <soap:operation soapAction="http://tempuri.org/GetExpenseNameByExpenseIdForMobile" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:GetExpenseNameByExpenseIdForMobileSecuredWebServiceHeader" part="SecuredWebServiceHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetReimbursementCurrencyByAccountIdForMobile">
+      <soap:operation soapAction="http://tempuri.org/GetReimbursementCurrencyByAccountIdForMobile" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:GetReimbursementCurrencyByAccountIdForMobileSecuredWebServiceHeader" part="SecuredWebServiceHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetAccountCurrencyByAccountCurrencyIdForMobile">
+      <soap:operation soapAction="http://tempuri.org/GetAccountCurrencyByAccountCurrencyIdForMobile" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:GetAccountCurrencyByAccountCurrencyIdForMobileSecuredWebServiceHeader" part="SecuredWebServiceHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetvueAccountCurrencyByAccountIdAndDisabled">
+      <soap:operation soapAction="http://tempuri.org/GetvueAccountCurrencyByAccountIdAndDisabled" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:GetvueAccountCurrencyByAccountIdAndDisabledSecuredWebServiceHeader" part="SecuredWebServiceHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AddExpenseSheetForMobile">
+      <soap:operation soapAction="http://tempuri.org/AddExpenseSheetForMobile" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:AddExpenseSheetForMobileSecuredWebServiceHeader" part="SecuredWebServiceHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateExpenseSheetForMobile">
+      <soap:operation soapAction="http://tempuri.org/UpdateExpenseSheetForMobile" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:UpdateExpenseSheetForMobileSecuredWebServiceHeader" part="SecuredWebServiceHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AddExpenseEntryForMobile">
+      <soap:operation soapAction="http://tempuri.org/AddExpenseEntryForMobile" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:AddExpenseEntryForMobileSecuredWebServiceHeader" part="SecuredWebServiceHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateExpenseEntryForMobile">
+      <soap:operation soapAction="http://tempuri.org/UpdateExpenseEntryForMobile" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:UpdateExpenseEntryForMobileSecuredWebServiceHeader" part="SecuredWebServiceHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ShowFieldsByExpenseForMobile">
+      <soap:operation soapAction="http://tempuri.org/ShowFieldsByExpenseForMobile" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:ShowFieldsByExpenseForMobileSecuredWebServiceHeader" part="SecuredWebServiceHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CalculateAmountByExpenseForMobile">
+      <soap:operation soapAction="http://tempuri.org/CalculateAmountByExpenseForMobile" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:CalculateAmountByExpenseForMobileSecuredWebServiceHeader" part="SecuredWebServiceHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SubmitExpenseSheetAndEntry">
+      <soap:operation soapAction="http://tempuri.org/SubmitExpenseSheetAndEntry" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:SubmitExpenseSheetAndEntrySecuredWebServiceHeader" part="SecuredWebServiceHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AddAttachment">
+      <soap:operation soapAction="http://tempuri.org/AddAttachment" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:AddAttachmentSecuredWebServiceHeader" part="SecuredWebServiceHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetExpenseApprovalEntries">
+      <soap:operation soapAction="http://tempuri.org/GetExpenseApprovalEntries" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:GetExpenseApprovalEntriesSecuredWebServiceHeader" part="SecuredWebServiceHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateExpenseApprovals">
+      <soap:operation soapAction="http://tempuri.org/UpdateExpenseApprovals" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:UpdateExpenseApprovalsSecuredWebServiceHeader" part="SecuredWebServiceHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="ExpenseEntriesSoap12" type="tns:ExpenseEntriesSoap">
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="AddExpenseEntry">
+      <soap12:operation soapAction="http://tempuri.org/AddExpenseEntry" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:AddExpenseEntrySecuredWebServiceHeader" part="SecuredWebServiceHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ExpenseEntryForMobileObject">
+      <soap12:operation soapAction="http://tempuri.org/ExpenseEntryForMobileObject" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:ExpenseEntryForMobileObjectSecuredWebServiceHeader" part="SecuredWebServiceHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AccountCurrencyForMobileObject">
+      <soap12:operation soapAction="http://tempuri.org/AccountCurrencyForMobileObject" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:AccountCurrencyForMobileObjectSecuredWebServiceHeader" part="SecuredWebServiceHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AccountPaymentMethodForMobileObject">
+      <soap12:operation soapAction="http://tempuri.org/AccountPaymentMethodForMobileObject" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:AccountPaymentMethodForMobileObjectSecuredWebServiceHeader" part="SecuredWebServiceHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="TaxZoneForMobileObject">
+      <soap12:operation soapAction="http://tempuri.org/TaxZoneForMobileObject" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:TaxZoneForMobileObjectSecuredWebServiceHeader" part="SecuredWebServiceHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CurrencyExchangeForMobileObject">
+      <soap12:operation soapAction="http://tempuri.org/CurrencyExchangeForMobileObject" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:CurrencyExchangeForMobileObjectSecuredWebServiceHeader" part="SecuredWebServiceHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AccountExpenseEntryForMobileObject">
+      <soap12:operation soapAction="http://tempuri.org/AccountExpenseEntryForMobileObject" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:AccountExpenseEntryForMobileObjectSecuredWebServiceHeader" part="SecuredWebServiceHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ExpenseSheetForMobileObject">
+      <soap12:operation soapAction="http://tempuri.org/ExpenseSheetForMobileObject" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:ExpenseSheetForMobileObjectSecuredWebServiceHeader" part="SecuredWebServiceHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ShowFieldsByExpenseNameForMobileObject">
+      <soap12:operation soapAction="http://tempuri.org/ShowFieldsByExpenseNameForMobileObject" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:ShowFieldsByExpenseNameForMobileObjectSecuredWebServiceHeader" part="SecuredWebServiceHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CalculateAmountByExpenseForMobileObject">
+      <soap12:operation soapAction="http://tempuri.org/CalculateAmountByExpenseForMobileObject" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:CalculateAmountByExpenseForMobileObjectSecuredWebServiceHeader" part="SecuredWebServiceHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetAllExpenseEntriesByDateRange">
+      <soap12:operation soapAction="http://tempuri.org/GetAllExpenseEntriesByDateRange" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:GetAllExpenseEntriesByDateRangeSecuredWebServiceHeader" part="SecuredWebServiceHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetExpenseEntriesByEmployeeIdAndDateRange">
+      <soap12:operation soapAction="http://tempuri.org/GetExpenseEntriesByEmployeeIdAndDateRange" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:GetExpenseEntriesByEmployeeIdAndDateRangeSecuredWebServiceHeader" part="SecuredWebServiceHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AddExpenseName">
+      <soap12:operation soapAction="http://tempuri.org/AddExpenseName" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:AddExpenseNameSecuredWebServiceHeader" part="SecuredWebServiceHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetExpenseNames">
+      <soap12:operation soapAction="http://tempuri.org/GetExpenseNames" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:GetExpenseNamesSecuredWebServiceHeader" part="SecuredWebServiceHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetExpenseApprovalTypeId">
+      <soap12:operation soapAction="http://tempuri.org/GetExpenseApprovalTypeId" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:GetExpenseApprovalTypeIdSecuredWebServiceHeader" part="SecuredWebServiceHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetExpenseSheetByDateForMobile">
+      <soap12:operation soapAction="http://tempuri.org/GetExpenseSheetByDateForMobile" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:GetExpenseSheetByDateForMobileSecuredWebServiceHeader" part="SecuredWebServiceHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetExpenseEntriesByExpenseSheetIdForMobile">
+      <soap12:operation soapAction="http://tempuri.org/GetExpenseEntriesByExpenseSheetIdForMobile" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:GetExpenseEntriesByExpenseSheetIdForMobileSecuredWebServiceHeader" part="SecuredWebServiceHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetExpenseEntriesByExpenseEntryIdForMobile">
+      <soap12:operation soapAction="http://tempuri.org/GetExpenseEntriesByExpenseEntryIdForMobile" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:GetExpenseEntriesByExpenseEntryIdForMobileSecuredWebServiceHeader" part="SecuredWebServiceHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetExpenseNameByAccountIdForMobile">
+      <soap12:operation soapAction="http://tempuri.org/GetExpenseNameByAccountIdForMobile" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:GetExpenseNameByAccountIdForMobileSecuredWebServiceHeader" part="SecuredWebServiceHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetPaymentMethodsByAccountIdForMobile">
+      <soap12:operation soapAction="http://tempuri.org/GetPaymentMethodsByAccountIdForMobile" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:GetPaymentMethodsByAccountIdForMobileSecuredWebServiceHeader" part="SecuredWebServiceHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetAccountCurrenciesByAccountIdForMobile">
+      <soap12:operation soapAction="http://tempuri.org/GetAccountCurrenciesByAccountIdForMobile" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:GetAccountCurrenciesByAccountIdForMobileSecuredWebServiceHeader" part="SecuredWebServiceHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetTaxZoneByAccountId">
+      <soap12:operation soapAction="http://tempuri.org/GetTaxZoneByAccountId" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:GetTaxZoneByAccountIdSecuredWebServiceHeader" part="SecuredWebServiceHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetExpenseTypeNameByExpenseTypeIdForMobile">
+      <soap12:operation soapAction="http://tempuri.org/GetExpenseTypeNameByExpenseTypeIdForMobile" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:GetExpenseTypeNameByExpenseTypeIdForMobileSecuredWebServiceHeader" part="SecuredWebServiceHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetTaxZoneByTaxZoneId">
+      <soap12:operation soapAction="http://tempuri.org/GetTaxZoneByTaxZoneId" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:GetTaxZoneByTaxZoneIdSecuredWebServiceHeader" part="SecuredWebServiceHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetTaxCodeByTaxCodeId">
+      <soap12:operation soapAction="http://tempuri.org/GetTaxCodeByTaxCodeId" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:GetTaxCodeByTaxCodeIdSecuredWebServiceHeader" part="SecuredWebServiceHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetExpenseNameByExpenseIdForMobile">
+      <soap12:operation soapAction="http://tempuri.org/GetExpenseNameByExpenseIdForMobile" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:GetExpenseNameByExpenseIdForMobileSecuredWebServiceHeader" part="SecuredWebServiceHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetReimbursementCurrencyByAccountIdForMobile">
+      <soap12:operation soapAction="http://tempuri.org/GetReimbursementCurrencyByAccountIdForMobile" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:GetReimbursementCurrencyByAccountIdForMobileSecuredWebServiceHeader" part="SecuredWebServiceHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetAccountCurrencyByAccountCurrencyIdForMobile">
+      <soap12:operation soapAction="http://tempuri.org/GetAccountCurrencyByAccountCurrencyIdForMobile" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:GetAccountCurrencyByAccountCurrencyIdForMobileSecuredWebServiceHeader" part="SecuredWebServiceHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetvueAccountCurrencyByAccountIdAndDisabled">
+      <soap12:operation soapAction="http://tempuri.org/GetvueAccountCurrencyByAccountIdAndDisabled" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:GetvueAccountCurrencyByAccountIdAndDisabledSecuredWebServiceHeader" part="SecuredWebServiceHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AddExpenseSheetForMobile">
+      <soap12:operation soapAction="http://tempuri.org/AddExpenseSheetForMobile" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:AddExpenseSheetForMobileSecuredWebServiceHeader" part="SecuredWebServiceHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateExpenseSheetForMobile">
+      <soap12:operation soapAction="http://tempuri.org/UpdateExpenseSheetForMobile" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:UpdateExpenseSheetForMobileSecuredWebServiceHeader" part="SecuredWebServiceHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AddExpenseEntryForMobile">
+      <soap12:operation soapAction="http://tempuri.org/AddExpenseEntryForMobile" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:AddExpenseEntryForMobileSecuredWebServiceHeader" part="SecuredWebServiceHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateExpenseEntryForMobile">
+      <soap12:operation soapAction="http://tempuri.org/UpdateExpenseEntryForMobile" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:UpdateExpenseEntryForMobileSecuredWebServiceHeader" part="SecuredWebServiceHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ShowFieldsByExpenseForMobile">
+      <soap12:operation soapAction="http://tempuri.org/ShowFieldsByExpenseForMobile" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:ShowFieldsByExpenseForMobileSecuredWebServiceHeader" part="SecuredWebServiceHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CalculateAmountByExpenseForMobile">
+      <soap12:operation soapAction="http://tempuri.org/CalculateAmountByExpenseForMobile" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:CalculateAmountByExpenseForMobileSecuredWebServiceHeader" part="SecuredWebServiceHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SubmitExpenseSheetAndEntry">
+      <soap12:operation soapAction="http://tempuri.org/SubmitExpenseSheetAndEntry" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:SubmitExpenseSheetAndEntrySecuredWebServiceHeader" part="SecuredWebServiceHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AddAttachment">
+      <soap12:operation soapAction="http://tempuri.org/AddAttachment" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:AddAttachmentSecuredWebServiceHeader" part="SecuredWebServiceHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetExpenseApprovalEntries">
+      <soap12:operation soapAction="http://tempuri.org/GetExpenseApprovalEntries" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:GetExpenseApprovalEntriesSecuredWebServiceHeader" part="SecuredWebServiceHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateExpenseApprovals">
+      <soap12:operation soapAction="http://tempuri.org/UpdateExpenseApprovals" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:UpdateExpenseApprovalsSecuredWebServiceHeader" part="SecuredWebServiceHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="ExpenseEntries">
+    <wsdl:port name="ExpenseEntriesSoap" binding="tns:ExpenseEntriesSoap">
+      <soap:address location="http://demo.livetecs.com/Services/ExpenseEntries.asmx" />
+    </wsdl:port>
+    <wsdl:port name="ExpenseEntriesSoap12" binding="tns:ExpenseEntriesSoap12">
+      <soap12:address location="http://demo.livetecs.com/Services/ExpenseEntries.asmx" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

@@ -1,0 +1,464 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="http://tempuri.org/" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" targetNamespace="http://tempuri.org/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://tempuri.org/">
+      <s:element name="AuthenticateUser">
+        <s:complexType />
+      </s:element>
+      <s:element name="AuthenticateUserResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="AuthenticateUserResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SecuredWebServiceHeader" type="tns:SecuredWebServiceHeader" />
+      <s:complexType name="SecuredWebServiceHeader">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Username" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Password" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="AuthenticatedToken" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="AccountId" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="AccountEmployeeId" type="s:int" />
+        </s:sequence>
+        <s:anyAttribute />
+      </s:complexType>
+      <s:element name="AuthenticateMobileUser">
+        <s:complexType />
+      </s:element>
+      <s:element name="AuthenticateMobileUserResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="AuthenticateMobileUserResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetAccountIdForMobile">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Username" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Password" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetAccountIdForMobileResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="GetAccountIdForMobileResult" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetAccountEmployeeIdForMobile">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Username" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Password" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetAccountEmployeeIdForMobileResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="GetAccountEmployeeIdForMobileResult" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetAccountId">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Username" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Password" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetAccountIdResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="GetAccountIdResult" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetAccountEmployeeId">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Username" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Password" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetAccountEmployeeIdResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="GetAccountEmployeeIdResult" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetDepartmentId">
+        <s:complexType />
+      </s:element>
+      <s:element name="GetDepartmentIdResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="GetDepartmentIdResult" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetLocationId">
+        <s:complexType />
+      </s:element>
+      <s:element name="GetLocationIdResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="GetLocationIdResult" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetWorkTypeId">
+        <s:complexType />
+      </s:element>
+      <s:element name="GetWorkTypeIdResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="GetWorkTypeIdResult" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetCurrencyId">
+        <s:complexType />
+      </s:element>
+      <s:element name="GetCurrencyIdResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="GetCurrencyIdResult" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+    </s:schema>
+  </wsdl:types>
+  <wsdl:message name="AuthenticateUserSoapIn">
+    <wsdl:part name="parameters" element="tns:AuthenticateUser" />
+  </wsdl:message>
+  <wsdl:message name="AuthenticateUserSoapOut">
+    <wsdl:part name="parameters" element="tns:AuthenticateUserResponse" />
+  </wsdl:message>
+  <wsdl:message name="AuthenticateUserSecuredWebServiceHeader">
+    <wsdl:part name="SecuredWebServiceHeader" element="tns:SecuredWebServiceHeader" />
+  </wsdl:message>
+  <wsdl:message name="AuthenticateMobileUserSoapIn">
+    <wsdl:part name="parameters" element="tns:AuthenticateMobileUser" />
+  </wsdl:message>
+  <wsdl:message name="AuthenticateMobileUserSoapOut">
+    <wsdl:part name="parameters" element="tns:AuthenticateMobileUserResponse" />
+  </wsdl:message>
+  <wsdl:message name="AuthenticateMobileUserSecuredWebServiceHeader">
+    <wsdl:part name="SecuredWebServiceHeader" element="tns:SecuredWebServiceHeader" />
+  </wsdl:message>
+  <wsdl:message name="GetAccountIdForMobileSoapIn">
+    <wsdl:part name="parameters" element="tns:GetAccountIdForMobile" />
+  </wsdl:message>
+  <wsdl:message name="GetAccountIdForMobileSoapOut">
+    <wsdl:part name="parameters" element="tns:GetAccountIdForMobileResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetAccountEmployeeIdForMobileSoapIn">
+    <wsdl:part name="parameters" element="tns:GetAccountEmployeeIdForMobile" />
+  </wsdl:message>
+  <wsdl:message name="GetAccountEmployeeIdForMobileSoapOut">
+    <wsdl:part name="parameters" element="tns:GetAccountEmployeeIdForMobileResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetAccountIdSoapIn">
+    <wsdl:part name="parameters" element="tns:GetAccountId" />
+  </wsdl:message>
+  <wsdl:message name="GetAccountIdSoapOut">
+    <wsdl:part name="parameters" element="tns:GetAccountIdResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetAccountEmployeeIdSoapIn">
+    <wsdl:part name="parameters" element="tns:GetAccountEmployeeId" />
+  </wsdl:message>
+  <wsdl:message name="GetAccountEmployeeIdSoapOut">
+    <wsdl:part name="parameters" element="tns:GetAccountEmployeeIdResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetDepartmentIdSoapIn">
+    <wsdl:part name="parameters" element="tns:GetDepartmentId" />
+  </wsdl:message>
+  <wsdl:message name="GetDepartmentIdSoapOut">
+    <wsdl:part name="parameters" element="tns:GetDepartmentIdResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetDepartmentIdSecuredWebServiceHeader">
+    <wsdl:part name="SecuredWebServiceHeader" element="tns:SecuredWebServiceHeader" />
+  </wsdl:message>
+  <wsdl:message name="GetLocationIdSoapIn">
+    <wsdl:part name="parameters" element="tns:GetLocationId" />
+  </wsdl:message>
+  <wsdl:message name="GetLocationIdSoapOut">
+    <wsdl:part name="parameters" element="tns:GetLocationIdResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetLocationIdSecuredWebServiceHeader">
+    <wsdl:part name="SecuredWebServiceHeader" element="tns:SecuredWebServiceHeader" />
+  </wsdl:message>
+  <wsdl:message name="GetWorkTypeIdSoapIn">
+    <wsdl:part name="parameters" element="tns:GetWorkTypeId" />
+  </wsdl:message>
+  <wsdl:message name="GetWorkTypeIdSoapOut">
+    <wsdl:part name="parameters" element="tns:GetWorkTypeIdResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetWorkTypeIdSecuredWebServiceHeader">
+    <wsdl:part name="SecuredWebServiceHeader" element="tns:SecuredWebServiceHeader" />
+  </wsdl:message>
+  <wsdl:message name="GetCurrencyIdSoapIn">
+    <wsdl:part name="parameters" element="tns:GetCurrencyId" />
+  </wsdl:message>
+  <wsdl:message name="GetCurrencyIdSoapOut">
+    <wsdl:part name="parameters" element="tns:GetCurrencyIdResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetCurrencyIdSecuredWebServiceHeader">
+    <wsdl:part name="SecuredWebServiceHeader" element="tns:SecuredWebServiceHeader" />
+  </wsdl:message>
+  <wsdl:portType name="TimeLiveServicesSoap">
+    <wsdl:operation name="AuthenticateUser">
+      <wsdl:input message="tns:AuthenticateUserSoapIn" />
+      <wsdl:output message="tns:AuthenticateUserSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="AuthenticateMobileUser">
+      <wsdl:input message="tns:AuthenticateMobileUserSoapIn" />
+      <wsdl:output message="tns:AuthenticateMobileUserSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetAccountIdForMobile">
+      <wsdl:input message="tns:GetAccountIdForMobileSoapIn" />
+      <wsdl:output message="tns:GetAccountIdForMobileSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetAccountEmployeeIdForMobile">
+      <wsdl:input message="tns:GetAccountEmployeeIdForMobileSoapIn" />
+      <wsdl:output message="tns:GetAccountEmployeeIdForMobileSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetAccountId">
+      <wsdl:input message="tns:GetAccountIdSoapIn" />
+      <wsdl:output message="tns:GetAccountIdSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetAccountEmployeeId">
+      <wsdl:input message="tns:GetAccountEmployeeIdSoapIn" />
+      <wsdl:output message="tns:GetAccountEmployeeIdSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetDepartmentId">
+      <wsdl:input message="tns:GetDepartmentIdSoapIn" />
+      <wsdl:output message="tns:GetDepartmentIdSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetLocationId">
+      <wsdl:input message="tns:GetLocationIdSoapIn" />
+      <wsdl:output message="tns:GetLocationIdSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetWorkTypeId">
+      <wsdl:input message="tns:GetWorkTypeIdSoapIn" />
+      <wsdl:output message="tns:GetWorkTypeIdSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetCurrencyId">
+      <wsdl:input message="tns:GetCurrencyIdSoapIn" />
+      <wsdl:output message="tns:GetCurrencyIdSoapOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="TimeLiveServicesSoap" type="tns:TimeLiveServicesSoap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="AuthenticateUser">
+      <soap:operation soapAction="http://tempuri.org/AuthenticateUser" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:AuthenticateUserSecuredWebServiceHeader" part="SecuredWebServiceHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AuthenticateMobileUser">
+      <soap:operation soapAction="http://tempuri.org/AuthenticateMobileUser" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:AuthenticateMobileUserSecuredWebServiceHeader" part="SecuredWebServiceHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetAccountIdForMobile">
+      <soap:operation soapAction="http://tempuri.org/GetAccountIdForMobile" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetAccountEmployeeIdForMobile">
+      <soap:operation soapAction="http://tempuri.org/GetAccountEmployeeIdForMobile" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetAccountId">
+      <soap:operation soapAction="http://tempuri.org/GetAccountId" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetAccountEmployeeId">
+      <soap:operation soapAction="http://tempuri.org/GetAccountEmployeeId" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetDepartmentId">
+      <soap:operation soapAction="http://tempuri.org/GetDepartmentId" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:GetDepartmentIdSecuredWebServiceHeader" part="SecuredWebServiceHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetLocationId">
+      <soap:operation soapAction="http://tempuri.org/GetLocationId" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:GetLocationIdSecuredWebServiceHeader" part="SecuredWebServiceHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetWorkTypeId">
+      <soap:operation soapAction="http://tempuri.org/GetWorkTypeId" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:GetWorkTypeIdSecuredWebServiceHeader" part="SecuredWebServiceHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetCurrencyId">
+      <soap:operation soapAction="http://tempuri.org/GetCurrencyId" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:GetCurrencyIdSecuredWebServiceHeader" part="SecuredWebServiceHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="TimeLiveServicesSoap12" type="tns:TimeLiveServicesSoap">
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="AuthenticateUser">
+      <soap12:operation soapAction="http://tempuri.org/AuthenticateUser" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:AuthenticateUserSecuredWebServiceHeader" part="SecuredWebServiceHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AuthenticateMobileUser">
+      <soap12:operation soapAction="http://tempuri.org/AuthenticateMobileUser" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:AuthenticateMobileUserSecuredWebServiceHeader" part="SecuredWebServiceHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetAccountIdForMobile">
+      <soap12:operation soapAction="http://tempuri.org/GetAccountIdForMobile" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetAccountEmployeeIdForMobile">
+      <soap12:operation soapAction="http://tempuri.org/GetAccountEmployeeIdForMobile" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetAccountId">
+      <soap12:operation soapAction="http://tempuri.org/GetAccountId" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetAccountEmployeeId">
+      <soap12:operation soapAction="http://tempuri.org/GetAccountEmployeeId" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetDepartmentId">
+      <soap12:operation soapAction="http://tempuri.org/GetDepartmentId" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:GetDepartmentIdSecuredWebServiceHeader" part="SecuredWebServiceHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetLocationId">
+      <soap12:operation soapAction="http://tempuri.org/GetLocationId" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:GetLocationIdSecuredWebServiceHeader" part="SecuredWebServiceHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetWorkTypeId">
+      <soap12:operation soapAction="http://tempuri.org/GetWorkTypeId" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:GetWorkTypeIdSecuredWebServiceHeader" part="SecuredWebServiceHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetCurrencyId">
+      <soap12:operation soapAction="http://tempuri.org/GetCurrencyId" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:GetCurrencyIdSecuredWebServiceHeader" part="SecuredWebServiceHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="TimeLiveServices">
+    <wsdl:port name="TimeLiveServicesSoap" binding="tns:TimeLiveServicesSoap">
+      <soap:address location="http://demo.livetecs.com/Services/TimeLiveServices.asmx" />
+    </wsdl:port>
+    <wsdl:port name="TimeLiveServicesSoap12" binding="tns:TimeLiveServicesSoap12">
+      <soap12:address location="http://demo.livetecs.com/Services/TimeLiveServices.asmx" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

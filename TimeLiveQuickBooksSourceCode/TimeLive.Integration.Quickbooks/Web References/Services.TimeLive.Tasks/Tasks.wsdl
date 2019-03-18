@@ -1,0 +1,616 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="http://tempuri.org/" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" targetNamespace="http://tempuri.org/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://tempuri.org/">
+      <s:element name="AddTask">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="objTask" type="tns:Task" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="Task">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="TaskName" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Code" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="ItemParent" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="JobParent" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="JobItemParent" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="TaskID" type="s:int" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="AddTaskResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="AddTaskResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SecuredWebServiceHeader" type="tns:SecuredWebServiceHeader" />
+      <s:complexType name="SecuredWebServiceHeader">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Username" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Password" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="AuthenticatedToken" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="AccountId" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="AccountEmployeeId" type="s:int" />
+        </s:sequence>
+        <s:anyAttribute />
+      </s:complexType>
+      <s:element name="GetTasks">
+        <s:complexType />
+      </s:element>
+      <s:element name="GetTasksResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetTasksResult" type="tns:ArrayOfAnyType" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfAnyType">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="anyType" nillable="true" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="GetAssignedTasksForMobile">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="AccountProjectId" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetAssignedTasksForMobileResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetAssignedTasksForMobileResult" type="tns:ArrayOfAnyType" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetAssignedTasks">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="AccountProjectId" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetAssignedTasksResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetAssignedTasksResult" type="tns:ArrayOfAnyType" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="InsertTask">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="AccountProjectId" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="ParentAccountProjectTaskid" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="TaskName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="TaskDescription" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="AccountTaskTypeId" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="Duration" type="s:double" />
+            <s:element minOccurs="0" maxOccurs="1" name="DurationUnit" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="CompletedPercent" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="Completed" type="s:boolean" />
+            <s:element minOccurs="1" maxOccurs="1" name="DeadlineDate" type="s:dateTime" />
+            <s:element minOccurs="1" maxOccurs="1" name="TaskStatusId" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="AccountPriorityId" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="AccountProjectMilestoneId" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="IsForAllEmployees" type="s:boolean" />
+            <s:element minOccurs="1" maxOccurs="1" name="IsParentTask" type="s:boolean" />
+            <s:element minOccurs="1" maxOccurs="1" name="CreatedOn" type="s:dateTime" />
+            <s:element minOccurs="1" maxOccurs="1" name="CreatedByEmployeeId" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="ModifiedOn" type="s:dateTime" />
+            <s:element minOccurs="1" maxOccurs="1" name="ModifiedByEmployeeId" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="EstimatedCost" type="s:double" />
+            <s:element minOccurs="1" maxOccurs="1" name="EstimatedTimeSpent" type="s:double" />
+            <s:element minOccurs="0" maxOccurs="1" name="EstimatedTimeSpentUnit" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="IsBillable" type="s:boolean" />
+            <s:element minOccurs="0" maxOccurs="1" name="TaskCode" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="AccountBillingRateId" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="IsForAllProjectTask" type="s:boolean" />
+            <s:element minOccurs="1" maxOccurs="1" name="EstimatedCurrencyId" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="InsertTaskResponse">
+        <s:complexType />
+      </s:element>
+      <s:element name="GetTaskId">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="TaskName" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetTaskIdResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="GetTaskIdResult" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetParentTaskId">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ParentTaskName" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetParentTaskIdResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="GetParentTaskIdResult" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetTaskNameByTaskId">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="AccountProjectTaskId" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetTaskNameByTaskIdResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetTaskNameByTaskIdResult" type="tns:ArrayOfAnyType" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="UpdateIsParentInTask">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="AccountProjectTaskId" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="IsParent" type="s:boolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="UpdateIsParentInTaskResponse">
+        <s:complexType />
+      </s:element>
+      <s:element name="GetTaskTypeId">
+        <s:complexType />
+      </s:element>
+      <s:element name="GetTaskTypeIdResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="GetTaskTypeIdResult" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetTaskStatusId">
+        <s:complexType />
+      </s:element>
+      <s:element name="GetTaskStatusIdResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="GetTaskStatusIdResult" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetTaskPriorityId">
+        <s:complexType />
+      </s:element>
+      <s:element name="GetTaskPriorityIdResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="GetTaskPriorityIdResult" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+    </s:schema>
+  </wsdl:types>
+  <wsdl:message name="AddTaskSoapIn">
+    <wsdl:part name="parameters" element="tns:AddTask" />
+  </wsdl:message>
+  <wsdl:message name="AddTaskSoapOut">
+    <wsdl:part name="parameters" element="tns:AddTaskResponse" />
+  </wsdl:message>
+  <wsdl:message name="AddTaskSecuredWebServiceHeader">
+    <wsdl:part name="SecuredWebServiceHeader" element="tns:SecuredWebServiceHeader" />
+  </wsdl:message>
+  <wsdl:message name="GetTasksSoapIn">
+    <wsdl:part name="parameters" element="tns:GetTasks" />
+  </wsdl:message>
+  <wsdl:message name="GetTasksSoapOut">
+    <wsdl:part name="parameters" element="tns:GetTasksResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetTasksSecuredWebServiceHeader">
+    <wsdl:part name="SecuredWebServiceHeader" element="tns:SecuredWebServiceHeader" />
+  </wsdl:message>
+  <wsdl:message name="GetAssignedTasksForMobileSoapIn">
+    <wsdl:part name="parameters" element="tns:GetAssignedTasksForMobile" />
+  </wsdl:message>
+  <wsdl:message name="GetAssignedTasksForMobileSoapOut">
+    <wsdl:part name="parameters" element="tns:GetAssignedTasksForMobileResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetAssignedTasksForMobileSecuredWebServiceHeader">
+    <wsdl:part name="SecuredWebServiceHeader" element="tns:SecuredWebServiceHeader" />
+  </wsdl:message>
+  <wsdl:message name="GetAssignedTasksSoapIn">
+    <wsdl:part name="parameters" element="tns:GetAssignedTasks" />
+  </wsdl:message>
+  <wsdl:message name="GetAssignedTasksSoapOut">
+    <wsdl:part name="parameters" element="tns:GetAssignedTasksResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetAssignedTasksSecuredWebServiceHeader">
+    <wsdl:part name="SecuredWebServiceHeader" element="tns:SecuredWebServiceHeader" />
+  </wsdl:message>
+  <wsdl:message name="InsertTaskSoapIn">
+    <wsdl:part name="parameters" element="tns:InsertTask" />
+  </wsdl:message>
+  <wsdl:message name="InsertTaskSoapOut">
+    <wsdl:part name="parameters" element="tns:InsertTaskResponse" />
+  </wsdl:message>
+  <wsdl:message name="InsertTaskSecuredWebServiceHeader">
+    <wsdl:part name="SecuredWebServiceHeader" element="tns:SecuredWebServiceHeader" />
+  </wsdl:message>
+  <wsdl:message name="GetTaskIdSoapIn">
+    <wsdl:part name="parameters" element="tns:GetTaskId" />
+  </wsdl:message>
+  <wsdl:message name="GetTaskIdSoapOut">
+    <wsdl:part name="parameters" element="tns:GetTaskIdResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetTaskIdSecuredWebServiceHeader">
+    <wsdl:part name="SecuredWebServiceHeader" element="tns:SecuredWebServiceHeader" />
+  </wsdl:message>
+  <wsdl:message name="GetParentTaskIdSoapIn">
+    <wsdl:part name="parameters" element="tns:GetParentTaskId" />
+  </wsdl:message>
+  <wsdl:message name="GetParentTaskIdSoapOut">
+    <wsdl:part name="parameters" element="tns:GetParentTaskIdResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetParentTaskIdSecuredWebServiceHeader">
+    <wsdl:part name="SecuredWebServiceHeader" element="tns:SecuredWebServiceHeader" />
+  </wsdl:message>
+  <wsdl:message name="GetTaskNameByTaskIdSoapIn">
+    <wsdl:part name="parameters" element="tns:GetTaskNameByTaskId" />
+  </wsdl:message>
+  <wsdl:message name="GetTaskNameByTaskIdSoapOut">
+    <wsdl:part name="parameters" element="tns:GetTaskNameByTaskIdResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetTaskNameByTaskIdSecuredWebServiceHeader">
+    <wsdl:part name="SecuredWebServiceHeader" element="tns:SecuredWebServiceHeader" />
+  </wsdl:message>
+  <wsdl:message name="UpdateIsParentInTaskSoapIn">
+    <wsdl:part name="parameters" element="tns:UpdateIsParentInTask" />
+  </wsdl:message>
+  <wsdl:message name="UpdateIsParentInTaskSoapOut">
+    <wsdl:part name="parameters" element="tns:UpdateIsParentInTaskResponse" />
+  </wsdl:message>
+  <wsdl:message name="UpdateIsParentInTaskSecuredWebServiceHeader">
+    <wsdl:part name="SecuredWebServiceHeader" element="tns:SecuredWebServiceHeader" />
+  </wsdl:message>
+  <wsdl:message name="GetTaskTypeIdSoapIn">
+    <wsdl:part name="parameters" element="tns:GetTaskTypeId" />
+  </wsdl:message>
+  <wsdl:message name="GetTaskTypeIdSoapOut">
+    <wsdl:part name="parameters" element="tns:GetTaskTypeIdResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetTaskTypeIdSecuredWebServiceHeader">
+    <wsdl:part name="SecuredWebServiceHeader" element="tns:SecuredWebServiceHeader" />
+  </wsdl:message>
+  <wsdl:message name="GetTaskStatusIdSoapIn">
+    <wsdl:part name="parameters" element="tns:GetTaskStatusId" />
+  </wsdl:message>
+  <wsdl:message name="GetTaskStatusIdSoapOut">
+    <wsdl:part name="parameters" element="tns:GetTaskStatusIdResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetTaskStatusIdSecuredWebServiceHeader">
+    <wsdl:part name="SecuredWebServiceHeader" element="tns:SecuredWebServiceHeader" />
+  </wsdl:message>
+  <wsdl:message name="GetTaskPriorityIdSoapIn">
+    <wsdl:part name="parameters" element="tns:GetTaskPriorityId" />
+  </wsdl:message>
+  <wsdl:message name="GetTaskPriorityIdSoapOut">
+    <wsdl:part name="parameters" element="tns:GetTaskPriorityIdResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetTaskPriorityIdSecuredWebServiceHeader">
+    <wsdl:part name="SecuredWebServiceHeader" element="tns:SecuredWebServiceHeader" />
+  </wsdl:message>
+  <wsdl:portType name="TasksSoap">
+    <wsdl:operation name="AddTask">
+      <wsdl:input message="tns:AddTaskSoapIn" />
+      <wsdl:output message="tns:AddTaskSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetTasks">
+      <wsdl:input message="tns:GetTasksSoapIn" />
+      <wsdl:output message="tns:GetTasksSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetAssignedTasksForMobile">
+      <wsdl:input message="tns:GetAssignedTasksForMobileSoapIn" />
+      <wsdl:output message="tns:GetAssignedTasksForMobileSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetAssignedTasks">
+      <wsdl:input message="tns:GetAssignedTasksSoapIn" />
+      <wsdl:output message="tns:GetAssignedTasksSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="InsertTask">
+      <wsdl:input message="tns:InsertTaskSoapIn" />
+      <wsdl:output message="tns:InsertTaskSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetTaskId">
+      <wsdl:input message="tns:GetTaskIdSoapIn" />
+      <wsdl:output message="tns:GetTaskIdSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetParentTaskId">
+      <wsdl:input message="tns:GetParentTaskIdSoapIn" />
+      <wsdl:output message="tns:GetParentTaskIdSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetTaskNameByTaskId">
+      <wsdl:input message="tns:GetTaskNameByTaskIdSoapIn" />
+      <wsdl:output message="tns:GetTaskNameByTaskIdSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="UpdateIsParentInTask">
+      <wsdl:input message="tns:UpdateIsParentInTaskSoapIn" />
+      <wsdl:output message="tns:UpdateIsParentInTaskSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetTaskTypeId">
+      <wsdl:input message="tns:GetTaskTypeIdSoapIn" />
+      <wsdl:output message="tns:GetTaskTypeIdSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetTaskStatusId">
+      <wsdl:input message="tns:GetTaskStatusIdSoapIn" />
+      <wsdl:output message="tns:GetTaskStatusIdSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetTaskPriorityId">
+      <wsdl:input message="tns:GetTaskPriorityIdSoapIn" />
+      <wsdl:output message="tns:GetTaskPriorityIdSoapOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="TasksSoap" type="tns:TasksSoap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="AddTask">
+      <soap:operation soapAction="http://tempuri.org/AddTask" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:AddTaskSecuredWebServiceHeader" part="SecuredWebServiceHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetTasks">
+      <soap:operation soapAction="http://tempuri.org/GetTasks" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:GetTasksSecuredWebServiceHeader" part="SecuredWebServiceHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetAssignedTasksForMobile">
+      <soap:operation soapAction="http://tempuri.org/GetAssignedTasksForMobile" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:GetAssignedTasksForMobileSecuredWebServiceHeader" part="SecuredWebServiceHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetAssignedTasks">
+      <soap:operation soapAction="http://tempuri.org/GetAssignedTasks" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:GetAssignedTasksSecuredWebServiceHeader" part="SecuredWebServiceHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="InsertTask">
+      <soap:operation soapAction="http://tempuri.org/InsertTask" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:InsertTaskSecuredWebServiceHeader" part="SecuredWebServiceHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetTaskId">
+      <soap:operation soapAction="http://tempuri.org/GetTaskId" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:GetTaskIdSecuredWebServiceHeader" part="SecuredWebServiceHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetParentTaskId">
+      <soap:operation soapAction="http://tempuri.org/GetParentTaskId" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:GetParentTaskIdSecuredWebServiceHeader" part="SecuredWebServiceHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetTaskNameByTaskId">
+      <soap:operation soapAction="http://tempuri.org/GetTaskNameByTaskId" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:GetTaskNameByTaskIdSecuredWebServiceHeader" part="SecuredWebServiceHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateIsParentInTask">
+      <soap:operation soapAction="http://tempuri.org/UpdateIsParentInTask" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:UpdateIsParentInTaskSecuredWebServiceHeader" part="SecuredWebServiceHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetTaskTypeId">
+      <soap:operation soapAction="http://tempuri.org/GetTaskTypeId" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:GetTaskTypeIdSecuredWebServiceHeader" part="SecuredWebServiceHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetTaskStatusId">
+      <soap:operation soapAction="http://tempuri.org/GetTaskStatusId" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:GetTaskStatusIdSecuredWebServiceHeader" part="SecuredWebServiceHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetTaskPriorityId">
+      <soap:operation soapAction="http://tempuri.org/GetTaskPriorityId" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:GetTaskPriorityIdSecuredWebServiceHeader" part="SecuredWebServiceHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="TasksSoap12" type="tns:TasksSoap">
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="AddTask">
+      <soap12:operation soapAction="http://tempuri.org/AddTask" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:AddTaskSecuredWebServiceHeader" part="SecuredWebServiceHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetTasks">
+      <soap12:operation soapAction="http://tempuri.org/GetTasks" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:GetTasksSecuredWebServiceHeader" part="SecuredWebServiceHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetAssignedTasksForMobile">
+      <soap12:operation soapAction="http://tempuri.org/GetAssignedTasksForMobile" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:GetAssignedTasksForMobileSecuredWebServiceHeader" part="SecuredWebServiceHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetAssignedTasks">
+      <soap12:operation soapAction="http://tempuri.org/GetAssignedTasks" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:GetAssignedTasksSecuredWebServiceHeader" part="SecuredWebServiceHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="InsertTask">
+      <soap12:operation soapAction="http://tempuri.org/InsertTask" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:InsertTaskSecuredWebServiceHeader" part="SecuredWebServiceHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetTaskId">
+      <soap12:operation soapAction="http://tempuri.org/GetTaskId" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:GetTaskIdSecuredWebServiceHeader" part="SecuredWebServiceHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetParentTaskId">
+      <soap12:operation soapAction="http://tempuri.org/GetParentTaskId" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:GetParentTaskIdSecuredWebServiceHeader" part="SecuredWebServiceHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetTaskNameByTaskId">
+      <soap12:operation soapAction="http://tempuri.org/GetTaskNameByTaskId" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:GetTaskNameByTaskIdSecuredWebServiceHeader" part="SecuredWebServiceHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateIsParentInTask">
+      <soap12:operation soapAction="http://tempuri.org/UpdateIsParentInTask" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:UpdateIsParentInTaskSecuredWebServiceHeader" part="SecuredWebServiceHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetTaskTypeId">
+      <soap12:operation soapAction="http://tempuri.org/GetTaskTypeId" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:GetTaskTypeIdSecuredWebServiceHeader" part="SecuredWebServiceHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetTaskStatusId">
+      <soap12:operation soapAction="http://tempuri.org/GetTaskStatusId" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:GetTaskStatusIdSecuredWebServiceHeader" part="SecuredWebServiceHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetTaskPriorityId">
+      <soap12:operation soapAction="http://tempuri.org/GetTaskPriorityId" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+        <soap12:header message="tns:GetTaskPriorityIdSecuredWebServiceHeader" part="SecuredWebServiceHeader" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="Tasks">
+    <wsdl:port name="TasksSoap" binding="tns:TasksSoap">
+      <soap:address location="http://demo.livetecs.com/Services/Tasks.asmx" />
+    </wsdl:port>
+    <wsdl:port name="TasksSoap12" binding="tns:TasksSoap12">
+      <soap12:address location="http://demo.livetecs.com/Services/Tasks.asmx" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

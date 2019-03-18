@@ -1,0 +1,719 @@
+﻿Imports QBFC11Lib
+Public Class QBtoTL_JobOrItem
+
+    ' datastructure for jobs and items
+    Public Class JobDataStructureQB
+        Public NoItems As Integer = 0
+        Public DataArray As New List(Of Job_Subjob)
+    End Class
+
+    Public Class Job_Subjob
+        Public RecSelect As Boolean
+        Public QB_Name As String
+        Public NewlyAdded As String
+        Public QB_ID As String
+        Public QBModTime As String
+        Public QBCreateTime As String
+        Public Email As String
+        Public Telephone1 As String
+        Public Fax As String
+        Public parent As String
+        Public FullName As String
+        Public subParentInt As Integer
+        Sub New(ByVal NewlyAdded_in As String, ByVal QB_Name_in As String, ByVal Email_in As String, ByVal QB_ID_in As String, ByVal Telephone1_in As String,
+                ByVal Fax_in As String, QBModTime_in As String, QBCreateTime_in As String, Is_parent_in As String, FullName_in As String, subParentInt_in As Integer)
+
+            RecSelect = False
+            QB_Name = QB_Name_in
+            NewlyAdded = NewlyAdded_in
+            QB_ID = QB_ID_in
+            QBModTime = QBModTime_in
+            QBCreateTime = QBCreateTime_in
+            Email = Email_in
+            Telephone1 = Telephone1_in
+            Fax = Fax_in
+            parent = Is_parent_in
+            FullName = FullName_in
+            subParentInt = subParentInt_in
+        End Sub
+
+    End Class
+
+
+    Public Class SubJobsOrSubitems
+        Public NoItems As Integer = 0
+        Public DataArray As New List(Of Job_Item)
+    End Class
+
+    Public Class Job_Item
+        Public TL_Name As String
+        Public TL_ID As String
+        Sub New(ByVal TL_Name_in As String, ByVal TL_ID_in As String)
+            TL_Name = TL_Name_in
+            TL_ID = TL_ID_in
+        End Sub
+    End Class
+
+    '---------------------------------------Get Job Data ---------------------------------
+    Public Function GetJobSubJobData(IntegratedUIForm As IntegratedUI, p_token As String, UI As Boolean) As JobDataStructureQB
+        Dim EmailAddress As String
+        Dim Telephone1 As String
+        Dim Fax As String
+        Dim ModTime As String
+        Dim CreateTime As String
+        Dim Job_subJobData As New JobDataStructureQB
+        Dim NewlyAdd As String
+
+        'step1: create QBFC session manager and prepare the request
+        'Dim sessManager As QBSessionManager
+        Dim msgSetRs As IMsgSetResponse
+        Try
+            'sessManager = New QBSessionManagerClass()
+            Dim msgSetRq As IMsgSetRequest = MAIN.SESSMANAGER.CreateMsgSetRequest("US", 2, 0) 'sessManager
+            msgSetRq.Attributes.OnError = ENRqOnError.roeContinue
+            ' Customer Query 
+            Dim synccust As ICustomerQuery = msgSetRq.AppendCustomerQueryRq
+
+            synccust.ORCustomerListQuery.CustomerListFilter.ActiveStatus.SetValue(ENActiveStatus.asActiveOnly)
+
+            'step2: begin QB session and send the request
+            'sessManager.OpenConnection("App", "TimeLive Quickbooks")
+            'sessManager.BeginSession("", ENOpenMode.omDontCare)
+            msgSetRs = MAIN.SESSMANAGER.DoRequests(msgSetRq) 'sessManager
+            Dim respList As IResponseList
+            respList = msgSetRs.ResponseList
+            If (respList Is Nothing) Then
+                Return Nothing
+            End If
+            ' Should only expect 1 response
+            Dim resp As IResponse
+            resp = respList.GetAt(0)
+            If (resp.StatusCode = 0) Then
+                Dim ptRetList As ICustomerRetList
+                ptRetList = resp.Detail
+
+                'sets status bar, If no, UI skip
+                If UI = True Then
+                    Dim pblenth As Integer = ptRetList.Count
+                    If pblenth >= 0 Then
+                        IntegratedUIForm.ProgressBar1.Maximum = pblenth - 1
+                    End If
+                End If
+
+                ' Should only be 1 CustomerRet object returned
+                Dim ptRet As ICustomerRet
+                For i As Integer = 0 To ptRetList.Count - 1
+
+                    ptRet = ptRetList.GetAt(i)
+                    With ptRet
+
+                        If Not .ParentRef Is Nothing Then
+
+                            Dim PTArray() As String = Split(.FullName.GetValue, ":")
+                            If PTArray.Length = 2 Then
+                                If .Email Is Nothing Then
+                                    EmailAddress = ""
+                                Else
+                                    EmailAddress = .Email.GetValue
+                                End If
+                                If .Phone Is Nothing Then
+                                    Telephone1 = ""
+                                Else
+                                    Telephone1 = .Phone.GetValue
+                                End If
+
+                                If .Fax Is Nothing Then
+                                    Fax = ""
+                                Else
+                                    Fax = .Fax.GetValue
+                                End If
+
+                                If .TimeModified Is Nothing Then
+                                    ModTime = .TimeCreated.GetValue.ToString
+                                Else
+                                    ModTime = .TimeModified.GetValue.ToString()
+                                End If
+
+                                If .TimeCreated Is Nothing Then
+                                    CreateTime = .TimeCreated.GetValue.ToString
+                                Else
+                                    CreateTime = .TimeModified.GetValue.ToString()
+                                End If
+                                Dim TL_ID_Count = ISQBID_In_DataTableForJobs(.FullName.GetValue, .ListID.GetValue)
+
+                                If TL_ID_Count <> 0 Then
+                                    NewlyAdd = ""
+                                Else
+                                    NewlyAdd = "N"
+                                End If
+
+
+                                ' will check which type data should be added 
+                                Job_subJobData.NoItems = Job_subJobData.NoItems + 1
+                                Job_subJobData.DataArray.Add(New Job_Subjob(NewlyAdd, .Name.GetValue, EmailAddress, .ListID.GetValue, Telephone1, Fax, ModTime, CreateTime, PTArray(0).ToString, .FullName.GetValue, 0))
+
+                            End If
+                            If PTArray.Length > 2 Then
+
+
+                                If .Email Is Nothing Then
+                                    EmailAddress = ""
+                                Else
+                                    EmailAddress = .Email.GetValue
+                                End If
+                                If .Phone Is Nothing Then
+                                    Telephone1 = ""
+                                Else
+                                    Telephone1 = .Phone.GetValue
+                                End If
+
+                                If .Fax Is Nothing Then
+                                    Fax = ""
+                                Else
+                                    Fax = .Fax.GetValue
+                                End If
+
+                                If .TimeModified Is Nothing Then
+                                    ModTime = .TimeCreated.GetValue.ToString
+                                Else
+                                    ModTime = .TimeModified.GetValue.ToString()
+                                End If
+
+                                If .TimeCreated Is Nothing Then
+                                    CreateTime = .TimeCreated.GetValue.ToString
+                                Else
+                                    CreateTime = .TimeModified.GetValue.ToString()
+                                End If
+                                Dim TL_ID_Count = ISQBID_In_DataTableForJobs(.FullName.GetValue, .ListID.GetValue)
+
+                                If TL_ID_Count <> 0 Then
+                                    NewlyAdd = ""
+                                Else
+                                    NewlyAdd = "N"
+                                End If
+
+                                ' will check which type data should be added 
+                                Job_subJobData.NoItems = Job_subJobData.NoItems + 1
+                                Job_subJobData.DataArray.Add(New Job_Subjob(NewlyAdd, .Name.GetValue, EmailAddress, .ListID.GetValue, Telephone1, Fax, ModTime, CreateTime, PTArray(1).ToString, .FullName.GetValue, 0))
+                            End If
+                        End If
+                    End With
+                    If UI = True Then
+                        IntegratedUIForm.ProgressBar1.Value = i
+                    End If
+                Next
+            End If
+            If msgSetRs.ResponseList.GetAt(0).StatusSeverity = "Error" Then
+                My.Forms.MAIN.History(msgSetRs.ResponseList.GetAt(0).StatusMessage, "C")
+                Throw New Exception(msgSetRs.ResponseList.GetAt(0).StatusMessage)
+            End If
+        Catch ex As Exception
+            My.Forms.MAIN.History(ex.ToString, "C")
+            Throw ex
+            'Finally
+            '   If Not sessManager Is Nothing Then
+            '       sessManager.EndSession()
+            '       sessManager.CloseConnection()
+            '   End If
+        End Try
+        Return Job_subJobData
+    End Function
+
+    '---------------------------------------Get Item Data -----------------------------------------------------------------'
+    Public Function GetItemSubItemData(IntegratedUIForm As IntegratedUI, p_token As String, UI As Boolean) As JobDataStructureQB
+        Dim ModTime As String
+        Dim CreateTime As String
+        Dim ItemData As New JobDataStructureQB
+        Dim NewlyAdd As String
+
+        'step1: create QBFC session manager and prepare the request
+        'Dim sessManager As QBSessionManager
+        Dim msgSetRs As IMsgSetResponse
+        Try
+            'sessManager = New QBSessionManagerClass()
+            Dim msgSetRq As IMsgSetRequest = MAIN.SESSMANAGER.CreateMsgSetRequest("US", 2, 0) 'sessManager
+            msgSetRq.Attributes.OnError = ENRqOnError.roeContinue
+            Dim synccust As IItemServiceQuery = msgSetRq.AppendItemServiceQueryRq
+            synccust.ORListQuery.ListFilter.ActiveStatus.SetValue(ENActiveStatus.asActiveOnly)
+
+            'step2: begin QB session and send the request
+            'sessManager.OpenConnection("App", "TimeLive Quickbooks")
+            'sessManager.BeginSession("", ENOpenMode.omDontCare)
+            msgSetRs = MAIN.SESSMANAGER.DoRequests(msgSetRq)
+            Dim respList As IResponseList
+            respList = msgSetRs.ResponseList
+            If (respList Is Nothing) Then
+                Return Nothing
+            End If
+
+            'sets status bar, If no, UI skip
+            If UI = True Then
+                Dim pblenth As Integer = respList.Count
+                If pblenth >= 0 Then
+                    IntegratedUIForm.ProgressBar1.Maximum = pblenth - 1
+                End If
+            End If
+
+            ' Should only expect 1 response
+            Dim resp As IResponse
+            resp = respList.GetAt(0)
+            If (resp.StatusCode = 0) Then
+                Dim ptRetList As IItemServiceRetList
+                ptRetList = resp.Detail
+                ' Should only be 1 CustomerRet object returned
+
+                Dim ptRet As IItemServiceRet
+
+                For i As Integer = 0 To ptRetList.Count - 1
+
+                    ptRet = ptRetList.GetAt(i)
+                    With ptRet
+                        If .ParentRef Is Nothing Then
+                            If .TimeModified Is Nothing Then
+                                ModTime = .TimeCreated.GetValue.ToString
+                            Else
+                                ModTime = .TimeModified.GetValue.ToString()
+                            End If
+
+                            If .TimeCreated Is Nothing Then
+                                CreateTime = .TimeCreated.GetValue.ToString
+                            Else
+                                CreateTime = .TimeModified.GetValue.ToString()
+                            End If
+                            Dim TL_ID_Count = ISQBID_In_DataTableForItems(.FullName.GetValue, .ListID.GetValue)
+
+                            If TL_ID_Count <> 0 Then
+                                NewlyAdd = ""
+                            Else
+                                NewlyAdd = "N"
+                            End If
+                            ItemData.NoItems = ItemData.NoItems + 1
+                            ItemData.DataArray.Add(New Job_Subjob(NewlyAdd, .FullName.GetValue, "", .ListID.GetValue, "", "", ModTime, CreateTime, "", .FullName.GetValue, .Sublevel.GetValue))
+
+                        End If
+                        If Not .ParentRef Is Nothing Then
+
+                            If .TimeModified Is Nothing Then
+                                ModTime = .TimeCreated.GetValue.ToString
+                            Else
+                                ModTime = .TimeModified.GetValue.ToString()
+                            End If
+
+                            If .TimeCreated Is Nothing Then
+                                CreateTime = .TimeCreated.GetValue.ToString
+                            Else
+                                CreateTime = .TimeModified.GetValue.ToString()
+                            End If
+                            '---------------
+                            Dim TL_ID_Count = ISQBID_In_DataTableForItems(.Name.GetValue, .ListID.GetValue)
+
+                            If TL_ID_Count <> 0 Then
+                                NewlyAdd = ""
+                            Else
+                                NewlyAdd = "N"
+                            End If
+                            ItemData.NoItems = ItemData.NoItems + 1
+                            ItemData.DataArray.Add(New Job_Subjob(NewlyAdd, .Name.GetValue, "", .ListID.GetValue, "", "", ModTime, CreateTime, "", .FullName.GetValue, .Sublevel.GetValue))
+
+                        End If
+                    End With
+                Next
+            End If
+            If msgSetRs.ResponseList.GetAt(0).StatusSeverity = "Error" Then
+                My.Forms.MAIN.History(msgSetRs.ResponseList.GetAt(0).StatusMessage, "C")
+                Throw New Exception(msgSetRs.ResponseList.GetAt(0).StatusMessage)
+            End If
+        Catch ex As Exception
+            My.Forms.MAIN.History(ex.ToString, "C")
+            'Throw ex
+            'Finally
+            '   If Not sessManager Is Nothing Then
+            '       sessManager.EndSession()
+            '       sessManager.CloseConnection()
+            '   End If
+        End Try
+        Return ItemData
+    End Function
+
+    '---------------------------------------Transfer Job Data -----------------------------------------------------------------
+    Public Function QBTransferJobstoTL(ByRef objData As QBtoTL_JobOrItem.JobDataStructureQB,
+                                   ByVal p_token As String, IntegratedUIForm As IntegratedUI, UI As Boolean) As Integer
+
+        Dim objProjectServices As New Services.TimeLive.Projects.Projects
+        Dim authentication As New Services.TimeLive.Projects.SecuredWebServiceHeader
+        authentication.AuthenticatedToken = p_token
+        objProjectServices.SecuredWebServiceHeaderValue = authentication
+
+        Dim objTaskServices As New Services.TimeLive.Tasks.Tasks
+        Dim authentication2 As New Services.TimeLive.Tasks.SecuredWebServiceHeader
+        authentication2.AuthenticatedToken = p_token
+        objTaskServices.SecuredWebServiceHeaderValue = authentication2
+
+        Dim objClientServices As New Services.TimeLive.Clients.Clients
+        Dim authentication3 As New Services.TimeLive.Clients.SecuredWebServiceHeader
+        authentication3.AuthenticatedToken = p_token
+        objClientServices.SecuredWebServiceHeaderValue = authentication3
+
+        Dim objServices As New Services.TimeLiveServices
+        Dim authentication4 As New Services.SecuredWebServiceHeader
+        authentication4.AuthenticatedToken = p_token
+        objServices.SecuredWebServiceHeaderValue = authentication4
+
+        'sets status bar. If no, UI skip
+        Dim incrementbar As Integer = 0
+        If UI = True Then
+            Dim pblenth As Integer = objData.DataArray.Count - 1
+            If pblenth >= 0 Then
+                IntegratedUIForm.ProgressBar1.Maximum = pblenth
+                IntegratedUIForm.ProgressBar1.Value = 0
+            End If
+        End If
+
+        Dim NoRecordsCreatedorUpdated = 0
+        ' open session  for TL
+        Try
+
+            Dim nProjectTypeId As Integer = objProjectServices.GetProjectTypeId()
+            Dim nProjectBillingTypeId As Integer = objProjectServices.GetProjectBillingTypeId()
+            Dim nProjectStatusId As Integer = objProjectServices.GetProjectStatusId()
+            Dim nTeamLeadId As Integer = objProjectServices.GetTeamLeadId()
+            Dim nProjectManagerId As Integer = objProjectServices.GetProjectManagerId()
+            Dim nProjectBillingRateTypeId As Integer = objProjectServices.GetProjectBillingRateTypeId()
+
+
+            For Each element As QBtoTL_JobOrItem.Job_Subjob In objData.DataArray
+                ' check if the check value is true
+                If element.RecSelect = True Then
+                    'Dim PTArray() As String = Split(element.p, ":")
+                    If Not element.parent Is Nothing Then
+                        My.Forms.MAIN.History("Processing:  " + element.QB_Name, "n")
+
+                        Dim TL_ID_Return = ISQBID_In_DataTableForJobs(element.QB_Name, element.QB_ID)
+                        'if none create
+                        If TL_ID_Return = 0 Then
+
+                            If MsgBox("New job or subjob found: " + element.QB_Name + ". Create?", MsgBoxStyle.YesNo, "Warning!") = MsgBoxResult.Yes Then
+
+                                NoRecordsCreatedorUpdated = NoRecordsCreatedorUpdated + 1
+
+                                Dim PTArray() As String = Split(element.FullName, ":")
+                                If PTArray.Length = 2 Then
+                                    Dim nClientId As Integer
+                                    Try
+                                        nClientId = objClientServices.GetClientIdByName(element.parent)
+                                    Catch ex As Exception
+                                        Throw New Exception("Error inserting client name """ + element.parent + """ not exist")
+                                    End Try
+
+                                    objProjectServices.InsertProject(nProjectTypeId, nClientId, 0,
+                                        0, nProjectBillingTypeId, element.QB_Name, element.QB_Name,
+                                        Now.Date, Now.AddMonths(1).Date, nProjectStatusId, nTeamLeadId,
+                                        nProjectManagerId, 0, 0, 1, "Months", element.QB_Name, 0, nProjectBillingRateTypeId,
+                                        False, True, 0, Now.Date, nTeamLeadId, Now.Date, nTeamLeadId, False)
+
+                                    objProjectServices.GetProjectId(element.QB_Name)
+
+                                    Dim JobAdapter As New QB_TL_IDsTableAdapters.Jobs_SubJobsTableAdapter
+
+                                    JobAdapter.Insert(element.QB_ID, objProjectServices.GetProjectId(element.QB_Name), element.QB_Name, element.QB_Name)
+
+                                End If
+
+
+                                If PTArray.Length > 2 Then
+
+                                    Dim nProjectId As Integer = objProjectServices.GetProjectId(element.parent)
+                                    Dim nParentTaskId As Integer
+                                    If PTArray.Length > 3 Then
+                                        nParentTaskId = objTaskServices.GetParentTaskId(PTArray(PTArray.Length - 2))
+                                        objTaskServices.UpdateIsParentInTask(nParentTaskId, True)
+                                    Else
+
+                                        nParentTaskId = 0
+                                    End If
+
+                                    Dim nTaskTypeId As Integer = objTaskServices.GetTaskTypeId()
+                                    Dim nTaskStatusId As Integer = objTaskServices.GetTaskStatusId()
+                                    Dim nPriorityId As Integer = objTaskServices.GetTaskPriorityId()
+                                    Dim nProjectMilestoneId As Integer = objProjectServices.GetProjectMilestoneIdByProjectId(nProjectId)
+                                    Dim nCurrencyId As Integer = objServices.GetCurrencyId()
+
+                                    objTaskServices.InsertTask(nProjectId, nParentTaskId, element.QB_Name, element.QB_Name,
+                                               nTaskTypeId, 1, "Months", 0,
+                                               0, Now.AddMonths(1).Date, nTaskStatusId, nPriorityId,
+                                               nProjectMilestoneId, False, False, Now.Date, nTeamLeadId, Now.Date, nTeamLeadId, 0, 0, "Days",
+                                               True, element.QB_Name, 0, False, nCurrencyId)
+
+                                    Dim JobAdapter As New QB_TL_IDsTableAdapters.Jobs_SubJobsTableAdapter
+                                    JobAdapter.Insert(element.QB_ID, objTaskServices.GetTaskId(element.QB_Name), element.QB_Name, element.FullName)
+                                End If
+
+                            End If
+
+                        End If
+                            'End If
+                            'If TL_ID_Return = 1 Then
+
+                            '    Dim TL_ID As String = ISTLID_In_DataTableForJobs(element.QB_ID)
+                            '    If TL_ID Is Nothing Then
+                            '        My.Forms.MAIN.History("Detected empty sync record (No TL ID). Needs to be manually sync or deleted." + element.QB_Name, "i")
+
+                            '    Else
+                            '        NoRecordsCreatedorUpdated = NoRecordsCreatedorUpdated + 1
+                            '        My.Forms.MAIN.History("Updating TL record for: " + element.QB_Name, "i")
+
+
+                            '        '-----------------------------------------------------------------------------------------------------------------------------------------------------------------
+                            '        ' ----------------------------------------------this part is the update--------------------------------------------------------------------------------------------. 
+                            '        '-----------------------------------------------------------------------------------------------------------------------------------------------------------------
+                            '    End If
+                            'End If
+
+                        End If
+                End If
+                'if no, UI skip
+                If UI = True Then
+                    IntegratedUIForm.ProgressBar1.Value = incrementbar
+                    incrementbar = incrementbar + 1
+                End If
+            Next
+        Catch ex As Exception
+            My.Forms.MAIN.History(ex.ToString, "C")
+            'Throw ex
+        End Try
+
+        Return NoRecordsCreatedorUpdated
+
+    End Function
+
+
+    '---------------------------------------Transfer Item Data -----------------------------------------------------------------'
+    Public Function QBTransferITemsToTL(ByRef objData As QBtoTL_JobOrItem.JobDataStructureQB,
+                                   ByVal p_token As String, IntegratedUIForm As IntegratedUI, UI As Boolean) As Integer
+        Dim objProjectServices As New Services.TimeLive.Projects.Projects
+        Dim authentication As New Services.TimeLive.Projects.SecuredWebServiceHeader
+        authentication.AuthenticatedToken = p_token
+        objProjectServices.SecuredWebServiceHeaderValue = authentication
+
+        Dim objTaskServices As New Services.TimeLive.Tasks.Tasks
+        Dim authentication2 As New Services.TimeLive.Tasks.SecuredWebServiceHeader
+        authentication2.AuthenticatedToken = p_token
+        objTaskServices.SecuredWebServiceHeaderValue = authentication2
+
+        Dim objClientServices As New Services.TimeLive.Clients.Clients
+        Dim authentication3 As New Services.TimeLive.Clients.SecuredWebServiceHeader
+        authentication3.AuthenticatedToken = p_token
+        objClientServices.SecuredWebServiceHeaderValue = authentication3
+
+        Dim objServices As New Services.TimeLiveServices
+        Dim authentication4 As New Services.SecuredWebServiceHeader
+        authentication4.AuthenticatedToken = p_token
+        objServices.SecuredWebServiceHeaderValue = authentication4
+
+        'sets status bar. If no, UI skip
+        Dim incrementbar As Integer = 0
+        If UI = True Then
+            Dim pblenth As Integer = objData.DataArray.Count - 1
+            If pblenth >= 0 Then
+                IntegratedUIForm.ProgressBar1.Maximum = pblenth
+                IntegratedUIForm.ProgressBar1.Value = 0
+            End If
+        End If
+
+        Dim NoRecordsCreatedorUpdated As Integer = 0
+        ' open session  for TL
+        'step1: loop thought our data array
+
+        Try
+            Dim nProjectTypeId As Integer = objProjectServices.GetProjectTypeId()
+            Dim nClientId As Integer
+            Try
+                nClientId = objClientServices.GetClientId()
+            Catch ex As Exception
+                Throw New Exception("Client not exist.")
+            End Try
+            Dim nProjectBillingTypeId As Integer = objProjectServices.GetProjectBillingTypeId()
+            Dim nProjectStatusId As Integer = objProjectServices.GetProjectStatusId()
+            Dim nTeamLeadId As Integer = objProjectServices.GetTeamLeadId()
+            Dim nProjectManagerId As Integer = objProjectServices.GetProjectManagerId()
+            Dim nProjectBillingRateTypeId As Integer = objProjectServices.GetProjectBillingRateTypeId()
+            Dim ProjectName As String
+            My.Forms.MAIN.History("Here ", "i")
+
+            For Each element As QBtoTL_JobOrItem.Job_Subjob In objData.DataArray
+                ' check if the check value is true
+                If element.RecSelect = True Then
+
+                    If Not element.parent Is Nothing Then
+                        My.Forms.MAIN.History("Processing:  " + element.QB_Name, "n")
+
+                        Dim TL_ID_Return = ISQBID_In_DataTableForItems(element.FullName, element.QB_ID)
+
+                        'if none create
+                        If TL_ID_Return = 0 Then
+
+                            If MsgBox("New item or subitem found: " + element.QB_Name + ". Create?", MsgBoxStyle.YesNo, "Warning!") = MsgBoxResult.Yes Then
+
+                                NoRecordsCreatedorUpdated = NoRecordsCreatedorUpdated + 1
+
+                                If element.subParentInt = 0 Then
+
+                                    objProjectServices.InsertProject(nProjectTypeId, nClientId, 0,
+                                0, nProjectBillingTypeId, element.FullName, element.FullName,
+                                Now.Date, Now.AddMonths(1).Date, nProjectStatusId, nTeamLeadId,
+                                nProjectManagerId, 0, 0, 1, "Months", element.FullName, 0, nProjectBillingRateTypeId,
+                                False, True, 0, Now.Date, nTeamLeadId, Now.Date, nTeamLeadId, False)
+
+                                    Dim JobAdapter As New QB_TL_IDsTableAdapters.Items_SubItemsTableAdapter
+                                    JobAdapter.Insert(element.QB_ID, objProjectServices.GetProjectId(element.QB_Name), element.QB_Name, element.FullName)
+
+
+                                    ProjectName = element.FullName
+                                End If
+                                If Not element.subParentInt = 0 Then
+                                    NoRecordsCreatedorUpdated = NoRecordsCreatedorUpdated + 1
+                                    Dim TaskArray() As String = Split(element.FullName, ":")
+                                    Dim ParentLevel As Integer = element.subParentInt - 1
+                                    Dim ParentTaskName As String = TaskArray(ParentLevel)
+                                    Dim nProjectId As Integer = objProjectServices.GetProjectId(ProjectName)
+                                    Dim nParentTaskId As Integer
+                                    If ParentLevel <> 0 Then
+                                        nParentTaskId = objTaskServices.GetParentTaskId(ParentTaskName)
+                                        objTaskServices.UpdateIsParentInTask(nParentTaskId, True)
+                                    Else
+                                        nParentTaskId = 0
+                                    End If
+                                    Dim nProjectMilestoneId As Integer = objProjectServices.GetProjectMilestoneIdByProjectId(nProjectId)
+                                    Dim nTaskTypeId As Integer = objTaskServices.GetTaskTypeId()
+                                    Dim nTaskStatusId As Integer = objTaskServices.GetTaskStatusId()
+                                    Dim nPriorityId As Integer = objTaskServices.GetTaskPriorityId()
+                                    Dim nCurrencyId As Integer = objServices.GetCurrencyId()
+
+
+                                    objTaskServices.InsertTask(nProjectId, nParentTaskId, element.FullName, element.FullName,
+                                nTaskTypeId, 1, "Months", 0,
+                                0, Now.AddMonths(1).Date, nTaskStatusId, nPriorityId,
+                                nProjectMilestoneId, False, False, Now.Date, nTeamLeadId, Now.Date, nTeamLeadId, 0, 0, "Days",
+                                True, element.FullName, 0, False, nCurrencyId)
+
+                                    Dim JobAdapter As New QB_TL_IDsTableAdapters.Items_SubItemsTableAdapter
+                                    JobAdapter.Insert(element.QB_ID, objTaskServices.GetTaskId(element.FullName), element.QB_Name, element.QB_Name)
+
+                                End If
+                                'If TL_ID_Return = 1 Then
+
+                                '    Dim TL_ID As String = ISQBID_In_DataTableForItems(element.QB_ID)
+                                '    If TL_ID Is Nothing Then
+                                '        My.Forms.MAIN.History("Detected empty sync record (No TL ID). Needs to be manually sync or deleted." + element.QB_Name, "i")
+
+                                '    Else
+                                '        NoRecordsCreatedorUpdated = NoRecordsCreatedorUpdated + 1
+                                '        My.Forms.MAIN.History("Updating TL record for: " + element.QB_Name, "i")
+
+
+                                '        '-----------------------------------------------------------------------------------------------------------------------------------------------------------------
+                                '        ' ----------------------------------------------this part is the update--------------------------------------------------------------------------------------------. 
+                                '        '-----------------------------------------------------------------------------------------------------------------------------------------------------------------
+                                '    End If
+                                'End If
+                            End If
+                        End If
+                    End If
+                End If
+                'if no, UI skip
+                If UI = True Then
+                    IntegratedUIForm.ProgressBar1.Value = incrementbar
+                    incrementbar = incrementbar + 1
+                End If
+            Next
+
+        Catch ex As Exception
+            My.Forms.MAIN.History(ex.ToString, "C")
+
+        End Try
+        Return NoRecordsCreatedorUpdated
+    End Function
+
+    Public Function SetLength(ByVal str As String) As String
+        If str.Length > 50 Then
+            str = str.Substring(0, 50)
+        End If
+        Return str
+    End Function
+
+    Public Function ISQBID_In_DataTableForJobs(ByVal myqbName As String, ByVal myqbID As String) As Int16
+        Dim result As Int16 = 0
+        Dim jobAdapter As New QB_TL_IDsTableAdapters.Jobs_SubJobsTableAdapter()
+        Dim TimeLiveIDs As QB_TL_IDs.Jobs_SubJobsDataTable = jobAdapter.GetCorrespondingTL_ID(myqbID)
+
+        If TimeLiveIDs.Count = 1 Then
+            result = 1
+            My.Forms.MAIN.History("One record found in QB sync table for: " + myqbName, "i")
+        End If
+
+        If TimeLiveIDs.Count = 0 Then
+            result = 0
+            My.Forms.MAIN.History("No records found on QB sync table for:" + myqbName, "i")
+        End If
+
+        If TimeLiveIDs.Count > 1 Then
+            result = 2
+            My.Forms.MAIN.History("More than one record found for:" + myqbName, "I")
+        End If
+
+        Return result
+    End Function
+
+    Public Function ISQBID_In_DataTableForItems(ByVal myqbName As String, ByVal myqbID As String) As Int16
+        Dim result As Int16 = 0
+        Dim ItemAdapter As New QB_TL_IDsTableAdapters.Items_SubItemsTableAdapter()
+        Dim TimeLiveIDs As QB_TL_IDs.Items_SubItemsDataTable = ItemAdapter.GetCorrespondingTL_ID(myqbID)
+
+        If TimeLiveIDs.Count = 1 Then
+            result = 1
+            My.Forms.MAIN.History("One record found in QB sync table for: " + myqbName, "i")
+        End If
+
+        If TimeLiveIDs.Count = 0 Then
+            result = 0
+            My.Forms.MAIN.History("No records found on QB sync table for:" + myqbName, "i")
+        End If
+
+        If TimeLiveIDs.Count > 1 Then
+            result = 2
+            My.Forms.MAIN.History("More than one record found for:" + myqbName, "I")
+        End If
+
+        Return result
+    End Function
+
+    'Private Function ISTLID_In_DataTableForItem(ByVal myqbID As String) As String
+    '    Dim result As String = Nothing
+    '    Dim ItemAdapter As New QB_TL_IDsTableAdapters.Items_SubItemsTableAdapter
+    '    Dim TimeLiveIDs As QB_TL_IDs.Items_SubItemsDataTable = ItemAdapter.GetCorrespondingTL_ID(myqbID)
+
+    '    If String.IsNullOrEmpty(Trim(TimeLiveIDs(0).TimeLive_ID.ToString())) Then
+    '        My.Forms.MAIN.History("Record has a TLID of Nothing", "I")
+    '    Else
+    '        My.Forms.MAIN.History("Record has a TLID of: " + TimeLiveIDs(0).TimeLive_ID.ToString(), "i")
+    '        result = TimeLiveIDs(0).TimeLive_ID.ToString()
+    '    End If
+
+    '    Return result
+    'End Function
+    'Private Function ISTLID_In_DataTableForJobs(ByVal myqbID As String) As String
+    '    Dim result As String = Nothing
+    '    Dim JobAdapter As New QB_TL_IDsTableAdapters.Jobs_SubJobsTableAdapter
+    '    Dim TimeLiveIDs As QB_TL_IDs.Jobs_SubJobsDataTable = JobAdapter.GetCorrespondingTL_ID(myqbID)
+
+    '    If String.IsNullOrEmpty(Trim(TimeLiveIDs(0).TimeLive_ID.ToString())) Then
+    '        My.Forms.MAIN.History("Record has a TLID of Nothing", "I")
+    '    Else
+    '        My.Forms.MAIN.History("Record has a TLID of: " + TimeLiveIDs(0).TimeLive_ID.ToString(), "i")
+    '        result = TimeLiveIDs(0).TimeLive_ID.ToString()
+    '    End If
+
+    '    Return result
+    'End Function
+
+End Class

@@ -1,0 +1,472 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.50727</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{BCB9035A-7AE7-4326-96E1-0ADC9BAC8170}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <StartupObject>TimeLive.Quickbooks.Integrator.My.MyApplication</StartupObject>
+    <RootNamespace>TimeLive.Quickbooks.Integrator</RootNamespace>
+    <AssemblyName>TimeLive.Quickbooks.Integrator</AssemblyName>
+    <MyType>WindowsForms</MyType>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>2.0</OldToolsVersion>
+    <UpgradeBackupLocation />
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>0.1.0.%2a</ApplicationVersion>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <PublishWizardCompleted>true</PublishWizardCompleted>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DocumentationFile>TimeLive.Quickbooks.Integrator.xml</DocumentationFile>
+    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022,42353,42354,42355</NoWarn>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <PlatformTarget>x86</PlatformTarget>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <DefineDebug>false</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DocumentationFile>TimeLive.Quickbooks.Integrator.xml</DocumentationFile>
+    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022,42353,42354,42355</NoWarn>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OptionCompare>Text</OptionCompare>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationManifest>My Project\app.manifest</ApplicationManifest>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>Teltrium TLtoQB.ico</ApplicationIcon>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ManifestCertificateThumbprint>307EE4431DD4C522DA4E7B839E735ECED6E35907</ManifestCertificateThumbprint>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ManifestKeyFile>TimeLive.Quickbooks.Integrator_TemporaryKey.pfx</ManifestKeyFile>
+  </PropertyGroup>
+  <PropertyGroup>
+    <GenerateManifests>true</GenerateManifests>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignManifests>false</SignManifests>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.DirectoryServices" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.EnterpriseServices" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Import Include="Microsoft.VisualBasic" />
+    <Import Include="System" />
+    <Import Include="System.Collections" />
+    <Import Include="System.Collections.Generic" />
+    <Import Include="System.Data" />
+    <Import Include="System.Drawing" />
+    <Import Include="System.Diagnostics" />
+    <Import Include="System.Windows.Forms" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ChargingRelationship.Designer.vb">
+      <DependentUpon>ChargingRelationship.vb</DependentUpon>
+    </Compile>
+    <Compile Include="ChargingRelationship.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CurrentSystemSync.vb" />
+    <Compile Include="IntUI_2ndSelect.Designer.vb">
+      <DependentUpon>IntUI_2ndSelect.vb</DependentUpon>
+    </Compile>
+    <Compile Include="IntUI_2ndSelect.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="QBtoTL_JobOrItem.vb" />
+    <Compile Include="QBtoTL_Vendor.vb" />
+    <Compile Include="QBtoTL_Employee.vb" />
+    <Compile Include="QBtoTL_Customer.vb" />
+    <Compile Include="AppSettings.Designer.vb">
+      <DependentUpon>AppSettings.vb</DependentUpon>
+    </Compile>
+    <Compile Include="AppSettings.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="IntegratedUI.Designer.vb">
+      <DependentUpon>IntegratedUI.vb</DependentUpon>
+    </Compile>
+    <Compile Include="IntegratedUI.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="QB_TL_IDs.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>QB_TL_IDs.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="QB_TL_IDs.vb">
+      <DependentUpon>QB_TL_IDs.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="TimeLiveDataSet.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>TimeLiveDataSet.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="Main.Designer.vb">
+      <DependentUpon>Main.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Main.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Login.Designer.vb">
+      <DependentUpon>Login.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Login.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="My Project\AssemblyInfo.vb" />
+    <Compile Include="My Project\Application.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Application.myapp</DependentUpon>
+    </Compile>
+    <Compile Include="My Project\Resources.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="My Project\Settings.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <Compile Include="TLtoQB_TimeEntry.vb" />
+    <Compile Include="Web References\Services.TimeLive.Clients\Reference.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.map</DependentUpon>
+    </Compile>
+    <Compile Include="Web References\Services.TimeLive.Employees\Reference.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.map</DependentUpon>
+    </Compile>
+    <Compile Include="Web References\Services.TimeLive.ExpenseEntries\Reference.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.map</DependentUpon>
+    </Compile>
+    <Compile Include="Web References\Services.TimeLive.Projects\Reference.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.map</DependentUpon>
+    </Compile>
+    <Compile Include="Web References\Services.TimeLive.Tasks\Reference.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.map</DependentUpon>
+    </Compile>
+    <Compile Include="Web References\Services.TimeLive.TimeEntries\Reference.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.map</DependentUpon>
+    </Compile>
+    <Compile Include="Web References\Services\Reference.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.map</DependentUpon>
+    </Compile>
+    <Compile Include="WebServiceUtilities.vb" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="AppSettings.resx">
+      <DependentUpon>AppSettings.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ChargingRelationship.resx">
+      <DependentUpon>ChargingRelationship.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="IntegratedUI.resx">
+      <DependentUpon>IntegratedUI.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="IntUI_2ndSelect.resx">
+      <DependentUpon>IntUI_2ndSelect.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Main.resx">
+      <DependentUpon>Main.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Login.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>Login.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="My Project\Resources.resx">
+      <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.vb</LastGenOutput>
+      <CustomToolNamespace>My.Resources</CustomToolNamespace>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="My Project\app.manifest" />
+    <None Include="My Project\Application.myapp">
+      <Generator>MyApplicationCodeGenerator</Generator>
+      <LastGenOutput>Application.Designer.vb</LastGenOutput>
+    </None>
+    <None Include="My Project\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <CustomToolNamespace>My</CustomToolNamespace>
+      <LastGenOutput>Settings.Designer.vb</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <WebReferences Include="Web References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="QB_TL_IDs.xsc">
+      <DependentUpon>QB_TL_IDs.xsd</DependentUpon>
+    </None>
+    <None Include="QB_TL_IDs.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>QB_TL_IDs.Designer.vb</LastGenOutput>
+    </None>
+    <None Include="QB_TL_IDs.xss">
+      <DependentUpon>QB_TL_IDs.xsd</DependentUpon>
+    </None>
+    <None Include="TimeLive.Quickbooks.Integrator_TemporaryKey.pfx" />
+    <None Include="TimeLiveDataSet.xsc">
+      <DependentUpon>TimeLiveDataSet.xsd</DependentUpon>
+    </None>
+    <None Include="TimeLiveDataSet.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>TimeLiveDataSet.Designer.vb</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="TimeLiveDataSet.xss">
+      <DependentUpon>TimeLiveDataSet.xsd</DependentUpon>
+    </None>
+    <None Include="Web References\Services.TimeLive.ExpenseEntries\AccountCurrency.xsd" />
+    <None Include="Web References\Services.TimeLive.ExpenseEntries\AccountCurrency1.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\Services\Reference.map">
+      <Generator>MSDiscoCodeGenerator</Generator>
+      <LastGenOutput>Reference.vb</LastGenOutput>
+    </None>
+    <None Include="Web References\Services\TimeLiveServices.wsdl" />
+  </ItemGroup>
+  <ItemGroup>
+    <WebReferenceUrl Include="http://demo.livetecs.com/Services/Clients.asmx">
+      <UrlBehavior>Dynamic</UrlBehavior>
+      <RelPath>Web References\Services.TimeLive.Clients\</RelPath>
+      <UpdateFromURL>http://demo.livetecs.com/Services/Clients.asmx</UpdateFromURL>
+      <ServiceLocationURL>
+      </ServiceLocationURL>
+      <CachedDynamicPropName>
+      </CachedDynamicPropName>
+      <CachedAppSettingsObjectName>MySettings</CachedAppSettingsObjectName>
+      <CachedSettingsPropName>TimeLive_Integration_Quickbooks_Services_TimeLive_Clients_Clients</CachedSettingsPropName>
+    </WebReferenceUrl>
+    <WebReferenceUrl Include="http://demo.livetecs.com/Services/Employees.asmx">
+      <UrlBehavior>Dynamic</UrlBehavior>
+      <RelPath>Web References\Services.TimeLive.Employees\</RelPath>
+      <UpdateFromURL>http://demo.livetecs.com/Services/Employees.asmx</UpdateFromURL>
+      <ServiceLocationURL>
+      </ServiceLocationURL>
+      <CachedDynamicPropName>
+      </CachedDynamicPropName>
+      <CachedAppSettingsObjectName>MySettings</CachedAppSettingsObjectName>
+      <CachedSettingsPropName>TimeLive_Integration_Quickbooks_Services_TimeLive_Employees_Employees</CachedSettingsPropName>
+    </WebReferenceUrl>
+    <WebReferenceUrl Include="http://demo.livetecs.com/Services/ExpenseEntries.asmx">
+      <UrlBehavior>Dynamic</UrlBehavior>
+      <RelPath>Web References\Services.TimeLive.ExpenseEntries\</RelPath>
+      <UpdateFromURL>http://demo.livetecs.com/Services/ExpenseEntries.asmx</UpdateFromURL>
+      <ServiceLocationURL>
+      </ServiceLocationURL>
+      <CachedDynamicPropName>
+      </CachedDynamicPropName>
+      <CachedAppSettingsObjectName>MySettings</CachedAppSettingsObjectName>
+      <CachedSettingsPropName>TimeLive_Integration_Quickbooks_Services_TimeLive_ExpenseEntries_ExpenseEntries</CachedSettingsPropName>
+    </WebReferenceUrl>
+    <WebReferenceUrl Include="http://demo.livetecs.com/Services/Projects.asmx">
+      <UrlBehavior>Dynamic</UrlBehavior>
+      <RelPath>Web References\Services.TimeLive.Projects\</RelPath>
+      <UpdateFromURL>http://demo.livetecs.com/Services/Projects.asmx</UpdateFromURL>
+      <ServiceLocationURL>
+      </ServiceLocationURL>
+      <CachedDynamicPropName>
+      </CachedDynamicPropName>
+      <CachedAppSettingsObjectName>MySettings</CachedAppSettingsObjectName>
+      <CachedSettingsPropName>TimeLive_Integration_Quickbooks_Services_TimeLive_Projects_Projects</CachedSettingsPropName>
+    </WebReferenceUrl>
+    <WebReferenceUrl Include="http://demo.livetecs.com/Services/Tasks.asmx">
+      <UrlBehavior>Dynamic</UrlBehavior>
+      <RelPath>Web References\Services.TimeLive.Tasks\</RelPath>
+      <UpdateFromURL>http://demo.livetecs.com/Services/Tasks.asmx</UpdateFromURL>
+      <ServiceLocationURL>
+      </ServiceLocationURL>
+      <CachedDynamicPropName>
+      </CachedDynamicPropName>
+      <CachedAppSettingsObjectName>MySettings</CachedAppSettingsObjectName>
+      <CachedSettingsPropName>TimeLive_Integration_Quickbooks_Services_TimeLive_Tasks_Tasks</CachedSettingsPropName>
+    </WebReferenceUrl>
+    <WebReferenceUrl Include="http://demo.livetecs.com/Services/TimeEntries.asmx">
+      <UrlBehavior>Dynamic</UrlBehavior>
+      <RelPath>Web References\Services.TimeLive.TimeEntries\</RelPath>
+      <UpdateFromURL>http://demo.livetecs.com/Services/TimeEntries.asmx</UpdateFromURL>
+      <ServiceLocationURL>
+      </ServiceLocationURL>
+      <CachedDynamicPropName>
+      </CachedDynamicPropName>
+      <CachedAppSettingsObjectName>MySettings</CachedAppSettingsObjectName>
+      <CachedSettingsPropName>TimeLive_Integration_Quickbooks_Services_TimeLive_TimeEntries_TimeEntries</CachedSettingsPropName>
+    </WebReferenceUrl>
+    <WebReferenceUrl Include="http://demo.livetecs.com/Services/TimeLiveServices.asmx">
+      <UrlBehavior>Dynamic</UrlBehavior>
+      <RelPath>Web References\Services\</RelPath>
+      <UpdateFromURL>http://demo.livetecs.com/Services/TimeLiveServices.asmx</UpdateFromURL>
+      <ServiceLocationURL>
+      </ServiceLocationURL>
+      <CachedDynamicPropName>
+      </CachedDynamicPropName>
+      <CachedAppSettingsObjectName>MySettings</CachedAppSettingsObjectName>
+      <CachedSettingsPropName>TimeLive_Integration_Quickbooks_Services_TimeLiveServices</CachedSettingsPropName>
+    </WebReferenceUrl>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Web References\Services.TimeLive.Employees\Employees.wsdl" />
+    <None Include="Web References\Services\TimeLiveServices.disco" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Web References\Services.TimeLive.Clients\Clients.wsdl" />
+    <None Include="Web References\Services.TimeLive.Employees\Employees.disco" />
+    <None Include="Web References\Services.TimeLive.Employees\Reference.map">
+      <Generator>MSDiscoCodeGenerator</Generator>
+      <LastGenOutput>Reference.vb</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Web References\Services.TimeLive.Clients\Clients.disco" />
+    <None Include="Web References\Services.TimeLive.Clients\Reference.map">
+      <Generator>MSDiscoCodeGenerator</Generator>
+      <LastGenOutput>Reference.vb</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Web References\Services.TimeLive.Projects\Projects.disco" />
+    <None Include="Web References\Services.TimeLive.Projects\Projects.wsdl" />
+    <None Include="Web References\Services.TimeLive.Projects\Reference.map">
+      <Generator>MSDiscoCodeGenerator</Generator>
+      <LastGenOutput>Reference.vb</LastGenOutput>
+    </None>
+    <None Include="Web References\Services.TimeLive.Tasks\Tasks.wsdl" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Web References\Services.TimeLive.Tasks\Reference.map">
+      <Generator>MSDiscoCodeGenerator</Generator>
+      <LastGenOutput>Reference.vb</LastGenOutput>
+    </None>
+    <None Include="Web References\Services.TimeLive.Tasks\Tasks.disco" />
+    <None Include="Web References\Services.TimeLive.TimeEntries\TimeEntries.wsdl" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Web References\Services.TimeLive.ExpenseEntries\ExpenseEntries.wsdl" />
+    <None Include="Web References\Services.TimeLive.TimeEntries\Reference.map">
+      <Generator>MSDiscoCodeGenerator</Generator>
+      <LastGenOutput>Reference.vb</LastGenOutput>
+    </None>
+    <None Include="Web References\Services.TimeLive.TimeEntries\TimeEntries.disco" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Web References\Services.TimeLive.ExpenseEntries\ExpenseEntries.disco" />
+    <None Include="Web References\Services.TimeLive.ExpenseEntries\Reference.map">
+      <Generator>MSDiscoCodeGenerator</Generator>
+      <LastGenOutput>Reference.vb</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 3.1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Images\ajax-loader.gif" />
+    <Content Include="Teltrium TLtoQB.ico" />
+    <Content Include="TimeLiveQuickBooks.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <COMReference Include="QBFC11Lib">
+      <Guid>{BCD71B09-6E35-4F3C-94D0-74A33C9606FC}</Guid>
+      <VersionMajor>1</VersionMajor>
+      <VersionMinor>0</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>tlbimp</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </COMReference>
+    <COMReference Include="QBFC13Lib">
+      <Guid>{0CB030A6-7B72-42CE-B92A-849B4A4A2CFB}</Guid>
+      <VersionMajor>1</VersionMajor>
+      <VersionMinor>0</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>tlbimp</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </COMReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.VisualBasic.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
