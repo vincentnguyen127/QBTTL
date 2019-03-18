@@ -101,6 +101,8 @@ Public Class ChargingRelationship
             DataGridView1.Refresh()
         Catch ex As Exception
             My.Forms.MAIN.History(ex.ToString, "C")
+            ' Before throwing exception, close the session manager if it is open
+            MAIN.QUITQBSESSION()
             Throw ex
         End Try
     End Sub
@@ -112,6 +114,8 @@ Public Class ChargingRelationship
             DataGridView1.Refresh()
         Catch ex As Exception
             My.Forms.MAIN.History(ex.ToString, "C")
+            ' Before throwing exception, close the session manager if it is open
+            MAIN.QUITQBSESSION()
             Throw ex
         End Try
     End Sub
@@ -168,6 +172,8 @@ Public Class ChargingRelationship
             End If
         Catch ex As Exception
             My.Forms.MAIN.History(ex.ToString, "C")
+            ' Before throwing exception, close the session manager if it is open
+            MAIN.QUITQBSESSION()
             Throw ex
             'Finally
             '   If Not sessManager Is Nothing Then
@@ -228,6 +234,8 @@ Public Class ChargingRelationship
             End If
         Catch ex As Exception
             My.Forms.MAIN.History(ex.ToString, "C")
+            ' Before throwing exception, close the session manager if it is open
+            MAIN.QUITQBSESSION()
             Throw ex
             'Finally
             '   If Not sessManager Is Nothing Then
@@ -278,7 +286,9 @@ Public Class ChargingRelationship
                 For i As Integer = 0 To ptRetList.Count - 1
                     ptRet = ptRetList.GetAt(i)
                     With ptRet
-                        .Rows.Add(.FullName.GetValue, .ListID.GetValue) 'Exception: Not Found
+                        'If Not .ParentRef Is Nothing Then
+                        ItemsSubItemsQBData.Rows.Add(.FullName.GetValue, .ListID.GetValue) 'Exception: Not Found
+                        'End If
                     End With
                 Next
             End If
@@ -288,6 +298,8 @@ Public Class ChargingRelationship
             End If
         Catch ex As Exception
             My.Forms.MAIN.History(ex.ToString, "C")
+            ' Before throwing exception, close the session manager if it is open
+            MAIN.QUITQBSESSION()
             Throw ex
             'Finally
             '    If Not sessManager Is Nothing Then
@@ -345,6 +357,8 @@ Public Class ChargingRelationship
             End If
         Catch ex As Exception
             My.Forms.MAIN.History(ex.ToString, "C")
+            ' Before throwing exception, close the session manager if it is open
+            MAIN.QUITQBSESSION()
             Throw ex
             'Finally
             '    If Not sessManager Is Nothing Then

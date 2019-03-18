@@ -209,6 +209,7 @@ Public Class QBtoTL_JobOrItem
             End If
         Catch ex As Exception
             My.Forms.MAIN.History(ex.ToString, "C")
+            MAIN.QUITQBSESSION()
             Throw ex
             'Finally
             '   If Not sessManager Is Nothing Then
@@ -402,6 +403,7 @@ Public Class QBtoTL_JobOrItem
                                     Try
                                         nClientId = objClientServices.GetClientIdByName(element.parent)
                                     Catch ex As Exception
+                                        MAIN.QUITQBSESSION()
                                         Throw New Exception("Error inserting client name """ + element.parent + """ not exist")
                                     End Try
 
@@ -530,6 +532,7 @@ Public Class QBtoTL_JobOrItem
             Try
                 nClientId = objClientServices.GetClientId()
             Catch ex As Exception
+                MAIN.QUITQBSESSION()
                 Throw New Exception("Client not exist.")
             End Try
             Dim nProjectBillingTypeId As Integer = objProjectServices.GetProjectBillingTypeId()
@@ -537,7 +540,7 @@ Public Class QBtoTL_JobOrItem
             Dim nTeamLeadId As Integer = objProjectServices.GetTeamLeadId()
             Dim nProjectManagerId As Integer = objProjectServices.GetProjectManagerId()
             Dim nProjectBillingRateTypeId As Integer = objProjectServices.GetProjectBillingRateTypeId()
-            Dim ProjectName As String
+            Dim ProjectName As String = Nothing
             My.Forms.MAIN.History("Here ", "i")
 
             For Each element As QBtoTL_JobOrItem.Job_Subjob In objData.DataArray
@@ -567,8 +570,7 @@ Public Class QBtoTL_JobOrItem
                                     Dim JobAdapter As New QB_TL_IDsTableAdapters.Items_SubItemsTableAdapter
                                     JobAdapter.Insert(element.QB_ID, objProjectServices.GetProjectId(element.QB_Name), element.QB_Name, element.FullName)
 
-
-                                    ProjectName = element.FullName
+                                    ProjectName = element.FullName ' Should this be outside the if?
                                 End If
                                 If Not element.subParentInt = 0 Then
                                     NoRecordsCreatedorUpdated = NoRecordsCreatedorUpdated + 1
@@ -629,8 +631,8 @@ Public Class QBtoTL_JobOrItem
 
         Catch ex As Exception
             My.Forms.MAIN.History(ex.ToString, "C")
-
         End Try
+
         Return NoRecordsCreatedorUpdated
     End Function
 

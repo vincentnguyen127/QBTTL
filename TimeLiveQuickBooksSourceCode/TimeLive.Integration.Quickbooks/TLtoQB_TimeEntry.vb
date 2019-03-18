@@ -269,8 +269,8 @@ Public Class TLtoQB_TimeEntry
 
             Next
 
-            ' TODO: Disconnect from QB before leaving the function
         Catch ex As Exception
+            MAIN.QUITQBSESSION()
             Throw ex
             'Finally
             '    If Not sessManager Is Nothing Then
@@ -502,6 +502,7 @@ Public Class TLtoQB_TimeEntry
             Return TimeEntryRet.TxnID.GetValue.ToString
 
         Catch ex As Exception
+            MAIN.QUITQBSESSION()
             Throw ex
             'Finally
             'If Not sessManager Is Nothing Then
@@ -561,6 +562,7 @@ Public Class TLtoQB_TimeEntry
             Return TimeEntryRet.TxnID.GetValue.ToString
 
         Catch ex As Exception
+            MAIN.QUITQBSESSION()
             Throw ex
             'Finally
             'If Not sessManager Is Nothing Then
@@ -633,6 +635,7 @@ Public Class TLtoQB_TimeEntry
             ' Make sure a customerRet was returned before trying to obtain
             Return TimeEntryRet.TxnID.GetValue.ToString
         Catch ex As Exception
+            MAIN.QUITQBSESSION()
             Throw ex
             'Finally
             '   If Not sessManager Is Nothing Then
@@ -666,6 +669,7 @@ Public Class TLtoQB_TimeEntry
             '    Throw New Exception(msgSetRs.ResponseList.GetAt(0).StatusMessage)
             'End If
         Catch ex As Exception
+            MAIN.QUITQBSESSION()
             Throw ex
             'Finally
             '   If Not sessManager Is Nothing Then
@@ -755,6 +759,7 @@ Public Class TLtoQB_TimeEntry
                 End If
             End If
         Catch ex As Exception
+            MAIN.QUITQBSESSION()
             Throw ex
             'Finally
             '    If Not sessManager Is Nothing Then
@@ -788,6 +793,7 @@ Public Class TLtoQB_TimeEntry
                 End If
             End If
         Catch ex As Exception
+            MAIN.QUITQBSESSION()
             Throw ex
             'Finally
             '    If Not sessManager Is Nothing Then

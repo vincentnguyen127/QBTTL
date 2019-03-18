@@ -164,6 +164,7 @@ Public Class QBtoTL_Vendor
             End If
 
         Catch ex As Exception
+            MAIN.QUITQBSESSION()
             If ex.Message.Contains("Specified email already") Then
                 Throw New Exception("Specified user already exist.")
             Else

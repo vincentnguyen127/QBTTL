@@ -163,6 +163,8 @@ Public Class QBtoTL_Employee
             End If
         Catch ex As Exception
             My.Forms.MAIN.History(ex.ToString, "C")
+            ' Close the session manager before throwing exception
+            MAIN.QUITQBSESSION()
             Throw ex
             'Finally
             '   If Not sessManager Is Nothing Then
@@ -286,15 +288,13 @@ Public Class QBtoTL_Employee
                                 My.Forms.MAIN.History("Transfer failed." + ex.ToString, "N")
                             End Try
                         End With
-
                     End If
                 End If
 
-
-                    'if it exist check that the TL_ID is not empty ---> 1
-                    'if not empty, just update
-                    'if empty, informed the user of a potential error as a record has been created in the sync database without a corresponding TL pointer
-                    If TL_ID_Return = 1 Then
+                'if it exist check that the TL_ID is not empty ---> 1
+                'if not empty, just update
+                'if empty, informed the user of a potential error as a record has been created in the sync database without a corresponding TL pointer
+                If TL_ID_Return = 1 Then
 
                     Dim TL_ID As String = ISTLID_In_DataTable(element.QB_ID)
                     If TL_ID Is Nothing Then
@@ -506,8 +506,6 @@ Public Class QBtoTL_Employee
                                 '                       JobTitle, HiredDate, AccountWorkingDayTypeId, AccountTimeOffPolicyId,
                                 '                       TimeOffApprovalTypeId, AccountHolidayTypeId, IsForcePasswordChange,
                                 '                       "", False)
-
-
 
                                 My.Forms.MAIN.History("Record update commented out -- Defect", "N")
 

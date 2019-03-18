@@ -109,6 +109,7 @@ Public Class CurrentSystemSync
             End If
 
         Catch ex As Exception
+            MAIN.QUITQBSESSION()
             Throw ex
             'Finally
             '    If Not sessManager Is Nothing Then
@@ -185,7 +186,6 @@ Public Class CurrentSystemSync
             Next
         Catch ex As Exception
             MsgBox(ex.Message)
-
         End Try
 
     End Sub
@@ -255,6 +255,7 @@ Public Class CurrentSystemSync
             End If
 
         Catch ex As Exception
+            MAIN.QUITQBSESSION()
             Throw ex
             'Finally
             '    If Not sessManager Is Nothing Then
@@ -393,6 +394,7 @@ Public Class CurrentSystemSync
             End If
 
         Catch ex As Exception
+            MAIN.QUITQBSESSION()
             Throw ex
             'Finally
             '    If Not sessManager Is Nothing Then
@@ -619,6 +621,7 @@ Public Class CurrentSystemSync
             End If
 
         Catch ex As Exception
+            MAIN.QUITQBSESSION()
             Throw ex
             'Finally
             '    If Not sessManager Is Nothing Then
@@ -709,6 +712,7 @@ Public Class CurrentSystemSync
             End If
 
         Catch ex As Exception
+            MAIN.QUITQBSESSION()
             Throw ex
             'Finally
             '    If Not sessManager Is Nothing Then

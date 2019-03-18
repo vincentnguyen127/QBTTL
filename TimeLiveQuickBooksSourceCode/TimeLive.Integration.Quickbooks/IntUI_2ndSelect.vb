@@ -113,7 +113,7 @@ Public Class IntUI_2ndSelect
 
     End Sub
 
-    Public Function LoadSelectedTmeEntryItems(AccountEmployeeId As String, EmployeeName As String)
+    Public Sub LoadSelectedTmeEntryItems(AccountEmployeeId As String, EmployeeName As String)
         Dim temp As New TLtoQB_TimeEntry.TimeEntryDataStructureQB
 
 
@@ -174,7 +174,7 @@ Public Class IntUI_2ndSelect
 
         'MsgBox(" at the end " + TimeEntryData.NoItems.ToString)
 
-    End Function
+    End Sub
 
 
 

@@ -101,16 +101,21 @@ Public Class MAIN
         End Try
     End Sub
 
+    Public Sub QUITQBSESSION()
+        ' close the session manager if it is open
+        If Not MAIN.SESSMANAGER Is Nothing Then
+            MAIN.SESSMANAGER.EndSession()
+            MAIN.SESSMANAGER.CloseConnection()
+        End If
+    End Sub
 
     Private Sub settingbtn_Click(sender As Object, e As EventArgs) Handles settingbtn.Click
         Using newsettingsForm = New AppSettings()
             If DialogResult.OK = newsettingsForm.ShowDialog() Then
                 Dim NextRunDateTime As Date = Convert.ToDateTime(My.Settings.AutoRunTime)
                 NextProcessingTime.Text = "Auto Processing Time: " + NextRunDateTime.ToString("MM/dd/yy HH:mm")
-
             End If
         End Using
-
     End Sub
 
     Private Sub loginbtn_Click(sender As Object, e As EventArgs) Handles loginbtn.Click
@@ -123,7 +128,6 @@ Public Class MAIN
             End Using
         Else
             MsgBox("You are already logged in")
-
         End If
     End Sub
 
@@ -132,8 +136,7 @@ Public Class MAIN
     End Sub
 
     Private Sub Exitbtn_Click(sender As Object, e As EventArgs) Handles Exitbtn.Click
-        SESSMANAGER.EndSession() 'Maybe?
-        SESSMANAGER.CloseConnection() 'Maybe?
+        QUITQBSESSION() ' Close QB session before exiting
         Me.Close()
     End Sub
 
@@ -179,7 +182,6 @@ Public Class MAIN
         'Write the contents of your mail
         Dim body As String = BodyText
         Try
-
             Dim smtp As New SmtpClient()
             With smtp
                 'used to be Key.Host
@@ -200,7 +202,6 @@ Public Class MAIN
             smtp.Send(message)
             MsgBox("Sent!")
         Catch ex As Exception
-
             MsgBox(ex.Message)
         End Try
     End Sub
@@ -268,30 +269,21 @@ Public Class MAIN
                     element.RecSelect = True
                 End If
                 FlagChangedItemsResults(element.QB_Name.ToString(), result)
-
             Next
 
             ItemsProcessed = customer_qbtotl.QBTransferCustomerToTL(customerData, p_token, Nothing, False)
             My.Settings.CustomerLastSync = DateTime.Now.ToString()
             My.Settings.Save()
-
         End If
 
         Return ItemsProcessed
     End Function
 
-    Private Sub travelexpenses_btn_Click(sender As Object, e As EventArgs)
-
-    End Sub
-
     Private Sub btn_systemsync_Click(sender As Object, e As EventArgs) Handles btn_systemsync.Click
-
         If MsgBox("Are you to perform a sync?", MsgBoxStyle.YesNo, "Warning!") = MsgBoxResult.Yes Then ' If you select yes in the MsgBox then it will close the window
             Dim CurrentSystemSync As New CurrentSystemSync
             CurrentSystemSync.PassToken(p_token, p_AccountId)
-
         End If
-
     End Sub
 
     Private Sub contractor_btn_Click(sender As Object, e As EventArgs) Handles vendor_btn.Click
@@ -300,12 +292,7 @@ Public Class MAIN
         IntegratedUI.Show(p_token, p_AccountId, 12)
     End Sub
 
-    Private Sub ToolStrip1_ItemClicked(sender As Object, e As ToolStripItemClickedEventArgs) Handles ToolStrip1.ItemClicked
-
-    End Sub
-
     Private Sub jobs_items_btn_Click(sender As Object, e As EventArgs) Handles jobs_items_btn.Click
-
         Dim IntegratedUI As New IntegratedUI
         IntegratedUI.Owner = Me
         If Not (My.Settings.JobOrItemHierarchy Is Nothing Or My.Settings.JobOrItemHierarchy Is "") Then
@@ -315,7 +302,7 @@ Public Class MAIN
                 IntegratedUI.Show(p_token, p_AccountId, 14)
             End If
         Else
-                MsgBox("Seems that settings are not set. Please set application settings.")
+            MsgBox("Seems that settings are not set. Please set application settings.")
         End If
     End Sub
 
@@ -333,6 +320,3 @@ Public Class MAIN
         CurrentSystemSync.GetTime()
     End Sub
 End Class
-
-
-

@@ -150,6 +150,7 @@ Public Class QBtoTL_Customer
             End If
         Catch ex As Exception
             My.Forms.MAIN.History(ex.ToString, "C")
+            MAIN.QUITQBSESSION()
             Throw ex
             'Finally
             '   If Not (sessManager Is Nothing) Then
