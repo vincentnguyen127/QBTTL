@@ -5,19 +5,17 @@ Public Class CurrentSystemSync
 
 
     Public Sub PassToken(ByVal token As String, ByVal AccountId As String)
-            If token Is Nothing Then
-                MsgBox("Please Login")
-            Else
-                p_AccountId = AccountId
-                p_token = token
+        If token Is Nothing Then
+            MsgBox("Please Login")
+        Else
+            p_AccountId = AccountId
+            p_token = token
             SyncCustomerData()
             SyncEmployeeData()
-            'SyncVendorData()  ' Can not get employee type
+            SyncVendorData()
             SyncJobsSubJobData()
-
         End If
-
-        End Sub
+    End Sub
 
     '---------------------Sync Customer TL Data to QB---------------------------------------
     ''' <summary>

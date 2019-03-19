@@ -40,7 +40,6 @@ Public Class TLtoQB_TimeEntry
         Public ServiceItem As String
         Public ServiceName As String
 
-
         Sub New(ByVal CustomerName_in As String, ByVal EmployeeName_in As String, ByVal IsBillable_in As Boolean,
                 ByVal ProjectName_in As String,
                 ByVal TaskWithParent_in As String, ByVal TotalTime_in As Date, ByVal TimeEntryDate_in As Date,
@@ -70,10 +69,8 @@ Public Class TLtoQB_TimeEntry
         End Sub
     End Class
 
-
     Public Function GetTimeEntryTLData(AccountEmployeeId As Integer, dpStartDate As DateTime, dpEndDate As DateTime,
                                        IntUI_2ndSelectForm As IntUI_2ndSelect, ByVal token As String, UI As Boolean) As TimeEntryDataStructureQB
-
         Dim TimeEntryData As New TimeEntryDataStructureQB
         Dim timeentry_tltoqb As TLtoQB_TimeEntry = New TLtoQB_TimeEntry
         Dim temp As String = Nothing

@@ -89,6 +89,30 @@ Public Class ChargingRelationship
 
         Me.ChargingRelationshipsTableAdapter.Fill(Me.QB_TL_IDs.ChargingRelationships)
 
+
+        Dim numEmployees As Integer = 0
+        ' Get only active employees
+        While numEmployees < Me.QB_TL_IDs.ChargingRelationships.Count
+            Dim row As DataRow = Me.QB_TL_IDs.ChargingRelationships.Rows(numEmployees)
+            Dim remove As Boolean = True
+            Dim employeeId As String = row(1).Trim
+            ' Compares to active employee data to see if employee is active or not
+            For Each EmployeeRow As DataRow In EmployeesQBData.Select
+                Dim employeeId2 As String = EmployeeRow(1).Trim
+                If employeeId2 = employeeId Then
+                    remove = False
+                    Exit For
+                End If
+            Next
+
+            ' Remove employee if inactive employee, otherwise increment numEmployees
+            If remove Then
+                Me.QB_TL_IDs.ChargingRelationships.RemoveChargingRelationshipsRow(row)
+            Else
+                numEmployees += 1
+            End If
+        End While
+
         DataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells
         DataGridView1.AutoResizeColumns()
 

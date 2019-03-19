@@ -19,13 +19,11 @@
             autoruninterval_btn.Value = Convert.ToInt16(My.Settings.AutoRunInterval)
         End If
 
-
         If My.Settings.SyncCustomers = Nothing Then
             chk_customers.Checked = False
         Else
             chk_customers.Checked = Convert.ToBoolean(My.Settings.SyncCustomers)
         End If
-
 
         If My.Settings.SyncLaborItems = Nothing Then
             chk_laboritems.Checked = False
@@ -75,8 +73,6 @@
             chk_jobsitems.Checked = Convert.ToBoolean(My.Settings.SyncJobOrItem)
         End If
 
-
-
         '-----Time trasfer settings
 
         If My.Settings.JobHierarchy = "" Then
@@ -103,7 +99,6 @@
             If My.Settings.JobOrItemHierarchy = 1 Then
                 item_subItems_btn.Checked = True
             End If
-
         End If
 
         '--------   cbClass 
@@ -147,8 +142,6 @@
         My.Settings.SyncExpenseEntries = chk_expenseentries.Checked
         My.Settings.SyncLaborItems = chk_laboritems.Checked
 
-
-
         '------Save time transfer options
         If rbtJobitems.Checked = True Then
             which_rbj = 0
@@ -185,6 +178,7 @@
     Private Sub rbJob_CheckedChanged(sender As Object, e As EventArgs)
         which_rbj = 1
     End Sub
+
     Private Sub rbItem_CheckedChanged(sender As Object, e As EventArgs)
         which_rbj = 2
     End Sub
@@ -192,7 +186,6 @@
     Private Sub rbtJobitems_CheckedChanged(sender As Object, e As EventArgs)
         which_rbj = 0
     End Sub
-
 
     Private Sub chkPayrollTimesheet_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkPayrollTimesheet.CheckedChanged
         If chkPayrollTimesheet.Checked = True Then
@@ -203,7 +196,6 @@
             cbPayrollItem.Enabled = False
         End If
     End Sub
-
 
     Private Sub CKB_syncElgibleVendor_CheckedChanged(sender As Object, e As EventArgs) Handles chk_syncElgibleVendor.CheckedChanged
         If chk_syncElgibleVendor.Checked = True Then

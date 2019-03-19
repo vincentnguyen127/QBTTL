@@ -82,7 +82,7 @@ Public Class QBtoTL_JobOrItem
             msgSetRs = MAIN.SESSMANAGER.DoRequests(msgSetRq) 'sessManager
             Dim respList As IResponseList
             respList = msgSetRs.ResponseList
-            If (respList Is Nothing) Then
+            If respList Is Nothing Then
                 Return Nothing
             End If
             ' Should only expect 1 response
@@ -93,7 +93,7 @@ Public Class QBtoTL_JobOrItem
                 ptRetList = resp.Detail
 
                 'sets status bar, If no, UI skip
-                If UI = True Then
+                If UI Then
                     Dim pblenth As Integer = ptRetList.Count
                     If pblenth >= 0 Then
                         IntegratedUIForm.ProgressBar1.Maximum = pblenth - 1
@@ -106,95 +106,23 @@ Public Class QBtoTL_JobOrItem
 
                     ptRet = ptRetList.GetAt(i)
                     With ptRet
-
                         If Not .ParentRef Is Nothing Then
-
                             Dim PTArray() As String = Split(.FullName.GetValue, ":")
-                            If PTArray.Length = 2 Then
-                                If .Email Is Nothing Then
-                                    EmailAddress = ""
-                                Else
-                                    EmailAddress = .Email.GetValue
-                                End If
-                                If .Phone Is Nothing Then
-                                    Telephone1 = ""
-                                Else
-                                    Telephone1 = .Phone.GetValue
-                                End If
+                            If PTArray.Length >= 2 Then
 
-                                If .Fax Is Nothing Then
-                                    Fax = ""
-                                Else
-                                    Fax = .Fax.GetValue
-                                End If
+                                EmailAddress = If(.Email Is Nothing, "", .Email.GetValue)
+                                Telephone1 = If(.Phone Is Nothing, "", .Phone.GetValue)
+                                Fax = If(.Fax Is Nothing, "", .Fax.GetValue)
+                                CreateTime = If(.TimeCreated Is Nothing, "", .TimeCreated.GetValue.ToString)
+                                ModTime = If(.TimeModified Is Nothing, CreateTime, .TimeModified.GetValue.ToString)
 
-                                If .TimeModified Is Nothing Then
-                                    ModTime = .TimeCreated.GetValue.ToString
-                                Else
-                                    ModTime = .TimeModified.GetValue.ToString()
-                                End If
-
-                                If .TimeCreated Is Nothing Then
-                                    CreateTime = .TimeCreated.GetValue.ToString
-                                Else
-                                    CreateTime = .TimeModified.GetValue.ToString()
-                                End If
                                 Dim TL_ID_Count = ISQBID_In_DataTableForJobs(.FullName.GetValue, .ListID.GetValue)
 
-                                If TL_ID_Count <> 0 Then
-                                    NewlyAdd = ""
-                                Else
-                                    NewlyAdd = "N"
-                                End If
-
+                                NewlyAdd = If(TL_ID_Count, "", "N") ' N if new
 
                                 ' will check which type data should be added 
                                 Job_subJobData.NoItems = Job_subJobData.NoItems + 1
                                 Job_subJobData.DataArray.Add(New Job_Subjob(NewlyAdd, .Name.GetValue, EmailAddress, .ListID.GetValue, Telephone1, Fax, ModTime, CreateTime, PTArray(0).ToString, .FullName.GetValue, 0))
-
-                            End If
-                            If PTArray.Length > 2 Then
-
-
-                                If .Email Is Nothing Then
-                                    EmailAddress = ""
-                                Else
-                                    EmailAddress = .Email.GetValue
-                                End If
-                                If .Phone Is Nothing Then
-                                    Telephone1 = ""
-                                Else
-                                    Telephone1 = .Phone.GetValue
-                                End If
-
-                                If .Fax Is Nothing Then
-                                    Fax = ""
-                                Else
-                                    Fax = .Fax.GetValue
-                                End If
-
-                                If .TimeModified Is Nothing Then
-                                    ModTime = .TimeCreated.GetValue.ToString
-                                Else
-                                    ModTime = .TimeModified.GetValue.ToString()
-                                End If
-
-                                If .TimeCreated Is Nothing Then
-                                    CreateTime = .TimeCreated.GetValue.ToString
-                                Else
-                                    CreateTime = .TimeModified.GetValue.ToString()
-                                End If
-                                Dim TL_ID_Count = ISQBID_In_DataTableForJobs(.FullName.GetValue, .ListID.GetValue)
-
-                                If TL_ID_Count <> 0 Then
-                                    NewlyAdd = ""
-                                Else
-                                    NewlyAdd = "N"
-                                End If
-
-                                ' will check which type data should be added 
-                                Job_subJobData.NoItems = Job_subJobData.NoItems + 1
-                                Job_subJobData.DataArray.Add(New Job_Subjob(NewlyAdd, .Name.GetValue, EmailAddress, .ListID.GetValue, Telephone1, Fax, ModTime, CreateTime, PTArray(1).ToString, .FullName.GetValue, 0))
                             End If
                         End If
                     End With
@@ -266,7 +194,7 @@ Public Class QBtoTL_JobOrItem
                 Dim ptRet As IItemServiceRet
 
                 For i As Integer = 0 To ptRetList.Count - 1
-
+                    ' Code below should be altered similarly to above
                     ptRet = ptRetList.GetAt(i)
                     With ptRet
                         If .ParentRef Is Nothing Then
@@ -277,7 +205,7 @@ Public Class QBtoTL_JobOrItem
                             End If
 
                             If .TimeCreated Is Nothing Then
-                                CreateTime = .TimeCreated.GetValue.ToString
+                                CreateTime = ""
                             Else
                                 CreateTime = .TimeModified.GetValue.ToString()
                             End If
@@ -301,18 +229,15 @@ Public Class QBtoTL_JobOrItem
                             End If
 
                             If .TimeCreated Is Nothing Then
-                                CreateTime = .TimeCreated.GetValue.ToString
+                                CreateTime = ""
                             Else
                                 CreateTime = .TimeModified.GetValue.ToString()
                             End If
                             '---------------
                             Dim TL_ID_Count = ISQBID_In_DataTableForItems(.Name.GetValue, .ListID.GetValue)
 
-                            If TL_ID_Count <> 0 Then
-                                NewlyAdd = ""
-                            Else
-                                NewlyAdd = "N"
-                            End If
+                            NewlyAdd = If(TL_ID_Count <> 0, "", "N") 'N if new
+
                             ItemData.NoItems = ItemData.NoItems + 1
                             ItemData.DataArray.Add(New Job_Subjob(NewlyAdd, .Name.GetValue, "", .ListID.GetValue, "", "", ModTime, CreateTime, "", .FullName.GetValue, .Sublevel.GetValue))
 
@@ -421,16 +346,15 @@ Public Class QBtoTL_JobOrItem
 
                                 End If
 
-
                                 If PTArray.Length > 2 Then
-
-                                    Dim nProjectId As Integer = objProjectServices.GetProjectId(element.parent)
+                                    ' Get job of the subjob
+                                    Dim nProjectId As Integer = objProjectServices.GetProjectId(PTArray(PTArray.Length - 2)) ' was element.parent, which was customer
                                     Dim nParentTaskId As Integer
                                     If PTArray.Length > 3 Then
+                                        ' Not sure, but should this instead be PTArray.Length - 3? The hierarchy 1 higher than job?
                                         nParentTaskId = objTaskServices.GetParentTaskId(PTArray(PTArray.Length - 2))
                                         objTaskServices.UpdateIsParentInTask(nParentTaskId, True)
                                     Else
-
                                         nParentTaskId = 0
                                     End If
 
@@ -474,9 +398,9 @@ Public Class QBtoTL_JobOrItem
                         End If
                 End If
                 'if no, UI skip
-                If UI = True Then
+                If UI Then
                     IntegratedUIForm.ProgressBar1.Value = incrementbar
-                    incrementbar = incrementbar + 1
+                    incrementbar += 1
                 End If
             Next
         Catch ex As Exception

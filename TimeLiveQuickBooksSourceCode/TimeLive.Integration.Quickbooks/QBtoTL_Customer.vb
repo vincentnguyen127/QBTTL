@@ -106,7 +106,7 @@ Public Class QBtoTL_Customer
                         'Dim TL_ID_Count As Int16 = 0 ' Delete
                         Dim TL_ID_Count = ISQBID_In_DataTable(.Name.GetValue, .ListID.GetValue) 'Timeouts
 
-                        NewlyAdd = If(TL_ID_Count = 0, "N", "")
+                        NewlyAdd = If(TL_ID_Count <> 0, "", "N") ' N if new
                         CustomerData.DataArray.Add(New Customer(NewlyAdd, .Name.GetValue, EmailAddress, .ListID.GetValue, Telephone1, Fax, ModTime, CreateTime))
                     End If
                 End With
@@ -207,7 +207,7 @@ Public Class QBtoTL_Customer
             'if no UI, skip
             If UI = True Then
                 IntegratedUIForm.ProgressBar1.Value = incrementbar
-                incrementbar = incrementbar + 1
+                incrementbar += 1
             End If
         Next
 
@@ -283,7 +283,7 @@ Public Class QBtoTL_Customer
 
 End Class
 
-'Upddate databese record code
+'Update databese record code
 'My.Forms.MAIN.History("Inserting TL key into sync database and inserting to TimeLife:  " + element.Name)
 ''Insert record into Time Life
 'objClientServices.InsertClient(element.Name, SetLength(element.Name),

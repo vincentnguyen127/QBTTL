@@ -13,9 +13,7 @@ Public Class IntegratedUI
     Private emailBody As String
     Private SelectAll As Boolean
 
-
     Private cur_week
-
 
     Dim customer_qbtotl As QBtoTL_Customer = New QBtoTL_Customer
     Dim customerData As New QBtoTL_Customer.CustomerDataStructureQB
@@ -31,7 +29,6 @@ Public Class IntegratedUI
 
     Dim timetry_tltoqb As TLtoQB_TimeEntry = New TLtoQB_TimeEntry
     Dim selectedEmployeeData As New TLtoQB_TimeEntry.EmployeeDataStructure
-
 
     Public Sub IntegratedUI_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         Dim ItemLastSync As DateTime

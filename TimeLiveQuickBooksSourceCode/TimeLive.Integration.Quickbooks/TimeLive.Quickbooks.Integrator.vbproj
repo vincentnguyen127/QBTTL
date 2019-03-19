@@ -170,6 +170,9 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <Compile Include="TimeLiveDataSet.vb">
+      <DependentUpon>TimeLiveDataSet.xsd</DependentUpon>
+    </Compile>
     <Compile Include="TLtoQB_TimeEntry.vb" />
     <Compile Include="Web References\Services.TimeLive.Clients\Reference.vb">
       <AutoGen>True</AutoGen>
