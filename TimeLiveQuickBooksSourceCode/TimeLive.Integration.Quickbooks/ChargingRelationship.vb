@@ -7,7 +7,6 @@ Public Class ChargingRelationship
         Private _QBName As String = String.Empty
         Private _QBID As String = String.Empty
 
-
         Public Sub New(ByVal QBName As String, ByVal QBID As String)
             Me._QBName = QBName
             Me._QBID = QBID
@@ -87,20 +86,19 @@ Public Class ChargingRelationship
 
         End With
 
+        ' Fill with all charging relationships
         Me.ChargingRelationshipsTableAdapter.Fill(Me.QB_TL_IDs.ChargingRelationships)
-
-
         Dim numEmployees As Integer = 0
-        ' Get only active employees
+        ' Remove relationships for all non-active employees
         While numEmployees < Me.QB_TL_IDs.ChargingRelationships.Count
             Dim row As DataRow = Me.QB_TL_IDs.ChargingRelationships.Rows(numEmployees)
             Dim remove As Boolean = True
             Dim employeeId As String = row(1).Trim
-            ' Compares to active employee data to see if employee is active or not
+            ' Compares the employee in relationship table to active employees
             For Each EmployeeRow As DataRow In EmployeesQBData.Select
                 Dim employeeId2 As String = EmployeeRow(1).Trim
                 If employeeId2 = employeeId Then
-                    remove = False
+                    remove = False ' employee is active
                     Exit For
                 End If
             Next
@@ -115,7 +113,6 @@ Public Class ChargingRelationship
 
         DataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells
         DataGridView1.AutoResizeColumns()
-
         Me.Show()
     End Sub
 
@@ -392,6 +389,14 @@ Public Class ChargingRelationship
         End Try
         Return PayrollItemsQBData
     End Function
+
+    ' Sort by selected column
+    Private Sub DataGridView1_CellContentClick(sender As Object, e As DataGridViewCellEventArgs) Handles DataGridView1.CellContentClick
+        ' If header clicked
+        If e.RowIndex = -1 Then
+            DataGridView1.Sort(DataGridView1.Columns(e.ColumnIndex), System.ComponentModel.ListSortDirection.Ascending)
+        End If
+    End Sub
 
 End Class
 

@@ -71,11 +71,10 @@ Public Class QBtoTL_Employee
             'sessManager.BeginSession("", ENOpenMode.omDontCare)
             msgSetRs = MAIN.SESSMANAGER.DoRequests(msgSetRq) 'sessManager
 
-
             Dim respList As IResponseList
             respList = msgSetRs.ResponseList
 
-            If (respList Is Nothing) Then
+            If respList Is Nothing Then
                 ' no data
                 My.Forms.MAIN.History("No Employees found...", "i")
                 Return Nothing
@@ -83,7 +82,7 @@ Public Class QBtoTL_Employee
             ' Should only expect 1 response
             Dim resp As IResponse
             resp = respList.GetAt(0)
-            If (resp.StatusCode = 0) Then
+            If resp.StatusCode = 0 Then
 
                 '----------------------2------------------------------------------------
                 Dim empRetList As IEmployeeRetList
@@ -92,7 +91,7 @@ Public Class QBtoTL_Employee
                 '------------------------------3-----------------------------------
                 Dim empRet As IEmployeeRet
                 'sets status bar, If no, UI skip
-                If UI = True Then
+                If UI Then
                     Dim pblenth As Integer = empRetList.Count
                     If pblenth >= 0 Then
                         IntegratedUIForm.ProgressBar1.Maximum = pblenth - 1
@@ -103,56 +102,23 @@ Public Class QBtoTL_Employee
                     empRet = empRetList.GetAt(i)
 
                     With empRet
-
-                        If .Email Is Nothing Then
-                            EmailAddress = ""
-                        Else
-                            EmailAddress = .Email.GetValue
-                        End If
-
-                        If .FirstName Is Nothing Then
-                            FirstName = ""
-                        Else
-                            FirstName = .FirstName.GetValue
-                        End If
-                        If .LastName Is Nothing Then
-                            LastName = ""
-                        Else
-                            LastName = .LastName.GetValue
-                        End If
-                        If .HiredDate Is Nothing Then
-                            HiredDate = ""
-                        Else
-                            HiredDate = .HiredDate.GetValue
-                        End If
-
-                        If .TimeModified Is Nothing Then
-                            ModTime = .TimeCreated.GetValue.ToString
-                        Else
-                            ModTime = .TimeModified.GetValue.ToString()
-                        End If
-
-                        If .TimeCreated Is Nothing Then
-                            CreateTime = .TimeCreated.GetValue.ToString
-                        Else
-                            CreateTime = .TimeModified.GetValue.ToString()
-                        End If
+                        EmailAddress = If(.Email Is Nothing, "", .Email.GetValue)
+                        FirstName = If(.FirstName Is Nothing, "", .FirstName.GetValue)
+                        LastName = If(.LastName Is Nothing, "", .LastName.GetValue)
+                        HiredDate = If(.HiredDate Is Nothing, "", .HiredDate.GetValue)
+                        CreateTime = If(.TimeCreated Is Nothing, "", .TimeCreated.GetValue.ToString)
+                        ModTime = If(.TimeModified Is Nothing, CreateTime, .TimeModified.GetValue.ToString)
 
                         Dim TL_ID_Count = ISQBID_In_DataTable(.Name.GetValue, .ListID.GetValue)
 
-                        If TL_ID_Count <> 0 Then
-                            NewlyAdd = ""
-                        Else
-                            NewlyAdd = "N"
-                        End If
-
+                        NewlyAdd = If(TL_ID_Count, "", "N") ' N if new
 
                         ' will check which type data should be added 
-                        EmployeeData.NoItems = EmployeeData.NoItems + 1
+                        EmployeeData.NoItems += 1
                         EmployeeData.DataArray.Add(New Employee(NewlyAdd, .Name.GetValue, EmailAddress, .ListID.GetValue, FirstName, LastName, ModTime, CreateTime, HiredDate))
 
                     End With
-                    If UI = True Then
+                    If UI Then
                         IntegratedUIForm.ProgressBar1.Value = i
                     End If
                 Next

@@ -43,7 +43,6 @@ Public Class IntegratedUI
         DataGridView1.AutoSizeRowsMode = False
         btn_currentweek_Click(sender, e)
 
-
         '-------------------------10---------------------------------------------
         'for type customers
         If Type = 10 Then
@@ -61,7 +60,6 @@ Public Class IntegratedUI
             col4.Name = "New"
             DataGridView1.Columns.Add(col4)
 
-
             If String.IsNullOrEmpty(My.Settings.CustomerLastSync.ToString()) Then
                 ItemLastSync = #1/1/2000#
             Else
@@ -69,7 +67,6 @@ Public Class IntegratedUI
             End If
 
             My.Forms.MAIN.History("Synchonizing modified customers since:   " + ItemLastSync.ToString(), "n")
-
 
             customerData = customer_qbtotl.GetCustomerQBData(Me, True)
             ReadItems = customerData.NoItems
@@ -90,7 +87,6 @@ Public Class IntegratedUI
             For Each element As QBtoTL_Customer.Customer In customerData.DataArray
                 'Dim count As Int16 = ISQBID_In_DataTable(element.QB_ID)
                 DataGridView1.Rows.Add(element.RecSelect, element.QB_Name.ToString(), element.QBModTime.ToString(), element.NewlyAdded)
-     
             Next
         End If
 
@@ -98,9 +94,7 @@ Public Class IntegratedUI
         '-------------------------11---------------------------------------------
         'for type Employees
         If Type = 11 Then
-
             TabPageEmployees.Visible = True
-
             TabControl1.SelectedIndex = 1
 
             'load grid (there might be an easire way)
@@ -110,12 +104,9 @@ Public Class IntegratedUI
             Dim col3 As New DataGridViewTextBoxColumn
             col3.Name = "Last Modified"
             DataGridView1.Columns.Add(col3)
-
             Dim col4 As New DataGridViewTextBoxColumn
             col4.Name = "New"
             DataGridView1.Columns.Add(col4)
-
-
 
             If String.IsNullOrEmpty(My.Settings.EmployeeLastSync.ToString()) Then
                 ItemLastSync = #1/1/2000#
@@ -124,10 +115,8 @@ Public Class IntegratedUI
             End If
             My.Forms.MAIN.History("Synchonizing modified employees since:   " + ItemLastSync.ToString(), "n")
 
-
             employeeData = employee_qbtotl.GetEmployeeQBData(Me, True)
             ReadItems = employeeData.NoItems
-
 
             If employeeData Is Nothing Then
                 My.Forms.MAIN.History("No employee data", "n")
@@ -143,16 +132,13 @@ Public Class IntegratedUI
                 'MAIN.FlagChangedItemsResults(element.QB_Name.ToString(), result)
             Next
             For Each element As QBtoTL_Employee.Employee In employeeData.DataArray
-
                 DataGridView1.Rows.Add(element.RecSelect, element.QB_Name.ToString(), element.QBModTime.ToString(), element.NewlyAdded)
-
             Next
         End If
 
         '-------------------------12---------------------------------------------
         'for type Vendors
         If Type = 12 Then
-
             TabControl1.SelectedIndex = 2
 
             'load grid (there might be an easire way)
@@ -173,7 +159,6 @@ Public Class IntegratedUI
             End If
             My.Forms.MAIN.History("Synchonizing modified vendors since:   " + ItemLastSync.ToString(), "n")
 
-
             vendorData = vendor_qbtotl.GetVendorQBData(Me, True)
             ReadItems = vendorData.NoItems
 
@@ -182,10 +167,9 @@ Public Class IntegratedUI
                 Exit Sub
             End If
 
-
             For Each element As QBtoTL_Vendor.Vendor In vendorData.DataArray
                 Dim result As Integer = DateTime.Compare(Convert.ToDateTime(element.QBModTime.ToString()),
-            ItemLastSync)
+                                                         ItemLastSync)
                 If result >= 0 Then
                     element.RecSelect = True
                 End If
@@ -216,7 +200,6 @@ Public Class IntegratedUI
             col5.Name = "New"
             DataGridView1.Columns.Add(col5)
 
-
             ' check here 
             If String.IsNullOrEmpty(My.Settings.JobLastSync.ToString()) Then
                 ItemLastSync = #1/1/2000#
@@ -228,7 +211,6 @@ Public Class IntegratedUI
             JobData = job_qbtotl.GetJobSubJobData(Me, p_token, True)
             ReadItems = jobData.NoItems
 
-
             If jobData Is Nothing Then
                 My.Forms.MAIN.History("No Jobs_SubJobs data", "n")
                 Exit Sub
@@ -236,16 +218,15 @@ Public Class IntegratedUI
 
             For Each element As QBtoTL_JobOrItem.Job_Subjob In JobData.DataArray
                 Dim result As Integer = DateTime.Compare(Convert.ToDateTime(element.QBModTime.ToString()),
-            ItemLastSync)
+                                                         ItemLastSync)
                 If result >= 0 Then
                     element.RecSelect = True
                 End If
-
             Next
+
             'Load DataGrid
             For Each element As QBtoTL_JobOrItem.Job_Subjob In JobData.DataArray
                 DataGridView1.Rows.Add(element.RecSelect, element.FullName.ToString(), element.QB_Name.ToString(), element.QBModTime.ToString(), element.NewlyAdded)
-
             Next
             SelectAll = False
         End If
@@ -254,9 +235,7 @@ Public Class IntegratedUI
         '  For Type items_SubItems
         If Type = 14 Then
             TabPageEmployees.Visible = True
-
             TabControl1.SelectedIndex = 3
-
 
             'load grid (there might be an easier way)
             Dim col2 As New DataGridViewTextBoxColumn
@@ -272,7 +251,6 @@ Public Class IntegratedUI
             col5.Name = "New"
             DataGridView1.Columns.Add(col5)
 
-
             If String.IsNullOrEmpty(My.Settings.ItemLastSync.ToString()) Then
                 ItemLastSync = #1/1/2000#
             Else
@@ -281,10 +259,8 @@ Public Class IntegratedUI
 
             My.Forms.MAIN.History("Synchonizing modified items since:   " + ItemLastSync.ToString(), "n")
 
-
             JobData = job_qbtotl.GetItemSubItemData(Me, p_token, True)
             ReadItems = JobData.NoItems
-
 
             If JobData Is Nothing Then
                 My.Forms.MAIN.History("No Item_SubItem Data", "n")
@@ -306,11 +282,9 @@ Public Class IntegratedUI
             SelectAll = False
         End If
 
-
         '-------------------------20---------------------------------------------
         'for type Time Items
         If Type = 20 Then
-
             TabPageTimeTransfer.Visible = True
             TabControl1.SelectedIndex = 4
 
@@ -322,7 +296,6 @@ Public Class IntegratedUI
             col3.Name = "Employee ID"
             DataGridView1.Columns.Add(col3)
 
-
             If String.IsNullOrEmpty(My.Settings.TimeTrackingLastSync.ToString()) Then
                 ItemLastSync = #1/1/2000#
             Else
@@ -330,8 +303,6 @@ Public Class IntegratedUI
             End If
 
             My.Forms.MAIN.History("Synchonizing time entries items since:   " + ItemLastSync.ToString(), "n")
-
-
 
             Dim objEmployeeServices As New Services.TimeLive.Employees.Employees
             Dim authentication As New Services.TimeLive.Employees.SecuredWebServiceHeader
@@ -373,7 +344,6 @@ Public Class IntegratedUI
             p_AccountId = AccountId
             p_token = token
             MyBase.Show()
-
 
             DataGridView1.Sort(DataGridView1.Columns(1), System.ComponentModel.ListSortDirection.Ascending)
             'Change the number to the column index that you want to sort
@@ -530,9 +500,7 @@ Public Class IntegratedUI
         Next
     End Sub
 
-
     Private Sub Set_Selected_SelectedEmployee()
-
         For Each row As DataGridViewRow In DataGridView1.Rows
             If row.Cells("Name").Value IsNot Nothing Then
                 If row.Cells("ckBox").Value = True Then
@@ -554,7 +522,6 @@ Public Class IntegratedUI
         Next
     End Sub
 
-
     Private Sub Set_Selected_Job_Item()
         For Each row As DataGridViewRow In DataGridView1.Rows
             If row.Cells("Name").Value IsNot Nothing Then
@@ -566,24 +533,13 @@ Public Class IntegratedUI
         Next
     End Sub
 
-
     Private Sub btnselectall_Click(sender As Object, e As EventArgs) Handles btnselectall.Click
-        If SelectAll = False Then
-            For Each row As DataGridViewRow In DataGridView1.Rows
-                If row.Cells("Name").Value IsNot Nothing Then
-                    row.Cells("ckBox").Value = True
-                End If
-            Next
-            SelectAll = True
-        Else
         For Each row As DataGridViewRow In DataGridView1.Rows
-                If row.Cells("Name").Value IsNot Nothing Then
-                    row.Cells("ckBox").Value = False
-                End If
-            Next
-            SelectAll = False
-        End If
-
+            If row.Cells("Name").Value IsNot Nothing Then
+                row.Cells("ckBox").Value = Not SelectAll
+            End If
+        Next
+        SelectAll = Not SelectAll
     End Sub
 
     '--- Timer Options Functions
@@ -622,9 +578,6 @@ Public Class IntegratedUI
             dpStartDate.Value = sat.AddDays(-7)
             dpEndDate.Value = sat.AddDays(-1)
         End If
-
-
-
     End Sub
 
     Public Function GetFirstDayOfWeek(year As Integer, weekNumber As Integer) As DateTime
@@ -677,7 +630,7 @@ Public Class IntegratedUI
         'End If
 
         'dpEndDate.Value = sat.AddDays(5).
-        cur_week = cur_week - 1
+        cur_week -= 1
 
         Dim sat = FirstDateOfWeek(Now.Year.ToString, cur_week, DayOfWeek.Saturday)
 
@@ -711,15 +664,13 @@ Public Class IntegratedUI
 
         If TimeLiveIDs.Count = 1 Then
             result = 1
-            'My.Forms.MAIN.History("One record found in QB sync table", "i")
+            My.Forms.MAIN.History("One record found in QB sync table", "i")
         End If
-
 
         If TimeLiveIDs.Count = 0 Then
             result = 0
             My.Forms.MAIN.History("No records found on QB sync table", "i")
         End If
-
 
         If TimeLiveIDs.Count > 1 Then
             result = 2

@@ -41,9 +41,6 @@ Public Class IntUI_2ndSelect
             DataGridView1.Sort(DataGridView1.Columns(1), System.ComponentModel.ListSortDirection.Ascending)
         End If
 
-        'For Testing purposes only
-        My.Forms.MAIN.History("Num. Columns" + DataGridView1.ColumnCount.ToString(), "n")
-        My.Forms.MAIN.History("Num Rows: " + DataGridView1.RowCount.ToString(), "n")
 
         DataGridView1.AutoSize = False
         DataGridView1.AutoSizeRowsMode = False

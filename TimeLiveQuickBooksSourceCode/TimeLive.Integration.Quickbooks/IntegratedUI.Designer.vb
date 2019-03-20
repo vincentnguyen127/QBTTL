@@ -58,7 +58,7 @@ Partial Class IntegratedUI
         Me.btnselectall.Name = "btnselectall"
         Me.btnselectall.Size = New System.Drawing.Size(75, 23)
         Me.btnselectall.TabIndex = 33
-        Me.btnselectall.Text = "Sellect All"
+        Me.btnselectall.Text = "Select All"
         Me.btnselectall.UseVisualStyleBackColor = True
         '
         'bntclose
