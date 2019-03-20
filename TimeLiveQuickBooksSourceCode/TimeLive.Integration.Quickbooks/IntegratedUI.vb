@@ -385,7 +385,6 @@ Public Class IntegratedUI
 
         'When processing vendor
         If Type = 12 Then
-
             Reset_Checked_Vendor_Value(vendorData)
             Set_Selected_Vendor()
             ItemsProcessed = vendor_qbtotl.QBTransferVendorToTL(vendorData, p_token, Me, True)
@@ -393,7 +392,6 @@ Public Class IntegratedUI
             My.Settings.VendorLastSync = DateTime.Now.ToString()
             My.Settings.Save()
         End If
-
 
         'When processing Jobs
         If Type = 13 Then
@@ -404,9 +402,9 @@ Public Class IntegratedUI
             My.Settings.JobLastSync = DateTime.Now.ToString()
             My.Settings.Save()
         End If
+
         'When processing items
         If Type = 14 Then
-
             Reset_Checked_Job_Value(JobData)
             Set_Selected_Job_Item()
             ItemsProcessed = job_qbtotl.QBTransferITemsToTL(JobData, p_token, Me, True)
@@ -415,14 +413,10 @@ Public Class IntegratedUI
             My.Settings.Save()
         End If
 
-
-
         'When processing Time Transfer
         If Type = 20 Then
-
             Reset_Checked_SelectedEmployee_Value(selectedEmployeeData)
             Set_Selected_SelectedEmployee()
-
             Dim IntUI_2ndSelect As New IntUI_2ndSelect
             IntUI_2ndSelect.Owner = Me
             IntUI_2ndSelect.Show(p_token, p_AccountId, selectedEmployeeData,
@@ -431,7 +425,6 @@ Public Class IntegratedUI
 
             My.Settings.TimeTrackingLastSync = DateTime.Now.ToString()
             My.Settings.Save()
-
         End If
 
         'wait for one second so user can see progress bar
@@ -439,7 +432,6 @@ Public Class IntegratedUI
         System.Windows.Forms.Application.DoEvents()
 
         Me.ProgressBar1.Value = 0
-
     End Sub
 
     Private Sub Reset_Checked_Customer_Value(ByRef customerObj As QBtoTL_Customer.CustomerDataStructureQB)
@@ -448,6 +440,7 @@ Public Class IntegratedUI
             element.RecSelect = False
         Next
     End Sub
+
     Private Sub Reset_Checked_Vendor_Value(ByRef vendorObj As QBtoTL_Vendor.VendorDataStructureQB)
         ' reset the check value to zero
         For Each element As QBtoTL_Vendor.Vendor In vendorObj.DataArray
@@ -480,55 +473,45 @@ Public Class IntegratedUI
 
     Private Sub Set_Selected_Customer()
         For Each row As DataGridViewRow In DataGridView1.Rows
-            If row.Cells("Name").Value IsNot Nothing Then
-                If row.Cells("ckBox").Value = True Then
-                    customerData.DataArray(row.Index).RecSelect = True
-                    My.Forms.MAIN.History("Customers selected for processing: " + row.Cells("Name").Value, "n")
-                End If
+            If row.Cells("Name").Value IsNot Nothing And row.Cells("ckBox").Value = True Then
+                customerData.DataArray(row.Index).RecSelect = True
+                My.Forms.MAIN.History("Customers selected for processing: " + row.Cells("Name").Value, "n")
             End If
         Next
     End Sub
 
     Private Sub Set_Selected_Employee()
         For Each row As DataGridViewRow In DataGridView1.Rows
-            If row.Cells("Name").Value IsNot Nothing Then
-                If row.Cells("ckBox").Value = True Then
-                    employeeData.DataArray(row.Index).RecSelect = True
-                    My.Forms.MAIN.History("Employees selected for processing: " + row.Cells("Name").Value, "n")
-                End If
+            If row.Cells("Name").Value IsNot Nothing And row.Cells("ckBox").Value = True Then
+                employeeData.DataArray(row.Index).RecSelect = True
+                My.Forms.MAIN.History("Employees selected for processing: " + row.Cells("Name").Value, "n")
             End If
         Next
     End Sub
 
     Private Sub Set_Selected_SelectedEmployee()
         For Each row As DataGridViewRow In DataGridView1.Rows
-            If row.Cells("Name").Value IsNot Nothing Then
-                If row.Cells("ckBox").Value = True Then
-                    selectedEmployeeData.DataArray(row.Index).RecSelect = True
-                    My.Forms.MAIN.History("Selected employee for time transfer: " + row.Cells("Name").Value, "n")
-                End If
+            If row.Cells("Name").Value IsNot Nothing And row.Cells("ckBox").Value = True Then
+                selectedEmployeeData.DataArray(row.Index).RecSelect = True
+                My.Forms.MAIN.History("Selected employee for time transfer: " + row.Cells("Name").Value, "n")
             End If
         Next
     End Sub
 
     Private Sub Set_Selected_Vendor()
         For Each row As DataGridViewRow In DataGridView1.Rows
-            If row.Cells("Name").Value IsNot Nothing Then
-                If row.Cells("ckBox").Value = True Then
-                    vendorData.DataArray(row.Index).RecSelect = True
-                    My.Forms.MAIN.History("Vendors selected for processing: " + row.Cells("Name").Value, "n")
-                End If
+            If row.Cells("Name").Value IsNot Nothing And row.Cells("ckBox").Value Then
+                vendorData.DataArray(row.Index).RecSelect = True
+                My.Forms.MAIN.History("Vendors selected for processing: " + row.Cells("Name").Value, "n")
             End If
         Next
     End Sub
 
     Private Sub Set_Selected_Job_Item()
         For Each row As DataGridViewRow In DataGridView1.Rows
-            If row.Cells("Name").Value IsNot Nothing Then
-                If row.Cells("ckBox").Value = True Then
-                    JobData.DataArray(row.Index).RecSelect = True
-                    My.Forms.MAIN.History("Job or items selected for processing: " + row.Cells("Name").Value, "n")
-                End If
+            If row.Cells("Name").Value IsNot Nothing And row.Cells("ckBox").Value = True Then
+                JobData.DataArray(row.Index).RecSelect = True
+                My.Forms.MAIN.History("Job or items selected for processing: " + row.Cells("Name").Value, "n")
             End If
         Next
     End Sub

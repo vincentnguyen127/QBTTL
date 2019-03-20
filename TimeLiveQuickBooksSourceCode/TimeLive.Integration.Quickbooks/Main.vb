@@ -316,4 +316,8 @@ Public Class MAIN
         Dim CurrentSystemSync As New CurrentSystemSync
         CurrentSystemSync.GetTime()
     End Sub
+
+    Friend Sub History(v As Object)
+        Throw New NotImplementedException()
+    End Sub
 End Class

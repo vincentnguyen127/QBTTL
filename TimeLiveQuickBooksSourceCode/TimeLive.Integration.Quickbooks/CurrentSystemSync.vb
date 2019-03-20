@@ -669,7 +669,7 @@ Public Class CurrentSystemSync
     Public Sub GetTime()
         'Dim sessManager As QBSessionManager
 
-        My.Forms.MAIN.History("Serching in QB for all time: ", "i")
+        My.Forms.MAIN.History("Searching in QB for all time: ", "i")
 
         Try
             'sessManager = New QBSessionManagerClass()
@@ -682,7 +682,6 @@ Public Class CurrentSystemSync
 
             Dim FromDate As New DateTime(2018, 1, 1, 0, 0, 0)
             TimeQueryRq.ORTimeTrackingTxnQuery.TimeTrackingTxnFilter.ORDateRangeFilter.ModifiedDateRangeFilter.FromModifiedDate.SetValue(FromDate, True)
-
 
             'sessManager.OpenConnection("App", "TimeLive Quickbooks")
             'sessManager.BeginSession("", ENOpenMode.omDontCare)

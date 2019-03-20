@@ -83,7 +83,7 @@ Public Class QBtoTL_Customer
             '------------------------------3-----------------------------------
             Dim custRet As ICustomerRet
             'sets status bar; If no, UI skip
-            If UI = True Then
+            If UI Then
                 Dim pblength As Integer = custRetList.Count
                 If pblength >= 0 Then
                     IntegratedUIForm.ProgressBar1.Maximum = pblength - 1
@@ -101,7 +101,7 @@ Public Class QBtoTL_Customer
                         ModTime = If(.TimeModified Is Nothing, CreateTime, .TimeModified.GetValue.ToString)
 
                         ' will check which type data should be added 
-                        CustomerData.NoItems = CustomerData.NoItems + 1
+                        CustomerData.NoItems += 1
                         'Check if newlyadded
                         'Dim TL_ID_Count As Int16 = 0 ' Delete
                         Dim TL_ID_Count = ISQBID_In_DataTable(.Name.GetValue, .ListID.GetValue) 'Timeouts
@@ -110,7 +110,7 @@ Public Class QBtoTL_Customer
                         CustomerData.DataArray.Add(New Customer(NewlyAdd, .Name.GetValue, EmailAddress, .ListID.GetValue, Telephone1, Fax, ModTime, CreateTime))
                     End If
                 End With
-                If UI = True Then
+                If UI Then
                     IntegratedUIForm.ProgressBar1.Value = i
                 End If
             Next
@@ -144,7 +144,7 @@ Public Class QBtoTL_Customer
 
         'sets status bar. If no, UI skip
         Dim incrementbar As Integer = 0
-        If UI = True Then
+        If UI Then
             Dim pblength As Integer = objData.DataArray.Count - 1
             If pblength >= 0 Then
                 IntegratedUIForm.ProgressBar1.Maximum = pblength
@@ -157,7 +157,7 @@ Public Class QBtoTL_Customer
         For Each element As QBtoTL_Customer.Customer In objData.DataArray
 
             ' check if the check value is true
-            If element.RecSelect = True Then
+            If element.RecSelect Then
                 'Check number of QB records that match ID
                 My.Forms.MAIN.History("Processing:  " + element.QB_Name, "n")
                 Dim TL_ID_Return = ISQBID_In_DataTable(element.QB_Name, element.QB_ID)
@@ -205,7 +205,7 @@ Public Class QBtoTL_Customer
                 End If
             End If
             'if no UI, skip
-            If UI = True Then
+            If UI Then
                 IntegratedUIForm.ProgressBar1.Value = incrementbar
                 incrementbar += 1
             End If

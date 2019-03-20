@@ -29,21 +29,32 @@ Partial Class ChargingRelationship
         Me.JobsSubJobsBindingSource = New System.Windows.Forms.BindingSource(Me.components)
         Me.btn_Save = New System.Windows.Forms.Button()
         Me.DataGridView1 = New System.Windows.Forms.DataGridView()
+        Me.IDDataGridViewTextBoxColumn = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.EmployeeQBIDDataGridViewTextBoxColumn = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.JobSubJobQBIDDataGridViewTextBoxColumn = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.PayrollItemQBIDDataGridViewTextBoxColumn = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.ItemSubItemQBIDDataGridViewTextBoxColumn = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.CustomersBindingSource = New System.Windows.Forms.BindingSource(Me.components)
         Me.btn_Delete = New System.Windows.Forms.Button()
         Me.btn_close = New System.Windows.Forms.Button()
         Me.EmployeesBindingSource = New System.Windows.Forms.BindingSource(Me.components)
         Me.ItemsSubItemsBindingSource = New System.Windows.Forms.BindingSource(Me.components)
         Me.EmployeesTableAdapter = New TimeLive.Quickbooks.Integrator.QB_TL_IDsTableAdapters.EmployeesTableAdapter()
+        Me.Jobs_SubJobsTableAdapter = New TimeLive.Quickbooks.Integrator.QB_TL_IDsTableAdapters.Jobs_SubJobsTableAdapter()
         Me.Items_SubItemsTableAdapter = New TimeLive.Quickbooks.Integrator.QB_TL_IDsTableAdapters.Items_SubItemsTableAdapter()
         Me.ChargingRelationshipsTableAdapter = New TimeLive.Quickbooks.Integrator.QB_TL_IDsTableAdapters.ChargingRelationshipsTableAdapter()
         Me.CustomersTableAdapter = New TimeLive.Quickbooks.Integrator.QB_TL_IDsTableAdapters.CustomersTableAdapter()
         Me.EmployeesBindingSource1 = New System.Windows.Forms.BindingSource(Me.components)
-        Me.IDDataGridViewTextBoxColumn = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.EmployeeQBIDDataGridViewTextBoxColumn = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.JobSubJobQBIDDataGridViewTextBoxColumn = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.PayrollItemQBIDDataGridViewTextBoxColumn = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.ItemSubItemQBIDDataGridViewTextBoxColumn = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.EmployeeFilterBox = New System.Windows.Forms.ComboBox()
+        Me.ChargingRelationshipsBindingSource1 = New System.Windows.Forms.BindingSource(Me.components)
+        Me.JobFilterBox = New System.Windows.Forms.ComboBox()
+        Me.PayrollFilterBox = New System.Windows.Forms.ComboBox()
+        Me.ItemFilterBox = New System.Windows.Forms.ComboBox()
+        Me.ChargingRelationshipsBindingSource2 = New System.Windows.Forms.BindingSource(Me.components)
+        Me.EmployeeFilterLabel = New System.Windows.Forms.Label()
+        Me.JobFilterLabel = New System.Windows.Forms.Label()
+        Me.PayrollFilterLabel = New System.Windows.Forms.Label()
+        Me.ItemFilterLabel = New System.Windows.Forms.Label()
         CType(Me.ChargingRelationshipsBindingSource, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.QBTLIDsBindingSource, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.QB_TL_IDs, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -53,6 +64,8 @@ Partial Class ChargingRelationship
         CType(Me.EmployeesBindingSource, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.ItemsSubItemsBindingSource, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.EmployeesBindingSource1, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.ChargingRelationshipsBindingSource1, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.ChargingRelationshipsBindingSource2, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'ChargingRelationshipsBindingSource
@@ -73,9 +86,10 @@ Partial Class ChargingRelationship
         'btn_Save
         '
         Me.btn_Save.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.btn_Save.Location = New System.Drawing.Point(442, 270)
+        Me.btn_Save.Location = New System.Drawing.Point(712, 424)
+        Me.btn_Save.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
         Me.btn_Save.Name = "btn_Save"
-        Me.btn_Save.Size = New System.Drawing.Size(75, 23)
+        Me.btn_Save.Size = New System.Drawing.Size(112, 35)
         Me.btn_Save.TabIndex = 1
         Me.btn_Save.Text = "Save"
         Me.btn_Save.UseVisualStyleBackColor = True
@@ -91,67 +105,12 @@ Partial Class ChargingRelationship
         Me.DataGridView1.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.IDDataGridViewTextBoxColumn, Me.EmployeeQBIDDataGridViewTextBoxColumn, Me.JobSubJobQBIDDataGridViewTextBoxColumn, Me.PayrollItemQBIDDataGridViewTextBoxColumn, Me.ItemSubItemQBIDDataGridViewTextBoxColumn})
         Me.DataGridView1.Cursor = System.Windows.Forms.Cursors.Default
         Me.DataGridView1.DataSource = Me.ChargingRelationshipsBindingSource
-        Me.DataGridView1.Location = New System.Drawing.Point(0, 1)
+        Me.DataGridView1.Location = New System.Drawing.Point(0, 0)
+        Me.DataGridView1.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
         Me.DataGridView1.Name = "DataGridView1"
         Me.DataGridView1.RowHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.[Single]
-        Me.DataGridView1.Size = New System.Drawing.Size(637, 249)
+        Me.DataGridView1.Size = New System.Drawing.Size(956, 385)
         Me.DataGridView1.TabIndex = 0
-        '
-        'CustomersBindingSource
-        '
-        Me.CustomersBindingSource.DataMember = "Customers"
-        Me.CustomersBindingSource.DataSource = Me.QBTLIDsBindingSource
-        '
-        'btn_Delete
-        '
-        Me.btn_Delete.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.btn_Delete.Location = New System.Drawing.Point(345, 270)
-        Me.btn_Delete.Name = "btn_Delete"
-        Me.btn_Delete.Size = New System.Drawing.Size(75, 23)
-        Me.btn_Delete.TabIndex = 2
-        Me.btn_Delete.Text = "Delete"
-        Me.btn_Delete.UseVisualStyleBackColor = True
-        '
-        'btn_close
-        '
-        Me.btn_close.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.btn_close.Location = New System.Drawing.Point(534, 270)
-        Me.btn_close.Name = "btn_close"
-        Me.btn_close.Size = New System.Drawing.Size(75, 23)
-        Me.btn_close.TabIndex = 3
-        Me.btn_close.Text = "Close"
-        Me.btn_close.UseVisualStyleBackColor = True
-        '
-        'EmployeesBindingSource
-        '
-        Me.EmployeesBindingSource.DataMember = "Employees"
-        Me.EmployeesBindingSource.DataSource = Me.QB_TL_IDs
-        '
-        'ItemsSubItemsBindingSource
-        '
-        Me.ItemsSubItemsBindingSource.DataMember = "Items_SubItems"
-        Me.ItemsSubItemsBindingSource.DataSource = Me.QB_TL_IDs
-        '
-        'EmployeesTableAdapter
-        '
-        Me.EmployeesTableAdapter.ClearBeforeFill = True
-        '
-        'Items_SubItemsTableAdapter
-        '
-        Me.Items_SubItemsTableAdapter.ClearBeforeFill = True
-        '
-        'ChargingRelationshipsTableAdapter
-        '
-        Me.ChargingRelationshipsTableAdapter.ClearBeforeFill = True
-        '
-        'CustomersTableAdapter
-        '
-        Me.CustomersTableAdapter.ClearBeforeFill = True
-        '
-        'EmployeesBindingSource1
-        '
-        Me.EmployeesBindingSource1.DataMember = "Employees"
-        Me.EmployeesBindingSource1.DataSource = Me.QB_TL_IDs
         '
         'IDDataGridViewTextBoxColumn
         '
@@ -189,15 +148,177 @@ Partial Class ChargingRelationship
         Me.ItemSubItemQBIDDataGridViewTextBoxColumn.HeaderText = "ItemSubItemQB_ID"
         Me.ItemSubItemQBIDDataGridViewTextBoxColumn.Name = "ItemSubItemQBIDDataGridViewTextBoxColumn"
         '
+        'CustomersBindingSource
+        '
+        Me.CustomersBindingSource.DataMember = "Customers"
+        Me.CustomersBindingSource.DataSource = Me.QBTLIDsBindingSource
+        '
+        'btn_Delete
+        '
+        Me.btn_Delete.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.btn_Delete.Location = New System.Drawing.Point(592, 424)
+        Me.btn_Delete.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
+        Me.btn_Delete.Name = "btn_Delete"
+        Me.btn_Delete.Size = New System.Drawing.Size(112, 35)
+        Me.btn_Delete.TabIndex = 2
+        Me.btn_Delete.Text = "Delete"
+        Me.btn_Delete.UseVisualStyleBackColor = True
+        '
+        'btn_close
+        '
+        Me.btn_close.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.btn_close.Location = New System.Drawing.Point(832, 424)
+        Me.btn_close.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
+        Me.btn_close.Name = "btn_close"
+        Me.btn_close.Size = New System.Drawing.Size(112, 35)
+        Me.btn_close.TabIndex = 3
+        Me.btn_close.Text = "Close"
+        Me.btn_close.UseVisualStyleBackColor = True
+        '
+        'EmployeesBindingSource
+        '
+        Me.EmployeesBindingSource.DataMember = "Employees"
+        Me.EmployeesBindingSource.DataSource = Me.QB_TL_IDs
+        '
+        'ItemsSubItemsBindingSource
+        '
+        Me.ItemsSubItemsBindingSource.DataMember = "Items_SubItems"
+        Me.ItemsSubItemsBindingSource.DataSource = Me.QB_TL_IDs
+        '
+        'EmployeesTableAdapter
+        '
+        Me.EmployeesTableAdapter.ClearBeforeFill = True
+        '
+        'Jobs_SubJobsTableAdapter
+        '
+        Me.Jobs_SubJobsTableAdapter.ClearBeforeFill = True
+        '
+        'Items_SubItemsTableAdapter
+        '
+        Me.Items_SubItemsTableAdapter.ClearBeforeFill = True
+        '
+        'ChargingRelationshipsTableAdapter
+        '
+        Me.ChargingRelationshipsTableAdapter.ClearBeforeFill = True
+        '
+        'CustomersTableAdapter
+        '
+        Me.CustomersTableAdapter.ClearBeforeFill = True
+        '
+        'EmployeesBindingSource1
+        '
+        Me.EmployeesBindingSource1.DataMember = "Employees"
+        Me.EmployeesBindingSource1.DataSource = Me.QB_TL_IDs
+        '
+        'EmployeeFilterBox
+        '
+        Me.EmployeeFilterBox.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+        Me.EmployeeFilterBox.BackColor = System.Drawing.SystemColors.Control
+        Me.EmployeeFilterBox.FormattingEnabled = True
+        Me.EmployeeFilterBox.Items.AddRange(New Object() {""})
+        Me.EmployeeFilterBox.Location = New System.Drawing.Point(12, 424)
+        Me.EmployeeFilterBox.Name = "EmployeeFilterBox"
+        Me.EmployeeFilterBox.Size = New System.Drawing.Size(135, 28)
+        Me.EmployeeFilterBox.TabIndex = 4
+        '
+        'ChargingRelationshipsBindingSource1
+        '
+        Me.ChargingRelationshipsBindingSource1.DataMember = "ChargingRelationships"
+        Me.ChargingRelationshipsBindingSource1.DataSource = Me.QBTLIDsBindingSource
+        '
+        'JobFilterBox
+        '
+        Me.JobFilterBox.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+        Me.JobFilterBox.BackColor = System.Drawing.SystemColors.Control
+        Me.JobFilterBox.FormattingEnabled = True
+        Me.JobFilterBox.Items.AddRange(New Object() {""})
+        Me.JobFilterBox.Location = New System.Drawing.Point(153, 424)
+        Me.JobFilterBox.Name = "JobFilterBox"
+        Me.JobFilterBox.Size = New System.Drawing.Size(135, 28)
+        Me.JobFilterBox.TabIndex = 6
+        '
+        'PayrollFilterBox
+        '
+        Me.PayrollFilterBox.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+        Me.PayrollFilterBox.BackColor = System.Drawing.SystemColors.Control
+        Me.PayrollFilterBox.FormattingEnabled = True
+        Me.PayrollFilterBox.Items.AddRange(New Object() {""})
+        Me.PayrollFilterBox.Location = New System.Drawing.Point(294, 424)
+        Me.PayrollFilterBox.Name = "PayrollFilterBox"
+        Me.PayrollFilterBox.Size = New System.Drawing.Size(135, 28)
+        Me.PayrollFilterBox.TabIndex = 6
+        '
+        'ItemFilterBox
+        '
+        Me.ItemFilterBox.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+        Me.ItemFilterBox.BackColor = System.Drawing.SystemColors.Control
+        Me.ItemFilterBox.FormattingEnabled = True
+        Me.ItemFilterBox.Items.AddRange(New Object() {""})
+        Me.ItemFilterBox.Location = New System.Drawing.Point(435, 424)
+        Me.ItemFilterBox.Name = "ItemFilterBox"
+        Me.ItemFilterBox.Size = New System.Drawing.Size(135, 28)
+        Me.ItemFilterBox.TabIndex = 7
+        '
+        'ChargingRelationshipsBindingSource2
+        '
+        Me.ChargingRelationshipsBindingSource2.DataMember = "ChargingRelationships"
+        Me.ChargingRelationshipsBindingSource2.DataSource = Me.QBTLIDsBindingSource
+        '
+        'EmployeeFilterLabel
+        '
+        Me.EmployeeFilterLabel.AutoSize = True
+        Me.EmployeeFilterLabel.Location = New System.Drawing.Point(12, 401)
+        Me.EmployeeFilterLabel.Name = "EmployeeFilterLabel"
+        Me.EmployeeFilterLabel.Size = New System.Drawing.Size(79, 20)
+        Me.EmployeeFilterLabel.TabIndex = 8
+        Me.EmployeeFilterLabel.Text = "Employee"
+        '
+        'JobFilterLabel
+        '
+        Me.JobFilterLabel.AutoSize = True
+        Me.JobFilterLabel.Location = New System.Drawing.Point(149, 401)
+        Me.JobFilterLabel.Name = "JobFilterLabel"
+        Me.JobFilterLabel.Size = New System.Drawing.Size(89, 20)
+        Me.JobFilterLabel.TabIndex = 9
+        Me.JobFilterLabel.Text = "Job Subjob"
+        '
+        'PayrollFilterLabel
+        '
+        Me.PayrollFilterLabel.AutoSize = True
+        Me.PayrollFilterLabel.Location = New System.Drawing.Point(290, 401)
+        Me.PayrollFilterLabel.Name = "PayrollFilterLabel"
+        Me.PayrollFilterLabel.Size = New System.Drawing.Size(91, 20)
+        Me.PayrollFilterLabel.TabIndex = 10
+        Me.PayrollFilterLabel.Text = "Payroll Item"
+        '
+        'ItemFilterLabel
+        '
+        Me.ItemFilterLabel.AutoSize = True
+        Me.ItemFilterLabel.Location = New System.Drawing.Point(431, 401)
+        Me.ItemFilterLabel.Name = "ItemFilterLabel"
+        Me.ItemFilterLabel.Size = New System.Drawing.Size(106, 20)
+        Me.ItemFilterLabel.TabIndex = 11
+        Me.ItemFilterLabel.Text = "Item SubItem"
+        '
         'ChargingRelationship
         '
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
+        Me.AutoScaleDimensions = New System.Drawing.SizeF(9.0!, 20.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(638, 305)
+        Me.BackColor = System.Drawing.SystemColors.Control
+        Me.ClientSize = New System.Drawing.Size(957, 469)
+        Me.Controls.Add(Me.ItemFilterLabel)
+        Me.Controls.Add(Me.PayrollFilterLabel)
+        Me.Controls.Add(Me.JobFilterLabel)
+        Me.Controls.Add(Me.EmployeeFilterLabel)
+        Me.Controls.Add(Me.ItemFilterBox)
+        Me.Controls.Add(Me.PayrollFilterBox)
+        Me.Controls.Add(Me.JobFilterBox)
+        Me.Controls.Add(Me.EmployeeFilterBox)
         Me.Controls.Add(Me.btn_close)
         Me.Controls.Add(Me.btn_Delete)
         Me.Controls.Add(Me.btn_Save)
         Me.Controls.Add(Me.DataGridView1)
+        Me.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
         Me.Name = "ChargingRelationship"
         Me.Text = "ChargingRelationship"
         CType(Me.ChargingRelationshipsBindingSource, System.ComponentModel.ISupportInitialize).EndInit()
@@ -209,7 +330,10 @@ Partial Class ChargingRelationship
         CType(Me.EmployeesBindingSource, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.ItemsSubItemsBindingSource, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.EmployeesBindingSource1, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.ChargingRelationshipsBindingSource1, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.ChargingRelationshipsBindingSource2, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
+        Me.PerformLayout()
 
     End Sub
     Friend WithEvents QB_TL_IDs As QB_TL_IDs
@@ -217,6 +341,7 @@ Partial Class ChargingRelationship
     Friend WithEvents EmployeesTableAdapter As QB_TL_IDsTableAdapters.EmployeesTableAdapter
     Friend WithEvents QBTLIDsBindingSource As BindingSource
     Friend WithEvents JobsSubJobsBindingSource As BindingSource
+    Friend WithEvents Jobs_SubJobsTableAdapter As QB_TL_IDsTableAdapters.Jobs_SubJobsTableAdapter
     Friend WithEvents ItemsSubItemsBindingSource As BindingSource
     Friend WithEvents Items_SubItemsTableAdapter As QB_TL_IDsTableAdapters.Items_SubItemsTableAdapter
     Friend WithEvents btn_Save As Button
@@ -233,4 +358,14 @@ Partial Class ChargingRelationship
     Friend WithEvents JobSubJobQBIDDataGridViewTextBoxColumn As DataGridViewTextBoxColumn
     Friend WithEvents PayrollItemQBIDDataGridViewTextBoxColumn As DataGridViewTextBoxColumn
     Friend WithEvents ItemSubItemQBIDDataGridViewTextBoxColumn As DataGridViewTextBoxColumn
+    Friend WithEvents EmployeeFilterBox As ComboBox
+    Friend WithEvents ChargingRelationshipsBindingSource1 As BindingSource
+    Friend WithEvents JobFilterBox As ComboBox
+    Friend WithEvents PayrollFilterBox As ComboBox
+    Friend WithEvents ItemFilterBox As ComboBox
+    Friend WithEvents ChargingRelationshipsBindingSource2 As BindingSource
+    Friend WithEvents EmployeeFilterLabel As Label
+    Friend WithEvents JobFilterLabel As Label
+    Friend WithEvents PayrollFilterLabel As Label
+    Friend WithEvents ItemFilterLabel As Label
 End Class

@@ -21,12 +21,34 @@ Public Class ChargingRelationship
         Dim PayrollItemsQBData As New DataTable
 
         Me.EmployeesTableAdapter.Fill(Me.QB_TL_IDs.Employees)
+        Me.Jobs_SubJobsTableAdapter.Fill(Me.QB_TL_IDs.Jobs_SubJobs) 'Maybe do this?
 
         JobsSubJobsQBData = QBJobsSubJobs()
         EmployeesQBData = QBEmployees()
         PayrollItemsQBData = QBPayrollItems()
         ItemsSubItemsQBData = QBItemsSubItems()
 
+        ' Add all Employees to Employee Filter Box
+        For Each employee As DataRow In EmployeesQBData.Rows
+            EmployeeFilterBox.Items.Add(employee(0))
+        Next
+
+        ' Add all Jobs/Subjobs to Job Filter Box
+        For Each job As DataRow In JobsSubJobsQBData.Rows
+            JobFilterBox.Items.Add(job(0))
+        Next
+
+        ' Add all Payroll Items to Payroll Filter Box
+        For Each payrollItem As DataRow In PayrollItemsQBData.Rows
+            PayrollFilterBox.Items.Add(payrollItem(0))
+        Next
+
+        ' Add all Items/SubItems to Item Filter Box
+        For Each item As DataRow In ItemsSubItemsQBData.Rows
+            ItemFilterBox.Items.Add(item(0))
+        Next
+
+        ' Add everything into Data Grid
         With DataGridView1
             Dim ColumnEmployees As New DataGridViewComboBoxColumn
 
@@ -83,17 +105,23 @@ Public Class ChargingRelationship
 
             .Columns.Remove(DataGridView1.Columns(4))
             .Columns.Insert(4, ColumnI_SI)
-
         End With
 
         ' Fill with all charging relationships
         Me.ChargingRelationshipsTableAdapter.Fill(Me.QB_TL_IDs.ChargingRelationships)
-        Dim numEmployees As Integer = 0
+
         ' Remove relationships for all non-active employees
+        Dim numEmployees As Integer = 0
         While numEmployees < Me.QB_TL_IDs.ChargingRelationships.Count
             Dim row As DataRow = Me.QB_TL_IDs.ChargingRelationships.Rows(numEmployees)
             Dim remove As Boolean = True
+            ' Remove the row if name was not chosen
+            If IsDBNull(row(1)) Then
+                Me.QB_TL_IDs.ChargingRelationships.RemoveChargingRelationshipsRow(row)
+                Continue While
+            End If
             Dim employeeId As String = row(1).Trim
+
             ' Compares the employee in relationship table to active employees
             For Each EmployeeRow As DataRow In EmployeesQBData.Select
                 Dim employeeId2 As String = EmployeeRow(1).Trim
@@ -103,7 +131,7 @@ Public Class ChargingRelationship
                 End If
             Next
 
-            ' Remove employee if inactive employee, otherwise increment numEmployees
+            ' Remove employee if they are inactive, otherwise increment numEmployees
             If remove Then
                 Me.QB_TL_IDs.ChargingRelationships.RemoveChargingRelationshipsRow(row)
             Else
@@ -391,12 +419,124 @@ Public Class ChargingRelationship
     End Function
 
     ' Sort by selected column
+    '                      ID, Employee, Job, Payroll, Item
+    Dim ascend(5) As Integer '0 is ascending, 1 is descending
     Private Sub DataGridView1_CellContentClick(sender As Object, e As DataGridViewCellEventArgs) Handles DataGridView1.CellContentClick
-        ' If header clicked
+        ' If header clicked, sort by that column
         If e.RowIndex = -1 Then
-            DataGridView1.Sort(DataGridView1.Columns(e.ColumnIndex), System.ComponentModel.ListSortDirection.Ascending)
+            DataGridView1.Sort(DataGridView1.Columns(e.ColumnIndex), ascend(e.ColumnIndex))
         End If
+        ascend(e.ColumnIndex) = If(ascend(e.ColumnIndex), 0, 1)
     End Sub
+
+    ' Filters the shown relationships based on the selected attributes
+    Private Sub Filter_SelectedIndexChanged(sender As Object, e As EventArgs) Handles EmployeeFilterBox.SelectedIndexChanged,
+                                                                                      JobFilterBox.SelectedIndexChanged,
+                                                                                      PayrollFilterBox.SelectedIndexChanged,
+                                                                                      ItemFilterBox.SelectedIndexChanged
+        Dim EmployeeQuery As String = EmployeeFilter()
+        Dim JobQuery As String = JobFilter()
+        Dim PayrollQuery As String = PayrollFilter()
+        Dim ItemQuery As String = ItemFilter()
+
+        Dim search As String = EmployeeQuery +
+                               If(EmployeeQuery.Length And JobQuery.Length, " AND ", "") + JobQuery +
+                               If((EmployeeQuery.Length Or JobQuery.Length) And PayrollQuery.Length, " AND ", "") + PayrollQuery +
+                               If((EmployeeQuery.Length Or JobQuery.Length Or PayrollQuery.Length) And ItemQuery.Length, " AND ", "") + ItemQuery
+        Dim view As DataView = New DataView(Me.QB_TL_IDs.ChargingRelationships, search, "ID Desc", DataViewRowState.CurrentRows)
+        DataGridView1.DataSource = view
+    End Sub
+
+    Private Function EmployeeFilter()
+        Dim name As String = If(EmployeeFilterBox.SelectedItem Is Nothing, "", EmployeeFilterBox.SelectedItem) ' Empty string if no selectedItem
+        Dim search As String = ""
+        ' Only check if name is not the empty string
+        If name.Length Then
+            Dim Employee_ID As String = Me.EmployeesTableAdapter.Name_to_ID(name)
+
+            ' Check if DB stores name as "Last, First" instead of "First Last"
+            If Employee_ID Is Nothing Then
+                Dim space_index = name.IndexOf(" ")
+                Dim firstName = name.Substring(0, space_index)
+                Dim lastName = name.Substring(space_index + 1)
+                name = lastName.Trim + ", " + firstName
+                Employee_ID = Me.EmployeesTableAdapter.Name_to_ID(name)
+            End If
+
+            ' Only update table if Employee ID was found in DB
+            If Not Employee_ID Is Nothing Then
+                search = "EmployeeQB_ID = '" + Employee_ID.Trim + "'"
+            End If
+        End If
+        Return search
+        'JobFilterBox_SelectedIndexChanged(sender, e)
+    End Function
+
+    Private Function JobFilter()
+        Dim name As String = If(JobFilterBox.SelectedItem Is Nothing, "", JobFilterBox.SelectedItem)
+        Dim search As String = ""
+        ' Only check if name is not the empty string
+        If name.Length Then
+            Dim Job_ID As String = Me.Jobs_SubJobsTableAdapter.Name_to_ID(name)
+
+            ' Check if DB stores as "job_name"/"subjob_name", not "customer_name:job_name"/"customer_name:job_name:subjob_name"
+            If Job_ID Is Nothing Then
+                Dim last_colon = name.LastIndexOf(":")
+                name = name.Substring(last_colon + 1)
+                Job_ID = Me.Jobs_SubJobsTableAdapter.Name_to_ID(name)
+            End If
+
+            ' Only update table if Employee ID was found in DB
+            If Not Job_ID Is Nothing Then
+                search = "JobSubJobQB_ID = '" + Job_ID.Trim + "'"
+            End If
+        End If
+        Return search
+    End Function
+
+    Private Function PayrollFilter()
+        Dim name As String = If(PayrollFilterBox.SelectedItem Is Nothing, "", PayrollFilterBox.SelectedItem)
+        Dim search As String = ""
+        ' Only check if name is not the empty string
+        If name.Length Then
+            Dim Payroll_ID As String = Nothing
+            Dim PayrollDT As DataTable = QBPayrollItems()
+            For Each row As DataRow In PayrollDT.Rows
+                If name = row(0).trim Or name = row(1).Trim Then
+                    Payroll_ID = row(1).Trim
+                    Exit For
+                End If
+            Next
+
+            ' Only update table if Employee ID was found in DB
+            If Not Payroll_ID Is Nothing Then
+                search = "PayrollItemQB_ID = '" + Payroll_ID + "'"
+            End If
+        End If
+        Return search
+    End Function
+
+    Private Function ItemFilter()
+        Dim name As String = If(ItemFilterBox.SelectedItem Is Nothing, "", ItemFilterBox.SelectedItem)
+        Dim search As String = ""
+        ' Only check if name is not the empty string
+        If name.Length Then
+            Dim Item_ID As String = Me.Items_SubItemsTableAdapter.Name_to_ID(name)
+
+            ' Check if DB stores as "subitem_name", not "service_name:subitem_name"
+            If Item_ID Is Nothing Then
+                Dim last_colon = name.LastIndexOf(":")
+                name = name.Substring(last_colon + 1)
+                Item_ID = Me.Items_SubItemsTableAdapter.Name_to_ID(name)
+            End If
+
+            ' Only update table if Employee ID was found in DB
+            If Not Item_ID Is Nothing Then
+                search = "ItemSubItemQB_ID = '" + Item_ID.Trim + "'"
+            End If
+        End If
+        Return search
+    End Function
 
 End Class
 

@@ -19,6 +19,10 @@
         End Sub
 
     End Class
+
+    Friend Function EmployeesTableAdapter() As Object
+        Throw New NotImplementedException()
+    End Function
 End Class
 
 Namespace QB_TL_IDsTableAdapters

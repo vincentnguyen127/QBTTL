@@ -121,12 +121,12 @@ Public Class QBtoTL_JobOrItem
                                 NewlyAdd = If(TL_ID_Count, "", "N") ' N if new
 
                                 ' will check which type data should be added 
-                                Job_subJobData.NoItems = Job_subJobData.NoItems + 1
+                                Job_subJobData.NoItems += 1
                                 Job_subJobData.DataArray.Add(New Job_Subjob(NewlyAdd, .Name.GetValue, EmailAddress, .ListID.GetValue, Telephone1, Fax, ModTime, CreateTime, PTArray(0).ToString, .FullName.GetValue, 0))
                             End If
                         End If
                     End With
-                    If UI = True Then
+                    If UI Then
                         IntegratedUIForm.ProgressBar1.Value = i
                     End If
                 Next
@@ -176,7 +176,7 @@ Public Class QBtoTL_JobOrItem
             End If
 
             'sets status bar, If no, UI skip
-            If UI = True Then
+            If UI Then
                 Dim pblenth As Integer = respList.Count
                 If pblenth >= 0 Then
                     IntegratedUIForm.ProgressBar1.Maximum = pblenth - 1
@@ -186,7 +186,7 @@ Public Class QBtoTL_JobOrItem
             ' Should only expect 1 response
             Dim resp As IResponse
             resp = respList.GetAt(0)
-            If (resp.StatusCode = 0) Then
+            If resp.StatusCode = 0 Then
                 Dim ptRetList As IItemServiceRetList
                 ptRetList = resp.Detail
                 ' Should only be 1 CustomerRet object returned
@@ -197,51 +197,14 @@ Public Class QBtoTL_JobOrItem
                     ' Code below should be altered similarly to above
                     ptRet = ptRetList.GetAt(i)
                     With ptRet
-                        If .ParentRef Is Nothing Then
-                            If .TimeModified Is Nothing Then
-                                ModTime = .TimeCreated.GetValue.ToString
-                            Else
-                                ModTime = .TimeModified.GetValue.ToString()
-                            End If
+                        CreateTime = If(.TimeCreated Is Nothing, "", .TimeCreated.GetValue.ToString)
+                        ModTime = If(.TimeModified Is Nothing, CreateTime, .TimeModified.GetValue.ToString)
 
-                            If .TimeCreated Is Nothing Then
-                                CreateTime = ""
-                            Else
-                                CreateTime = .TimeModified.GetValue.ToString()
-                            End If
-                            Dim TL_ID_Count = ISQBID_In_DataTableForItems(.FullName.GetValue, .ListID.GetValue)
-
-                            If TL_ID_Count <> 0 Then
-                                NewlyAdd = ""
-                            Else
-                                NewlyAdd = "N"
-                            End If
-                            ItemData.NoItems = ItemData.NoItems + 1
-                            ItemData.DataArray.Add(New Job_Subjob(NewlyAdd, .FullName.GetValue, "", .ListID.GetValue, "", "", ModTime, CreateTime, "", .FullName.GetValue, .Sublevel.GetValue))
-
-                        End If
-                        If Not .ParentRef Is Nothing Then
-
-                            If .TimeModified Is Nothing Then
-                                ModTime = .TimeCreated.GetValue.ToString
-                            Else
-                                ModTime = .TimeModified.GetValue.ToString()
-                            End If
-
-                            If .TimeCreated Is Nothing Then
-                                CreateTime = ""
-                            Else
-                                CreateTime = .TimeModified.GetValue.ToString()
-                            End If
-                            '---------------
-                            Dim TL_ID_Count = ISQBID_In_DataTableForItems(.Name.GetValue, .ListID.GetValue)
-
-                            NewlyAdd = If(TL_ID_Count <> 0, "", "N") 'N if new
-
-                            ItemData.NoItems = ItemData.NoItems + 1
-                            ItemData.DataArray.Add(New Job_Subjob(NewlyAdd, .Name.GetValue, "", .ListID.GetValue, "", "", ModTime, CreateTime, "", .FullName.GetValue, .Sublevel.GetValue))
-
-                        End If
+                        Dim name As String = If(.ParentRef Is Nothing, .FullName.GetValue, .Name.GetValue)
+                        Dim TL_ID_Count = ISQBID_In_DataTableForItems(name, .ListID.GetValue)
+                        NewlyAdd = If(TL_ID_Count, "", "N") ' N if new
+                        ItemData.NoItems += 1
+                        ItemData.DataArray.Add(New Job_Subjob(NewlyAdd, name, "", .ListID.GetValue, "", "", ModTime, CreateTime, "", .FullName.GetValue, .Sublevel.GetValue))
                     End With
                 Next
             End If
@@ -287,7 +250,7 @@ Public Class QBtoTL_JobOrItem
 
         'sets status bar. If no, UI skip
         Dim incrementbar As Integer = 0
-        If UI = True Then
+        If UI Then
             Dim pblenth As Integer = objData.DataArray.Count - 1
             If pblenth >= 0 Then
                 IntegratedUIForm.ProgressBar1.Maximum = pblenth
@@ -306,7 +269,6 @@ Public Class QBtoTL_JobOrItem
             Dim nProjectManagerId As Integer = objProjectServices.GetProjectManagerId()
             Dim nProjectBillingRateTypeId As Integer = objProjectServices.GetProjectBillingRateTypeId()
 
-
             For Each element As QBtoTL_JobOrItem.Job_Subjob In objData.DataArray
                 ' check if the check value is true
                 If element.RecSelect = True Then
@@ -320,7 +282,7 @@ Public Class QBtoTL_JobOrItem
 
                             If MsgBox("New job or subjob found: " + element.QB_Name + ". Create?", MsgBoxStyle.YesNo, "Warning!") = MsgBoxResult.Yes Then
 
-                                NoRecordsCreatedorUpdated = NoRecordsCreatedorUpdated + 1
+                                NoRecordsCreatedorUpdated += 1
 
                                 Dim PTArray() As String = Split(element.FullName, ":")
                                 If PTArray.Length = 2 Then
@@ -438,7 +400,7 @@ Public Class QBtoTL_JobOrItem
 
         'sets status bar. If no, UI skip
         Dim incrementbar As Integer = 0
-        If UI = True Then
+        If UI Then
             Dim pblenth As Integer = objData.DataArray.Count - 1
             If pblenth >= 0 Then
                 IntegratedUIForm.ProgressBar1.Maximum = pblenth
@@ -478,11 +440,9 @@ Public Class QBtoTL_JobOrItem
 
                         'if none create
                         If TL_ID_Return = 0 Then
-
                             If MsgBox("New item or subitem found: " + element.QB_Name + ". Create?", MsgBoxStyle.YesNo, "Warning!") = MsgBoxResult.Yes Then
-
-                                NoRecordsCreatedorUpdated = NoRecordsCreatedorUpdated + 1
-
+                                NoRecordsCreatedorUpdated += 1
+                                ' If item
                                 If element.subParentInt = 0 Then
 
                                     objProjectServices.InsertProject(nProjectTypeId, nClientId, 0,
@@ -496,8 +456,9 @@ Public Class QBtoTL_JobOrItem
 
                                     ProjectName = element.FullName ' Should this be outside the if?
                                 End If
+                                ' If subitem
                                 If Not element.subParentInt = 0 Then
-                                    NoRecordsCreatedorUpdated = NoRecordsCreatedorUpdated + 1
+                                    NoRecordsCreatedorUpdated += 1
                                     Dim TaskArray() As String = Split(element.FullName, ":")
                                     Dim ParentLevel As Integer = element.subParentInt - 1
                                     Dim ParentTaskName As String = TaskArray(ParentLevel)
@@ -547,9 +508,9 @@ Public Class QBtoTL_JobOrItem
                     End If
                 End If
                 'if no, UI skip
-                If UI = True Then
+                If UI Then
                     IntegratedUIForm.ProgressBar1.Value = incrementbar
-                    incrementbar = incrementbar + 1
+                    incrementbar += 1
                 End If
             Next
 
