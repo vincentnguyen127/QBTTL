@@ -10,6 +10,7 @@ Public Class QBtoTL_Vendor
         Public NoItems As Integer = 0
         Public DataArray As New List(Of Vendor)
     End Class
+
     Public Class Vendor
         Public RecSelect As Boolean
         Public QB_Name As String
@@ -52,13 +53,10 @@ Public Class QBtoTL_Vendor
         Dim pblenth As Integer
         Dim NewlyAdd As String
 
-        'step1: create QBFC session manager and prepare the request
-        'Dim sessManager As QBSessionManager
+        'step1: prepare the request
         Dim vendormsgSetRs As IMsgSetResponse
 
         Try
-            'sessManager = New QBSessionManagerClass()
-
             Dim vendormsgSetRq As IMsgSetRequest = MAIN.SESSMANAGER.CreateMsgSetRequest("US", 2, 0) 'sessManager
             vendormsgSetRq.Attributes.OnError = ENRqOnError.roeContinue
 
@@ -66,9 +64,7 @@ Public Class QBtoTL_Vendor
 
             syncvendor.ORVendorListQuery.VendorListFilter.ActiveStatus.SetValue(ENActiveStatus.asActiveOnly)
 
-            'step2: begin QB session and send the request
-            'sessManager.OpenConnection("App", "TimeLive Quickbooks")
-            'sessManager.BeginSession("", ENOpenMode.omDontCare)
+            'step2: send the request
             vendormsgSetRs = MAIN.SESSMANAGER.DoRequests(vendormsgSetRq) 'sessManager
 
             Dim vendorrespList As IResponseList
@@ -80,82 +76,38 @@ Public Class QBtoTL_Vendor
             Dim vendorRetList As IVendorRetList
             vendorRetList = vendorresp.Detail
 
-            Dim vendorRetListCount As Integer
+            Dim vendorRetListCount As Integer = If(vendorRetList Is Nothing, 0, vendorRetList.Count)
 
-            If vendorRetList Is Nothing Then
-                vendorRetListCount = 0
-            Else
-                vendorRetListCount = vendorRetList.Count
-            End If
-
-            If (vendorresp.StatusCode = 0) Then
-
-                If UI = True Then
-                    pblenth = vendorRetList.Count
+            If vendorresp.StatusCode = 0 Then
+                If UI Then
+                    pblenth = If(vendorRetList Is Nothing, -1, vendorRetList.Count)
                     If pblenth >= 0 Then
                         IntegratedUIForm.ProgressBar1.Maximum = pblenth - 1
                     End If
                 End If
 
-                For i As Integer = 0 To vendorRetList.Count - 1
+                For i As Integer = 0 To If(vendorRetList Is Nothing, -1, vendorRetList.Count - 1)
                     vendorRet = vendorRetList.GetAt(i)
                     With vendorRet
-
-                        If My.Settings.SyncElbVendor = False Or .IsVendorEligibleFor1099.GetValue = True Then
-                            If .Email Is Nothing Then
-                                EmailAddress = ""
-                            Else
-                                EmailAddress = .Email.GetValue
-                            End If
-
-                            If .FirstName Is Nothing Then
-                                FirstName = ""
-                            Else
-                                FirstName = .FirstName.GetValue
-                            End If
-                            If .LastName Is Nothing Then
-                                LastName = ""
-                            Else
-                                LastName = .LastName.GetValue
-                            End If
-
-                            If .TimeModified Is Nothing Then
-                                ModTime = .TimeCreated.GetValue.ToString
-                            Else
-                                ModTime = .TimeModified.GetValue.ToString()
-                            End If
-
-                            If .TimeCreated Is Nothing Then
-                                CreateTime = .TimeCreated.GetValue.ToString
-                            Else
-                                CreateTime = .TimeModified.GetValue.ToString()
-                            End If
-                            If .IsVendorEligibleFor1099.GetValue = False Or .IsVendorEligibleFor1099 Is Nothing Then
-
-                                IsVendorEligibleFor1099 = False
-                            Else
-                                IsVendorEligibleFor1099 = True
-                            End If
+                        If Not CBool(My.Settings.SyncElbVendor) Or .IsVendorEligibleFor1099.GetValue Then
+                            EmailAddress = If(.Email Is Nothing, "", .Email.GetValue)
+                            FirstName = If(.FirstName Is Nothing, "", .FirstName.GetValue)
+                            LastName = If(.LastName Is Nothing, "", .LastName.GetValue)
+                            CreateTime = If(.TimeCreated Is Nothing, "", .TimeCreated.GetValue.ToString)
+                            ModTime = If(.TimeModified Is Nothing, CreateTime, .TimeModified.GetValue.ToString)
+                            IsVendorEligibleFor1099 = ((Not .IsVendorEligibleFor1099 Is Nothing) And
+                                                    .IsVendorEligibleFor1099.GetValue)
                             ' will check which type data should be added 
 
-
                             Dim TL_ID_Count = ISQBID_In_DataTable(.Name.GetValue, .ListID.GetValue)
-
-                            If TL_ID_Count <> 0 Then
-                                NewlyAdd = ""
-                            Else
-                                NewlyAdd = "N"
-                            End If
-
-
-                            VendorData.NoItems = VendorData.NoItems + 1
+                            NewlyAdd = If(TL_ID_Count, "", "N") ' N if new
+                            VendorData.NoItems += 1
                             VendorData.DataArray.Add(New Vendor(NewlyAdd, .Name.GetValue, EmailAddress, .ListID.GetValue, FirstName, LastName, "", ModTime, CreateTime, IsVendorEligibleFor1099))
                         End If
                     End With
-                    If UI = True Then
+                    If UI Then
                         IntegratedUIForm.ProgressBar1.Value = i
                     End If
-
                 Next
             End If
 
@@ -171,11 +123,6 @@ Public Class QBtoTL_Vendor
                 My.Forms.MAIN.History(ex.ToString, "C")
                 Throw ex
             End If
-            'Finally
-            '    If Not sessManager Is Nothing Then
-            '       sessManager.EndSession()
-            '       sessManager.CloseConnection()
-            '    End If
         End Try
         Return VendorData
     End Function
@@ -193,7 +140,6 @@ Public Class QBtoTL_Vendor
         authentication2.AuthenticatedToken = token
         objServices.SecuredWebServiceHeaderValue = authentication2
 
-
         Dim nDepartmentId As Integer = objServices.GetDepartmentId()
         Dim nRoleId As Integer = objEmployeeServices.GetUserRoleId()
         Dim nLocationId As Integer = objServices.GetLocationId()
@@ -202,24 +148,20 @@ Public Class QBtoTL_Vendor
         Dim nWorkingDayTypeId As Guid = objEmployeeServices.GetEmployeeWorkingDayTypeId()
         Dim nBillingTypeId As Integer = objEmployeeServices.GetEmployeeBillingTypeId()
 
-
         'sets status bar. If no, UI skip
         Dim incrementbar As Integer = 0
         If UI = True Then
-            Dim pblenth As Integer = objData.DataArray.Count - 1
-            If pblenth >= 0 Then
-                IntegratedUIForm.ProgressBar1.Maximum = pblenth
-                IntegratedUIForm.ProgressBar1.Value = 0
-            End If
+            Dim pblenth As Integer = objData.DataArray.Count
+            IntegratedUIForm.ProgressBar1.Maximum = pblenth
+            IntegratedUIForm.ProgressBar1.Value = 0
         End If
 
         Dim NoRecordsCreatedorUpdated = 0
         For Each element As QBtoTL_Vendor.Vendor In objData.DataArray
 
             ' check if the check value is true
-            If element.RecSelect = True Then
+            If element.RecSelect Then
                 'Check number of QB records that match ID
-
 
                 Dim EmailAddress As String
                 Dim FirstName As String
@@ -230,8 +172,7 @@ Public Class QBtoTL_Vendor
                 'if none create
                 If TL_ID_Return = 0 Then
                     If MsgBox("New  vendor found: " + element.QB_Name + ". Create?", MsgBoxStyle.YesNo, "Warning!") = MsgBoxResult.Yes Then
-
-                        NoRecordsCreatedorUpdated = NoRecordsCreatedorUpdated + 1
+                        NoRecordsCreatedorUpdated += 1
                         ' if it does not exist create a new record on both the sync database and on TL
                         My.Forms.MAIN.History("Inserting QB & TL keys into sync database and inserting to TimeLife:  " + element.QB_Name, "i")
 
@@ -248,13 +189,13 @@ Public Class QBtoTL_Vendor
                                     EmployeeName = FirstName + " " + LastName
 
                                     objEmployeeServices.InsertEmployee(EmailAddress, EmailAddress, FirstName,
-                                LastName, EmailAddress, "", nDepartmentId, nRoleId, nLocationId,
-                                233, nBillingTypeId, Now.Date, -1, 0, 6, 0, 0, nEmployeeTypeId, nEmployeeStatusId,
-                                "", Now.Date, Now.Date, nWorkingDayTypeId, System.Guid.Empty, 0, System.Guid.Empty, False, "", "", "", "", "", "", "", "", "", "Mr.", True)
+                                        LastName, EmailAddress, "", nDepartmentId, nRoleId, nLocationId,
+                                        233, nBillingTypeId, Now.Date, -1, 0, 6, 0, 0, nEmployeeTypeId, nEmployeeStatusId,
+                                        "", Now.Date, Now.Date, nWorkingDayTypeId, System.Guid.Empty, 0, System.Guid.Empty, False,
+                                        "", "", "", "", "", "", "", "", "", "Mr.", True)
 
                                     Dim VendorAdapter As New QB_TL_IDsTableAdapters.VendorsTableAdapter()
                                     VendorAdapter.Insert(element.QB_ID, objEmployeeServices.GetEmployeeId(EmployeeName), element.QB_Name, EmployeeName)
-
                                 End If
 
                             Catch ex As Exception
@@ -264,18 +205,16 @@ Public Class QBtoTL_Vendor
                     End If
                 End If
 
-
-                    'if it exist check that the TL_ID is not empty ---> 1
-                    'if not empty, just update
-                    'if empty, informed the user of a potential error as a record has been created in the sync database without a corresponding TL pointer
-                    If TL_ID_Return = 1 Then
-
+                'if it exist check that the TL_ID is not empty ---> 1
+                'if not empty, just update
+                'if empty, informed the user of a potential error as a record has been created in the sync database without a corresponding TL pointer
+                If TL_ID_Return = 1 Then
                     Dim TL_ID As String = ISTLID_In_DataTableForVendor(element.QB_ID)
                     If TL_ID Is Nothing Then
                         My.Forms.MAIN.History("Detected empty sync record (No TL ID). Needs to be manually sync or deleted." + element.QB_Name, "i")
 
                     Else
-                        NoRecordsCreatedorUpdated = NoRecordsCreatedorUpdated + 1
+                        NoRecordsCreatedorUpdated += 1
                         My.Forms.MAIN.History("Updating TL record for: " + element.QB_Name, "i")
                         'Update TimeLife Record
 
@@ -284,10 +223,10 @@ Public Class QBtoTL_Vendor
                         employees = objEmployeeServices.GetEmployeesData
 
 
-                        Dim foundRows() As DataRow
+                        ' Dim foundRows() As DataRow
 
                         ' Use the Select method to find all rows matching the filter.
-                        foundRows = employees.Select(String.Format("AccountEmployeeId = '{0}'", 16))
+                        'foundRows = employees.Select(String.Format("AccountEmployeeId = '{0}'", 16))
 
 
                         'Dim AccountEmployeeId As Integer = 16
@@ -452,7 +391,6 @@ Public Class QBtoTL_Vendor
 
                                 My.Forms.MAIN.History("Record update commented out -- Defect", "N")
 
-
                             Catch ex As Exception
                                 My.Forms.MAIN.History("Update failed." + ex.ToString, "N")
                             End Try
@@ -462,11 +400,10 @@ Public Class QBtoTL_Vendor
                 End If
             End If
             'if no, UI skip
-            If UI = True Then
+            If UI Then
+                incrementbar += 1
                 IntegratedUIForm.ProgressBar1.Value = incrementbar
-                incrementbar = incrementbar + 1
             End If
-
         Next
 
         Return NoRecordsCreatedorUpdated

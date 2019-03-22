@@ -1,4 +1,7 @@
 ﻿Partial Class QB_TL_IDs
+    Partial Public Class Items_SubItemsDataTable
+    End Class
+
     Partial Public Class EmployeesDataTable
     End Class
 
@@ -19,6 +22,10 @@
         End Sub
 
     End Class
+
+    Friend Function EmployeesTableAdapter() As Object
+        Throw New NotImplementedException()
+    End Function
 End Class
 
 Namespace QB_TL_IDsTableAdapters

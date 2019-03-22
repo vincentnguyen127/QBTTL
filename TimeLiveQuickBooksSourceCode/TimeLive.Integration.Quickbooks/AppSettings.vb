@@ -19,13 +19,11 @@
             autoruninterval_btn.Value = Convert.ToInt16(My.Settings.AutoRunInterval)
         End If
 
-
         If My.Settings.SyncCustomers = Nothing Then
             chk_customers.Checked = False
         Else
             chk_customers.Checked = Convert.ToBoolean(My.Settings.SyncCustomers)
         End If
-
 
         If My.Settings.SyncLaborItems = Nothing Then
             chk_laboritems.Checked = False
@@ -75,8 +73,6 @@
             chk_jobsitems.Checked = Convert.ToBoolean(My.Settings.SyncJobOrItem)
         End If
 
-
-
         '-----Time trasfer settings
 
         If My.Settings.JobHierarchy = "" Then
@@ -84,11 +80,9 @@
         Else
             If My.Settings.JobHierarchy = 0 Then
                 rbtJobitems.Checked = True
-            End If
-            If My.Settings.JobHierarchy = 1 Then
+            ElseIf My.Settings.JobHierarchy = 1 Then
                 rbJob.Checked = True
-            End If
-            If My.Settings.JobHierarchy = 2 Then
+            ElseIf My.Settings.JobHierarchy = 2 Then
                 rbItem.Checked = True
             End If
         End If
@@ -103,7 +97,6 @@
             If My.Settings.JobOrItemHierarchy = 1 Then
                 item_subItems_btn.Checked = True
             End If
-
         End If
 
         '--------   cbClass 
@@ -147,14 +140,12 @@
         My.Settings.SyncExpenseEntries = chk_expenseentries.Checked
         My.Settings.SyncLaborItems = chk_laboritems.Checked
 
-
-
         '------Save time transfer options
-        If rbtJobitems.Checked = True Then
+        If rbtJobitems.Checked Then
             which_rbj = 0
-        ElseIf rbJob.Checked = True Then
+        ElseIf rbJob.Checked Then
             which_rbj = 1
-        ElseIf rbItem.Checked = True Then
+        ElseIf rbItem.Checked Then
             which_rbj = 2
         End If
         ' saving all the parameters 
@@ -162,9 +153,9 @@
 
 
         '------Save job or item data transfer options
-        If job_subJobs_btn.Checked = True Then
+        If job_subJobs_btn.Checked Then
             job_item_btn_option = 0
-        ElseIf item_subItems_btn.Checked = True Then
+        ElseIf item_subItems_btn.Checked Then
             job_item_btn_option = 1
         End If
 
@@ -185,6 +176,7 @@
     Private Sub rbJob_CheckedChanged(sender As Object, e As EventArgs)
         which_rbj = 1
     End Sub
+
     Private Sub rbItem_CheckedChanged(sender As Object, e As EventArgs)
         which_rbj = 2
     End Sub
@@ -193,17 +185,10 @@
         which_rbj = 0
     End Sub
 
-
     Private Sub chkPayrollTimesheet_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkPayrollTimesheet.CheckedChanged
-        If chkPayrollTimesheet.Checked = True Then
-            cbClass.Enabled = True
-            cbPayrollItem.Enabled = True
-        Else
-            cbClass.Enabled = False
-            cbPayrollItem.Enabled = False
-        End If
+        cbClass.Enabled = chkPayrollTimesheet.Checked
+        cbPayrollItem.Enabled = chkPayrollTimesheet.Checked
     End Sub
-
 
     Private Sub CKB_syncElgibleVendor_CheckedChanged(sender As Object, e As EventArgs) Handles chk_syncElgibleVendor.CheckedChanged
         If chk_syncElgibleVendor.Checked = True Then
@@ -227,6 +212,10 @@
     End Sub
 
     Private Sub cbPayrollItem_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cbPayrollItem.SelectedIndexChanged
+
+    End Sub
+
+    Private Sub chk_employees_CheckedChanged(sender As Object, e As EventArgs) Handles chk_employees.CheckedChanged
 
     End Sub
 End Class

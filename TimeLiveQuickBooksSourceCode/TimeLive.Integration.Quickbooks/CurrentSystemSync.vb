@@ -3,21 +3,18 @@ Public Class CurrentSystemSync
     Private p_token As String
     Private p_AccountId As String
 
-
     Public Sub PassToken(ByVal token As String, ByVal AccountId As String)
-            If token Is Nothing Then
-                MsgBox("Please Login")
-            Else
-                p_AccountId = AccountId
-                p_token = token
+        If token Is Nothing Then
+            MsgBox("Please Login")
+        Else
+            p_AccountId = AccountId
+            p_token = token
             SyncCustomerData()
             SyncEmployeeData()
-            'SyncVendorData()  ' Can not get employee type
+            SyncVendorData()
             SyncJobsSubJobData()
-
         End If
-
-        End Sub
+    End Sub
 
     '---------------------Sync Customer TL Data to QB---------------------------------------
     ''' <summary>
@@ -49,7 +46,6 @@ Public Class CurrentSystemSync
                         My.Forms.MAIN.History("Please update or enter client into QB --> Name: " + .ClientName.ToString + " ID: " + .ClientId.ToString + " manually", "I")
                     End If
                 End With
-
             Next
 
         Catch ex As Exception
@@ -578,7 +574,6 @@ Public Class CurrentSystemSync
 
         My.Forms.MAIN.History("Serching in QB for: " + QBJobSubJobName, "i")
 
-
         Try
             'sessManager = New QBSessionManagerClass()
             Dim msgSetRq As IMsgSetRequest = MAIN.SESSMANAGER.CreateMsgSetRequest("US", 2, 0)
@@ -591,7 +586,6 @@ Public Class CurrentSystemSync
             'sessManager.OpenConnection("App", "TimeLive Quickbooks")
             'sessManager.BeginSession("", ENOpenMode.omDontCare)
             Dim msgSetRs As IMsgSetResponse = MAIN.SESSMANAGER.DoRequests(msgSetRq)
-
             Dim response As IResponse = msgSetRs.ResponseList.GetAt(0)
             Dim jobsubjobsRetList As ICustomerRetList
             jobsubjobsRetList = response.Detail
@@ -600,7 +594,6 @@ Public Class CurrentSystemSync
                 My.Forms.MAIN.History("Job not found", "i")
                 Return False
             Else
-
                 'Assume only one return
                 Dim JobSubJobsRet As ICustomerRet
                 JobSubJobsRet = jobsubjobsRetList.GetAt(0)
@@ -671,7 +664,7 @@ Public Class CurrentSystemSync
     Public Sub GetTime()
         'Dim sessManager As QBSessionManager
 
-        My.Forms.MAIN.History("Serching in QB for all time: ", "i")
+        My.Forms.MAIN.History("Searching in QB for all time: ", "i")
 
         Try
             'sessManager = New QBSessionManagerClass()
@@ -685,13 +678,10 @@ Public Class CurrentSystemSync
             Dim FromDate As New DateTime(2018, 1, 1, 0, 0, 0)
             TimeQueryRq.ORTimeTrackingTxnQuery.TimeTrackingTxnFilter.ORDateRangeFilter.ModifiedDateRangeFilter.FromModifiedDate.SetValue(FromDate, True)
 
-
             'sessManager.OpenConnection("App", "TimeLive Quickbooks")
             'sessManager.BeginSession("", ENOpenMode.omDontCare)
             Dim msgSetRs As IMsgSetResponse = MAIN.SESSMANAGER.DoRequests(msgSetRq)
-
             Dim response As IResponse = msgSetRs.ResponseList.GetAt(0)
-
             Dim TimeRetList As ITimeTrackingRetList
 
             TimeRetList = response.Detail
@@ -720,7 +710,6 @@ Public Class CurrentSystemSync
             '       sessManager.CloseConnection()
             '    End If
         End Try
-
     End Sub
 
 End Class
