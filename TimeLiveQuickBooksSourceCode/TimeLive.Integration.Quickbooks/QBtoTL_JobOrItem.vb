@@ -299,8 +299,10 @@ Public Class QBtoTL_JobOrItem
 
                                     Dim nProjectId As Integer
                                     ' Check if Job exists, if not then do not try to add the SubJob
-                                    Dim hasParentProject = False
-                                    Array.ForEach(objProjectServices.GetProjects, Function(proj As Services.TimeLive.Projects.Project) hasParentProject = If(proj.ProjectName = PTArray(PTArray.Length - 2), True, hasParentProject))
+                                    Dim hasParentProject = Array.Exists(objProjectServices.GetProjects,
+                                                                        Function(proj As Services.TimeLive.Projects.Project)
+                                                                            Return proj.ProjectName = PTArray(PTArray.Length - 2)
+                                                                        End Function)
 
                                     If hasParentProject Then
                                         nProjectId = objProjectServices.GetProjectId(PTArray(PTArray.Length - 2)) ' Was ProjectName, which was Nothing                                

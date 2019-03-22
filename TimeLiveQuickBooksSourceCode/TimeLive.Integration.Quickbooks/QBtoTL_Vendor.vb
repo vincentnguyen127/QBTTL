@@ -151,11 +151,9 @@ Public Class QBtoTL_Vendor
         'sets status bar. If no, UI skip
         Dim incrementbar As Integer = 0
         If UI = True Then
-            Dim pblenth As Integer = objData.DataArray.Count - 1
-            If pblenth >= 0 Then
-                IntegratedUIForm.ProgressBar1.Maximum = pblenth
-                IntegratedUIForm.ProgressBar1.Value = 0
-            End If
+            Dim pblenth As Integer = objData.DataArray.Count
+            IntegratedUIForm.ProgressBar1.Maximum = pblenth
+            IntegratedUIForm.ProgressBar1.Value = 0
         End If
 
         Dim NoRecordsCreatedorUpdated = 0
@@ -211,7 +209,6 @@ Public Class QBtoTL_Vendor
                 'if not empty, just update
                 'if empty, informed the user of a potential error as a record has been created in the sync database without a corresponding TL pointer
                 If TL_ID_Return = 1 Then
-
                     Dim TL_ID As String = ISTLID_In_DataTableForVendor(element.QB_ID)
                     If TL_ID Is Nothing Then
                         My.Forms.MAIN.History("Detected empty sync record (No TL ID). Needs to be manually sync or deleted." + element.QB_Name, "i")
@@ -226,10 +223,10 @@ Public Class QBtoTL_Vendor
                         employees = objEmployeeServices.GetEmployeesData
 
 
-                        Dim foundRows() As DataRow
+                        ' Dim foundRows() As DataRow
 
                         ' Use the Select method to find all rows matching the filter.
-                        foundRows = employees.Select(String.Format("AccountEmployeeId = '{0}'", 16))
+                        'foundRows = employees.Select(String.Format("AccountEmployeeId = '{0}'", 16))
 
 
                         'Dim AccountEmployeeId As Integer = 16
@@ -394,7 +391,6 @@ Public Class QBtoTL_Vendor
 
                                 My.Forms.MAIN.History("Record update commented out -- Defect", "N")
 
-
                             Catch ex As Exception
                                 My.Forms.MAIN.History("Update failed." + ex.ToString, "N")
                             End Try
@@ -404,11 +400,10 @@ Public Class QBtoTL_Vendor
                 End If
             End If
             'if no, UI skip
-            If UI = True Then
+            If UI Then
+                incrementbar += 1
                 IntegratedUIForm.ProgressBar1.Value = incrementbar
-                incrementbar = incrementbar + 1
             End If
-
         Next
 
         Return NoRecordsCreatedorUpdated

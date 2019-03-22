@@ -108,21 +108,23 @@ Public Class ChargingRelationship
             .Columns.Insert(4, ColumnI_SI)
         End With
 
-        ' Fill with all charging relationships
+        ' Fill Data Grid with all charging relationships
         Me.ChargingRelationshipsTableAdapter.Fill(Me.QB_TL_IDs.ChargingRelationships)
 
-        ' Remove relationships for all non-active employees
-        Dim numEmployees As Integer = 0
-        While numEmployees < Me.QB_TL_IDs.ChargingRelationships.Count
-            Dim row As DataRow = Me.QB_TL_IDs.ChargingRelationships.Rows(numEmployees)
+        ' Remove all relationships from Data Grid where one or more of the entities is inactive
+        Dim numRow As Integer = 0
+        While numRow < Me.QB_TL_IDs.ChargingRelationships.Count
+            Dim row As DataRow = Me.QB_TL_IDs.ChargingRelationships.Rows(numRow)
             Dim remove As Boolean = True
-            ' Remove the row if name was not chosen
-            If IsDBNull(row(1)) Then
+
+            ' Remove the row if any of the 4 attributes are not chosen (are null)
+            If IsDBNull(row(1)) Or IsDBNull(row(2)) Or IsDBNull(row(3)) Or IsDBNull(row(4)) Then
                 Me.QB_TL_IDs.ChargingRelationships.RemoveChargingRelationshipsRow(row)
                 Continue While
             End If
-            Dim employeeId As String = row(1).Trim
 
+            ' check if the employee is active
+            Dim employeeId As String = row(1).Trim
             ' Compares the employee in relationship table to active employees
             For Each EmployeeRow As DataRow In EmployeesQBData.Select
                 Dim employeeId2 As String = EmployeeRow(1).Trim
@@ -132,11 +134,53 @@ Public Class ChargingRelationship
                 End If
             Next
 
-            ' Remove employee if they are inactive, otherwise increment numEmployees
+            ' Check if the job is active
+            If Not remove Then
+                remove = True
+                Dim jobID As String = row(2).Trim
+                ' Compares the job in relationship table to active jobs
+                For Each JobRow As DataRow In JobsSubJobsQBData.Select
+                    Dim jobId2 As String = JobRow(1).Trim
+                    If jobId2 = jobID Then
+                        remove = False ' job is active
+                        Exit For
+                    End If
+                Next
+            End If
+
+            ' Check if the payroll item is active
+            If Not remove Then
+                remove = True
+                Dim payrollID As String = row(3).Trim
+                ' Compares the payroll item in relationship table to active payroll items
+                For Each PayrollRow As DataRow In PayrollItemsQBData.Select
+                    Dim payrollId2 As String = PayrollRow(1).Trim
+                    If payrollId2 = payrollID Then
+                        remove = False ' payroll item is active
+                        Exit For
+                    End If
+                Next
+            End If
+
+            ' Check if the item is active
+            If Not remove Then
+                remove = True
+                Dim itemID As String = row(4).Trim
+                ' Compares the item in relationship table to active items
+                For Each ItemRow As DataRow In ItemsSubItemsQBData.Select
+                    Dim itemId2 As String = ItemRow(1).Trim
+                    If itemId2 = itemID Then
+                        remove = False ' item is active
+                        Exit For
+                    End If
+                Next
+            End If
+
+            ' Remove relationship if one or more entities are inactive, otherwise increment numRow
             If remove Then
                 Me.QB_TL_IDs.ChargingRelationships.RemoveChargingRelationshipsRow(row)
             Else
-                numEmployees += 1
+                numRow += 1
             End If
         End While
 

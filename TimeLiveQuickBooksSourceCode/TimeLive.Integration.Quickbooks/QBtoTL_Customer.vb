@@ -127,7 +127,7 @@ Public Class QBtoTL_Customer
             'Dim isActive As Boolean
             'For Each customerRow As DataRow In customers.Rows
             'isActive = CustomerData.DataArray.Exists(Function(x As Customer) x.QB_ID = customerRow(1))
-            'If Not isActive Then
+            'If Not isActive.GetValue Then
             'My.Forms.MAIN.History(customerRow.Item(2), "i")
             'End If
             'Next
@@ -154,11 +154,9 @@ Public Class QBtoTL_Customer
         'sets status bar. If no, UI skip
         Dim incrementbar As Integer = 0
         If UI Then
-            Dim pblength As Integer = objData.NoItems - objData.NoInactive - 1
-            If pblength >= 0 Then
-                IntegratedUIForm.ProgressBar1.Maximum = pblength
-                IntegratedUIForm.ProgressBar1.Value = 0
-            End If
+            Dim pblength As Integer = objData.NoItems - objData.NoInactive
+            IntegratedUIForm.ProgressBar1.Maximum = pblength
+            IntegratedUIForm.ProgressBar1.Value = 0
         End If
 
         Dim NoRecordsCreatedorUpdated As Integer = 0
@@ -169,61 +167,91 @@ Public Class QBtoTL_Customer
             If element.Enabled And element.RecSelect Then
                 'Check number of QB records that match ID
                 My.Forms.MAIN.History("Processing:  " + element.QB_Name, "n")
-                Dim TL_ID_Return = ISQBID_In_DataTable(element.QB_Name, element.QB_ID)
+                Dim DT_has_QBID = ISQBID_In_DataTable(element.QB_Name, element.QB_ID)
 
                 'if none create
-                If TL_ID_Return = 0 Then
-                    Dim create As Boolean = True
-                    ' Do not show Message Box when UI = false, instead just create the new customer
-                    If UI Then
-                        create = MsgBox("New customer found: " + element.QB_Name + ". Create?", MsgBoxStyle.YesNo, "Warning!") = MsgBoxResult.Yes
+                'If TL_ID_Return = 0 Then
+                Dim create As Boolean = True
+                ' Do not show Message Box when UI = false, instead just create the new customer
+                If UI And Not CBool(DT_has_QBID) Then
+                    create = MsgBox("New customer found: " + element.QB_Name + ". Create?", MsgBoxStyle.YesNo, "Warning!") = MsgBoxResult.Yes
+                End If
+                If create Then
+                    If DT_has_QBID Then
+                        Dim TL_ID As String = ISTLID_In_DataTable(element.QB_ID)
+                        If TL_ID Is Nothing Then
+                            My.Forms.MAIN.History("Detected empty sync record (No TL ID). Needs to be manually sync or deleted." + element.QB_Name, "i")
+                        End If
+                        Dim customerInTL As Boolean = Array.Exists(objClientServices.GetClients,
+                                                                   Function(e As Services.TimeLive.Clients.Client)
+                                                                       Return e.ClientName = element.QB_Name
+                                                                   End Function)
+                        If customerInTL Then
+                            ' TL already has this value and so does our DB, so just move to next element after updating Progress Bar
+                            If UI Then
+                                incrementbar += 1
+                                IntegratedUIForm.ProgressBar1.Value = incrementbar
+                            End If
+                            Continue For
+                        End If
                     End If
-                    If create Then
-                        NoRecordsCreatedorUpdated += 1
 
-                        ' if it does not exist create a new record on both the sync database and on TL
-                        My.Forms.MAIN.History("Inserting QB & TL keys into sync database and inserting to TimeLife:  " + element.QB_Name, "i")
-
+                    NoRecordsCreatedorUpdated += 1
+                    Dim whereInsert As String = If(DT_has_QBID, "TimeLive: ", "sync database and TimeLive: ")
+                    ' if it does not exist create a new record on both the sync database and on TL
+                    My.Forms.MAIN.History("Inserting customer into " + whereInsert + element.QB_Name, "i")
+                    Try
                         'Insert record into TimeLife
                         objClientServices.InsertClient(element.QB_Name, SetLength(element.QB_Name),
                         element.Email, "", "", 233, "", "", "", element.Telephone1, "no telephone 2 yet", element.Fax, 0,
                                                        "", element.QB_ID, element.Enabled, False, Now.Date, 0, Now.Date, 0)
+                        My.Forms.MAIN.History("Transfer to TimeLive was successful.", "i")
 
-                        'Insert record into sync database
-                        Dim TLClientID As String = objClientServices.GetClientIdByName(element.QB_Name)
-                        If TLClientID IsNot Nothing Then
-                            Dim CustomerAdapter As New QB_TL_IDsTableAdapters.CustomersTableAdapter()
-                            CustomerAdapter.Insert(element.QB_ID, TLClientID, element.QB_Name, element.QB_Name)
-                        Else
-                            My.Forms.MAIN.History("Error creating record in TimeLive", "N")
+                        If Not CBool(DT_has_QBID) Then
+                            'Insert record into sync database
+                            Dim customerInTL As Boolean = Array.Exists(objClientServices.GetClients,
+                                                                       Function(e As Services.TimeLive.Clients.Client)
+                                                                           Return e.ClientName = element.QB_Name
+                                                                       End Function)
+                            If customerInTL Then
+                                Dim TLClientID As String = objClientServices.GetClientIdByName(element.QB_Name)
+                                My.Forms.MAIN.History("TimeLive Client ID: " + TLClientID, "i")
+                                My.Forms.MAIN.History("Inserting new client into sync db.", "i")
+                                Dim CustomerAdapter As New QB_TL_IDsTableAdapters.CustomersTableAdapter()
+                                CustomerAdapter.Insert(element.QB_ID, TLClientID, element.QB_Name, element.QB_Name)
+                            Else
+                                My.Forms.MAIN.History("Error creating record in TimeLive", "N")
+                            End If
                         End If
-                    End If
+                    Catch ex As Exception
+                        My.Forms.MAIN.History("Transfer failed." + ex.ToString, "N")
+                    End Try
                 End If
+                    'End If
 
-                'if it exist check that the TL_ID is not empty ---> 1
-                'if not empty, just update
-                'if empty, informed the user of a potential error as a record has been created in the sync database without a corresponding TL pointer
+                    'if it exist check that the TL_ID is not empty ---> 1
+                    'if not empty, just update
+                    'if empty, informed the user of a potential error as a record has been created in the sync database without a corresponding TL pointer
 
-                If TL_ID_Return = 1 Then
-                    Dim TL_ID As String = ISTLID_In_DataTable(element.QB_ID)
-                    If TL_ID Is Nothing Then
-                        My.Forms.MAIN.History("Detected empty sync record (No TL ID). Needs to be manually sync or deleted." + element.QB_Name, "i")
-                    Else
-                        NoRecordsCreatedorUpdated += 1
-                        My.Forms.MAIN.History("Updating TL record for: " + element.QB_Name, "i")
-                        '-----------------------------------------------------------------------------------------------------------------------------------------------------------------
-                        ' --------------------------------------------- this part is the update ------------------------------------------------------------------------------------------
-                        '-----------------------------------------------------------------------------------------------------------------------------------------------------------------
-                    End If
+                    'If TL_ID_Return = 1 Then
+                    'Dim TL_ID As String = ISTLID_In_DataTable(element.QB_ID)
+                    'If TL_ID Is Nothing Then
+                    'My.Forms.MAIN.History("Detected empty sync record (No TL ID). Needs to be manually sync or deleted." + element.QB_Name, "i")
+                    'Else
+                    '   NoRecordsCreatedorUpdated += 1
+                    '  My.Forms.MAIN.History("Updating TL record for: " + element.QB_Name, "i")
+                    '-----------------------------------------------------------------------------------------------------------------------------------------------------------------
+                    ' --------------------------------------------- this part is the update ------------------------------------------------------------------------------------------
+                    '-----------------------------------------------------------------------------------------------------------------------------------------------------------------
+                    'End If
                 End If
-            End If
 
             ' TODO: Make Client in TL enabled/disabled based on element.Enabled field
 
-            'if no UI, skip
+            'if no UI, then skip
             If element.Enabled And UI Then ' Only increment for active customers
-                IntegratedUIForm.ProgressBar1.Value = incrementbar
                 incrementbar += 1
+                IntegratedUIForm.ProgressBar1.Value = incrementbar
             End If
         Next
 

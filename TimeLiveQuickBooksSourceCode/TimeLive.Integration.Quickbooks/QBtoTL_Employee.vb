@@ -40,7 +40,6 @@ Public Class QBtoTL_Employee
     End Class
 
     Public Function GetEmployeeQBData(IntegratedUIForm As IntegratedUI, UI As Boolean) As EmployeeDataStructureQB
-
         Dim EmailAddress As String
         Dim FirstName As String
         Dim LastName As String
@@ -52,21 +51,17 @@ Public Class QBtoTL_Employee
 
         'step1: prepare the request
         Dim msgSetRs As IMsgSetResponse
-
         Try
             Dim msgSetRq As IMsgSetRequest = MAIN.SESSMANAGER.CreateMsgSetRequest("US", 2, 0) 'sessManager
             msgSetRq.Attributes.OnError = ENRqOnError.roeContinue
 
-            '-------------------------1---------------------------------------------
+            '------------------------------1-----------------------------------
             Dim employeequery As IEmployeeQuery = msgSetRq.AppendEmployeeQueryRq
-
             employeequery.ORListQuery.ListFilter.ActiveStatus.SetValue(ENActiveStatus.asActiveOnly)
 
             'step2: send the request
-            msgSetRs = MAIN.SESSMANAGER.DoRequests(msgSetRq) 'sessManager
-
-            Dim respList As IResponseList
-            respList = msgSetRs.ResponseList
+            msgSetRs = MAIN.SESSMANAGER.DoRequests(msgSetRq)
+            Dim respList As IResponseList = msgSetRs.ResponseList
 
             If respList Is Nothing Then
                 ' no data
@@ -77,22 +72,19 @@ Public Class QBtoTL_Employee
             Dim resp As IResponse
             resp = respList.GetAt(0)
             If resp.StatusCode = 0 Then
-
-                '----------------------2------------------------------------------------
+                '------------------------------2-----------------------------------
                 Dim empRetList As IEmployeeRetList
                 empRetList = resp.Detail
 
                 '------------------------------3-----------------------------------
                 Dim empRet As IEmployeeRet
                 'sets status bar, If no, UI skip
+                Dim pblength As Integer = If(empRetList Is Nothing, 0, empRetList.Count)
                 If UI Then
-                    Dim pblenth As Integer = If(empRetList Is Nothing, -1, empRetList.Count)
-                    If pblenth >= 0 Then
-                        IntegratedUIForm.ProgressBar1.Maximum = pblenth - 1
-                    End If
+                    IntegratedUIForm.ProgressBar1.Maximum = pblength
                 End If
 
-                For i As Integer = 0 To If(empRetList Is Nothing, -1, empRetList.Count - 1)
+                For i As Integer = 0 To pblength - 1
                     empRet = empRetList.GetAt(i)
 
                     With empRet
@@ -113,7 +105,7 @@ Public Class QBtoTL_Employee
 
                     End With
                     If UI Then
-                        IntegratedUIForm.ProgressBar1.Value = i
+                        IntegratedUIForm.ProgressBar1.Value = i + 1
                     End If
                 Next
             End If
@@ -124,7 +116,7 @@ Public Class QBtoTL_Employee
         Catch ex As Exception
             My.Forms.MAIN.History(ex.ToString, "C")
             ' Close the session manager before throwing exception
-            MAIN.QUITQBSESSION()
+            'MAIN.QUITQBSESSION()
             Throw ex
         End Try
 
@@ -134,8 +126,6 @@ Public Class QBtoTL_Employee
     ' Note: Will need to add things similar to QBTransferCustomerToTL if we add Enabled as variable
     Public Function QBTransferEmployeeToTL(ByRef objData As QBtoTL_Employee.EmployeeDataStructureQB,
                                    ByVal token As String, IntegratedUIForm As IntegratedUI, UI As Boolean) As Integer
-
-
         Dim objEmployeeServices As New Services.TimeLive.Employees.Employees
         Dim authentication As New Services.TimeLive.Employees.SecuredWebServiceHeader
         authentication.AuthenticatedToken = token
@@ -209,7 +199,7 @@ Public Class QBtoTL_Employee
                     ' Create the element in TL:
                     NoRecordsCreatedorUpdated += 1
                     Dim whereInsert As String = If(DT_has_QBID, "TimeLive: ", "sync database and TimeLive: ")
-                    My.Forms.MAIN.History("Inserting QB & TL keys into " + whereInsert + element.QB_Name, "i")
+                    My.Forms.MAIN.History("Inserting employee into " + whereInsert + element.QB_Name, "i")
 
                     'Insert record into TimeLive
                     With element
@@ -220,11 +210,7 @@ Public Class QBtoTL_Employee
                             LastName = GetValue(.QB_Name, "LastName")
                             LastName = LastName.Replace(",", "")
                             HiredDate = GetValue(.HiredDate, "HiredDate")
-                            EmployeeName = FirstName + " " + LastName ' Changed "," to " "?
-
-                            'My.Forms.MAIN.History("FirstName: " + LastName, "i")
-                            'My.Forms.MAIN.History("LastName: " + FirstName, "i")
-                            'My.Forms.MAIN.History("FullName: " + EmployeeName, "i")
+                            EmployeeName = FirstName + " " + LastName ' Changed "," to " "
 
                             ' Add user with username and password = emailAddress
                             objEmployeeServices.InsertEmployee(EmailAddress, EmailAddress, FirstName, LastName, EmailAddress, "",
@@ -242,11 +228,11 @@ Public Class QBtoTL_Employee
                                                                    End Function)
                                 If employeeInTL Then
                                     ' if EmployeeName is changed back to "firstName,lastName", change to GetEmployeeID(firstName + " " + lastName)
-                                    Dim TLClientID As Integer = objEmployeeServices.GetEmployeeId(EmployeeName)
-                                    My.Forms.MAIN.History("Employee ID: " + TLClientID, "i")
+                                    Dim TLClientID As String = objEmployeeServices.GetEmployeeId(EmployeeName)
+                                    My.Forms.MAIN.History("TimeLive Employee ID: " + TLClientID, "i")
                                     My.Forms.MAIN.History("Inserting new employee into sync db.", "i")
                                     Dim EmployeesAdapter As New QB_TL_IDsTableAdapters.EmployeesTableAdapter()
-                                    EmployeesAdapter.Insert(element.QB_ID, CInt(TLClientID), element.QB_Name, EmployeeName)
+                                    EmployeesAdapter.Insert(element.QB_ID, TLClientID, element.QB_Name, EmployeeName)
                                 Else
                                     My.Forms.MAIN.History("Error creating record in TimeLive", "N")
                                 End If
@@ -453,7 +439,6 @@ Public Class QBtoTL_Employee
                 IntegratedUIForm.ProgressBar1.Value = incrementbar
             End If
         Next
-
         Return NoRecordsCreatedorUpdated
     End Function
 
