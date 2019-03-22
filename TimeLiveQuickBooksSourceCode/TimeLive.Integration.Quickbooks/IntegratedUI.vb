@@ -69,7 +69,7 @@ Public Class IntegratedUI
             My.Forms.MAIN.History("Synchonizing modified customers since:   " + ItemLastSync.ToString(), "n")
 
             customerData = customer_qbtotl.GetCustomerQBData(Me, True)
-            ReadItems = customerData.NoItems
+            ReadItems = customerData.NoItems - customerData.NoInactive
 
             If customerData Is Nothing Then
                 My.Forms.MAIN.History("No customer data", "n")
@@ -86,7 +86,9 @@ Public Class IntegratedUI
             Next
             For Each element As QBtoTL_Customer.Customer In customerData.DataArray
                 'Dim count As Int16 = ISQBID_In_DataTable(element.QB_ID)
-                DataGridView1.Rows.Add(element.RecSelect, element.QB_Name.ToString(), element.QBModTime.ToString(), element.NewlyAdded)
+                If element.Enabled Then ' Only show active customers
+                    DataGridView1.Rows.Add(element.RecSelect, element.QB_Name.ToString(), element.QBModTime.ToString(), element.NewlyAdded)
+                End If
             Next
         End If
 
@@ -407,7 +409,7 @@ Public Class IntegratedUI
         If Type = 14 Then
             Reset_Checked_Job_Value(JobData)
             Set_Selected_Job_Item()
-            ItemsProcessed = job_qbtotl.QBTransferITemsToTL(JobData, p_token, Me, True)
+            ItemsProcessed = job_qbtotl.QBTransferItemsToTL(JobData, p_token, Me, True)
             My.Forms.MAIN.History(ItemsProcessed.ToString() + " TimeLive records were created or updated", "i")
             My.Settings.ItemLastSync = DateTime.Now.ToString()
             My.Settings.Save()

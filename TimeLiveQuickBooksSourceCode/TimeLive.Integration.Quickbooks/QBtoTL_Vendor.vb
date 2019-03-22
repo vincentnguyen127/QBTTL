@@ -53,13 +53,10 @@ Public Class QBtoTL_Vendor
         Dim pblenth As Integer
         Dim NewlyAdd As String
 
-        'step1: create QBFC session manager and prepare the request
-        'Dim sessManager As QBSessionManager
+        'step1: prepare the request
         Dim vendormsgSetRs As IMsgSetResponse
 
         Try
-            'sessManager = New QBSessionManagerClass()
-
             Dim vendormsgSetRq As IMsgSetRequest = MAIN.SESSMANAGER.CreateMsgSetRequest("US", 2, 0) 'sessManager
             vendormsgSetRq.Attributes.OnError = ENRqOnError.roeContinue
 
@@ -67,9 +64,7 @@ Public Class QBtoTL_Vendor
 
             syncvendor.ORVendorListQuery.VendorListFilter.ActiveStatus.SetValue(ENActiveStatus.asActiveOnly)
 
-            'step2: begin QB session and send the request
-            'sessManager.OpenConnection("App", "TimeLive Quickbooks")
-            'sessManager.BeginSession("", ENOpenMode.omDontCare)
+            'step2: send the request
             vendormsgSetRs = MAIN.SESSMANAGER.DoRequests(vendormsgSetRq) 'sessManager
 
             Dim vendorrespList As IResponseList
@@ -84,15 +79,14 @@ Public Class QBtoTL_Vendor
             Dim vendorRetListCount As Integer = If(vendorRetList Is Nothing, 0, vendorRetList.Count)
 
             If vendorresp.StatusCode = 0 Then
-
                 If UI Then
-                    pblenth = vendorRetList.Count
+                    pblenth = If(vendorRetList Is Nothing, -1, vendorRetList.Count)
                     If pblenth >= 0 Then
                         IntegratedUIForm.ProgressBar1.Maximum = pblenth - 1
                     End If
                 End If
 
-                For i As Integer = 0 To vendorRetList.Count - 1
+                For i As Integer = 0 To If(vendorRetList Is Nothing, -1, vendorRetList.Count - 1)
                     vendorRet = vendorRetList.GetAt(i)
                     With vendorRet
                         If Not CBool(My.Settings.SyncElbVendor) Or .IsVendorEligibleFor1099.GetValue Then
@@ -129,11 +123,6 @@ Public Class QBtoTL_Vendor
                 My.Forms.MAIN.History(ex.ToString, "C")
                 Throw ex
             End If
-            'Finally
-            '    If Not sessManager Is Nothing Then
-            '       sessManager.EndSession()
-            '       sessManager.CloseConnection()
-            '    End If
         End Try
         Return VendorData
     End Function

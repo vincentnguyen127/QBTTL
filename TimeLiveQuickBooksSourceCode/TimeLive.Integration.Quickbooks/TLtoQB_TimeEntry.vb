@@ -88,7 +88,7 @@ Public Class TLtoQB_TimeEntry
 
             'sets status bar. If no, UI skip
             Dim incrementbar As Integer = 0
-            If UI = True Then
+            If UI Then
                 Dim pblenth As Integer = objTimeEntryArray.Length - 1
                 If pblenth >= 0 Then
                     IntUI_2ndSelectForm.ProgressBar1.Maximum = pblenth
@@ -106,7 +106,7 @@ Public Class TLtoQB_TimeEntry
                     ' need to add the time live ID and Name here using Object()
 
                     'objTimeTrackingServices.GetTimesheetApprovalTypeId()
-                    TimeEntryData.NoItems = TimeEntryData.NoItems + 1
+                    TimeEntryData.NoItems += 1
 
                     'My.Forms.MAIN.History("................+++++++++++: " + TimeEntryData.NoItems.ToString, "i")
                     'Query for Item_SubIemID
@@ -152,10 +152,9 @@ Public Class TLtoQB_TimeEntry
                                                      IIf(My.Settings.TransferToPayroll = True, GetClass(objTimeEntry), "<None>"),
                                                      PayrollItem_TypeName, Payroll_Item_SubItemID, ServiceItem_TypeName,
                                                      Item_SubItemID, PayrollName, ItemName))
-
                 End With
 
-                If UI = True Then
+                If UI Then
                     IntUI_2ndSelectForm.ProgressBar1.Value = n
                 End If
             Next
@@ -170,10 +169,9 @@ Public Class TLtoQB_TimeEntry
 
     Public Function TLTransferTimeToQB(ByRef objData As TLtoQB_TimeEntry.TimeEntryDataStructureQB,
                                    ByVal token As String, IntUI_2ndSelectForm As IntUI_2ndSelect, UI As Boolean) As Integer
-
         'sets status bar. If no, UI skip
         Dim incrementbar As Integer = 0
-        If UI = True Then
+        If UI Then
             Dim pblenth As Integer = objData.DataArray.Count - 1
             If pblenth >= 0 Then
                 IntUI_2ndSelectForm.ProgressBar1.Maximum = pblenth
@@ -182,37 +180,25 @@ Public Class TLtoQB_TimeEntry
         End If
 
         Dim NoRecordsCreatedorUpdated = 0
-
-        ' TODO: Connect to QB here so we dont have to do it so much within AddTimeEntryInQB
-        'step1: create QBFC session manager and prepare the request
-        'Dim sessManager As QBSessionManager
+        'step1: prepare the request
         Dim msgSetRs As IMsgSetResponse
-
-        'sessManager = New QBSessionManagerClass()
         Dim msgSetRq As IMsgSetRequest = MAIN.SESSMANAGER.CreateMsgSetRequest("US", 2, 0)
         Try
-            'sessManager.OpenConnection("App", "TimeLive Quickbooks")
-            'sessManager.BeginSession("", ENOpenMode.omDontCare)
             msgSetRs = MAIN.SESSMANAGER.DoRequests(msgSetRq)
             For Each element As TLtoQB_TimeEntry.TimeEntry In objData.DataArray
-
                 ' check if the check value is true
-                If element.RecSelect = True Then
+                If element.RecSelect Then
                     'Check number of QB records that match ID
-
                     My.Forms.MAIN.History("Processing: " + element.EmployeeName, "n")
-
                     'My.Forms.MAIN.History("get QB_ID:   " + na.ToString + " Name is : " + element.EmployeeName, "i")
                     Dim TL_ID_Return = 0 'ISQBID_In_DataTable(element.QB_ID)
                     'if none create
                     If TL_ID_Return = 0 Then
-                        NoRecordsCreatedorUpdated = NoRecordsCreatedorUpdated + 1
-
+                        NoRecordsCreatedorUpdated += 1
                         Try
                             'Insert record into quickbooks
                             Dim RecordTxnID As String = Nothing
                             With element
-
                                 RecordTxnID = AddTimeEntryInQB(.CustomerName, .EmployeeName, .IsBillable, .ProjectName,
                                              .TaskWithParent, .TotalTime, .TimeEntryDate, .TimeEntryClass,
                                              .PayrollItem_TypeName, .PayrollItem, .ServiceItem_TypeName, .ServiceItem)
@@ -236,7 +222,6 @@ Public Class TLtoQB_TimeEntry
                         End Try
                     End If
 
-
                     'if it exist check that the TL_ID is not empty ---> 1
                     'if not empty, just update
                     'if empty, informed the user of a potential error as a record has been created in the sync database without a corresponding TL pointer
@@ -258,25 +243,18 @@ Public Class TLtoQB_TimeEntry
                     'End If
                     'End If
                 End If
-                'if no, UI skip
-                If UI = True Then
+                'if no UI, then skip
+                If UI Then
                     IntUI_2ndSelectForm.ProgressBar1.Value = incrementbar
-                    incrementbar = incrementbar + 1
+                    incrementbar += 1
                 End If
-
             Next
-
         Catch ex As Exception
-            MAIN.QUITQBSESSION()
+            'MAIN.QUITQBSESSION()
             Throw ex
-            'Finally
-            '    If Not sessManager Is Nothing Then
-            '       sessManager.EndSession()
-            '       sessManager.CloseConnection()
-            '    End If
         End Try
-        Return NoRecordsCreatedorUpdated
 
+        Return NoRecordsCreatedorUpdated
     End Function
 
     ''' <summary>
@@ -285,25 +263,21 @@ Public Class TLtoQB_TimeEntry
     ''' <param name="mytlID"></param>
     ''' <returns></returns>
     Private Function ISTLID_In_DataTable(ByVal mytlID As String) As Int16
-        Dim result As Int16 = 0
-
         Dim TimeEntrieAdapter As New QB_TL_IDsTableAdapters.TimeEntriesTableAdapter()
         Dim QuickBooksIDs As QB_TL_IDs.TimeEntriesDataTable = TimeEntrieAdapter.GetCorrespondingQB_ID(mytlID)
+        Dim result = Math.Min(QuickBooksIDs.Count, 2)
+        Dim numResults As String
 
+        Select Case QuickBooksIDs.Count
+            Case 0
+                numResults = "No record"
+            Case 1
+                numResults = "One record"
+            Case Else
+                numResults = "More than one record"
+        End Select
 
-        If QuickBooksIDs.Count = 1 Then
-            result = 1
-            My.Forms.MAIN.History("One record found in TL sync table", "i")
-        End If
-        If QuickBooksIDs.Count = 0 Then
-            result = 0
-            My.Forms.MAIN.History("No records found on TL sync table", "i")
-        End If
-        If QuickBooksIDs.Count > 1 Then
-            result = 2
-            My.Forms.MAIN.History("More than one record found", "i")
-        End If
-
+        My.Forms.MAIN.History(numResults + " found in TL sync table", "i")
         Return result
     End Function
 
@@ -317,16 +291,12 @@ Public Class TLtoQB_TimeEntry
         If EmployeeQBID.Count > 1 Then
             My.Forms.MAIN.History("Found more than one matching employee IDs: " + EmployeeQBID.Count.ToString, "I")
             Return ""
-        End If
-
-        If EmployeeQBID.Count = 0 Then
+        ElseIf EmployeeQBID.Count = 0 Then
             My.Forms.MAIN.History("id not find any matching employee IDs: " + EmployeeQBID.Count.ToString, "I")
             Return ""
         End If
 
-
         result = EmployeeQBID.Rows(0)(0).ToString
-
         My.Forms.MAIN.History("QB Employee ID: " + result, "i")
         Return result
     End Function
@@ -349,9 +319,7 @@ Public Class TLtoQB_TimeEntry
         If ItemQBID.Count > 1 Then
             My.Forms.MAIN.History("Found more than one matching items ID: " + ItemQBID.Count.ToString, "I")
             Return ""
-        End If
-
-        If ItemQBID.Count = 0 Then
+        ElseIf ItemQBID.Count = 0 Then
             My.Forms.MAIN.History("Did not find any matching items ID: " + ItemQBID.Count.ToString, "I")
             Return ""
         End If
@@ -391,8 +359,7 @@ Public Class TLtoQB_TimeEntry
         If PayrollQBID.Count > 1 Then
             My.Forms.MAIN.History("Found more than one matching PayrollItem IDs: " + PayrollQBID.Count.ToString, "I")
             Return ""
-        End If
-        If PayrollQBID.Count = 0 Then
+        ElseIf PayrollQBID.Count = 0 Then
             My.Forms.MAIN.History("Did not find any matching PayrollItems: " + PayrollQBID.Count.ToString, "I")
             Return ""
         End If
@@ -401,8 +368,6 @@ Public Class TLtoQB_TimeEntry
         My.Forms.MAIN.History("Results of PayRoll ID: " + result.ToString, "i")
         Return result
     End Function
-
-
 
     ''' <summary>
     ''' Check if QBID is in sync database and if it has a corresponding TLID
@@ -436,38 +401,31 @@ Public Class TLtoQB_TimeEntry
         Dim rbtJobitems_AppSettings As Integer = My.Settings.JobHierarchy
         Dim RecordTxnID As String = Nothing
 
-
         If rbtJobitems_AppSettings = 0 Then
             RecordTxnID = AddTimeEntryInQBJobItem(CustomerName, EmployeeName, IsBillable, ProjectName, ServiceItemName, TotalTime,
                                     TimeEntryDate, TimeEntryClass, PayrollItem)
         ElseIf rbtJobitems_AppSettings = 1 Then
-
             RecordTxnID = AddTimeEntryInQBJobSubJob(CustomerName, EmployeeName, IsBillable, ProjectName, ServiceItemName, TotalTime,
                                       TimeEntryDate, TimeEntryClass, PayrollItem_TypeName, PayrollItem, ServiceItem_TypeName, ItemID)
         ElseIf rbtJobitems_AppSettings = 2 Then
-
             RecordTxnID = AddTimeEntryInQBItemSubItem(CustomerName, EmployeeName, IsBillable, ProjectName, ServiceItemName, TotalTime,
-                                        TimeEntryDate, TimeEntryClass, PayrollItem)
+                                        TimeEntryDate, TimeEntryClass, PayrollItem_TypeName, PayrollItem, ServiceItem_TypeName, ItemID)
         End If
 
         Return RecordTxnID
-
     End Function
 
     Public Function AddTimeEntryInQBJobItem(ByVal CustomerName As String, ByVal EmployeeName As String, ByVal IsBillable As Boolean,
                                        ByVal ProjectName As String, ByVal ServiceItemName As String, ByVal TotalTime As DateTime,
                                        ByVal TimeEntryDate As Date, ByVal TimeEntryClass As String, ByVal PayrollItem As String) As String
-
-        'step1: create QBFC session manager and prepare the request
-        'Dim sessManager As QBSessionManager
+        'step1: prepare the request
         Dim msgSetRs As IMsgSetResponse
         Try
             ProjectName = SetLength(ProjectName)
-            'sessManager = New QBSessionManagerClass()
             Dim msgSetRq As IMsgSetRequest = MAIN.SESSMANAGER.CreateMsgSetRequest("US", 2, 0)
             msgSetRq.Attributes.OnError = ENRqOnError.roeContinue
             Dim timeAdd As ITimeTrackingAdd = msgSetRq.AppendTimeTrackingAddRq
-            timeAdd.CustomerRef.FullName.SetValue(CustomerName & ": " & ProjectName)
+            timeAdd.CustomerRef.FullName.SetValue(CustomerName & ":" & ProjectName) ' CustomerName & ":" & ProjectName & ":" ServiceItemName
             timeAdd.Duration.SetValue(TotalTime.Hour, TotalTime.Minute, 0, False)
             timeAdd.EntityRef.FullName.SetValue(EmployeeName)
             timeAdd.IsBillable.SetValue(IsBillable)
@@ -482,9 +440,7 @@ Public Class TLtoQB_TimeEntry
                 timeAdd.PayrollItemWageRef.FullName.SetValue(PayrollItem)
             End If
 
-            'step2: begin QB session and send the request
-            'sessManager.OpenConnection("App", "TimeLive Quickbooks")
-            'sessManager.BeginSession("", ENOpenMode.omDontCare)
+            'step2: send the request
             msgSetRs = MAIN.SESSMANAGER.DoRequests(msgSetRq)
 
             ' Interpret the response
@@ -492,7 +448,7 @@ Public Class TLtoQB_TimeEntry
             response = msgSetRs.ResponseList.GetAt(0)
 
             If response.StatusSeverity = "Error" Then
-                Throw New Exception(msgSetRs.ResponseList.GetAt(0).StatusMessage)
+                Throw New Exception(response.StatusMessage)
             End If
 
             ' The response detail for Add and Mod requests is a 'Ret' object
@@ -505,56 +461,49 @@ Public Class TLtoQB_TimeEntry
             Return TimeEntryRet.TxnID.GetValue.ToString
 
         Catch ex As Exception
-            MAIN.QUITQBSESSION()
+            'MAIN.QUITQBSESSION()
             Throw ex
-            'Finally
-            'If Not sessManager Is Nothing Then
-            'sessManager.EndSession()
-            'sessManager.CloseConnection()
-            'End If
         End Try
     End Function
 
     Public Function AddTimeEntryInQBItemSubItem(ByVal CustomerName As String, ByVal EmployeeName As String, ByVal IsBillable As Boolean,
                                            ByVal ProjectName As String, ByVal ServiceItemName As String, ByVal TotalTime As DateTime,
-                                           ByVal TimeEntryDate As Date, ByVal TimeEntryClass As String, ByVal PayrollItem As String) As String
-
-        'step1: create QBFC session manager and prepare the request
-        'Dim sessManager As QBSessionManager
+                                           ByVal TimeEntryDate As Date, ByVal TimeEntryClass As String, ByVal PayrollItem_TypeName As Boolean,
+                                         ByVal PayrollItem As String, ByVal ServiceItem_TypeName As Boolean, ByVal ItemID As String) As String
+        'step1: prepare the request
         Dim msgSetRs As IMsgSetResponse
         Try
             ProjectName = SetLength(ProjectName)
-            'sessManager = New QBSessionManagerClass()
             Dim msgSetRq As IMsgSetRequest = MAIN.SESSMANAGER.CreateMsgSetRequest("US", 2, 0)
             msgSetRq.Attributes.OnError = ENRqOnError.roeContinue
             Dim timeAdd As ITimeTrackingAdd = msgSetRq.AppendTimeTrackingAddRq
-            timeAdd.CustomerRef.FullName.SetValue(CustomerName)
+            timeAdd.CustomerRef.FullName.SetValue(CustomerName & ":" & ProjectName & ":" & ServiceItemName) ' CustomerName
             timeAdd.Duration.SetValue(TotalTime.Hour, TotalTime.Minute, 0, False)
             timeAdd.EntityRef.FullName.SetValue(EmployeeName)
             timeAdd.IsBillable.SetValue(IsBillable)
-            timeAdd.ItemServiceRef.FullName.SetValue(ProjectName & ":" & ServiceItemName)
+            ' This is incorrect, puts Job:SubJob instead of Item:SubItem
+            timeAdd.ItemServiceRef.FullName.SetValue(ProjectName & ":" & ServiceItemName) ' ProjectName & ":" & ServiceItemName
             timeAdd.TxnDate.SetValue(TimeEntryDate)
             If Not TimeEntryClass = "<None>" Then
                 timeAdd.ClassRef.FullName.SetValue(TimeEntryClass)
             End If
             If Not PayrollItem = "<None>" Then
-                timeAdd.PayrollItemWageRef.FullName.SetValue(PayrollItem)
+                If PayrollItem_TypeName Then
+                    timeAdd.PayrollItemWageRef.FullName.SetValue(PayrollItem)
+                Else
+                    timeAdd.PayrollItemWageRef.ListID.SetValue(PayrollItem.ToString.Trim)
+                End If
             End If
 
-            'step2: begin QB session and send the request
-            'sessManager.OpenConnection("App", "TimeLive Quickbooks")
-            'sessManager.BeginSession("", ENOpenMode.omDontCare)
+            'step2: send the request
             msgSetRs = MAIN.SESSMANAGER.DoRequests(msgSetRq)
-            If msgSetRs.ResponseList.GetAt(0).StatusSeverity = "Error" Then
-                Throw New Exception(msgSetRs.ResponseList.GetAt(0).StatusMessage)
-            End If
 
             ' Interpret the response
             Dim response As IResponse
             response = msgSetRs.ResponseList.GetAt(0)
 
             If response.StatusSeverity = "Error" Then
-                Throw New Exception(msgSetRs.ResponseList.GetAt(0).StatusMessage)
+                Throw New Exception(response.StatusMessage)
             End If
 
             ' The response detail for Add and Mod requests is a 'Ret' object
@@ -566,13 +515,8 @@ Public Class TLtoQB_TimeEntry
             Return TimeEntryRet.TxnID.GetValue.ToString
 
         Catch ex As Exception
-            MAIN.QUITQBSESSION()
+            'MAIN.QUITQBSESSION()
             Throw ex
-            'Finally
-            'If Not sessManager Is Nothing Then
-            'sessManager.EndSession()
-            'sessManager.CloseConnection()
-            'End If
         End Try
     End Function
 
@@ -580,14 +524,10 @@ Public Class TLtoQB_TimeEntry
                                          ByVal ProjectName As String, ByVal ServiceItemName As String, ByVal TotalTime As DateTime,
                                          ByVal TimeEntryDate As Date, ByVal TimeEntryClass As String, ByVal PayrollItem_TypeName As Boolean,
                                          ByVal PayrollItem As String, ByVal ServiceItem_TypeName As Boolean, ByVal ItemID As String) As String
-
-
-        'step1: create QBFC session manager and prepare the request
-        'Dim sessManager As QBSessionManager
+        'step1: prepare the request
         Dim msgSetRs As IMsgSetResponse
         Try
             ProjectName = SetLength(ProjectName)
-            'sessManager = New QBSessionManagerClass()
             Dim msgSetRq As IMsgSetRequest = MAIN.SESSMANAGER.CreateMsgSetRequest("US", 2, 0)
             msgSetRq.Attributes.OnError = ENRqOnError.roeContinue
             Dim timeAdd As ITimeTrackingAdd = msgSetRq.AppendTimeTrackingAddRq
@@ -616,20 +556,15 @@ Public Class TLtoQB_TimeEntry
                 timeAdd.PayrollItemWageRef.ListID.SetValue(PayrollItem.ToString.Trim)
             End If
 
-            'step2: begin QB session and send the request
-            'sessManager.OpenConnection("App", "TimeLive Quickbooks")
-            'sessManager.BeginSession("", ENOpenMode.omDontCare)
+            'step2: send the request
             msgSetRs = MAIN.SESSMANAGER.DoRequests(msgSetRq)
-            If msgSetRs.ResponseList.GetAt(0).StatusSeverity = "Error" Then
-                Throw New Exception(msgSetRs.ResponseList.GetAt(0).StatusMessage)
-            End If
 
             ' Interpret the response
             Dim response As IResponse
             response = msgSetRs.ResponseList.GetAt(0)
 
             If response.StatusSeverity = "Error" Then
-                Throw New Exception(msgSetRs.ResponseList.GetAt(0).StatusMessage)
+                Throw New Exception(response.StatusMessage)
             End If
 
             ' The response detail for Add and Mod requests is a 'Ret' object
@@ -640,23 +575,16 @@ Public Class TLtoQB_TimeEntry
             ' Make sure a customerRet was returned before trying to obtain
             Return TimeEntryRet.TxnID.GetValue.ToString
         Catch ex As Exception
-            MAIN.QUITQBSESSION()
+            'MAIN.QUITQBSESSION()
             Throw ex
-            'Finally
-            '   If Not sessManager Is Nothing Then
-            '       sessManager.EndSession()
-            '       sessManager.CloseConnection()
-            '   End If
         End Try
     End Function
 
     Public Sub AddNoneItemInQB(ByVal ItemName As String, ByVal ServiceItemAccount As String)
-        'step1: create QBFC session manager and prepare the request
-        'Dim sessManager As QBSessionManager
+        'step1: prepare the request
         Dim msgSetRs As IMsgSetResponse
         Try
             ItemName = SetLength(ItemName)
-            'sessManager = New QBSessionManagerClass()
             Dim msgSetRq As IMsgSetRequest = MAIN.SESSMANAGER.CreateMsgSetRequest("US", 2, 0)
             msgSetRq.Attributes.OnError = ENRqOnError.roeContinue
             Dim AccountAdd As IAccountAdd = msgSetRq.AppendAccountAddRq
@@ -665,30 +593,19 @@ Public Class TLtoQB_TimeEntry
             Dim ItemAdd As IItemServiceAdd = msgSetRq.AppendItemServiceAddRq
             ItemAdd.Name.SetValue(ItemName)
             ItemAdd.ORSalesPurchase.SalesOrPurchase.AccountRef.FullName.SetValue(ServiceItemAccount)
-            'step2: begin QB session and send the request
-            'sessManager.OpenConnection("App", "TimeLive Quickbooks")
-            'sessManager.BeginSession("", ENOpenMode.omDontCare)
+            'step2: send the request
             msgSetRs = MAIN.SESSMANAGER.DoRequests(msgSetRq)
             'If msgSetRs.ResponseList.GetAt(0).StatusSeverity = "Error" Then
             '    Throw New Exception(msgSetRs.ResponseList.GetAt(0).StatusMessage)
             'End If
         Catch ex As Exception
-            MAIN.QUITQBSESSION()
+            'MAIN.QUITQBSESSION()
             Throw ex
-            'Finally
-            '   If Not sessManager Is Nothing Then
-            '       sessManager.EndSession()
-            '       sessManager.CloseConnection()
-            '   End If
         End Try
     End Sub
     Public Function SetLength(ByVal Name As String) As String
-        If Name.Length > 32 Then
-            Name = Name.Substring(0, 32)
-        End If
-        Return Name
+        Return Name.Substring(0, Math.Min(Name.Length, 32))
     End Function
-
 
     Public Function GetClass(ByVal objTimeEntry As Services.TimeLive.TimeEntries.TimeEntry) As String
         Dim TimeEntryClass As String = "<None>"
@@ -743,43 +660,31 @@ Public Class TLtoQB_TimeEntry
 
     'Add class to Quickbooks if it does not exist (should be prevented)
     Public Sub AddClass(ByVal ClassName As String)
-        'step1: create QBFC session manager and prepare the request
-        'Dim sessManager As QBSessionManager
+        'step1: prepare the request
         Dim msgSetRs As IMsgSetResponse
         Try
-            'sessManager = New QBSessionManagerClass()
             Dim msgSetRq As IMsgSetRequest = MAIN.SESSMANAGER.CreateMsgSetRequest("US", 2, 0)
             msgSetRq.Attributes.OnError = ENRqOnError.roeContinue
             Dim ClassAdd As IClassAdd = msgSetRq.AppendClassAddRq
             ClassAdd.Name.SetValue(ClassName)
 
-            'step2: begin QB session and send the request
-            'sessManager.OpenConnection("App", "TimeLive Quickbooks")
-            'sessManager.BeginSession("", ENOpenMode.omDontCare)
+            'step2: send the request
             msgSetRs = MAIN.SESSMANAGER.DoRequests(msgSetRq)
-            If Not msgSetRs.ResponseList.GetAt(0).StatusMessage.Contains("already in use") Then
-                If msgSetRs.ResponseList.GetAt(0).StatusSeverity = "Error" Then
-                    Throw New Exception(msgSetRs.ResponseList.GetAt(0).StatusMessage)
-                End If
+            If (Not msgSetRs.ResponseList.GetAt(0).StatusMessage.Contains("already in use")) And
+               msgSetRs.ResponseList.GetAt(0).StatusSeverity = "Error" Then
+                Throw New Exception(msgSetRs.ResponseList.GetAt(0).StatusMessage)
             End If
         Catch ex As Exception
-            MAIN.QUITQBSESSION()
+            'MAIN.QUITQBSESSION()
             Throw ex
-            'Finally
-            '    If Not sessManager Is Nothing Then
-            '       sessManager.EndSession()
-            '       sessManager.CloseConnection()
-            '    End If
         End Try
     End Sub
 
     'Add payroll item to Quickbooks if it does not exist (should be prevented)
     Public Sub AddPayrollItem(ByVal PayrollItem As String)
-        'step1: create QBFC session manager and prepare the request
-        'Dim sessManager As QBSessionManager
+        'step1: prepare the request
         Dim msgSetRs As IMsgSetResponse
         Try
-            'sessManager = New QBSessionManagerClass()
             Dim msgSetRq As IMsgSetRequest = MAIN.SESSMANAGER.CreateMsgSetRequest("US", 2, 0)
             msgSetRq.Attributes.OnError = ENRqOnError.roeContinue
             Dim PayrollItemAdd As IPayrollItemWageAdd = msgSetRq.AppendPayrollItemWageAddRq
@@ -787,9 +692,7 @@ Public Class TLtoQB_TimeEntry
             PayrollItemAdd.ExpenseAccountRef.FullName.SetValue("Payroll Expenses")
             PayrollItemAdd.WageType.SetValue(GetWageType(IntegratedUI.cbWageType.SelectedItem))
 
-            'step2: begin QB session and send the request
-            'sessManager.OpenConnection("App", "TimeLive Quickbooks")
-            'sessManager.BeginSession("", ENOpenMode.omDontCare)
+            'step2: send the request
             msgSetRs = MAIN.SESSMANAGER.DoRequests(msgSetRq)
             If Not msgSetRs.ResponseList.GetAt(0).StatusMessage.Contains("already in use") Then
                 If msgSetRs.ResponseList.GetAt(0).StatusSeverity = "Error" Then
@@ -797,13 +700,8 @@ Public Class TLtoQB_TimeEntry
                 End If
             End If
         Catch ex As Exception
-            MAIN.QUITQBSESSION()
+            'MAIN.QUITQBSESSION()
             Throw ex
-            'Finally
-            '    If Not sessManager Is Nothing Then
-            '       sessManager.EndSession()
-            '       sessManager.CloseConnection()
-            '    End If
         End Try
     End Sub
 

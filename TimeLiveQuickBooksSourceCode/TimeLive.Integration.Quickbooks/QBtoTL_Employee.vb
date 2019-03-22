@@ -9,6 +9,7 @@ Public Class QBtoTL_Employee
 
     Public Class EmployeeDataStructureQB
         Public NoItems As Integer = 0
+        'Public NoInactive As Integer = 0 'Add this once we start tracking inactive employees
         Public DataArray As New List(Of Employee)
     End Class
     Public Class Employee
@@ -22,8 +23,6 @@ Public Class QBtoTL_Employee
         Public LastName As String
         Public HiredDate As String
         Public Email As String
-
-
 
         Sub New(ByVal NewlyAdded_in As String, ByVal QB_Name_in As String, ByVal Email_in As String, ByVal QB_ID_in As String, ByVal FirstName_in As String,
                 ByVal LastName_in As String, ByVal HiredDate_in As String, ModTime_in As String, CreateTime_in As String)
@@ -40,7 +39,6 @@ Public Class QBtoTL_Employee
         End Sub
     End Class
 
-
     Public Function GetEmployeeQBData(IntegratedUIForm As IntegratedUI, UI As Boolean) As EmployeeDataStructureQB
 
         Dim EmailAddress As String
@@ -52,12 +50,10 @@ Public Class QBtoTL_Employee
         Dim EmployeeData As New EmployeeDataStructureQB
         Dim NewlyAdd As String
 
-        'step1: create QBFC session manager and prepare the request
-        'Dim sessManager As QBSessionManager
+        'step1: prepare the request
         Dim msgSetRs As IMsgSetResponse
 
         Try
-            'sessManager = New QBSessionManagerClass()
             Dim msgSetRq As IMsgSetRequest = MAIN.SESSMANAGER.CreateMsgSetRequest("US", 2, 0) 'sessManager
             msgSetRq.Attributes.OnError = ENRqOnError.roeContinue
 
@@ -66,9 +62,7 @@ Public Class QBtoTL_Employee
 
             employeequery.ORListQuery.ListFilter.ActiveStatus.SetValue(ENActiveStatus.asActiveOnly)
 
-            'step2: begin QB session and send the request
-            'sessManager.OpenConnection("App", "TimeLive Quickbooks")
-            'sessManager.BeginSession("", ENOpenMode.omDontCare)
+            'step2: send the request
             msgSetRs = MAIN.SESSMANAGER.DoRequests(msgSetRq) 'sessManager
 
             Dim respList As IResponseList
@@ -92,13 +86,13 @@ Public Class QBtoTL_Employee
                 Dim empRet As IEmployeeRet
                 'sets status bar, If no, UI skip
                 If UI Then
-                    Dim pblenth As Integer = empRetList.Count
+                    Dim pblenth As Integer = If(empRetList Is Nothing, -1, empRetList.Count)
                     If pblenth >= 0 Then
                         IntegratedUIForm.ProgressBar1.Maximum = pblenth - 1
                     End If
                 End If
 
-                For i As Integer = 0 To empRetList.Count - 1
+                For i As Integer = 0 To If(empRetList Is Nothing, -1, empRetList.Count - 1)
                     empRet = empRetList.GetAt(i)
 
                     With empRet
@@ -132,16 +126,12 @@ Public Class QBtoTL_Employee
             ' Close the session manager before throwing exception
             MAIN.QUITQBSESSION()
             Throw ex
-            'Finally
-            '   If Not sessManager Is Nothing Then
-            '       sessManager.EndSession()
-            '       sessManager.CloseConnection()
-            '   End If
         End Try
 
         Return EmployeeData
     End Function
 
+    ' Note: Will need to add things similar to QBTransferCustomerToTL if we add Enabled as variable
     Public Function QBTransferEmployeeToTL(ByRef objData As QBtoTL_Employee.EmployeeDataStructureQB,
                                    ByVal token As String, IntegratedUIForm As IntegratedUI, UI As Boolean) As Integer
 
@@ -166,19 +156,19 @@ Public Class QBtoTL_Employee
 
         'sets status bar. If no, UI skip
         Dim incrementbar As Integer = 0
-        If UI = True Then
-            Dim pblenth As Integer = objData.DataArray.Count - 1
-            If pblenth >= 0 Then
-                IntegratedUIForm.ProgressBar1.Maximum = pblenth
-                IntegratedUIForm.ProgressBar1.Value = 0
-            End If
+        If UI Then
+            Dim pblenth As Integer = objData.DataArray.Count
+            'If pblenth >= 0 Then
+            IntegratedUIForm.ProgressBar1.Maximum = pblenth
+            IntegratedUIForm.ProgressBar1.Value = 0
+            'End If
         End If
 
         Dim NoRecordsCreatedorUpdated = 0
         For Each element As QBtoTL_Employee.Employee In objData.DataArray
 
             ' check if the check value is true
-            If element.RecSelect = True Then
+            If element.RecSelect Then
                 'Check number of QB records that match ID
                 My.Forms.MAIN.History("Processing:  " + element.QB_Name, "n")
 
@@ -187,306 +177,280 @@ Public Class QBtoTL_Employee
                 Dim LastName As String
                 Dim EmployeeName As String
                 Dim HiredDate As String
-                Dim TL_ID_Return = ISQBID_In_DataTable(element.QB_Name, element.QB_ID)
+                ' 0: QuickBooks ID is not in Data Table
+                ' 1: QuickBooks ID is in DataTable
+                Dim DT_has_QBID = ISQBID_In_DataTable(element.QB_Name, element.QB_ID)
 
-                'if none create
-                If TL_ID_Return = 0 Then
+                Dim create As Boolean = True
+                ' Do not show Message Box when no UI or when QB ID is in our Data Table, just create employee
+                If UI And Not CBool(DT_has_QBID) Then
+                    create = MsgBox("New employee found: " + element.QB_Name + ". Create?", MsgBoxStyle.YesNo, "Warning!") = MsgBoxResult.Yes
+                End If
+                If create Then
+                    ' If QB_ID is in the DB, check if TL ID is too
+                    If DT_has_QBID Then
+                        Dim TL_ID As String = ISTLID_In_DataTable(element.QB_ID)
+                        If TL_ID Is Nothing Then
+                            My.Forms.MAIN.History("Detected empty sync record (No TL ID). Needs to be manually sync or deleted." + element.QB_Name, "i")
+                        End If
+                        Dim employeeInTL As Boolean = Array.Exists(objEmployeeServices.GetEmployees,
+                                                                   Function(e As Services.TimeLive.Employees.Employee)
+                                                                       Return e.EmployeeName = element.QB_Name
+                                                                   End Function)
+                        If employeeInTL Then
+                            ' TL already has this value and so does our DB, so just move to next element after updating Progress Bar
+                            If UI Then
+                                incrementbar += 1
+                                IntegratedUIForm.ProgressBar1.Value = incrementbar
+                            End If
+                            Continue For
+                        End If
+                    End If
+                    ' Create the element in TL:
+                    NoRecordsCreatedorUpdated += 1
+                    Dim whereInsert As String = If(DT_has_QBID, "TimeLive: ", "sync database and TimeLive: ")
+                    My.Forms.MAIN.History("Inserting QB & TL keys into " + whereInsert + element.QB_Name, "i")
 
-                    If MsgBox("New employee found: " + element.QB_Name + ". Create?", MsgBoxStyle.YesNo, "Warning!") = MsgBoxResult.Yes Then
+                    'Insert record into TimeLive
+                    With element
+                        Try
+                            EmailAddress = GetEmailAddress(.Email, token, .QB_ID)
+                            FirstName = GetValue(.QB_Name, "FirstName")
+                            FirstName = FirstName.Replace(",", "")
+                            LastName = GetValue(.QB_Name, "LastName")
+                            LastName = LastName.Replace(",", "")
+                            HiredDate = GetValue(.HiredDate, "HiredDate")
+                            EmployeeName = FirstName + " " + LastName ' Changed "," to " "?
 
-                        NoRecordsCreatedorUpdated = NoRecordsCreatedorUpdated + 1
-                        ' if it does not exist create a new record on both the sync database and on TL
-                        My.Forms.MAIN.History("Inserting QB & TL keys into sync database and inserting to TimeLife:  " + element.QB_Name, "i")
+                            'My.Forms.MAIN.History("FirstName: " + LastName, "i")
+                            'My.Forms.MAIN.History("LastName: " + FirstName, "i")
+                            'My.Forms.MAIN.History("FullName: " + EmployeeName, "i")
 
+                            ' Add user with username and password = emailAddress
+                            objEmployeeServices.InsertEmployee(EmailAddress, EmailAddress, FirstName, LastName, EmailAddress, "",
+                                                               nDepartmentId, nRoleId, nLocationId, 233, nBillingTypeId, Now.Date,
+                                                               -1, 0, 6, 0, 0, nEmployeeTypeId, nEmployeeStatusId, "", HiredDate,
+                                                               Now.Date, nWorkingDayTypeId, System.Guid.Empty, 0, System.Guid.Empty,
+                                                               False, "", "", "", "", "", "", "", "", "", "Mr.", True)
+                            My.Forms.MAIN.History("Transfer to TimeLive was successful.", "i")
 
-                        'Insert record into Time Life
-                        With element
-                            Try
-                                EmailAddress = GetEmailAddress(.Email, token, .QB_ID)
-                                FirstName = GetValue(.QB_Name, "FirstName")
-                                FirstName = FirstName.Replace(",", "")
-                                LastName = GetValue(.QB_Name, "LastName")
-                                LastName = LastName.Replace(",", "")
-                                HiredDate = GetValue(.HiredDate, "HiredDate")
-                                EmployeeName = FirstName + "," + LastName
-
-                                'My.Forms.MAIN.History("FirstName: " + LastName, "i")
-                                'My.Forms.MAIN.History("LastName: " + FirstName, "i")
-                                'My.Forms.MAIN.History("FullName: " + EmployeeName, "i")
-
-
-
-                                objEmployeeServices.InsertEmployee(EmailAddress,
-                                EmailAddress, FirstName, LastName, EmailAddress, "", nDepartmentId, nRoleId, nLocationId,
-                                233, nBillingTypeId, Now.Date, -1, 0, 6, 0, 0, nEmployeeTypeId, nEmployeeStatusId,
-                                "", HiredDate, Now.Date, nWorkingDayTypeId, System.Guid.Empty, 0, System.Guid.Empty, False, "", "", "", "", "", "", "", "", "", "Mr.", True)
-                                My.Forms.MAIN.History("Transfer was sucessful.", "i")
-
-
-                                ''Insert record into sync database
-
-                                Dim TLClientID As String = objEmployeeServices.GetEmployeeId(FirstName + " " + LastName)
-                                My.Forms.MAIN.History("Employee ID: " + TLClientID, "i")
-                                If TLClientID IsNot Nothing Then
+                            'Insert record into sync database if not in it
+                            If Not CBool(DT_has_QBID) Then
+                                Dim employeeInTL As Boolean = Array.Exists(objEmployeeServices.GetEmployees,
+                                                                   Function(e As Services.TimeLive.Employees.Employee)
+                                                                       Return e.EmployeeName = EmployeeName
+                                                                   End Function)
+                                If employeeInTL Then
+                                    ' if EmployeeName is changed back to "firstName,lastName", change to GetEmployeeID(firstName + " " + lastName)
+                                    Dim TLClientID As Integer = objEmployeeServices.GetEmployeeId(EmployeeName)
+                                    My.Forms.MAIN.History("Employee ID: " + TLClientID, "i")
                                     My.Forms.MAIN.History("Inserting new employee into sync db.", "i")
                                     Dim EmployeesAdapter As New QB_TL_IDsTableAdapters.EmployeesTableAdapter()
-                                    EmployeesAdapter.Insert(element.QB_ID, objEmployeeServices.GetEmployeeId(FirstName + " " + LastName), element.QB_Name, EmployeeName)
+                                    EmployeesAdapter.Insert(element.QB_ID, CInt(TLClientID), element.QB_Name, EmployeeName)
                                 Else
                                     My.Forms.MAIN.History("Error creating record in TimeLive", "N")
                                 End If
+                            End If
+                            '--------------------Save just in case is needed later
+                            'Dim employees As New Services.TimeLive.Employees.Employees
+                            'employee.EmployeeName = "Test Employee"
+                            'employee.FirstName = "Employee"
+                            'employee.LastName = "Test"
+                            'Dim EmployeeID As String = objEmployeeServices.AddEmployee(employee)
+                            '--------------------Save just in case is needed later
+                            'Dim employees As New Object
+                            'employees = objEmployeeServices.GetEmployees()
 
-                                '--------------------Save just in case is needed later
-                                'Dim employees As New Services.TimeLive.Employees.Employees
-                                'employee.EmployeeName = "Test Employee"
-                                'employee.FirstName = "Employee"
-                                'employee.LastName = "Test"
-                                'Dim EmployeeID As String = objEmployeeServices.AddEmployee(employee)
-                                '--------------------Save just in case is needed later
-                                'Dim employees As New Object
-                                'employees = objEmployeeServices.GetEmployees()
+                            'For Each e_element As Services.TimeLive.Employees.Employee In employees
+                            '    My.Forms.MAIN.History("Name:" + e_element.EmployeeName, "i")
+                            '    My.Forms.MAIN.History("ID:" + e_element.EmployeeId.ToString(), "i")
+                            'Next
 
-                                'For Each e_element As Services.TimeLive.Employees.Employee In employees
-                                '    My.Forms.MAIN.History("Name:" + e_element.EmployeeName, "i")
-                                '    My.Forms.MAIN.History("ID:" + e_element.EmployeeId.ToString(), "i")
-                                'Next
-
-                            Catch ex As Exception
-                                My.Forms.MAIN.History("Transfer failed." + ex.ToString, "N")
-                            End Try
-                        End With
-                    End If
+                        Catch ex As Exception
+                            My.Forms.MAIN.History("Transfer failed." + ex.ToString, "N")
+                        End Try
+                    End With
                 End If
 
-                'if it exist check that the TL_ID is not empty ---> 1
-                'if not empty, just update
-                'if empty, informed the user of a potential error as a record has been created in the sync database without a corresponding TL pointer
-                If TL_ID_Return = 1 Then
+                'Dim foundRows() As DataRow
 
-                    Dim TL_ID As String = ISTLID_In_DataTable(element.QB_ID)
-                    If TL_ID Is Nothing Then
-                        My.Forms.MAIN.History("Detected empty sync record (No TL ID). Needs to be manually sync or deleted." + element.QB_Name, "i")
-
-                    Else
-                        NoRecordsCreatedorUpdated = NoRecordsCreatedorUpdated + 1
-                        My.Forms.MAIN.History("Updating TL record for: " + element.QB_Name, "i")
-                        'Update TimeLife Record
+                '' Use the Select method to find all rows matching the filter.
+                'foundRows = employees.Select(String.Format("AccountEmployeeId = '{0}'", 16))
 
 
-                        Dim employees As New DataTable
-                        employees = objEmployeeServices.GetEmployeesData
+                'Dim AccountEmployeeId As Integer = 16
+                'If Not IsDBNull(foundRows(0)("AccountEmployeeId")) Then
+                '    AccountEmployeeId = foundRows(0)("AccountEmployeeId")
+                'End If
+                ''My.Forms.MAIN.History("AccountEmployeeId: " + AccountEmployeeId.ToString, "n")
 
-                        'For Each column As DataColumn In employees.Columns
-                        '    My.Forms.MAIN.History(column.ColumnName, "n")
-                        'Next
+                'Dim Password As String = ""
+                'If Not IsDBNull(foundRows(0)("Password")) Then
+                '    Password = foundRows(0)("Password")
+                'End If
+                ''My.Forms.MAIN.History("Password: " + Password, "n")
 
-                        'Dim foundRows() As DataRow
+                'Dim Prefix As String = ""
+                'If Not IsDBNull(foundRows(0)("Prefix")) Then
+                '    Prefix = foundRows(0)("Prefix")
+                'End If
+                ''My.Forms.MAIN.History("Prefix: " + Prefix, "n")
 
-                        '' Use the Select method to find all rows matching the filter.
-                        'foundRows = employees.Select(String.Format("AccountEmployeeId = '{0}'", 16))
+                'Dim EmployeeCode As String = ""
+                'If Not IsDBNull(foundRows(0)("EmployeeCode")) Then
+                '    EmployeeCode = foundRows(0)("EmployeeCode")
+                'End If
+                ''My.Forms.MAIN.History("EmployeeCode: " + EmployeeCode, "n")
 
+                'Dim MiddleName As String = ""
+                'If Not IsDBNull(foundRows(0)("MiddleName")) Then
+                '    MiddleName = foundRows(0)("MiddleName")
+                'End If
+                ''My.Forms.MAIN.History("MiddleName: " + MiddleName, "n")
 
-                        'Dim AccountEmployeeId As Integer = 16
-                        'If Not IsDBNull(foundRows(0)("AccountEmployeeId")) Then
-                        '    AccountEmployeeId = foundRows(0)("AccountEmployeeId")
-                        'End If
-                        ''My.Forms.MAIN.History("AccountEmployeeId: " + AccountEmployeeId.ToString, "n")
+                'Dim AccountDepartmentID As Integer = nDepartmentId
+                'If Not IsDBNull(foundRows(0)("AccountDepartmentID")) Then
+                '    AccountDepartmentID = foundRows(0)("AccountDepartmentID")
+                'End If
+                ''My.Forms.MAIN.History("AccountDepartmentID: " + AccountDepartmentID.ToString, "n")
 
-                        'Dim Password As String = ""
-                        'If Not IsDBNull(foundRows(0)("Password")) Then
-                        '    Password = foundRows(0)("Password")
-                        'End If
-                        ''My.Forms.MAIN.History("Password: " + Password, "n")
+                'Dim AccountRoleID As Integer = nRoleId
+                'If Not IsDBNull(foundRows(0)("AccountRoleID")) Then
+                '    AccountRoleID = foundRows(0)("AccountRoleID")
+                'End If
+                ''My.Forms.MAIN.History("AccountRoleID: " + AccountRoleID.ToString, "n")
 
-                        'Dim Prefix As String = ""
-                        'If Not IsDBNull(foundRows(0)("Prefix")) Then
-                        '    Prefix = foundRows(0)("Prefix")
-                        'End If
-                        ''My.Forms.MAIN.History("Prefix: " + Prefix, "n")
+                'Dim AccountLocationID As Integer = nLocationId
+                'If Not IsDBNull(foundRows(0)("AccountLocationID")) Then
+                '    AccountLocationID = foundRows(0)("AccountLocationID")
+                'End If
+                ''My.Forms.MAIN.History("AccountLocationID: " + AccountLocationID.ToString, "n")
 
-                        'Dim EmployeeCode As String = ""
-                        'If Not IsDBNull(foundRows(0)("EmployeeCode")) Then
-                        '    EmployeeCode = foundRows(0)("EmployeeCode")
-                        'End If
-                        ''My.Forms.MAIN.History("EmployeeCode: " + EmployeeCode, "n")
+                'Dim CountryId As Short = 233
+                'If Not IsDBNull(foundRows(0)("CountryId")) Then
+                '    CountryId = foundRows(0)("CountryId")
+                'End If
+                ''My.Forms.MAIN.History("CountryId: " + CountryId.ToString, "n")
 
-                        'Dim MiddleName As String = ""
-                        'If Not IsDBNull(foundRows(0)("MiddleName")) Then
-                        '    MiddleName = foundRows(0)("MiddleName")
-                        'End If
-                        ''My.Forms.MAIN.History("MiddleName: " + MiddleName, "n")
+                'Dim BillingTypeId As Integer = nBillingTypeId
+                'If Not IsDBNull(foundRows(0)("BillingTypeId")) Then
+                '    BillingTypeId = foundRows(0)("BillingTypeId")
+                'End If
+                ''My.Forms.MAIN.History("BillingTypeId: " + BillingTypeId.ToString, "n")
 
-                        'Dim AccountDepartmentID As Integer = nDepartmentId
-                        'If Not IsDBNull(foundRows(0)("AccountDepartmentID")) Then
-                        '    AccountDepartmentID = foundRows(0)("AccountDepartmentID")
-                        'End If
-                        ''My.Forms.MAIN.History("AccountDepartmentID: " + AccountDepartmentID.ToString, "n")
+                'Dim StartDate As DateTime = Now()
+                'If Not IsDBNull(foundRows(0)("StartDate")) Then
+                '    StartDate = foundRows(0)("StartDate")
+                'End If
+                ''My.Forms.MAIN.History("StartDate: " + StartDate.ToString, "n")
 
-                        'Dim AccountRoleID As Integer = nRoleId
-                        'If Not IsDBNull(foundRows(0)("AccountRoleID")) Then
-                        '    AccountRoleID = foundRows(0)("AccountRoleID")
-                        'End If
-                        ''My.Forms.MAIN.History("AccountRoleID: " + AccountRoleID.ToString, "n")
+                'Dim TerminationDate As DateTime = Now()
+                'If Not IsDBNull(foundRows(0)("TerminationDate")) Then
+                '    StartDate = foundRows(0)("TerminationDate")
+                'End If
+                ''My.Forms.MAIN.History("TerminationDate: " + TerminationDate.ToString, "n")
 
-                        'Dim AccountLocationID As Integer = nLocationId
-                        'If Not IsDBNull(foundRows(0)("AccountLocationID")) Then
-                        '    AccountLocationID = foundRows(0)("AccountLocationID")
-                        'End If
-                        ''My.Forms.MAIN.History("AccountLocationID: " + AccountLocationID.ToString, "n")
+                'Dim StatusId As Integer = nEmployeeStatusId
+                'If Not IsDBNull(foundRows(0)("StatusId")) Then
+                '    StatusId = foundRows(0)("StatusId")
+                'End If
+                ''My.Forms.MAIN.History("StatusId: " + StatusId.ToString, "n")
 
-                        'Dim CountryId As Short = 233
-                        'If Not IsDBNull(foundRows(0)("CountryId")) Then
-                        '    CountryId = foundRows(0)("CountryId")
-                        'End If
-                        ''My.Forms.MAIN.History("CountryId: " + CountryId.ToString, "n")
+                'Dim IsDeleted As Boolean = False
+                'If Not IsDBNull(foundRows(0)("IsDeleted")) Then
+                '    IsDeleted = foundRows(0)("IsDeleted")
+                'End If
+                ''My.Forms.MAIN.History("IsDeleted: " + IsDeleted.ToString, "n")
 
-                        'Dim BillingTypeId As Integer = nBillingTypeId
-                        'If Not IsDBNull(foundRows(0)("BillingTypeId")) Then
-                        '    BillingTypeId = foundRows(0)("BillingTypeId")
-                        'End If
-                        ''My.Forms.MAIN.History("BillingTypeId: " + BillingTypeId.ToString, "n")
+                'Dim IsDisabled As Boolean = False
+                'If Not IsDBNull(foundRows(0)("IsDisabled")) Then
+                '    IsDisabled = foundRows(0)("IsDisabled")
+                'End If
+                ''My.Forms.MAIN.History("Password: " + IsDisabled.ToString, "n")
 
-                        'Dim StartDate As DateTime = Now()
-                        'If Not IsDBNull(foundRows(0)("StartDate")) Then
-                        '    StartDate = foundRows(0)("StartDate")
-                        'End If
-                        ''My.Forms.MAIN.History("StartDate: " + StartDate.ToString, "n")
+                'Dim DefaultProjectId As Integer = -1
+                'If Not IsDBNull(foundRows(0)("DefaultProjectId")) Then
+                '    DefaultProjectId = foundRows(0)("DefaultProjectId")
+                'End If
+                ''My.Forms.MAIN.History("DefaultProjectId: " + DefaultProjectId.ToString, "n")
 
-                        'Dim TerminationDate As DateTime = Now()
-                        'If Not IsDBNull(foundRows(0)("TerminationDate")) Then
-                        '    StartDate = foundRows(0)("TerminationDate")
-                        'End If
-                        ''My.Forms.MAIN.History("TerminationDate: " + TerminationDate.ToString, "n")
+                'Dim EmployeeManagerId As Integer = 0
+                'If Not IsDBNull(foundRows(0)("EmployeeManagerId")) Then
+                '    EmployeeManagerId = foundRows(0)("EmployeeManagerId")
+                'End If
+                ''My.Forms.MAIN.History("EmployeeManagerId: " + EmployeeManagerId.ToString, "n")
 
-                        'Dim StatusId As Integer = nEmployeeStatusId
-                        'If Not IsDBNull(foundRows(0)("StatusId")) Then
-                        '    StatusId = foundRows(0)("StatusId")
-                        'End If
-                        ''My.Forms.MAIN.History("StatusId: " + StatusId.ToString, "n")
+                'Dim TimeZoneId As Integer = 6
+                'If Not IsDBNull(foundRows(0)("TimeZoneId")) Then
+                '    TimeZoneId = foundRows(0)("TimeZoneId")
+                'End If
+                ''My.Forms.MAIN.History("TimeZoneId: " + TimeZoneId.ToString, "n")
 
-                        'Dim IsDeleted As Boolean = False
-                        'If Not IsDBNull(foundRows(0)("IsDeleted")) Then
-                        '    IsDeleted = foundRows(0)("IsDeleted")
-                        'End If
-                        ''My.Forms.MAIN.History("IsDeleted: " + IsDeleted.ToString, "n")
+                'Dim CreatedByEmployeeId As Integer = 0
+                'If Not IsDBNull(foundRows(0)("CreatedByEmployeeId")) Then
+                '    CreatedByEmployeeId = foundRows(0)("CreatedByEmployeeId")
+                'End If
+                ''My.Forms.MAIN.History("CreatedByEmployeeId: " + CreatedByEmployeeId.ToString, "n")
 
-                        'Dim IsDisabled As Boolean = False
-                        'If Not IsDBNull(foundRows(0)("IsDisabled")) Then
-                        '    IsDisabled = foundRows(0)("IsDisabled")
-                        'End If
-                        ''My.Forms.MAIN.History("Password: " + IsDisabled.ToString, "n")
+                'Dim ModifiedByEmployeeId As Integer = 0
+                'If Not IsDBNull(foundRows(0)("ModifiedByEmployeeId")) Then
+                '    ModifiedByEmployeeId = foundRows(0)("ModifiedByEmployeeId")
+                'End If
+                ''My.Forms.MAIN.History("ModifiedByEmployeeId: " + ModifiedByEmployeeId.ToString, "n")
 
-                        'Dim DefaultProjectId As Integer = -1
-                        'If Not IsDBNull(foundRows(0)("DefaultProjectId")) Then
-                        '    DefaultProjectId = foundRows(0)("DefaultProjectId")
-                        'End If
-                        ''My.Forms.MAIN.History("DefaultProjectId: " + DefaultProjectId.ToString, "n")
+                'Dim AllowedAccessFromIP As String = ""
+                'If Not IsDBNull(foundRows(0)("AllowedAccessFromIP")) Then
+                '    AllowedAccessFromIP = foundRows(0)("AllowedAccessFromIP")
+                'End If
+                ''My.Forms.MAIN.History("AllowedAccessFromIP: " + AllowedAccessFromIP, "n")
 
-                        'Dim EmployeeManagerId As Integer = 0
-                        'If Not IsDBNull(foundRows(0)("EmployeeManagerId")) Then
-                        '    EmployeeManagerId = foundRows(0)("EmployeeManagerId")
-                        'End If
-                        ''My.Forms.MAIN.History("EmployeeManagerId: " + EmployeeManagerId.ToString, "n")
+                'Dim EmployeePayTypeId As Guid = nEmployeeTypeId
+                'If Not IsDBNull(foundRows(0)("EmployeePayTypeId")) Then
+                '    EmployeePayTypeId = foundRows(0)("EmployeePayTypeId")
+                'End If
+                ''My.Forms.MAIN.History("EmployeePayTypeId: " + EmployeePayTypeId.ToString, "n")
 
-                        'Dim TimeZoneId As Integer = 6
-                        'If Not IsDBNull(foundRows(0)("TimeZoneId")) Then
-                        '    TimeZoneId = foundRows(0)("TimeZoneId")
-                        'End If
-                        ''My.Forms.MAIN.History("TimeZoneId: " + TimeZoneId.ToString, "n")
+                'Dim JobTitle As String = ""
+                'If Not IsDBNull(foundRows(0)("JobTitle")) Then
+                '    JobTitle = foundRows(0)("JobTitle")
+                'End If
+                ''My.Forms.MAIN.History("JobTitle: " + JobTitle, "n")
 
-                        'Dim CreatedByEmployeeId As Integer = 0
-                        'If Not IsDBNull(foundRows(0)("CreatedByEmployeeId")) Then
-                        '    CreatedByEmployeeId = foundRows(0)("CreatedByEmployeeId")
-                        'End If
-                        ''My.Forms.MAIN.History("CreatedByEmployeeId: " + CreatedByEmployeeId.ToString, "n")
+                'Dim AccountWorkingDayTypeId As Guid = nWorkingDayTypeId
+                'If Not IsDBNull(foundRows(0)("AccountWorkingDayTypeId")) Then
+                '    AccountWorkingDayTypeId = foundRows(0)("AccountWorkingDayTypeId")
+                'End If
+                ''My.Forms.MAIN.History("AccountWorkingDayTypeId " + AccountWorkingDayTypeId.ToString, "n")
 
-                        'Dim ModifiedByEmployeeId As Integer = 0
-                        'If Not IsDBNull(foundRows(0)("ModifiedByEmployeeId")) Then
-                        '    ModifiedByEmployeeId = foundRows(0)("ModifiedByEmployeeId")
-                        'End If
-                        ''My.Forms.MAIN.History("ModifiedByEmployeeId: " + ModifiedByEmployeeId.ToString, "n")
+                'Dim AccountTimeOffPolicyId As Guid = System.Guid.Empty
+                'If Not IsDBNull(foundRows(0)("AccountTimeOffPolicyId")) Then
+                '    AccountTimeOffPolicyId = foundRows(0)("AccountTimeOffPolicyId")
+                'End If
+                ''My.Forms.MAIN.History("AccountTimeOffPolicyId: " + AccountTimeOffPolicyId.ToString, "n")
 
-                        'Dim AllowedAccessFromIP As String = ""
-                        'If Not IsDBNull(foundRows(0)("AllowedAccessFromIP")) Then
-                        '    AllowedAccessFromIP = foundRows(0)("AllowedAccessFromIP")
-                        'End If
-                        ''My.Forms.MAIN.History("AllowedAccessFromIP: " + AllowedAccessFromIP, "n")
+                'Dim TimeOffApprovalTypeId As Integer = 0
+                'If Not IsDBNull(foundRows(0)("TimeOffApprovalTypeId")) Then
+                '    TimeOffApprovalTypeId = foundRows(0)("TimeOffApprovalTypeId")
+                'End If
+                ''My.Forms.MAIN.History("TimeOffApprovalTypeId: " + TimeOffApprovalTypeId.ToString, "n")
 
-                        'Dim EmployeePayTypeId As Guid = nEmployeeTypeId
-                        'If Not IsDBNull(foundRows(0)("EmployeePayTypeId")) Then
-                        '    EmployeePayTypeId = foundRows(0)("EmployeePayTypeId")
-                        'End If
-                        ''My.Forms.MAIN.History("EmployeePayTypeId: " + EmployeePayTypeId.ToString, "n")
+                'Dim AccountHolidayTypeId As Guid = System.Guid.Empty
+                'If Not IsDBNull(foundRows(0)("AccountHolidayTypeId")) Then
+                '    AccountHolidayTypeId = foundRows(0)("AccountHolidayTypeId")
+                'End If
+                ''My.Forms.MAIN.History("AccountHolidayTypeId: " + AccountHolidayTypeId.ToString, "n")
 
-                        'Dim JobTitle As String = ""
-                        'If Not IsDBNull(foundRows(0)("JobTitle")) Then
-                        '    JobTitle = foundRows(0)("JobTitle")
-                        'End If
-                        ''My.Forms.MAIN.History("JobTitle: " + JobTitle, "n")
+                'Dim IsForcePasswordChange As Boolean = False
+                'If Not IsDBNull(foundRows(0)("IsForcePasswordChange")) Then
+                '    IsForcePasswordChange = foundRows(0)("IsForcePasswordChange")
+                'End If
+                ''My.Forms.MAIN.History("IsForcePasswordChange: " + IsForcePasswordChange.ToString, "n")
 
-                        'Dim AccountWorkingDayTypeId As Guid = nWorkingDayTypeId
-                        'If Not IsDBNull(foundRows(0)("AccountWorkingDayTypeId")) Then
-                        '    AccountWorkingDayTypeId = foundRows(0)("AccountWorkingDayTypeId")
-                        'End If
-                        ''My.Forms.MAIN.History("AccountWorkingDayTypeId " + AccountWorkingDayTypeId.ToString, "n")
-
-                        'Dim AccountTimeOffPolicyId As Guid = System.Guid.Empty
-                        'If Not IsDBNull(foundRows(0)("AccountTimeOffPolicyId")) Then
-                        '    AccountTimeOffPolicyId = foundRows(0)("AccountTimeOffPolicyId")
-                        'End If
-                        ''My.Forms.MAIN.History("AccountTimeOffPolicyId: " + AccountTimeOffPolicyId.ToString, "n")
-
-                        'Dim TimeOffApprovalTypeId As Integer = 0
-                        'If Not IsDBNull(foundRows(0)("TimeOffApprovalTypeId")) Then
-                        '    TimeOffApprovalTypeId = foundRows(0)("TimeOffApprovalTypeId")
-                        'End If
-                        ''My.Forms.MAIN.History("TimeOffApprovalTypeId: " + TimeOffApprovalTypeId.ToString, "n")
-
-                        'Dim AccountHolidayTypeId As Guid = System.Guid.Empty
-                        'If Not IsDBNull(foundRows(0)("AccountHolidayTypeId")) Then
-                        '    AccountHolidayTypeId = foundRows(0)("AccountHolidayTypeId")
-                        'End If
-                        ''My.Forms.MAIN.History("AccountHolidayTypeId: " + AccountHolidayTypeId.ToString, "n")
-
-                        'Dim IsForcePasswordChange As Boolean = False
-                        'If Not IsDBNull(foundRows(0)("IsForcePasswordChange")) Then
-                        '    IsForcePasswordChange = foundRows(0)("IsForcePasswordChange")
-                        'End If
-                        ''My.Forms.MAIN.History("IsForcePasswordChange: " + IsForcePasswordChange.ToString, "n")
-
-                        With element
-                            Try
-                                EmailAddress = GetEmailAddress(.Email, token, .QB_ID)
-                                FirstName = GetValue(.QB_Name, "FirstName")
-                                LastName = GetValue(.QB_Name, "LastName")
-                                HiredDate = GetValue(.HiredDate, "HiredDate")
-
-                                EmployeeName = FirstName + " " + LastName
-
-                                'objEmployeeServices.UpdateEmployeeAsync(AccountEmployeeId, Password, Prefix, FirstName, LastName,
-                                '                       MiddleName, EmailAddress, EmployeeCode, AccountDepartmentID,
-                                '                       AccountRoleID, AccountLocationID, "AddressLine1", "ddressLine2",
-                                '                       "State", "City", "Zip", CountryId, "HomePhoneNo", "WorkPhoneNo",
-                                '                       "MobilePhoneNo", BillingTypeId, StartDate, TerminationDate,
-                                '                       StatusId, True, IsDisabled, DefaultProjectId, EmployeeManagerId, TimeZoneId,
-                                '                       CreatedByEmployeeId, ModifiedByEmployeeId, AllowedAccessFromIP, EmployeePayTypeId,
-                                '                       JobTitle, HiredDate, AccountWorkingDayTypeId, AccountTimeOffPolicyId,
-                                '                       TimeOffApprovalTypeId, AccountHolidayTypeId, IsForcePasswordChange,
-                                '                       "", False)
-
-                                My.Forms.MAIN.History("Record update commented out -- Defect", "N")
-
-                            Catch ex As Exception
-                                My.Forms.MAIN.History("Update failed." + ex.ToString, "N")
-                            End Try
-                        End With
-
-                    End If
-                End If
             End If
-            'if no, UI skip
-            If UI = True Then
+            'if no UI, then skip
+            If UI Then
+                incrementbar += 1
                 IntegratedUIForm.ProgressBar1.Value = incrementbar
-                incrementbar = incrementbar + 1
             End If
         Next
 
@@ -507,29 +471,14 @@ Public Class QBtoTL_Employee
         Dim recordsFoundStr As String = ""
         Select Case result
             Case 0
-                recordsFoundStr = "No records found"
+                recordsFoundStr = "No records"
             Case 1
-                recordsFoundStr = "One records found"
+                recordsFoundStr = "One records"
             Case 2
-                recordsFoundStr = "More than one record found"
+                recordsFoundStr = "More than one record"
         End Select
 
-        My.Forms.MAIN.History(recordsFoundStr + " in QB sync table for: " + myqbName, "i")
-
-        'If TimeLiveIDs.Count = 1 Then
-        'result = 1
-        'My.Forms.MAIN.History("One record found in QB sync table for: " + myqbName, "i")
-        'End If
-
-        'If TimeLiveIDs.Count = 0 Then
-        'result = 0
-        'My.Forms.MAIN.History("No records found on QB sync table for:" + myqbName, "i")
-        'End If
-
-        'If TimeLiveIDs.Count > 1 Then
-        'result = 2
-        'My.Forms.MAIN.History("More than one record found for:" + myqbName, "I")
-        'End If
+        My.Forms.MAIN.History(recordsFoundStr + " found in QB sync table for: " + myqbName, "i")
 
         Return result
     End Function
@@ -561,10 +510,7 @@ Public Class QBtoTL_Employee
     End Function
 
     Public Function SetLength(ByVal str As String) As String
-        If str.Length > 50 Then
-            str = str.Substring(0, 50)
-        End If
-        Return str
+        Return str.Substring(0, Math.Min(50, str.Length))
     End Function
 
     Public Function GetValue(Value As String, ColumnName As String) As Object

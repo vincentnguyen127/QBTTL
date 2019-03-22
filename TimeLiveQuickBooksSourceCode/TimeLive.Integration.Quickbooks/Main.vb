@@ -72,7 +72,7 @@ Public Class MAIN
                 'Execution code goes here
 
                 Dim ItemsProcessed As Integer = AutoExecute()
-                My.Forms.MAIN.History(ItemsProcessed.ToString() + " TmeLive record(s) was created or updated", "i")
+                My.Forms.MAIN.History(ItemsProcessed.ToString() + " TimeLive record(s) was created or updated", "N")
 
 
                 Dim NextRunDateTime As Date = Convert.ToDateTime(My.Settings.AutoRunTime)
@@ -202,15 +202,11 @@ Public Class MAIN
             MsgBox(ex.Message)
         End Try
     End Sub
+
     Public Sub FlagChangedItemsResults(Name As String, result As Integer)
         My.Forms.MAIN.History("Item: " + Name, "i")
-        Dim relationship As String
-
-        If result < 0 Then
-            relationship = "Not modified before last run"
-        Else
-            relationship = "******* Created or modified after last run *******"
-        End If
+        Dim relationship As String = If(result < 0, "Not modified before last run",
+                                        "******* Created or modified after last run *******")
         My.Forms.MAIN.History(relationship, "c")
     End Sub
 
@@ -222,17 +218,14 @@ Public Class MAIN
             StatusWindow.Text += vbNewLine + "***********************"
             StatusWindow.Text += vbNewLine + ">> " + input
             StatusWindow.Text += vbNewLine + "***********************"
-
         End If
         If String.Compare("c", Type, False) = 0 Then
             StatusWindow.Text += ", " + input
         End If
         If String.Compare("C", Type, False) = 0 Then
             StatusWindow.Text += ", " + input
-
         End If
         If String.Compare("i", Type, False) = 0 Then
-
             StatusWindow.Text += vbNewLine + vbTab + "- " + input
         End If
         If String.Compare("I", Type, False) = 0 Then
@@ -248,15 +241,13 @@ Public Class MAIN
     Private Function AutoExecute() As Integer
         Dim ItemsProcessed As Integer = 0
 
-        If My.Settings.SyncCustomers = True Then
+        If My.Settings.SyncCustomers Then
             Dim customer_qbtotl As QBtoTL_Customer = New QBtoTL_Customer
             Dim customerData As QBtoTL_Customer.CustomerDataStructureQB
-
             Dim ItemLastSync As DateTime = Convert.ToDateTime(My.Settings.CustomerLastSync)
             My.Forms.MAIN.History("Synchonizing modified customers since: " + ItemLastSync.ToString(), "n")
-
             customerData = customer_qbtotl.GetCustomerQBData(Nothing, False)
-            My.Forms.MAIN.History(customerData.NoItems.ToString() + " items were read from Quickbooks", "i")
+            My.Forms.MAIN.History((customerData.NoItems - customerData.NoInactive).ToString() + " active items were read from Quickbooks", "i")
 
             For Each element As QBtoTL_Customer.Customer In customerData.DataArray
                 Dim result As Integer = DateTime.Compare(Convert.ToDateTime(element.QBModTime.ToString()),
@@ -265,14 +256,46 @@ Public Class MAIN
                 If result >= 0 Then
                     element.RecSelect = True
                 End If
-                FlagChangedItemsResults(element.QB_Name.ToString(), result)
+                If element.Enabled Then ' Note: Not sure if this is entirely right
+                    FlagChangedItemsResults(element.QB_Name.ToString(), result)
+                End If
             Next
 
-            ItemsProcessed = customer_qbtotl.QBTransferCustomerToTL(customerData, p_token, Nothing, False)
+            Dim customersProcessed As Integer = customer_qbtotl.QBTransferCustomerToTL(customerData, p_token, Nothing, False)
+            My.Forms.MAIN.History(customersProcessed.ToString() + " TimeLive customer(s) was created or updated", "i")
+            ItemsProcessed += customersProcessed
             My.Settings.CustomerLastSync = DateTime.Now.ToString()
-            My.Settings.Save()
         End If
 
+        If My.Settings.SyncEmployees Then
+            Dim employee_qbtotl As QBtoTL_Employee = New QBtoTL_Employee
+            Dim employeeData As QBtoTL_Employee.EmployeeDataStructureQB
+
+            Dim ItemLastSync As DateTime = Convert.ToDateTime(My.Settings.EmployeeLastSync)
+            My.Forms.MAIN.History("Synchonizing modified employees since: " + ItemLastSync.ToString(), "n")
+            employeeData = employee_qbtotl.GetEmployeeQBData(Nothing, False)
+            ' Change to "employeeData.NoItems - employeeData.NoInactive" once we begin storing inactive employees
+            My.Forms.MAIN.History(employeeData.NoItems.ToString() + " active items were read from Quickbooks", "i")
+
+            For Each element As QBtoTL_Employee.Employee In employeeData.DataArray
+                Dim result As Integer = DateTime.Compare(Convert.ToDateTime(element.QBModTime.ToString()),
+            ItemLastSync)
+
+                If result >= 0 Then
+                    element.RecSelect = True
+                End If
+                'If element.Enabled Then ' Note: Will need to check if employee is enabled first once we start tracking inactive employees
+                FlagChangedItemsResults(element.QB_Name.ToString(), result)
+                'End If
+            Next
+
+            Dim employeesProcessed As Integer = employee_qbtotl.QBTransferEmployeeToTL(employeeData, p_token, Nothing, False)
+            My.Settings.EmployeeLastSync = DateTime.Now.ToString()
+            My.Forms.MAIN.History(employeesProcessed.ToString() + " TimeLive employee(s) was created or updated", "i")
+            ItemsProcessed += employeesProcessed
+        End If
+
+        My.Settings.Save()
         Return ItemsProcessed
     End Function
 

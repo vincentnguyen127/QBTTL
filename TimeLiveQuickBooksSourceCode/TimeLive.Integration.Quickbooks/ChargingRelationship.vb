@@ -22,6 +22,7 @@ Public Class ChargingRelationship
 
         Me.EmployeesTableAdapter.Fill(Me.QB_TL_IDs.Employees)
         Me.Jobs_SubJobsTableAdapter.Fill(Me.QB_TL_IDs.Jobs_SubJobs) 'Maybe do this?
+        'Me.Items_SubItemsTableAdapter.Fill(Me.QB_TL_IDs.Items_SubItems) ' Should this be added?
 
         JobsSubJobsQBData = QBJobsSubJobs()
         EmployeesQBData = QBEmployees()
@@ -336,7 +337,7 @@ Public Class ChargingRelationship
                     ptRet = ptRetList.GetAt(i)
                     With ptRet
                         If Not .ParentRef Is Nothing Then
-                            ItemsSubItemsQBData.Rows.Add(.FullName.GetValue, .ListID.GetValue) 'Exception: Not Found
+                            ItemsSubItemsQBData.Rows.Add(.FullName.GetValue, .ListID.GetValue)
                         End If
                     End With
                 Next
@@ -367,19 +368,15 @@ Public Class ChargingRelationship
         PayrollItemsQBData.Columns.Add("QB_Name", GetType(String))
         PayrollItemsQBData.Columns.Add("QB_ID", GetType(String))
 
-        'step1: create QBFC session manager and prepare the request
-        'Dim sessManager As QBSessionManager
+        'step1: prepare the request
         Dim msgSetRs As IMsgSetResponse
         Try
-            'sessManager = New QBSessionManagerClass()
             Dim msgSetRq As IMsgSetRequest = MAIN.SESSMANAGER.CreateMsgSetRequest("US", 2, 0)
             msgSetRq.Attributes.OnError = ENRqOnError.roeContinue
             ' Customer Query 
-            Dim PayRollItemWuery As IPayrollItemWageQuery = msgSetRq.AppendPayrollItemWageQueryRq
+            Dim PayRollItemWuery As IPayrollItemWageQuery = msgSetRq.AppendPayrollItemWageQueryRq 'typo in name
 
-            'step2: begin QB session and send the request
-            'sessManager.OpenConnection("App", "TimeLive Quickbooks")
-            'sessManager.BeginSession("", ENOpenMode.omDontCare)
+            'step2: send the request
             msgSetRs = MAIN.SESSMANAGER.DoRequests(msgSetRq)
             Dim respList As IResponseList
             respList = msgSetRs.ResponseList
@@ -409,24 +406,18 @@ Public Class ChargingRelationship
             ' Before throwing exception, close the session manager if it is open
             MAIN.QUITQBSESSION()
             Throw ex
-            'Finally
-            '    If Not sessManager Is Nothing Then
-            '       sessManager.EndSession()
-            '       sessManager.CloseConnection()
-            '    End If
         End Try
         Return PayrollItemsQBData
     End Function
 
     ' Sort by selected column
-    '                      ID, Employee, Job, Payroll, Item
     Dim ascend(5) As Integer '0 is ascending, 1 is descending
     Private Sub DataGridView1_CellContentClick(sender As Object, e As DataGridViewCellEventArgs) Handles DataGridView1.CellContentClick
         ' If header clicked, sort by that column
         If e.RowIndex = -1 Then
             DataGridView1.Sort(DataGridView1.Columns(e.ColumnIndex), ascend(e.ColumnIndex))
+            ascend(e.ColumnIndex) = If(ascend(e.ColumnIndex), 0, 1)
         End If
-        ascend(e.ColumnIndex) = If(ascend(e.ColumnIndex), 0, 1)
     End Sub
 
     ' Filters the shown relationships based on the selected attributes
@@ -447,6 +438,9 @@ Public Class ChargingRelationship
         DataGridView1.DataSource = view
     End Sub
 
+    ' Returns a string for the employee filter based on the selected employee within the checkbox
+    ' If an Employee name is selected, query relationships for that employee
+    ' Otherwise an empty string is selected, we should do nothing and return an empty string
     Private Function EmployeeFilter()
         Dim name As String = If(EmployeeFilterBox.SelectedItem Is Nothing, "", EmployeeFilterBox.SelectedItem) ' Empty string if no selectedItem
         Dim search As String = ""
@@ -468,10 +462,13 @@ Public Class ChargingRelationship
                 search = "EmployeeQB_ID = '" + Employee_ID.Trim + "'"
             End If
         End If
+
         Return search
-        'JobFilterBox_SelectedIndexChanged(sender, e)
     End Function
 
+    ' Returns a string for the Job/SubJob filter based on the selected Job/SubJob within the checkbox
+    ' If an Job/SubJob name is selected, query relationships for that Job/SubJob
+    ' Otherwise an empty string is selected, we should do nothing and return an empty string
     Private Function JobFilter()
         Dim name As String = If(JobFilterBox.SelectedItem Is Nothing, "", JobFilterBox.SelectedItem)
         Dim search As String = ""
@@ -494,6 +491,9 @@ Public Class ChargingRelationship
         Return search
     End Function
 
+    ' Returns a string for the Payroll Item filter based on the selected Payroll Item within the checkbox
+    ' If an Payroll Item name is selected, query relationships for that Payroll Item
+    ' Otherwise an empty string is selected, we should do nothing and return an empty string
     Private Function PayrollFilter()
         Dim name As String = If(PayrollFilterBox.SelectedItem Is Nothing, "", PayrollFilterBox.SelectedItem)
         Dim search As String = ""
@@ -516,6 +516,9 @@ Public Class ChargingRelationship
         Return search
     End Function
 
+    ' Returns a string for the Item/SubItem filter based on the selected Item/SubItem within the checkbox
+    ' If an Item/SubItem name is selected, query relationships for that employee
+    ' Otherwise an empty string is selected, we should do nothing and return an empty string
     Private Function ItemFilter()
         Dim name As String = If(ItemFilterBox.SelectedItem Is Nothing, "", ItemFilterBox.SelectedItem)
         Dim search As String = ""

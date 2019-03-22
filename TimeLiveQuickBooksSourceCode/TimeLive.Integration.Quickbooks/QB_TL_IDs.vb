@@ -1,4 +1,7 @@
 ﻿Partial Class QB_TL_IDs
+    Partial Public Class Items_SubItemsDataTable
+    End Class
+
     Partial Public Class EmployeesDataTable
     End Class
 

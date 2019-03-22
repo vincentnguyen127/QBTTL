@@ -80,11 +80,9 @@
         Else
             If My.Settings.JobHierarchy = 0 Then
                 rbtJobitems.Checked = True
-            End If
-            If My.Settings.JobHierarchy = 1 Then
+            ElseIf My.Settings.JobHierarchy = 1 Then
                 rbJob.Checked = True
-            End If
-            If My.Settings.JobHierarchy = 2 Then
+            ElseIf My.Settings.JobHierarchy = 2 Then
                 rbItem.Checked = True
             End If
         End If
@@ -143,11 +141,11 @@
         My.Settings.SyncLaborItems = chk_laboritems.Checked
 
         '------Save time transfer options
-        If rbtJobitems.Checked = True Then
+        If rbtJobitems.Checked Then
             which_rbj = 0
-        ElseIf rbJob.Checked = True Then
+        ElseIf rbJob.Checked Then
             which_rbj = 1
-        ElseIf rbItem.Checked = True Then
+        ElseIf rbItem.Checked Then
             which_rbj = 2
         End If
         ' saving all the parameters 
@@ -155,9 +153,9 @@
 
 
         '------Save job or item data transfer options
-        If job_subJobs_btn.Checked = True Then
+        If job_subJobs_btn.Checked Then
             job_item_btn_option = 0
-        ElseIf item_subItems_btn.Checked = True Then
+        ElseIf item_subItems_btn.Checked Then
             job_item_btn_option = 1
         End If
 
@@ -188,13 +186,8 @@
     End Sub
 
     Private Sub chkPayrollTimesheet_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkPayrollTimesheet.CheckedChanged
-        If chkPayrollTimesheet.Checked = True Then
-            cbClass.Enabled = True
-            cbPayrollItem.Enabled = True
-        Else
-            cbClass.Enabled = False
-            cbPayrollItem.Enabled = False
-        End If
+        cbClass.Enabled = chkPayrollTimesheet.Checked
+        cbPayrollItem.Enabled = chkPayrollTimesheet.Checked
     End Sub
 
     Private Sub CKB_syncElgibleVendor_CheckedChanged(sender As Object, e As EventArgs) Handles chk_syncElgibleVendor.CheckedChanged
@@ -219,6 +212,10 @@
     End Sub
 
     Private Sub cbPayrollItem_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cbPayrollItem.SelectedIndexChanged
+
+    End Sub
+
+    Private Sub chk_employees_CheckedChanged(sender As Object, e As EventArgs) Handles chk_employees.CheckedChanged
 
     End Sub
 End Class
