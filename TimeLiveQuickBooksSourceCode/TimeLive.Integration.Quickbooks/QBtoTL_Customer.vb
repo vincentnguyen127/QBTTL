@@ -135,7 +135,7 @@ Public Class QBtoTL_Customer
             ' If it is not in CustomerData, then make it disabled in TimeLive
         Catch ex As Exception
             My.Forms.MAIN.History(ex.ToString, "C")
-            MAIN.QUITQBSESSION()
+            'MAIN.QUITQBSESSION()
             Throw ex
         End Try
 
@@ -182,16 +182,14 @@ Public Class QBtoTL_Customer
                         If TL_ID Is Nothing Then
                             My.Forms.MAIN.History("Detected empty sync record (No TL ID). Needs to be manually sync or deleted." + element.QB_Name, "i")
                         End If
-                        Dim customerInTL As Boolean = Array.Exists(objClientServices.GetClients,
-                                                                   Function(e As Services.TimeLive.Clients.Client)
-                                                                       Return e.ClientName = element.QB_Name
-                                                                   End Function)
+                        Dim customerInTL As Boolean = Array.Exists(objClientServices.GetClients, Function(e As Services.TimeLive.Clients.Client) e.ClientName = element.QB_Name)
                         If customerInTL Then
                             ' TL already has this value and so does our DB, so just move to next element after updating Progress Bar
                             If UI Then
                                 incrementbar += 1
                                 IntegratedUIForm.ProgressBar1.Value = incrementbar
                             End If
+                            ' TODO: Update TL
                             Continue For
                         End If
                     End If
@@ -201,7 +199,7 @@ Public Class QBtoTL_Customer
                     ' if it does not exist create a new record on both the sync database and on TL
                     My.Forms.MAIN.History("Inserting customer into " + whereInsert + element.QB_Name, "i")
                     Try
-                        'Insert record into TimeLife
+                        'Insert record into TimeLive
                         objClientServices.InsertClient(element.QB_Name, SetLength(element.QB_Name),
                         element.Email, "", "", 233, "", "", "", element.Telephone1, "no telephone 2 yet", element.Fax, 0,
                                                        "", element.QB_ID, element.Enabled, False, Now.Date, 0, Now.Date, 0)
@@ -210,9 +208,7 @@ Public Class QBtoTL_Customer
                         If Not CBool(DT_has_QBID) Then
                             'Insert record into sync database
                             Dim customerInTL As Boolean = Array.Exists(objClientServices.GetClients,
-                                                                       Function(e As Services.TimeLive.Clients.Client)
-                                                                           Return e.ClientName = element.QB_Name
-                                                                       End Function)
+                                                                       Function(e As Services.TimeLive.Clients.Client) e.ClientName = element.QB_Name)
                             If customerInTL Then
                                 Dim TLClientID As String = objClientServices.GetClientIdByName(element.QB_Name)
                                 My.Forms.MAIN.History("TimeLive Client ID: " + TLClientID, "i")
@@ -319,7 +315,7 @@ Public Class QBtoTL_Customer
 
 End Class
 
-'Update databese record code
+'Update database record code
 'My.Forms.MAIN.History("Inserting TL key into sync database and inserting to TimeLife:  " + element.Name)
 ''Insert record into Time Life
 'objClientServices.InsertClient(element.Name, SetLength(element.Name),

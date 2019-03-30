@@ -489,7 +489,7 @@ Namespace My
         <Global.System.Configuration.UserScopedSettingAttribute(),
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),
          Global.System.Configuration.DefaultSettingValueAttribute("")>
-        Public Property SyncJobs_ITems() As String
+        Public Property SyncJobs_Items() As String
             Get
                 Return CType(Me("SyncJobs_ITems"), String)
             End Get

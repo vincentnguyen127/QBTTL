@@ -143,7 +143,9 @@ Public Class QBtoTL_Vendor
         Dim nDepartmentId As Integer = objServices.GetDepartmentId()
         Dim nRoleId As Integer = objEmployeeServices.GetUserRoleId()
         Dim nLocationId As Integer = objServices.GetLocationId()
-        Dim nEmployeeTypeId As Guid = objEmployeeServices.GetEmployeeTypeId()
+        'Dim nEmployeeTypeId As Guid = objEmployeeServices.GetEmployeeTypeId() '= {c2189a83 - 86aa-4972-83E9-5c814fc4eb69}
+        Dim nEmployeeTypeId As Guid = New Guid("{cae3a1c1-f2cb-419a-a53f-b47cf5ef6e3b}") ' Sets employee type to Consultant instead of Full-Time Hourly
+        Dim val = nEmployeeTypeId.ToByteArray()
         Dim nEmployeeStatusId As Integer = objEmployeeServices.GetEmployeeStatusId()
         Dim nWorkingDayTypeId As Guid = objEmployeeServices.GetEmployeeWorkingDayTypeId()
         Dim nBillingTypeId As Integer = objEmployeeServices.GetEmployeeBillingTypeId()
@@ -168,242 +170,286 @@ Public Class QBtoTL_Vendor
                 Dim LastName As String
                 Dim EmployeeName As String
                 Dim HiredDate As String
-                Dim TL_ID_Return = ISQBID_In_DataTable(element.QB_Name, element.QB_ID)
+                Dim DT_has_QBID = ISQBID_In_DataTable(element.QB_Name, element.QB_ID)
                 'if none create
-                If TL_ID_Return = 0 Then
-                    If MsgBox("New  vendor found: " + element.QB_Name + ". Create?", MsgBoxStyle.YesNo, "Warning!") = MsgBoxResult.Yes Then
-                        NoRecordsCreatedorUpdated += 1
-                        ' if it does not exist create a new record on both the sync database and on TL
-                        My.Forms.MAIN.History("Inserting QB & TL keys into sync database and inserting to TimeLife:  " + element.QB_Name, "i")
-
-                        'Insert record into Time Life
-                        With element
-                            Try
-                                My.Forms.MAIN.History("1099 : " + .IsVendorEligibleFor1099.ToString, "i")
-                                If .IsVendorEligibleFor1099 = True Then
-                                    My.Forms.MAIN.History("TL_ID1111 : " + TL_ID_Return.ToString, "i")
-                                    EmailAddress = GetEmailAddress(.Email, token, .QB_ID)
-                                    FirstName = GetValue(.QB_Name, "FirstName")
-                                    LastName = GetValue(.QB_Name, "LastName")
-                                    HiredDate = GetValue(.HiredDate, "HiredDate")
-                                    EmployeeName = FirstName + " " + LastName
-
-                                    objEmployeeServices.InsertEmployee(EmailAddress, EmailAddress, FirstName,
-                                        LastName, EmailAddress, "", nDepartmentId, nRoleId, nLocationId,
-                                        233, nBillingTypeId, Now.Date, -1, 0, 6, 0, 0, nEmployeeTypeId, nEmployeeStatusId,
-                                        "", Now.Date, Now.Date, nWorkingDayTypeId, System.Guid.Empty, 0, System.Guid.Empty, False,
-                                        "", "", "", "", "", "", "", "", "", "Mr.", True)
-
-                                    Dim VendorAdapter As New QB_TL_IDsTableAdapters.VendorsTableAdapter()
-                                    VendorAdapter.Insert(element.QB_ID, objEmployeeServices.GetEmployeeId(EmployeeName), element.QB_Name, EmployeeName)
-                                End If
-
-                            Catch ex As Exception
-                                My.Forms.MAIN.History("Transfer failed." + ex.ToString, "N")
-                            End Try
-                        End With
-                    End If
+                'If TL_ID_Return = 0 Then
+                Dim create As Boolean = True
+                If UI And Not CBool(DT_has_QBID) Then
+                    create = MsgBox("New  vendor found: " + element.QB_Name + ". Create?", MsgBoxStyle.YesNo, "Warning!") = MsgBoxResult.Yes
                 End If
+                If create Then
+                    ' If QB_ID is in the DB, check if TL ID is too
+                    If DT_has_QBID Then
+                        Dim TL_ID As String = ISTLID_In_DataTableForVendor(element.QB_ID)
+                        If TL_ID Is Nothing Then
+                            My.Forms.MAIN.History("Detected empty sync record (No TL ID). Needs to be manually sync or deleted." + element.QB_Name, "i")
+                        End If
+                        Dim vendorInTL As Boolean = Array.Exists(objEmployeeServices.GetEmployees,
+                                                                   Function(e As Services.TimeLive.Employees.Employee)
+                                                                       Return e.EmployeeName = element.QB_Name
+                                                                   End Function)
+                        If vendorInTL Then
+                            ' TL already has this value and so does our DB, so just move to next element after updating Progress Bar
+                        If UI Then
+                                incrementbar += 1
+                                IntegratedUIForm.ProgressBar1.Value = incrementbar
+                            End If
+                            ' TODO: Update TL, based on commented out code below
+                            Continue For
+                        End If
+                    End If
 
-                'if it exist check that the TL_ID is not empty ---> 1
-                'if not empty, just update
-                'if empty, informed the user of a potential error as a record has been created in the sync database without a corresponding TL pointer
-                If TL_ID_Return = 1 Then
-                    Dim TL_ID As String = ISTLID_In_DataTableForVendor(element.QB_ID)
-                    If TL_ID Is Nothing Then
-                        My.Forms.MAIN.History("Detected empty sync record (No TL ID). Needs to be manually sync or deleted." + element.QB_Name, "i")
+                    'oRecordsCreatedorUpdated += 1
+                    ' if it does not exist create a new record on both the sync database and on TL
+                    Dim whereToInsert As String = If(DT_has_QBID, "TimeLive: ", "sync database and TimeLive: ")
+                    My.Forms.MAIN.History("Inserting vendor into " + whereToInsert + element.QB_Name, "i")
 
-                    Else
-                        NoRecordsCreatedorUpdated += 1
-                        My.Forms.MAIN.History("Updating TL record for: " + element.QB_Name, "i")
-                        'Update TimeLife Record
-
-
-                        Dim employees As New DataTable
-                        employees = objEmployeeServices.GetEmployeesData
-
-
-                        ' Dim foundRows() As DataRow
-
-                        ' Use the Select method to find all rows matching the filter.
-                        'foundRows = employees.Select(String.Format("AccountEmployeeId = '{0}'", 16))
-
-
-                        'Dim AccountEmployeeId As Integer = 16
-                        'If Not IsDBNull(foundRows(0)("AccountEmployeeId")) Then
-                        '    AccountEmployeeId = foundRows(0)("AccountEmployeeId")
-                        'End If
-
-                        'Dim Password As String = ""
-                        'If Not IsDBNull(foundRows(0)("Password")) Then
-                        '    Password = foundRows(0)("Password")
-                        'End If
-
-                        'Dim Prefix As String = ""
-                        'If Not IsDBNull(foundRows(0)("Prefix")) Then
-                        '    Prefix = foundRows(0)("Prefix")
-                        'End If
-
-                        'Dim EmployeeCode As String = ""
-                        'If Not IsDBNull(foundRows(0)("EmployeeCode")) Then
-                        '    EmployeeCode = foundRows(0)("EmployeeCode")
-                        'End If
-
-                        'Dim MiddleName As String = ""
-                        'If Not IsDBNull(foundRows(0)("MiddleName")) Then
-                        '    MiddleName = foundRows(0)("MiddleName")
-                        'End If
-
-                        'Dim AccountDepartmentID As Integer = nDepartmentId
-                        'If Not IsDBNull(foundRows(0)("AccountDepartmentID")) Then
-                        '    AccountDepartmentID = foundRows(0)("AccountDepartmentID")
-                        'End If
-
-                        'Dim AccountRoleID As Integer = nRoleId
-                        'If Not IsDBNull(foundRows(0)("AccountRoleID")) Then
-                        '    AccountRoleID = foundRows(0)("AccountRoleID")
-                        'End If
-
-                        'Dim AccountLocationID As Integer = nLocationId
-                        'If Not IsDBNull(foundRows(0)("AccountLocationID")) Then
-                        '    AccountLocationID = foundRows(0)("AccountLocationID")
-                        'End If
-
-                        'Dim CountryId As Short = 233
-                        'If Not IsDBNull(foundRows(0)("CountryId")) Then
-                        '    CountryId = foundRows(0)("CountryId")
-                        'End If
-
-                        'Dim BillingTypeId As Integer = nBillingTypeId
-                        'If Not IsDBNull(foundRows(0)("BillingTypeId")) Then
-                        '    BillingTypeId = foundRows(0)("BillingTypeId")
-                        'End If
-
-                        'Dim StartDate As DateTime = Now()
-                        'If Not IsDBNull(foundRows(0)("StartDate")) Then
-                        '    StartDate = foundRows(0)("StartDate")
-                        'End If
-
-                        'Dim TerminationDate As DateTime = Now()
-                        'If Not IsDBNull(foundRows(0)("TerminationDate")) Then
-                        '    StartDate = foundRows(0)("TerminationDate")
-                        'End If
-
-                        'Dim StatusId As Integer = nEmployeeStatusId
-                        'If Not IsDBNull(foundRows(0)("StatusId")) Then
-                        '    StatusId = foundRows(0)("StatusId")
-                        'End If
-
-                        'Dim IsDeleted As Boolean = False
-                        'If Not IsDBNull(foundRows(0)("IsDeleted")) Then
-                        '    IsDeleted = foundRows(0)("IsDeleted")
-                        'End If
-
-                        'Dim IsDisabled As Boolean = False
-                        'If Not IsDBNull(foundRows(0)("IsDisabled")) Then
-                        '    IsDisabled = foundRows(0)("IsDisabled")
-                        'End If
-
-                        'Dim DefaultProjectId As Integer = -1
-                        'If Not IsDBNull(foundRows(0)("DefaultProjectId")) Then
-                        '    DefaultProjectId = foundRows(0)("DefaultProjectId")
-                        'End If
-
-                        'Dim EmployeeManagerId As Integer = 0
-                        'If Not IsDBNull(foundRows(0)("EmployeeManagerId")) Then
-                        '    EmployeeManagerId = foundRows(0)("EmployeeManagerId")
-                        'End If
-
-                        'Dim TimeZoneId As Integer = 6
-                        'If Not IsDBNull(foundRows(0)("TimeZoneId")) Then
-                        '    TimeZoneId = foundRows(0)("TimeZoneId")
-                        'End If
-
-                        'Dim CreatedByEmployeeId As Integer = 0
-                        'If Not IsDBNull(foundRows(0)("CreatedByEmployeeId")) Then
-                        '    CreatedByEmployeeId = foundRows(0)("CreatedByEmployeeId")
-                        'End If
-
-                        'Dim ModifiedByEmployeeId As Integer = 0
-                        'If Not IsDBNull(foundRows(0)("ModifiedByEmployeeId")) Then
-                        '    ModifiedByEmployeeId = foundRows(0)("ModifiedByEmployeeId")
-                        'End If
-
-                        'Dim AllowedAccessFromIP As String = ""
-                        'If Not IsDBNull(foundRows(0)("AllowedAccessFromIP")) Then
-                        '    AllowedAccessFromIP = foundRows(0)("AllowedAccessFromIP")
-                        'End If
-
-                        'Dim EmployeePayTypeId As Guid = nEmployeeTypeId
-                        'If Not IsDBNull(foundRows(0)("EmployeePayTypeId")) Then
-                        '    EmployeePayTypeId = foundRows(0)("EmployeePayTypeId")
-                        'End If
-
-                        'Dim JobTitle As String = ""
-                        'If Not IsDBNull(foundRows(0)("JobTitle")) Then
-                        '    JobTitle = foundRows(0)("JobTitle")
-                        'End If
-
-                        'Dim AccountWorkingDayTypeId As Guid = nWorkingDayTypeId
-                        'If Not IsDBNull(foundRows(0)("AccountWorkingDayTypeId")) Then
-                        '    AccountWorkingDayTypeId = foundRows(0)("AccountWorkingDayTypeId")
-                        'End If
-
-                        'Dim AccountTimeOffPolicyId As Guid = System.Guid.Empty
-                        'If Not IsDBNull(foundRows(0)("AccountTimeOffPolicyId")) Then
-                        '    AccountTimeOffPolicyId = foundRows(0)("AccountTimeOffPolicyId")
-                        'End If
-
-                        'Dim TimeOffApprovalTypeId As Integer = 0
-                        'If Not IsDBNull(foundRows(0)("TimeOffApprovalTypeId")) Then
-                        '    TimeOffApprovalTypeId = foundRows(0)("TimeOffApprovalTypeId")
-                        'End If
-
-                        'Dim AccountHolidayTypeId As Guid = System.Guid.Empty
-                        'If Not IsDBNull(foundRows(0)("AccountHolidayTypeId")) Then
-                        '    AccountHolidayTypeId = foundRows(0)("AccountHolidayTypeId")
-                        'End If
-
-                        'Dim IsForcePasswordChange As Boolean = False
-                        'If Not IsDBNull(foundRows(0)("IsForcePasswordChange")) Then
-                        '    IsForcePasswordChange = foundRows(0)("IsForcePasswordChange")
-                        'End If
-
-                        With element
-                            Try
+                    'Insert record into TimeLive
+                    With element
+                        Try
+                            My.Forms.MAIN.History("1099 : " + .IsVendorEligibleFor1099.ToString, "i")
+                            If .IsVendorEligibleFor1099 Then
+                                NoRecordsCreatedorUpdated += 1
+                                My.Forms.MAIN.History("TL_ID1111 : " + DT_has_QBID.ToString, "i")
                                 EmailAddress = GetEmailAddress(.Email, token, .QB_ID)
                                 FirstName = GetValue(.QB_Name, "FirstName")
                                 LastName = GetValue(.QB_Name, "LastName")
                                 HiredDate = GetValue(.HiredDate, "HiredDate")
                                 EmployeeName = FirstName + " " + LastName
 
+                                objEmployeeServices.InsertEmployee(EmailAddress, EmailAddress, FirstName,
+                                        LastName, EmailAddress, "", nDepartmentId, nRoleId, nLocationId,
+                                        233, nBillingTypeId, Now.Date, -1, 0, 6, 0, 0, nEmployeeTypeId, nEmployeeStatusId,
+                                        "", Now.Date, Now.Date, nWorkingDayTypeId, System.Guid.Empty, 0, System.Guid.Empty, False,
+                                        "", "", "", "", "", "", "", "", "", "Mr.", True)
+                                My.Forms.MAIN.History("Transfer to TimeLive was successful.", "i")
 
-                                'objEmployeeServices.UpdateEmployeeAsync(AccountEmployeeId, Password, Prefix, FirstName, LastName,
-                                '                       MiddleName, EmailAddress, EmployeeCode, AccountDepartmentID,
-                                '                       AccountRoleID, AccountLocationID, "AddressLine1", "ddressLine2",
-                                '                       "State", "City", "Zip", CountryId, "HomePhoneNo", "WorkPhoneNo",
-                                '                       "MobilePhoneNo", BillingTypeId, StartDate, TerminationDate,
-                                '                       StatusId, IsDeleted, IsDisabled, DefaultProjectId, EmployeeManagerId, TimeZoneId,
-                                '                       CreatedByEmployeeId, ModifiedByEmployeeId, AllowedAccessFromIP, EmployeePayTypeId,
-                                '                       JobTitle, HiredDate, AccountWorkingDayTypeId, AccountTimeOffPolicyId,
-                                '                       TimeOffApprovalTypeId, AccountHolidayTypeId, IsForcePasswordChange,
-                                '                       "", False)
+                                'Insert record into sync database if not in it
+                                If Not CBool(DT_has_QBID) Then
+                                    Dim vendorInTL As Boolean = Array.Exists(objEmployeeServices.GetEmployees,
+                                                                   Function(e As Services.TimeLive.Employees.Employee)
+                                                                       Return e.EmployeeName = EmployeeName
+                                                                   End Function)
+                                    If vendorInTL Then
+                                        'Note: if EmployeeName is changed back to "firstName,lastName", change to GetEmployeeID(firstName + " " + lastName)
+                                        Dim TLClientID As String = objEmployeeServices.GetEmployeeId(EmployeeName)
+                                        My.Forms.MAIN.History("TimeLive Vendor (as Employee) ID: " + TLClientID, "i")
+                                        My.Forms.MAIN.History("Inserting new vendor into sync db.", "i")
+                                        Dim VendorAdapter As New QB_TL_IDsTableAdapters.VendorsTableAdapter()
+                                        VendorAdapter.Insert(element.QB_ID, objEmployeeServices.GetEmployeeId(EmployeeName), element.QB_Name, EmployeeName)
+                                    Else
+                                        My.Forms.MAIN.History("Error creating record in TimeLive", "N")
+                                    End If
+                                End If
+                            End If
 
-                                My.Forms.MAIN.History("Record update commented out -- Defect", "N")
-
-                            Catch ex As Exception
-                                My.Forms.MAIN.History("Update failed." + ex.ToString, "N")
-                            End Try
-                        End With
-
-                    End If
+                        Catch ex As Exception
+                            My.Forms.MAIN.History("Transfer failed." + ex.ToString, "N")
+                        End Try
+                    End With
                 End If
+                'End If
+
+                'if it exist check that the TL_ID is not empty ---> 1
+                'if not empty, just update
+                'if empty, informed the user of a potential error as a record has been created in the sync database without a corresponding TL pointer
+                'If TL_ID_Return = 1 Then
+                'Dim TL_ID As String = ISTLID_In_DataTableForVendor(element.QB_ID)
+                'If TL_ID Is Nothing Then
+                'My.Forms.MAIN.History("Detected empty sync record (No TL ID). Needs to be manually sync or deleted." + element.QB_Name, "i")
+
+                'Else
+                'NoRecordsCreatedorUpdated += 1
+                'My.Forms.MAIN.History("Updating TL record for: " + element.QB_Name, "i")
+                'Update TimeLife Record
+
+
+                'Dim employees As New DataTable
+                'employees = objEmployeeServices.GetEmployeesData
+
+
+                ' Dim foundRows() As DataRow
+
+                ' Use the Select method to find all rows matching the filter.
+                'foundRows = employees.Select(String.Format("AccountEmployeeId = '{0}'", 16))
+
+
+                'Dim AccountEmployeeId As Integer = 16
+                'If Not IsDBNull(foundRows(0)("AccountEmployeeId")) Then
+                '    AccountEmployeeId = foundRows(0)("AccountEmployeeId")
+                'End If
+
+                'Dim Password As String = ""
+                'If Not IsDBNull(foundRows(0)("Password")) Then
+                '    Password = foundRows(0)("Password")
+                'End If
+
+                'Dim Prefix As String = ""
+                'If Not IsDBNull(foundRows(0)("Prefix")) Then
+                '    Prefix = foundRows(0)("Prefix")
+                'End If
+
+                'Dim EmployeeCode As String = ""
+                'If Not IsDBNull(foundRows(0)("EmployeeCode")) Then
+                '    EmployeeCode = foundRows(0)("EmployeeCode")
+                'End If
+
+                'Dim MiddleName As String = ""
+                'If Not IsDBNull(foundRows(0)("MiddleName")) Then
+                '    MiddleName = foundRows(0)("MiddleName")
+                'End If
+
+                'Dim AccountDepartmentID As Integer = nDepartmentId
+                'If Not IsDBNull(foundRows(0)("AccountDepartmentID")) Then
+                '    AccountDepartmentID = foundRows(0)("AccountDepartmentID")
+                'End If
+
+                'Dim AccountRoleID As Integer = nRoleId
+                'If Not IsDBNull(foundRows(0)("AccountRoleID")) Then
+                '    AccountRoleID = foundRows(0)("AccountRoleID")
+                'End If
+
+                'Dim AccountLocationID As Integer = nLocationId
+                'If Not IsDBNull(foundRows(0)("AccountLocationID")) Then
+                '    AccountLocationID = foundRows(0)("AccountLocationID")
+                'End If
+
+                'Dim CountryId As Short = 233
+                'If Not IsDBNull(foundRows(0)("CountryId")) Then
+                '    CountryId = foundRows(0)("CountryId")
+                'End If
+
+                'Dim BillingTypeId As Integer = nBillingTypeId
+                'If Not IsDBNull(foundRows(0)("BillingTypeId")) Then
+                '    BillingTypeId = foundRows(0)("BillingTypeId")
+                'End If
+
+                'Dim StartDate As DateTime = Now()
+                'If Not IsDBNull(foundRows(0)("StartDate")) Then
+                '    StartDate = foundRows(0)("StartDate")
+                'End If
+
+                'Dim TerminationDate As DateTime = Now()
+                'If Not IsDBNull(foundRows(0)("TerminationDate")) Then
+                '    StartDate = foundRows(0)("TerminationDate")
+                'End If
+
+                'Dim StatusId As Integer = nEmployeeStatusId
+                'If Not IsDBNull(foundRows(0)("StatusId")) Then
+                '    StatusId = foundRows(0)("StatusId")
+                'End If
+
+                'Dim IsDeleted As Boolean = False
+                'If Not IsDBNull(foundRows(0)("IsDeleted")) Then
+                '    IsDeleted = foundRows(0)("IsDeleted")
+                'End If
+
+                'Dim IsDisabled As Boolean = False
+                'If Not IsDBNull(foundRows(0)("IsDisabled")) Then
+                '    IsDisabled = foundRows(0)("IsDisabled")
+                'End If
+
+                'Dim DefaultProjectId As Integer = -1
+                'If Not IsDBNull(foundRows(0)("DefaultProjectId")) Then
+                '    DefaultProjectId = foundRows(0)("DefaultProjectId")
+                'End If
+
+                'Dim EmployeeManagerId As Integer = 0
+                'If Not IsDBNull(foundRows(0)("EmployeeManagerId")) Then
+                '    EmployeeManagerId = foundRows(0)("EmployeeManagerId")
+                'End If
+
+                'Dim TimeZoneId As Integer = 6
+                'If Not IsDBNull(foundRows(0)("TimeZoneId")) Then
+                '    TimeZoneId = foundRows(0)("TimeZoneId")
+                'End If
+
+                'Dim CreatedByEmployeeId As Integer = 0
+                'If Not IsDBNull(foundRows(0)("CreatedByEmployeeId")) Then
+                '    CreatedByEmployeeId = foundRows(0)("CreatedByEmployeeId")
+                'End If
+
+                'Dim ModifiedByEmployeeId As Integer = 0
+                'If Not IsDBNull(foundRows(0)("ModifiedByEmployeeId")) Then
+                '    ModifiedByEmployeeId = foundRows(0)("ModifiedByEmployeeId")
+                'End If
+
+                'Dim AllowedAccessFromIP As String = ""
+                'If Not IsDBNull(foundRows(0)("AllowedAccessFromIP")) Then
+                '    AllowedAccessFromIP = foundRows(0)("AllowedAccessFromIP")
+                'End If
+
+                'Dim EmployeePayTypeId As Guid = nEmployeeTypeId
+                'If Not IsDBNull(foundRows(0)("EmployeePayTypeId")) Then
+                '    EmployeePayTypeId = foundRows(0)("EmployeePayTypeId")
+                'End If
+
+                'Dim JobTitle As String = ""
+                'If Not IsDBNull(foundRows(0)("JobTitle")) Then
+                '    JobTitle = foundRows(0)("JobTitle")
+                'End If
+
+                'Dim AccountWorkingDayTypeId As Guid = nWorkingDayTypeId
+                'If Not IsDBNull(foundRows(0)("AccountWorkingDayTypeId")) Then
+                '    AccountWorkingDayTypeId = foundRows(0)("AccountWorkingDayTypeId")
+                'End If
+
+                'Dim AccountTimeOffPolicyId As Guid = System.Guid.Empty
+                'If Not IsDBNull(foundRows(0)("AccountTimeOffPolicyId")) Then
+                '    AccountTimeOffPolicyId = foundRows(0)("AccountTimeOffPolicyId")
+                'End If
+
+                'Dim TimeOffApprovalTypeId As Integer = 0
+                'If Not IsDBNull(foundRows(0)("TimeOffApprovalTypeId")) Then
+                '    TimeOffApprovalTypeId = foundRows(0)("TimeOffApprovalTypeId")
+                'End If
+
+                'Dim AccountHolidayTypeId As Guid = System.Guid.Empty
+                'If Not IsDBNull(foundRows(0)("AccountHolidayTypeId")) Then
+                '    AccountHolidayTypeId = foundRows(0)("AccountHolidayTypeId")
+                'End If
+
+                'Dim IsForcePasswordChange As Boolean = False
+                'If Not IsDBNull(foundRows(0)("IsForcePasswordChange")) Then
+                '    IsForcePasswordChange = foundRows(0)("IsForcePasswordChange")
+                'End If
+
+                'With element
+                'Try
+                '                EmailAddress = GetEmailAddress(.Email, token, .QB_ID)
+                'FirstName = GetValue(.QB_Name, "FirstName")
+                'LastName = GetValue(.QB_Name, "LastName")
+                'HiredDate = GetValue(.HiredDate, "HiredDate")
+                'EmployeeName = FirstName + " " + LastName
+
+
+                'objEmployeeServices.UpdateEmployeeAsync(AccountEmployeeId, Password, Prefix, FirstName, LastName,
+                '                       MiddleName, EmailAddress, EmployeeCode, AccountDepartmentID,
+                '                       AccountRoleID, AccountLocationID, "AddressLine1", "ddressLine2",
+                '                       "State", "City", "Zip", CountryId, "HomePhoneNo", "WorkPhoneNo",
+                '                       "MobilePhoneNo", BillingTypeId, StartDate, TerminationDate,
+                '                       StatusId, IsDeleted, IsDisabled, DefaultProjectId, EmployeeManagerId, TimeZoneId,
+                '                       CreatedByEmployeeId, ModifiedByEmployeeId, AllowedAccessFromIP, EmployeePayTypeId,
+                '                       JobTitle, HiredDate, AccountWorkingDayTypeId, AccountTimeOffPolicyId,
+                '                       TimeOffApprovalTypeId, AccountHolidayTypeId, IsForcePasswordChange,
+                '                       "", False)
+
+                'My.Forms.MAIN.History("Record update commented out -- Defect", "N")
+
+                'Catch ex As Exception
+                'My.Forms.MAIN.History("Update failed." + ex.ToString, "N")
+                'End Try
+                'End With
+
+                'End If
+                'End If
+                'End If
+                'if no, UI skip
             End If
-            'if no, UI skip
             If UI Then
-                incrementbar += 1
-                IntegratedUIForm.ProgressBar1.Value = incrementbar
-            End If
+                    incrementbar += 1
+                    IntegratedUIForm.ProgressBar1.Value = incrementbar
+                End If
         Next
 
         Return NoRecordsCreatedorUpdated

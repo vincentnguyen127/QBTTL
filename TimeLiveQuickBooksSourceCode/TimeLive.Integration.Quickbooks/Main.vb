@@ -170,11 +170,12 @@ Public Class MAIN
     Public Shared Sub SendGMail(Subject__1 As String, BodyText As String)
         'Specify senders gmail address
         Dim SendersAddress As String = "teltrium@gmail.com"
-        'Specify The Address You want to sent Email To(can be any valid email address)
-        Dim ReceiversAddress As String = "ywang@teltrium.com"
-        'Specify The password of gmial account u are using to sent mail(pw of sender@gmail.com)
+        'Specify The Address You want to send Email To(can be any valid email address)
+        Dim ReceiversAddress As String = "cpetrelle@teltrium.com" '"ywang@teltrium.com"
+
+        'Specify The password of gmail account u are using to sent mail(pw of sender@gmail.com)
         MsgBox("--> Sending email to: " + ReceiversAddress + " From: " + SendersAddress)
-        Dim SendersPassword As String = "1October2014"
+        Dim SendersPassword As String = "27February2019" '"1October2014"
 
         'Write the contents of your mail
         Dim body As String = BodyText
@@ -241,6 +242,7 @@ Public Class MAIN
     Private Function AutoExecute() As Integer
         Dim ItemsProcessed As Integer = 0
 
+        ' Customers
         If My.Settings.SyncCustomers Then
             Dim customer_qbtotl As QBtoTL_Customer = New QBtoTL_Customer
             Dim customerData As QBtoTL_Customer.CustomerDataStructureQB
@@ -267,6 +269,7 @@ Public Class MAIN
             My.Settings.CustomerLastSync = DateTime.Now.ToString()
         End If
 
+        ' Employees
         If My.Settings.SyncEmployees Then
             Dim employee_qbtotl As QBtoTL_Employee = New QBtoTL_Employee
             Dim employeeData As QBtoTL_Employee.EmployeeDataStructureQB
@@ -295,7 +298,77 @@ Public Class MAIN
             ItemsProcessed += employeesProcessed
         End If
 
+        ' Vendors/Consultants
+        If My.Settings.SyncConsultants Then ' Sync Vendors
+            Dim vendor_qbtotl As QBtoTL_Vendor = New QBtoTL_Vendor
+            Dim vendorData As QBtoTL_Vendor.VendorDataStructureQB
+
+            Dim ItemLastSync As DateTime = Convert.ToDateTime(My.Settings.VendorLastSync)
+            My.Forms.MAIN.History("Synchonizing modified vendors since: " + ItemLastSync.ToString(), "n")
+            vendorData = vendor_qbtotl.GetVendorQBData(Nothing, False)
+            ' Change to "employeeData.NoItems - employeeData.NoInactive" if we begin storing inactive vendors
+            My.Forms.MAIN.History(vendorData.NoItems.ToString() + " active items were read from Quickbooks", "i")
+
+            For Each element As QBtoTL_Vendor.Vendor In vendorData.DataArray
+                Dim result As Integer = DateTime.Compare(Convert.ToDateTime(element.QBModTime.ToString()),
+            ItemLastSync)
+
+                If result >= 0 Then
+                    element.RecSelect = True
+                End If
+                'If element.Enabled Then ' Note: Will need to check if vendor is enabled first if we start tracking inactive vendors
+                FlagChangedItemsResults(element.QB_Name.ToString(), result)
+                'End If
+            Next
+
+            Dim vendorsProcessed As Integer = vendor_qbtotl.QBTransferVendorToTL(vendorData, p_token, Nothing, False)
+            My.Settings.VendorLastSync = DateTime.Now.ToString()
+            My.Forms.MAIN.History(vendorsProcessed.ToString() + " TimeLive employee(s) was created or updated from vendors", "i")
+            ItemsProcessed += vendorsProcessed
+        End If
+
+        ' Jobs/Subjobs
+        If My.Settings.SyncJobs_Items Then
+            Dim job_item_qbtotl As QBtoTL_JobOrItem = New QBtoTL_JobOrItem
+            Dim job_itemData As QBtoTL_JobOrItem.JobDataStructureQB
+
+            Dim ItemLastSync As DateTime = Convert.ToDateTime(My.Settings.JobLastSync)
+            My.Forms.MAIN.History("Synchonizing modified jobs since: " + ItemLastSync.ToString(), "n")
+            If True Then
+                job_itemData = job_item_qbtotl.GetJobSubJobData(Nothing, "", False)
+            Else
+                job_itemData = job_item_qbtotl.GetItemSubItemData(Nothing, "", False)
+            End If
+
+            ' Change to "employeeData.NoItems - employeeData.NoInactive" if we begin storing inactive vendors
+            My.Forms.MAIN.History(job_itemData.NoItems.ToString() + " active items were read from Quickbooks", "i")
+
+            For Each element As QBtoTL_JobOrItem.Job_Subjob In job_itemData.DataArray ' Or should this be job_item?
+                Dim result As Integer = DateTime.Compare(Convert.ToDateTime(element.QBModTime.ToString()),
+            ItemLastSync)
+
+                If result >= 0 Then
+                    element.RecSelect = True
+                End If
+                'If element.Enabled Then ' Note: Will need to check if vendor is enabled first if we start tracking inactive vendors
+                FlagChangedItemsResults(element.QB_Name.ToString(), result)
+                'End If
+            Next
+
+            Dim jobsProcessed As Integer = job_item_qbtotl.QBTransferJobstoTL(job_itemData, p_token, Nothing, False)
+            If True Then
+                My.Settings.JobLastSync = DateTime.Now.ToString()
+            Else
+                My.Settings.ItemLastSync = DateTime.Now.ToString()
+            End If
+
+            My.Forms.MAIN.History(jobsProcessed.ToString() + " TimeLive project(s)/task(s) was created or updated from jobs", "i")
+            ItemsProcessed += jobsProcessed
+        End If
+
         My.Settings.Save()
+
+        'SendGMail("Subject", "Body: " + ItemsProcessed + " Updates")
         Return ItemsProcessed
     End Function
 

@@ -134,7 +134,7 @@
         My.Settings.SyncCustomers = chk_customers.Checked
         My.Settings.SyncEmployees = chk_employees.Checked
         My.Settings.SyncConsultants = chk_consultans.Checked
-        My.Settings.SyncJobs_ITems = chk_jobsitems.Checked
+        My.Settings.SyncJobs_Items = chk_jobsitems.Checked
         My.Settings.SyncAccounts = chk_accounts.Checked
         My.Settings.SyncTimeEntries = chk_timeentries.Checked
         My.Settings.SyncExpenseEntries = chk_expenseentries.Checked
@@ -216,6 +216,10 @@
     End Sub
 
     Private Sub chk_employees_CheckedChanged(sender As Object, e As EventArgs) Handles chk_employees.CheckedChanged
+
+    End Sub
+
+    Private Sub chk_jobsitems_CheckedChanged(sender As Object, e As EventArgs) Handles chk_jobsitems.CheckedChanged
 
     End Sub
 End Class

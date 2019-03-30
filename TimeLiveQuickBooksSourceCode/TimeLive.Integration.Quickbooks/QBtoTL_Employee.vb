@@ -193,13 +193,14 @@ Public Class QBtoTL_Employee
                                 incrementbar += 1
                                 IntegratedUIForm.ProgressBar1.Value = incrementbar
                             End If
+                            ' TODO: Update TL, based on commented out code below
                             Continue For
                         End If
                     End If
                     ' Create the element in TL:
                     NoRecordsCreatedorUpdated += 1
-                    Dim whereInsert As String = If(DT_has_QBID, "TimeLive: ", "sync database and TimeLive: ")
-                    My.Forms.MAIN.History("Inserting employee into " + whereInsert + element.QB_Name, "i")
+                    Dim whereToInsert As String = If(DT_has_QBID, "TimeLive: ", "sync database and TimeLive: ")
+                    My.Forms.MAIN.History("Inserting employee into " + whereToInsert + element.QB_Name, "i")
 
                     'Insert record into TimeLive
                     With element
@@ -227,7 +228,7 @@ Public Class QBtoTL_Employee
                                                                        Return e.EmployeeName = EmployeeName
                                                                    End Function)
                                 If employeeInTL Then
-                                    ' if EmployeeName is changed back to "firstName,lastName", change to GetEmployeeID(firstName + " " + lastName)
+                                    'Note: if EmployeeName is changed back to "firstName,lastName", change to GetEmployeeID(firstName + " " + lastName)
                                     Dim TLClientID As String = objEmployeeServices.GetEmployeeId(EmployeeName)
                                     My.Forms.MAIN.History("TimeLive Employee ID: " + TLClientID, "i")
                                     My.Forms.MAIN.History("Inserting new employee into sync db.", "i")
