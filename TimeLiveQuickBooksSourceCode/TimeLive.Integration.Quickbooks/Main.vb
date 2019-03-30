@@ -6,7 +6,9 @@ Public Class MAIN
 
     Private p_token As String
     Private p_AccountId As String
-    Public Shared SESSMANAGER As QBSessionManager
+    <ThreadStatic> Public Shared SESSMANAGER As QBSessionManager
+
+
 
     Private Sub PARENT_LOAD(SENDER As System.Object, E As System.EventArgs) Handles MyBase.Load
         Try
@@ -241,6 +243,10 @@ Public Class MAIN
 
     Private Function AutoExecute() As Integer
         Dim ItemsProcessed As Integer = 0
+
+        If (MAIN.SESSMANAGER Is Nothing) Then
+            VALIDATEQBSESSION()
+        End If
 
         ' Customers
         If My.Settings.SyncCustomers Then
