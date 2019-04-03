@@ -347,7 +347,9 @@ Public Class IntegratedUI
             p_token = token
             MyBase.Show()
 
-            DataGridView1.Sort(DataGridView1.Columns(1), System.ComponentModel.ListSortDirection.Ascending)
+            'Commented out, changes the display ordering which affects the check box matching with the respective row
+            'DataGridView1.Sort(DataGridView1.Columns(1), System.ComponentModel.ListSortDirection.Ascending)
+
             'Change the number to the column index that you want to sort
             '--------   cbWageType 
             If My.Settings.QBClass = "" Then
@@ -468,7 +470,6 @@ Public Class IntegratedUI
         ' reset the check value to zero
         For Each element As TLtoQB_TimeEntry.Employee In SelectedEmployeeObj.DataArray
             element.RecSelect = False
-
             'My.Forms.MAIN.History("Time selection:  Reseting employees:   " + element.RecSelect.ToString(), "n")
         Next
     End Sub
@@ -476,7 +477,14 @@ Public Class IntegratedUI
     Private Sub Set_Selected_Customer()
         For Each row As DataGridViewRow In DataGridView1.Rows
             If row.Cells("Name").Value IsNot Nothing And row.Cells("ckBox").Value = True Then
-                customerData.DataArray(row.Index).RecSelect = True
+                customerData.DataArray.ForEach(
+                    Sub(customer)
+                        If customer.QB_Name = row.Cells("Name").Value.ToString Then
+                            customer.RecSelect = True
+                        End If
+                    End Sub
+                )
+                'customerData.DataArray(row.Index).RecSelect = True
                 My.Forms.MAIN.History("Customers selected for processing: " + row.Cells("Name").Value, "n")
             End If
         Next
@@ -485,16 +493,32 @@ Public Class IntegratedUI
     Private Sub Set_Selected_Employee()
         For Each row As DataGridViewRow In DataGridView1.Rows
             If row.Cells("Name").Value IsNot Nothing And row.Cells("ckBox").Value = True Then
-                employeeData.DataArray(row.Index).RecSelect = True
+                employeeData.DataArray.ForEach(
+                    Sub(employee)
+                        If employee.QB_Name = row.Cells("Name").Value.ToString Then
+                            employee.RecSelect = True
+                        End If
+                    End Sub
+                )
+                'employeeData.DataArray(row.Index).RecSelect = True
                 My.Forms.MAIN.History("Employees selected for processing: " + row.Cells("Name").Value, "n")
             End If
         Next
     End Sub
 
+    ' For Time Transfer
     Private Sub Set_Selected_SelectedEmployee()
         For Each row As DataGridViewRow In DataGridView1.Rows
             If row.Cells("Name").Value IsNot Nothing And row.Cells("ckBox").Value = True Then
-                selectedEmployeeData.DataArray(row.Index).RecSelect = True
+                selectedEmployeeData.DataArray.ForEach(
+                    Sub(selectedEmployee)
+                        My.Forms.MAIN.History(selectedEmployee.FullName + " vs " + row.Cells("Name").Value.ToString, "i")
+                        If selectedEmployee.FullName = row.Cells("Name").Value.ToString Then
+                            selectedEmployee.RecSelect = True
+                        End If
+                    End Sub
+                )
+                'selectedEmployeeData.DataArray(row.Index).RecSelect = True
                 My.Forms.MAIN.History("Selected employee for time transfer: " + row.Cells("Name").Value, "n")
             End If
         Next
@@ -503,7 +527,14 @@ Public Class IntegratedUI
     Private Sub Set_Selected_Vendor()
         For Each row As DataGridViewRow In DataGridView1.Rows
             If row.Cells("Name").Value IsNot Nothing And row.Cells("ckBox").Value Then
-                vendorData.DataArray(row.Index).RecSelect = True
+                vendorData.DataArray.ForEach(
+                    Sub(vendor)
+                        If vendor.QB_Name = row.Cells("Name").Value.ToString Then
+                            vendor.RecSelect = True
+                        End If
+                    End Sub
+                )
+                'vendorData.DataArray(row.Index).RecSelect = True
                 My.Forms.MAIN.History("Vendors selected for processing: " + row.Cells("Name").Value, "n")
             End If
         Next
@@ -512,7 +543,14 @@ Public Class IntegratedUI
     Private Sub Set_Selected_Job_Item()
         For Each row As DataGridViewRow In DataGridView1.Rows
             If row.Cells("Name").Value IsNot Nothing And row.Cells("ckBox").Value = True Then
-                JobData.DataArray(row.Index).RecSelect = True
+                JobData.DataArray.ForEach(
+                    Sub(job)
+                        If job.QB_Name = row.Cells("Name").Value.ToString Then
+                            job.RecSelect = True
+                        End If
+                    End Sub
+                )
+                'JobData.DataArray(row.Index).RecSelect = True
                 My.Forms.MAIN.History("Job or items selected for processing: " + row.Cells("Name").Value, "n")
             End If
         Next
