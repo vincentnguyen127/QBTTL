@@ -102,6 +102,7 @@ Public Class TLtoQB_TimeEntry
             For n As Integer = 0 To objTimeEntryArray.Length - 1
                 objTimeEntry = objTimeEntryArray(n)
                 With objTimeEntry
+                    ' Dim val = objTimeEntry.TaskWithParent
                     ' will check which type data should be added 
                     ' need to add the time live ID and Name here using Object()
 
@@ -124,7 +125,7 @@ Public Class TLtoQB_TimeEntry
                     End If
 
                     Dim empId As String = Get_QB_ID_ForTL_EmployeeName(EmployeeName)
-                    Dim jobID As String = Get_QB_ID_ForTL_JobName(.ClientName.ToString + ":" + .ProjectName.ToString + ":" + .TaskName.ToString)
+                    Dim jobID As String = Get_QB_ID_ForTL_JobName(.ClientName.ToString + ":" + .ProjectName.ToString + ":" + .TaskWithParent.ToString)
                     Dim Item_SubItemID As String = Get_QB_ID_ForTL_ItemName(empId, jobID).ToString.Trim
                     My.Forms.MAIN.History(Item_SubItemID, "i")
 
@@ -136,7 +137,7 @@ Public Class TLtoQB_TimeEntry
                     Dim ItemName As String = get_QB_Name_ForTL_ItemName(Item_SubItemID) 'exception
 
                     If Item_SubItemID.Trim = "" Then
-                        Item_SubItemID = ItemName '"<None>"
+                        Item_SubItemID = "<None>" 'ItemName
                         ServiceItem_TypeName = True
                     End If
 

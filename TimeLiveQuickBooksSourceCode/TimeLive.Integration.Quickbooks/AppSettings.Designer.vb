@@ -98,7 +98,7 @@ Partial Class AppSettings
         Me.Tab_HoursOptions.Controls.Add(Me.GroupBox3)
         Me.Tab_HoursOptions.Location = New System.Drawing.Point(4, 22)
         Me.Tab_HoursOptions.Name = "Tab_HoursOptions"
-        Me.Tab_HoursOptions.Padding = New System.Windows.Forms.Padding(3, 3, 3, 3)
+        Me.Tab_HoursOptions.Padding = New System.Windows.Forms.Padding(3)
         Me.Tab_HoursOptions.Size = New System.Drawing.Size(453, 198)
         Me.Tab_HoursOptions.TabIndex = 2
         Me.Tab_HoursOptions.Text = "Hours"
@@ -201,7 +201,7 @@ Partial Class AppSettings
         Me.TabPage2.Controls.Add(Me.chk_syncElgibleVendor)
         Me.TabPage2.Location = New System.Drawing.Point(4, 22)
         Me.TabPage2.Name = "TabPage2"
-        Me.TabPage2.Padding = New System.Windows.Forms.Padding(3, 3, 3, 3)
+        Me.TabPage2.Padding = New System.Windows.Forms.Padding(3)
         Me.TabPage2.Size = New System.Drawing.Size(453, 198)
         Me.TabPage2.TabIndex = 1
         Me.TabPage2.Text = "Vendor"
@@ -227,7 +227,7 @@ Partial Class AppSettings
         Me.Tab_Sync.Controls.Add(Me.dtp_autoruntime)
         Me.Tab_Sync.Location = New System.Drawing.Point(4, 22)
         Me.Tab_Sync.Name = "Tab_Sync"
-        Me.Tab_Sync.Padding = New System.Windows.Forms.Padding(3, 3, 3, 3)
+        Me.Tab_Sync.Padding = New System.Windows.Forms.Padding(3)
         Me.Tab_Sync.Size = New System.Drawing.Size(453, 198)
         Me.Tab_Sync.TabIndex = 0
         Me.Tab_Sync.Text = "Sync Options"
@@ -391,7 +391,7 @@ Partial Class AppSettings
         Me.Tab_ItemsJobs.Controls.Add(Me.GroupBox4)
         Me.Tab_ItemsJobs.Location = New System.Drawing.Point(4, 22)
         Me.Tab_ItemsJobs.Name = "Tab_ItemsJobs"
-        Me.Tab_ItemsJobs.Padding = New System.Windows.Forms.Padding(3, 3, 3, 3)
+        Me.Tab_ItemsJobs.Padding = New System.Windows.Forms.Padding(3)
         Me.Tab_ItemsJobs.Size = New System.Drawing.Size(453, 198)
         Me.Tab_ItemsJobs.TabIndex = 3
         Me.Tab_ItemsJobs.Text = "Items/Jobs"

@@ -117,8 +117,8 @@ Public Class ChargingRelationship
             Dim row As DataRow = Me.QB_TL_IDs.ChargingRelationships.Rows(numRow)
             Dim remove As Boolean = True
 
-            ' Remove the row if any of the 4 attributes are not chosen (are null)
-            If IsDBNull(row(1)) Or IsDBNull(row(2)) Or IsDBNull(row(3)) Or IsDBNull(row(4)) Then
+            ' Remove the row if Employee, Subjob, or Payroll attributes are not chosen (are null)
+            If IsDBNull(row(1)) Or IsDBNull(row(2)) Or IsDBNull(row(3)) Then 'Or IsDBNull(row(4))
                 Me.QB_TL_IDs.ChargingRelationships.RemoveChargingRelationshipsRow(row)
                 Continue While
             End If
@@ -162,8 +162,8 @@ Public Class ChargingRelationship
                 Next
             End If
 
-            ' Check if the item is active
-            If Not remove Then
+            ' Check if the item is active, if it exists
+            If Not remove And Not IsDBNull(row(4)) Then
                 remove = True
                 Dim itemID As String = row(4).Trim
                 ' Compares the item in relationship table to active items

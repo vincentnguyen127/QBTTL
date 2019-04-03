@@ -97,7 +97,6 @@ C:\Users\Dev1Teltrium\Source\Repos\TimeLive.Quickbooks.Integrator\TimeLiveQuickB
 C:\Users\Dev1Teltrium\Source\Repos\TimeLive.Quickbooks.Integrator\TimeLiveQuickBooksSourceCode\TimeLive.Integration.Quickbooks\bin\Debug\TimeLive.Quickbooks.Integrator.xml
 C:\Users\Dev1Teltrium\Source\Repos\TimeLive.Quickbooks.Integrator\TimeLiveQuickBooksSourceCode\TimeLive.Integration.Quickbooks\bin\Debug\Interop.QBFC11Lib.dll
 C:\Users\Dev1Teltrium\Source\Repos\TimeLive.Quickbooks.Integrator\TimeLiveQuickBooksSourceCode\TimeLive.Integration.Quickbooks\bin\Debug\Interop.QBFC13Lib.dll
-C:\Users\Dev1Teltrium\Source\Repos\TimeLive.Quickbooks.Integrator\TimeLiveQuickBooksSourceCode\TimeLive.Integration.Quickbooks\obj\Debug\TimeLive.Quickbooks.Integrator.vbprojResolveAssemblyReference.cache
 C:\Users\Dev1Teltrium\Source\Repos\TimeLive.Quickbooks.Integrator\TimeLiveQuickBooksSourceCode\TimeLive.Integration.Quickbooks\obj\Debug\TimeLive.Quickbooks.Integrator.AppSettings.resources
 C:\Users\Dev1Teltrium\Source\Repos\TimeLive.Quickbooks.Integrator\TimeLiveQuickBooksSourceCode\TimeLive.Integration.Quickbooks\obj\Debug\TimeLive.Quickbooks.Integrator.ChargingRelationship.resources
 C:\Users\Dev1Teltrium\Source\Repos\TimeLive.Quickbooks.Integrator\TimeLiveQuickBooksSourceCode\TimeLive.Integration.Quickbooks\obj\Debug\TimeLive.Quickbooks.Integrator.IntegratedUI.resources
@@ -108,3 +107,4 @@ C:\Users\Dev1Teltrium\Source\Repos\TimeLive.Quickbooks.Integrator\TimeLiveQuickB
 C:\Users\Dev1Teltrium\Source\Repos\TimeLive.Quickbooks.Integrator\TimeLiveQuickBooksSourceCode\TimeLive.Integration.Quickbooks\obj\Debug\TimeLive.Quickbooks.Integrator.vbproj.GenerateResource.Cache
 C:\Users\Dev1Teltrium\Source\Repos\TimeLive.Quickbooks.Integrator\TimeLiveQuickBooksSourceCode\TimeLive.Integration.Quickbooks\obj\Debug\TimeLive.Quickbooks.Integrator.exe.manifest
 C:\Users\Dev1Teltrium\Source\Repos\TimeLive.Quickbooks.Integrator\TimeLiveQuickBooksSourceCode\TimeLive.Integration.Quickbooks\obj\Debug\TimeLive.Quickbooks.Integrator.application
+C:\Users\Dev1Teltrium\Source\Repos\TimeLive.QuickBooks.Integrator\TimeLiveQuickBooksSourceCode\TimeLive.Integration.Quickbooks\obj\Debug\TimeLive.Quickbooks.Integrator.vbprojResolveAssemblyReference.cache

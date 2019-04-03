@@ -222,4 +222,8 @@
     Private Sub chk_jobsitems_CheckedChanged(sender As Object, e As EventArgs) Handles chk_jobsitems.CheckedChanged
 
     End Sub
+
+    Private Sub rbItem_CheckedChanged_1(sender As Object, e As EventArgs) Handles rbItem.CheckedChanged
+
+    End Sub
 End Class
