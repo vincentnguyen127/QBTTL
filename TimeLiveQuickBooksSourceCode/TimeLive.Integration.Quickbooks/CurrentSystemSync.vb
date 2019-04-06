@@ -1,4 +1,6 @@
-﻿Imports QBFC11Lib
+﻿'Imports QBFC11Lib
+Imports QBFC13Lib
+
 Public Class CurrentSystemSync
     Private p_token As String
     Private p_AccountId As String
@@ -13,6 +15,7 @@ Public Class CurrentSystemSync
             SyncEmployeeData()
             SyncVendorData()
             SyncJobsSubJobData()
+            My.Forms.MAIN.History("Sync Complete", "n")
         End If
     End Sub
 
@@ -39,6 +42,7 @@ Public Class CurrentSystemSync
                 objClient = objClientArray(n)
                 With objClient
                     'Call subroutine
+
                     'Dim result As Boolean = checkQBCustomerExist(.ClientName.ToString, objClientServices.GetClientIdByName(.ClientName))
                     result = checkQBCustomerExist(.ClientName.ToString, .ClientId)
                     If result = False Then
@@ -172,11 +176,14 @@ Public Class CurrentSystemSync
             For n As Integer = 0 To objClientArray.Length - 1
                 objClient = objClientArray(n)
                 With objClient
-                    result = checkQBEmployeeExist(.EmployeeName.ToString, .EmployeeId)
+                    If Not .IsVendor Then
+                        ' Note: Also checks vendors that are employees within TimeLive
+                        result = checkQBEmployeeExist(.EmployeeName.ToString, .EmployeeId)
 
-                    If result = False Then
-                        'Does not exist in QB
-                        My.Forms.MAIN.History("Please update or enter employee in QB --> Name: " + .EmployeeName.ToString + " ID: " + .EmployeeId.ToString + " manually", "I")
+                        If result = False Then
+                            'Does not exist in QB
+                            My.Forms.MAIN.History("Please update or enter employee in QB --> Name: " + .EmployeeName.ToString + " ID: " + .EmployeeId.ToString + " manually", "I")
+                        End If
                     End If
                 End With
             Next
@@ -305,7 +312,7 @@ Public Class CurrentSystemSync
         My.Forms.MAIN.History("Syncing Vendor Data", "n")
         Try
             ' connect to Time live
-            Dim play As New Services.TimeLive.Employees.Employees
+            'Dim play As New Services.TimeLive.Employees.Employees
             Dim objClientServices As New Services.TimeLive.Employees.Employees
             Dim authentication As New Services.TimeLive.Employees.SecuredWebServiceHeader
             authentication.AuthenticatedToken = p_token
@@ -319,12 +326,13 @@ Public Class CurrentSystemSync
                 objClient = objClientArray(n)
                 With objClient
 
-                    If .IsVendor = True Then
-                        result = checkQBEmployeeExist(.EmployeeName.ToString, .EmployeeId)
+                    If .IsVendor Then
+                        'result = checkQBVendorExist(.EmployeeName.ToString, .EmployeeId)
 
+                        result = checkQBVendorExist(.EmployeeName.ToString, .EmployeeId) ' Note: Change if vendor name in TL changes from vendor name, vendor name
                         If result = False Then
                             'Does not exist in QB
-                            My.Forms.MAIN.History("Please update or enter vendor into QB --> Name: " + .EmployeeName.ToString + " ID: " + .EmployeeName.ToString + " manually", "I")
+                            My.Forms.MAIN.History("Please update or enter vendor into QB --> Vendor: " + .EmployeeName.ToString + " ID: " + .EmployeeId.ToString + " manually", "I")
                         End If
                     End If
                 End With
@@ -356,7 +364,7 @@ Public Class CurrentSystemSync
             msgSetRq.Attributes.OnError = ENRqOnError.roeContinue
             Dim VendorQueryRq As IVendorQuery = msgSetRq.AppendVendorQueryRq
 
-            VendorQueryRq.ORListQuery.FullNameList.Add(TLEmployeeName)
+            VendorQueryRq.ORVendorListQuery.FullNameList.Add(TLEmployeeName)
             'sessManager.OpenConnection("App", "TimeLive Quickbooks")
             'sessManager.BeginSession("", ENOpenMode.omDontCare)
             Dim msgSetRs As IMsgSetResponse = MAIN.SESSMANAGER.DoRequests(msgSetRq)
@@ -368,7 +376,6 @@ Public Class CurrentSystemSync
             If vendorRetList Is Nothing Then
                 Return False
             Else
-
 
                 'Assume only one return
                 Dim VendorRet As IVendorRet
@@ -390,7 +397,7 @@ Public Class CurrentSystemSync
             End If
 
         Catch ex As Exception
-            MAIN.QUITQBSESSION()
+            'MAIN.QUITQBSESSION()
             Throw ex
             'Finally
             '    If Not sessManager Is Nothing Then
@@ -510,6 +517,7 @@ Public Class CurrentSystemSync
                 objTask = objTaskArray(n)
                 With objTask
                     result = checkQBJobSubJobExist(.JobParent.ToString + ":" + .TaskName.ToString, .TaskID.ToString, .JobParent.ToString + ":" + .TaskName.ToString)
+
                     If result = False Then
                         'Does not exist in QB
                         My.Forms.MAIN.History("Update or enter task in QB: " + .JobParent.ToString + ":" + .TaskName.ToString + " manually", "I")
@@ -606,7 +614,7 @@ Public Class CurrentSystemSync
 
                     If ISQBID_In_JobSubJobDataTable(.Name.GetValue.ToString, .ListID.GetValue) = 0 Then
                         My.Forms.MAIN.History("Not in database, Adding to Sync Database: " + JobSubJobAdapter.GetCorrespondingTL_ID(TL_ID).ToString + "QB_ID:  " + .ListID.GetValue + " With the TL_ID: " + TL_ID.ToString, "i")
-                        JobSubJobAdapter.Insert(.ListID.GetValue, TL_ID, QBJobSubJobName, TL_Name)
+                        JobSubJobAdapter.Insert(.ListID.GetValue, TL_ID, .Name.GetValue, TL_Name) 'QBJobSubJobName
                     End If
                 End With
 
@@ -614,7 +622,7 @@ Public Class CurrentSystemSync
             End If
 
         Catch ex As Exception
-            MAIN.QUITQBSESSION()
+            'MAIN.QUITQBSESSION()
             Throw ex
             'Finally
             '    If Not sessManager Is Nothing Then
@@ -702,7 +710,7 @@ Public Class CurrentSystemSync
             End If
 
         Catch ex As Exception
-            MAIN.QUITQBSESSION()
+            'MAIN.QUITQBSESSION()
             Throw ex
             'Finally
             '    If Not sessManager Is Nothing Then

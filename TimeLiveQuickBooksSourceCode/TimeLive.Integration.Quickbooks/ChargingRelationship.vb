@@ -1,4 +1,4 @@
-﻿Imports QBFC11Lib
+﻿Imports QBFC13Lib
 Imports System.Configuration
 Imports System.Collections.Generic
 
@@ -353,7 +353,7 @@ Public Class ChargingRelationship
         'Dim sessManager As QBSessionManager
         Dim msgSetRs As IMsgSetResponse
         Try
-            'sessManager = New QBSessionManagerClass()
+            ''sessManager = New QBSessionManagerClass()
             ' Specify spec version (2)
             Dim msgSetRq As IMsgSetRequest = MAIN.SESSMANAGER.CreateMsgSetRequest("US", 2, 0)
             msgSetRq.Attributes.OnError = ENRqOnError.roeContinue
@@ -381,6 +381,7 @@ Public Class ChargingRelationship
                     ptRet = ptRetList.GetAt(i)
                     With ptRet
                         If Not .ParentRef Is Nothing Then
+                            Dim val As String = .FullName.GetValue
                             ItemsSubItemsQBData.Rows.Add(.FullName.GetValue, .ListID.GetValue)
                         End If
                     End With

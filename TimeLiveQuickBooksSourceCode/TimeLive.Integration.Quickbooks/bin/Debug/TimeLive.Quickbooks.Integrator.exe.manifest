@@ -50,7 +50,7 @@
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <dsig:DigestValue>UCPJ6gmTsyHVMvq3z/bG66TZtck=</dsig:DigestValue>
+        <dsig:DigestValue>YxBnQ3Ca9Qk+Gx2v3LZxhxOoMsc=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
@@ -62,19 +62,19 @@
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <dsig:DigestValue>vkzKiNaOO2dGnc0p0IIe5pg3GqE=</dsig:DigestValue>
+        <dsig:DigestValue>+2cSQ1njabpkXMWDlI8U1tTucro=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="TimeLive.Quickbooks.Integrator.exe" size="1549312">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="TimeLive.Quickbooks.Integrator.exe" size="1549824">
       <assemblyIdentity name="TimeLive.Quickbooks.Integrator" version="1.0.0.0" language="neutral" processorArchitecture="x86" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <dsig:DigestValue>Z35CzAyiYr/PrziqCMxHe6dmI94=</dsig:DigestValue>
+        <dsig:DigestValue>b8rBzkwt0ZoXPcSrB/glW6sVqEU=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>

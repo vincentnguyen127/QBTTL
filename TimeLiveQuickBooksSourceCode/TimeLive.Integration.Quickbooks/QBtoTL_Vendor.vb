@@ -1,4 +1,5 @@
-﻿Imports QBFC11Lib
+﻿Imports QBFC13Lib
+
 Imports System.Net.Mail
 Imports System.Data.SqlClient
 
@@ -144,7 +145,9 @@ Public Class QBtoTL_Vendor
         Dim nRoleId As Integer = objEmployeeServices.GetUserRoleId()
         Dim nLocationId As Integer = objServices.GetLocationId()
         'Dim nEmployeeTypeId As Guid = objEmployeeServices.GetEmployeeTypeId() '= {c2189a83 - 86aa-4972-83E9-5c814fc4eb69}
-        Dim nEmployeeTypeId As Guid = New Guid("{cae3a1c1-f2cb-419a-a53f-b47cf5ef6e3b}") ' Sets employee type to Consultant instead of Full-Time Hourly
+
+        ' Sets employee type in TimeLive to Consultant instead of Full-Time Hourly
+        Dim nEmployeeTypeId As Guid = New Guid("{cae3a1c1-f2cb-419a-a53f-b47cf5ef6e3b}")
         Dim val = nEmployeeTypeId.ToByteArray()
         Dim nEmployeeStatusId As Integer = objEmployeeServices.GetEmployeeStatusId()
         Dim nWorkingDayTypeId As Guid = objEmployeeServices.GetEmployeeWorkingDayTypeId()
@@ -168,6 +171,7 @@ Public Class QBtoTL_Vendor
                 Dim EmailAddress As String
                 Dim FirstName As String
                 Dim LastName As String
+                Dim EmployeeCode As String
                 Dim EmployeeName As String
                 Dim HiredDate As String
                 Dim DT_has_QBID = ISQBID_In_DataTable(element.QB_Name, element.QB_ID)
@@ -184,10 +188,8 @@ Public Class QBtoTL_Vendor
                         If TL_ID Is Nothing Then
                             My.Forms.MAIN.History("Detected empty sync record (No TL ID). Needs to be manually sync or deleted." + element.QB_Name, "i")
                         End If
-                        Dim vendorInTL As Boolean = Array.Exists(objEmployeeServices.GetEmployees,
-                                                                   Function(e As Services.TimeLive.Employees.Employee)
-                                                                       Return e.EmployeeName = element.QB_Name
-                                                                   End Function)
+
+                        Dim vendorInTL As Boolean = Array.Exists(objEmployeeServices.GetEmployees, Function(e As Services.TimeLive.Employees.Employee) e.EmployeeName = element.QB_Name)
                         If vendorInTL Then
                             ' TL already has this value and so does our DB, so just move to next element after updating Progress Bar
                         If UI Then
@@ -199,7 +201,6 @@ Public Class QBtoTL_Vendor
                         End If
                     End If
 
-                    'oRecordsCreatedorUpdated += 1
                     ' if it does not exist create a new record on both the sync database and on TL
                     Dim whereToInsert As String = If(DT_has_QBID, "TimeLive: ", "sync database and TimeLive: ")
                     My.Forms.MAIN.History("Inserting vendor into " + whereToInsert + element.QB_Name, "i")
@@ -212,13 +213,17 @@ Public Class QBtoTL_Vendor
                                 NoRecordsCreatedorUpdated += 1
                                 My.Forms.MAIN.History("TL_ID1111 : " + DT_has_QBID.ToString, "i")
                                 EmailAddress = GetEmailAddress(.Email, token, .QB_ID)
+                                'FirstName = If(.FirstName = "", .QB_Name, .FirstName)
+                                'LastName = If(.LastName = "", .QB_Name, .LastName)
+                                EmployeeCode = .QB_Name 'GetValue(.QB_Name, "EmployeeCode")
                                 FirstName = GetValue(.QB_Name, "FirstName")
                                 LastName = GetValue(.QB_Name, "LastName")
                                 HiredDate = GetValue(.HiredDate, "HiredDate")
                                 EmployeeName = FirstName + " " + LastName
 
+                                ' Changed Employee Code from "" to EmployeeCode
                                 objEmployeeServices.InsertEmployee(EmailAddress, EmailAddress, FirstName,
-                                        LastName, EmailAddress, "", nDepartmentId, nRoleId, nLocationId,
+                                        LastName, EmailAddress, EmployeeCode, nDepartmentId, nRoleId, nLocationId,
                                         233, nBillingTypeId, Now.Date, -1, 0, 6, 0, 0, nEmployeeTypeId, nEmployeeStatusId,
                                         "", Now.Date, Now.Date, nWorkingDayTypeId, System.Guid.Empty, 0, System.Guid.Empty, False,
                                         "", "", "", "", "", "", "", "", "", "Mr.", True)
@@ -226,10 +231,7 @@ Public Class QBtoTL_Vendor
 
                                 'Insert record into sync database if not in it
                                 If Not CBool(DT_has_QBID) Then
-                                    Dim vendorInTL As Boolean = Array.Exists(objEmployeeServices.GetEmployees,
-                                                                   Function(e As Services.TimeLive.Employees.Employee)
-                                                                       Return e.EmployeeName = EmployeeName
-                                                                   End Function)
+                                    Dim vendorInTL As Boolean = Array.Exists(objEmployeeServices.GetEmployees, Function(e As Services.TimeLive.Employees.Employee) EmployeeName = element.QB_Name)
                                     If vendorInTL Then
                                         'Note: if EmployeeName is changed back to "firstName,lastName", change to GetEmployeeID(firstName + " " + lastName)
                                         Dim TLClientID As String = objEmployeeServices.GetEmployeeId(EmployeeName)

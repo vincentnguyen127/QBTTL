@@ -1,4 +1,6 @@
-﻿Imports QBFC11Lib
+﻿'Imports QBFC11Lib
+Imports QBFC13Lib
+
 Public Class QBtoTL_JobOrItem
 
     ' datastructure for jobs and items
@@ -364,7 +366,7 @@ Public Class QBtoTL_JobOrItem
                             Dim hasParentTask As Boolean = Array.Exists(objTaskServices.GetTasks,
                                                                 Function(proj As Services.TimeLive.Tasks.Task) proj.TaskName = PTArray(PTArray.Length - 2))
 
-                            objTaskServices.UpdateIsParentInTask(nParentTaskId, True) ' Not sure what this line does
+                            objTaskServices.UpdateIsParentInTask(nParentTaskId, True)
 
                             If Not hasParentTask Then
                                 My.Forms.MAIN.History("Subtask " + element.QB_Name + "tried to be added before task " + PTArray(PTArray.Length - 2), "i")
@@ -375,16 +377,7 @@ Public Class QBtoTL_JobOrItem
                             Dim nTaskTypeId As Integer = objTaskServices.GetTaskTypeId()
                             Dim nTaskStatusId As Integer = objTaskServices.GetTaskStatusId()
                             Dim nPriorityId As Integer = objTaskServices.GetTaskPriorityId()
-                            Dim nProjectMilestoneId As Integer
-                            Try
-                                nProjectMilestoneId = objProjectServices.GetProjectMilestoneIdByProjectId(nProjectId)
-                            Catch ex As Exception
-                                My.Forms.MAIN.History("No Milestone available: Did not add " + element.QB_Name, "i")
-                                NoRecordsCreatedorUpdated -= 1
-                                Continue For
-                                ' TODO: Add Milestone to project
-                                'nProjectMilestoneId = 0
-                            End Try
+                            Dim nProjectMilestoneId As Integer = objProjectServices.GetProjectMilestoneIdByProjectId(nProjectId)
                             Dim nCurrencyId As Integer = objServices.GetCurrencyId()
 
                             objTaskServices.InsertTask(nProjectId, nParentTaskId, element.QB_Name, element.QB_Name,

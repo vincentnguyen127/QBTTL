@@ -1,6 +1,8 @@
 ﻿Imports System.Windows.Forms
 Imports System.Threading
-Imports QBFC11Lib
+'Imports QBFC11Lib
+Imports QBFC13Lib
+
 Imports System.Net.Mail
 Public Class MAIN
 
@@ -72,15 +74,14 @@ Public Class MAIN
                 History("Executing selected sync processes: " + Currentdt.ToString(), "n")
 
                 'Execution code goes here
-
                 Dim ItemsProcessed As Integer = AutoExecute()
                 My.Forms.MAIN.History(ItemsProcessed.ToString() + " TimeLive record(s) was created or updated", "N")
-
 
                 Dim NextRunDateTime As Date = Convert.ToDateTime(My.Settings.AutoRunTime)
                 NextRunDateTime = NextRunDateTime.AddHours(Convert.ToInt16(My.Settings.AutoRunInterval))
                 My.Settings.AutoRunTime = NextRunDateTime
                 My.Settings.Save()
+
                 NextProcessingTime.Text = "Auto Processing Time: " + Convert.ToDateTime(My.Settings.AutoRunTime)
             End If
             CurrentTime.Text = "Time: " + DateTime.Now.ToString("HH:mm")
@@ -169,15 +170,17 @@ Public Class MAIN
     End Sub
 
 
-    Public Shared Sub SendGMail(Subject__1 As String, BodyText As String)
+    Public Shared Sub SendGMail(Subject__1 As String, BodyText As String, UI As Boolean)
         'Specify senders gmail address
         Dim SendersAddress As String = "teltrium@gmail.com"
         'Specify The Address You want to send Email To(can be any valid email address)
         Dim ReceiversAddress As String = "cpetrelle@teltrium.com" '"ywang@teltrium.com"
 
         'Specify The password of gmail account u are using to sent mail(pw of sender@gmail.com)
-        MsgBox("--> Sending email to: " + ReceiversAddress + " From: " + SendersAddress)
-        Dim SendersPassword As String = "27February2019" '"1October2014"
+        If UI Then
+            MsgBox("--> Sending email to: " + ReceiversAddress + " From: " + SendersAddress)
+        End If
+        Dim SendersPassword As String = "1October2014"
 
         'Write the contents of your mail
         Dim body As String = BodyText
@@ -200,7 +203,9 @@ Public Class MAIN
             'WE use smtp sever we specified above to send the message(MailMessage message)
 
             smtp.Send(message)
-            MsgBox("Sent!")
+            If UI Then
+                MsgBox("Sent!")
+            End If
         Catch ex As Exception
             MsgBox(ex.Message)
         End Try
@@ -243,7 +248,7 @@ Public Class MAIN
 
     Private Function AutoExecute() As Integer
         Dim ItemsProcessed As Integer = 0
-
+        Dim emailBody As String = ""
         If (MAIN.SESSMANAGER Is Nothing) Then
             VALIDATEQBSESSION()
         End If
@@ -270,9 +275,10 @@ Public Class MAIN
             Next
 
             Dim customersProcessed As Integer = customer_qbtotl.QBTransferCustomerToTL(customerData, p_token, Nothing, False)
+            emailBody += "Customers Processed: " + customersProcessed.ToString & vbCrLf
+            My.Settings.CustomerLastSync = DateTime.Now.ToString()
             My.Forms.MAIN.History(customersProcessed.ToString() + " TimeLive customer(s) was created or updated", "i")
             ItemsProcessed += customersProcessed
-            My.Settings.CustomerLastSync = DateTime.Now.ToString()
         End If
 
         ' Employees
@@ -299,6 +305,7 @@ Public Class MAIN
             Next
 
             Dim employeesProcessed As Integer = employee_qbtotl.QBTransferEmployeeToTL(employeeData, p_token, Nothing, False)
+            emailBody += "Employees Processed: " + employeesProcessed.ToString & vbCrLf
             My.Settings.EmployeeLastSync = DateTime.Now.ToString()
             My.Forms.MAIN.History(employeesProcessed.ToString() + " TimeLive employee(s) was created or updated", "i")
             ItemsProcessed += employeesProcessed
@@ -328,6 +335,7 @@ Public Class MAIN
             Next
 
             Dim vendorsProcessed As Integer = vendor_qbtotl.QBTransferVendorToTL(vendorData, p_token, Nothing, False)
+            emailBody += "Vendors Processed: " + vendorsProcessed.ToString & vbCrLf
             My.Settings.VendorLastSync = DateTime.Now.ToString()
             My.Forms.MAIN.History(vendorsProcessed.ToString() + " TimeLive employee(s) was created or updated from vendors", "i")
             ItemsProcessed += vendorsProcessed
@@ -368,13 +376,15 @@ Public Class MAIN
                 My.Settings.ItemLastSync = DateTime.Now.ToString()
             End If
 
+            emailBody += "Jobs Processed: " + jobsProcessed.ToString & vbCrLf
             My.Forms.MAIN.History(jobsProcessed.ToString() + " TimeLive project(s)/task(s) was created or updated from jobs", "i")
             ItemsProcessed += jobsProcessed
         End If
 
+        emailBody += "Total items Processed: " + ItemsProcessed.ToString
+        MAIN.SendGMail("QuickBooks to TimeLive Auto transfer", emailBody, False)
         My.Settings.Save()
 
-        'SendGMail("Subject", "Body: " + ItemsProcessed + " Updates")
         Return ItemsProcessed
     End Function
 
