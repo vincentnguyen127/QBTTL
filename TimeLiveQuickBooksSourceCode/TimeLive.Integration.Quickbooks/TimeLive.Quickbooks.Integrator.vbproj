@@ -114,10 +114,10 @@
     <Compile Include="IntUI_2ndSelect.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="QBtoTL_JobOrItem.vb" />
-    <Compile Include="QBtoTL_Vendor.vb" />
-    <Compile Include="QBtoTL_Employee.vb" />
-    <Compile Include="QBtoTL_Customer.vb" />
+    <Compile Include="QBtoTL\QBtoTL_JobOrItem.vb" />
+    <Compile Include="QBtoTL\QBtoTL_Vendor.vb" />
+    <Compile Include="QBtoTL\QBtoTL_Employee.vb" />
+    <Compile Include="QBtoTL\QBtoTL_Customer.vb" />
     <Compile Include="AppSettings.Designer.vb">
       <DependentUpon>AppSettings.vb</DependentUpon>
     </Compile>
@@ -138,6 +138,10 @@
     <Compile Include="QB_TL_IDs.vb">
       <DependentUpon>QB_TL_IDs.xsd</DependentUpon>
     </Compile>
+    <Compile Include="Sync_TLtoQB\Sync_TLtoQB_JoborItem.vb" />
+    <Compile Include="Sync_TLtoQB\Sync_TLtoQB_Vendors.vb" />
+    <Compile Include="Sync_TLtoQB\Sync_TLtoQB_Employees.vb" />
+    <Compile Include="Sync_TLtoQB\Sync_TLtoQB_Customer.vb" />
     <Compile Include="TimeLiveDataSet.Designer.vb">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

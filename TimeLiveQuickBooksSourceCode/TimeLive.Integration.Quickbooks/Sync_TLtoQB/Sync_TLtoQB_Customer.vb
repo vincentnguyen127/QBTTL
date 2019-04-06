@@ -1,0 +1,169 @@
+﻿Imports QBFC13Lib
+
+Public Class Sync_TLtoQB_Customer
+
+
+    '---------------------Sync Customer TL Data to QB---------------------------------------
+    ''' <summary>
+    ''' Sync the customer data from QB. Print out customers that are in TL but not QB
+    ''' </summary>
+    Sub SyncCustomerData(ByVal p_token As String)
+        Dim result As Boolean = False
+
+        My.Forms.MAIN.History("Syncing Clients Data", "n")
+        Try
+            ' connect to Timelive
+            Dim play As New Services.TimeLive.Clients.Clients
+            Dim objClientServices As New Services.TimeLive.Clients.Clients
+            Dim authentication As New Services.TimeLive.Clients.SecuredWebServiceHeader
+            authentication.AuthenticatedToken = p_token
+            objClientServices.SecuredWebServiceHeaderValue = authentication
+            Dim objClientArray() As Object
+            objClientArray = objClientServices.GetClients()
+            Dim objClient As New Services.TimeLive.Clients.Client
+
+            For n As Integer = 0 To objClientArray.Length - 1
+                objClient = objClientArray(n)
+                With objClient
+                    'Call subroutine
+                    Dim clientID As Integer = objClientServices.GetClientIdByName(.ClientName)
+                    'Dim result As Boolean = checkQBCustomerExist(.ClientName.ToString, objClientServices.GetClientIdByName(.ClientName))
+                    ' Check if 
+                    Dim alreadyInQB As Boolean = checkQBCustomerExist(.ClientName.ToString, clientID, objClient)
+                    If Not alreadyInQB Then
+                        'Does not exist in QB
+                        My.Forms.MAIN.History("Added Name:" + .ClientName.ToString + " with TL ID: " + clientID.ToString + " to QuickBooks", "N")
+                        'My.Forms.MAIN.History("Please update or enter client into QB --> Name: " + .ClientName.ToString + " ID: " + clientID.ToString + " manually", "I")
+                    End If
+                End With
+            Next
+
+        Catch ex As Exception
+            MsgBox(ex.Message)
+        End Try
+    End Sub
+
+    ''' <summary>
+    ''' Verifies a client exists in QB, adding it to the Data Table if necessary
+    ''' </summary>
+    ''' <param name="TLClientName"></param>
+    ''' <param name="TL_ID"></param>
+    ''' <returns>
+    ''' False: does not exist in QB
+    ''' True: does exist in QB, and we add it to the Data Table if not present
+    ''' </returns>
+    Public Function checkQBCustomerExist(ByRef TLClientName As String, ByVal TL_ID As Integer, ByVal objClient As Services.TimeLive.Clients.Client) As Boolean
+
+        'Dim sessManager As QBSessionManager
+        Dim custRet As ICustomerRet
+
+        Try
+            'sessManager = New QBSessionManagerClass()
+            Dim msgSetRq As IMsgSetRequest = MAIN.SESSMANAGER.CreateMsgSetRequest("US", 2, 0)
+
+            msgSetRq.Attributes.OnError = ENRqOnError.roeContinue
+            Dim CustomerQueryRq As ICustomerQuery = msgSetRq.AppendCustomerQueryRq
+
+            CustomerQueryRq.ORCustomerListQuery.FullNameList.Add(TLClientName)
+            'sessManager.OpenConnection("App", "TimeLive Quickbooks")
+            'sessManager.BeginSession("", ENOpenMode.omDontCare)
+            Dim msgSetRs As IMsgSetResponse = MAIN.SESSMANAGER.DoRequests(msgSetRq)
+
+            Dim response As IResponse = msgSetRs.ResponseList.GetAt(0)
+            Dim custRetList As ICustomerRetList
+            custRetList = response.Detail
+
+            If custRetList Is Nothing Then
+                Dim newMsgSetRq As IMsgSetRequest = MAIN.SESSMANAGER.CreateMsgSetRequest("US", 2, 0)
+
+                newMsgSetRq.Attributes.OnError = ENRqOnError.roeContinue
+
+                ' Add TL Customer to QB
+                Dim custAdd As ICustomerAdd = newMsgSetRq.AppendCustomerAddRq
+                custAdd.CompanyName.SetValue(TLClientName.ToString)
+                custAdd.Name.SetValue(TLClientName.ToString)
+                custAdd.Fax.SetValue(If(objClient.Fax = Nothing, "", objClient.Fax))
+                custAdd.Email.SetValue(If(objClient.EmailAddress = Nothing, "", objClient.EmailAddress))
+                custAdd.Phone.SetValue(If(objClient.Telephone1 = Nothing, "", objClient.Telephone1))
+
+                'step2: send the request
+                msgSetRs = MAIN.SESSMANAGER.DoRequests(newMsgSetRq)
+
+                ' Interpret the response
+                Dim res As IResponse
+                res = msgSetRs.ResponseList.GetAt(0)
+
+                If res.StatusSeverity = "Error" Then
+                    Throw New Exception(res.StatusMessage)
+                End If
+
+                ' The response detail for Add and Mod requests is a 'Ret' object
+                ' In our case, it's ICustomerRet
+                ' Dim TimeEntryRet As ICustomerRet
+                ' TimeEntryRet = res.Detail
+                ' My.Forms.MAIN.History("Added: " + TimeEntryRet.FullName, "i")
+                Return False
+            Else
+
+                'Assume only one return
+                custRet = custRetList.GetAt(0)
+
+                With custRet
+                    My.Forms.MAIN.History("Found name in QB: " + .Name.GetValue.ToString + vbTab + "--> ID: " + .ListID.GetValue.ToString, "i")
+                    ' check if its in our database if not then add to it.
+                    Dim CustomerAdapter As New QB_TL_IDsTableAdapters.CustomersTableAdapter()
+
+                    If Not CBool(ISQBID_In_CustomerDataTable(.Name.GetValue.ToString, .ListID.GetValue)) Then
+                        My.Forms.MAIN.History("Adding customer to sync database: " + TLClientName, "i")
+                        CustomerAdapter.Insert(.ListID.GetValue, TL_ID, .Name.GetValue, TLClientName)
+                    End If
+                End With
+
+                Return True
+            End If
+
+        Catch ex As Exception
+            Throw ex
+            '     'Finally
+            '    If Not sessManager Is Nothing Then
+            '       sessManager.EndSession()
+            '       sessManager.CloseConnection()
+            '    End If
+        End Try
+    End Function
+
+    ''' <summary>
+    ''' Check if QB ID is in customer data table
+    ''' </summary>
+    ''' <param name="myqbName">qb name to be printed</param>
+    ''' <param name="myqbID">qb id to be verified</param>
+    ''' <returns>
+    ''' 0 -> not in data table
+    ''' 1 -> one record in data table
+    ''' 2 -> more than one record in data table
+    ''' </returns>
+    Private Function ISQBID_In_CustomerDataTable(ByVal myqbName As String, ByVal myqbID As String) As Int16
+        Dim result As Int16 = 0
+
+        Dim CustomerAdapter As New QB_TL_IDsTableAdapters.CustomersTableAdapter()
+        Dim TimeLiveIDs As QB_TL_IDs.CustomersDataTable = CustomerAdapter.GetCorrespondingTL_ID(myqbID)
+
+        If TimeLiveIDs.Count = 1 Then
+            result = 1
+            My.Forms.MAIN.History("One record found in QB sync table for: " + myqbName, "i")
+        End If
+
+        If TimeLiveIDs.Count = 0 Then
+            result = 0
+            My.Forms.MAIN.History("No records found on QB sync table for:" + myqbName, "i")
+        End If
+
+        If TimeLiveIDs.Count > 1 Then
+            result = 2
+            My.Forms.MAIN.History("More than one record found for:" + myqbName, "I")
+        End If
+
+        Return result
+    End Function
+
+End Class

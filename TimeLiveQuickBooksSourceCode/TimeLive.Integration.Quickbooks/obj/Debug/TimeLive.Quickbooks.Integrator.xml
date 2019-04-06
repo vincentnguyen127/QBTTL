@@ -6,128 +6,16 @@ TimeLive.Quickbooks.Integrator
 </name>
 </assembly>
 <members>
-<member name="M:TimeLive.Quickbooks.Integrator.CurrentSystemSync.SyncCustomerData">
+<member name="M:TimeLive.Quickbooks.Integrator.CurrentSystemSync.PassToken(System.String,System.String)">
  <summary>
- Sync the customer data from QB. Print out customers that are in TL but not QB
+ Runs a System Sync from TimeLive which adds entities into the database and into Quickbooks if not present
  </summary>
-</member>
-<member name="M:TimeLive.Quickbooks.Integrator.CurrentSystemSync.checkQBCustomerExist(System.String@,System.Int32)">
- <summary>
- Verifies a client exists in QB, adding it to the Data Table if necessary
- </summary>
- <param name="TLClientName"></param>
- <param name="TL_ID"></param>
- <returns>
- False: does not exist in QB
- True: does exist in QB, and we add it to the Data Table if not present
- </returns>
-</member>
-<member name="M:TimeLive.Quickbooks.Integrator.CurrentSystemSync.ISQBID_In_CustomerDataTable(System.String,System.String)">
- <summary>
- Check if QB ID is in customer data table
- </summary>
- <param name="myqbName">qb name to be printed</param>
- <param name="myqbID">qb id to be verified</param>
- <returns>
- 0 -> not in data table
- 1 -> one record in data table
- 2 -> more than one record in data table
- </returns>
-</member>
-<member name="M:TimeLive.Quickbooks.Integrator.CurrentSystemSync.SyncEmployeeData">
- <summary>
- Sync the employee data from QB. Print out employees that are in TL but not QB
- </summary>
-</member>
-<member name="M:TimeLive.Quickbooks.Integrator.CurrentSystemSync.checkQBEmployeeExist(System.String@,System.Int32)">
- <summary>
- Verifies an employee exists in QB, adding it to the Data Table if necessary
- </summary>
- <param name="TLEmployeeName"></param>
- <param name="TL_ID"></param>
- <returns>
- False: does not exist in QB
- True: does exist in QB, and we add it to the Data Table if not present
- </returns>
-</member>
-<member name="M:TimeLive.Quickbooks.Integrator.CurrentSystemSync.ISQBID_In_EmployeeDataTable(System.String,System.String)">
- <summary>
- Check if QB ID is in employee data table
- </summary>
- <param name="myqbName"></param>
- <param name="myqbID"></param>
- <returns>
- 0 -> not in data table
- 1 -> one record in data table
- 2 -> more than one record in data table
- </returns>
-</member>
-<member name="M:TimeLive.Quickbooks.Integrator.CurrentSystemSync.SyncVendorData">
- <summary>
- Sync the vendor data from QB. Print out vendors that are in TL but not QB
- </summary>
-</member>
-<member name="M:TimeLive.Quickbooks.Integrator.CurrentSystemSync.checkQBVendorExist(System.String@,System.Int32)">
- <summary>
- Verifies a vendor exists in QB, adding it to the Data Table if necessary
- </summary>
- <param name="TLEmployeeName"></param>
- <param name="TL_ID"></param>
- <returns>
- False: does not exist in QB
- True: does exist in QB, and we add it to the Data Table if not present
- </returns>
-</member>
-<member name="M:TimeLive.Quickbooks.Integrator.CurrentSystemSync.ISQBID_In_VendorDataTable(System.String,System.String)">
- <summary>
- Check if QB ID is in vendor data table
- </summary>
- <param name="myqbName"></param>
- <param name="myqbID"></param>
- <returns>
- 0 -> not in data table
- 1 -> one record in data table
- 2 -> more than one record in data table
- </returns>
-</member>
-<member name="M:TimeLive.Quickbooks.Integrator.CurrentSystemSync.SyncJobsSubJobData2">
- <summary>
- Sync the Jobs data from QB. Print out Projects and Tasks that are in TL but not QB
- </summary>
-</member>
-<member name="M:TimeLive.Quickbooks.Integrator.CurrentSystemSync.GetTasks(System.String)">
- <summary>
- Get Tasks, adding them as jobs to QB
- </summary>
- <param name="ParentName"></param>
- <returns></returns>
-</member>
-<member name="M:TimeLive.Quickbooks.Integrator.CurrentSystemSync.checkQBJobSubJobExist(System.String@,System.Int32,System.String)">
- <summary>
- Verifies a Job exists in QB, adding it to the Data Table if necessary
- </summary>
- <param name="TL_Name"></param>
- <param name="TL_ID"></param>
- <returns>
- False: does not exist in QB
- True: does exist in QB, and we add it to the Data Table if not present
- </returns>
-</member>
-<member name="M:TimeLive.Quickbooks.Integrator.CurrentSystemSync.ISQBID_In_JobSubJobDataTable(System.String,System.String)">
- <summary>
- Check if QB ID is in job/subjob data table
- </summary>
- <param name="myqbName"></param>
- <param name="myqbID"></param>
- <returns>
- 0 -> not in data table
- 1 -> one record in data table
- 2 -> more than one record in data table
- </returns>
+ <param name="token"></param>
+ <param name="AccountId"></param>
 </member>
 <member name="M:TimeLive.Quickbooks.Integrator.CurrentSystemSync.GetTime">
  <summary>
- 
+ Gets Time Entries from QB
  </summary>
 </member>
 <member name="M:TimeLive.Quickbooks.Integrator.QBtoTL_Vendor.ISQBID_In_DataTable(System.String,System.String)">
@@ -368,6 +256,131 @@ Update Order Option
 <summary>
 Used to sort self-referenced table's rows
 </summary>
+</member>
+<member name="M:TimeLive.Quickbooks.Integrator.Sync_TLtoQB_JoborItem.SyncJobsSubJobData2(System.String)">
+ <summary>
+ Sync the Jobs data from QB. Print out Projects and Tasks that are in TL but not QB
+ </summary>
+</member>
+<member name="M:TimeLive.Quickbooks.Integrator.Sync_TLtoQB_JoborItem.SyncJobsSubJobData(System.String)">
+ <summary>
+ Sync the Jobs from QB. Print out Projects and Tasks in TL but not QB
+ </summary>
+ <param name="p_token"></param>
+</member>
+<member name="M:TimeLive.Quickbooks.Integrator.Sync_TLtoQB_JoborItem.GetTasks(System.String,System.String)">
+ <summary>
+ Get Tasks, adding them as jobs to QB
+ </summary>
+ <param name="ParentName"></param>
+ <returns></returns>
+</member>
+<member name="M:TimeLive.Quickbooks.Integrator.Sync_TLtoQB_JoborItem.checkQBJobSubJobExist(System.String@,System.Int32,System.String)">
+ <summary>
+ Verifies a Job exists in QB, adding it to the Data Table if necessary
+ </summary>
+ <param name="TL_Name"></param>
+ <param name="TL_ID"></param>
+ <returns>
+ False: does not exist in QB
+ True: does exist in QB, and we add it to the Data Table if not present
+ </returns>
+</member>
+<member name="M:TimeLive.Quickbooks.Integrator.Sync_TLtoQB_JoborItem.ISQBID_In_JobSubJobDataTable(System.String,System.String)">
+ <summary>
+ Check if QB ID is in job/subjob data table
+ </summary>
+ <param name="myqbName"></param>
+ <param name="myqbID"></param>
+ <returns>
+ 0 -> not in data table
+ 1 -> one record in data table
+ 2 -> more than one record in data table
+ </returns>
+</member>
+<member name="M:TimeLive.Quickbooks.Integrator.Sync_TLtoQB_Vendors.SyncVendorData(System.String)">
+ <summary>
+ Sync the vendor data from QB. Print out vendors that are in TL but not QB
+ </summary>
+</member>
+<member name="M:TimeLive.Quickbooks.Integrator.Sync_TLtoQB_Vendors.checkQBVendorExist(System.String@,System.Int32,TimeLive.Quickbooks.Integrator.Services.TimeLive.Employees.Employee)">
+ <summary>
+ Verifies a vendor exists in QB, adding it to the Data Table if necessary
+ </summary>
+ <param name="TLEmployeeName"></param>
+ <param name="TL_ID"></param>
+ <returns>
+ False: does not exist in QB
+ True: does exist in QB, and we add it to the Data Table if not present
+ </returns>
+</member>
+<member name="M:TimeLive.Quickbooks.Integrator.Sync_TLtoQB_Vendors.ISQBID_In_VendorDataTable(System.String,System.String)">
+ <summary>
+ Check if QB ID is in vendor data table
+ </summary>
+ <param name="myqbName"></param>
+ <param name="myqbID"></param>
+ <returns>
+ 0 -> not in data table
+ 1 -> one record in data table
+ 2 -> more than one record in data table
+ </returns>
+</member>
+<member name="M:TimeLive.Quickbooks.Integrator.Sync_TLtoQB_Employees.SyncEmployeeData(System.String)">
+ <summary>
+ Sync the employee data from QB. Print out employees that are in TL but not QB
+ </summary>
+</member>
+<member name="M:TimeLive.Quickbooks.Integrator.Sync_TLtoQB_Employees.checkQBEmployeeExist(System.String@,System.Int32,TimeLive.Quickbooks.Integrator.Services.TimeLive.Employees.Employee)">
+ <summary>
+ Verifies an employee exists in QB, adding it to the Data Table if necessary
+ </summary>
+ <param name="TLEmployeeName"></param>
+ <param name="TL_ID"></param>
+ <returns>
+ False: does not exist in QB
+ True: does exist in QB, and we add it to the Data Table if not present
+ </returns>
+</member>
+<member name="M:TimeLive.Quickbooks.Integrator.Sync_TLtoQB_Employees.ISQBID_In_EmployeeDataTable(System.String,System.String)">
+ <summary>
+ Check if QB ID is in employee data table
+ </summary>
+ <param name="myqbName"></param>
+ <param name="myqbID"></param>
+ <returns>
+ 0 -> not in data table
+ 1 -> one record in data table
+ 2 -> more than one record in data table
+ </returns>
+</member>
+<member name="M:TimeLive.Quickbooks.Integrator.Sync_TLtoQB_Customer.SyncCustomerData(System.String)">
+ <summary>
+ Sync the customer data from QB. Print out customers that are in TL but not QB
+ </summary>
+</member>
+<member name="M:TimeLive.Quickbooks.Integrator.Sync_TLtoQB_Customer.checkQBCustomerExist(System.String@,System.Int32,TimeLive.Quickbooks.Integrator.Services.TimeLive.Clients.Client)">
+ <summary>
+ Verifies a client exists in QB, adding it to the Data Table if necessary
+ </summary>
+ <param name="TLClientName"></param>
+ <param name="TL_ID"></param>
+ <returns>
+ False: does not exist in QB
+ True: does exist in QB, and we add it to the Data Table if not present
+ </returns>
+</member>
+<member name="M:TimeLive.Quickbooks.Integrator.Sync_TLtoQB_Customer.ISQBID_In_CustomerDataTable(System.String,System.String)">
+ <summary>
+ Check if QB ID is in customer data table
+ </summary>
+ <param name="myqbName">qb name to be printed</param>
+ <param name="myqbID">qb id to be verified</param>
+ <returns>
+ 0 -> not in data table
+ 1 -> one record in data table
+ 2 -> more than one record in data table
+ </returns>
 </member>
 <member name="T:TimeLive.Quickbooks.Integrator.TimeLiveDataSet">
 <summary>

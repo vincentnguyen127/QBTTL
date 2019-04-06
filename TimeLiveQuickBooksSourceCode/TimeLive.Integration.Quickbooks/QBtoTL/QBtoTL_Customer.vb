@@ -163,7 +163,7 @@ Public Class QBtoTL_Customer
 
         Dim NoRecordsCreatedorUpdated As Integer = 0
 
-        For Each element As QBtoTL_Customer.Customer In objData.DataArray
+        For Each element As Customer In objData.DataArray
 
             ' check if the check value is true
             If element.Enabled And element.RecSelect Then
@@ -225,24 +225,24 @@ Public Class QBtoTL_Customer
                         My.Forms.MAIN.History("Transfer failed." + ex.ToString, "N")
                     End Try
                 End If
-                    'End If
+                'End If
 
-                    'if it exist check that the TL_ID is not empty ---> 1
-                    'if not empty, just update
-                    'if empty, informed the user of a potential error as a record has been created in the sync database without a corresponding TL pointer
+                'if it exist check that the TL_ID is not empty ---> 1
+                'if not empty, just update
+                'if empty, informed the user of a potential error as a record has been created in the sync database without a corresponding TL pointer
 
-                    'If TL_ID_Return = 1 Then
-                    'Dim TL_ID As String = ISTLID_In_DataTable(element.QB_ID)
-                    'If TL_ID Is Nothing Then
-                    'My.Forms.MAIN.History("Detected empty sync record (No TL ID). Needs to be manually sync or deleted." + element.QB_Name, "i")
-                    'Else
-                    '   NoRecordsCreatedorUpdated += 1
-                    '  My.Forms.MAIN.History("Updating TL record for: " + element.QB_Name, "i")
-                    '-----------------------------------------------------------------------------------------------------------------------------------------------------------------
-                    ' --------------------------------------------- this part is the update ------------------------------------------------------------------------------------------
-                    '-----------------------------------------------------------------------------------------------------------------------------------------------------------------
-                    'End If
-                End If
+                'If TL_ID_Return = 1 Then
+                'Dim TL_ID As String = ISTLID_In_DataTable(element.QB_ID)
+                'If TL_ID Is Nothing Then
+                'My.Forms.MAIN.History("Detected empty sync record (No TL ID). Needs to be manually sync or deleted." + element.QB_Name, "i")
+                'Else
+                '   NoRecordsCreatedorUpdated += 1
+                '  My.Forms.MAIN.History("Updating TL record for: " + element.QB_Name, "i")
+                '-----------------------------------------------------------------------------------------------------------------------------------------------------------------
+                ' --------------------------------------------- this part is the update ------------------------------------------------------------------------------------------
+                '-----------------------------------------------------------------------------------------------------------------------------------------------------------------
+                'End If
+            End If
 
             ' TODO: Make Client in TL enabled/disabled based on element.Enabled field
 
