@@ -43,18 +43,6 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Interop.QBFC11Lib.dll" size="876544">
-      <assemblyIdentity name="Interop.QBFC11Lib" version="1.0.0.0" language="neutral" processorArchitecture="x86" />
-      <hash>
-        <dsig:Transforms>
-          <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
-        </dsig:Transforms>
-        <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <dsig:DigestValue>YxBnQ3Ca9Qk+Gx2v3LZxhxOoMsc=</dsig:DigestValue>
-      </hash>
-    </dependentAssembly>
-  </dependency>
-  <dependency>
     <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Interop.QBFC13Lib.dll" size="942080">
       <assemblyIdentity name="Interop.QBFC13Lib" version="1.0.0.0" language="neutral" processorArchitecture="x86" />
       <hash>
@@ -62,19 +50,19 @@
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <dsig:DigestValue>+2cSQ1njabpkXMWDlI8U1tTucro=</dsig:DigestValue>
+        <dsig:DigestValue>r+vHe3eOgc4pM1KeugoaxcuAWuU=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="TimeLive.Quickbooks.Integrator.exe" size="1551872">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="TimeLive.Quickbooks.Integrator.exe" size="1553408">
       <assemblyIdentity name="TimeLive.Quickbooks.Integrator" version="1.0.0.0" language="neutral" processorArchitecture="x86" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <dsig:DigestValue>jpfxMod28u7Prs6Ghr+XHTxhghE=</dsig:DigestValue>
+        <dsig:DigestValue>iitIzmUHdJgF2p4O2v5SyP2vEfs=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>

@@ -15,14 +15,14 @@
     {
         "Entry"
         {
-        "MsmKey" = "8:_3F815A50D70B4E301BC2763A8F20725A"
-        "OwnerKey" = "8:_41923F2A34FB1936AB53DCEB6928A0B1"
+        "MsmKey" = "8:_34F4A7CC5DAE2C278C84531C2F62E135"
+        "OwnerKey" = "8:_FF7293944CDF4E30915AC2511D214A99"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_41923F2A34FB1936AB53DCEB6928A0B1"
-        "OwnerKey" = "8:_FF7293944CDF4E30915AC2511D214A99"
+        "MsmKey" = "8:_570E587BFB26575755DBF6C2F52762CE"
+        "OwnerKey" = "8:_34F4A7CC5DAE2C278C84531C2F62E135"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -46,13 +46,13 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_41923F2A34FB1936AB53DCEB6928A0B1"
+        "OwnerKey" = "8:_FF7293944CDF4E30915AC2511D214A99"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_FF7293944CDF4E30915AC2511D214A99"
+        "OwnerKey" = "8:_34F4A7CC5DAE2C278C84531C2F62E135"
         "MsmSig" = "8:_UNDEFINED"
         }
     }
@@ -150,10 +150,21 @@
         }
         "File"
         {
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_3F815A50D70B4E301BC2763A8F20725A"
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_34F4A7CC5DAE2C278C84531C2F62E135"
             {
-            "SourcePath" = "8:QBFC11.dll"
-            "TargetName" = "8:QBFC11.dll"
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:Interop.QBFC13Lib, Version=1.0.0.0, Culture=neutral, processorArchitecture=x86"
+                "ScatterAssemblies"
+                {
+                    "_34F4A7CC5DAE2C278C84531C2F62E135"
+                    {
+                    "Name" = "8:Interop.QBFC13Lib.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:Interop.QBFC13Lib.dll"
+            "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_159B339552794F7EB29BEF563DAB4CA9"
             "Condition" = "8:"
@@ -170,21 +181,10 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_41923F2A34FB1936AB53DCEB6928A0B1"
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_570E587BFB26575755DBF6C2F52762CE"
             {
-            "AssemblyRegister" = "3:1"
-            "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:Interop.QBFC11Lib, Version=1.0.0.0, Culture=neutral, processorArchitecture=x86"
-                "ScatterAssemblies"
-                {
-                    "_41923F2A34FB1936AB53DCEB6928A0B1"
-                    {
-                    "Name" = "8:Interop.QBFC11Lib.dll"
-                    "Attributes" = "3:512"
-                    }
-                }
-            "SourcePath" = "8:Interop.QBFC11Lib.dll"
-            "TargetName" = "8:"
+            "SourcePath" = "8:QBFC13.dll"
+            "TargetName" = "8:QBFC13.dll"
             "Tag" = "8:"
             "Folder" = "8:_159B339552794F7EB29BEF563DAB4CA9"
             "Condition" = "8:"
@@ -310,7 +310,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:TeltriumTimeLiveToQuickBooks"
         "ProductCode" = "8:{55D4FC3A-C6BA-4437-8AAD-27BF32055D83}"
-        "PackageCode" = "8:{F1DBDB78-1857-491F-9EFE-5519DC37C42C}"
+        "PackageCode" = "8:{221170B4-4F9C-4F54-B223-F813008C7FF6}"
         "UpgradeCode" = "8:{E8B6CFCA-D71F-4602-A017-1E150F8773A6}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
@@ -890,7 +890,7 @@
             "Exclude" = "11:FALSE"
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
-            "ProjectOutputGroupRegister" = "3:1"
+            "ProjectOutputGroupRegister" = "3:2"
             "OutputConfiguration" = "8:"
             "OutputGroupCanonicalName" = "8:Built"
             "OutputProjectGuid" = "8:{BCB9035A-7AE7-4326-96E1-0ADC9BAC8170}"

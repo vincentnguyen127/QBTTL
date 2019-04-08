@@ -7,7 +7,7 @@ Public Class Sync_TLtoQB_Customer
     ''' <summary>
     ''' Sync the customer data from QB. Print out customers that are in TL but not QB
     ''' </summary>
-    Sub SyncCustomerData(ByVal p_token As String)
+    Sub SyncCustomerData(ByVal p_token As String, Optional ByVal UI As Boolean = True)
         Dim result As Boolean = False
 
         My.Forms.MAIN.History("Syncing Clients Data", "n")
@@ -28,13 +28,8 @@ Public Class Sync_TLtoQB_Customer
                     'Call subroutine
                     Dim clientID As Integer = objClientServices.GetClientIdByName(.ClientName)
                     'Dim result As Boolean = checkQBCustomerExist(.ClientName.ToString, objClientServices.GetClientIdByName(.ClientName))
-                    ' Check if 
-                    Dim alreadyInQB As Boolean = checkQBCustomerExist(.ClientName.ToString, clientID, objClient)
-                    If Not alreadyInQB Then
-                        'Does not exist in QB
-                        My.Forms.MAIN.History("Added Name:" + .ClientName.ToString + " with TL ID: " + clientID.ToString + " to QuickBooks", "N")
-                        'My.Forms.MAIN.History("Please update or enter client into QB --> Name: " + .ClientName.ToString + " ID: " + clientID.ToString + " manually", "I")
-                    End If
+                    ' Check if TL Client is in QB, and add if not. 
+                    checkQBCustomerExist(.ClientName.ToString, clientID, objClient, UI)
                 End With
             Next
 
@@ -52,7 +47,7 @@ Public Class Sync_TLtoQB_Customer
     ''' False: does not exist in QB
     ''' True: does exist in QB, and we add it to the Data Table if not present
     ''' </returns>
-    Public Function checkQBCustomerExist(ByRef TLClientName As String, ByVal TL_ID As Integer, ByVal objClient As Services.TimeLive.Clients.Client) As Boolean
+    Public Function checkQBCustomerExist(ByRef TLClientName As String, ByVal TL_ID As Integer, ByVal objClient As Services.TimeLive.Clients.Client, ByVal UI As Boolean) As Boolean
 
         'Dim sessManager As QBSessionManager
         Dim custRet As ICustomerRet
@@ -73,55 +68,84 @@ Public Class Sync_TLtoQB_Customer
             Dim custRetList As ICustomerRetList
             custRetList = response.Detail
 
-            If custRetList Is Nothing Then
+            Dim inQB As Boolean = Not custRetList Is Nothing
+
+            If Not inQB Then
                 Dim newMsgSetRq As IMsgSetRequest = MAIN.SESSMANAGER.CreateMsgSetRequest("US", 2, 0)
 
                 newMsgSetRq.Attributes.OnError = ENRqOnError.roeContinue
+                Dim create As Boolean = True
 
-                ' Add TL Customer to QB
-                Dim custAdd As ICustomerAdd = newMsgSetRq.AppendCustomerAddRq
-                custAdd.CompanyName.SetValue(TLClientName.ToString)
-                custAdd.Name.SetValue(TLClientName.ToString)
-                custAdd.Fax.SetValue(If(objClient.Fax = Nothing, "", objClient.Fax))
-                custAdd.Email.SetValue(If(objClient.EmailAddress = Nothing, "", objClient.EmailAddress))
-                custAdd.Phone.SetValue(If(objClient.Telephone1 = Nothing, "", objClient.Telephone1))
-
-                'step2: send the request
-                msgSetRs = MAIN.SESSMANAGER.DoRequests(newMsgSetRq)
-
-                ' Interpret the response
-                Dim res As IResponse
-                res = msgSetRs.ResponseList.GetAt(0)
-
-                If res.StatusSeverity = "Error" Then
-                    Throw New Exception(res.StatusMessage)
+                If UI Then
+                    create = MsgBox("New customer found in TimeLive: " + TLClientName + ". Create in QuickBooks?", MsgBoxStyle.YesNo, "Warning!") = MsgBoxResult.Yes
                 End If
 
-                ' The response detail for Add and Mod requests is a 'Ret' object
-                ' In our case, it's ICustomerRet
-                ' Dim TimeEntryRet As ICustomerRet
-                ' TimeEntryRet = res.Detail
-                ' My.Forms.MAIN.History("Added: " + TimeEntryRet.FullName, "i")
-                Return False
-            Else
+                If create Then
+                    ' Add TL Customer to QB
+                    Dim custAdd As ICustomerAdd = newMsgSetRq.AppendCustomerAddRq
+                    custAdd.CompanyName.SetValue(TLClientName.ToString)
+                    custAdd.Name.SetValue(TLClientName.ToString)
+                    custAdd.Fax.SetValue(If(objClient.Fax = Nothing, "", objClient.Fax))
+                    custAdd.Email.SetValue(If(objClient.EmailAddress = Nothing, "", objClient.EmailAddress))
+                    custAdd.Phone.SetValue(If(objClient.Telephone1 = Nothing, "", objClient.Telephone1))
 
+                    'step2: send the request
+                    msgSetRs = MAIN.SESSMANAGER.DoRequests(newMsgSetRq)
+
+                    ' Interpret the response
+                    Dim res As IResponse
+                    res = msgSetRs.ResponseList.GetAt(0)
+
+                    If res.StatusSeverity = "Error" Then
+                        Throw New Exception(res.StatusMessage)
+                    End If
+
+                    My.Forms.MAIN.History("Added Name:" + TLClientName + " with TL ID: " + TL_ID.ToString + " to QuickBooks", "N")
+
+                    ' The response detail for Add and Mod requests is a 'Ret' object
+                    ' In our case, it's ICustomerRet
+                    ' Dim TimeEntryRet As ICustomerRet
+                    ' TimeEntryRet = res.Detail
+                    ' My.Forms.MAIN.History("Added: " + TimeEntryRet.FullName, "i")
+                Else
+                    Return False ' Do not add to QB nor sync table
+                End If
+
+                ' Make request again to make sure that we added to QB, then add to sync table
+                msgSetRq = MAIN.SESSMANAGER.CreateMsgSetRequest("US", 2, 0)
+                msgSetRq.Attributes.OnError = ENRqOnError.roeContinue
+
+                CustomerQueryRq = msgSetRq.AppendCustomerQueryRq
+                CustomerQueryRq.ORCustomerListQuery.FullNameList.Add(TLClientName)
+
+                msgSetRs = MAIN.SESSMANAGER.DoRequests(msgSetRq)
+                response = msgSetRs.ResponseList.GetAt(0)
+                custRetList = response.Detail
+
+                'Return False
+                'Else
+            End If
+
+            If Not custRetList Is Nothing Then
                 'Assume only one return
                 custRet = custRetList.GetAt(0)
-
                 With custRet
-                    My.Forms.MAIN.History("Found name in QB: " + .Name.GetValue.ToString + vbTab + "--> ID: " + .ListID.GetValue.ToString, "i")
+                    If inQB Then
+                        My.Forms.MAIN.History("Found name in QB: " + .Name.GetValue.ToString + vbTab + "--> ID: " + .ListID.GetValue.ToString, "i")
+                    End If
                     ' check if its in our database if not then add to it.
                     Dim CustomerAdapter As New QB_TL_IDsTableAdapters.CustomersTableAdapter()
-
                     If Not CBool(ISQBID_In_CustomerDataTable(.Name.GetValue.ToString, .ListID.GetValue)) Then
                         My.Forms.MAIN.History("Adding customer to sync database: " + TLClientName, "i")
                         CustomerAdapter.Insert(.ListID.GetValue, TL_ID, .Name.GetValue, TLClientName)
+                    Else
+                        CustomerAdapter.Update(.ListID.GetValue, TL_ID, .Name.GetValue, TLClientName)
                     End If
                 End With
-
-                Return True
             End If
 
+            Return inQB
+            'End If
         Catch ex As Exception
             Throw ex
             '     'Finally

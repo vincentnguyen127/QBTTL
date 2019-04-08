@@ -28,7 +28,8 @@ Public Class Sync_TLtoQB_JoborItem
 
                 My.Forms.MAIN.History("Processing TL Project: " + objProject.ProjectName.ToString, "i")
                 ExpectedQBProjectName = objProject.ClientName + ":" + objProject.ProjectName.ToString
-                result = checkQBJobSubJobExist(ExpectedQBProjectName, objProject.ProjectID, ExpectedQBProjectName)
+                'result = checkQBJobSubJobExist(ExpectedQBProjectName, objProject.ProjectID, ExpectedQBProjectName)
+                result = checkQBJobSubJobExist(objProject.ClientName, objProject.ProjectName, ExpectedQBProjectName, True)
                 If result = False Then
                     'Does not exist in QB
                     My.Forms.MAIN.History("Please update or enter project in QB --> Name: " + objProject.ProjectName.ToString + vbTab + "ID: " + objProject.ProjectID.ToString(), "I")
@@ -39,7 +40,7 @@ Public Class Sync_TLtoQB_JoborItem
 
 
                     For Each element As QBtoTL_JobOrItem.Job_Item In SubJobsOrSubData.DataArray
-                        result = checkQBJobSubJobExist(ExpectedQBTaskName + ":" + element.TL_Name, element.TL_ID, ExpectedQBTaskName + ":" + element.TL_Name)
+                        result = checkQBJobSubJobExist(ExpectedQBTaskName, element.TL_Name, element.TL_ID, True)
                         If result = False Then
                             'Does not exist in QB
                             My.Forms.MAIN.History("Please update or enter task in QB: " + ExpectedQBTaskName + ":" + element.TL_Name.ToString + " manually", "I")
@@ -60,39 +61,44 @@ Public Class Sync_TLtoQB_JoborItem
     ''' Sync the Jobs from QB. Print out Projects and Tasks in TL but not QB
     ''' </summary>
     ''' <param name="p_token"></param>
-    Sub SyncJobsSubJobData(ByVal p_token As String)
+    Sub SyncJobsSubJobData(ByVal p_token As String, Optional ByVal UI As Boolean = True)
         Dim result As Boolean = False
         Dim SubJobsOrSubData As New QBtoTL_JobOrItem.SubJobsOrSubitems
 
         My.Forms.MAIN.History("Syncing JobSubJob Data", "n")
         Try
-            ' connect to Timelive
-            Dim objTaskServices As New Services.TimeLive.Tasks.Tasks
-            Dim authentication As New Services.TimeLive.Tasks.SecuredWebServiceHeader
-            authentication.AuthenticatedToken = p_token
-            objTaskServices.SecuredWebServiceHeaderValue = authentication
+            ' Connect to TimeLive Projects
+            Dim objProjectServices As New Services.TimeLive.Projects.Projects
+            Dim authenticationProjects As New Services.TimeLive.Projects.SecuredWebServiceHeader
+            authenticationProjects.AuthenticatedToken = p_token
+            objProjectServices.SecuredWebServiceHeaderValue = authenticationProjects
+            Dim objProjectArray() As Object = objProjectServices.GetProjects
+            Dim objProject As New Services.TimeLive.Projects.Project
 
-            Dim objTaskArray As Object = objTaskServices.GetTasks
+            For n As Integer = 0 To objProjectArray.Length - 1
+                objProject = objProjectArray(n)
+                ' Done this way since field .ProjectID just returned 0
+                Dim projectID As Integer = objProjectServices.GetProjectId(objProject.ProjectName)
+                checkQBJobSubJobExist(objProject.ClientName, objProject.ProjectName, projectID.ToString, UI)
+            Next
+
+            ' Connect to Timelive Tasks
+            Dim objTaskServices As New Services.TimeLive.Tasks.Tasks
+            Dim authenticationTasks As New Services.TimeLive.Tasks.SecuredWebServiceHeader
+            authenticationTasks.AuthenticatedToken = p_token
+            objTaskServices.SecuredWebServiceHeaderValue = authenticationTasks
+            ' Note: Will error if 'Code' is null
+            Dim objTaskArray() As Object = objTaskServices.GetTasks
             Dim objTask As New Services.TimeLive.Tasks.Task
 
             For n As Integer = 0 To objTaskArray.Length - 1
                 objTask = objTaskArray(n)
-                With objTask
-                    ' Done this way since field .taskID just returned 0
-                    Dim taskID As Integer = objTaskServices.GetTaskId(.TaskName)
-                    If .TaskID = 0 Then
-                        My.Forms.MAIN.History(.TaskName + " id: " + taskID.ToString, "i")
-                    End If
-                    result = checkQBJobSubJobExist(.JobParent.ToString + ":" + .TaskName.ToString, taskID.ToString, .JobParent.ToString + ":" + .TaskName.ToString)
-
-                    If result = False Then
-                        'Does not exist in QB
-                        My.Forms.MAIN.History("Update or enter task in QB: " + .JobParent.ToString + ":" + .TaskName.ToString + " manually", "I")
-                    End If
-                End With
+                ' Done this way since field .taskID just returned 0
+                Dim taskID As Integer = objTaskServices.GetTaskId(objTask.TaskName)
+                checkQBJobSubJobExist(objTask.JobParent, objTask.TaskName, taskID.ToString, UI)
             Next
-
-
+        Catch ex As System.Web.Services.Protocols.SoapException
+            MsgBox("Make sure all Tasks and Jobs have a Code: " + ex.Message)
         Catch ex As Exception
             MsgBox(ex.Message)
         End Try
@@ -146,19 +152,22 @@ Public Class Sync_TLtoQB_JoborItem
     ''' False: does not exist in QB
     ''' True: does exist in QB, and we add it to the Data Table if not present
     ''' </returns>
-    Public Function checkQBJobSubJobExist(ByRef QBJobSubJobName As String, ByVal TL_ID As Integer, ByVal TL_Name As String) As Boolean
+    Public Function checkQBJobSubJobExist(ByRef Parent As String, ByRef TL_Name As String, ByVal TL_ID As Integer, ByVal UI As Boolean) As Boolean
         'Dim sessManager As QBSessionManager
 
-        My.Forms.MAIN.History("Serching in QB for: " + QBJobSubJobName, "i")
+        ' My.Forms.MAIN.History("Searching in QB for: " + QBJobSubJobName, "i")
 
         Try
+            Dim TLJobSubJobName As String = Parent + ":" + TL_Name
+            Dim jobOrTask As String = If(Parent.Split(":").Length = 1, "Job", "Task")
+
             'sessManager = New QBSessionManagerClass()
             Dim msgSetRq As IMsgSetRequest = MAIN.SESSMANAGER.CreateMsgSetRequest("US", 2, 0)
 
             msgSetRq.Attributes.OnError = ENRqOnError.roeContinue
             Dim TaskSubTaskQueryRq As ICustomerQuery = msgSetRq.AppendCustomerQueryRq
 
-            TaskSubTaskQueryRq.ORCustomerListQuery.FullNameList.Add(QBJobSubJobName)
+            TaskSubTaskQueryRq.ORCustomerListQuery.FullNameList.Add(TLJobSubJobName)
 
             'sessManager.OpenConnection("App", "TimeLive Quickbooks")
             'sessManager.BeginSession("", ENOpenMode.omDontCare)
@@ -167,28 +176,69 @@ Public Class Sync_TLtoQB_JoborItem
             Dim jobsubjobsRetList As ICustomerRetList
             jobsubjobsRetList = response.Detail
 
-            If jobsubjobsRetList Is Nothing Then
-                My.Forms.MAIN.History("Job not found", "i")
-                Return False
-            Else
-                'Assume only one return
-                Dim JobSubJobsRet As ICustomerRet
-                JobSubJobsRet = jobsubjobsRetList.GetAt(0)
+            Dim inQB As Boolean = Not jobsubjobsRetList Is Nothing
 
-                With JobSubJobsRet
-                    My.Forms.MAIN.History("Found job/subjob name in QB: " + .Name.GetValue.ToString + " --> ID: " + .ListID.GetValue.ToString, "i")
-                    ' check if its in our database if not then add to it.
-                    Dim JobSubJobAdapter As New QB_TL_IDsTableAdapters.Jobs_SubJobsTableAdapter()
-                    'MsgBox("Hit:" + .ListID.GetValue + "-- " + TL_ID.ToString)
+            If Not inQB Then
+                Dim newMsgSetRq As IMsgSetRequest = MAIN.SESSMANAGER.CreateMsgSetRequest("US", 2, 0)
+                newMsgSetRq.Attributes.OnError = ENRqOnError.roeContinue
 
-                    If ISQBID_In_JobSubJobDataTable(.Name.GetValue.ToString, .ListID.GetValue) = 0 Then
-                        My.Forms.MAIN.History("Not in database, Adding to Sync Database: " + JobSubJobAdapter.GetCorrespondingTL_ID(TL_ID).ToString + "QB_ID:  " + .ListID.GetValue + " With the TL_ID: " + TL_ID.ToString, "i")
-                        JobSubJobAdapter.Insert(.ListID.GetValue, TL_ID, .Name.GetValue, TL_Name) 'QBJobSubJobName
+                Dim create As Boolean = True
+                If UI Then
+                    create = MsgBox("New " + jobOrTask + " found in TimeLive: " + TLJobSubJobName + ". Create in QuickBooks?", MsgBoxStyle.YesNo, "Warning!") = MsgBoxResult.Yes
+                End If
+
+                If create Then
+                    ' Add TL Job to QB
+                    Dim jobAdd As ICustomerAdd = newMsgSetRq.AppendCustomerAddRq
+
+                    jobAdd.ParentRef.FullName.SetValue(Parent)
+                    jobAdd.Name.SetValue(TL_Name)
+
+                    'step2: send the request
+                    msgSetRs = MAIN.SESSMANAGER.DoRequests(newMsgSetRq)
+
+                    ' Interpret the response
+                    Dim res As IResponse
+                    res = msgSetRs.ResponseList.GetAt(0)
+
+                    If res.StatusSeverity = "Error" Then
+                        Throw New Exception(res.StatusMessage)
                     End If
-                End With
 
-                Return True
+                    My.Forms.MAIN.History(jobOrTask + " in Timelive with name: " + TLJobSubJobName + " added to QuickBooks", "N")
+
+                    msgSetRq = MAIN.SESSMANAGER.CreateMsgSetRequest("US", 2, 0)
+                    msgSetRq.Attributes.OnError = ENRqOnError.roeContinue
+
+                    TaskSubTaskQueryRq = msgSetRq.AppendCustomerQueryRq
+                    TaskSubTaskQueryRq.ORCustomerListQuery.FullNameList.Add(TLJobSubJobName)
+
+                    msgSetRs = MAIN.SESSMANAGER.DoRequests(msgSetRq)
+                    response = msgSetRs.ResponseList.GetAt(0)
+                    jobsubjobsRetList = response.Detail
+                Else
+                    Return False
+                End If
             End If
+            'Assume only one return
+            Dim JobSubJobsRet As ICustomerRet
+            JobSubJobsRet = jobsubjobsRetList.GetAt(0)
+
+            With JobSubJobsRet
+                If inQB Then
+                    My.Forms.MAIN.History("Found " + jobOrTask + " in QB with name: " + .Name.GetValue.ToString + " --> ID: " + .ListID.GetValue.ToString, "i")
+                End If
+                ' check if its in our database if not then add to it.
+                Dim JobSubJobAdapter As New QB_TL_IDsTableAdapters.Jobs_SubJobsTableAdapter()
+                'MsgBox("Hit:" + .ListID.GetValue + "-- " + TL_ID.ToString)
+
+                If ISQBID_In_JobSubJobDataTable(.Name.GetValue.ToString, .ListID.GetValue) = 0 Then
+                    My.Forms.MAIN.History("Adding " + TLJobSubJobName + " With the TL_ID " + TL_ID.ToString + " to data sync table", "i")
+                    JobSubJobAdapter.Insert(.ListID.GetValue, TL_ID, .Name.GetValue, TLJobSubJobName) 'QBJobSubJobName
+                End If
+            End With
+
+            Return inQB
 
         Catch ex As Exception
             Throw ex

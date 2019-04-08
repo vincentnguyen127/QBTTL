@@ -225,7 +225,7 @@ Partial Class MAIN
         Me.vendor_btn.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.vendor_btn.Name = "vendor_btn"
         Me.vendor_btn.Size = New System.Drawing.Size(90, 19)
-        Me.vendor_btn.Text = "Vendor"
+        Me.vendor_btn.Text = "Vendors"
         Me.vendor_btn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
         'jobs_items_btn

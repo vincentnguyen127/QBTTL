@@ -55,7 +55,6 @@ Partial Class ChargingRelationship
         Me.JobFilterLabel = New System.Windows.Forms.Label()
         Me.PayrollFilterLabel = New System.Windows.Forms.Label()
         Me.ItemFilterLabel = New System.Windows.Forms.Label()
-        Me.Label1 = New System.Windows.Forms.Label()
         CType(Me.ChargingRelationshipsBindingSource, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.QBTLIDsBindingSource, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.QB_TL_IDs, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -87,7 +86,7 @@ Partial Class ChargingRelationship
         'btn_Save
         '
         Me.btn_Save.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.btn_Save.Location = New System.Drawing.Point(542, 374)
+        Me.btn_Save.Location = New System.Drawing.Point(621, 374)
         Me.btn_Save.Name = "btn_Save"
         Me.btn_Save.Size = New System.Drawing.Size(75, 23)
         Me.btn_Save.TabIndex = 1
@@ -96,6 +95,8 @@ Partial Class ChargingRelationship
         '
         'DataGridView1
         '
+        Me.DataGridView1.AllowUserToDeleteRows = False
+        Me.DataGridView1.AllowUserToResizeRows = False
         Me.DataGridView1.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
             Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
@@ -108,7 +109,7 @@ Partial Class ChargingRelationship
         Me.DataGridView1.Location = New System.Drawing.Point(0, 63)
         Me.DataGridView1.Name = "DataGridView1"
         Me.DataGridView1.RowHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.[Single]
-        Me.DataGridView1.Size = New System.Drawing.Size(704, 285)
+        Me.DataGridView1.Size = New System.Drawing.Size(783, 285)
         Me.DataGridView1.TabIndex = 0
         '
         'IDDataGridViewTextBoxColumn
@@ -155,7 +156,7 @@ Partial Class ChargingRelationship
         'btn_Delete
         '
         Me.btn_Delete.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.btn_Delete.Location = New System.Drawing.Point(462, 374)
+        Me.btn_Delete.Location = New System.Drawing.Point(541, 374)
         Me.btn_Delete.Name = "btn_Delete"
         Me.btn_Delete.Size = New System.Drawing.Size(75, 23)
         Me.btn_Delete.TabIndex = 2
@@ -165,7 +166,7 @@ Partial Class ChargingRelationship
         'btn_close
         '
         Me.btn_close.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.btn_close.Location = New System.Drawing.Point(622, 374)
+        Me.btn_close.Location = New System.Drawing.Point(701, 374)
         Me.btn_close.Name = "btn_close"
         Me.btn_close.Size = New System.Drawing.Size(75, 23)
         Me.btn_close.TabIndex = 3
@@ -212,10 +213,10 @@ Partial Class ChargingRelationship
         Me.EmployeeFilterBox.BackColor = System.Drawing.SystemColors.Control
         Me.EmployeeFilterBox.FormattingEnabled = True
         Me.EmployeeFilterBox.Items.AddRange(New Object() {""})
-        Me.EmployeeFilterBox.Location = New System.Drawing.Point(92, 27)
+        Me.EmployeeFilterBox.Location = New System.Drawing.Point(11, 27)
         Me.EmployeeFilterBox.Margin = New System.Windows.Forms.Padding(2)
         Me.EmployeeFilterBox.Name = "EmployeeFilterBox"
-        Me.EmployeeFilterBox.Size = New System.Drawing.Size(95, 21)
+        Me.EmployeeFilterBox.Size = New System.Drawing.Size(180, 21)
         Me.EmployeeFilterBox.TabIndex = 4
         '
         'ChargingRelationshipsBindingSource1
@@ -228,32 +229,34 @@ Partial Class ChargingRelationship
         Me.JobFilterBox.BackColor = System.Drawing.SystemColors.Control
         Me.JobFilterBox.FormattingEnabled = True
         Me.JobFilterBox.Items.AddRange(New Object() {""})
-        Me.JobFilterBox.Location = New System.Drawing.Point(191, 27)
+        Me.JobFilterBox.Location = New System.Drawing.Point(205, 27)
         Me.JobFilterBox.Margin = New System.Windows.Forms.Padding(2)
         Me.JobFilterBox.Name = "JobFilterBox"
-        Me.JobFilterBox.Size = New System.Drawing.Size(95, 21)
+        Me.JobFilterBox.Size = New System.Drawing.Size(180, 21)
         Me.JobFilterBox.TabIndex = 6
         '
         'PayrollFilterBox
         '
         Me.PayrollFilterBox.BackColor = System.Drawing.SystemColors.Control
+        Me.PayrollFilterBox.DropDownWidth = 180
         Me.PayrollFilterBox.FormattingEnabled = True
         Me.PayrollFilterBox.Items.AddRange(New Object() {""})
-        Me.PayrollFilterBox.Location = New System.Drawing.Point(290, 27)
+        Me.PayrollFilterBox.Location = New System.Drawing.Point(400, 27)
         Me.PayrollFilterBox.Margin = New System.Windows.Forms.Padding(2)
         Me.PayrollFilterBox.Name = "PayrollFilterBox"
-        Me.PayrollFilterBox.Size = New System.Drawing.Size(95, 21)
+        Me.PayrollFilterBox.Size = New System.Drawing.Size(180, 21)
         Me.PayrollFilterBox.TabIndex = 6
         '
         'ItemFilterBox
         '
         Me.ItemFilterBox.BackColor = System.Drawing.SystemColors.Control
+        Me.ItemFilterBox.DropDownWidth = 200
         Me.ItemFilterBox.FormattingEnabled = True
         Me.ItemFilterBox.Items.AddRange(New Object() {""})
-        Me.ItemFilterBox.Location = New System.Drawing.Point(394, 27)
+        Me.ItemFilterBox.Location = New System.Drawing.Point(594, 27)
         Me.ItemFilterBox.Margin = New System.Windows.Forms.Padding(2)
         Me.ItemFilterBox.Name = "ItemFilterBox"
-        Me.ItemFilterBox.Size = New System.Drawing.Size(95, 21)
+        Me.ItemFilterBox.Size = New System.Drawing.Size(180, 21)
         Me.ItemFilterBox.TabIndex = 7
         '
         'ChargingRelationshipsBindingSource2
@@ -264,7 +267,7 @@ Partial Class ChargingRelationship
         'EmployeeFilterLabel
         '
         Me.EmployeeFilterLabel.AutoSize = True
-        Me.EmployeeFilterLabel.Location = New System.Drawing.Point(89, 9)
+        Me.EmployeeFilterLabel.Location = New System.Drawing.Point(11, 12)
         Me.EmployeeFilterLabel.Margin = New System.Windows.Forms.Padding(2, 0, 2, 0)
         Me.EmployeeFilterLabel.Name = "EmployeeFilterLabel"
         Me.EmployeeFilterLabel.Size = New System.Drawing.Size(53, 13)
@@ -274,7 +277,7 @@ Partial Class ChargingRelationship
         'JobFilterLabel
         '
         Me.JobFilterLabel.AutoSize = True
-        Me.JobFilterLabel.Location = New System.Drawing.Point(188, 9)
+        Me.JobFilterLabel.Location = New System.Drawing.Point(205, 9)
         Me.JobFilterLabel.Margin = New System.Windows.Forms.Padding(2, 0, 2, 0)
         Me.JobFilterLabel.Name = "JobFilterLabel"
         Me.JobFilterLabel.Size = New System.Drawing.Size(60, 13)
@@ -284,7 +287,7 @@ Partial Class ChargingRelationship
         'PayrollFilterLabel
         '
         Me.PayrollFilterLabel.AutoSize = True
-        Me.PayrollFilterLabel.Location = New System.Drawing.Point(287, 9)
+        Me.PayrollFilterLabel.Location = New System.Drawing.Point(420, 9)
         Me.PayrollFilterLabel.Margin = New System.Windows.Forms.Padding(2, 0, 2, 0)
         Me.PayrollFilterLabel.Name = "PayrollFilterLabel"
         Me.PayrollFilterLabel.Size = New System.Drawing.Size(61, 13)
@@ -294,29 +297,19 @@ Partial Class ChargingRelationship
         'ItemFilterLabel
         '
         Me.ItemFilterLabel.AutoSize = True
-        Me.ItemFilterLabel.Location = New System.Drawing.Point(391, 9)
+        Me.ItemFilterLabel.Location = New System.Drawing.Point(561, 12)
         Me.ItemFilterLabel.Margin = New System.Windows.Forms.Padding(2, 0, 2, 0)
         Me.ItemFilterLabel.Name = "ItemFilterLabel"
         Me.ItemFilterLabel.Size = New System.Drawing.Size(69, 13)
         Me.ItemFilterLabel.TabIndex = 11
         Me.ItemFilterLabel.Text = "Item SubItem"
         '
-        'Label1
-        '
-        Me.Label1.AutoSize = True
-        Me.Label1.Location = New System.Drawing.Point(26, 30)
-        Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(34, 13)
-        Me.Label1.TabIndex = 12
-        Me.Label1.Text = "Filters"
-        '
         'ChargingRelationship
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.SystemColors.Control
-        Me.ClientSize = New System.Drawing.Size(705, 403)
-        Me.Controls.Add(Me.Label1)
+        Me.ClientSize = New System.Drawing.Size(784, 403)
         Me.Controls.Add(Me.ItemFilterLabel)
         Me.Controls.Add(Me.PayrollFilterLabel)
         Me.Controls.Add(Me.JobFilterLabel)
@@ -378,5 +371,4 @@ Partial Class ChargingRelationship
     Friend WithEvents JobFilterLabel As Label
     Friend WithEvents PayrollFilterLabel As Label
     Friend WithEvents ItemFilterLabel As Label
-    Friend WithEvents Label1 As Label
 End Class

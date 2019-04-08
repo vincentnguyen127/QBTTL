@@ -6,7 +6,7 @@ Public Class Sync_TLtoQB_Vendors
     ''' <summary>
     ''' Sync the vendor data from QB. Print out vendors that are in TL but not QB
     ''' </summary>
-    Sub SyncVendorData(ByVal p_token As String)
+    Sub SyncVendorData(ByVal p_token As String, Optional ByVal UI As Boolean = True)
         Dim result As Boolean = True
 
         My.Forms.MAIN.History("Syncing Vendor Data", "n")
@@ -24,15 +24,9 @@ Public Class Sync_TLtoQB_Vendors
             For n As Integer = 0 To objEmployeeArray.Length - 1
                 objEmployee = objEmployeeArray(n)
                 With objEmployee
-
                     If .IsVendor Then
                         'result = checkQBVendorExist(.EmployeeName.ToString, .EmployeeId)
-
-                        Dim alreadyInQB As Boolean = checkQBVendorExist(.EmployeeName.ToString, .EmployeeId, objEmployee) ' Note: Change if vendor name in TL changes from vendor name, vendor name
-                        If Not alreadyInQB Then
-                            'Does not exist in QB
-                            My.Forms.MAIN.History("Added Vendor: " + .EmployeeName.ToString + " with TimeLive ID: " + .EmployeeId.ToString + " into QuickBooks", "N")
-                        End If
+                        checkQBVendorExist(.EmployeeName.ToString, .EmployeeId, objEmployee, UI)
                     End If
                 End With
             Next
@@ -50,7 +44,7 @@ Public Class Sync_TLtoQB_Vendors
     ''' False: does not exist in QB
     ''' True: does exist in QB, and we add it to the Data Table if not present
     ''' </returns>
-    Public Function checkQBVendorExist(ByRef TLEmployeeName As String, ByVal TL_ID As Integer, ByVal objEmployee As Services.TimeLive.Employees.Employee) As Boolean
+    Public Function checkQBVendorExist(ByRef TLEmployeeName As String, ByVal TL_ID As Integer, ByVal objEmployee As Services.TimeLive.Employees.Employee, ByVal UI As Boolean) As Boolean
         'Dim sessManager As QBSessionManager
 
         Try
@@ -69,64 +63,87 @@ Public Class Sync_TLtoQB_Vendors
             Dim vendorRetList As IVendorRetList
             vendorRetList = response.Detail
 
+            Dim inQB As Boolean = Not vendorRetList Is Nothing
+
             ' Add to QB if not present
-            If vendorRetList Is Nothing Then
-                Dim newMsgSetRq As IMsgSetRequest = MAIN.SESSMANAGER.CreateMsgSetRequest("US", 2, 0)
-
-                newMsgSetRq.Attributes.OnError = ENRqOnError.roeContinue
-
-                ' Add TL Employee to QB as a Vendor
-                Dim employAdd As IVendorAdd = newMsgSetRq.AppendVendorAddRq
-                employAdd.IsVendorEligibleFor1099.SetValue(True)
-                employAdd.VendorTypeRef.FullName.SetValue("1099 contractor")
-                employAdd.Name.SetValue(objEmployee.FirstName + " " + objEmployee.LastName)
-                employAdd.FirstName.SetValue(If(objEmployee.FirstName = Nothing, "", objEmployee.FirstName))
-                employAdd.LastName.SetValue(If(objEmployee.LastName = Nothing, "", objEmployee.LastName))
-                employAdd.MiddleName.SetValue(If(objEmployee.MiddleName = Nothing, "", objEmployee.MiddleName))
-                employAdd.OpenBalanceDate.SetValue(If(objEmployee.HiredDate = Nothing, Date.Now, objEmployee.HiredDate))
-                employAdd.Phone.SetValue(If(objEmployee.Phone = Nothing, "", objEmployee.Phone))
-                'employAdd.Mobile.SetValue(If(objEmployee.Mobile = Nothing, "", objEmployee.Mobile)) ' Errors for some reason
-                ' Employee Address
-                employAdd.VendorAddress.Addr1.SetValue(If(objEmployee.Address1 = Nothing, "", objEmployee.Address1))
-                employAdd.VendorAddress.Addr2.SetValue(If(objEmployee.Address2 = Nothing, "", objEmployee.Address2))
-                employAdd.VendorAddress.City.SetValue(If(objEmployee.City = Nothing, "", objEmployee.City))
-                employAdd.VendorAddress.PostalCode.SetValue(If(objEmployee.PostalCode = Nothing, "", objEmployee.PostalCode))
-                employAdd.VendorAddress.State.SetValue(If(objEmployee.State = Nothing, "", objEmployee.State))
-                employAdd.VendorAddress.Country.SetValue(If(objEmployee.Country = Nothing, "", objEmployee.Country))
-
-
-                'step2: send the request
-                msgSetRs = MAIN.SESSMANAGER.DoRequests(newMsgSetRq)
-
-                ' Interpret the response
-                Dim res As IResponse
-                res = msgSetRs.ResponseList.GetAt(0)
-
-                If res.StatusSeverity = "Error" Then
-                    Throw New Exception(res.StatusMessage)
+            If Not inQB Then
+                Dim create As Boolean = True
+                If UI Then
+                    create = MsgBox("New vendor found in TimeLive: " + TLEmployeeName + ". Create in QuickBooks?", MsgBoxStyle.YesNo, "Warning!") = MsgBoxResult.Yes
                 End If
+                If create Then
+                    Dim newMsgSetRq As IMsgSetRequest = MAIN.SESSMANAGER.CreateMsgSetRequest("US", 2, 0)
+                    newMsgSetRq.Attributes.OnError = ENRqOnError.roeContinue
+                    ' Add TL Employee to QB as a Vendor
+                    Dim vendorAdd As IVendorAdd = newMsgSetRq.AppendVendorAddRq
+                    vendorAdd.IsVendorEligibleFor1099.SetValue(True)
+                    vendorAdd.VendorTypeRef.FullName.SetValue("1099 contractor")
+                    vendorAdd.Name.SetValue(objEmployee.FirstName + " " + objEmployee.LastName)
+                    vendorAdd.FirstName.SetValue(If(objEmployee.FirstName = Nothing, "", objEmployee.FirstName))
+                    vendorAdd.LastName.SetValue(If(objEmployee.LastName = Nothing, "", objEmployee.LastName))
+                    vendorAdd.MiddleName.SetValue(If(objEmployee.MiddleName = Nothing, "", objEmployee.MiddleName))
+                    vendorAdd.OpenBalanceDate.SetValue(If(objEmployee.HiredDate = Nothing, Date.Now, objEmployee.HiredDate))
+                    vendorAdd.Phone.SetValue(If(objEmployee.Phone = Nothing, "", objEmployee.Phone))
+                    'vendorAdd.Mobile.SetValue(If(objEmployee.Mobile = Nothing, "", objEmployee.Mobile)) ' Errors for some reason
 
-                Return False
-            Else
+                    ' Employee Address
+                    vendorAdd.VendorAddress.Addr1.SetValue(If(objEmployee.Address1 = Nothing, "", objEmployee.Address1))
+                    vendorAdd.VendorAddress.Addr2.SetValue(If(objEmployee.Address2 = Nothing, "", objEmployee.Address2))
+                    vendorAdd.VendorAddress.City.SetValue(If(objEmployee.City = Nothing, "", objEmployee.City))
+                    vendorAdd.VendorAddress.PostalCode.SetValue(If(objEmployee.PostalCode = Nothing, "", objEmployee.PostalCode))
+                    vendorAdd.VendorAddress.State.SetValue(If(objEmployee.State = Nothing, "", objEmployee.State))
+                    vendorAdd.VendorAddress.Country.SetValue(If(objEmployee.Country = Nothing, "", objEmployee.Country))
 
-                'Assume only one return
+
+                    'step2: send the request
+                    msgSetRs = MAIN.SESSMANAGER.DoRequests(newMsgSetRq)
+
+                    ' Interpret the response
+                    Dim res As IResponse
+                    res = msgSetRs.ResponseList.GetAt(0)
+
+                    If res.StatusSeverity = "Error" Then
+                        Throw New Exception(res.StatusMessage)
+                    End If
+
+                    My.Forms.MAIN.History("Added Name: " + TLEmployeeName.ToString + " with TimeLive ID: " + TL_ID.ToString + " to QuickBooks", "N")
+
+                    msgSetRq = MAIN.SESSMANAGER.CreateMsgSetRequest("US", 2, 0)
+                    msgSetRq.Attributes.OnError = ENRqOnError.roeContinue
+
+                    VendorQueryRq = msgSetRq.AppendVendorQueryRq
+                    VendorQueryRq.ORVendorListQuery.FullNameList.Add(TLEmployeeName)
+
+                    msgSetRs = MAIN.SESSMANAGER.DoRequests(msgSetRq)
+                    response = msgSetRs.ResponseList.GetAt(0)
+                    vendorRetList = response.Detail
+                Else
+                    Return False
+                End If
+                'Else
+            End If
+            'Assume only one return
+            If Not vendorRetList Is Nothing Then
                 Dim VendorRet As IVendorRet
                 VendorRet = vendorRetList.GetAt(0)
-
                 With VendorRet
-                    My.Forms.MAIN.History("Found vendor name in QB: " + .Name.GetValue.ToString + " --> ID: " + .ListID.GetValue.ToString, "i")
+                    If inQB Then
+                        My.Forms.MAIN.History("Found vendor name in QB: " + .Name.GetValue + " --> ID: " + .ListID.GetValue.ToString, "i")
+                    End If
                     ' check if its in our database if not then add to it.
                     Dim VendorAdapter As New QB_TL_IDsTableAdapters.VendorsTableAdapter()
 
                     If ISQBID_In_VendorDataTable(.Name.GetValue.ToString, .ListID.GetValue) <= 0 Then
-                        My.Forms.MAIN.History("Adding to sync database: " + VendorAdapter.GetCorrespondingTL_ID(TL_ID).ToString, "i")
+                        My.Forms.MAIN.History("Adding to sync database: " + .Name.GetValue, "i")
+                        VendorAdapter.Insert(.ListID.GetValue, TL_ID, .Name.GetValue, TLEmployeeName)
+                    Else
                         VendorAdapter.Update(.ListID.GetValue, TL_ID, .Name.GetValue, TLEmployeeName)
-
                     End If
                 End With
-
-                Return True
+            Else
+                My.Forms.MAIN.History("Error when adding " + TLEmployeeName + " to Quickbooks", "i")
             End If
+            Return inQB
 
         Catch ex As Exception
             Throw ex

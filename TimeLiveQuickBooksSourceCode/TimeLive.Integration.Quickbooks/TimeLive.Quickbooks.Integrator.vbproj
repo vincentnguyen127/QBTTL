@@ -449,15 +449,6 @@
     <Content Include="TimeLiveQuickBooks.ico" />
   </ItemGroup>
   <ItemGroup>
-    <COMReference Include="QBFC11Lib">
-      <Guid>{BCD71B09-6E35-4F3C-94D0-74A33C9606FC}</Guid>
-      <VersionMajor>1</VersionMajor>
-      <VersionMinor>0</VersionMinor>
-      <Lcid>0</Lcid>
-      <WrapperTool>tlbimp</WrapperTool>
-      <Isolated>False</Isolated>
-      <EmbedInteropTypes>True</EmbedInteropTypes>
-    </COMReference>
     <COMReference Include="QBFC13Lib">
       <Guid>{0CB030A6-7B72-42CE-B92A-849B4A4A2CFB}</Guid>
       <VersionMajor>1</VersionMajor>
