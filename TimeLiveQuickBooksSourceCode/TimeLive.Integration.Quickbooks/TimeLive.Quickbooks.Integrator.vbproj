@@ -139,6 +139,7 @@
       <DependentUpon>QB_TL_IDs.xsd</DependentUpon>
     </Compile>
     <Compile Include="Sync_TLtoQB\Sync_TLtoQB_JoborItem.vb" />
+    <Compile Include="Sync_TLtoQB\Sync_TLtoQB_Relationships.vb" />
     <Compile Include="Sync_TLtoQB\Sync_TLtoQB_Vendors.vb" />
     <Compile Include="Sync_TLtoQB\Sync_TLtoQB_Employees.vb" />
     <Compile Include="Sync_TLtoQB\Sync_TLtoQB_Customer.vb" />
@@ -249,11 +250,13 @@
     <None Include="My Project\Application.myapp">
       <Generator>MyApplicationCodeGenerator</Generator>
       <LastGenOutput>Application.Designer.vb</LastGenOutput>
+      <SubType>Designer</SubType>
     </None>
     <None Include="My Project\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <CustomToolNamespace>My</CustomToolNamespace>
       <LastGenOutput>Settings.Designer.vb</LastGenOutput>
+      <SubType>Designer</SubType>
     </None>
   </ItemGroup>
   <ItemGroup>

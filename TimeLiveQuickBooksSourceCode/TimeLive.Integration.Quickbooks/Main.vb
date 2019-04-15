@@ -404,8 +404,8 @@ Public Class MAIN
     Private Sub jobs_items_btn_Click(sender As Object, e As EventArgs) Handles jobs_items_btn.Click
         Dim IntegratedUI As New IntegratedUI
         IntegratedUI.Owner = Me
-        If Not (My.Settings.JobOrItemHierarchy Is Nothing Or My.Settings.JobOrItemHierarchy Is "") Then
-            If My.Settings.JobOrItemHierarchy = 0 Then
+        If Not (My.Settings.JobORItemHierarchy Is Nothing Or My.Settings.JobORItemHierarchy = "") Then
+            If My.Settings.JobORItemHierarchy = 0 Then
                 IntegratedUI.Show(p_token, p_AccountId, 13)
             Else
                 IntegratedUI.Show(p_token, p_AccountId, 14)

@@ -438,7 +438,7 @@ Partial Class AppSettings
         Me.Controls.Add(Me.Button1)
         Me.Controls.Add(Me.btnSave)
         Me.Name = "AppSettings"
-        Me.Text = "Settings"
+        Me.Text = "AppSettings"
         Me.Tab_HoursOptions.ResumeLayout(False)
         Me.Tab_HoursOptions.PerformLayout()
         Me.GroupBox3.ResumeLayout(False)

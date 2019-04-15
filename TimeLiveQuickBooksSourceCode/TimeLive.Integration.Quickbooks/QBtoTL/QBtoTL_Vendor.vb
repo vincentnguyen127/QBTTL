@@ -86,11 +86,10 @@ Public Class QBtoTL_Vendor
                         IntegratedUIForm.ProgressBar1.Maximum = pblenth - 1
                     End If
                 End If
-
                 For i As Integer = 0 To If(vendorRetList Is Nothing, -1, vendorRetList.Count - 1)
                     vendorRet = vendorRetList.GetAt(i)
                     With vendorRet
-                        If Not CBool(My.Settings.SyncElbVendor) Or .IsVendorEligibleFor1099.GetValue Then
+                        If (Not My.Settings.SyncElbVendor = "") And My.Settings.SyncElbVendor Or .IsVendorEligibleFor1099.GetValue Then
                             EmailAddress = If(.Email Is Nothing, "", .Email.GetValue)
                             FirstName = If(.FirstName Is Nothing, "", .FirstName.GetValue)
                             LastName = If(.LastName Is Nothing, "", .LastName.GetValue)

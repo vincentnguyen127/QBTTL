@@ -298,6 +298,34 @@ Used to sort self-referenced table's rows
  2 -> more than one record in data table
  </returns>
 </member>
+<member name="M:TimeLive.Quickbooks.Integrator.Sync_TLtoQB_Relationships.SyncRelationshipData(System.String,System.Boolean)">
+ <summary>
+ Sync the employee data from QB. Print out employees that are in TL but not QB
+ </summary>
+</member>
+<member name="M:TimeLive.Quickbooks.Integrator.Sync_TLtoQB_Relationships.checkQBEmployeeExist(System.String@,System.Int32,TimeLive.Quickbooks.Integrator.Services.TimeLive.Employees.Employee,System.Boolean)">
+ <summary>
+ Verifies an employee exists in QB, adding it to the Data Table if necessary
+ </summary>
+ <param name="TLEmployeeName"></param>
+ <param name="TL_ID"></param>
+ <returns>
+ False: does not exist in QB
+ True: does exist in QB, and we add it to the Data Table if not present
+ </returns>
+</member>
+<member name="M:TimeLive.Quickbooks.Integrator.Sync_TLtoQB_Relationships.ISQBID_In_EmployeeDataTable(System.String,System.String)">
+ <summary>
+ Check if QB ID is in employee data table
+ </summary>
+ <param name="myqbName"></param>
+ <param name="myqbID"></param>
+ <returns>
+ 0 -> not in data table
+ 1 -> one record in data table
+ 2 -> more than one record in data table
+ </returns>
+</member>
 <member name="M:TimeLive.Quickbooks.Integrator.Sync_TLtoQB_Vendors.SyncVendorData(System.String,System.Boolean)">
  <summary>
  Sync the vendor data from QB. Print out vendors that are in TL but not QB
@@ -392,7 +420,27 @@ Represents a strongly typed in-memory cache of data.
 Represents the strongly named DataTable class.
 </summary>
 </member>
+<member name="T:TimeLive.Quickbooks.Integrator.TimeLiveDataSet.AccountProjectTaskEmployeeDataTable">
+<summary>
+Represents the strongly named DataTable class.
+</summary>
+</member>
+<member name="T:TimeLive.Quickbooks.Integrator.TimeLiveDataSet.AccountProjectEmployeeDataTable">
+<summary>
+Represents the strongly named DataTable class.
+</summary>
+</member>
 <member name="T:TimeLive.Quickbooks.Integrator.TimeLiveDataSet.AccountPartyRow">
+<summary>
+Represents strongly named DataRow class.
+</summary>
+</member>
+<member name="T:TimeLive.Quickbooks.Integrator.TimeLiveDataSet.AccountProjectTaskEmployeeRow">
+<summary>
+Represents strongly named DataRow class.
+</summary>
+</member>
+<member name="T:TimeLive.Quickbooks.Integrator.TimeLiveDataSet.AccountProjectEmployeeRow">
 <summary>
 Represents strongly named DataRow class.
 </summary>
@@ -402,7 +450,27 @@ Represents strongly named DataRow class.
 Row event argument class
 </summary>
 </member>
+<member name="T:TimeLive.Quickbooks.Integrator.TimeLiveDataSet.AccountProjectTaskEmployeeRowChangeEvent">
+<summary>
+Row event argument class
+</summary>
+</member>
+<member name="T:TimeLive.Quickbooks.Integrator.TimeLiveDataSet.AccountProjectEmployeeRowChangeEvent">
+<summary>
+Row event argument class
+</summary>
+</member>
 <member name="T:TimeLive.Quickbooks.Integrator.TimeLiveDataSetTableAdapters.AccountPartyTableAdapter">
+<summary>
+Represents the connection and commands used to retrieve and save data.
+</summary>
+</member>
+<member name="T:TimeLive.Quickbooks.Integrator.TimeLiveDataSetTableAdapters.AccountProjectTaskEmployeeTableAdapter">
+<summary>
+Represents the connection and commands used to retrieve and save data.
+</summary>
+</member>
+<member name="T:TimeLive.Quickbooks.Integrator.TimeLiveDataSetTableAdapters.AccountProjectEmployeeTableAdapter">
 <summary>
 Represents the connection and commands used to retrieve and save data.
 </summary>

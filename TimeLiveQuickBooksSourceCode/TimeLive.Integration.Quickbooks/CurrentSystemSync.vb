@@ -33,6 +33,10 @@ Public Class CurrentSystemSync
             Dim syncJobs As New Sync_TLtoQB_JoborItem
             syncJobs.SyncJobsSubJobData(p_token)
 
+            ' Sync Relationships
+            Dim syncRelationships As New Sync_TLtoQB_Relationships
+            syncRelationships.SyncRelationshipData(p_token)
+
             My.Forms.MAIN.History("Sync Complete", "n")
         End If
     End Sub

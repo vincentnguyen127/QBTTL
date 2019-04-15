@@ -199,31 +199,4 @@
         Me.Close()
     End Sub
 
-    Private Sub rbJob_CheckedChanged_1(sender As Object, e As EventArgs) Handles rbJob.CheckedChanged
-
-    End Sub
-
-    Private Sub job_subJobs_btn_CheckedChanged(sender As Object, e As EventArgs) Handles job_subJobs_btn.CheckedChanged
-
-    End Sub
-
-    Private Sub item_subItems_btn_CheckedChanged(sender As Object, e As EventArgs) Handles item_subItems_btn.CheckedChanged
-
-    End Sub
-
-    Private Sub cbPayrollItem_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cbPayrollItem.SelectedIndexChanged
-
-    End Sub
-
-    Private Sub chk_employees_CheckedChanged(sender As Object, e As EventArgs) Handles chk_employees.CheckedChanged
-
-    End Sub
-
-    Private Sub chk_jobsitems_CheckedChanged(sender As Object, e As EventArgs) Handles chk_jobsitems.CheckedChanged
-
-    End Sub
-
-    Private Sub rbItem_CheckedChanged_1(sender As Object, e As EventArgs) Handles rbItem.CheckedChanged
-
-    End Sub
 End Class
