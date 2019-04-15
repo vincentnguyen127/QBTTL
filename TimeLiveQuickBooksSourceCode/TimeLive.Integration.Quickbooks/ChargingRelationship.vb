@@ -16,6 +16,7 @@ Public Class ChargingRelationship
     Private Sub ChargingRelationship_Load(sender As Object, e As EventArgs) Handles MyBase.Load
 
         Dim EmployeesQBData As New DataTable
+        Dim VendorsQBData As New DataTable
         Dim JobsSubJobsQBData As New DataTable
         Dim ItemsSubItemsQBData As New DataTable
         Dim PayrollItemsQBData As New DataTable
@@ -26,12 +27,19 @@ Public Class ChargingRelationship
 
         JobsSubJobsQBData = QBJobsSubJobs()
         EmployeesQBData = QBEmployees()
+        VendorsQBData = QBVendors()
         PayrollItemsQBData = QBPayrollItems()
         ItemsSubItemsQBData = QBItemsSubItems()
 
         ' Add all Employees to Employee Filter Box
         For Each employee As DataRow In EmployeesQBData.Rows
             EmployeeFilterBox.Items.Add(employee(0))
+        Next
+
+        ' Add all Vendors to Employee Filter Box and to Employee Data
+        For Each vendor As DataRow In VendorsQBData.Rows
+            EmployeesQBData.ImportRow(vendor)
+            EmployeeFilterBox.Items.Add(vendor(0))
         Next
 
         ' Add all Jobs/Subjobs to Job Filter Box
@@ -49,7 +57,6 @@ Public Class ChargingRelationship
             ItemFilterBox.Items.Add(item(0))
         Next
 
-        ' Add everything into Data Grid
         With DataGridView1
             Dim ColumnEmployees As New DataGridViewComboBoxColumn
 
@@ -123,9 +130,10 @@ Public Class ChargingRelationship
                 Continue While
             End If
 
-            ' check if the employee is active
+            ' check if the employee/vendor is active
             Dim employeeId As String = row(1).Trim
-            ' Compares the employee in relationship table to active employees
+            ' Compares the employee/vendor in relationship table to active employees/vendors
+            Dim emp As DataRow() = EmployeesQBData.Select
             For Each EmployeeRow As DataRow In EmployeesQBData.Select
                 Dim employeeId2 As String = EmployeeRow(1).Trim
                 If employeeId2 = employeeId Then
@@ -184,6 +192,9 @@ Public Class ChargingRelationship
             End If
         End While
 
+        'ChargingRelationshipsTableAdapter.DeleteInvalidRelationships()
+
+
         DataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells
         DataGridView1.AutoResizeColumns()
         Me.Show()
@@ -196,7 +207,7 @@ Public Class ChargingRelationship
         Catch ex As Exception
             My.Forms.MAIN.History(ex.ToString, "C")
             ' Before throwing exception, close the session manager if it is open
-            MAIN.QUITQBSESSION()
+            'MAIN.QUITQBSESSION()
             Throw ex
         End Try
     End Sub
@@ -209,7 +220,7 @@ Public Class ChargingRelationship
         Catch ex As Exception
             My.Forms.MAIN.History(ex.ToString, "C")
             ' Before throwing exception, close the session manager if it is open
-            MAIN.QUITQBSESSION()
+            'MAIN.QUITQBSESSION()
             Throw ex
         End Try
     End Sub
@@ -218,27 +229,43 @@ Public Class ChargingRelationship
         Me.Close()
     End Sub
 
-    Private Function QBEmployees() As DataTable
-
-        Dim EmployeesQBData As New DataTable
-
+    ''' <summary>
+    ''' Helper Function to get the desired data for the attribute
+    ''' </summary>
+    ''' <param name="attribute">
+    ''' 1 -> Employee
+    ''' 2 -> Vendors
+    ''' 3 -> Payroll Item
+    ''' 4 -> Job/SubJob
+    ''' 5 -> Item/SubItem
+    ''' </param>
+    ''' <returns></returns>
+    Private Function QBData(ByVal attribute As Integer) As DataTable
+        Dim attrQBData As New DataTable
         ' Create four typed columns in the DataTable.
-        EmployeesQBData.Columns.Add("QB_Name", GetType(String))
-        EmployeesQBData.Columns.Add("QB_ID", GetType(String))
+        attrQBData.Columns.Add("QB_Name", GetType(String))
+        attrQBData.Columns.Add("QB_ID", GetType(String))
 
-        'step1: create QBFC session manager and prepare the request
-        'Dim sessManager As QBSessionManager
+        'step1: prepare the request
         Dim msgSetRs As IMsgSetResponse
         Try
-            'sessManager = New QBSessionManagerClass()
             Dim msgSetRq As IMsgSetRequest = MAIN.SESSMANAGER.CreateMsgSetRequest("US", 2, 0)
             msgSetRq.Attributes.OnError = ENRqOnError.roeContinue
-            ' Customer Query 
-            Dim employeequery As IEmployeeQuery = msgSetRq.AppendEmployeeQueryRq
+            '  Query 
+            Select Case attribute
+                Case 1
+                    msgSetRq.AppendEmployeeQueryRq()
+                Case 2
+                    msgSetRq.AppendVendorQueryRq()
+                Case 3
+                    msgSetRq.AppendPayrollItemWageQueryRq()
+                Case 4
+                    msgSetRq.AppendCustomerQueryRq()
+                Case 5
+                    msgSetRq.AppendItemServiceQueryRq()
+            End Select
 
-            'step2: begin QB session and send the request
-            'sessManager.OpenConnection("App", "TimeLive Quickbooks")
-            'sessManager.BeginSession("", ENOpenMode.omDontCare)
+            'step2: send the request
             msgSetRs = MAIN.SESSMANAGER.DoRequests(msgSetRq)
             Dim respList As IResponseList
             respList = msgSetRs.ResponseList
@@ -249,14 +276,12 @@ Public Class ChargingRelationship
             Dim resp As IResponse
             resp = respList.GetAt(0)
             If (resp.StatusCode = 0) Then
-                Dim empRetList As IEmployeeRetList
-                empRetList = resp.Detail
+                Dim retList = resp.Detail
 
-                Dim empRet As IEmployeeRet
-                For i As Integer = 0 To empRetList.Count - 1
-                    empRet = empRetList.GetAt(i)
-                    With empRet
-                        EmployeesQBData.Rows.Add(.Name.GetValue, .ListID.GetValue)
+                For i As Integer = 0 To retList.Count - 1
+                    Dim ret = retList.GetAt(i)
+                    With ret
+                        attrQBData.Rows.Add(.Name.GetValue, .ListID.GetValue)
                     End With
                 Next
             End If
@@ -267,192 +292,36 @@ Public Class ChargingRelationship
         Catch ex As Exception
             My.Forms.MAIN.History(ex.ToString, "C")
             ' Before throwing exception, close the session manager if it is open
-            MAIN.QUITQBSESSION()
+            ' MAIN.QUITQBSESSION()
             Throw ex
-            'Finally
-            '   If Not sessManager Is Nothing Then
-            '       sessManager.EndSession()
-            '       sessManager.CloseConnection()
-            '   End If
         End Try
+        Return attrQBData
+    End Function
+
+    Private Function QBEmployees() As DataTable
+        Dim EmployeesQBData As DataTable = QBData(1)
         Return EmployeesQBData
     End Function
 
+    Private Function QBVendors() As DataTable
+        Dim VendorsQBData As DataTable = QBData(2)
+        Return VendorsQBData
+    End Function
+
+    Private Function QBPayrollItems() As DataTable
+        Dim PayrollItemsQBData As DataTable = QBData(3)
+        Return PayrollItemsQBData
+    End Function
+
     Private Function QBJobsSubJobs() As DataTable
-
-        Dim JobsSubJobsQBData As New DataTable
-
-        ' Create four typed columns in the DataTable.
-        JobsSubJobsQBData.Columns.Add("QB_Name", GetType(String))
-        JobsSubJobsQBData.Columns.Add("QB_ID", GetType(String))
-
-        'step1: create QBFC session manager and prepare the request
-        'Dim sessManager As QBSessionManager
-        Dim msgSetRs As IMsgSetResponse
-        Try
-            'sessManager = New QBSessionManagerClass()
-            Dim msgSetRq As IMsgSetRequest = MAIN.SESSMANAGER.CreateMsgSetRequest("US", 2, 0)
-            msgSetRq.Attributes.OnError = ENRqOnError.roeContinue
-            ' Customer Query 
-            Dim synccust As ICustomerQuery = msgSetRq.AppendCustomerQueryRq
-
-            'step2: begin QB session and send the request
-            'sessManager.OpenConnection("App", "TimeLive Quickbooks")
-            'sessManager.BeginSession("", ENOpenMode.omDontCare)
-            msgSetRs = MAIN.SESSMANAGER.DoRequests(msgSetRq)
-            Dim respList As IResponseList
-            respList = msgSetRs.ResponseList
-            If (respList Is Nothing) Then
-                Return Nothing
-            End If
-            ' Should only expect 1 response
-            Dim resp As IResponse
-            resp = respList.GetAt(0)
-            If (resp.StatusCode = 0) Then
-                Dim ptRetList As ICustomerRetList
-                ptRetList = resp.Detail
-
-                Dim ptRet As ICustomerRet
-                For i As Integer = 0 To ptRetList.Count - 1
-                    ptRet = ptRetList.GetAt(i)
-                    With ptRet
-                        If Not .ParentRef Is Nothing Then
-                            JobsSubJobsQBData.Rows.Add(.FullName.GetValue, .ListID.GetValue)
-                        End If
-                    End With
-                Next
-            End If
-            If msgSetRs.ResponseList.GetAt(0).StatusSeverity = "Error" Then
-                My.Forms.MAIN.History(msgSetRs.ResponseList.GetAt(0).StatusMessage, "C")
-                Throw New Exception(msgSetRs.ResponseList.GetAt(0).StatusMessage)
-            End If
-        Catch ex As Exception
-            My.Forms.MAIN.History(ex.ToString, "C")
-            ' Before throwing exception, close the session manager if it is open
-            MAIN.QUITQBSESSION()
-            Throw ex
-            'Finally
-            '   If Not sessManager Is Nothing Then
-            '       sessManager.EndSession()
-            '       sessManager.CloseConnection()
-            '   End If
-        End Try
+        Dim JobsSubJobsQBData As DataTable = QBData(4)
         Return JobsSubJobsQBData
     End Function
 
     ' Changed to public since used in TLtoQB_TimeEntry
     Private Function QBItemsSubItems() As DataTable
-
-        Dim ItemsSubItemsQBData As New DataTable
-
-        ' Create four typed columns in the DataTable.
-        ItemsSubItemsQBData.Columns.Add("QB_Name", GetType(String))
-        ItemsSubItemsQBData.Columns.Add("QB_ID", GetType(String))
-
-        'step1: create QBFC session manager and prepare the request
-        'Dim sessManager As QBSessionManager
-        Dim msgSetRs As IMsgSetResponse
-        Try
-            ''sessManager = New QBSessionManagerClass()
-            ' Specify spec version (2)
-            Dim msgSetRq As IMsgSetRequest = MAIN.SESSMANAGER.CreateMsgSetRequest("US", 2, 0)
-            msgSetRq.Attributes.OnError = ENRqOnError.roeContinue
-            ' Customer Query 
-            Dim itemservicequery As IItemServiceQuery = msgSetRq.AppendItemServiceQueryRq
-
-            'step2: begin QB session and send the request
-            'sessManager.OpenConnection("App", "TimeLive Quickbooks")
-            'sessManager.BeginSession("", ENOpenMode.omDontCare)
-            msgSetRs = MAIN.SESSMANAGER.DoRequests(msgSetRq)
-            Dim respList As IResponseList
-            respList = msgSetRs.ResponseList
-            If (respList Is Nothing) Then
-                Return Nothing
-            End If
-            ' Should only expect 1 response
-            Dim resp As IResponse
-            resp = respList.GetAt(0)
-            If (resp.StatusCode = 0) Then
-                Dim ptRetList As IItemServiceRetList
-                ptRetList = resp.Detail
-
-                Dim ptRet As IItemServiceRet
-                For i As Integer = 0 To ptRetList.Count - 1
-                    ptRet = ptRetList.GetAt(i)
-                    With ptRet
-                        If Not .ParentRef Is Nothing Then
-                            Dim val As String = .FullName.GetValue
-                            ItemsSubItemsQBData.Rows.Add(.FullName.GetValue, .ListID.GetValue)
-                        End If
-                    End With
-                Next
-            End If
-            If msgSetRs.ResponseList.GetAt(0).StatusSeverity = "Error" Then
-                My.Forms.MAIN.History(msgSetRs.ResponseList.GetAt(0).StatusMessage, "C")
-                Throw New Exception(msgSetRs.ResponseList.GetAt(0).StatusMessage)
-            End If
-        Catch ex As Exception
-            My.Forms.MAIN.History(ex.ToString, "C")
-            ' Before throwing exception, close the session manager if it is open
-            MAIN.QUITQBSESSION()
-            Throw ex
-            'Finally
-            '    If Not sessManager Is Nothing Then
-            '       sessManager.EndSession()
-            '       sessManager.CloseConnection()
-            '   End If
-        End Try
+        Dim ItemsSubItemsQBData As DataTable = QBData(5)
         Return ItemsSubItemsQBData
-    End Function
-
-    Private Function QBPayrollItems() As DataTable
-
-        Dim PayrollItemsQBData As New DataTable
-
-        ' Create four typed columns in the DataTable.
-        PayrollItemsQBData.Columns.Add("QB_Name", GetType(String))
-        PayrollItemsQBData.Columns.Add("QB_ID", GetType(String))
-
-        'step1: prepare the request
-        Dim msgSetRs As IMsgSetResponse
-        Try
-            Dim msgSetRq As IMsgSetRequest = MAIN.SESSMANAGER.CreateMsgSetRequest("US", 2, 0)
-            msgSetRq.Attributes.OnError = ENRqOnError.roeContinue
-            ' Customer Query 
-            Dim PayRollItemWuery As IPayrollItemWageQuery = msgSetRq.AppendPayrollItemWageQueryRq 'typo in name
-
-            'step2: send the request
-            msgSetRs = MAIN.SESSMANAGER.DoRequests(msgSetRq)
-            Dim respList As IResponseList
-            respList = msgSetRs.ResponseList
-            If (respList Is Nothing) Then
-                Return Nothing
-            End If
-            ' Should only expect 1 response
-            Dim resp As IResponse
-            resp = respList.GetAt(0)
-            If (resp.StatusCode = 0) Then
-                Dim ParyRollRetList As IPayrollItemWageRetList
-                ParyRollRetList = resp.Detail
-                Dim ParyRollRet As IPayrollItemWageRet
-                For i As Integer = 0 To ParyRollRetList.Count - 1
-                    ParyRollRet = ParyRollRetList.GetAt(i)
-                    With ParyRollRet
-                        PayrollItemsQBData.Rows.Add(.Name.GetValue, .ListID.GetValue)
-                    End With
-                Next
-            End If
-            If msgSetRs.ResponseList.GetAt(0).StatusSeverity = "Error" Then
-                My.Forms.MAIN.History(msgSetRs.ResponseList.GetAt(0).StatusMessage, "C")
-                Throw New Exception(msgSetRs.ResponseList.GetAt(0).StatusMessage)
-            End If
-        Catch ex As Exception
-            My.Forms.MAIN.History(ex.ToString, "C")
-            ' Before throwing exception, close the session manager if it is open
-            MAIN.QUITQBSESSION()
-            Throw ex
-        End Try
-        Return PayrollItemsQBData
     End Function
 
     ' Sort by selected column
@@ -465,7 +334,11 @@ Public Class ChargingRelationship
         End If
     End Sub
 
-    ' Filters the shown relationships based on the selected attributes
+    ''' <summary>
+    ''' Filters the shown relationships based on the selected attribute
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
     Private Sub Filter_SelectedIndexChanged(sender As Object, e As EventArgs) Handles EmployeeFilterBox.SelectedIndexChanged,
                                                                                       JobFilterBox.SelectedIndexChanged,
                                                                                       PayrollFilterBox.SelectedIndexChanged,

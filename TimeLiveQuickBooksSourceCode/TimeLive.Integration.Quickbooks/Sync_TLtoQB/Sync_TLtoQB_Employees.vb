@@ -149,7 +149,7 @@ Public Class Sync_TLtoQB_Employees
                         My.Forms.MAIN.History("Adding employee to sync database: " + TLEmployeeName, "i")
                         EmployeeAdapter.Insert(.ListID.GetValue, TL_ID, .Name.GetValue, TLEmployeeName)
                     Else
-                        EmployeeAdapter.Update(.ListID.GetValue, TL_ID, .Name.GetValue, TLEmployeeName)
+                        ' EmployeeAdapter.Update(.ListID.GetValue, TL_ID, .Name.GetValue, TLEmployeeName)
                     End If
                 End With
             End If

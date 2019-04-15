@@ -139,7 +139,7 @@ Public Class Sync_TLtoQB_Customer
                         My.Forms.MAIN.History("Adding customer to sync database: " + TLClientName, "i")
                         CustomerAdapter.Insert(.ListID.GetValue, TL_ID, .Name.GetValue, TLClientName)
                     Else
-                        CustomerAdapter.Update(.ListID.GetValue, TL_ID, .Name.GetValue, TLClientName)
+                        ' CustomerAdapter.Update(.ListID.GetValue, TL_ID, .Name.GetValue, TLClientName)
                     End If
                 End With
             End If

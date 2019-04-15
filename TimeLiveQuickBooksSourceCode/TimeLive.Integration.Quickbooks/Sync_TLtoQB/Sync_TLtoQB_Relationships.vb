@@ -40,7 +40,15 @@ Public Class Sync_TLtoQB_Relationships
         Dim TLEmployeeID As String = row(3).ToString ' AccountEmployeeID
 
         Dim EmployeeAdapter As New QB_TL_IDsTableAdapters.EmployeesTableAdapter
+        Dim VendorAdapter As New QB_TL_IDsTableAdapters.VendorsTableAdapter
+
         Dim QBEmployeeID As String = EmployeeAdapter.GetCorrespondingQB_IDfromTL_ID(TLEmployeeID)
+
+        ' Checks if it was actually a vendor
+        If QBEmployeeID Is Nothing Then
+            QBEmployeeID = VendorAdapter.GetCorrespondingQB_IDfromTL_ID(TLEmployeeID)
+        End If
+
 
         Dim Job_SubjobAdapter As New QB_TL_IDsTableAdapters.Jobs_SubJobsTableAdapter
         Dim QBJobSubJobID As String = Job_SubjobAdapter.GetCorrespondingQB_IDfromTL_ID(TLProjectID)
@@ -53,7 +61,13 @@ Public Class Sync_TLtoQB_Relationships
             QBJobSubJobID = QBJobSubJobID.Trim
 
             Dim JobSubJobName As String = Job_SubjobAdapter.GetNamefromID(QBJobSubJobID).Trim
-            Dim EmployeeName As String = EmployeeAdapter.GetNamefromID(QBEmployeeID).Trim
+            Dim EmployeeName As String = EmployeeAdapter.GetNamefromID(QBEmployeeID)
+            If EmployeeName Is Nothing Then
+                EmployeeName = VendorAdapter.GetNamefromID(QBEmployeeID).Trim
+            Else
+                EmployeeName = EmployeeName.Trim
+            End If
+
             If numRel = 0 Then
                 My.Forms.MAIN.History("Adding Time Relationship between " + EmployeeName + " and " + JobSubJobName, "N")
                 chargingRelationshipAdapter.AddEmployeeJobRelationship(QBEmployeeID, QBJobSubJobID)

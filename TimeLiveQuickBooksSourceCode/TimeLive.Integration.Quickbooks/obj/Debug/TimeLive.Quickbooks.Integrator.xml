@@ -6,6 +6,26 @@ TimeLive.Quickbooks.Integrator
 </name>
 </assembly>
 <members>
+<member name="M:TimeLive.Quickbooks.Integrator.ChargingRelationship.QBData(System.Int32)">
+ <summary>
+ Helper Function to get the desired data for the attribute
+ </summary>
+ <param name="attribute">
+ 1 -> Employee
+ 2 -> Vendors
+ 3 -> Payroll Item
+ 4 -> Job/SubJob
+ 5 -> Item/SubItem
+ </param>
+ <returns></returns>
+</member>
+<member name="M:TimeLive.Quickbooks.Integrator.ChargingRelationship.Filter_SelectedIndexChanged(System.Object,System.EventArgs)">
+ <summary>
+ Filters the shown relationships based on the selected attribute
+ </summary>
+ <param name="sender"></param>
+ <param name="e"></param>
+</member>
 <member name="M:TimeLive.Quickbooks.Integrator.CurrentSystemSync.PassToken(System.String,System.String)">
  <summary>
  Runs a System Sync from TimeLive which adds entities into the database and into Quickbooks if not present
@@ -303,28 +323,12 @@ Used to sort self-referenced table's rows
  Sync the employee data from QB. Print out employees that are in TL but not QB
  </summary>
 </member>
-<member name="M:TimeLive.Quickbooks.Integrator.Sync_TLtoQB_Relationships.checkQBEmployeeExist(System.String@,System.Int32,TimeLive.Quickbooks.Integrator.Services.TimeLive.Employees.Employee,System.Boolean)">
+<member name="M:TimeLive.Quickbooks.Integrator.Sync_TLtoQB_Relationships.Add_Relationship(TimeLive.Quickbooks.Integrator.QB_TL_IDsTableAdapters.ChargingRelationshipsTableAdapter@,System.Data.DataRow)">
  <summary>
- Verifies an employee exists in QB, adding it to the Data Table if necessary
+ Adds the relationship between an employee and job within the given row into the chargining relationships table
  </summary>
- <param name="TLEmployeeName"></param>
- <param name="TL_ID"></param>
- <returns>
- False: does not exist in QB
- True: does exist in QB, and we add it to the Data Table if not present
- </returns>
-</member>
-<member name="M:TimeLive.Quickbooks.Integrator.Sync_TLtoQB_Relationships.ISQBID_In_EmployeeDataTable(System.String,System.String)">
- <summary>
- Check if QB ID is in employee data table
- </summary>
- <param name="myqbName"></param>
- <param name="myqbID"></param>
- <returns>
- 0 -> not in data table
- 1 -> one record in data table
- 2 -> more than one record in data table
- </returns>
+ <param name="chargingRelationshipAdapter"></param>
+ <param name="row">Row with an employee and job/subjob</param>
 </member>
 <member name="M:TimeLive.Quickbooks.Integrator.Sync_TLtoQB_Vendors.SyncVendorData(System.String,System.Boolean)">
  <summary>
