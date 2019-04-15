@@ -1,5 +1,5 @@
 # TimeLive.Quickbooks.Integrator
 
-Interal tool for syncing TimeLive and QuickBook
+Internal tool for syncing TimeLive and QuickBooks
 
 Teltrium Solutions
