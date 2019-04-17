@@ -27,7 +27,7 @@ Public Class ChargingRelationship
 
         JobsSubJobsQBData = QBJobsSubJobs()
         EmployeesQBData = QBEmployees()
-        VendorsQBData = QBVendors()
+        VendorsQBData = QB1099Vendors()
         PayrollItemsQBData = QBPayrollItems()
         ItemsSubItemsQBData = QBItemsSubItems()
 
@@ -279,10 +279,17 @@ Public Class ChargingRelationship
                 Dim retList = resp.Detail
 
                 For i As Integer = 0 To retList.Count - 1
+                    ' Do not add Vendor to VendorList if it is not a 1099 Contractor
+                    If attribute = 2 Then
+                        Dim check1099 As IVendorRet = retList.getAt(i)
+                        If Not check1099.IsVendorEligibleFor1099.GetValue Then
+                            Continue For
+                        End If
+                    End If
+
                     Dim ret = retList.GetAt(i)
-                    With ret
-                        attrQBData.Rows.Add(.Name.GetValue, .ListID.GetValue)
-                    End With
+
+                    attrQBData.Rows.Add(ret.Name.GetValue, ret.ListID.GetValue)
                 Next
             End If
             If msgSetRs.ResponseList.GetAt(0).StatusSeverity = "Error" Then
@@ -291,8 +298,6 @@ Public Class ChargingRelationship
             End If
         Catch ex As Exception
             My.Forms.MAIN.History(ex.ToString, "C")
-            ' Before throwing exception, close the session manager if it is open
-            ' MAIN.QUITQBSESSION()
             Throw ex
         End Try
         Return attrQBData
@@ -303,7 +308,7 @@ Public Class ChargingRelationship
         Return EmployeesQBData
     End Function
 
-    Private Function QBVendors() As DataTable
+    Private Function QB1099Vendors() As DataTable
         Dim VendorsQBData As DataTable = QBData(2)
         Return VendorsQBData
     End Function
