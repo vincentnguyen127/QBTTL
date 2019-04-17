@@ -6,33 +6,42 @@ Public Class Sync_TLtoQB_Employees
     ''' Sync the employee data from QB. Print out employees that are in TL but not QB
     ''' </summary>
     Sub SyncEmployeeData(ByVal p_token As String, Optional ByVal UI As Boolean = True)
-        Dim result As Boolean = False
+        Dim create As Boolean = True
 
-        My.Forms.MAIN.History("Syncing Employees Data", "n")
-        Try
-            ' connect to Time live
-            Dim play As New Services.TimeLive.Employees.Employees
-            Dim objEmployeeServices As New Services.TimeLive.Employees.Employees
-            Dim authentication As New Services.TimeLive.Employees.SecuredWebServiceHeader
-            authentication.AuthenticatedToken = p_token
-            objEmployeeServices.SecuredWebServiceHeaderValue = authentication
-            Dim objClientArray() As Object
-            objClientArray = objEmployeeServices.GetEmployees
-            Dim objEmployee As New Services.TimeLive.Employees.Employee
+        If UI Then
+            create = MsgBox("Sync Employees?", MsgBoxStyle.YesNo, "Warning!") = MsgBoxResult.Yes
+        End If
 
-            ' Print employees within TimeLive that are not in QB
-            For n As Integer = 0 To objClientArray.Length - 1
-                objEmployee = objClientArray(n)
-                With objEmployee
-                    If Not .IsVendor Then
-                        ' Check if in QB, adds to QB and sync data table if not
-                        checkQBEmployeeExist(.EmployeeName.ToString, .EmployeeId, objEmployee, UI)
-                    End If
-                End With
-            Next
-        Catch ex As Exception
-            MsgBox(ex.Message)
-        End Try
+        If create Then
+            My.Forms.MAIN.History("Syncing Employees Data", "n")
+            Try
+                ' connect to Time live
+                Dim objEmployeeServices As New Services.TimeLive.Employees.Employees
+                Dim authentication As New Services.TimeLive.Employees.SecuredWebServiceHeader
+                authentication.AuthenticatedToken = p_token
+                objEmployeeServices.SecuredWebServiceHeaderValue = authentication
+                Dim objClientArray() As Object
+                objClientArray = objEmployeeServices.GetEmployees
+                Dim objEmployee As New Services.TimeLive.Employees.Employee
+
+                ' Print employees within TimeLive that are not in QB
+                For n As Integer = 0 To objClientArray.Length - 1
+                    objEmployee = objClientArray(n)
+                    With objEmployee
+                        If Not .IsVendor Then
+                            ' Check if in QB, adds to QB and sync data table if not
+                            checkQBEmployeeExist(.EmployeeName.ToString, .EmployeeId, objEmployee, UI)
+                        End If
+                    End With
+                Next
+            Catch ex As Exception
+                If UI Then
+                    MsgBox(ex.Message)
+                Else
+                    Throw ex
+                End If
+            End Try
+        End If
 
     End Sub
 

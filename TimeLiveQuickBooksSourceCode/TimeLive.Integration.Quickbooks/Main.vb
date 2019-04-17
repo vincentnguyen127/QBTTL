@@ -1,6 +1,5 @@
 ﻿Imports System.Windows.Forms
 Imports System.Threading
-'Imports QBFC11Lib
 Imports QBFC13Lib
 
 Imports System.Net.Mail

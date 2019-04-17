@@ -5,29 +5,47 @@ Public Class Sync_TLtoQB_Relationships
     ''' Sync the employee data from QB. Print out employees that are in TL but not QB
     ''' </summary>
     Sub SyncRelationshipData(ByVal p_token As String, Optional ByVal UI As Boolean = True)
-        Dim result As Boolean = False
+        Dim create As Boolean = True
 
-        My.Forms.MAIN.History("Syncing Relationships Data", "n")
-        Try
-            Dim chargingRelationshipAdapter As New QB_TL_IDsTableAdapters.ChargingRelationshipsTableAdapter
+        If UI Then
+            create = MsgBox("Sync Relationships?", MsgBoxStyle.YesNo, "Warning!") = MsgBoxResult.Yes
+        End If
+        If create Then
+            My.Forms.MAIN.History("Syncing Relationships Data", "n")
+            Try
+                ' Connect to Time Live
+                Dim objTaskServices As New Services.TimeLive.Tasks.Tasks
+                Dim authentication As New Services.TimeLive.Tasks.SecuredWebServiceHeader
+                authentication.AuthenticatedToken = p_token
+                objTaskServices.SecuredWebServiceHeaderValue = authentication
 
-            Dim TLProjectRelationshipAdapter As New TimeLiveDataSetTableAdapters.AccountProjectEmployeeTableAdapter
-            Dim TLProjectRelationships As TimeLiveDataSet.AccountProjectEmployeeDataTable = TLProjectRelationshipAdapter.GetProjectEmployeeData()
+                Dim chargingRelationshipAdapter As New QB_TL_IDsTableAdapters.ChargingRelationshipsTableAdapter
 
-            For Each row As DataRow In TLProjectRelationships.Select
-                Add_Relationship(chargingRelationshipAdapter, row)
-            Next
+                'Dim TLProjectRelationshipAdapter As New TimeLiveDataSetTableAdapters.AccountProjectEmployeeTableAdapter
+                'Dim TLProjectRelationships As TimeLiveDataSet.AccountProjectEmployeeDataTable = TLProjectRelationshipAdapter.GetProjectEmployeeData()
 
-            Dim TLTaskRelationshipAdapter As New TimeLiveDataSetTableAdapters.AccountProjectTaskEmployeeTableAdapter
-            Dim TLTaskRelationships As TimeLiveDataSet.AccountProjectTaskEmployeeDataTable = TLTaskRelationshipAdapter.GetTaskEmployeeData()
+                'For Each row As DataRow In TLProjectRelationships.Select
+                '   Add_Relationship(chargingRelationshipAdapter, row)
+                'Next
 
-            For Each row As DataRow In TLTaskRelationships.Select
-                Add_Relationship(chargingRelationshipAdapter, row)
-            Next
-        Catch ex As Exception
-            MsgBox(ex.Message)
-        End Try
+                Dim TLTaskRelationshipAdapter As New TimeLiveDataSetTableAdapters.AccountProjectTaskEmployeeTableAdapter
+                Dim TLTaskRelationships As TimeLiveDataSet.AccountProjectTaskEmployeeDataTable = TLTaskRelationshipAdapter.GetTaskEmployeeData()
+                Dim objTaskArray() As Object
+                objTaskArray = objTaskServices.GetTasks
+                Dim objTask As New Services.TimeLive.Tasks.Task
 
+                For Each row As DataRow In TLTaskRelationships.Select
+                    ' TODO: Check if task is parent task
+                    Add_Relationship(chargingRelationshipAdapter, row)
+                Next
+            Catch ex As Exception
+                If UI Then
+                    MsgBox(ex.Message)
+                Else
+                    Throw ex
+                End If
+            End Try
+        End If
     End Sub
 
     ''' <summary>
@@ -49,7 +67,6 @@ Public Class Sync_TLtoQB_Relationships
             QBEmployeeID = VendorAdapter.GetCorrespondingQB_IDfromTL_ID(TLEmployeeID)
         End If
 
-
         Dim Job_SubjobAdapter As New QB_TL_IDsTableAdapters.Jobs_SubJobsTableAdapter
         Dim QBJobSubJobID As String = Job_SubjobAdapter.GetCorrespondingQB_IDfromTL_ID(TLProjectID)
 
@@ -57,6 +74,7 @@ Public Class Sync_TLtoQB_Relationships
 
         ' If the relationship in TL is not in the ChargingRelationship table, add it
         If Not (QBEmployeeID Is Nothing Or QBJobSubJobID Is Nothing) Then
+
             QBEmployeeID = QBEmployeeID.Trim
             QBJobSubJobID = QBJobSubJobID.Trim
 

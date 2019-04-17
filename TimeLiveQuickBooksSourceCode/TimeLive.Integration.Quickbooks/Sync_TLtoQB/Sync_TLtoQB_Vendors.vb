@@ -7,32 +7,41 @@ Public Class Sync_TLtoQB_Vendors
     ''' Sync the vendor data from QB. Print out vendors that are in TL but not QB
     ''' </summary>
     Sub SyncVendorData(ByVal p_token As String, Optional ByVal UI As Boolean = True)
-        Dim result As Boolean = True
+        Dim create As Boolean = True
 
-        My.Forms.MAIN.History("Syncing Vendor Data", "n")
-        Try
-            ' connect to Time live
-            'Dim play As New Services.TimeLive.Employees.Employees
-            Dim objEmployeeServices As New Services.TimeLive.Employees.Employees
-            Dim authentication As New Services.TimeLive.Employees.SecuredWebServiceHeader
-            authentication.AuthenticatedToken = p_token
-            objEmployeeServices.SecuredWebServiceHeaderValue = authentication
-            Dim objEmployeeArray() As Object
-            objEmployeeArray = objEmployeeServices.GetEmployees
-            Dim objEmployee As New Services.TimeLive.Employees.Employee
+        If UI Then
+            create = MsgBox("Sync Vendors?", MsgBoxStyle.YesNo, "Warning!") = MsgBoxResult.Yes
+        End If
 
-            For n As Integer = 0 To objEmployeeArray.Length - 1
-                objEmployee = objEmployeeArray(n)
-                With objEmployee
-                    If .IsVendor Then
-                        'result = checkQBVendorExist(.EmployeeName.ToString, .EmployeeId)
-                        checkQBVendorExist(.EmployeeName.ToString, .EmployeeId, objEmployee, UI)
-                    End If
-                End With
-            Next
-        Catch ex As Exception
-            MsgBox(ex.Message)
-        End Try
+        If create Then
+            My.Forms.MAIN.History("Syncing Vendor Data", "n")
+            Try
+                ' connect to Time live
+                'Dim play As New Services.TimeLive.Employees.Employees
+                Dim objEmployeeServices As New Services.TimeLive.Employees.Employees
+                Dim authentication As New Services.TimeLive.Employees.SecuredWebServiceHeader
+                authentication.AuthenticatedToken = p_token
+                objEmployeeServices.SecuredWebServiceHeaderValue = authentication
+                Dim objEmployeeArray() As Object
+                objEmployeeArray = objEmployeeServices.GetEmployees
+                Dim objEmployee As New Services.TimeLive.Employees.Employee
+
+                For n As Integer = 0 To objEmployeeArray.Length - 1
+                    objEmployee = objEmployeeArray(n)
+                    With objEmployee
+                        If .IsVendor Then
+                            checkQBVendorExist(.EmployeeName.ToString, .EmployeeId, objEmployee, UI)
+                        End If
+                    End With
+                Next
+            Catch ex As Exception
+                If UI Then
+                    MsgBox(ex.Message)
+                Else
+                    Throw ex
+                End If
+            End Try
+        End If
     End Sub
 
     ''' <summary>

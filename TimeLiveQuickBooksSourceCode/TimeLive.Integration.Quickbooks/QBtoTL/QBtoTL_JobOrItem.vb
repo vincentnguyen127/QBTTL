@@ -132,7 +132,7 @@ Public Class QBtoTL_JobOrItem
             End If
         Catch ex As Exception
             My.Forms.MAIN.History(ex.ToString, "C")
-            MAIN.QUITQBSESSION()
+            'MAIN.QUITQBSESSION()
             Throw ex
         End Try
         Return Job_subJobData
@@ -499,7 +499,6 @@ Public Class QBtoTL_JobOrItem
             For Each element As QBtoTL_JobOrItem.Job_Subjob In objData.DataArray
                 ' check if the check value is true
                 If element.RecSelect Then
-
                     If Not element.parent Is Nothing Then
                         My.Forms.MAIN.History("Processing:  " + element.QB_Name, "n")
 

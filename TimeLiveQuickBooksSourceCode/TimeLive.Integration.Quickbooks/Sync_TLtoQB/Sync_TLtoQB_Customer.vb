@@ -8,34 +8,35 @@ Public Class Sync_TLtoQB_Customer
     ''' Sync the customer data from QB. Print out customers that are in TL but not QB
     ''' </summary>
     Sub SyncCustomerData(ByVal p_token As String, Optional ByVal UI As Boolean = True)
-        Dim result As Boolean = False
+        Dim create As Boolean = True
 
-        My.Forms.MAIN.History("Syncing Clients Data", "n")
-        Try
-            ' connect to Timelive
-            Dim play As New Services.TimeLive.Clients.Clients
-            Dim objClientServices As New Services.TimeLive.Clients.Clients
-            Dim authentication As New Services.TimeLive.Clients.SecuredWebServiceHeader
-            authentication.AuthenticatedToken = p_token
-            objClientServices.SecuredWebServiceHeaderValue = authentication
-            Dim objClientArray() As Object
-            objClientArray = objClientServices.GetClients()
-            Dim objClient As New Services.TimeLive.Clients.Client
+        If UI Then
+            create = MsgBox("Sync Customers?", MsgBoxStyle.YesNo, "Warning!") = MsgBoxResult.Yes
+        End If
 
-            For n As Integer = 0 To objClientArray.Length - 1
-                objClient = objClientArray(n)
-                With objClient
-                    'Call subroutine
-                    Dim clientID As Integer = objClientServices.GetClientIdByName(.ClientName)
-                    'Dim result As Boolean = checkQBCustomerExist(.ClientName.ToString, objClientServices.GetClientIdByName(.ClientName))
+        If create Then
+            My.Forms.MAIN.History("Syncing Clients Data", "n")
+            Try
+                ' connect to Timelive
+                Dim objClientServices As New Services.TimeLive.Clients.Clients
+                Dim authentication As New Services.TimeLive.Clients.SecuredWebServiceHeader
+                authentication.AuthenticatedToken = p_token
+                objClientServices.SecuredWebServiceHeaderValue = authentication
+                Dim objClientArray() As Object
+                objClientArray = objClientServices.GetClients()
+                Dim objClient As New Services.TimeLive.Clients.Client
+
+                For n As Integer = 0 To objClientArray.Length - 1
+                    objClient = objClientArray(n)
+                    Dim clientID As Integer = objClientServices.GetClientIdByName(objClient.ClientName)
                     ' Check if TL Client is in QB, and add if not. 
-                    checkQBCustomerExist(.ClientName.ToString, clientID, objClient, UI)
-                End With
-            Next
+                    checkQBCustomerExist(objClient.ClientName.ToString, clientID, objClient, UI)
+                Next
 
-        Catch ex As Exception
-            MsgBox(ex.Message)
-        End Try
+            Catch ex As Exception
+                MsgBox(ex.Message)
+            End Try
+        End If
     End Sub
 
     ''' <summary>
