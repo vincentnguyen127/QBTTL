@@ -134,8 +134,8 @@ Public Class IntUI_2ndSelect
                     Dim ServiceDisp As String = If(.ServiceName Is Nothing, .ServiceItem, .ServiceName)
 
                     DataGridView1.Rows.Add(.RecSelect, .TimeEntryDate.ToString("MM/dd/yyyy"), .CustomerName.ToString(),
-                                           .ProjectName.ToString(), .TaskWithParent.ToString(), (TotalHour + TotalMin).ToString,
-                                           .TimeEntryClass, payrollDisp, ServiceDisp)
+                                           .ProjectName.ToString(), .TaskWithParent.ToString(),
+                                           (TotalHour + TotalMin).ToString, .TimeEntryClass, payrollDisp, ServiceDisp)
                     element.RecSelect = True
                 End With
             Next

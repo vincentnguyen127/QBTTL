@@ -288,8 +288,11 @@ Public Class ChargingRelationship
                     End If
 
                     Dim ret = retList.GetAt(i)
+                    ' Full Name for Job/SubJob or Item/SubItem
+                    Dim name As String = If(attribute = 4 Or attribute = 5, ret.FullName.GetValue, ret.Name.GetValue)
 
-                    attrQBData.Rows.Add(ret.Name.GetValue, ret.ListID.GetValue)
+
+                    attrQBData.Rows.Add(name, ret.ListID.GetValue)
                 Next
             End If
             If msgSetRs.ResponseList.GetAt(0).StatusSeverity = "Error" Then
@@ -449,7 +452,7 @@ Public Class ChargingRelationship
         If name.Length Then
             Dim Item_ID As String = Me.Items_SubItemsTableAdapter.Name_to_ID(name)
 
-            ' Check if DB stores as "subitem_name", not "service_name:subitem_name"
+            ' Checks if DB stores as "subitem_name", not "service_name:subitem_name"
             If Item_ID Is Nothing Then
                 Dim last_colon = name.LastIndexOf(":")
                 name = name.Substring(last_colon + 1)
