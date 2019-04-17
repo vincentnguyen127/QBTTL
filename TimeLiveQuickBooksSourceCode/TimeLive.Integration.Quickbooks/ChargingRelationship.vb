@@ -22,7 +22,8 @@ Public Class ChargingRelationship
         Dim PayrollItemsQBData As New DataTable
 
         Me.EmployeesTableAdapter.Fill(Me.QB_TL_IDs.Employees)
-        Me.Jobs_SubJobsTableAdapter.Fill(Me.QB_TL_IDs.Jobs_SubJobs) 'Maybe do this?
+        Me.Jobs_SubJobsTableAdapter.Fill(Me.QB_TL_IDs.Jobs_SubJobs) ' Maybe do this?
+        Me.VendorsTableAdapter.Fill(Me.QB_TL_IDs.Vendors) ' Maybe do this?
         'Me.Items_SubItemsTableAdapter.Fill(Me.QB_TL_IDs.Items_SubItems) ' Should this be added?
 
         JobsSubJobsQBData = QBJobsSubJobs()
@@ -44,7 +45,11 @@ Public Class ChargingRelationship
 
         ' Add all Jobs/Subjobs to Job Filter Box
         For Each job As DataRow In JobsSubJobsQBData.Rows
-            JobFilterBox.Items.Add(job(0))
+            Dim numSubJobs As Integer = Me.Jobs_SubJobsTableAdapter.numSubTaskswithParent(job(0))
+
+            If numSubJobs = 0 Then
+                JobFilterBox.Items.Add(job(0))
+            End If
         Next
 
         ' Add all Payroll Items to Payroll Filter Box
@@ -291,8 +296,10 @@ Public Class ChargingRelationship
                     ' Full Name for Job/SubJob or Item/SubItem
                     Dim name As String = If(attribute = 4 Or attribute = 5, ret.FullName.GetValue, ret.Name.GetValue)
 
-
-                    attrQBData.Rows.Add(name, ret.ListID.GetValue)
+                    ' Do not include customers for a job query
+                    If (Not attribute = 4) Or name.Contains(":") Then
+                        attrQBData.Rows.Add(name, ret.ListID.GetValue)
+                    End If
                 Next
             End If
             If msgSetRs.ResponseList.GetAt(0).StatusSeverity = "Error" Then
@@ -374,13 +381,21 @@ Public Class ChargingRelationship
         If name.Length Then
             Dim Employee_ID As String = Me.EmployeesTableAdapter.Name_to_ID(name)
 
-            ' Check if DB stores name as "Last, First" instead of "First Last"
+            If Employee_ID Is Nothing Then
+                Employee_ID = Me.VendorsTableAdapter.Name_to_ID(name)
+            End If
+
+            ' Check if Employee DB stores name as "Last, First" instead of "First Last"
             If Employee_ID Is Nothing Then
                 Dim space_index = name.IndexOf(" ")
                 Dim firstName = name.Substring(0, space_index)
                 Dim lastName = name.Substring(space_index + 1)
                 name = lastName.Trim + ", " + firstName
                 Employee_ID = Me.EmployeesTableAdapter.Name_to_ID(name)
+                ' Check if Vendor DB stores name as "Last, First" instead of "First Last"
+                If Employee_ID Is Nothing Then
+                    Employee_ID = Me.VendorsTableAdapter.Name_to_ID(name)
+                End If
             End If
 
             ' Only update table if Employee ID was found in DB

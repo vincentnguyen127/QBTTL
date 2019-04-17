@@ -519,7 +519,6 @@ Public Class QBtoTL_JobOrItem
 
                                     Dim JobAdapter As New QB_TL_IDsTableAdapters.Items_SubItemsTableAdapter
                                     JobAdapter.Insert(element.QB_ID, objProjectServices.GetProjectId(element.QB_Name), element.QB_Name, element.FullName)
-
                                     ProjectName = element.FullName ' Should this be outside the if?
                                 End If
                                 ' If subitem

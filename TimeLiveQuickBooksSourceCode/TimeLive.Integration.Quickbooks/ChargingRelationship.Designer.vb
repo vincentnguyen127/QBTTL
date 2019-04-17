@@ -42,6 +42,7 @@ Partial Class ChargingRelationship
         Me.EmployeesTableAdapter = New TimeLive.Quickbooks.Integrator.QB_TL_IDsTableAdapters.EmployeesTableAdapter()
         Me.Jobs_SubJobsTableAdapter = New TimeLive.Quickbooks.Integrator.QB_TL_IDsTableAdapters.Jobs_SubJobsTableAdapter()
         Me.Items_SubItemsTableAdapter = New TimeLive.Quickbooks.Integrator.QB_TL_IDsTableAdapters.Items_SubItemsTableAdapter()
+        Me.VendorsTableAdapter = New TimeLive.Quickbooks.Integrator.QB_TL_IDsTableAdapters.VendorsTableAdapter()
         Me.ChargingRelationshipsTableAdapter = New TimeLive.Quickbooks.Integrator.QB_TL_IDsTableAdapters.ChargingRelationshipsTableAdapter()
         Me.CustomersTableAdapter = New TimeLive.Quickbooks.Integrator.QB_TL_IDsTableAdapters.CustomersTableAdapter()
         Me.EmployeesBindingSource1 = New System.Windows.Forms.BindingSource(Me.components)
@@ -347,6 +348,8 @@ Partial Class ChargingRelationship
     Friend WithEvents Jobs_SubJobsTableAdapter As QB_TL_IDsTableAdapters.Jobs_SubJobsTableAdapter
     Friend WithEvents ItemsSubItemsBindingSource As BindingSource
     Friend WithEvents Items_SubItemsTableAdapter As QB_TL_IDsTableAdapters.Items_SubItemsTableAdapter
+    Friend WithEvents VendorsBindingSource As BindingSource
+    Friend WithEvents VendorsTableAdapter As QB_TL_IDsTableAdapters.VendorsTableAdapter
     Friend WithEvents btn_Save As Button
     Friend WithEvents ChargingRelationshipsBindingSource As BindingSource
     Friend WithEvents ChargingRelationshipsTableAdapter As QB_TL_IDsTableAdapters.ChargingRelationshipsTableAdapter
