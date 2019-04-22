@@ -71,10 +71,10 @@ Public Class IntUI_2ndSelect
             col7.Name = "Class"
             DataGridView1.Columns.Add(col7)
             Dim col8 As New DataGridViewTextBoxColumn
-            col8.Name = "Payroll Item ID"
+            col8.Name = "Payroll Item"
             DataGridView1.Columns.Add(col8)
             Dim col9 As New DataGridViewTextBoxColumn
-            col9.Name = "Item SubItem ID"
+            col9.Name = "Item SubItem"
             DataGridView1.Columns.Add(col9)
 
             'look for first selected employee
@@ -132,6 +132,7 @@ Public Class IntUI_2ndSelect
 
                     Dim payrollDisp As String = If(.PayrollName Is Nothing, .PayrollItem, .PayrollName)
                     Dim ServiceDisp As String = If(.ServiceName Is Nothing, .ServiceItem, .ServiceName)
+
 
                     DataGridView1.Rows.Add(.RecSelect, .TimeEntryDate.ToString("MM/dd/yyyy"), .CustomerName.ToString(),
                                            .ProjectName.ToString(), .TaskWithParent.ToString(),

@@ -96,7 +96,7 @@ Public Class TLtoQB_TimeEntry
                 End If
             End If
 
-            Dim EmployeeName As String = Nothing
+            'Dim EmployeeName As String = Nothing
             Dim FirstMiddleLastName() As String = Nothing
 
             For n As Integer = 0 To objTimeEntryArray.Length - 1
@@ -112,22 +112,43 @@ Public Class TLtoQB_TimeEntry
                     'My.Forms.MAIN.History("................+++++++++++: " + TimeEntryData.NoItems.ToString, "i")
                     'Query for Item_SubIemID
 
-                    FirstMiddleLastName = .EmployeeName.ToString().Split(" ")
-                    If FirstMiddleLastName.Length = 3 Then
-                        EmployeeName = FirstMiddleLastName(2) + ", " + FirstMiddleLastName(0) + " " + FirstMiddleLastName(1)
+                    ' Commented out code searches based on "Last, First", which is incorrect
+                    'FirstMiddleLastName = .EmployeeName.ToString().Split(" ")
+                    'If FirstMiddleLastName.Length = 3 Then
+                    '    EmployeeName = FirstMiddleLastName(2) + ", " + FirstMiddleLastName(0) + " " + FirstMiddleLastName(1)
+                    'End If
+
+                    'If FirstMiddleLastName.Length = 2 Then
+                    '    EmployeeName = FirstMiddleLastName(1) + ", " + FirstMiddleLastName(0)
+                    'End If
+                    'If FirstMiddleLastName.Length = 1 Then
+                    '    EmployeeName = FirstMiddleLastName(0)
+                    'End If
+
+                    Dim empId As String = Get_QB_ID_ForTL_EmployeeName(.EmployeeName) ' EmployeeName)
+
+                    ' Checks if the name is actually stored as "Last, First" instead of "First Last"
+                    If empId = Nothing Then
+                        Dim EmployeeName As String = Nothing
+
+                        FirstMiddleLastName = .EmployeeName.ToString().Split(" ")
+                        If FirstMiddleLastName.Length = 3 Then
+                            EmployeeName = FirstMiddleLastName(2) + ", " + FirstMiddleLastName(0) + " " + FirstMiddleLastName(1)
+                        End If
+
+                        If FirstMiddleLastName.Length = 2 Then
+                            EmployeeName = FirstMiddleLastName(1) + ", " + FirstMiddleLastName(0)
+                        End If
+                        If FirstMiddleLastName.Length = 1 Then
+                            EmployeeName = FirstMiddleLastName(0)
+                        End If
+
+                        empId = Get_QB_ID_ForTL_EmployeeName(EmployeeName)
                     End If
 
-                    If FirstMiddleLastName.Length = 2 Then
-                        EmployeeName = FirstMiddleLastName(1) + ", " + FirstMiddleLastName(0)
-                    End If
-                    If FirstMiddleLastName.Length = 1 Then
-                        EmployeeName = FirstMiddleLastName(0)
-                    End If
-
-                    Dim empId As String = Get_QB_ID_ForTL_EmployeeName(EmployeeName)
                     Dim jobID As String = Get_QB_ID_ForTL_JobName(.ClientName.ToString + ":" + .ProjectName.ToString + ":" + .TaskWithParent.ToString)
                     Dim Item_SubItemID As String = Get_QB_ID_ForTL_ItemName(empId, jobID).ToString.Trim
-                    My.Forms.MAIN.History(Item_SubItemID, "i")
+                    'My.Forms.MAIN.History(Item_SubItemID, "i")
 
                     Dim Payroll_Item_SubItemID As String = Get_QB_PayrollItemID(empId, jobID).ToString.Trim
 
@@ -136,14 +157,28 @@ Public Class TLtoQB_TimeEntry
 
                     Dim ItemName As String = get_QB_Name_ForTL_ItemName(Item_SubItemID) 'exception
 
-                    If Item_SubItemID.Trim = "" Then
+                    If Not ItemName Is Nothing Then
+                        ItemName = ItemName.Trim
+                        My.Forms.MAIN.History("Item name: " + ItemName, "i")
+                    Else
+                        My.Forms.MAIN.History("Item ID: " + Item_SubItemID, "i")
+                    End If
+
+                    If Item_SubItemID = "" Then
                         Item_SubItemID = "<None>" 'ItemName
                         ServiceItem_TypeName = True
                     End If
 
                     Dim PayrollName As String = GetPayrollItem(objTimeEntry)
 
-                    If Payroll_Item_SubItemID.Trim = "" Then
+                    If Not PayrollName Is Nothing Then
+                        PayrollName = PayrollName.Trim
+                        My.Forms.MAIN.History("Payroll Name: " + PayrollName, "i")
+                    Else
+                        My.Forms.MAIN.History("Payroll ID: " + Payroll_Item_SubItemID, "i")
+                    End If
+
+                    If Payroll_Item_SubItemID = "" Then
                         Payroll_Item_SubItemID = PayrollName 'GetPayrollItem(objTimeEntry)
                         PayrollItem_TypeName = True
                     End If
@@ -289,11 +324,18 @@ Public Class TLtoQB_TimeEntry
         Dim EmployeeAdapter As New QB_TL_IDsTableAdapters.EmployeesTableAdapter()
         Dim EmployeeQBID As QB_TL_IDs.EmployeesDataTable = EmployeeAdapter.GetCorrespondingQB_IDbyQB_Name(employeeName)
 
+        Dim VendorAdapter As New QB_TL_IDsTableAdapters.VendorsTableAdapter()
+
         If EmployeeQBID.Count > 1 Then
-            My.Forms.MAIN.History("Found more than one matching employee IDs: " + EmployeeQBID.Count.ToString, "I")
+            My.Forms.MAIN.History("Found " + EmployeeQBID.Count.ToString + " matching employee IDs for: " + employeeName, "I")
             Return ""
         ElseIf EmployeeQBID.Count = 0 Then
-            My.Forms.MAIN.History("id not find any matching employee IDs: " + EmployeeQBID.Count.ToString, "I")
+            Dim VendorQBID As QB_TL_IDs.VendorsDataTable = VendorAdapter.GetCorrespondingQB_IDbyQB_Name(employeeName)
+            If VendorQBID.Count = 0 Then
+                My.Forms.MAIN.History("Did not find any matching employee/vendor IDs for: " + employeeName, "I")
+            ElseIf VendorQBID.Count > 1 Then
+                My.Forms.MAIN.History("Found " + VendorQBID.Count.ToString + " matching vendor IDs for: " + employeeName, "I")
+            End If
             Return ""
         End If
 

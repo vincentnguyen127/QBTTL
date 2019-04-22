@@ -559,13 +559,12 @@ Public Class QBtoTL_JobOrItem
                                     Dim nCurrencyId As Integer = objServices.GetCurrencyId()
 
                                     objTaskServices.InsertTask(nProjectId, nParentTaskId, element.QB_Name, element.FullName,
-                                    nTaskTypeId, 1, "Months", 0,
-                                    0, Now.AddMonths(1).Date, nTaskStatusId, nPriorityId,
+                                    nTaskTypeId, 1, "Months", 0, 0, Now.AddMonths(1).Date, nTaskStatusId, nPriorityId,
                                     nProjectMilestoneId, False, False, Now.Date, nTeamLeadId, Now.Date, nTeamLeadId, 0, 0, "Days",
                                     True, element.FullName, 0, False, nCurrencyId)
 
                                     Dim JobAdapter As New QB_TL_IDsTableAdapters.Items_SubItemsTableAdapter
-                                    JobAdapter.Insert(element.QB_ID, objTaskServices.GetTaskId(element.FullName), element.QB_Name, element.QB_Name)
+                                    JobAdapter.Insert(element.QB_ID, objTaskServices.GetTaskId(element.FullName), element.QB_Name, element.FullName)
                                 End If
                                 'If TL_ID_Return = 1 Then
 

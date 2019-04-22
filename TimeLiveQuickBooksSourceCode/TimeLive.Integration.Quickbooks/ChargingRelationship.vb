@@ -24,6 +24,7 @@ Public Class ChargingRelationship
         Me.EmployeesTableAdapter.Fill(Me.QB_TL_IDs.Employees)
         Me.Jobs_SubJobsTableAdapter.Fill(Me.QB_TL_IDs.Jobs_SubJobs) ' Maybe do this?
         Me.VendorsTableAdapter.Fill(Me.QB_TL_IDs.Vendors) ' Maybe do this?
+        ' Null since TL -> QB relationship sync does not fill items_subitems
         'Me.Items_SubItemsTableAdapter.Fill(Me.QB_TL_IDs.Items_SubItems) ' Should this be added?
 
         JobsSubJobsQBData = QBJobsSubJobs()
@@ -37,7 +38,7 @@ Public Class ChargingRelationship
             EmployeeFilterBox.Items.Add(employee(0))
         Next
 
-        ' Add all Vendors to Employee Filter Box and to Employee Data
+        ' Add all 1099 Vendors to Employee Filter Box and to Employee Data
         For Each vendor As DataRow In VendorsQBData.Rows
             EmployeesQBData.ImportRow(vendor)
             EmployeeFilterBox.Items.Add(vendor(0))
