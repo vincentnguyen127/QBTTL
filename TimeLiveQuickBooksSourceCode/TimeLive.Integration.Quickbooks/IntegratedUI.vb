@@ -19,18 +19,438 @@ Public Class IntegratedUI
 
     Dim customer_qbtotl As QBtoTL_Customer = New QBtoTL_Customer
     Dim customerData As New QBtoTL_Customer.CustomerDataStructureQB
+    Dim customer_TLSync As Sync_TLtoQB_Customer = New Sync_TLtoQB_Customer
 
     Dim job_qbtotl As QBtoTL_JobOrItem = New QBtoTL_JobOrItem
     Dim JobData As New QBtoTL_JobOrItem.JobDataStructureQB
+    Dim job_TLSync As Sync_TLtoQB_JoborItem = New Sync_TLtoQB_JoborItem
 
     Dim employee_qbtotl As QBtoTL_Employee = New QBtoTL_Employee
     Dim employeeData As New QBtoTL_Employee.EmployeeDataStructureQB
+    Dim employee_TLSync As Sync_TLtoQB_Employee = New Sync_TLtoQB_Employee
 
     Dim vendor_qbtotl As QBtoTL_Vendor = New QBtoTL_Vendor
     Dim vendorData As New QBtoTL_Vendor.VendorDataStructureQB
+    Dim vendor_TLSync As Sync_TLtoQB_Vendor = New Sync_TLtoQB_Vendor
 
     Dim timetry_tltoqb As TLtoQB_TimeEntry = New TLtoQB_TimeEntry
     Dim selectedEmployeeData As New TLtoQB_TimeEntry.EmployeeDataStructure
+
+    ' Note: This is the new, up to date one that does TL -> QB too, replace display_UI with this once done testing
+    Private Function display_UI() Handles QBtoTLCustomerRadioButton.CheckedChanged, QBtoTLEmployeeRadioButton.CheckedChanged,
+                                           QBtoTLVendorRadioButton.CheckedChanged, QBtoTLJobItemRadioButton.CheckedChanged
+        Dim ItemLastSync As DateTime
+        Dim lastSync As String
+        Dim Data
+        Dim attribute As String
+        Dim QBtoTLRadioButton As RadioButton
+
+        Select Case Type
+            ' Customers
+            Case 10
+                TabPageCustomers.Visible = True
+                TabControl1.SelectedIndex = 0
+                lastSync = My.Settings.CustomerLastSync
+                customerData = customer_qbtotl.GetCustomerQBData(Me, True)
+                Data = customerData
+                attribute = "customer"
+                QBtoTLRadioButton = QBtoTLCustomerRadioButton
+
+            ' Employees
+            Case 11
+                TabPageEmployees.Visible = True
+                CustomerSyncDirection.Visible = True
+                TabControl1.SelectedIndex = 1
+                lastSync = My.Settings.EmployeeLastSync
+                employeeData = employee_qbtotl.GetEmployeeQBData(Me, True)
+                Data = employeeData
+                attribute = "employee"
+                QBtoTLRadioButton = QBtoTLEmployeeRadioButton
+
+            ' Vendors
+            Case 12
+                TabPageVendor.Visible = True
+                TabControl1.SelectedIndex = 2
+                lastSync = My.Settings.VendorLastSync
+                vendorData = vendor_qbtotl.GetVendorQBData(Me, True)
+                Data = vendorData
+                attribute = "vendor"
+                QBtoTLRadioButton = QBtoTLVendorRadioButton
+
+            ' Jobs / Subjobs
+            Case 13
+                TabPageJobsItems.Visible = True
+                TabControl1.SelectedIndex = 3
+                lastSync = My.Settings.JobLastSync
+                JobData = job_qbtotl.GetJobSubJobData(Me, p_token, True)
+                Data = JobData
+                attribute = "job/subjob"
+                QBtoTLRadioButton = QBtoTLJobItemRadioButton
+
+            ' Items / SubItems
+            Case 14
+                TabPageJobsItems.Visible = True
+                TabControl1.SelectedIndex = 3
+                lastSync = My.Settings.ItemlastSync
+                JobData = job_qbtotl.GetItemSubItemData(Me, p_token, True)
+                Data = JobData
+                attribute = "item/subitem"
+                QBtoTLRadioButton = QBtoTLJobItemRadioButton
+
+            Case Else
+                Return 0
+        End Select
+
+        SyncFromLabel.Text = If(QBtoTLRadioButton.Checked, "QuickBooks", "TimeLive")
+        SyncToLabel.Text = If(QBtoTLRadioButton.Checked, "TimeLive", "QuickBooks")
+
+        If String.IsNullOrEmpty(lastSync) Then
+            ItemLastSync = #1/1/2000#
+        Else
+            ItemLastSync = Convert.ToDateTime(lastSync)
+        End If
+        My.Forms.MAIN.History("Synchonizing modified " + attribute + " since: " + ItemLastSync.ToString(), "n")
+
+        Dim readItems As Integer = Data.NoItems
+
+        ' Delete all rows and columns from the DataGridView's execpt the "Check Name" column in DataGridView1
+        DataGridView1.Rows.Clear()
+        While DataGridView1.ColumnCount > 1
+            DataGridView1.Columns.RemoveAt(1)
+        End While
+
+        DataGridView2.Rows.Clear()
+        DataGridView2.Columns.Clear()
+
+        '-----------------------------------------
+        'load grid for QuickBooks (might be easier way)
+        '-----------------------------------------
+
+        ' Add Full Name Column for Job/Subjob and Item/SubItem
+        Dim QBDataGridView As DataGridView = If(QBtoTLRadioButton.Checked, DataGridView1, DataGridView2)
+        Dim TLDataGridView As DataGridView = If(QBtoTLRadioButton.Checked, DataGridView2, DataGridView1)
+
+
+        If Type = 13 Or Type = 14 Then
+            Dim QBcol0 As New DataGridViewTextBoxColumn
+            QBcol0.Name = "Full Name"
+            QBDataGridView.Columns.Add(QBcol0)
+        End If
+
+        Dim QBcol1 As New DataGridViewTextBoxColumn
+        QBcol1.Name = "Name"
+        QBDataGridView.Columns.Add(QBcol1)
+        Dim QBcol2 As New DataGridViewTextBoxColumn
+        QBcol2.Name = "Last Modified"
+        QBDataGridView.Columns.Add(QBcol2)
+        Dim QBcol3 As New DataGridViewTextBoxColumn
+        QBcol3.Name = "New"
+        QBDataGridView.Columns.Add(QBcol3)
+
+        ' Note: Currently only customer stored both active and inactive; If changed, then change this line accordingly
+        readItems = If(Type = 10, Data.NoItems - Data.NoInactive, Data.NoItems)
+
+        If Data Is Nothing Then
+            My.Forms.MAIN.History("No QuickBooks" + attribute + " data", "n")
+        End If
+
+        Dim element
+        For Each element In Data.DataArray
+            Dim result As Integer = DateTime.Compare(Convert.ToDateTime(element.QBModTime.ToString()),
+            ItemLastSync)
+            If result >= 0 Then
+                element.RecSelect = True
+            End If
+            'MAIN.FlagChangedItemsResults(element.QB_Name.ToString(), result)
+        Next
+        For Each element In Data.DataArray
+            ' Currently only customer has the enabled field, if all do then remove if type = 10
+            If Type = 10 Then
+                If Not element.Enabled Then
+                    Continue For
+                End If
+            End If
+            ' Jobs/Subjobs and Items/Subitems show full name too
+            If Type = 13 Or Type = 14 Then
+                If QBtoTLRadioButton.Checked Then
+                    QBDataGridView.Rows.Add(element.RecSelect, element.FullName.ToString(), element.QB_Name.ToString(), element.QBModTime.ToString(), element.NewlyAdded)
+                Else
+                    QBDataGridView.Rows.Add(element.FullName.ToString(), element.QB_Name.ToString(), element.QBModTime.ToString(), element.NewlyAdded)
+                End If
+            Else
+                If QBtoTLRadioButton.Checked Then
+                    QBDataGridView.Rows.Add(element.RecSelect, element.QB_Name.ToString(), element.QBModTime.ToString(), element.NewlyAdded)
+                Else
+                    QBDataGridView.Rows.Add(element.QB_Name.ToString(), element.QBModTime.ToString(), element.NewlyAdded)
+                End If
+            End If
+        Next
+
+        '-----------------------------------------
+        ' Load Grid for TimeLive
+        '-----------------------------------------
+        Dim TLcol1 As New DataGridViewTextBoxColumn
+        TLcol1.Name = "Name"
+        TLDataGridView.Columns.Add(TLcol1)
+
+        Dim TLcol2 As New DataGridViewTextBoxColumn
+        TLcol2.Name = "New"
+        TLDataGridView.Columns.Add(TLcol2)
+
+        Dim TLItemsArray() As Object = {}
+
+        Dim objServices = Nothing
+        ' objServices2 only used for Jobs/Subjobs (and maybe items/subitems too), will be Tasks and objServices wil be projects
+        Dim objServices2 = Nothing
+
+        ' Initialize the Service and get all items of the specified attribute
+        Select Case Type
+            ' Customers
+            Case 10
+                Dim objClientServices As New Services.TimeLive.Clients.Clients
+                Dim authentication As New Services.TimeLive.Clients.SecuredWebServiceHeader
+                authentication.AuthenticatedToken = p_token
+                objClientServices.SecuredWebServiceHeaderValue = authentication
+                objServices = objClientServices
+                TLItemsArray = objServices.GetClients()
+
+            ' Employees, Vendors
+            Case 11, 12
+                Dim objEmployeeServices As New Services.TimeLive.Employees.Employees
+                Dim authentication As New Services.TimeLive.Employees.SecuredWebServiceHeader
+                authentication.AuthenticatedToken = p_token
+                objEmployeeServices.SecuredWebServiceHeaderValue = authentication
+                objServices = objEmployeeServices
+                TLItemsArray = objServices.GetEmployees()
+
+            ' Jobs/SubJobs | Items/SubItems (Projects/Tasks in TimeLive)
+            Case 13, 14
+                Dim list As List(Of Object) = New List(Of Object)
+
+                Dim objProjectServices As New Services.TimeLive.Projects.Projects
+                Dim authentication1 As New Services.TimeLive.Projects.SecuredWebServiceHeader
+                authentication1.AuthenticatedToken = p_token
+                objProjectServices.SecuredWebServiceHeaderValue = authentication1
+                objServices = objProjectServices
+                list.AddRange(objServices.GetProjects())
+
+                Dim objTaskServices As New Services.TimeLive.Tasks.Tasks
+                Dim authentication2 As New Services.TimeLive.Tasks.SecuredWebServiceHeader
+                authentication2.AuthenticatedToken = p_token
+                objTaskServices.SecuredWebServiceHeaderValue = authentication2
+                objServices2 = objTaskServices
+                list.AddRange(objServices2.GetTasks())
+
+                TLItemsArray = list.ToArray()
+
+        End Select
+
+        If TLItemsArray Is Nothing Or TLItemsArray.Length = 0 Then
+            My.Forms.MAIN.History("No TimeLive " + attribute + " data", "n")
+        End If
+
+        Dim CustomerAdapter As New QB_TL_IDsTableAdapters.CustomersTableAdapter()
+        Dim EmployeeAdapter As New QB_TL_IDsTableAdapters.EmployeesTableAdapter()
+        Dim VendorAdapter As New QB_TL_IDsTableAdapters.VendorsTableAdapter()
+        Dim Job_SubJobAdapter As New QB_TL_IDsTableAdapters.Jobs_SubJobsTableAdapter()
+        Dim Item_SubItemAdapter As New QB_TL_IDsTableAdapters.Items_SubItemsTableAdapter()
+
+        ' Populate the table based on the TineLive elements
+        For Each element In TLItemsArray
+            Dim ID As Integer = 0
+            Dim name As String = ""
+            Dim isNew As String = ""
+
+            Select Case Type
+                ' .ClientID always returns 0, so always do: GetClientIdByName(.ClientName)
+
+                ' Customers
+                Case 10
+                    name = element.ClientName
+                    ID = objServices.GetClientIdByName(name)
+                    isNew = If(CustomerAdapter.numCustomersWithTL_ID(ID), "", "N")
+
+                ' Employees
+                Case 11 ' Will need to change this a little bit
+                    name = element.EmployeeName
+                    ID = objServices.GetEmployeeId(name)
+                    ' Do not show vendors
+                    If (VendorAdapter.numVendorsWithTL_ID(ID)) Then
+                        Continue For
+                    End If
+                    isNew = If(EmployeeAdapter.numEmployeesWithTL_ID(ID), "", "N")
+
+                ' Vendors 
+                Case 12
+                    name = element.EmployeeName
+                    ID = objServices.GetEmployeeId(name)
+                    ' Do not show employees
+                    If (EmployeeAdapter.numEmployeesWithTL_ID(ID)) Then
+                        Continue For
+                    End If
+                    isNew = If(VendorAdapter.numVendorsWithTL_ID(ID), "", "N")
+
+                ' Jobs/Subjobs
+                Case 13
+                    If element.GetType Is (New Services.TimeLive.Projects.Project).GetType Then
+                        name = element.projectName
+                        ID = objServices.GetProjectId(name)
+                    Else
+                        name = element.TaskName
+                        ID = objServices2.GetTaskId(name)
+                    End If
+
+                    ' Do not show Items
+                    If (Item_SubItemAdapter.numItemsSubItemsWithTL_ID(ID)) Then
+                        Continue For
+                    End If
+                    isNew = If(Job_SubJobAdapter.numTasksSubTasksWithTL_ID(ID), "", "N")
+
+                ' Items/SubItems
+                Case 14
+                    If element.GetType Is (New Services.TimeLive.Projects.Project).GetType Then
+                        name = element.projectName
+                        ID = objServices.GetProjectId(name)
+                    Else
+                        name = element.TaskName
+                        ID = objServices2.GetTaskId(name)
+                    End If
+                    ' Do not show Jobs
+                    If Job_SubJobAdapter.numTasksSubTasksWithTL_ID(ID) Then
+                        Continue For
+                    End If
+                    isNew = If(Item_SubItemAdapter.numItemsSubItemsWithTL_ID(ID), "", "N")
+            End Select
+
+            ' Checks if TLDataGridView is DataGridView1 or DataGridView2
+            If QBtoTLRadioButton.Checked Then
+                TLDataGridView.Rows.Add(name, isNew)
+            Else
+                TLDataGridView.Rows.Add(False, name, isNew)
+            End If
+        Next
+
+        System.Threading.Thread.Sleep(150)
+        System.Windows.Forms.Application.DoEvents()
+        Me.ProgressBar1.Value = 0
+        SelectAll = False
+        Return readItems
+    End Function
+
+    ' Depreciated. Will remove once display_UI is fully integrated
+    Private Function display_UI_Old()
+        Dim ItemLastSync As DateTime
+        Dim lastSync As String
+        Dim Data
+        Dim attribute As String
+
+        Select Case Type
+            ' Customers
+            Case 10
+                TabPageCustomers.Visible = True
+                TabControl1.SelectedIndex = 0
+                lastSync = My.Settings.CustomerLastSync
+                customerData = customer_qbtotl.GetCustomerQBData(Me, True)
+                Data = customerData
+                attribute = "customer"
+
+            ' Employees
+            Case 11
+                TabPageEmployees.Visible = True
+                TabControl1.SelectedIndex = 1
+                lastSync = My.Settings.EmployeeLastSync
+                employeeData = employee_qbtotl.GetEmployeeQBData(Me, True)
+                Data = employeeData
+                attribute = "employee"
+
+            ' Vendors
+            Case 12
+                TabPageVendor.Visible = True
+                TabControl1.SelectedIndex = 2
+                lastSync = My.Settings.VendorLastSync
+                vendorData = vendor_qbtotl.GetVendorQBData(Me, True)
+                Data = vendorData
+                attribute = "vendor"
+
+            ' Jobs / Subjobs
+            Case 13
+                TabPageJobsItems.Visible = True
+                TabControl1.SelectedIndex = 3
+                lastSync = My.Settings.JobLastSync
+                JobData = job_qbtotl.GetJobSubJobData(Me, p_token, True)
+                Data = JobData
+                attribute = "job/subjob"
+
+            ' Items / SubItems
+            Case 14
+                TabPageJobsItems.Visible = True
+                TabControl1.SelectedIndex = 3
+                lastSync = My.Settings.ItemlastSync
+                JobData = job_qbtotl.GetItemSubItemData(Me, p_token, True)
+                Data = JobData
+                attribute = "item/subitem"
+
+            Case Else
+                Return 0
+        End Select
+
+        If String.IsNullOrEmpty(lastSync) Then
+            ItemLastSync = #1/1/2000#
+        Else
+            ItemLastSync = Convert.ToDateTime(lastSync)
+        End If
+        My.Forms.MAIN.History("Synchonizing modified " + attribute + " since: " + ItemLastSync.ToString(), "n")
+
+        Dim readItems As Integer = Data.NoItems
+
+
+        'load grid (there might be an easire way)
+        ' Add Full Name Column for Job/Subjob and Item/SubItem
+        If Type = 13 Or Type = 14 Then
+            Dim col0 As New DataGridViewTextBoxColumn
+            col0.Name = "Full Name"
+            DataGridView1.Columns.Add(col0)
+        End If
+        Dim col2 As New DataGridViewTextBoxColumn
+        col2.Name = "Name"
+        DataGridView1.Columns.Add(col2)
+        Dim col3 As New DataGridViewTextBoxColumn
+        col3.Name = "Last Modified"
+        DataGridView1.Columns.Add(col3)
+        Dim col4 As New DataGridViewTextBoxColumn
+        col4.Name = "New"
+        DataGridView1.Columns.Add(col4)
+
+        If Data Is Nothing Then
+            My.Forms.MAIN.History("No " + attribute + " data", "n")
+        End If
+
+
+        Dim element
+        For Each element In Data.DataArray
+            Dim result As Integer = DateTime.Compare(Convert.ToDateTime(element.QBModTime.ToString()),
+        ItemLastSync)
+            If result >= 0 Then
+                element.RecSelect = True
+            End If
+            'MAIN.FlagChangedItemsResults(element.QB_Name.ToString(), result)
+        Next
+        For Each element In Data.DataArray
+            ' Full Name column for Job/Subjob and Item/Subitem
+            If Type = 13 Or Type = 14 Then
+                DataGridView1.Rows.Add(element.RecSelect, element.FullName.ToString(), element.QB_Name.ToString(), element.QBModTime.ToString(), element.NewlyAdded)
+            Else
+                DataGridView1.Rows.Add(element.RecSelect, element.QB_Name.ToString(), element.QBModTime.ToString(), element.NewlyAdded)
+            End If
+        Next
+
+        ' Might not be wanted for every attribute, check if that is the case
+        System.Threading.Thread.Sleep(150)
+        System.Windows.Forms.Application.DoEvents()
+        Me.ProgressBar1.Value = 0
+        SelectAll = False
+        Return readItems
+    End Function
 
     Public Sub IntegratedUI_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         Dim ItemLastSync As DateTime
@@ -45,249 +465,19 @@ Public Class IntegratedUI
         DataGridView1.AutoSizeRowsMode = False
         btn_currentweek_Click(sender, e)
 
-        '-------------------------10---------------------------------------------
-        'for type customers
-        If Type = 10 Then
-            TabPageCustomers.Visible = True
-            TabControl1.SelectedIndex = 0
-
-            'load grid (there might be an easire way)
-            Dim col2 As New DataGridViewTextBoxColumn
-            col2.Name = "Name"
-            DataGridView1.Columns.Add(col2)
-            Dim col3 As New DataGridViewTextBoxColumn
-            col3.Name = "Last Modified"
-            DataGridView1.Columns.Add(col3)
-            Dim col4 As New DataGridViewTextBoxColumn
-            col4.Name = "New"
-            DataGridView1.Columns.Add(col4)
-
-            If String.IsNullOrEmpty(My.Settings.CustomerLastSync.ToString()) Then
-                ItemLastSync = #1/1/2000#
-            Else
-                ItemLastSync = Convert.ToDateTime(My.Settings.CustomerLastSync)
-            End If
-
-            My.Forms.MAIN.History("Synchonizing modified customers since:   " + ItemLastSync.ToString(), "n")
-
-            customerData = customer_qbtotl.GetCustomerQBData(Me, True)
-            ReadItems = customerData.NoItems - customerData.NoInactive
-
-            If customerData Is Nothing Then
-                My.Forms.MAIN.History("No customer data", "n")
-                Exit Sub
-            End If
-
-            For Each element As QBtoTL_Customer.Customer In customerData.DataArray
-                Dim result As Integer = DateTime.Compare(Convert.ToDateTime(element.QBModTime.ToString()),
-            ItemLastSync)
-                If result >= 0 Then
-                    element.RecSelect = True
-                End If
-                'MAIN.FlagChangedItemsResults(element.QB_Name.ToString(), result)
-            Next
-            For Each element As QBtoTL_Customer.Customer In customerData.DataArray
-                'Dim count As Int16 = ISQBID_In_DataTable(element.QB_ID)
-                If element.Enabled Then ' Only show active customers
-                    DataGridView1.Rows.Add(element.RecSelect, element.QB_Name.ToString(), element.QBModTime.ToString(), element.NewlyAdded)
-                End If
-            Next
+        'for type Customers, Employees, Vendors, Jobs/Subjobs, and Items/Subitems
+        'If Type >= 10 And Type < 15 Then
+        If Type = 10 Then ' Replace with previous line
+            ReadItems = display_UI()
         End If
 
-
-        '-------------------------11---------------------------------------------
-        'for type Employees
-        If Type = 11 Then
-            TabPageEmployees.Visible = True
-            TabControl1.SelectedIndex = 1
-
-            'load grid (there might be an easire way)
-            Dim col2 As New DataGridViewTextBoxColumn
-            col2.Name = "Name"
-            DataGridView1.Columns.Add(col2)
-            Dim col3 As New DataGridViewTextBoxColumn
-            col3.Name = "Last Modified"
-            DataGridView1.Columns.Add(col3)
-            Dim col4 As New DataGridViewTextBoxColumn
-            col4.Name = "New"
-            DataGridView1.Columns.Add(col4)
-
-            If String.IsNullOrEmpty(My.Settings.EmployeeLastSync.ToString()) Then
-                ItemLastSync = #1/1/2000#
-            Else
-                ItemLastSync = Convert.ToDateTime(My.Settings.EmployeeLastSync)
-            End If
-            My.Forms.MAIN.History("Synchonizing modified employees since:   " + ItemLastSync.ToString(), "n")
-
-            employeeData = employee_qbtotl.GetEmployeeQBData(Me, True)
-            ReadItems = employeeData.NoItems
-
-            If employeeData Is Nothing Then
-                My.Forms.MAIN.History("No employee data", "n")
-                Exit Sub
-            End If
-
-            For Each element As QBtoTL_Employee.Employee In employeeData.DataArray
-                Dim result As Integer = DateTime.Compare(Convert.ToDateTime(element.QBModTime.ToString()),
-            ItemLastSync)
-                If result >= 0 Then
-                    element.RecSelect = True
-                End If
-                'MAIN.FlagChangedItemsResults(element.QB_Name.ToString(), result)
-            Next
-            For Each element As QBtoTL_Employee.Employee In employeeData.DataArray
-                DataGridView1.Rows.Add(element.RecSelect, element.QB_Name.ToString(), element.QBModTime.ToString(), element.NewlyAdded)
-            Next
+        ' Remove when above code is implemented
+        If Type >= 11 And Type < 15 Then
+            ReadItems = display_UI_Old()
         End If
 
-        '-------------------------12---------------------------------------------
-        'for type Vendors
-        If Type = 12 Then
-            TabControl1.SelectedIndex = 2
-
-            'load grid (there might be an easire way)
-            Dim col2 As New DataGridViewTextBoxColumn
-            col2.Name = "Name"
-            DataGridView1.Columns.Add(col2)
-            Dim col3 As New DataGridViewTextBoxColumn
-            col3.Name = "Last Modified"
-            DataGridView1.Columns.Add(col3)
-            Dim col4 As New DataGridViewTextBoxColumn
-            col4.Name = "New"
-            DataGridView1.Columns.Add(col4)
-
-            If String.IsNullOrEmpty(My.Settings.VendorLastSync.ToString()) Then
-                ItemLastSync = #1/1/2000#
-            Else
-                ItemLastSync = Convert.ToDateTime(My.Settings.VendorLastSync)
-            End If
-            My.Forms.MAIN.History("Synchonizing modified vendors since:   " + ItemLastSync.ToString(), "n")
-
-            vendorData = vendor_qbtotl.GetVendorQBData(Me, True)
-            ReadItems = vendorData.NoItems
-
-            If vendorData Is Nothing Then
-                My.Forms.MAIN.History("No Vendor data", "n")
-                Exit Sub
-            End If
-
-            For Each element As QBtoTL_Vendor.Vendor In vendorData.DataArray
-                Dim result As Integer = DateTime.Compare(Convert.ToDateTime(element.QBModTime.ToString()),
-                                                         ItemLastSync)
-                If result >= 0 Then
-                    element.RecSelect = True
-                End If
-                'MAIN.FlagChangedItemsResults(element.QB_Name.ToString(), result)
-            Next
-            For Each element As QBtoTL_Vendor.Vendor In vendorData.DataArray
-                DataGridView1.Rows.Add(element.RecSelect, element.QB_Name.ToString(), element.QBModTime.ToString(), element.NewlyAdded)
-            Next
-            SelectAll = False
-        End If
-
-        '-------------------------13---------------------------------------------
-        'for type Jobs_Sub Jobs
-        If Type = 13 Then
-            TabControl1.SelectedIndex = 3
-
-            'load grid (there might be an easier way)
-            Dim col2 As New DataGridViewTextBoxColumn
-            col2.Name = "Full Name"
-            DataGridView1.Columns.Add(col2)
-            Dim col3 As New DataGridViewTextBoxColumn
-            col3.Name = "Name"
-            DataGridView1.Columns.Add(col3)
-            Dim col4 As New DataGridViewTextBoxColumn
-            col4.Name = "Last Modified"
-            DataGridView1.Columns.Add(col4)
-            Dim col5 As New DataGridViewTextBoxColumn
-            col5.Name = "New"
-            DataGridView1.Columns.Add(col5)
-
-            ' check here 
-            If String.IsNullOrEmpty(My.Settings.JobLastSync.ToString()) Then
-                ItemLastSync = #1/1/2000#
-            Else
-                ItemLastSync = Convert.ToDateTime(My.Settings.JobLastSync)
-            End If
-            My.Forms.MAIN.History("Synchonizing modified jobs since:   " + ItemLastSync.ToString(), "n")
-
-            JobData = job_qbtotl.GetJobSubJobData(Me, p_token, True)
-            ReadItems = jobData.NoItems
-
-            If jobData Is Nothing Then
-                My.Forms.MAIN.History("No Jobs_SubJobs data", "n")
-                Exit Sub
-            End If
-
-            For Each element As QBtoTL_JobOrItem.Job_Subjob In JobData.DataArray
-                Dim result As Integer = DateTime.Compare(Convert.ToDateTime(element.QBModTime.ToString()),
-                                                         ItemLastSync)
-                If result >= 0 Then
-                    element.RecSelect = True
-                End If
-            Next
-
-            'Load DataGrid
-            For Each element As QBtoTL_JobOrItem.Job_Subjob In JobData.DataArray
-                DataGridView1.Rows.Add(element.RecSelect, element.FullName.ToString(), element.QB_Name.ToString(), element.QBModTime.ToString(), element.NewlyAdded)
-            Next
-            SelectAll = False
-        End If
-
-        '-------------------------14---------------------------------------------
-        '  For Type items_SubItems
-        If Type = 14 Then
-            TabPageEmployees.Visible = True
-            TabControl1.SelectedIndex = 3
-
-            'load grid (there might be an easier way)
-            Dim col2 As New DataGridViewTextBoxColumn
-            col2.Name = "Full Name"
-            DataGridView1.Columns.Add(col2)
-            Dim col3 As New DataGridViewTextBoxColumn
-            col3.Name = "Name"
-            DataGridView1.Columns.Add(col3)
-            Dim col4 As New DataGridViewTextBoxColumn
-            col4.Name = "Last Modified"
-            DataGridView1.Columns.Add(col4)
-            Dim col5 As New DataGridViewTextBoxColumn
-            col5.Name = "New"
-            DataGridView1.Columns.Add(col5)
-
-            If String.IsNullOrEmpty(My.Settings.ItemLastSync.ToString()) Then
-                ItemLastSync = #1/1/2000#
-            Else
-                ItemLastSync = Convert.ToDateTime(My.Settings.ItemLastSync)
-            End If
-
-            My.Forms.MAIN.History("Synchonizing modified items since:   " + ItemLastSync.ToString(), "n")
-
-            JobData = job_qbtotl.GetItemSubItemData(Me, p_token, True)
-            ReadItems = JobData.NoItems
-
-            If JobData Is Nothing Then
-                My.Forms.MAIN.History("No Item_SubItem Data", "n")
-                Exit Sub
-            End If
-
-            For Each element As QBtoTL_JobOrItem.Job_Subjob In JobData.DataArray
-                Dim result As Integer = DateTime.Compare(Convert.ToDateTime(element.QBModTime.ToString()),
-                ItemLastSync)
-                If result >= 0 Then
-                    element.RecSelect = True
-                End If
-                'MAIN.FlagChangedItemsResults(element.QB_Name.ToString(), result)
-            Next
-
-            For Each element As QBtoTL_JobOrItem.Job_Subjob In JobData.DataArray
-                DataGridView1.Rows.Add(element.RecSelect, element.FullName.ToString(), element.QB_Name.ToString(), element.QBModTime.ToString(), element.NewlyAdded)
-            Next
-            SelectAll = False
-        End If
-
-        '-------------------------20---------------------------------------------
         'for type Time Items
+        ' Might add this to display_UI()
         If Type = 20 Then
             TabPageTimeTransfer.Visible = True
             TabControl1.SelectedIndex = 4
@@ -326,15 +516,19 @@ Public Class IntegratedUI
                 'My.Forms.MAIN.History("Debug:   " + element.RecSelect.ToString(), "n")
                 DataGridView1.Rows.Add(element.RecSelect, element.FullName.ToString(), element.AccountEmployeeId.ToString())
             Next
+
+            System.Threading.Thread.Sleep(150)
+            System.Windows.Forms.Application.DoEvents()
+            Me.ProgressBar1.Value = 0
         End If
 
         My.Forms.MAIN.History(ReadItems.ToString() + " items were read from Quickbooks", "n")
 
         'wait for one second so user can see progress bar
-        System.Threading.Thread.Sleep(500)
-        System.Windows.Forms.Application.DoEvents()
+        'System.Threading.Thread.Sleep(500)
+        'System.Windows.Forms.Application.DoEvents()
 
-        Me.ProgressBar1.Value = 0
+        'Me.ProgressBar1.Value = 0
         SelectAll = False
     End Sub
 
@@ -372,52 +566,85 @@ Public Class IntegratedUI
         'When processing customers
         If Type = 10 Then
             Reset_Checked_Customer_Value(customerData)
-            Set_Selected_Customer()
-            ItemsProcessed = customer_qbtotl.QBTransferCustomerToTL(customerData, p_token, Me, True)
-            My.Forms.MAIN.History(ItemsProcessed.ToString() + " TimeLive records were created or updated", "i")
-            My.Settings.CustomerLastSync = DateTime.Now.ToString()
-            My.Settings.Save()
+            If QBtoTLCustomerRadioButton.Checked Then
+                QB_Set_Selected_Customer()
+                ItemsProcessed = customer_qbtotl.QBTransferCustomerToTL(customerData, p_token, Me, True)
+                My.Forms.MAIN.History(ItemsProcessed.ToString() + " TimeLive record" + If(ItemsProcessed = 1, " was", "s were") + " created or updated", "i")
+                My.Settings.CustomerLastSync = DateTime.Now.ToString()
+                My.Settings.Save()
+            Else
+                Dim customersToCheck As List(Of String) = TL_Set_Selected_Items()
+                ItemsProcessed = customer_TLSync.SyncCustomerData(p_token, True, customersToCheck)
+                My.Forms.MAIN.History(ItemsProcessed.ToString() + " QuickBooks customer" + If(ItemsProcessed = 1, " was", "s were") + " created or updated", "i")
+            End If
         End If
 
         'When processing Employees
         If Type = 11 Then
             Reset_Checked_Employee_Value(employeeData)
-            Set_Selected_Employee()
-            ItemsProcessed = employee_qbtotl.QBTransferEmployeeToTL(employeeData, p_token, Me, True)
-            My.Forms.MAIN.History(ItemsProcessed.ToString() + " TimeLive records were created or updated", "i")
-            My.Settings.EmployeeLastSync = DateTime.Now.ToString()
-            My.Settings.Save()
+            If QBtoTLEmployeeRadioButton.Checked Then
+                Set_Selected_Employee()
+                ItemsProcessed = employee_qbtotl.QBTransferEmployeeToTL(employeeData, p_token, Me, True)
+                My.Forms.MAIN.History(ItemsProcessed.ToString() + " TimeLive records were created or updated", "i")
+                My.Settings.EmployeeLastSync = DateTime.Now.ToString()
+                My.Settings.Save()
+            Else
+                Dim employeesToCheck As List(Of String) = TL_Set_Selected_Items()
+                ItemsProcessed = employee_TLSync.SyncEmployeeData(p_token, True, employeesToCheck)
+                My.Forms.MAIN.History(ItemsProcessed.ToString() + " QuickBooks employee" + If(ItemsProcessed = 1, " was", "s were") + " created or updated", "i")
+            End If
         End If
 
-        'When processing vendor
-        If Type = 12 Then
+            'When processing vendor
+            If Type = 12 Then
             Reset_Checked_Vendor_Value(vendorData)
-            Set_Selected_Vendor()
-            ItemsProcessed = vendor_qbtotl.QBTransferVendorToTL(vendorData, p_token, Me, True)
-            My.Forms.MAIN.History(ItemsProcessed.ToString() + " TimeLive records were created or updated", "i")
-            My.Settings.VendorLastSync = DateTime.Now.ToString()
-            My.Settings.Save()
+            If QBtoTLVendorRadioButton.Checked Then
+                Set_Selected_Vendor()
+                ItemsProcessed = vendor_qbtotl.QBTransferVendorToTL(vendorData, p_token, Me, True)
+                My.Forms.MAIN.History(ItemsProcessed.ToString() + " TimeLive records were created or updated", "i")
+                My.Settings.VendorLastSync = DateTime.Now.ToString()
+                My.Settings.Save()
+            Else
+                Dim vendorsToCheck As List(Of String) = TL_Set_Selected_Items()
+                ItemsProcessed = vendor_TLSync.SyncVendorData(p_token, True, vendorsToCheck)
+                My.Forms.MAIN.History(ItemsProcessed.ToString() + " QuickBooks vendor" + If(ItemsProcessed = 1, " was", "s were") + " created or updated", "i")
+            End If
         End If
 
-        'When processing Jobs
-        If Type = 13 Then
+        'When processing Jobs or Items
+        If Type = 13 Or Type = 14 Then
             Reset_Checked_Job_Value(JobData)
-            Set_Selected_Job_Item()
-            ItemsProcessed = job_qbtotl.QBTransferJobstoTL(JobData, p_token, Me, True)
-            My.Forms.MAIN.History(ItemsProcessed.ToString() + " TimeLive records were created or updated", "i")
-            My.Settings.JobLastSync = DateTime.Now.ToString()
-            My.Settings.Save()
+            If QBtoTLJobItemRadioButton.Checked Then
+                Set_Selected_Job_Item()
+                If Type = 13 Then
+                    ItemsProcessed = job_qbtotl.QBTransferJobstoTL(JobData, p_token, Me, True)
+                    My.Forms.MAIN.History(ItemsProcessed.ToString() + " TimeLive records were created or updated", "i")
+                    My.Settings.JobLastSync = DateTime.Now.ToString()
+                Else
+                    ItemsProcessed = job_qbtotl.QBTransferItemsToTL(JobData, p_token, Me, True)
+                    My.Forms.MAIN.History(ItemsProcessed.ToString() + " TimeLive records were created or updated", "i")
+                    My.Settings.ItemlastSync = DateTime.Now.ToString()
+                End If
+                My.Settings.Save()
+            Else
+                Dim jobsToCheck As List(Of String) = TL_Set_Selected_Items()
+                ItemsProcessed = job_TLSync.SyncJobsSubJobData(p_token, True, jobsToCheck)
+                My.Forms.MAIN.History(ItemsProcessed.ToString() + " QuickBooks job/item" + If(ItemsProcessed = 1, " was", "s were") + " created or updated", "i")
+            End If
         End If
 
         'When processing items
-        If Type = 14 Then
-            Reset_Checked_Job_Value(JobData)
-            Set_Selected_Job_Item()
-            ItemsProcessed = job_qbtotl.QBTransferItemsToTL(JobData, p_token, Me, True)
-            My.Forms.MAIN.History(ItemsProcessed.ToString() + " TimeLive records were created or updated", "i")
-            My.Settings.ItemLastSync = DateTime.Now.ToString()
-            My.Settings.Save()
-        End If
+        'If Type = 14 Then
+        '    Reset_Checked_Job_Value(JobData)
+        '    If QBtoTLJobItemRadioButton.Checked Then
+        '        Set_Selected_Job_Item()
+        '        ItemsProcessed = job_qbtotl.QBTransferItemsToTL(JobData, p_token, Me, True)
+        '        My.Forms.MAIN.History(ItemsProcessed.ToString() + " TimeLive records were created or updated", "i")
+        '        My.Settings.ItemlastSync = DateTime.Now.ToString()
+        '        My.Settings.Save()
+        '    Else
+        '    End If
+        'End If
 
         'When processing Time Transfer
         If Type = 20 Then
@@ -434,7 +661,7 @@ Public Class IntegratedUI
         End If
 
         'wait for one second so user can see progress bar
-        System.Threading.Thread.Sleep(500)
+        System.Threading.Thread.Sleep(150)
         System.Windows.Forms.Application.DoEvents()
 
         Me.ProgressBar1.Value = 0
@@ -476,7 +703,7 @@ Public Class IntegratedUI
         Next
     End Sub
 
-    Private Sub Set_Selected_Customer()
+    Private Sub QB_Set_Selected_Customer()
         For Each row As DataGridViewRow In DataGridView1.Rows
             If row.Cells("Name").Value IsNot Nothing And row.Cells("ckBox").Value = True Then
                 customerData.DataArray.ForEach(
@@ -491,6 +718,18 @@ Public Class IntegratedUI
             End If
         Next
     End Sub
+
+    Private Function TL_Set_Selected_Items()
+        Dim TL_Names As List(Of String) = New List(Of String)
+        For Each row As DataGridViewRow In DataGridView1.Rows
+            If row.Cells("Name").Value IsNot Nothing And row.Cells("ckBox").Value Then
+                TL_Names.Add(row.Cells("Name").Value.ToString)
+                My.Forms.MAIN.History("Item selected for processing: " + row.Cells("Name").Value, "n")
+            End If
+        Next
+
+        Return TL_Names
+    End Function
 
     Private Sub Set_Selected_Employee()
         For Each row As DataGridViewRow In DataGridView1.Rows
@@ -708,5 +947,9 @@ Public Class IntegratedUI
     Private Sub cbWageType_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cbWageType.SelectedIndexChanged
         My.Settings.QBWageType = cbWageType.SelectedIndex
         My.Settings.Save()
+    End Sub
+
+    Private Sub display_UI2(sender As Object, e As EventArgs) Handles QBtoTLCustomerRadioButton.CheckedChanged
+
     End Sub
 End Class

@@ -7,37 +7,35 @@ Public Class Sync_TLtoQB_Customer
     ''' <summary>
     ''' Sync the customer data from QB. Print out customers that are in TL but not QB
     ''' </summary>
-    Sub SyncCustomerData(ByVal p_token As String, Optional ByVal UI As Boolean = True)
-        Dim create As Boolean = True
+    Function SyncCustomerData(ByVal p_token As String, Optional ByVal UI As Boolean = True, Optional ByVal nameList As List(Of String) = Nothing)
+        Dim numSynced As Integer = 0
+        My.Forms.MAIN.History("Syncing Clients Data", "n")
+        Try
+            ' connect to Timelive
+            Dim objClientServices As New Services.TimeLive.Clients.Clients
+            Dim authentication As New Services.TimeLive.Clients.SecuredWebServiceHeader
+            authentication.AuthenticatedToken = p_token
+            objClientServices.SecuredWebServiceHeaderValue = authentication
+            Dim objClientArray() As Object
+            objClientArray = objClientServices.GetClients()
+            Dim objClient As New Services.TimeLive.Clients.Client
 
-        If UI Then
-            create = MsgBox("Sync Customers?", MsgBoxStyle.YesNo, "Warning!") = MsgBoxResult.Yes
-        End If
-
-        If create Then
-            My.Forms.MAIN.History("Syncing Clients Data", "n")
-            Try
-                ' connect to Timelive
-                Dim objClientServices As New Services.TimeLive.Clients.Clients
-                Dim authentication As New Services.TimeLive.Clients.SecuredWebServiceHeader
-                authentication.AuthenticatedToken = p_token
-                objClientServices.SecuredWebServiceHeaderValue = authentication
-                Dim objClientArray() As Object
-                objClientArray = objClientServices.GetClients()
-                Dim objClient As New Services.TimeLive.Clients.Client
-
-                For n As Integer = 0 To objClientArray.Length - 1
-                    objClient = objClientArray(n)
-                    Dim clientID As Integer = objClientServices.GetClientIdByName(objClient.ClientName)
+            For n As Integer = 0 To objClientArray.Length - 1
+                objClient = objClientArray(n)
+                Dim clientID As Integer = objClientServices.GetClientIdByName(objClient.ClientName)
+                ' Only run for a name if it was selected, or we are syncing all of the names
+                If nameList Is Nothing Or nameList.Contains(objClient.ClientName) Then
                     ' Check if TL Client is in QB, and add if not. 
-                    checkQBCustomerExist(objClient.ClientName.ToString, clientID, objClient, UI)
-                Next
+                    numSynced += If(checkQBCustomerExist(objClient.ClientName.ToString, clientID, objClient, UI), 0, 1)
+                End If
+            Next
 
-            Catch ex As Exception
-                MsgBox(ex.Message)
-            End Try
-        End If
-    End Sub
+        Catch ex As Exception
+            MsgBox(ex.Message)
+        End Try
+
+        Return numSynced
+    End Function
 
     ''' <summary>
     ''' Verifies a client exists in QB, adding it to the Data Table if necessary

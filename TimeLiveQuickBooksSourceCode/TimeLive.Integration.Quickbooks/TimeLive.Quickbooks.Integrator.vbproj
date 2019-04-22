@@ -140,8 +140,8 @@
     </Compile>
     <Compile Include="Sync_TLtoQB\Sync_TLtoQB_JoborItem.vb" />
     <Compile Include="Sync_TLtoQB\Sync_TLtoQB_Relationships.vb" />
-    <Compile Include="Sync_TLtoQB\Sync_TLtoQB_Vendors.vb" />
-    <Compile Include="Sync_TLtoQB\Sync_TLtoQB_Employees.vb" />
+    <Compile Include="Sync_TLtoQB\Sync_TLtoQB_Vendor.vb" />
+    <Compile Include="Sync_TLtoQB\Sync_TLtoQB_Employee.vb" />
     <Compile Include="Sync_TLtoQB\Sync_TLtoQB_Customer.vb" />
     <Compile Include="TimeLiveDataSet.Designer.vb">
       <AutoGen>True</AutoGen>

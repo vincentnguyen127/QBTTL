@@ -41,13 +41,37 @@ Partial Class IntegratedUI
         Me.btn_currentweek = New System.Windows.Forms.Button()
         Me.TabControl1 = New System.Windows.Forms.TabControl()
         Me.TabPageCustomers = New System.Windows.Forms.TabPage()
+        Me.CustomerSyncDirection = New System.Windows.Forms.GroupBox()
+        Me.TLtoQBCustomerRadioButton = New System.Windows.Forms.RadioButton()
+        Me.QBtoTLCustomerRadioButton = New System.Windows.Forms.RadioButton()
         Me.TabPageEmployees = New System.Windows.Forms.TabPage()
+        Me.EmployeeSyncDirection = New System.Windows.Forms.GroupBox()
+        Me.TLtoQBEmployeeRadioButton = New System.Windows.Forms.RadioButton()
+        Me.QBtoTLEmployeeRadioButton = New System.Windows.Forms.RadioButton()
         Me.TabPageVendor = New System.Windows.Forms.TabPage()
+        Me.VendorSyncDirection = New System.Windows.Forms.GroupBox()
+        Me.TLtoQBVendorRadioButton = New System.Windows.Forms.RadioButton()
+        Me.QBtoTLVendorRadioButton = New System.Windows.Forms.RadioButton()
         Me.TabPageJobsItems = New System.Windows.Forms.TabPage()
+        Me.SyncFromLabel = New System.Windows.Forms.Label()
+        Me.DataGridView2 = New System.Windows.Forms.DataGridView()
+        Me.SyncToLabel = New System.Windows.Forms.Label()
+        Me.JobItemSyncDirection = New System.Windows.Forms.GroupBox()
+        Me.TLtoQBJobItemRadioButton = New System.Windows.Forms.RadioButton()
+        Me.QBtoTLJobItemRadioButton = New System.Windows.Forms.RadioButton()
         CType(Me.DataGridView1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.GroupBox1.SuspendLayout()
         Me.TabPageTimeTransfer.SuspendLayout()
         Me.TabControl1.SuspendLayout()
+        Me.TabPageCustomers.SuspendLayout()
+        Me.CustomerSyncDirection.SuspendLayout()
+        Me.TabPageEmployees.SuspendLayout()
+        Me.EmployeeSyncDirection.SuspendLayout()
+        Me.TabPageVendor.SuspendLayout()
+        Me.VendorSyncDirection.SuspendLayout()
+        Me.TabPageJobsItems.SuspendLayout()
+        CType(Me.DataGridView2, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.JobItemSyncDirection.SuspendLayout()
         Me.SuspendLayout()
         '
         'btnselectall
@@ -65,7 +89,7 @@ Partial Class IntegratedUI
         '
         Me.bntclose.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.bntclose.ImeMode = System.Windows.Forms.ImeMode.NoControl
-        Me.bntclose.Location = New System.Drawing.Point(552, 399)
+        Me.bntclose.Location = New System.Drawing.Point(652, 399)
         Me.bntclose.Name = "bntclose"
         Me.bntclose.Size = New System.Drawing.Size(75, 23)
         Me.bntclose.TabIndex = 32
@@ -76,7 +100,7 @@ Partial Class IntegratedUI
         '
         Me.btnTransfer.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.btnTransfer.ImeMode = System.Windows.Forms.ImeMode.NoControl
-        Me.btnTransfer.Location = New System.Drawing.Point(462, 399)
+        Me.btnTransfer.Location = New System.Drawing.Point(562, 399)
         Me.btnTransfer.Name = "btnTransfer"
         Me.btnTransfer.Size = New System.Drawing.Size(75, 23)
         Me.btnTransfer.TabIndex = 31
@@ -91,9 +115,9 @@ Partial Class IntegratedUI
         Me.DataGridView1.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells
         Me.DataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
         Me.DataGridView1.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.ckBox})
-        Me.DataGridView1.Location = New System.Drawing.Point(0, 109)
+        Me.DataGridView1.Location = New System.Drawing.Point(0, 129)
         Me.DataGridView1.Name = "DataGridView1"
-        Me.DataGridView1.Size = New System.Drawing.Size(639, 242)
+        Me.DataGridView1.Size = New System.Drawing.Size(413, 222)
         Me.DataGridView1.TabIndex = 38
         '
         'ckBox
@@ -109,7 +133,7 @@ Partial Class IntegratedUI
         Me.GroupBox1.Controls.Add(Me.ProgressBar1)
         Me.GroupBox1.Location = New System.Drawing.Point(2, 356)
         Me.GroupBox1.Name = "GroupBox1"
-        Me.GroupBox1.Size = New System.Drawing.Size(635, 37)
+        Me.GroupBox1.Size = New System.Drawing.Size(735, 37)
         Me.GroupBox1.TabIndex = 39
         Me.GroupBox1.TabStop = False
         Me.GroupBox1.Text = "Progress Bar"
@@ -121,7 +145,7 @@ Partial Class IntegratedUI
         Me.ProgressBar1.Location = New System.Drawing.Point(10, 17)
         Me.ProgressBar1.Maximum = 10
         Me.ProgressBar1.Name = "ProgressBar1"
-        Me.ProgressBar1.Size = New System.Drawing.Size(615, 14)
+        Me.ProgressBar1.Size = New System.Drawing.Size(715, 14)
         Me.ProgressBar1.TabIndex = 0
         '
         'TabPageTimeTransfer
@@ -240,6 +264,7 @@ Partial Class IntegratedUI
         '
         'TabPageCustomers
         '
+        Me.TabPageCustomers.Controls.Add(Me.CustomerSyncDirection)
         Me.TabPageCustomers.Location = New System.Drawing.Point(4, 22)
         Me.TabPageCustomers.Name = "TabPageCustomers"
         Me.TabPageCustomers.Padding = New System.Windows.Forms.Padding(3)
@@ -248,8 +273,43 @@ Partial Class IntegratedUI
         Me.TabPageCustomers.Text = "Customers Options"
         Me.TabPageCustomers.UseVisualStyleBackColor = True
         '
+        'CustomerSyncDirection
+        '
+        Me.CustomerSyncDirection.Controls.Add(Me.TLtoQBCustomerRadioButton)
+        Me.CustomerSyncDirection.Controls.Add(Me.QBtoTLCustomerRadioButton)
+        Me.CustomerSyncDirection.Location = New System.Drawing.Point(6, 6)
+        Me.CustomerSyncDirection.Name = "CustomerSyncDirection"
+        Me.CustomerSyncDirection.Size = New System.Drawing.Size(344, 69)
+        Me.CustomerSyncDirection.TabIndex = 0
+        Me.CustomerSyncDirection.TabStop = False
+        Me.CustomerSyncDirection.Text = "Sync Direction"
+        '
+        'TLtoQBCustomerRadioButton
+        '
+        Me.TLtoQBCustomerRadioButton.AutoSize = True
+        Me.TLtoQBCustomerRadioButton.Location = New System.Drawing.Point(170, 28)
+        Me.TLtoQBCustomerRadioButton.Name = "TLtoQBCustomerRadioButton"
+        Me.TLtoQBCustomerRadioButton.Size = New System.Drawing.Size(68, 17)
+        Me.TLtoQBCustomerRadioButton.TabIndex = 1
+        Me.TLtoQBCustomerRadioButton.TabStop = True
+        Me.TLtoQBCustomerRadioButton.Text = "TL -> QB"
+        Me.TLtoQBCustomerRadioButton.UseVisualStyleBackColor = True
+        '
+        'QBtoTLCustomerRadioButton
+        '
+        Me.QBtoTLCustomerRadioButton.AutoSize = True
+        Me.QBtoTLCustomerRadioButton.Checked = True
+        Me.QBtoTLCustomerRadioButton.Location = New System.Drawing.Point(29, 28)
+        Me.QBtoTLCustomerRadioButton.Name = "QBtoTLCustomerRadioButton"
+        Me.QBtoTLCustomerRadioButton.Size = New System.Drawing.Size(68, 17)
+        Me.QBtoTLCustomerRadioButton.TabIndex = 0
+        Me.QBtoTLCustomerRadioButton.TabStop = True
+        Me.QBtoTLCustomerRadioButton.Text = "QB -> TL"
+        Me.QBtoTLCustomerRadioButton.UseVisualStyleBackColor = True
+        '
         'TabPageEmployees
         '
+        Me.TabPageEmployees.Controls.Add(Me.EmployeeSyncDirection)
         Me.TabPageEmployees.Location = New System.Drawing.Point(4, 22)
         Me.TabPageEmployees.Name = "TabPageEmployees"
         Me.TabPageEmployees.Padding = New System.Windows.Forms.Padding(3)
@@ -258,30 +318,165 @@ Partial Class IntegratedUI
         Me.TabPageEmployees.Text = "Employees Options"
         Me.TabPageEmployees.UseVisualStyleBackColor = True
         '
+        'EmployeeSyncDirection
+        '
+        Me.EmployeeSyncDirection.Controls.Add(Me.TLtoQBEmployeeRadioButton)
+        Me.EmployeeSyncDirection.Controls.Add(Me.QBtoTLEmployeeRadioButton)
+        Me.EmployeeSyncDirection.Location = New System.Drawing.Point(6, 6)
+        Me.EmployeeSyncDirection.Name = "EmployeeSyncDirection"
+        Me.EmployeeSyncDirection.Size = New System.Drawing.Size(344, 69)
+        Me.EmployeeSyncDirection.TabIndex = 1
+        Me.EmployeeSyncDirection.TabStop = False
+        Me.EmployeeSyncDirection.Text = "Sync Direction"
+        '
+        'TLtoQBEmployeeRadioButton
+        '
+        Me.TLtoQBEmployeeRadioButton.AutoSize = True
+        Me.TLtoQBEmployeeRadioButton.Location = New System.Drawing.Point(170, 28)
+        Me.TLtoQBEmployeeRadioButton.Name = "TLtoQBEmployeeRadioButton"
+        Me.TLtoQBEmployeeRadioButton.Size = New System.Drawing.Size(68, 17)
+        Me.TLtoQBEmployeeRadioButton.TabIndex = 1
+        Me.TLtoQBEmployeeRadioButton.TabStop = True
+        Me.TLtoQBEmployeeRadioButton.Text = "TL -> QB"
+        Me.TLtoQBEmployeeRadioButton.UseVisualStyleBackColor = True
+        '
+        'QBtoTLEmployeeRadioButton
+        '
+        Me.QBtoTLEmployeeRadioButton.AutoSize = True
+        Me.QBtoTLEmployeeRadioButton.Checked = True
+        Me.QBtoTLEmployeeRadioButton.Location = New System.Drawing.Point(29, 28)
+        Me.QBtoTLEmployeeRadioButton.Name = "QBtoTLEmployeeRadioButton"
+        Me.QBtoTLEmployeeRadioButton.Size = New System.Drawing.Size(68, 17)
+        Me.QBtoTLEmployeeRadioButton.TabIndex = 0
+        Me.QBtoTLEmployeeRadioButton.TabStop = True
+        Me.QBtoTLEmployeeRadioButton.Text = "QB -> TL"
+        Me.QBtoTLEmployeeRadioButton.UseVisualStyleBackColor = True
+        '
         'TabPageVendor
         '
+        Me.TabPageVendor.Controls.Add(Me.VendorSyncDirection)
         Me.TabPageVendor.Location = New System.Drawing.Point(4, 22)
         Me.TabPageVendor.Name = "TabPageVendor"
         Me.TabPageVendor.Padding = New System.Windows.Forms.Padding(3)
         Me.TabPageVendor.Size = New System.Drawing.Size(629, 82)
         Me.TabPageVendor.TabIndex = 5
-        Me.TabPageVendor.Text = "Vendor"
+        Me.TabPageVendor.Text = "Vendors Options"
         Me.TabPageVendor.UseVisualStyleBackColor = True
+        '
+        'VendorSyncDirection
+        '
+        Me.VendorSyncDirection.Controls.Add(Me.TLtoQBVendorRadioButton)
+        Me.VendorSyncDirection.Controls.Add(Me.QBtoTLVendorRadioButton)
+        Me.VendorSyncDirection.Location = New System.Drawing.Point(6, 6)
+        Me.VendorSyncDirection.Name = "VendorSyncDirection"
+        Me.VendorSyncDirection.Size = New System.Drawing.Size(344, 69)
+        Me.VendorSyncDirection.TabIndex = 2
+        Me.VendorSyncDirection.TabStop = False
+        Me.VendorSyncDirection.Text = "Sync Direction"
+        '
+        'TLtoQBVendorRadioButton
+        '
+        Me.TLtoQBVendorRadioButton.AutoSize = True
+        Me.TLtoQBVendorRadioButton.Location = New System.Drawing.Point(170, 28)
+        Me.TLtoQBVendorRadioButton.Name = "TLtoQBVendorRadioButton"
+        Me.TLtoQBVendorRadioButton.Size = New System.Drawing.Size(68, 17)
+        Me.TLtoQBVendorRadioButton.TabIndex = 1
+        Me.TLtoQBVendorRadioButton.TabStop = True
+        Me.TLtoQBVendorRadioButton.Text = "TL -> QB"
+        Me.TLtoQBVendorRadioButton.UseVisualStyleBackColor = True
+        '
+        'QBtoTLVendorRadioButton
+        '
+        Me.QBtoTLVendorRadioButton.AutoSize = True
+        Me.QBtoTLVendorRadioButton.Checked = True
+        Me.QBtoTLVendorRadioButton.Location = New System.Drawing.Point(29, 28)
+        Me.QBtoTLVendorRadioButton.Name = "QBtoTLVendorRadioButton"
+        Me.QBtoTLVendorRadioButton.Size = New System.Drawing.Size(68, 17)
+        Me.QBtoTLVendorRadioButton.TabIndex = 0
+        Me.QBtoTLVendorRadioButton.TabStop = True
+        Me.QBtoTLVendorRadioButton.Text = "QB -> TL"
+        Me.QBtoTLVendorRadioButton.UseVisualStyleBackColor = True
         '
         'TabPageJobsItems
         '
+        Me.TabPageJobsItems.Controls.Add(Me.JobItemSyncDirection)
         Me.TabPageJobsItems.Location = New System.Drawing.Point(4, 22)
         Me.TabPageJobsItems.Name = "TabPageJobsItems"
         Me.TabPageJobsItems.Size = New System.Drawing.Size(629, 82)
         Me.TabPageJobsItems.TabIndex = 6
-        Me.TabPageJobsItems.Text = "Jobs/Items"
+        Me.TabPageJobsItems.Text = "Jobs/Items Options"
         Me.TabPageJobsItems.UseVisualStyleBackColor = True
+        '
+        'SyncFromLabel
+        '
+        Me.SyncFromLabel.AutoSize = True
+        Me.SyncFromLabel.Location = New System.Drawing.Point(6, 110)
+        Me.SyncFromLabel.Name = "SyncFromLabel"
+        Me.SyncFromLabel.Size = New System.Drawing.Size(65, 13)
+        Me.SyncFromLabel.TabIndex = 41
+        Me.SyncFromLabel.Text = "QuickBooks"
+        '
+        'DataGridView2
+        '
+        Me.DataGridView2.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.DataGridView2.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
+        Me.DataGridView2.Location = New System.Drawing.Point(419, 129)
+        Me.DataGridView2.Name = "DataGridView2"
+        Me.DataGridView2.Size = New System.Drawing.Size(308, 222)
+        Me.DataGridView2.TabIndex = 42
+        '
+        'SyncToLabel
+        '
+        Me.SyncToLabel.AutoSize = True
+        Me.SyncToLabel.Location = New System.Drawing.Point(419, 110)
+        Me.SyncToLabel.Name = "SyncToLabel"
+        Me.SyncToLabel.Size = New System.Drawing.Size(50, 13)
+        Me.SyncToLabel.TabIndex = 43
+        Me.SyncToLabel.Text = "TimeLive"
+        '
+        'JobItemSyncDirection
+        '
+        Me.JobItemSyncDirection.Controls.Add(Me.TLtoQBJobItemRadioButton)
+        Me.JobItemSyncDirection.Controls.Add(Me.QBtoTLJobItemRadioButton)
+        Me.JobItemSyncDirection.Location = New System.Drawing.Point(6, 6)
+        Me.JobItemSyncDirection.Name = "JobItemSyncDirection"
+        Me.JobItemSyncDirection.Size = New System.Drawing.Size(344, 69)
+        Me.JobItemSyncDirection.TabIndex = 3
+        Me.JobItemSyncDirection.TabStop = False
+        Me.JobItemSyncDirection.Text = "Sync Direction"
+        '
+        'TLtoQBJobItemRadioButton
+        '
+        Me.TLtoQBJobItemRadioButton.AutoSize = True
+        Me.TLtoQBJobItemRadioButton.Location = New System.Drawing.Point(170, 28)
+        Me.TLtoQBJobItemRadioButton.Name = "TLtoQBJobItemRadioButton"
+        Me.TLtoQBJobItemRadioButton.Size = New System.Drawing.Size(68, 17)
+        Me.TLtoQBJobItemRadioButton.TabIndex = 1
+        Me.TLtoQBJobItemRadioButton.TabStop = True
+        Me.TLtoQBJobItemRadioButton.Text = "TL -> QB"
+        Me.TLtoQBJobItemRadioButton.UseVisualStyleBackColor = True
+        '
+        'QBtoTLJobItemRadioButton
+        '
+        Me.QBtoTLJobItemRadioButton.AutoSize = True
+        Me.QBtoTLJobItemRadioButton.Checked = True
+        Me.QBtoTLJobItemRadioButton.Location = New System.Drawing.Point(29, 28)
+        Me.QBtoTLJobItemRadioButton.Name = "QBtoTLJobItemRadioButton"
+        Me.QBtoTLJobItemRadioButton.Size = New System.Drawing.Size(68, 17)
+        Me.QBtoTLJobItemRadioButton.TabIndex = 0
+        Me.QBtoTLJobItemRadioButton.TabStop = True
+        Me.QBtoTLJobItemRadioButton.Text = "QB -> TL"
+        Me.QBtoTLJobItemRadioButton.UseVisualStyleBackColor = True
         '
         'IntegratedUI
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(639, 433)
+        Me.ClientSize = New System.Drawing.Size(739, 433)
+        Me.Controls.Add(Me.SyncToLabel)
+        Me.Controls.Add(Me.DataGridView2)
+        Me.Controls.Add(Me.SyncFromLabel)
         Me.Controls.Add(Me.TabControl1)
         Me.Controls.Add(Me.DataGridView1)
         Me.Controls.Add(Me.btnselectall)
@@ -296,7 +491,21 @@ Partial Class IntegratedUI
         Me.TabPageTimeTransfer.ResumeLayout(False)
         Me.TabPageTimeTransfer.PerformLayout()
         Me.TabControl1.ResumeLayout(False)
+        Me.TabPageCustomers.ResumeLayout(False)
+        Me.CustomerSyncDirection.ResumeLayout(False)
+        Me.CustomerSyncDirection.PerformLayout()
+        Me.TabPageEmployees.ResumeLayout(False)
+        Me.EmployeeSyncDirection.ResumeLayout(False)
+        Me.EmployeeSyncDirection.PerformLayout()
+        Me.TabPageVendor.ResumeLayout(False)
+        Me.VendorSyncDirection.ResumeLayout(False)
+        Me.VendorSyncDirection.PerformLayout()
+        Me.TabPageJobsItems.ResumeLayout(False)
+        CType(Me.DataGridView2, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.JobItemSyncDirection.ResumeLayout(False)
+        Me.JobItemSyncDirection.PerformLayout()
         Me.ResumeLayout(False)
+        Me.PerformLayout()
 
     End Sub
 
@@ -320,6 +529,21 @@ Partial Class IntegratedUI
     Friend WithEvents TabControl1 As TabControl
     Friend WithEvents TabPageCustomers As TabPage
     Friend WithEvents TabPageEmployees As TabPage
-    Friend WithEvents TabPageVendor As TabPage
     Friend WithEvents TabPageJobsItems As TabPage
+    Friend WithEvents DataGridView2 As DataGridView
+    Friend WithEvents SyncFromLabel As Label
+    Friend WithEvents CustomerSyncDirection As GroupBox
+    Friend WithEvents TLtoQBCustomerRadioButton As RadioButton
+    Friend WithEvents QBtoTLCustomerRadioButton As RadioButton
+    Friend WithEvents SyncToLabel As Label
+    Friend WithEvents TabPageVendor As TabPage
+    Friend WithEvents EmployeeSyncDirection As GroupBox
+    Friend WithEvents TLtoQBEmployeeRadioButton As RadioButton
+    Friend WithEvents QBtoTLEmployeeRadioButton As RadioButton
+    Friend WithEvents QBtoTLVendorRadioButton As RadioButton
+    Friend WithEvents TLtoQBVendorRadioButton As RadioButton
+    Friend WithEvents VendorSyncDirection As GroupBox
+    Friend WithEvents JobItemSyncDirection As GroupBox
+    Friend WithEvents TLtoQBJobItemRadioButton As RadioButton
+    Friend WithEvents QBtoTLJobItemRadioButton As RadioButton
 End Class

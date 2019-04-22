@@ -19,26 +19,36 @@ Public Class CurrentSystemSync
 
             ' Sync Customers
             Dim syncCustomers As New Sync_TLtoQB_Customer
-            syncCustomers.SyncCustomerData(p_token)
+            If MsgBox("Sync Customers?", MsgBoxStyle.YesNo, "Warning!") = MsgBoxResult.Yes Then
+                syncCustomers.SyncCustomerData(p_token)
+            End If
 
             ' Sync Employees
-            Dim syncEmployees As New Sync_TLtoQB_Employees
-            syncEmployees.SyncEmployeeData(p_token)
+            Dim syncEmployees As New Sync_TLtoQB_Employee
+            If MsgBox("Sync Employees?", MsgBoxStyle.YesNo, "Warning!") = MsgBoxResult.Yes Then
+                syncEmployees.SyncEmployeeData(p_token)
+            End If
 
             ' Sync Vendors
-            Dim syncVendors As New Sync_TLtoQB_Vendors
-            syncVendors.SyncVendorData(p_token)
+            Dim syncVendors As New Sync_TLtoQB_Vendor
+            If MsgBox("Sync Vendors?", MsgBoxStyle.YesNo, "Warning!") = MsgBoxResult.Yes Then
+                syncVendors.SyncVendorData(p_token)
+            End If
 
             ' Sync Jobs/SubJobs
             Dim syncJobs As New Sync_TLtoQB_JoborItem
-            syncJobs.SyncJobsSubJobData(p_token)
+            If MsgBox("Sync Jobs/SubJobs?", MsgBoxStyle.YesNo, "Warning!") = MsgBoxResult.Yes Then
+                syncJobs.SyncJobsSubJobData(p_token)
+            End If
 
             ' Sync Relationships
             Dim syncRelationships As New Sync_TLtoQB_Relationships
-            syncRelationships.SyncRelationshipData(p_token)
+            If MsgBox("Sync Relationships?", MsgBoxStyle.YesNo, "Warning!") = MsgBoxResult.Yes Then
+                syncRelationships.SyncRelationshipData(p_token)
+            End If
 
             My.Forms.MAIN.History("Sync Complete", "n")
-        End If
+            End If
     End Sub
 
     ''' <summary>

@@ -5,50 +5,43 @@ Public Class Sync_TLtoQB_Relationships
     ''' Sync the employee data from QB. Print out employees that are in TL but not QB
     ''' </summary>
     Sub SyncRelationshipData(ByVal p_token As String, Optional ByVal UI As Boolean = True)
-        Dim create As Boolean = True
+        My.Forms.MAIN.History("Syncing Relationships Data", "n")
+        Try
+            ' Connect to Time Live
+            Dim objTaskServices As New Services.TimeLive.Tasks.Tasks
+            Dim authentication As New Services.TimeLive.Tasks.SecuredWebServiceHeader
+            authentication.AuthenticatedToken = p_token
+            objTaskServices.SecuredWebServiceHeaderValue = authentication
 
-        If UI Then
-            create = MsgBox("Sync Relationships?", MsgBoxStyle.YesNo, "Warning!") = MsgBoxResult.Yes
-        End If
-        If create Then
-            My.Forms.MAIN.History("Syncing Relationships Data", "n")
-            Try
-                ' Connect to Time Live
-                Dim objTaskServices As New Services.TimeLive.Tasks.Tasks
-                Dim authentication As New Services.TimeLive.Tasks.SecuredWebServiceHeader
-                authentication.AuthenticatedToken = p_token
-                objTaskServices.SecuredWebServiceHeaderValue = authentication
+            Dim chargingRelationshipAdapter As New QB_TL_IDsTableAdapters.ChargingRelationshipsTableAdapter
 
-                Dim chargingRelationshipAdapter As New QB_TL_IDsTableAdapters.ChargingRelationshipsTableAdapter
+            'Dim TLProjectRelationshipAdapter As New TimeLiveDataSetTableAdapters.AccountProjectEmployeeTableAdapter
+            'Dim TLProjectRelationships As TimeLiveDataSet.AccountProjectEmployeeDataTable = TLProjectRelationshipAdapter.GetProjectEmployeeData()
 
-                'Dim TLProjectRelationshipAdapter As New TimeLiveDataSetTableAdapters.AccountProjectEmployeeTableAdapter
-                'Dim TLProjectRelationships As TimeLiveDataSet.AccountProjectEmployeeDataTable = TLProjectRelationshipAdapter.GetProjectEmployeeData()
+            'For Each row As DataRow In TLProjectRelationships.Select
+            '   Add_Relationship(chargingRelationshipAdapter, row)
+            'Next
 
-                'For Each row As DataRow In TLProjectRelationships.Select
-                '   Add_Relationship(chargingRelationshipAdapter, row)
-                'Next
+            Dim TLTaskRelationshipAdapter As New TimeLiveDataSetTableAdapters.AccountProjectTaskEmployeeTableAdapter
+            Dim TLTaskRelationships As TimeLiveDataSet.AccountProjectTaskEmployeeDataTable = TLTaskRelationshipAdapter.GetTaskEmployeeData()
 
-                Dim TLTaskRelationshipAdapter As New TimeLiveDataSetTableAdapters.AccountProjectTaskEmployeeTableAdapter
-                Dim TLTaskRelationships As TimeLiveDataSet.AccountProjectTaskEmployeeDataTable = TLTaskRelationshipAdapter.GetTaskEmployeeData()
+            Dim TLTaskAdapter As New QB_TL_IDsTableAdapters.Jobs_SubJobsTableAdapter
 
-                Dim TLTaskAdapter As New QB_TL_IDsTableAdapters.Jobs_SubJobsTableAdapter
-
-                For Each row As DataRow In TLTaskRelationships.Select
-                    ' Note: NumSubTasks assumes TL_Name in Tasks DB formatted - Customer:Job:SubJob:SubSubJob:...
-                    ' row(2) corresponds to the TimeLive ID of the Task/SubTask
-                    Dim numSubTasks As Integer = TLTaskAdapter.NumSubTasks(row(2).ToString.Trim)
-                    If numSubTasks = 0 Then
-                        Add_Relationship(chargingRelationshipAdapter, row)
-                    End If
-                Next
-            Catch ex As Exception
-                If UI Then
-                    MsgBox(ex.Message)
-                Else
-                    Throw ex
+            For Each row As DataRow In TLTaskRelationships.Select
+                ' Note: NumSubTasks assumes TL_Name in Tasks DB formatted - Customer:Job:SubJob:SubSubJob:...
+                ' row(2) corresponds to the TimeLive ID of the Task/SubTask
+                Dim numSubTasks As Integer = TLTaskAdapter.NumSubTasks(row(2).ToString.Trim)
+                If numSubTasks = 0 Then
+                    Add_Relationship(chargingRelationshipAdapter, row)
                 End If
-            End Try
-        End If
+            Next
+        Catch ex As Exception
+            If UI Then
+                MsgBox(ex.Message)
+            Else
+                Throw ex
+            End If
+        End Try
     End Sub
 
     ''' <summary>

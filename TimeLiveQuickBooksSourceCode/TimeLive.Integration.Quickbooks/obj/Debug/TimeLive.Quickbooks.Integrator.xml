@@ -282,7 +282,7 @@ Used to sort self-referenced table's rows
  Sync the Jobs data from QB. Print out Projects and Tasks that are in TL but not QB
  </summary>
 </member>
-<member name="M:TimeLive.Quickbooks.Integrator.Sync_TLtoQB_JoborItem.SyncJobsSubJobData(System.String,System.Boolean)">
+<member name="M:TimeLive.Quickbooks.Integrator.Sync_TLtoQB_JoborItem.SyncJobsSubJobData(System.String,System.Boolean,System.Collections.Generic.List{System.String})">
  <summary>
  Sync the Jobs from QB. Print out Projects and Tasks in TL but not QB
  </summary>
@@ -330,12 +330,12 @@ Used to sort self-referenced table's rows
  <param name="chargingRelationshipAdapter"></param>
  <param name="row">Row with an employee and job/subjob</param>
 </member>
-<member name="M:TimeLive.Quickbooks.Integrator.Sync_TLtoQB_Vendors.SyncVendorData(System.String,System.Boolean)">
+<member name="M:TimeLive.Quickbooks.Integrator.Sync_TLtoQB_Vendor.SyncVendorData(System.String,System.Boolean,System.Collections.Generic.List{System.String})">
  <summary>
  Sync the vendor data from QB. Print out vendors that are in TL but not QB
  </summary>
 </member>
-<member name="M:TimeLive.Quickbooks.Integrator.Sync_TLtoQB_Vendors.checkQBVendorExist(System.String@,System.Int32,TimeLive.Quickbooks.Integrator.Services.TimeLive.Employees.Employee,System.Boolean)">
+<member name="M:TimeLive.Quickbooks.Integrator.Sync_TLtoQB_Vendor.checkQBVendorExist(System.String@,System.Int32,TimeLive.Quickbooks.Integrator.Services.TimeLive.Employees.Employee,System.Boolean)">
  <summary>
  Verifies a vendor exists in QB, adding it to the Data Table if necessary
  </summary>
@@ -346,7 +346,7 @@ Used to sort self-referenced table's rows
  True: does exist in QB, and we add it to the Data Table if not present
  </returns>
 </member>
-<member name="M:TimeLive.Quickbooks.Integrator.Sync_TLtoQB_Vendors.ISQBID_In_VendorDataTable(System.String,System.String)">
+<member name="M:TimeLive.Quickbooks.Integrator.Sync_TLtoQB_Vendor.ISQBID_In_VendorDataTable(System.String,System.String)">
  <summary>
  Check if QB ID is in vendor data table
  </summary>
@@ -358,12 +358,12 @@ Used to sort self-referenced table's rows
  2 -> more than one record in data table
  </returns>
 </member>
-<member name="M:TimeLive.Quickbooks.Integrator.Sync_TLtoQB_Employees.SyncEmployeeData(System.String,System.Boolean)">
+<member name="M:TimeLive.Quickbooks.Integrator.Sync_TLtoQB_Employee.SyncEmployeeData(System.String,System.Boolean,System.Collections.Generic.List{System.String})">
  <summary>
  Sync the employee data from QB. Print out employees that are in TL but not QB
  </summary>
 </member>
-<member name="M:TimeLive.Quickbooks.Integrator.Sync_TLtoQB_Employees.checkQBEmployeeExist(System.String@,System.Int32,TimeLive.Quickbooks.Integrator.Services.TimeLive.Employees.Employee,System.Boolean)">
+<member name="M:TimeLive.Quickbooks.Integrator.Sync_TLtoQB_Employee.checkQBEmployeeExist(System.String@,System.Int32,TimeLive.Quickbooks.Integrator.Services.TimeLive.Employees.Employee,System.Boolean)">
  <summary>
  Verifies an employee exists in QB, adding it to the Data Table if necessary
  </summary>
@@ -374,7 +374,7 @@ Used to sort self-referenced table's rows
  True: does exist in QB, and we add it to the Data Table if not present
  </returns>
 </member>
-<member name="M:TimeLive.Quickbooks.Integrator.Sync_TLtoQB_Employees.ISQBID_In_EmployeeDataTable(System.String,System.String)">
+<member name="M:TimeLive.Quickbooks.Integrator.Sync_TLtoQB_Employee.ISQBID_In_EmployeeDataTable(System.String,System.String)">
  <summary>
  Check if QB ID is in employee data table
  </summary>
@@ -386,7 +386,7 @@ Used to sort self-referenced table's rows
  2 -> more than one record in data table
  </returns>
 </member>
-<member name="M:TimeLive.Quickbooks.Integrator.Sync_TLtoQB_Customer.SyncCustomerData(System.String,System.Boolean)">
+<member name="M:TimeLive.Quickbooks.Integrator.Sync_TLtoQB_Customer.SyncCustomerData(System.String,System.Boolean,System.Collections.Generic.List{System.String})">
  <summary>
  Sync the customer data from QB. Print out customers that are in TL but not QB
  </summary>

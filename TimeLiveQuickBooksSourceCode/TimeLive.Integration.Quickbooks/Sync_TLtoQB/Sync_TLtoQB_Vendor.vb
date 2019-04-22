@@ -1,48 +1,43 @@
 ﻿Imports QBFC13Lib
 
-Public Class Sync_TLtoQB_Vendors
+Public Class Sync_TLtoQB_Vendor
     '---------------------Sync Vendor TL Data to QB---------------------------------------
     'Note need to detect contractors; these need to be linked as vendors
     ''' <summary>
     ''' Sync the vendor data from QB. Print out vendors that are in TL but not QB
     ''' </summary>
-    Sub SyncVendorData(ByVal p_token As String, Optional ByVal UI As Boolean = True)
-        Dim create As Boolean = True
+    Function SyncVendorData(ByVal p_token As String, Optional ByVal UI As Boolean = True, Optional ByVal nameList As List(Of String) = Nothing)
+        Dim numSynced As Integer = 0
+        My.Forms.MAIN.History("Syncing Vendor Data", "n")
+        Try
+            ' connect to Time live
+            'Dim play As New Services.TimeLive.Employees.Employees
+            Dim objEmployeeServices As New Services.TimeLive.Employees.Employees
+            Dim authentication As New Services.TimeLive.Employees.SecuredWebServiceHeader
+            authentication.AuthenticatedToken = p_token
+            objEmployeeServices.SecuredWebServiceHeaderValue = authentication
+            Dim objEmployeeArray() As Object
+            objEmployeeArray = objEmployeeServices.GetEmployees
+            Dim objEmployee As New Services.TimeLive.Employees.Employee
 
-        If UI Then
-            create = MsgBox("Sync Vendors?", MsgBoxStyle.YesNo, "Warning!") = MsgBoxResult.Yes
-        End If
+            For n As Integer = 0 To objEmployeeArray.Length - 1
+                objEmployee = objEmployeeArray(n)
+                With objEmployee
+                    If .IsVendor And (nameList Is Nothing Or nameList.Contains(objEmployee.EmployeeName)) Then
+                        numSynced += If(checkQBVendorExist(.EmployeeName.ToString, .EmployeeId, objEmployee, UI), 0, 1)
+                    End If
+                End With
+            Next
+        Catch ex As Exception
+            If UI Then
+                MsgBox(ex.Message)
+            Else
+                Throw ex
+            End If
+        End Try
 
-        If create Then
-            My.Forms.MAIN.History("Syncing Vendor Data", "n")
-            Try
-                ' connect to Time live
-                'Dim play As New Services.TimeLive.Employees.Employees
-                Dim objEmployeeServices As New Services.TimeLive.Employees.Employees
-                Dim authentication As New Services.TimeLive.Employees.SecuredWebServiceHeader
-                authentication.AuthenticatedToken = p_token
-                objEmployeeServices.SecuredWebServiceHeaderValue = authentication
-                Dim objEmployeeArray() As Object
-                objEmployeeArray = objEmployeeServices.GetEmployees
-                Dim objEmployee As New Services.TimeLive.Employees.Employee
-
-                For n As Integer = 0 To objEmployeeArray.Length - 1
-                    objEmployee = objEmployeeArray(n)
-                    With objEmployee
-                        If .IsVendor Then
-                            checkQBVendorExist(.EmployeeName.ToString, .EmployeeId, objEmployee, UI)
-                        End If
-                    End With
-                Next
-            Catch ex As Exception
-                If UI Then
-                    MsgBox(ex.Message)
-                Else
-                    Throw ex
-                End If
-            End Try
-        End If
-    End Sub
+        Return numSynced
+    End Function
 
     ''' <summary>
     ''' Verifies a vendor exists in QB, adding it to the Data Table if necessary

@@ -61,62 +61,60 @@ Public Class Sync_TLtoQB_JoborItem
     ''' Sync the Jobs from QB. Print out Projects and Tasks in TL but not QB
     ''' </summary>
     ''' <param name="p_token"></param>
-    Sub SyncJobsSubJobData(ByVal p_token As String, Optional ByVal UI As Boolean = True)
-        Dim create As Boolean = True
+    Function SyncJobsSubJobData(ByVal p_token As String, Optional ByVal UI As Boolean = True, Optional ByVal nameList As List(Of String) = Nothing)
+        Dim numSynced As Integer = 0
+        My.Forms.MAIN.History("Syncing JobSubJob Data", "n")
+        Try
+            ' Connect to TimeLive Projects
+            Dim objProjectServices As New Services.TimeLive.Projects.Projects
+            Dim authenticationProjects As New Services.TimeLive.Projects.SecuredWebServiceHeader
+            authenticationProjects.AuthenticatedToken = p_token
+            objProjectServices.SecuredWebServiceHeaderValue = authenticationProjects
+            Dim objProjectArray() As Object = objProjectServices.GetProjects
+            Dim objProject As New Services.TimeLive.Projects.Project
 
-        If UI Then
-            create = MsgBox("Sync Jobs and Subjobs?", MsgBoxStyle.YesNo, "Warning!") = MsgBoxResult.Yes
-        End If
-
-        If create Then
-            My.Forms.MAIN.History("Syncing JobSubJob Data", "n")
-            Try
-                ' Connect to TimeLive Projects
-                Dim objProjectServices As New Services.TimeLive.Projects.Projects
-                Dim authenticationProjects As New Services.TimeLive.Projects.SecuredWebServiceHeader
-                authenticationProjects.AuthenticatedToken = p_token
-                objProjectServices.SecuredWebServiceHeaderValue = authenticationProjects
-                Dim objProjectArray() As Object = objProjectServices.GetProjects
-                Dim objProject As New Services.TimeLive.Projects.Project
-
-                For n As Integer = 0 To objProjectArray.Length - 1
-                    objProject = objProjectArray(n)
-                    ' Done this way since field .ProjectID just returned 0
-                    Dim projectID As Integer = objProjectServices.GetProjectId(objProject.ProjectName)
-                    checkQBJobSubJobExist(objProject.ClientName, objProject.ProjectName, projectID.ToString, UI)
-                Next
-
-                ' Connect to Timelive Tasks
-                Dim objTaskServices As New Services.TimeLive.Tasks.Tasks
-                Dim authenticationTasks As New Services.TimeLive.Tasks.SecuredWebServiceHeader
-                authenticationTasks.AuthenticatedToken = p_token
-                objTaskServices.SecuredWebServiceHeaderValue = authenticationTasks
-                ' Note: Will error if 'Code' is null
-                Dim objTaskArray() As Object = objTaskServices.GetTasks
-                Dim objTask As New Services.TimeLive.Tasks.Task
-
-                For n As Integer = 0 To objTaskArray.Length - 1
-                    objTask = objTaskArray(n)
-                    ' Done this way since field .taskID just returned 0
-                    Dim taskID As Integer = objTaskServices.GetTaskId(objTask.TaskName)
-                    checkQBJobSubJobExist(objTask.JobParent, objTask.TaskName, taskID.ToString, UI)
-                Next
-            Catch ex As System.Web.Services.Protocols.SoapException
-                If UI Then
-                    MsgBox("Make sure all Tasks and Jobs have a Code: " + ex.Message)
-                Else
-                    Throw New Exception("Make sure all Tasks and Jobs have a Code: " + ex.Message)
+            For n As Integer = 0 To objProjectArray.Length - 1
+                objProject = objProjectArray(n)
+                ' Done this way since field .ProjectID just returned 0
+                Dim projectID As Integer = objProjectServices.GetProjectId(objProject.ProjectName)
+                If nameList Is Nothing Or nameList.Contains(objProject.ProjectName) Then
+                    numSynced += If(checkQBJobSubJobExist(objProject.ClientName, objProject.ProjectName, projectID.ToString, UI), 0, 1)
                 End If
-            Catch ex As Exception
-                If UI Then
-                    MsgBox(ex.Message)
-                Else
-                    Throw ex
+            Next
+
+            ' Connect to Timelive Tasks
+            Dim objTaskServices As New Services.TimeLive.Tasks.Tasks
+            Dim authenticationTasks As New Services.TimeLive.Tasks.SecuredWebServiceHeader
+            authenticationTasks.AuthenticatedToken = p_token
+            objTaskServices.SecuredWebServiceHeaderValue = authenticationTasks
+            ' Note: Will error if 'Code' is null
+            Dim objTaskArray() As Object = objTaskServices.GetTasks
+            Dim objTask As New Services.TimeLive.Tasks.Task
+
+            For n As Integer = 0 To objTaskArray.Length - 1
+                objTask = objTaskArray(n)
+                ' Done this way since field .taskID just returned 0
+                Dim taskID As Integer = objTaskServices.GetTaskId(objTask.TaskName)
+                If nameList Is Nothing Or nameList.Contains(objTask.TaskName) Then
+                    numSynced += If(checkQBJobSubJobExist(objTask.JobParent, objTask.TaskName, taskID.ToString, UI), 0, 1)
                 End If
+            Next
+        Catch ex As System.Web.Services.Protocols.SoapException
+            If UI Then
+                MsgBox("Make sure all Tasks and Jobs have a Code: " + ex.Message)
+            Else
+                Throw New Exception("Make sure all Tasks and Jobs have a Code: " + ex.Message)
+            End If
+        Catch ex As Exception
+            If UI Then
                 MsgBox(ex.Message)
-            End Try
-        End If
-    End Sub
+            Else
+                Throw ex
+            End If
+        End Try
+
+        Return numSynced
+    End Function
 
     ''' <summary>
     ''' Get Tasks, adding them as jobs to QB
