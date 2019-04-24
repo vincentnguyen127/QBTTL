@@ -146,7 +146,7 @@ Public Class TLtoQB_TimeEntry
                         empId = Get_QB_ID_ForTL_EmployeeName(EmployeeName)
                     End If
 
-                    Dim jobID As String = Get_QB_ID_ForTL_JobName(.ClientName.ToString + ":" + .ProjectName.ToString + ":" + .TaskWithParent.ToString)
+                    Dim jobID As String = Get_QB_ID_ForTL_JobName(.ProjectName.ToString + ":" + .TaskWithParent.ToString) ' was .CustomerName.ToString + ":" + ...
                     Dim Item_SubItemID As String = Get_QB_ID_ForTL_ItemName(empId, jobID).ToString.Trim
                     'My.Forms.MAIN.History(Item_SubItemID, "i")
 
@@ -524,7 +524,6 @@ Public Class TLtoQB_TimeEntry
             timeAdd.Duration.SetValue(TotalTime.Hour, TotalTime.Minute, 0, False)
             timeAdd.EntityRef.FullName.SetValue(EmployeeName)
             timeAdd.IsBillable.SetValue(IsBillable)
-            ' This is incorrect, puts Job:SubJob instead of Item:SubItem
             timeAdd.ItemServiceRef.FullName.SetValue(ProjectName & ":" & ServiceItemName) ' ProjectName & ":" & ServiceItemName
             timeAdd.TxnDate.SetValue(TimeEntryDate)
             If Not TimeEntryClass = "<None>" Then
@@ -574,7 +573,11 @@ Public Class TLtoQB_TimeEntry
             Dim msgSetRq As IMsgSetRequest = MAIN.SESSMANAGER.CreateMsgSetRequest("US", 2, 0)
             msgSetRq.Attributes.OnError = ENRqOnError.roeContinue
             Dim timeAdd As ITimeTrackingAdd = msgSetRq.AppendTimeTrackingAddRq
-            timeAdd.CustomerRef.FullName.SetValue(CustomerName & ":" & ProjectName & ":" & ServiceItemName)
+            If ProjectName.Split(":")(0) = CustomerName Then
+                timeAdd.CustomerRef.FullName.SetValue(ProjectName & ":" & ServiceItemName) ' CustomerName & ":" & ...
+            Else
+                timeAdd.CustomerRef.FullName.SetValue(CustomerName & ":" & ProjectName & ":" & ServiceItemName) ' CustomerName & ":" & ...
+            End If
             timeAdd.Duration.SetValue(TotalTime.Hour, TotalTime.Minute, 0, False)
             timeAdd.EntityRef.FullName.SetValue(EmployeeName)
             timeAdd.IsBillable.SetValue(IsBillable)
