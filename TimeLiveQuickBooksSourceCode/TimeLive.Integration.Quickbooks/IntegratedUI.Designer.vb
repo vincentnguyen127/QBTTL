@@ -38,10 +38,12 @@ Partial Class IntegratedUI
         Me.btn_currentweek = New System.Windows.Forms.Button()
         Me.TabControl1 = New System.Windows.Forms.TabControl()
         Me.TabPageCustomers = New System.Windows.Forms.TabPage()
+        Me.RefreshCustomers = New System.Windows.Forms.Button()
         Me.CustomerSyncDirection = New System.Windows.Forms.GroupBox()
         Me.TLtoQBCustomerRadioButton = New System.Windows.Forms.RadioButton()
         Me.QBtoTLCustomerRadioButton = New System.Windows.Forms.RadioButton()
         Me.TabPageEmployees = New System.Windows.Forms.TabPage()
+        Me.RefreshEmployees = New System.Windows.Forms.Button()
         Me.EmployeeSyncDirection = New System.Windows.Forms.GroupBox()
         Me.TLtoQBEmployeeRadioButton = New System.Windows.Forms.RadioButton()
         Me.QBtoTLEmployeeRadioButton = New System.Windows.Forms.RadioButton()
@@ -60,6 +62,8 @@ Partial Class IntegratedUI
         Me.DataGridView1 = New System.Windows.Forms.DataGridView()
         Me.ckBox = New System.Windows.Forms.DataGridViewCheckBoxColumn()
         Me.DataGridView2 = New System.Windows.Forms.DataGridView()
+        Me.RefreshVendors = New System.Windows.Forms.Button()
+        Me.RefreshJobsOrItems = New System.Windows.Forms.Button()
         Me.GroupBox1.SuspendLayout()
         Me.TabPageTimeTransfer.SuspendLayout()
         Me.TabControl1.SuspendLayout()
@@ -238,6 +242,7 @@ Partial Class IntegratedUI
         '
         'TabPageCustomers
         '
+        Me.TabPageCustomers.Controls.Add(Me.RefreshCustomers)
         Me.TabPageCustomers.Controls.Add(Me.CustomerSyncDirection)
         Me.TabPageCustomers.Location = New System.Drawing.Point(4, 22)
         Me.TabPageCustomers.Name = "TabPageCustomers"
@@ -246,6 +251,15 @@ Partial Class IntegratedUI
         Me.TabPageCustomers.TabIndex = 3
         Me.TabPageCustomers.Text = "Customers Options"
         Me.TabPageCustomers.UseVisualStyleBackColor = True
+        '
+        'RefreshCustomers
+        '
+        Me.RefreshCustomers.Location = New System.Drawing.Point(429, 26)
+        Me.RefreshCustomers.Name = "RefreshCustomers"
+        Me.RefreshCustomers.Size = New System.Drawing.Size(97, 30)
+        Me.RefreshCustomers.TabIndex = 1
+        Me.RefreshCustomers.Text = "Refresh"
+        Me.RefreshCustomers.UseVisualStyleBackColor = True
         '
         'CustomerSyncDirection
         '
@@ -283,6 +297,7 @@ Partial Class IntegratedUI
         '
         'TabPageEmployees
         '
+        Me.TabPageEmployees.Controls.Add(Me.RefreshEmployees)
         Me.TabPageEmployees.Controls.Add(Me.EmployeeSyncDirection)
         Me.TabPageEmployees.Location = New System.Drawing.Point(4, 22)
         Me.TabPageEmployees.Name = "TabPageEmployees"
@@ -291,6 +306,15 @@ Partial Class IntegratedUI
         Me.TabPageEmployees.TabIndex = 4
         Me.TabPageEmployees.Text = "Employees Options"
         Me.TabPageEmployees.UseVisualStyleBackColor = True
+        '
+        'RefreshEmployees
+        '
+        Me.RefreshEmployees.Location = New System.Drawing.Point(429, 26)
+        Me.RefreshEmployees.Name = "RefreshEmployees"
+        Me.RefreshEmployees.Size = New System.Drawing.Size(97, 30)
+        Me.RefreshEmployees.TabIndex = 2
+        Me.RefreshEmployees.Text = "Refresh"
+        Me.RefreshEmployees.UseVisualStyleBackColor = True
         '
         'EmployeeSyncDirection
         '
@@ -328,6 +352,7 @@ Partial Class IntegratedUI
         '
         'TabPageVendor
         '
+        Me.TabPageVendor.Controls.Add(Me.RefreshVendors)
         Me.TabPageVendor.Controls.Add(Me.VendorSyncDirection)
         Me.TabPageVendor.Location = New System.Drawing.Point(4, 22)
         Me.TabPageVendor.Name = "TabPageVendor"
@@ -373,6 +398,7 @@ Partial Class IntegratedUI
         '
         'TabPageJobsItems
         '
+        Me.TabPageJobsItems.Controls.Add(Me.RefreshJobsOrItems)
         Me.TabPageJobsItems.Controls.Add(Me.JobItemSyncDirection)
         Me.TabPageJobsItems.Location = New System.Drawing.Point(4, 22)
         Me.TabPageJobsItems.Name = "TabPageJobsItems"
@@ -496,6 +522,24 @@ Partial Class IntegratedUI
         Me.DataGridView2.Size = New System.Drawing.Size(496, 388)
         Me.DataGridView2.TabIndex = 42
         '
+        'RefreshVendors
+        '
+        Me.RefreshVendors.Location = New System.Drawing.Point(429, 26)
+        Me.RefreshVendors.Name = "RefreshVendors"
+        Me.RefreshVendors.Size = New System.Drawing.Size(97, 30)
+        Me.RefreshVendors.TabIndex = 3
+        Me.RefreshVendors.Text = "Refresh"
+        Me.RefreshVendors.UseVisualStyleBackColor = True
+        '
+        'RefreshJobsOrItems
+        '
+        Me.RefreshJobsOrItems.Location = New System.Drawing.Point(429, 26)
+        Me.RefreshJobsOrItems.Name = "RefreshJobsOrItems"
+        Me.RefreshJobsOrItems.Size = New System.Drawing.Size(97, 30)
+        Me.RefreshJobsOrItems.TabIndex = 4
+        Me.RefreshJobsOrItems.Text = "Refresh"
+        Me.RefreshJobsOrItems.UseVisualStyleBackColor = True
+        '
         'IntegratedUI
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -573,4 +617,8 @@ Partial Class IntegratedUI
     Friend WithEvents TLtoQBCustomerRadioButton As RadioButton
     Friend WithEvents QBtoTLCustomerRadioButton As RadioButton
     Friend WithEvents SelectAllCheckBox As CheckBox
+    Friend WithEvents RefreshCustomers As Button
+    Friend WithEvents RefreshEmployees As Button
+    Friend WithEvents RefreshVendors As Button
+    Friend WithEvents RefreshJobsOrItems As Button
 End Class

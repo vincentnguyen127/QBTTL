@@ -37,7 +37,10 @@ Public Class IntegratedUI
 
     ' Note: This is the new, up to date one that does TL -> QB too, replace display_UI with this once done testing
     Private Function display_UI() Handles QBtoTLCustomerRadioButton.CheckedChanged, QBtoTLEmployeeRadioButton.CheckedChanged,
-                                           QBtoTLVendorRadioButton.CheckedChanged, QBtoTLJobItemRadioButton.CheckedChanged
+                                           QBtoTLVendorRadioButton.CheckedChanged, QBtoTLJobItemRadioButton.CheckedChanged,
+                                           RefreshCustomers.Click, RefreshEmployees.Click, RefreshVendors.Click, RefreshJobsOrItems.Click
+
+
         Dim ItemLastSync As DateTime
         Dim lastSync As String
         Dim Data
@@ -933,7 +936,7 @@ Public Class IntegratedUI
 
     End Sub
 
-    Private Sub display_UI(sender As Object, e As EventArgs) Handles QBtoTLVendorRadioButton.CheckedChanged, QBtoTLJobItemRadioButton.CheckedChanged, QBtoTLEmployeeRadioButton.CheckedChanged, QBtoTLCustomerRadioButton.CheckedChanged
+    Private Sub display_UI(sender As Object, e As EventArgs) Handles QBtoTLVendorRadioButton.CheckedChanged, QBtoTLJobItemRadioButton.CheckedChanged, QBtoTLEmployeeRadioButton.CheckedChanged, QBtoTLCustomerRadioButton.CheckedChanged, RefreshEmployees.Click, RefreshCustomers.Click
 
     End Sub
 End Class

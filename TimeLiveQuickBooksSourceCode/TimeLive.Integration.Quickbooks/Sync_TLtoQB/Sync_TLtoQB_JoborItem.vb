@@ -172,7 +172,7 @@ Public Class Sync_TLtoQB_JoborItem
         ' My.Forms.MAIN.History("Searching in QB for: " + QBJobSubJobName, "i")
 
         Try
-            Dim TLJobSubJobName As String = Parent + ":" + TL_Name
+            Dim TLJobSubJobName As String = If(TL_Name.Contains(":"), TL_Name, Parent + ":" + TL_Name)
             Dim jobOrTask As String = If(Parent.Split(":").Length = 1, "Job", "Task")
 
             'sessManager = New QBSessionManagerClass()
