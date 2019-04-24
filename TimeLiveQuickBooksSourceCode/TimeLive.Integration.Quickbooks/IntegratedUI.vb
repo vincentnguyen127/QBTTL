@@ -13,7 +13,6 @@ Public Class IntegratedUI
     Private p_AccountId As String
     Private Type As Integer
     Private emailBody As String
-    Private SelectAll As Boolean
 
     Private cur_week
 
@@ -44,6 +43,9 @@ Public Class IntegratedUI
         Dim Data
         Dim attribute As String
         Dim QBtoTLRadioButton As RadioButton
+
+        ' Unselect the select all check box
+        SelectAllCheckBox.Checked = False
 
         Select Case Type
             ' Customers
@@ -126,11 +128,10 @@ Public Class IntegratedUI
         'load grid for QuickBooks (might be easier way)
         '-----------------------------------------
 
-        ' Add Full Name Column for Job/Subjob and Item/SubItem
         Dim QBDataGridView As DataGridView = If(QBtoTLRadioButton.Checked, DataGridView1, DataGridView2)
         Dim TLDataGridView As DataGridView = If(QBtoTLRadioButton.Checked, DataGridView2, DataGridView1)
 
-
+        ' Add Full Name Column for Job/Subjob and Item/SubItem
         If Type = 13 Or Type = 14 Then
             Dim QBcol0 As New DataGridViewTextBoxColumn
             QBcol0.Name = "Full Name"
@@ -333,7 +334,6 @@ Public Class IntegratedUI
         System.Threading.Thread.Sleep(150)
         System.Windows.Forms.Application.DoEvents()
         Me.ProgressBar1.Value = 0
-        SelectAll = False
         Return readItems
     End Function
 
@@ -448,7 +448,6 @@ Public Class IntegratedUI
         System.Threading.Thread.Sleep(150)
         System.Windows.Forms.Application.DoEvents()
         Me.ProgressBar1.Value = 0
-        SelectAll = False
         Return readItems
     End Function
 
@@ -477,7 +476,7 @@ Public Class IntegratedUI
         End If
 
         'for type Time Items
-        ' Might add this to display_UI()
+        ' Might add this to display_UI() or as its own private function
         If Type = 20 Then
             TabPageTimeTransfer.Visible = True
             TabControl1.SelectedIndex = 4
@@ -523,13 +522,6 @@ Public Class IntegratedUI
         End If
 
         My.Forms.MAIN.History(ReadItems.ToString() + " items were read from Quickbooks", "n")
-
-        'wait for one second so user can see progress bar
-        'System.Threading.Thread.Sleep(500)
-        'System.Windows.Forms.Application.DoEvents()
-
-        'Me.ProgressBar1.Value = 0
-        SelectAll = False
     End Sub
 
 
@@ -713,7 +705,6 @@ Public Class IntegratedUI
                         End If
                     End Sub
                 )
-                'customerData.DataArray(row.Index).RecSelect = True
                 My.Forms.MAIN.History("Customers selected for processing: " + row.Cells("Name").Value, "n")
             End If
         Next
@@ -741,7 +732,6 @@ Public Class IntegratedUI
                         End If
                     End Sub
                 )
-                'employeeData.DataArray(row.Index).RecSelect = True
                 My.Forms.MAIN.History("Employees selected for processing: " + row.Cells("Name").Value, "n")
             End If
         Next
@@ -759,7 +749,6 @@ Public Class IntegratedUI
                         End If
                     End Sub
                 )
-                'selectedEmployeeData.DataArray(row.Index).RecSelect = True
                 My.Forms.MAIN.History("Selected employee for time transfer: " + row.Cells("Name").Value, "n")
             End If
         Next
@@ -775,7 +764,6 @@ Public Class IntegratedUI
                         End If
                     End Sub
                 )
-                'vendorData.DataArray(row.Index).RecSelect = True
                 My.Forms.MAIN.History("Vendors selected for processing: " + row.Cells("Name").Value, "n")
             End If
         Next
@@ -791,19 +779,17 @@ Public Class IntegratedUI
                         End If
                     End Sub
                 )
-                'JobData.DataArray(row.Index).RecSelect = True
                 My.Forms.MAIN.History("Job or items selected for processing: " + row.Cells("Name").Value, "n")
             End If
         Next
     End Sub
 
-    Private Sub btnselectall_Click(sender As Object, e As EventArgs) Handles btnselectall.Click
+    Private Sub selectall_checkbox(sender As Object, e As EventArgs) Handles SelectAllCheckBox.CheckedChanged
         For Each row As DataGridViewRow In DataGridView1.Rows
             If row.Cells("Name").Value IsNot Nothing Then
-                row.Cells("ckBox").Value = Not SelectAll
+                row.Cells("ckBox").Value = SelectAllCheckBox.Checked
             End If
         Next
-        SelectAll = Not SelectAll
     End Sub
 
     '--- Timer Options Functions
@@ -950,6 +936,10 @@ Public Class IntegratedUI
     End Sub
 
     Private Sub display_UI2(sender As Object, e As EventArgs) Handles QBtoTLCustomerRadioButton.CheckedChanged
+
+    End Sub
+
+    Private Sub display_UI(sender As Object, e As EventArgs) Handles QBtoTLVendorRadioButton.CheckedChanged, QBtoTLJobItemRadioButton.CheckedChanged, QBtoTLEmployeeRadioButton.CheckedChanged, QBtoTLCustomerRadioButton.CheckedChanged
 
     End Sub
 End Class

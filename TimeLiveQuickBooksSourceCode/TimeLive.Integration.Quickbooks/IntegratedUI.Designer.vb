@@ -22,11 +22,8 @@ Partial Class IntegratedUI
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
-        Me.btnselectall = New System.Windows.Forms.Button()
         Me.bntclose = New System.Windows.Forms.Button()
         Me.btnTransfer = New System.Windows.Forms.Button()
-        Me.DataGridView1 = New System.Windows.Forms.DataGridView()
-        Me.ckBox = New System.Windows.Forms.DataGridViewCheckBoxColumn()
         Me.GroupBox1 = New System.Windows.Forms.GroupBox()
         Me.ProgressBar1 = New System.Windows.Forms.ProgressBar()
         Me.TabPageTimeTransfer = New System.Windows.Forms.TabPage()
@@ -53,13 +50,16 @@ Partial Class IntegratedUI
         Me.TLtoQBVendorRadioButton = New System.Windows.Forms.RadioButton()
         Me.QBtoTLVendorRadioButton = New System.Windows.Forms.RadioButton()
         Me.TabPageJobsItems = New System.Windows.Forms.TabPage()
-        Me.SyncFromLabel = New System.Windows.Forms.Label()
-        Me.DataGridView2 = New System.Windows.Forms.DataGridView()
-        Me.SyncToLabel = New System.Windows.Forms.Label()
         Me.JobItemSyncDirection = New System.Windows.Forms.GroupBox()
         Me.TLtoQBJobItemRadioButton = New System.Windows.Forms.RadioButton()
         Me.QBtoTLJobItemRadioButton = New System.Windows.Forms.RadioButton()
-        CType(Me.DataGridView1, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.SyncFromLabel = New System.Windows.Forms.Label()
+        Me.SyncToLabel = New System.Windows.Forms.Label()
+        Me.SplitContainer1 = New System.Windows.Forms.SplitContainer()
+        Me.SelectAllCheckBox = New System.Windows.Forms.CheckBox()
+        Me.DataGridView1 = New System.Windows.Forms.DataGridView()
+        Me.ckBox = New System.Windows.Forms.DataGridViewCheckBoxColumn()
+        Me.DataGridView2 = New System.Windows.Forms.DataGridView()
         Me.GroupBox1.SuspendLayout()
         Me.TabPageTimeTransfer.SuspendLayout()
         Me.TabControl1.SuspendLayout()
@@ -70,26 +70,19 @@ Partial Class IntegratedUI
         Me.TabPageVendor.SuspendLayout()
         Me.VendorSyncDirection.SuspendLayout()
         Me.TabPageJobsItems.SuspendLayout()
-        CType(Me.DataGridView2, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.JobItemSyncDirection.SuspendLayout()
+        Me.SplitContainer1.Panel1.SuspendLayout()
+        Me.SplitContainer1.Panel2.SuspendLayout()
+        Me.SplitContainer1.SuspendLayout()
+        CType(Me.DataGridView1, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.DataGridView2, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
-        '
-        'btnselectall
-        '
-        Me.btnselectall.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
-        Me.btnselectall.ImeMode = System.Windows.Forms.ImeMode.NoControl
-        Me.btnselectall.Location = New System.Drawing.Point(12, 399)
-        Me.btnselectall.Name = "btnselectall"
-        Me.btnselectall.Size = New System.Drawing.Size(75, 23)
-        Me.btnselectall.TabIndex = 33
-        Me.btnselectall.Text = "Select All"
-        Me.btnselectall.UseVisualStyleBackColor = True
         '
         'bntclose
         '
         Me.bntclose.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.bntclose.ImeMode = System.Windows.Forms.ImeMode.NoControl
-        Me.bntclose.Location = New System.Drawing.Point(652, 399)
+        Me.bntclose.Location = New System.Drawing.Point(903, 597)
         Me.bntclose.Name = "bntclose"
         Me.bntclose.Size = New System.Drawing.Size(75, 23)
         Me.bntclose.TabIndex = 32
@@ -100,40 +93,21 @@ Partial Class IntegratedUI
         '
         Me.btnTransfer.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.btnTransfer.ImeMode = System.Windows.Forms.ImeMode.NoControl
-        Me.btnTransfer.Location = New System.Drawing.Point(562, 399)
+        Me.btnTransfer.Location = New System.Drawing.Point(813, 597)
         Me.btnTransfer.Name = "btnTransfer"
         Me.btnTransfer.Size = New System.Drawing.Size(75, 23)
         Me.btnTransfer.TabIndex = 31
         Me.btnTransfer.Text = "Process"
         Me.btnTransfer.UseVisualStyleBackColor = True
         '
-        'DataGridView1
-        '
-        Me.DataGridView1.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-            Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.DataGridView1.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells
-        Me.DataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
-        Me.DataGridView1.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.ckBox})
-        Me.DataGridView1.Location = New System.Drawing.Point(0, 129)
-        Me.DataGridView1.Name = "DataGridView1"
-        Me.DataGridView1.Size = New System.Drawing.Size(413, 222)
-        Me.DataGridView1.TabIndex = 38
-        '
-        'ckBox
-        '
-        Me.ckBox.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
-        Me.ckBox.HeaderText = "Check Name"
-        Me.ckBox.Name = "ckBox"
-        '
         'GroupBox1
         '
         Me.GroupBox1.Anchor = CType(((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.GroupBox1.Controls.Add(Me.ProgressBar1)
-        Me.GroupBox1.Location = New System.Drawing.Point(2, 356)
+        Me.GroupBox1.Location = New System.Drawing.Point(2, 554)
         Me.GroupBox1.Name = "GroupBox1"
-        Me.GroupBox1.Size = New System.Drawing.Size(735, 37)
+        Me.GroupBox1.Size = New System.Drawing.Size(986, 37)
         Me.GroupBox1.TabIndex = 39
         Me.GroupBox1.TabStop = False
         Me.GroupBox1.Text = "Progress Bar"
@@ -145,7 +119,7 @@ Partial Class IntegratedUI
         Me.ProgressBar1.Location = New System.Drawing.Point(10, 17)
         Me.ProgressBar1.Maximum = 10
         Me.ProgressBar1.Name = "ProgressBar1"
-        Me.ProgressBar1.Size = New System.Drawing.Size(715, 14)
+        Me.ProgressBar1.Size = New System.Drawing.Size(966, 14)
         Me.ProgressBar1.TabIndex = 0
         '
         'TabPageTimeTransfer
@@ -407,34 +381,6 @@ Partial Class IntegratedUI
         Me.TabPageJobsItems.Text = "Jobs/Items Options"
         Me.TabPageJobsItems.UseVisualStyleBackColor = True
         '
-        'SyncFromLabel
-        '
-        Me.SyncFromLabel.AutoSize = True
-        Me.SyncFromLabel.Location = New System.Drawing.Point(6, 110)
-        Me.SyncFromLabel.Name = "SyncFromLabel"
-        Me.SyncFromLabel.Size = New System.Drawing.Size(65, 13)
-        Me.SyncFromLabel.TabIndex = 41
-        Me.SyncFromLabel.Text = "QuickBooks"
-        '
-        'DataGridView2
-        '
-        Me.DataGridView2.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.DataGridView2.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
-        Me.DataGridView2.Location = New System.Drawing.Point(419, 129)
-        Me.DataGridView2.Name = "DataGridView2"
-        Me.DataGridView2.Size = New System.Drawing.Size(308, 222)
-        Me.DataGridView2.TabIndex = 42
-        '
-        'SyncToLabel
-        '
-        Me.SyncToLabel.AutoSize = True
-        Me.SyncToLabel.Location = New System.Drawing.Point(419, 110)
-        Me.SyncToLabel.Name = "SyncToLabel"
-        Me.SyncToLabel.Size = New System.Drawing.Size(50, 13)
-        Me.SyncToLabel.TabIndex = 43
-        Me.SyncToLabel.Text = "TimeLive"
-        '
         'JobItemSyncDirection
         '
         Me.JobItemSyncDirection.Controls.Add(Me.TLtoQBJobItemRadioButton)
@@ -469,24 +415,100 @@ Partial Class IntegratedUI
         Me.QBtoTLJobItemRadioButton.Text = "QB -> TL"
         Me.QBtoTLJobItemRadioButton.UseVisualStyleBackColor = True
         '
+        'SyncFromLabel
+        '
+        Me.SyncFromLabel.AutoSize = True
+        Me.SyncFromLabel.Location = New System.Drawing.Point(7, 10)
+        Me.SyncFromLabel.Name = "SyncFromLabel"
+        Me.SyncFromLabel.Size = New System.Drawing.Size(65, 13)
+        Me.SyncFromLabel.TabIndex = 41
+        Me.SyncFromLabel.Text = "QuickBooks"
+        '
+        'SyncToLabel
+        '
+        Me.SyncToLabel.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.SyncToLabel.AutoSize = True
+        Me.SyncToLabel.Location = New System.Drawing.Point(3, 10)
+        Me.SyncToLabel.Name = "SyncToLabel"
+        Me.SyncToLabel.Size = New System.Drawing.Size(50, 13)
+        Me.SyncToLabel.TabIndex = 43
+        Me.SyncToLabel.Text = "TimeLive"
+        '
+        'SplitContainer1
+        '
+        Me.SplitContainer1.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.SplitContainer1.Location = New System.Drawing.Point(2, 126)
+        Me.SplitContainer1.Name = "SplitContainer1"
+        '
+        'SplitContainer1.Panel1
+        '
+        Me.SplitContainer1.Panel1.Controls.Add(Me.SelectAllCheckBox)
+        Me.SplitContainer1.Panel1.Controls.Add(Me.SyncFromLabel)
+        Me.SplitContainer1.Panel1.Controls.Add(Me.DataGridView1)
+        '
+        'SplitContainer1.Panel2
+        '
+        Me.SplitContainer1.Panel2.Controls.Add(Me.SyncToLabel)
+        Me.SplitContainer1.Panel2.Controls.Add(Me.DataGridView2)
+        Me.SplitContainer1.Size = New System.Drawing.Size(986, 422)
+        Me.SplitContainer1.SplitterDistance = 473
+        Me.SplitContainer1.TabIndex = 44
+        '
+        'SelectAllCheckBox
+        '
+        Me.SelectAllCheckBox.AutoSize = True
+        Me.SelectAllCheckBox.Location = New System.Drawing.Point(88, 10)
+        Me.SelectAllCheckBox.Name = "SelectAllCheckBox"
+        Me.SelectAllCheckBox.Size = New System.Drawing.Size(70, 17)
+        Me.SelectAllCheckBox.TabIndex = 42
+        Me.SelectAllCheckBox.Text = "Select All"
+        Me.SelectAllCheckBox.UseVisualStyleBackColor = True
+        '
+        'DataGridView1
+        '
+        Me.DataGridView1.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.DataGridView1.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells
+        Me.DataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
+        Me.DataGridView1.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.ckBox})
+        Me.DataGridView1.Location = New System.Drawing.Point(4, 31)
+        Me.DataGridView1.Name = "DataGridView1"
+        Me.DataGridView1.Size = New System.Drawing.Size(466, 388)
+        Me.DataGridView1.TabIndex = 38
+        '
+        'ckBox
+        '
+        Me.ckBox.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
+        Me.ckBox.HeaderText = "Check Name"
+        Me.ckBox.Name = "ckBox"
+        '
+        'DataGridView2
+        '
+        Me.DataGridView2.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.DataGridView2.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
+        Me.DataGridView2.Location = New System.Drawing.Point(3, 31)
+        Me.DataGridView2.Name = "DataGridView2"
+        Me.DataGridView2.Size = New System.Drawing.Size(496, 388)
+        Me.DataGridView2.TabIndex = 42
+        '
         'IntegratedUI
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(739, 433)
-        Me.Controls.Add(Me.SyncToLabel)
-        Me.Controls.Add(Me.DataGridView2)
-        Me.Controls.Add(Me.SyncFromLabel)
+        Me.ClientSize = New System.Drawing.Size(990, 631)
+        Me.Controls.Add(Me.SplitContainer1)
         Me.Controls.Add(Me.TabControl1)
-        Me.Controls.Add(Me.DataGridView1)
-        Me.Controls.Add(Me.btnselectall)
         Me.Controls.Add(Me.bntclose)
         Me.Controls.Add(Me.btnTransfer)
         Me.Controls.Add(Me.GroupBox1)
         Me.Name = "IntegratedUI"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
         Me.Text = "IntegratedUI"
-        CType(Me.DataGridView1, System.ComponentModel.ISupportInitialize).EndInit()
         Me.GroupBox1.ResumeLayout(False)
         Me.TabPageTimeTransfer.ResumeLayout(False)
         Me.TabPageTimeTransfer.PerformLayout()
@@ -501,20 +523,21 @@ Partial Class IntegratedUI
         Me.VendorSyncDirection.ResumeLayout(False)
         Me.VendorSyncDirection.PerformLayout()
         Me.TabPageJobsItems.ResumeLayout(False)
-        CType(Me.DataGridView2, System.ComponentModel.ISupportInitialize).EndInit()
         Me.JobItemSyncDirection.ResumeLayout(False)
         Me.JobItemSyncDirection.PerformLayout()
+        Me.SplitContainer1.Panel1.ResumeLayout(False)
+        Me.SplitContainer1.Panel1.PerformLayout()
+        Me.SplitContainer1.Panel2.ResumeLayout(False)
+        Me.SplitContainer1.Panel2.PerformLayout()
+        Me.SplitContainer1.ResumeLayout(False)
+        CType(Me.DataGridView1, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.DataGridView2, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
-        Me.PerformLayout()
 
     End Sub
-
-    Friend WithEvents btnselectall As Button
     Friend WithEvents bntclose As Button
     Friend WithEvents btnTransfer As Button
-    Friend WithEvents DataGridView1 As DataGridView
     Friend WithEvents GroupBox1 As GroupBox
-    Friend WithEvents ckBox As DataGridViewCheckBoxColumn
     Friend WithEvents ProgressBar1 As ProgressBar
     Friend WithEvents TabPageTimeTransfer As TabPage
     Friend WithEvents cbWageType As ComboBox
@@ -530,11 +553,8 @@ Partial Class IntegratedUI
     Friend WithEvents TabPageCustomers As TabPage
     Friend WithEvents TabPageEmployees As TabPage
     Friend WithEvents TabPageJobsItems As TabPage
-    Friend WithEvents DataGridView2 As DataGridView
     Friend WithEvents SyncFromLabel As Label
     Friend WithEvents CustomerSyncDirection As GroupBox
-    Friend WithEvents TLtoQBCustomerRadioButton As RadioButton
-    Friend WithEvents QBtoTLCustomerRadioButton As RadioButton
     Friend WithEvents SyncToLabel As Label
     Friend WithEvents TabPageVendor As TabPage
     Friend WithEvents EmployeeSyncDirection As GroupBox
@@ -546,4 +566,11 @@ Partial Class IntegratedUI
     Friend WithEvents JobItemSyncDirection As GroupBox
     Friend WithEvents TLtoQBJobItemRadioButton As RadioButton
     Friend WithEvents QBtoTLJobItemRadioButton As RadioButton
+    Friend WithEvents SplitContainer1 As SplitContainer
+    Friend WithEvents DataGridView1 As DataGridView
+    Friend WithEvents ckBox As DataGridViewCheckBoxColumn
+    Friend WithEvents DataGridView2 As DataGridView
+    Friend WithEvents TLtoQBCustomerRadioButton As RadioButton
+    Friend WithEvents QBtoTLCustomerRadioButton As RadioButton
+    Friend WithEvents SelectAllCheckBox As CheckBox
 End Class
