@@ -22,7 +22,8 @@ Public Class Sync_TLtoQB_Employee
             For n As Integer = 0 To objClientArray.Length - 1
                 objEmployee = objClientArray(n)
                 With objEmployee
-                    If (Not .IsVendor) And (nameList Is Nothing Or nameList.Contains(.EmployeeName)) Then
+                    Dim create As Boolean = If(nameList Is Nothing, True, nameList.Contains(objEmployee.EmployeeName))
+                    If (Not .IsVendor) And create Then
                         ' Check if in QB, adds to QB and sync data table if not
                         numSynced += If(checkQBEmployeeExist(.EmployeeName.ToString, .EmployeeId, objEmployee, UI), 0, 1)
                     End If

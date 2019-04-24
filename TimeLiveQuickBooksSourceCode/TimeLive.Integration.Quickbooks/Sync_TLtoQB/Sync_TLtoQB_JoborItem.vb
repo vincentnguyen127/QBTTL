@@ -77,7 +77,9 @@ Public Class Sync_TLtoQB_JoborItem
                 objProject = objProjectArray(n)
                 ' Done this way since field .ProjectID just returned 0
                 Dim projectID As Integer = objProjectServices.GetProjectId(objProject.ProjectName)
-                If nameList Is Nothing Or nameList.Contains(objProject.ProjectName) Then
+                Dim create As Boolean = If(nameList Is Nothing, True, nameList.Contains(objProject.ProjectName))
+
+                If create Then
                     numSynced += If(checkQBJobSubJobExist(objProject.ClientName, objProject.ProjectName, projectID.ToString, UI), 0, 1)
                 End If
             Next
@@ -95,7 +97,8 @@ Public Class Sync_TLtoQB_JoborItem
                 objTask = objTaskArray(n)
                 ' Done this way since field .taskID just returned 0
                 Dim taskID As Integer = objTaskServices.GetTaskId(objTask.TaskName)
-                If nameList Is Nothing Or nameList.Contains(objTask.TaskName) Then
+                Dim create As Boolean = If(nameList Is Nothing, True, nameList.Contains(objTask.TaskName))
+                If create Then
                     numSynced += If(checkQBJobSubJobExist(objTask.JobParent, objTask.TaskName, taskID.ToString, UI), 0, 1)
                 End If
             Next

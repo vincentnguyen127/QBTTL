@@ -465,14 +465,8 @@ Public Class IntegratedUI
         btn_currentweek_Click(sender, e)
 
         'for type Customers, Employees, Vendors, Jobs/Subjobs, and Items/Subitems
-        'If Type >= 10 And Type < 15 Then
-        If Type = 10 Then ' Replace with previous line
+        If Type >= 10 And Type < 15 Then
             ReadItems = display_UI()
-        End If
-
-        ' Remove when above code is implemented
-        If Type >= 11 And Type < 15 Then
-            ReadItems = display_UI_Old()
         End If
 
         'for type Time Items

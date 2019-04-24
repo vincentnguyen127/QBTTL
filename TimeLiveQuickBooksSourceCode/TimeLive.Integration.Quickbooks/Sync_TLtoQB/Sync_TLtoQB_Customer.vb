@@ -24,8 +24,8 @@ Public Class Sync_TLtoQB_Customer
                 objClient = objClientArray(n)
                 Dim clientID As Integer = objClientServices.GetClientIdByName(objClient.ClientName)
                 ' Only run for a name if it was selected, or we are syncing all of the names
-                If nameList Is Nothing Or nameList.Contains(objClient.ClientName) Then
-                    ' Check if TL Client is in QB, and add if not. 
+                Dim create As Boolean = If(nameList Is Nothing, True, nameList.Contains(objClient.ClientName))
+                If create Then
                     numSynced += If(checkQBCustomerExist(objClient.ClientName.ToString, clientID, objClient, UI), 0, 1)
                 End If
             Next
