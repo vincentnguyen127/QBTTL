@@ -6,7 +6,8 @@ Public Class Sync_TLtoQB_Vendor
     ''' <summary>
     ''' Sync the vendor data from QB. Print out vendors that are in TL but not QB
     ''' </summary>
-    Function SyncVendorData(ByVal p_token As String, Optional ByVal UI As Boolean = True, Optional ByVal nameList As List(Of String) = Nothing)
+    Function SyncVendorData(ByVal p_token As String, Optional IntegratedUIForm As IntegratedUI = Nothing,
+                            Optional ByVal UI As Boolean = True, Optional ByVal nameList As List(Of String) = Nothing)
         Dim numSynced As Integer = 0
         My.Forms.MAIN.History("Syncing Vendor Data", "n")
         Try
@@ -19,6 +20,7 @@ Public Class Sync_TLtoQB_Vendor
             Dim objEmployeeArray() As Object
             objEmployeeArray = objEmployeeServices.GetEmployees
             Dim objEmployee As New Services.TimeLive.Employees.Employee
+            If Not IntegratedUIForm Is Nothing Then IntegratedUIForm.ProgressBar1.Maximum = objEmployeeArray.Length
 
             For n As Integer = 0 To objEmployeeArray.Length - 1
                 objEmployee = objEmployeeArray(n)
@@ -28,6 +30,7 @@ Public Class Sync_TLtoQB_Vendor
                         numSynced += If(checkQBVendorExist(.EmployeeName.ToString, .EmployeeId, objEmployee, UI), 0, 1)
                     End If
                 End With
+                If Not IntegratedUIForm Is Nothing Then IntegratedUIForm.ProgressBar1.Value += 1
             Next
         Catch ex As Exception
             If UI Then

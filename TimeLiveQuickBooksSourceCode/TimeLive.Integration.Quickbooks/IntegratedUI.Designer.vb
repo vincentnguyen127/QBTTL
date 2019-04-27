@@ -48,10 +48,12 @@ Partial Class IntegratedUI
         Me.TLtoQBEmployeeRadioButton = New System.Windows.Forms.RadioButton()
         Me.QBtoTLEmployeeRadioButton = New System.Windows.Forms.RadioButton()
         Me.TabPageVendor = New System.Windows.Forms.TabPage()
+        Me.RefreshVendors = New System.Windows.Forms.Button()
         Me.VendorSyncDirection = New System.Windows.Forms.GroupBox()
         Me.TLtoQBVendorRadioButton = New System.Windows.Forms.RadioButton()
         Me.QBtoTLVendorRadioButton = New System.Windows.Forms.RadioButton()
         Me.TabPageJobsItems = New System.Windows.Forms.TabPage()
+        Me.RefreshJobsOrItems = New System.Windows.Forms.Button()
         Me.JobItemSyncDirection = New System.Windows.Forms.GroupBox()
         Me.TLtoQBJobItemRadioButton = New System.Windows.Forms.RadioButton()
         Me.QBtoTLJobItemRadioButton = New System.Windows.Forms.RadioButton()
@@ -62,8 +64,8 @@ Partial Class IntegratedUI
         Me.DataGridView1 = New System.Windows.Forms.DataGridView()
         Me.ckBox = New System.Windows.Forms.DataGridViewCheckBoxColumn()
         Me.DataGridView2 = New System.Windows.Forms.DataGridView()
-        Me.RefreshVendors = New System.Windows.Forms.Button()
-        Me.RefreshJobsOrItems = New System.Windows.Forms.Button()
+        Me.TransferTimeButton = New System.Windows.Forms.Button()
+        Me.TimeEntrySelectAll = New System.Windows.Forms.CheckBox()
         Me.GroupBox1.SuspendLayout()
         Me.TabPageTimeTransfer.SuspendLayout()
         Me.TabControl1.SuspendLayout()
@@ -362,6 +364,15 @@ Partial Class IntegratedUI
         Me.TabPageVendor.Text = "Vendors Options"
         Me.TabPageVendor.UseVisualStyleBackColor = True
         '
+        'RefreshVendors
+        '
+        Me.RefreshVendors.Location = New System.Drawing.Point(429, 26)
+        Me.RefreshVendors.Name = "RefreshVendors"
+        Me.RefreshVendors.Size = New System.Drawing.Size(97, 30)
+        Me.RefreshVendors.TabIndex = 3
+        Me.RefreshVendors.Text = "Refresh"
+        Me.RefreshVendors.UseVisualStyleBackColor = True
+        '
         'VendorSyncDirection
         '
         Me.VendorSyncDirection.Controls.Add(Me.TLtoQBVendorRadioButton)
@@ -406,6 +417,15 @@ Partial Class IntegratedUI
         Me.TabPageJobsItems.TabIndex = 6
         Me.TabPageJobsItems.Text = "Jobs/Items Options"
         Me.TabPageJobsItems.UseVisualStyleBackColor = True
+        '
+        'RefreshJobsOrItems
+        '
+        Me.RefreshJobsOrItems.Location = New System.Drawing.Point(429, 26)
+        Me.RefreshJobsOrItems.Name = "RefreshJobsOrItems"
+        Me.RefreshJobsOrItems.Size = New System.Drawing.Size(97, 30)
+        Me.RefreshJobsOrItems.TabIndex = 4
+        Me.RefreshJobsOrItems.Text = "Refresh"
+        Me.RefreshJobsOrItems.UseVisualStyleBackColor = True
         '
         'JobItemSyncDirection
         '
@@ -476,6 +496,7 @@ Partial Class IntegratedUI
         '
         'SplitContainer1.Panel2
         '
+        Me.SplitContainer1.Panel2.Controls.Add(Me.TimeEntrySelectAll)
         Me.SplitContainer1.Panel2.Controls.Add(Me.SyncToLabel)
         Me.SplitContainer1.Panel2.Controls.Add(Me.DataGridView2)
         Me.SplitContainer1.Size = New System.Drawing.Size(986, 422)
@@ -522,29 +543,33 @@ Partial Class IntegratedUI
         Me.DataGridView2.Size = New System.Drawing.Size(496, 388)
         Me.DataGridView2.TabIndex = 42
         '
-        'RefreshVendors
+        'TransferTimeButton
         '
-        Me.RefreshVendors.Location = New System.Drawing.Point(429, 26)
-        Me.RefreshVendors.Name = "RefreshVendors"
-        Me.RefreshVendors.Size = New System.Drawing.Size(97, 30)
-        Me.RefreshVendors.TabIndex = 3
-        Me.RefreshVendors.Text = "Refresh"
-        Me.RefreshVendors.UseVisualStyleBackColor = True
+        Me.TransferTimeButton.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.TransferTimeButton.ImeMode = System.Windows.Forms.ImeMode.NoControl
+        Me.TransferTimeButton.Location = New System.Drawing.Point(697, 597)
+        Me.TransferTimeButton.Name = "TransferTimeButton"
+        Me.TransferTimeButton.Size = New System.Drawing.Size(97, 23)
+        Me.TransferTimeButton.TabIndex = 45
+        Me.TransferTimeButton.Text = "Transfer Time"
+        Me.TransferTimeButton.UseVisualStyleBackColor = True
         '
-        'RefreshJobsOrItems
+        'TimeEntrySelectAll
         '
-        Me.RefreshJobsOrItems.Location = New System.Drawing.Point(429, 26)
-        Me.RefreshJobsOrItems.Name = "RefreshJobsOrItems"
-        Me.RefreshJobsOrItems.Size = New System.Drawing.Size(97, 30)
-        Me.RefreshJobsOrItems.TabIndex = 4
-        Me.RefreshJobsOrItems.Text = "Refresh"
-        Me.RefreshJobsOrItems.UseVisualStyleBackColor = True
+        Me.TimeEntrySelectAll.AutoSize = True
+        Me.TimeEntrySelectAll.Location = New System.Drawing.Point(69, 9)
+        Me.TimeEntrySelectAll.Name = "TimeEntrySelectAll"
+        Me.TimeEntrySelectAll.Size = New System.Drawing.Size(70, 17)
+        Me.TimeEntrySelectAll.TabIndex = 44
+        Me.TimeEntrySelectAll.Text = "Select All"
+        Me.TimeEntrySelectAll.UseVisualStyleBackColor = True
         '
         'IntegratedUI
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(990, 631)
+        Me.Controls.Add(Me.TransferTimeButton)
         Me.Controls.Add(Me.SplitContainer1)
         Me.Controls.Add(Me.TabControl1)
         Me.Controls.Add(Me.bntclose)
@@ -621,4 +646,6 @@ Partial Class IntegratedUI
     Friend WithEvents RefreshEmployees As Button
     Friend WithEvents RefreshVendors As Button
     Friend WithEvents RefreshJobsOrItems As Button
+    Friend WithEvents TransferTimeButton As Button
+    Friend WithEvents TimeEntrySelectAll As CheckBox
 End Class

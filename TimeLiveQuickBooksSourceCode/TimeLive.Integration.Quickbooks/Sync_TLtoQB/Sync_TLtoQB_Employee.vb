@@ -5,7 +5,8 @@ Public Class Sync_TLtoQB_Employee
     ''' <summary>
     ''' Sync the employee data from QB. Print out employees that are in TL but not QB
     ''' </summary>
-    Function SyncEmployeeData(ByVal p_token As String, Optional ByVal UI As Boolean = True, Optional ByVal nameList As List(Of String) = Nothing)
+    Function SyncEmployeeData(ByVal p_token As String, Optional ByVal IntegratedUIForm As IntegratedUI = Nothing,
+                              Optional ByVal UI As Boolean = True, Optional ByVal nameList As List(Of String) = Nothing)
         Dim numSynced As Integer = 0
         My.Forms.MAIN.History("Syncing Employees Data", "n")
         Try
@@ -14,13 +15,16 @@ Public Class Sync_TLtoQB_Employee
             Dim authentication As New Services.TimeLive.Employees.SecuredWebServiceHeader
             authentication.AuthenticatedToken = p_token
             objEmployeeServices.SecuredWebServiceHeaderValue = authentication
-            Dim objClientArray() As Object
-            objClientArray = objEmployeeServices.GetEmployees
+            Dim objEmployeeArray() As Object
+            objEmployeeArray = objEmployeeServices.GetEmployees
             Dim objEmployee As New Services.TimeLive.Employees.Employee
 
+            If Not IntegratedUIForm Is Nothing Then IntegratedUIForm.ProgressBar1.Maximum = objEmployeeArray.Length
+
+
             ' Print employees within TimeLive that are not in QB
-            For n As Integer = 0 To objClientArray.Length - 1
-                objEmployee = objClientArray(n)
+            For n As Integer = 0 To objEmployeeArray.Length - 1
+                objEmployee = objEmployeeArray(n)
                 With objEmployee
                     Dim create As Boolean = If(nameList Is Nothing, True, nameList.Contains(objEmployee.EmployeeName))
                     If (Not .IsVendor) And create Then
@@ -28,6 +32,7 @@ Public Class Sync_TLtoQB_Employee
                         numSynced += If(checkQBEmployeeExist(.EmployeeName.ToString, .EmployeeId, objEmployee, UI), 0, 1)
                     End If
                 End With
+                If Not IntegratedUIForm Is Nothing Then IntegratedUIForm.ProgressBar1.Value += 1
             Next
         Catch ex As Exception
             If UI Then

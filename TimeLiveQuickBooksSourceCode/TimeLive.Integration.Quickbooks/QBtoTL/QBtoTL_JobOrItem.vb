@@ -306,10 +306,10 @@ Public Class QBtoTL_JobOrItem
                         If PTArray.Length = 2 Then ' Job
                             Try
                                 ' Changed element.QB_Name to element.FullName
-                                objProjectServices.InsertProject(nProjectTypeId, nClientId, 0, 0, nProjectBillingTypeId, element.FullName,
-                                                                 element.QB_Name, Now.Date, Now.AddMonths(1).Date, nProjectStatusId, nTeamLeadId,
+                                objProjectServices.InsertProject(nProjectTypeId, nClientId, 0, 0, nProjectBillingTypeId, element.QB_Name,
+                                                                 element.FullName, Now.Date, Now.AddMonths(1).Date, nProjectStatusId, nTeamLeadId,
                                                                  nProjectManagerId, 0, 0, 1, "Months", element.QB_Name, 0, nProjectBillingRateTypeId,
-                                                                 False, False, 0, Now.Date, nTeamLeadId, Now.Date, nTeamLeadId, False)
+                                                                 False, True, 0, Now.Date, nTeamLeadId, Now.Date, nTeamLeadId, False)
 
                             Catch ex As System.Web.Services.Protocols.SoapException
                                 ' Do Nothing
@@ -331,12 +331,12 @@ Public Class QBtoTL_JobOrItem
                             ' SubJob
                         ElseIf PTArray.Length = 3 Then ' Subjob
                             Dim hasParentProject As Boolean = Array.Exists(objProjectServices.GetProjects,
-                                                                Function(proj As Services.TimeLive.Projects.Project) proj.ProjectName = TLProjectName)
+                                                                Function(proj As Services.TimeLive.Projects.Project) proj.ProjectName = PTArray(1))
                             If Not hasParentProject Then
                                 ' Currently decrement because we do not add the task
                                 ' TODO: Add Project then the task, which would mean we would then increment this value (ie we have added 2 instead of 0)
                                 Try
-                                    objProjectServices.InsertProject(nProjectTypeId, nClientId, 0, 0, nProjectBillingTypeId, TLProjectName, PTArray(1),
+                                    objProjectServices.InsertProject(nProjectTypeId, nClientId, 0, 0, nProjectBillingTypeId, PTArray(1), PTArray(1),
                                                                      Now.Date, Now.AddMonths(1).Date, nProjectStatusId, nTeamLeadId, nProjectManagerId,
                                                                      0, 0, 1, "Months", PTArray(1), 0, nProjectBillingRateTypeId,
                                                                      False, True, 0, Now.Date, nTeamLeadId, Now.Date, nTeamLeadId, False)
@@ -350,7 +350,7 @@ Public Class QBtoTL_JobOrItem
                                 'Continue For
                             End If
 
-                            Dim nProjectId As Integer = objProjectServices.GetProjectId(TLProjectName) ' Was ProjectName, which was Nothing 
+                            Dim nProjectId As Integer = objProjectServices.GetProjectId(PTArray(1)) ' Was ProjectName, which was Nothing 
 
                             Dim nTaskTypeId As Integer = objTaskServices.GetTaskTypeId()
                             Dim nTaskStatusId As Integer = objTaskServices.GetTaskStatusId()
@@ -397,11 +397,11 @@ Public Class QBtoTL_JobOrItem
                         If Not CBool(DT_has_QBID) Then
                             Dim project_or_task_inTL As Boolean =
                                 Array.Exists(objTaskServices.GetTasks, Function(e As Services.TimeLive.Tasks.Task) e.TaskName = element.QB_Name) Or
-                                Array.Exists(objProjectServices.GetProjects, Function(e As Services.TimeLive.Projects.Project) e.ProjectName = TLProjectName)
+                                Array.Exists(objProjectServices.GetProjects, Function(e As Services.TimeLive.Projects.Project) e.ProjectName = element.QB_Name)
 
                             If project_or_task_inTL Then
                                 Dim JobAdapter As New QB_TL_IDsTableAdapters.Jobs_SubJobsTableAdapter
-                                Dim proj_or_task_ID = If(PTArray.Length = 2, objProjectServices.GetProjectId(element.FullName), objTaskServices.GetTaskId(element.QB_Name))
+                                Dim proj_or_task_ID = If(PTArray.Length = 2, objProjectServices.GetProjectId(element.QB_Name), objTaskServices.GetTaskId(element.QB_Name))
                                 JobAdapter.Insert(element.QB_ID, proj_or_task_ID, element.QB_Name, element.FullName)
                             Else
                                 My.Forms.MAIN.History("Error creating record In TimeLive", "N")

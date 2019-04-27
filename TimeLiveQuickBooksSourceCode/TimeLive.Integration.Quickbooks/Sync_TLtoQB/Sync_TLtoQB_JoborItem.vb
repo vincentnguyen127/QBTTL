@@ -61,7 +61,8 @@ Public Class Sync_TLtoQB_JoborItem
     ''' Sync the Jobs from QB. Print out Projects and Tasks in TL but not QB
     ''' </summary>
     ''' <param name="p_token"></param>
-    Function SyncJobsSubJobData(ByVal p_token As String, Optional ByVal UI As Boolean = True, Optional ByVal nameList As List(Of String) = Nothing)
+    Function SyncJobsSubJobData(ByVal p_token As String, Optional IntegratedUIForm As IntegratedUI = Nothing,
+                                Optional ByVal UI As Boolean = True, Optional ByVal nameList As List(Of String) = Nothing)
         Dim numSynced As Integer = 0
         My.Forms.MAIN.History("Syncing JobSubJob Data", "n")
         Try
@@ -73,17 +74,6 @@ Public Class Sync_TLtoQB_JoborItem
             Dim objProjectArray() As Object = objProjectServices.GetProjects
             Dim objProject As New Services.TimeLive.Projects.Project
 
-            For n As Integer = 0 To objProjectArray.Length - 1
-                objProject = objProjectArray(n)
-                ' Done this way since field .ProjectID just returned 0
-                Dim projectID As Integer = objProjectServices.GetProjectId(objProject.ProjectName)
-                Dim create As Boolean = If(nameList Is Nothing, True, nameList.Contains(objProject.ProjectName))
-
-                If create Then
-                    numSynced += If(checkQBJobSubJobExist(objProject.ClientName, objProject.ProjectName, projectID.ToString, UI), 0, 1)
-                End If
-            Next
-
             ' Connect to Timelive Tasks
             Dim objTaskServices As New Services.TimeLive.Tasks.Tasks
             Dim authenticationTasks As New Services.TimeLive.Tasks.SecuredWebServiceHeader
@@ -93,6 +83,21 @@ Public Class Sync_TLtoQB_JoborItem
             Dim objTaskArray() As Object = objTaskServices.GetTasks
             Dim objTask As New Services.TimeLive.Tasks.Task
 
+            If Not IntegratedUIForm Is Nothing Then IntegratedUIForm.ProgressBar1.Maximum = objProjectArray.Length + objTaskArray.Length
+
+            For n As Integer = 0 To objProjectArray.Length - 1
+                objProject = objProjectArray(n)
+                ' Done this way since field .ProjectID just returned 0
+                Dim projectID As Integer = objProjectServices.GetProjectId(objProject.ProjectName)
+                Dim create As Boolean = If(nameList Is Nothing, True, nameList.Contains(objProject.ProjectName))
+
+                If create Then
+                    numSynced += If(checkQBJobSubJobExist(objProject.ClientName, objProject.ProjectName, projectID.ToString, UI), 0, 1)
+                End If
+
+                If Not IntegratedUIForm Is Nothing Then IntegratedUIForm.ProgressBar1.Value += 1
+            Next
+
             For n As Integer = 0 To objTaskArray.Length - 1
                 objTask = objTaskArray(n)
                 ' Done this way since field .taskID just returned 0
@@ -101,6 +106,8 @@ Public Class Sync_TLtoQB_JoborItem
                 If create Then
                     numSynced += If(checkQBJobSubJobExist(objTask.JobParent, objTask.TaskName, taskID.ToString, UI), 0, 1)
                 End If
+
+                If Not IntegratedUIForm Is Nothing Then IntegratedUIForm.ProgressBar1.Value += 1
             Next
         Catch ex As System.Web.Services.Protocols.SoapException
             If UI Then

@@ -22,7 +22,15 @@ Public Class IntUI_2ndSelect
     Dim timeentry_tltoqb As TLtoQB_TimeEntry = New TLtoQB_TimeEntry
     Dim TimeEntryData As New TLtoQB_TimeEntry.TimeEntryDataStructureQB
 
-
+    Public Sub init_vars(ByVal token As String, ByVal AccountId As String, ByRef objData As TLtoQB_TimeEntry.EmployeeDataStructure,
+                              StartD As DateTime, EndD As DateTime)
+        p_AccountId = AccountId
+        p_token = token
+        selectedEmployeeData = objData
+        StartDate = StartD
+        EndDate = EndD
+        TimeEntryData.clear()
+    End Sub
 
     Public Overloads Sub Show(ByVal token As String, ByVal AccountId As String, ByRef objData As TLtoQB_TimeEntry.EmployeeDataStructure,
                               StartD As DateTime, EndD As DateTime, TypeSelected As Integer)
@@ -83,7 +91,7 @@ Public Class IntUI_2ndSelect
                 With element
                     If element.RecSelect = True Then
                         My.Forms.MAIN.History("Processing: " + element.FullName.ToString(), "n")
-                        LoadSelectedTmeEntryItems(element.AccountEmployeeId, element.FullName)
+                        LoadSelectedTimeEntryItems(element.AccountEmployeeId, element.FullName, DataGridView1)
                         'deselect as not to load again
                         element.RecSelect = False
                         Exit For
@@ -109,14 +117,20 @@ Public Class IntUI_2ndSelect
         Next
     End Sub
 
-    Public Sub LoadSelectedTmeEntryItems(AccountEmployeeId As String, EmployeeName As String)
+    Public Sub LoadSelectedTimeEntryItems(AccountEmployeeId As String, EmployeeName As String, ByRef DataGridView As DataGridView, Optional combine As Boolean = False)
         Dim temp As New TLtoQB_TimeEntry.TimeEntryDataStructureQB
-        TimeEntryData = timeentry_tltoqb.GetTimeEntryTLData(AccountEmployeeId, StartDate, EndDate,
-                                       Me, p_token, False)
+
+        Dim emplTLData As TLtoQB_TimeEntry.TimeEntryDataStructureQB = timeentry_tltoqb.GetTimeEntryTLData(AccountEmployeeId, StartDate, EndDate, Me, p_token, False)
+        If combine Then
+            TimeEntryData.combine(emplTLData)
+        Else
+            TimeEntryData = emplTLData
+        End If
+
         Dim TotalHour As Integer
         Dim TotalMin As Double
         If TimeEntryData IsNot Nothing Then
-            For Each element As TLtoQB_TimeEntry.TimeEntry In TimeEntryData.DataArray
+            For Each element As TLtoQB_TimeEntry.TimeEntry In emplTLData.DataArray
                 With element
                     Dim Item_SubItemID As String = Nothing
 
@@ -134,7 +148,7 @@ Public Class IntUI_2ndSelect
                     Dim ServiceDisp As String = If(.ServiceName Is Nothing, .ServiceItem, .ServiceName)
 
 
-                    DataGridView1.Rows.Add(.RecSelect, .TimeEntryDate.ToString("MM/dd/yyyy"), .CustomerName.ToString(),
+                    DataGridView.Rows.Add(.RecSelect, .EmployeeName, .TimeEntryDate.ToString("MM/dd/yyyy"), .CustomerName.ToString(),
                                            .ProjectName.ToString(), .TaskWithParent.ToString(),
                                            (TotalHour + TotalMin).ToString, .TimeEntryClass, payrollDisp, ServiceDisp)
                     element.RecSelect = True
@@ -144,13 +158,23 @@ Public Class IntUI_2ndSelect
         End If
 
         'Select All
-        For Each row As DataGridViewRow In DataGridView1.Rows
+        For Each row As DataGridViewRow In DataGridView.Rows
             If row.Cells("Date").Value IsNot Nothing Then
                 row.Cells("ckBox").Value = True
             End If
         Next
 
         'MsgBox(" at the end " + TimeEntryData.NoItems.ToString)
+    End Sub
+
+    Public Sub time_transfer(ByRef DataGridView As DataGridView)
+        Reset_Checked_TimeEntry_Value(TimeEntryData)
+        Set_Selected_TimeEntry(DataGridView)
+
+        ' Set TimeEntryData
+
+        ' Transfer Time Entry data from TL to QB
+        timeentry_tltoqb.TLTransferTimeToQB(TimeEntryData, p_token, Me, True)
     End Sub
 
     Private Sub btnclose_Click(sender As Object, e As EventArgs) Handles bntclose.Click
@@ -163,7 +187,7 @@ Public Class IntUI_2ndSelect
 
         If Type = 201 Then
             Reset_Checked_TimeEntry_Value(TimeEntryData)
-            Set_Selected_TimeEntry()
+            Set_Selected_TimeEntry(DataGridView1)
             ' need to set selected data
 
             Dim element As New TLtoQB_TimeEntry.EmployeeDataStructure
@@ -171,10 +195,10 @@ Public Class IntUI_2ndSelect
             timeentry_tltoqb.TLTransferTimeToQB(TimeEntryData, p_token, Me, True)
 
             'wait for one second so user can see progress bar
-            System.Threading.Thread.Sleep(500)
+            System.Threading.Thread.Sleep(150)
             System.Windows.Forms.Application.DoEvents()
             Me.ProgressBar1.Value = 0
-            System.Threading.Thread.Sleep(500)
+            System.Threading.Thread.Sleep(150)
             System.Windows.Forms.Application.DoEvents()
 
             Dim NextItemFound As Boolean = False
@@ -190,7 +214,7 @@ Public Class IntUI_2ndSelect
                         '                     CDate(EndDate).Date.ToString, 201)
 
                         My.Forms.MAIN.History("Processing: " + element1.FullName.ToString(), "n")
-                        LoadSelectedTmeEntryItems(element1.AccountEmployeeId, element1.FullName)
+                        LoadSelectedTimeEntryItems(element1.AccountEmployeeId, element1.FullName, DataGridView1)
                         NextItemFound = True
                         'deselect as not to load again
                         element1.RecSelect = False
@@ -213,36 +237,35 @@ Public Class IntUI_2ndSelect
         Next
     End Sub
 
-    Private Sub Set_Selected_TimeEntry()
-        For Each row As DataGridViewRow In DataGridView1.Rows
-            If row.Cells("Date").Value IsNot Nothing Then
-                If row.Cells("ckBox").Value = True Then
-                    If TimeEntryData.NoItems > 0 Then
-                        TimeEntryData.DataArray(row.Index).RecSelect = True
-                        My.Forms.MAIN.History("Selected for processing: " + row.Cells("Date").Value, "n")
-                    End If
-                End If
+    Private Sub Set_Selected_TimeEntry(ByRef DataGridView As DataGridView)
+        For Each row As DataGridViewRow In DataGridView.Rows
+            If row.Cells("Date").Value IsNot Nothing And row.Cells("ckBox").Value And TimeEntryData.NoItems Then
+                Dim i = 0
+                TimeEntryData.DataArray.ForEach(
+                    Sub(timeentry)
+                        If (timeentry.EmployeeName = row.Cells("Employee").Value.ToString And
+                           timeentry.CustomerName = row.Cells("Customer").Value.ToString And
+                           timeentry.ProjectName = row.Cells("Job").Value.ToString And
+                           timeentry.TaskWithParent = row.Cells("Subjob").Value.ToString And
+                           timeentry.TimeEntryDate.ToString("MM/dd/yyyy") = row.Cells("Date").Value.ToString) Then
+                            timeentry.RecSelect = True
+                        End If
+                    End Sub
+                )
+                'TimeEntryData.DataArray(row.Index).RecSelect = True
+                My.Forms.MAIN.History("Selected for processing: " + row.Cells("Date").Value, "n")
             End If
         Next
     End Sub
 
-    Private Sub btnselectall_Click(sender As Object, e As EventArgs) Handles btnselectall.Click
-        If SelectAll = False Then
-            For Each row As DataGridViewRow In DataGridView1.Rows
-                If row.Cells("Name").Value IsNot Nothing Then
-                    row.Cells("ckBox").Value = True
-                End If
-            Next
-            SelectAll = True
-        Else
-            For Each row As DataGridViewRow In DataGridView1.Rows
-                If row.Cells("Name").Value IsNot Nothing Then
-                    row.Cells("ckBox").Value = False
-                End If
-            Next
-            SelectAll = False
-        End If
-    End Sub
+    'Private Sub btnselectall_Click(sender As Object, e As EventArgs, ByRef DataGridView As DataGridView) Handles btnselectall.Click
+    '    SelectAll = Not SelectAll
+    '    For Each row As DataGridViewRow In DataGridView1.Rows
+    '        If row.Cells("Name").Value IsNot Nothing Then
+    '            row.Cells("ckBox").Value = SelectAll
+    '        End If
+    '    Next
+    'End Sub
 
     Private Sub DataGridView1_CellValueChanged(sender As Object, e As DataGridViewCellEventArgs) Handles DataGridView1.CellValueChanged
         Dim TotalTime As Double = 0.0

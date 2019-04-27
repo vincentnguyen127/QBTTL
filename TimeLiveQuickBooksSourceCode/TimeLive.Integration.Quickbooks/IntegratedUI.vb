@@ -39,14 +39,13 @@ Public Class IntegratedUI
     Private Function display_UI() Handles QBtoTLCustomerRadioButton.CheckedChanged, QBtoTLEmployeeRadioButton.CheckedChanged,
                                            QBtoTLVendorRadioButton.CheckedChanged, QBtoTLJobItemRadioButton.CheckedChanged,
                                            RefreshCustomers.Click, RefreshEmployees.Click, RefreshVendors.Click, RefreshJobsOrItems.Click
-
-
         Dim ItemLastSync As DateTime
         Dim lastSync As String
         Dim Data
         Dim attribute As String
         Dim QBtoTLRadioButton As RadioButton
-
+        TransferTimeButton.Visible = False
+        TimeEntrySelectAll.Visible = False
         ' Unselect the select all check box
         SelectAllCheckBox.Checked = False
 
@@ -106,8 +105,8 @@ Public Class IntegratedUI
                 Return 0
         End Select
 
-        SyncFromLabel.Text = If(QBtoTLRadioButton.Checked, "QuickBooks", "TimeLive")
-        SyncToLabel.Text = If(QBtoTLRadioButton.Checked, "TimeLive", "QuickBooks")
+        SyncFromLabel.Text = If(Type = 20, "Employees", If(QBtoTLRadioButton.Checked, "QuickBooks", "TimeLive"))
+        SyncToLabel.Text = If(Type = 20, "Time", If(QBtoTLRadioButton.Checked, "TimeLive", "QuickBooks"))
 
         If String.IsNullOrEmpty(lastSync) Then
             ItemLastSync = #1/1/2000#
@@ -454,6 +453,47 @@ Public Class IntegratedUI
         Return readItems
     End Function
 
+    Private Sub Time_Entry_Times()
+        DataGridView2.AutoSize = False
+        DataGridView2.AutoSizeRowsMode = False
+
+        DataGridView2.Rows.Clear()
+        DataGridView2.Columns.Clear()
+
+        ' load grid 2
+        Dim col1 As New DataGridViewCheckBoxColumn
+        col1.Name = "ckBox"
+        col1.HeaderText = "Check Box"
+        DataGridView2.Columns.Add(col1)
+        Dim colname As New DataGridViewTextBoxColumn
+        colname.Name = "Employee"
+        DataGridView2.Columns.Add(colname)
+        Dim col2 As New DataGridViewTextBoxColumn
+        col2.Name = "Date"
+        DataGridView2.Columns.Add(col2)
+        Dim col3 As New DataGridViewTextBoxColumn
+        col3.Name = "Customer"
+        DataGridView2.Columns.Add(col3)
+        Dim col4 As New DataGridViewTextBoxColumn
+        col4.Name = "Job"
+        DataGridView2.Columns.Add(col4)
+        Dim col5 As New DataGridViewTextBoxColumn
+        col5.Name = "SubJob"
+        DataGridView2.Columns.Add(col5)
+        Dim col6 As New DataGridViewTextBoxColumn
+        col6.Name = "Time"
+        DataGridView2.Columns.Add(col6)
+        Dim col7 As New DataGridViewTextBoxColumn
+        col7.Name = "Class"
+        DataGridView2.Columns.Add(col7)
+        Dim col8 As New DataGridViewTextBoxColumn
+        col8.Name = "Payroll Item"
+        DataGridView2.Columns.Add(col8)
+        Dim col9 As New DataGridViewTextBoxColumn
+        col9.Name = "Item SubItem"
+        DataGridView2.Columns.Add(col9)
+    End Sub
+
     Public Sub IntegratedUI_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         Dim ItemLastSync As DateTime
         Dim ReadItems As Integer = 0
@@ -478,13 +518,18 @@ Public Class IntegratedUI
             TabPageTimeTransfer.Visible = True
             TabControl1.SelectedIndex = 4
 
-            'load grid (there might be an easire way)
+            SyncFromLabel.Text = "Employees"
+            SyncToLabel.Text = "Time"
+
+            'load grid 1
             Dim col2 As New DataGridViewTextBoxColumn
             col2.Name = "Name"
             DataGridView1.Columns.Add(col2)
             Dim col3 As New DataGridViewTextBoxColumn
             col3.Name = "Employee ID"
             DataGridView1.Columns.Add(col3)
+
+            SelectAllCheckBox.Checked = True
 
             If String.IsNullOrEmpty(My.Settings.TimeTrackingLastSync.ToString()) Then
                 ItemLastSync = #1/1/2000#
@@ -512,6 +557,8 @@ Public Class IntegratedUI
                 'My.Forms.MAIN.History("Debug:   " + element.RecSelect.ToString(), "n")
                 DataGridView1.Rows.Add(element.RecSelect, element.FullName.ToString(), element.AccountEmployeeId.ToString())
             Next
+
+            'Time_Entry_Times()
 
             System.Threading.Thread.Sleep(150)
             System.Windows.Forms.Application.DoEvents()
@@ -546,6 +593,8 @@ Public Class IntegratedUI
     End Sub
 
     Private Sub btnclose_Click(sender As Object, e As EventArgs) Handles bntclose.Click
+        TransferTimeButton.Visible = False
+        TimeEntrySelectAll.Visible = False
         Me.Close()
     End Sub
 
@@ -563,7 +612,7 @@ Public Class IntegratedUI
                 My.Settings.Save()
             Else
                 Dim customersToCheck As List(Of String) = TL_Set_Selected_Items()
-                ItemsProcessed = customer_TLSync.SyncCustomerData(p_token, True, customersToCheck)
+                ItemsProcessed = customer_TLSync.SyncCustomerData(p_token, Me, True, customersToCheck)
                 My.Forms.MAIN.History(ItemsProcessed.ToString() + " QuickBooks customer" + If(ItemsProcessed = 1, " was", "s were") + " created or updated", "i")
             End If
         End If
@@ -579,7 +628,7 @@ Public Class IntegratedUI
                 My.Settings.Save()
             Else
                 Dim employeesToCheck As List(Of String) = TL_Set_Selected_Items()
-                ItemsProcessed = employee_TLSync.SyncEmployeeData(p_token, True, employeesToCheck)
+                ItemsProcessed = employee_TLSync.SyncEmployeeData(p_token, Me, True, employeesToCheck)
                 My.Forms.MAIN.History(ItemsProcessed.ToString() + " QuickBooks employee" + If(ItemsProcessed = 1, " was", "s were") + " created or updated", "i")
             End If
         End If
@@ -595,7 +644,7 @@ Public Class IntegratedUI
                 My.Settings.Save()
             Else
                 Dim vendorsToCheck As List(Of String) = TL_Set_Selected_Items()
-                ItemsProcessed = vendor_TLSync.SyncVendorData(p_token, True, vendorsToCheck)
+                ItemsProcessed = vendor_TLSync.SyncVendorData(p_token, Me, True, vendorsToCheck)
                 My.Forms.MAIN.History(ItemsProcessed.ToString() + " QuickBooks vendor" + If(ItemsProcessed = 1, " was", "s were") + " created or updated", "i")
             End If
         End If
@@ -617,7 +666,7 @@ Public Class IntegratedUI
                 My.Settings.Save()
             Else
                 Dim jobsToCheck As List(Of String) = TL_Set_Selected_Items()
-                ItemsProcessed = job_TLSync.SyncJobsSubJobData(p_token, True, jobsToCheck)
+                ItemsProcessed = job_TLSync.SyncJobsSubJobData(p_token, Me, True, jobsToCheck)
                 My.Forms.MAIN.History(ItemsProcessed.ToString() + " QuickBooks job/item" + If(ItemsProcessed = 1, " was", "s were") + " created or updated", "i")
             End If
         End If
@@ -637,13 +686,30 @@ Public Class IntegratedUI
 
         'When processing Time Transfer
         If Type = 20 Then
+            TransferTimeButton.Visible = True
+            TimeEntrySelectAll.Visible = True
+            TimeEntrySelectAll.Checked = True
             Reset_Checked_SelectedEmployee_Value(selectedEmployeeData)
             Set_Selected_SelectedEmployee()
-            Dim IntUI_2ndSelect As New IntUI_2ndSelect
-            IntUI_2ndSelect.Owner = Me
-            IntUI_2ndSelect.Show(p_token, p_AccountId, selectedEmployeeData,
-                                             CDate(dpStartDate.Value).Date,
-                                             CDate(dpEndDate.Value).Date.ToString, 201)
+            'Dim IntUI_2ndSelect As New IntUI_2ndSelect
+            Time_Entry_Times()
+            IntUI_2ndSelect.init_vars(p_token, p_AccountId, selectedEmployeeData, CDate(dpStartDate.Value).Date, CDate(dpEndDate.Value).Date.ToString)
+
+            For Each element As TLtoQB_TimeEntry.Employee In selectedEmployeeData.DataArray
+                With element
+                    If element.RecSelect = True Then
+                        My.Forms.MAIN.History("Processing: " + element.FullName.ToString(), "n")
+                        IntUI_2ndSelect.LoadSelectedTimeEntryItems(element.AccountEmployeeId, element.FullName, DataGridView2, True)
+                        'deselect as not to load again
+                        element.RecSelect = False
+                        'Exit For
+                    End If
+                End With
+            Next
+            'IntUI_2ndSelect.Owner = Me
+            'IntUI_2ndSelect.Show(p_token, p_AccountId, selectedEmployeeData,
+            '                                 CDate(dpStartDate.Value).Date,
+            '                                 CDate(dpEndDate.Value).Date.ToString, 201)
 
             My.Settings.TimeTrackingLastSync = DateTime.Now.ToString()
             My.Settings.Save()
@@ -654,6 +720,18 @@ Public Class IntegratedUI
         System.Windows.Forms.Application.DoEvents()
 
         Me.ProgressBar1.Value = 0
+    End Sub
+
+    Private Sub transfer_time(sender As Object, e As EventArgs) Handles TransferTimeButton.Click
+        'IntUI_2ndSelect.Set_Selected_TimeEntry(DataGridView2)
+        IntUI_2ndSelect.time_transfer(DataGridView2)
+
+        'wait for one second so user can see progress bar
+        'System.Threading.Thread.Sleep(150)
+        'System.Windows.Forms.Application.DoEvents()
+        'Me.ProgressBar1.Value = 0
+
+        'MessageBox.Show("Last employee processed")
     End Sub
 
     Private Sub Reset_Checked_Customer_Value(ByRef customerObj As QBtoTL_Customer.CustomerDataStructureQB)
@@ -785,6 +863,14 @@ Public Class IntegratedUI
         For Each row As DataGridViewRow In DataGridView1.Rows
             If row.Cells("Name").Value IsNot Nothing Then
                 row.Cells("ckBox").Value = SelectAllCheckBox.Checked
+            End If
+        Next
+    End Sub
+
+    Private Sub timeEntry_selectall_checkbox(sender As Object, e As EventArgs) Handles TimeEntrySelectAll.CheckedChanged
+        For Each row As DataGridViewRow In DataGridView2.Rows
+            If row.Cells("Employee").Value IsNot Nothing Then
+                row.Cells("ckBox").Value = TimeEntrySelectAll.Checked
             End If
         Next
     End Sub
@@ -930,13 +1016,5 @@ Public Class IntegratedUI
     Private Sub cbWageType_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cbWageType.SelectedIndexChanged
         My.Settings.QBWageType = cbWageType.SelectedIndex
         My.Settings.Save()
-    End Sub
-
-    Private Sub display_UI2(sender As Object, e As EventArgs) Handles QBtoTLCustomerRadioButton.CheckedChanged
-
-    End Sub
-
-    Private Sub display_UI(sender As Object, e As EventArgs) Handles QBtoTLVendorRadioButton.CheckedChanged, QBtoTLJobItemRadioButton.CheckedChanged, QBtoTLEmployeeRadioButton.CheckedChanged, QBtoTLCustomerRadioButton.CheckedChanged, RefreshEmployees.Click, RefreshCustomers.Click
-
     End Sub
 End Class

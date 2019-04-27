@@ -22,6 +22,16 @@ Public Class TLtoQB_TimeEntry
     Public Class TimeEntryDataStructureQB
         Public NoItems As Integer = 0
         Public DataArray As New List(Of TimeEntry)
+
+        Public Sub combine(other As TimeEntryDataStructureQB)
+            Me.NoItems += other.NoItems
+            Me.DataArray.AddRange(other.DataArray)
+        End Sub
+
+        Public Sub clear()
+            Me.NoItems = 0
+            Me.DataArray = New List(Of TimeEntry)
+        End Sub
     End Class
     Public Class TimeEntry
         Public RecSelect As Boolean
@@ -146,7 +156,7 @@ Public Class TLtoQB_TimeEntry
                         empId = Get_QB_ID_ForTL_EmployeeName(EmployeeName)
                     End If
 
-                    Dim jobID As String = Get_QB_ID_ForTL_JobName(.ProjectName.ToString + ":" + .TaskWithParent.ToString) ' was .CustomerName.ToString + ":" + ...
+                    Dim jobID As String = Get_QB_ID_ForTL_JobName(.ClientName.ToString + .ProjectName.ToString + ":" + .TaskWithParent.ToString)
                     Dim Item_SubItemID As String = Get_QB_ID_ForTL_ItemName(empId, jobID).ToString.Trim
                     'My.Forms.MAIN.History(Item_SubItemID, "i")
 
@@ -225,7 +235,7 @@ Public Class TLtoQB_TimeEntry
                 ' check if the check value is true
                 If element.RecSelect Then
                     'Check number of QB records that match ID
-                    My.Forms.MAIN.History("Processing: " + element.EmployeeName, "n")
+                    'My.Forms.MAIN.History("Processing: " + element.EmployeeName, "n")
                     'My.Forms.MAIN.History("get QB_ID:   " + na.ToString + " Name is : " + element.EmployeeName, "i")
                     Dim TL_ID_Return = 0 'ISQBID_In_DataTable(element.QB_ID)
                     'if none create
@@ -239,7 +249,7 @@ Public Class TLtoQB_TimeEntry
                                              .TaskWithParent, .TotalTime, .TimeEntryDate, .TimeEntryClass,
                                              .PayrollItem_TypeName, .PayrollItem, .ServiceItem_TypeName, .ServiceItem)
 
-                                My.Forms.MAIN.History("Inserted time entry for: " + .TimeEntryDate, "i")
+                                My.Forms.MAIN.History("Inserted time entry for " + .EmployeeName + " on " + .TimeEntryDate + " for task " + .TaskWithParent, "i")
 
                                 ' if it does not exist create a new record on both the sync database and on TL
                                 'My.Forms.MAIN.History("Inserting QB & TL keys into sync database and inserting to TimeLife:  " + element.EmployeeName, "i")
@@ -318,29 +328,27 @@ Public Class TLtoQB_TimeEntry
     End Function
 
     Public Function Get_QB_ID_ForTL_EmployeeName(ByVal employeeName As String) As String
-        Dim result As String
+        Dim result As String = ""
         My.Forms.MAIN.History("Finding employeeID using Employee Name: " + employeeName, "n")
 
         Dim EmployeeAdapter As New QB_TL_IDsTableAdapters.EmployeesTableAdapter()
         Dim EmployeeQBID As QB_TL_IDs.EmployeesDataTable = EmployeeAdapter.GetCorrespondingQB_IDbyQB_Name(employeeName)
 
         Dim VendorAdapter As New QB_TL_IDsTableAdapters.VendorsTableAdapter()
-
-        If EmployeeQBID.Count > 1 Then
-            My.Forms.MAIN.History("Found " + EmployeeQBID.Count.ToString + " matching employee IDs for: " + employeeName, "I")
-            Return ""
-        ElseIf EmployeeQBID.Count = 0 Then
+        ' No employee found, check if it was actually a vendor
+        If EmployeeQBID.Count = 0 Then
             Dim VendorQBID As QB_TL_IDs.VendorsDataTable = VendorAdapter.GetCorrespondingQB_IDbyQB_Name(employeeName)
-            If VendorQBID.Count = 0 Then
-                My.Forms.MAIN.History("Did not find any matching employee/vendor IDs for: " + employeeName, "I")
-            ElseIf VendorQBID.Count > 1 Then
-                My.Forms.MAIN.History("Found " + VendorQBID.Count.ToString + " matching vendor IDs for: " + employeeName, "I")
-            End If
-            Return ""
+            My.Forms.MAIN.History("Found " + VendorQBID.Count.ToString + " matching employee/vendor ID" +
+                                  If(VendorQBID.Count = 1, "", "s") + " for: " + employeeName, "I")
+            result = If(VendorQBID.Count, VendorQBID(0)(0).ToString, "")
+        Else
+            My.Forms.MAIN.History("Found " + EmployeeQBID.Count.ToString + " matching employee ID" +
+                                  If(EmployeeQBID.Count = 1, "", "s") + " for: " + employeeName, "I")
+            result = If(EmployeeQBID.Count, EmployeeQBID(0)(0).ToString, "")
         End If
 
-        result = EmployeeQBID.Rows(0)(0).ToString
         My.Forms.MAIN.History("QB Employee ID: " + result, "i")
+        ' Return string of the ID (Empty string if none found)
         Return result
     End Function
 
@@ -573,11 +581,7 @@ Public Class TLtoQB_TimeEntry
             Dim msgSetRq As IMsgSetRequest = MAIN.SESSMANAGER.CreateMsgSetRequest("US", 2, 0)
             msgSetRq.Attributes.OnError = ENRqOnError.roeContinue
             Dim timeAdd As ITimeTrackingAdd = msgSetRq.AppendTimeTrackingAddRq
-            If ProjectName.Split(":")(0) = CustomerName Then
-                timeAdd.CustomerRef.FullName.SetValue(ProjectName & ":" & ServiceItemName) ' CustomerName & ":" & ...
-            Else
-                timeAdd.CustomerRef.FullName.SetValue(CustomerName & ":" & ProjectName & ":" & ServiceItemName) ' CustomerName & ":" & ...
-            End If
+            timeAdd.CustomerRef.FullName.SetValue(CustomerName & ":" & ProjectName & ":" & ServiceItemName) ' CustomerName & ":" & ...
             timeAdd.Duration.SetValue(TotalTime.Hour, TotalTime.Minute, 0, False)
             timeAdd.EntityRef.FullName.SetValue(EmployeeName)
             timeAdd.IsBillable.SetValue(IsBillable)

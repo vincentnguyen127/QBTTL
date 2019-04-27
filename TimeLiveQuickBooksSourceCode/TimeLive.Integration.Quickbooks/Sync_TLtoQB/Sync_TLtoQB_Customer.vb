@@ -7,7 +7,8 @@ Public Class Sync_TLtoQB_Customer
     ''' <summary>
     ''' Sync the customer data from QB. Print out customers that are in TL but not QB
     ''' </summary>
-    Function SyncCustomerData(ByVal p_token As String, Optional ByVal UI As Boolean = True, Optional ByVal nameList As List(Of String) = Nothing)
+    Function SyncCustomerData(ByVal p_token As String, Optional ByVal IntegratedUIForm As IntegratedUI = Nothing,
+                              Optional ByVal UI As Boolean = True, Optional ByVal nameList As List(Of String) = Nothing)
         Dim numSynced As Integer = 0
         My.Forms.MAIN.History("Syncing Clients Data", "n")
         Try
@@ -20,6 +21,8 @@ Public Class Sync_TLtoQB_Customer
             objClientArray = objClientServices.GetClients()
             Dim objClient As New Services.TimeLive.Clients.Client
 
+            If Not IntegratedUIForm Is Nothing Then IntegratedUIForm.ProgressBar1.Maximum = objClientArray.Length
+
             For n As Integer = 0 To objClientArray.Length - 1
                 objClient = objClientArray(n)
                 Dim clientID As Integer = objClientServices.GetClientIdByName(objClient.ClientName)
@@ -28,6 +31,7 @@ Public Class Sync_TLtoQB_Customer
                 If create Then
                     numSynced += If(checkQBCustomerExist(objClient.ClientName.ToString, clientID, objClient, UI), 0, 1)
                 End If
+                If Not IntegratedUIForm Is Nothing Then IntegratedUIForm.ProgressBar1.Value += 1
             Next
 
         Catch ex As Exception
