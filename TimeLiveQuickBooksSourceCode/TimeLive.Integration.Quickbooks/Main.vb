@@ -9,6 +9,7 @@ Public Class MAIN
     Private p_AccountId As String
     <ThreadStatic> Public Shared SESSMANAGER As QBSessionManager
     Public Shared colonReplacer = ">"
+    Public Shared TIMERTHREAD As Threading.Thread
 
 
     Private Sub PARENT_LOAD(SENDER As System.Object, E As System.EventArgs) Handles MyBase.Load
@@ -31,7 +32,7 @@ Public Class MAIN
             Dim ChargingRelationship As New ChargingRelationship
 
             'SPIN OFF THREAD FOR TIMER
-            TIMERTHREAD()
+            TIMERTHREAD_func()
             Dim NextRunDateTime As Date = Convert.ToDateTime(My.Settings.AutoRunTime)
             NextProcessingTime.Text = "Auto Processing Time: " + NextRunDateTime.ToString("MM/dd/yy HH:mm")
 
@@ -41,10 +42,11 @@ Public Class MAIN
         End Try
     End Sub
 
-    Public Sub TIMERTHREAD()
-        Dim TIMERTHREAD _
-        As New Threading.Thread(
-            AddressOf TIMERMULTITHREADING)
+    Public Sub TIMERTHREAD_func()
+        'TIMERTHREAD _
+        'As New Threading.Thread(
+        '    AddressOf TIMERMULTITHREADING)
+        TIMERTHREAD = New Threading.Thread(AddressOf TIMERMULTITHREADING)
         TIMERTHREAD.Start()
     End Sub
 
@@ -102,7 +104,8 @@ Public Class MAIN
 
     Public Sub QUITQBSESSION()
         ' close the session manager if it is open
-        If Not MAIN.SESSMANAGER Is Nothing Then
+        Dim val = SESSMANAGER.ConnectionType
+        If MAIN.SESSMANAGER IsNot Nothing Then
             MAIN.SESSMANAGER.EndSession()
             MAIN.SESSMANAGER.CloseConnection()
         End If
@@ -136,6 +139,9 @@ Public Class MAIN
 
     Private Sub Exitbtn_Click(sender As Object, e As EventArgs) Handles Exitbtn.Click
         QUITQBSESSION() ' Close QB session before exiting
+        If TIMERTHREAD IsNot Nothing Then
+            TIMERTHREAD.Abort()
+        End If
         Me.Close()
     End Sub
 

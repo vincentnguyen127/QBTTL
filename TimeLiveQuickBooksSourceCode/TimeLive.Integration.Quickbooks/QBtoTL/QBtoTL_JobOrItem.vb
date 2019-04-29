@@ -260,7 +260,7 @@ Public Class QBtoTL_JobOrItem
                     'If DT_has_QBID = 0 Then
                     Dim create As Boolean = True
                     If UI And Not CBool(DT_has_QBID) Then
-                        create = MsgBox("New job or subjob found: " + element.QB_Name + ". Create?", MsgBoxStyle.YesNo, "Warning!") = MsgBoxResult.Yes
+                        create = MsgBox("New job or subjob found: " + element.FullName.Replace(":", MAIN.colonReplacer) + ". Create?", MsgBoxStyle.YesNo, "Warning!") = MsgBoxResult.Yes
                     End If
                     If create Then
                         ' If QB_ID is in the DB, check if TL ID is too
@@ -301,11 +301,8 @@ Public Class QBtoTL_JobOrItem
                         End If
 
                         NoRecordsCreatedorUpdated += 1
-                        Dim TLProjectName = PTArray(0) + ":" + PTArray(1)
-
                         If PTArray.Length = 2 Then ' Job
                             Try
-                                ' Changed element.QB_Name to element.FullName
                                 objProjectServices.InsertProject(nProjectTypeId, nClientId, 0, 0, nProjectBillingTypeId, element.QB_Name,
                                                                  element.FullName, Now.Date, Now.AddMonths(1).Date, nProjectStatusId, nTeamLeadId,
                                                                  nProjectManagerId, 0, 0, 1, "Months", element.QB_Name, 0, nProjectBillingRateTypeId,
@@ -331,12 +328,12 @@ Public Class QBtoTL_JobOrItem
                             ' SubJob
                         ElseIf PTArray.Length = 3 Then ' Subjob
                             Dim hasParentProject As Boolean = Array.Exists(objProjectServices.GetProjects,
-                                                                Function(proj As Services.TimeLive.Projects.Project) proj.ProjectName = PTArray(1))
+                                                                Function(proj As Services.TimeLive.Projects.Project) proj.ClientName + ":" + proj.ProjectName = PTArray(0) + ":" + PTArray(1))
                             If Not hasParentProject Then
                                 ' Currently decrement because we do not add the task
                                 ' TODO: Add Project then the task, which would mean we would then increment this value (ie we have added 2 instead of 0)
                                 Try
-                                    objProjectServices.InsertProject(nProjectTypeId, nClientId, 0, 0, nProjectBillingTypeId, PTArray(1), PTArray(1),
+                                    objProjectServices.InsertProject(nProjectTypeId, nClientId, 0, 0, nProjectBillingTypeId, PTArray(1), PTArray(0) + ":" + PTArray(1),
                                                                      Now.Date, Now.AddMonths(1).Date, nProjectStatusId, nTeamLeadId, nProjectManagerId,
                                                                      0, 0, 1, "Months", PTArray(1), 0, nProjectBillingRateTypeId,
                                                                      False, True, 0, Now.Date, nTeamLeadId, Now.Date, nTeamLeadId, False)
@@ -345,7 +342,7 @@ Public Class QBtoTL_JobOrItem
                                 End Try
                                 nProjectTypeId = objProjectServices.GetProjectTypeId() ' Not sure if this is needed, to update project id or something
                                 NoRecordsCreatedorUpdated += 1
-                                My.Forms.MAIN.History("Successfully inserted project " + TLProjectName, "i")
+                                My.Forms.MAIN.History("Successfully inserted project " + PTArray(0) + ":" + PTArray(1), "i")
                                 'My.Forms.MAIN.History(ex.ToString, "C")
                                 'Continue For
                             End If
@@ -377,7 +374,7 @@ Public Class QBtoTL_JobOrItem
                                 Continue For
                             End If
 
-                            Dim nProjectId As Integer = objProjectServices.GetProjectId(TLProjectName)
+                            Dim nProjectId As Integer = objProjectServices.GetProjectId(PTArray(1))
                             Dim nTaskTypeId As Integer = objTaskServices.GetTaskTypeId()
                             Dim nTaskStatusId As Integer = objTaskServices.GetTaskStatusId()
                             Dim nPriorityId As Integer = objTaskServices.GetTaskPriorityId()
@@ -396,15 +393,19 @@ Public Class QBtoTL_JobOrItem
                         'Insert record into sync database if Not in it
                         If Not CBool(DT_has_QBID) Then
                             Dim project_or_task_inTL As Boolean =
-                                Array.Exists(objTaskServices.GetTasks, Function(e As Services.TimeLive.Tasks.Task) e.TaskName = element.QB_Name) Or
-                                Array.Exists(objProjectServices.GetProjects, Function(e As Services.TimeLive.Projects.Project) e.ProjectName = element.QB_Name)
+                                Array.Exists(objTaskServices.GetTasks, Function(e As Services.TimeLive.Tasks.Task) e.JobParent + ":" + e.TaskName = element.FullName) Or
+                                Array.Exists(objProjectServices.GetProjects, Function(e As Services.TimeLive.Projects.Project) e.ClientName + ":" + e.ProjectName = element.FullName)
 
                             If project_or_task_inTL Then
-                                Dim JobAdapter As New QB_TL_IDsTableAdapters.Jobs_SubJobsTableAdapter
-                                Dim proj_or_task_ID = If(PTArray.Length = 2, objProjectServices.GetProjectId(element.QB_Name), objTaskServices.GetTaskId(element.QB_Name))
-                                JobAdapter.Insert(element.QB_ID, proj_or_task_ID, element.QB_Name, element.FullName)
+                                If Not UI Or MsgBox("Job/SubJob in QB and TL: " + element.FullName.Replace(":", MAIN.colonReplacer) + ". Insert into Table Adapter?", MsgBoxStyle.YesNo, "Warning!") = MsgBoxResult.Yes Then
+                                    Dim JobAdapter As New QB_TL_IDsTableAdapters.Jobs_SubJobsTableAdapter
+                                    ' Currently does not support the same job name with different parent customers / same subjob name with different parent jobs
+                                    Dim proj_or_task_ID As Integer = If(PTArray.Length = 2, objProjectServices.GetProjectId(element.QB_Name), objTaskServices.GetTaskId(element.QB_Name))
+                                    JobAdapter.Insert(element.QB_ID, proj_or_task_ID, element.QB_Name, element.FullName)
+                                End If
                             Else
-                                My.Forms.MAIN.History("Error creating record In TimeLive", "N")
+                                Dim errStr As String = If(PTArray.Length = 2, " client in timelive has a project with name ", " project in timelive has a task with name ")
+                                My.Forms.MAIN.History("Error creating record In TimeLive: Make sure that no other " + errStr + element.QB_Name, "N")
                             End If
                         End If
 

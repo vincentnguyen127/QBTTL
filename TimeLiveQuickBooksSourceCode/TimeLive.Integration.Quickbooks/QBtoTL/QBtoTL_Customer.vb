@@ -212,11 +212,13 @@ Public Class QBtoTL_Customer
                             Dim customerInTL As Boolean = Array.Exists(objClientServices.GetClients,
                                                                        Function(e As Services.TimeLive.Clients.Client) e.ClientName = element.QB_Name)
                             If customerInTL Then
-                                Dim TLClientID As String = objClientServices.GetClientIdByName(element.QB_Name)
-                                My.Forms.MAIN.History("TimeLive Client ID: " + TLClientID, "i")
-                                My.Forms.MAIN.History("Inserting new client into sync db.", "i")
-                                Dim CustomerAdapter As New QB_TL_IDsTableAdapters.CustomersTableAdapter()
-                                CustomerAdapter.Insert(element.QB_ID, TLClientID, element.QB_Name, element.QB_Name)
+                                If Not UI Or MsgBox("Customer in QB and TL: " + element.QB_Name + ". Insert into Table Adapter?", MsgBoxStyle.YesNo, "Warning!") = MsgBoxResult.Yes Then
+                                    Dim TLClientID As String = objClientServices.GetClientIdByName(element.QB_Name)
+                                    My.Forms.MAIN.History("TimeLive Client ID: " + TLClientID, "i")
+                                    My.Forms.MAIN.History("Inserting new client into sync db.", "i")
+                                    Dim CustomerAdapter As New QB_TL_IDsTableAdapters.CustomersTableAdapter()
+                                    CustomerAdapter.Insert(element.QB_ID, TLClientID, element.QB_Name, element.QB_Name)
+                                End If
                             Else
                                 My.Forms.MAIN.History("Error creating record in TimeLive", "N")
                             End If

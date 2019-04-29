@@ -43,7 +43,6 @@ Public Class QBtoTL_Vendor
     End Class
 
     Public Function GetVendorQBData(IntegratedUIForm As IntegratedUI, UI As Boolean) As VendorDataStructureQB
-
         Dim EmailAddress As String
         Dim FirstName As String
         Dim LastName As String
@@ -230,14 +229,16 @@ Public Class QBtoTL_Vendor
 
                                 'Insert record into sync database if not in it
                                 If Not CBool(DT_has_QBID) Then
-                                    Dim vendorInTL As Boolean = Array.Exists(objEmployeeServices.GetEmployees, Function(e As Services.TimeLive.Employees.Employee) EmployeeName = element.QB_Name)
+                                    Dim vendorInTL As Boolean = Array.Exists(objEmployeeServices.GetEmployees, Function(e As Services.TimeLive.Employees.Employee) EmployeeName = .QB_Name)
                                     If vendorInTL Then
-                                        'Note: if EmployeeName is changed back to "firstName,lastName", change to GetEmployeeID(firstName + " " + lastName)
-                                        Dim TLClientID As String = objEmployeeServices.GetEmployeeId(EmployeeName)
-                                        My.Forms.MAIN.History("TimeLive Vendor (as Employee) ID: " + TLClientID, "i")
-                                        My.Forms.MAIN.History("Inserting new vendor into sync db.", "i")
-                                        Dim VendorAdapter As New QB_TL_IDsTableAdapters.VendorsTableAdapter()
-                                        VendorAdapter.Insert(element.QB_ID, objEmployeeServices.GetEmployeeId(EmployeeName), element.QB_Name, EmployeeName)
+                                        If Not UI Or MsgBox("Vendor in QB and TL: " + .QB_Name + ". Insert into Table Adapter?", MsgBoxStyle.YesNo, "Warning!") = MsgBoxResult.Yes Then
+                                            'Note: if EmployeeName is changed back to "firstName,lastName", change to GetEmployeeID(firstName + " " + lastName)
+                                            Dim TLClientID As String = objEmployeeServices.GetEmployeeId(EmployeeName)
+                                            My.Forms.MAIN.History("TimeLive Vendor (as Employee) ID: " + TLClientID, "i")
+                                            My.Forms.MAIN.History("Inserting new vendor into sync db.", "i")
+                                            Dim VendorAdapter As New QB_TL_IDsTableAdapters.VendorsTableAdapter()
+                                            VendorAdapter.Insert(.QB_ID, objEmployeeServices.GetEmployeeId(EmployeeName), .QB_Name, EmployeeName)
+                                        End If
                                     Else
                                         My.Forms.MAIN.History("Error creating record in TimeLive", "N")
                                     End If

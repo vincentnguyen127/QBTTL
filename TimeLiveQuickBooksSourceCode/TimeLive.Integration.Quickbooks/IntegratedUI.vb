@@ -115,8 +115,6 @@ Public Class IntegratedUI
         End If
         My.Forms.MAIN.History("Synchonizing modified " + attribute + " since: " + ItemLastSync.ToString(), "n")
 
-        Dim readItems As Integer = Data.NoItems
-
         ' Delete all rows and columns from the DataGridView's execpt the "Check Name" column in DataGridView1
         DataGridView1.Rows.Clear()
         While DataGridView1.ColumnCount > 1
@@ -150,45 +148,48 @@ Public Class IntegratedUI
         QBcol3.Name = "New"
         QBDataGridView.Columns.Add(QBcol3)
 
-        ' Note: Currently only customer stored both active and inactive; If changed, then change this line accordingly
-        readItems = If(Type = 10, Data.NoItems - Data.NoInactive, Data.NoItems)
-
-        If Data Is Nothing Then
-            My.Forms.MAIN.History("No QuickBooks" + attribute + " data", "n")
-        End If
+        Dim readItems As Integer = 0
 
         Dim element
-        For Each element In Data.DataArray
-            Dim result As Integer = DateTime.Compare(Convert.ToDateTime(element.QBModTime.ToString()),
-            ItemLastSync)
-            If result >= 0 Then
-                element.RecSelect = True
-            End If
-            'MAIN.FlagChangedItemsResults(element.QB_Name.ToString(), result)
-        Next
-        For Each element In Data.DataArray
-            ' Currently only customer has the enabled field, if all do then remove if type = 10
-            If Type = 10 Then
-                If Not element.Enabled Then
-                    Continue For
+        If Data Is Nothing Then
+            My.Forms.MAIN.History("No QuickBooks " + attribute + " data", "n")
+        Else
+            ' Note: Currently only customer stored both active and inactive; If changed, then change this line accordingly
+            readItems = If(Type = 10, Data.NoItems - Data.NoInactive, Data.NoItems)
+
+            For Each element In Data.DataArray
+                Dim result As Integer = DateTime.Compare(Convert.ToDateTime(element.QBModTime.ToString()),
+                ItemLastSync)
+                If result >= 0 Then
+                    element.RecSelect = True
                 End If
-            End If
-            ' Jobs/Subjobs and Items/Subitems show full name too
-            If Type = 13 Or Type = 14 Then
-                Dim full_name As String = element.FullName.ToString().Replace(":", MAIN.colonReplacer)
-                If QBtoTLRadioButton.Checked Then
-                    QBDataGridView.Rows.Add(element.RecSelect, full_name, element.QB_Name.ToString(), element.QBModTime.ToString(), element.NewlyAdded)
+                'MAIN.FlagChangedItemsResults(element.QB_Name.ToString(), result)
+            Next
+            For Each element In Data.DataArray
+                ' Currently only customer has the enabled field, if all do then remove if type = 10
+                If Type = 10 Then
+                    If Not element.Enabled Then
+                        Continue For
+                    End If
+                End If
+
+                ' Jobs/Subjobs and Items/Subitems show full name too
+                If Type = 13 Or Type = 14 Then
+                    Dim full_name As String = element.FullName.ToString().Replace(":", MAIN.colonReplacer)
+                    If QBtoTLRadioButton.Checked Then
+                        QBDataGridView.Rows.Add(element.RecSelect, full_name, element.QB_Name.ToString(), element.QBModTime.ToString(), element.NewlyAdded)
+                    Else
+                        QBDataGridView.Rows.Add(full_name, element.QB_Name.ToString(), element.QBModTime.ToString(), element.NewlyAdded)
+                    End If
                 Else
-                    QBDataGridView.Rows.Add(full_name, element.QB_Name.ToString(), element.QBModTime.ToString(), element.NewlyAdded)
+                    If QBtoTLRadioButton.Checked Then
+                        QBDataGridView.Rows.Add(element.RecSelect, element.QB_Name.ToString(), element.QBModTime.ToString(), element.NewlyAdded)
+                    Else
+                        QBDataGridView.Rows.Add(element.QB_Name.ToString(), element.QBModTime.ToString(), element.NewlyAdded)
+                    End If
                 End If
-            Else
-                If QBtoTLRadioButton.Checked Then
-                    QBDataGridView.Rows.Add(element.RecSelect, element.QB_Name.ToString(), element.QBModTime.ToString(), element.NewlyAdded)
-                Else
-                    QBDataGridView.Rows.Add(element.QB_Name.ToString(), element.QBModTime.ToString(), element.NewlyAdded)
-                End If
-            End If
-        Next
+            Next
+        End If
 
         '-----------------------------------------
         ' Load Grid for TimeLive
@@ -746,38 +747,48 @@ Public Class IntegratedUI
 
     Private Sub Reset_Checked_Customer_Value(ByRef customerObj As QBtoTL_Customer.CustomerDataStructureQB)
         ' reset the check value to zero
-        For Each element As QBtoTL_Customer.Customer In customerObj.DataArray
-            element.RecSelect = False
-        Next
+        If customerObj IsNot Nothing Then
+            For Each element As QBtoTL_Customer.Customer In customerObj.DataArray
+                element.RecSelect = False
+            Next
+        End If
     End Sub
 
     Private Sub Reset_Checked_Vendor_Value(ByRef vendorObj As QBtoTL_Vendor.VendorDataStructureQB)
         ' reset the check value to zero
-        For Each element As QBtoTL_Vendor.Vendor In vendorObj.DataArray
-            element.RecSelect = False
-        Next
+        If vendorObj IsNot Nothing Then
+            For Each element As QBtoTL_Vendor.Vendor In vendorObj.DataArray
+                element.RecSelect = False
+            Next
+        End If
     End Sub
 
     Private Sub Reset_Checked_Job_Value(ByRef jobObj As QBtoTL_JobOrItem.JobDataStructureQB)
         ' reset the check value to zero
-        For Each element As QBtoTL_JobOrItem.Job_Subjob In jobObj.DataArray
-            element.RecSelect = False
-        Next
+        If jobObj IsNot Nothing Then
+            For Each element As QBtoTL_JobOrItem.Job_Subjob In jobObj.DataArray
+                element.RecSelect = False
+            Next
+        End If
     End Sub
 
     Private Sub Reset_Checked_Employee_Value(ByRef EmployeeObj As QBtoTL_Employee.EmployeeDataStructureQB)
         ' reset the check value to zero
-        For Each element As QBtoTL_Employee.Employee In EmployeeObj.DataArray
-            element.RecSelect = False
-        Next
+        If EmployeeObj IsNot Nothing Then
+            For Each element As QBtoTL_Employee.Employee In EmployeeObj.DataArray
+                element.RecSelect = False
+            Next
+        End If
     End Sub
 
     Private Sub Reset_Checked_SelectedEmployee_Value(ByRef SelectedEmployeeObj As TLtoQB_TimeEntry.EmployeeDataStructure)
         ' reset the check value to zero
-        For Each element As TLtoQB_TimeEntry.Employee In SelectedEmployeeObj.DataArray
-            element.RecSelect = False
-            'My.Forms.MAIN.History("Time selection:  Reseting employees:   " + element.RecSelect.ToString(), "n")
-        Next
+        If SelectedEmployeeObj IsNot Nothing Then
+            For Each element As TLtoQB_TimeEntry.Employee In SelectedEmployeeObj.DataArray
+                element.RecSelect = False
+                'My.Forms.MAIN.History("Time selection:  Reseting employees:   " + element.RecSelect.ToString(), "n")
+            Next
+        End If
     End Sub
 
     ' Returns a list of the full names for the selected TimeLive entities
@@ -786,7 +797,6 @@ Public Class IntegratedUI
         For Each row As DataGridViewRow In DataGridView1.Rows
             If row.Cells("Name").Value IsNot Nothing And row.Cells("ckBox").Value Then
                 Dim full_name As String = row.Cells("Name").Value.ToString.Replace(MAIN.colonReplacer, ":")
-
                 TL_Names.Add(full_name)
                 My.Forms.MAIN.History("Item selected for processing: " + row.Cells("Name").Value, "n")
             End If
@@ -862,12 +872,13 @@ Public Class IntegratedUI
             If row.Cells("Name").Value IsNot Nothing And row.Cells("ckBox").Value = True Then
                 JobData.DataArray.ForEach(
                     Sub(job)
-                        If job.QB_Name = row.Cells("Name").Value.ToString Then
+                        Dim full_name As String = row.Cells("Full Name").Value.ToString.Replace(MAIN.colonReplacer, ":")
+                        If job.FullName = full_name Then
                             job.RecSelect = True
                         End If
                     End Sub
                 )
-                My.Forms.MAIN.History("Job or items selected for processing: " + row.Cells("Name").Value, "n")
+                My.Forms.MAIN.History("Job or items selected for processing: " + row.Cells("Full Name").Value, "n")
             End If
         Next
     End Sub

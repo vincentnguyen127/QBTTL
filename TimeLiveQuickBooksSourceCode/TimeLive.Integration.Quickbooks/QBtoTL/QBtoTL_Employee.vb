@@ -231,11 +231,13 @@ Public Class QBtoTL_Employee
                                                                    End Function)
                                 If employeeInTL Then
                                     'Note: if EmployeeName is changed back to "firstName,lastName", change to GetEmployeeID(firstName + " " + lastName)
-                                    Dim TLClientID As String = objEmployeeServices.GetEmployeeId(EmployeeName)
-                                    My.Forms.MAIN.History("TimeLive Employee ID: " + TLClientID, "i")
-                                    My.Forms.MAIN.History("Inserting new employee into sync db.", "i")
-                                    Dim EmployeesAdapter As New QB_TL_IDsTableAdapters.EmployeesTableAdapter()
-                                    EmployeesAdapter.Insert(element.QB_ID, TLClientID, element.QB_Name, EmployeeName)
+                                    If Not UI Or MsgBox("Employee in QB and TL: " + .QB_Name + ". Insert into Table Adapter?", MsgBoxStyle.YesNo, "Warning!") = MsgBoxResult.Yes Then
+                                        Dim TLClientID As String = objEmployeeServices.GetEmployeeId(EmployeeName)
+                                        My.Forms.MAIN.History("TimeLive Employee ID: " + TLClientID, "i")
+                                        My.Forms.MAIN.History("Inserting new employee into sync db.", "i")
+                                        Dim EmployeesAdapter As New QB_TL_IDsTableAdapters.EmployeesTableAdapter()
+                                        EmployeesAdapter.Insert(.QB_ID, TLClientID, .QB_Name, EmployeeName)
+                                    End If
                                 Else
                                     My.Forms.MAIN.History("Error creating record in TimeLive", "N")
                                 End If
