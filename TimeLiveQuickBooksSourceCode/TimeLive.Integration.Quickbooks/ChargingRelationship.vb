@@ -49,7 +49,7 @@ Public Class ChargingRelationship
             Dim numSubJobs As Integer = Me.Jobs_SubJobsTableAdapter.numSubTaskswithParent(job(0))
 
             If numSubJobs = 0 Then
-                JobFilterBox.Items.Add(job(0))
+                JobFilterBox.Items.Add(job(0).replace(":", MAIN.colonReplacer))
             End If
         Next
 
@@ -295,10 +295,11 @@ Public Class ChargingRelationship
 
                     Dim ret = retList.GetAt(i)
                     ' Full Name for Job/SubJob or Item/SubItem
-                    Dim name As String = If(attribute = 4 Or attribute = 5, ret.FullName.GetValue, ret.Name.GetValue)
+                    Dim name As String = If(attribute = 4 Or attribute = 5, ret.FullName.GetValue.replace(":", MAIN.colonReplacer), ret.Name.GetValue)
 
                     ' Do not include customers for a job query
-                    If (Not attribute = 4) Or name.Contains(":") Then
+                    ' assumes MAIN.colonReplacer Is not a part of the customer's name
+                    If (Not attribute = 4) Or name.Contains(MAIN.colonReplacer) Then
                         attrQBData.Rows.Add(name, ret.ListID.GetValue)
                     End If
                 Next
@@ -420,7 +421,7 @@ Public Class ChargingRelationship
 
             ' Check if DB stores as "job_name"/"subjob_name", not "customer_name:job_name"/"customer_name:job_name:subjob_name"
             If Job_ID Is Nothing Then
-                Dim last_colon = name.LastIndexOf(":")
+                Dim last_colon = name.LastIndexOf(MAIN.colonReplacer) '":"
                 name = name.Substring(last_colon + 1)
                 Job_ID = Me.Jobs_SubJobsTableAdapter.Name_to_ID(name)
             End If
@@ -470,7 +471,7 @@ Public Class ChargingRelationship
 
             ' Checks if DB stores as "subitem_name", not "service_name:subitem_name"
             If Item_ID Is Nothing Then
-                Dim last_colon = name.LastIndexOf(":")
+                Dim last_colon = name.LastIndexOf(MAIN.colonReplacer) ' ":"
                 name = name.Substring(last_colon + 1)
                 Item_ID = Me.Items_SubItemsTableAdapter.Name_to_ID(name)
             End If

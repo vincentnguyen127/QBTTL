@@ -83,31 +83,36 @@ Public Class Sync_TLtoQB_JoborItem
             Dim objTaskArray() As Object = objTaskServices.GetTasks
             Dim objTask As New Services.TimeLive.Tasks.Task
 
-            If Not IntegratedUIForm Is Nothing Then IntegratedUIForm.ProgressBar1.Maximum = objProjectArray.Length + objTaskArray.Length
+            ' Only change progress bar if one exists
+            If Not IntegratedUIForm Is Nothing Then IntegratedUIForm.ProgressBar1.Maximum = nameList.Count
 
+            ' Iterate through all projects
             For n As Integer = 0 To objProjectArray.Length - 1
                 objProject = objProjectArray(n)
                 ' Done this way since field .ProjectID just returned 0
                 Dim projectID As Integer = objProjectServices.GetProjectId(objProject.ProjectName)
-                Dim create As Boolean = If(nameList Is Nothing, True, nameList.Contains(objProject.ProjectName))
+                Dim full_name As String = objProject.ClientName + ":" + objProject.ProjectName
+                Dim create As Boolean = If(nameList Is Nothing, True, nameList.Contains(full_name))
 
                 If create Then
                     numSynced += If(checkQBJobSubJobExist(objProject.ClientName, objProject.ProjectName, projectID.ToString, UI), 0, 1)
                 End If
 
-                If Not IntegratedUIForm Is Nothing Then IntegratedUIForm.ProgressBar1.Value += 1
+                If Not IntegratedUIForm Is Nothing And create Then IntegratedUIForm.ProgressBar1.Value += 1
             Next
 
+            ' Iterate through all tasks
             For n As Integer = 0 To objTaskArray.Length - 1
                 objTask = objTaskArray(n)
                 ' Done this way since field .taskID just returned 0
                 Dim taskID As Integer = objTaskServices.GetTaskId(objTask.TaskName)
-                Dim create As Boolean = If(nameList Is Nothing, True, nameList.Contains(objTask.TaskName))
+                Dim full_name As String = objTask.JobParent + ":" + objTask.TaskName
+                Dim create As Boolean = If(nameList Is Nothing, True, nameList.Contains(full_name))
                 If create Then
                     numSynced += If(checkQBJobSubJobExist(objTask.JobParent, objTask.TaskName, taskID.ToString, UI), 0, 1)
                 End If
 
-                If Not IntegratedUIForm Is Nothing Then IntegratedUIForm.ProgressBar1.Value += 1
+                If Not IntegratedUIForm Is Nothing And create Then IntegratedUIForm.ProgressBar1.Value += 1
             Next
         Catch ex As System.Web.Services.Protocols.SoapException
             If UI Then
@@ -253,7 +258,9 @@ Public Class Sync_TLtoQB_JoborItem
                 Dim JobSubJobAdapter As New QB_TL_IDsTableAdapters.Jobs_SubJobsTableAdapter()
                 'MsgBox("Hit:" + .ListID.GetValue + "-- " + TL_ID.ToString)
 
-                If ISQBID_In_JobSubJobDataTable(.Name.GetValue.ToString, .ListID.GetValue) = 0 Then
+                ' Add to table adapter
+                If ISQBID_In_JobSubJobDataTable(.Name.GetValue.ToString, .ListID.GetValue) = 0 And
+                (Not UI Or MsgBox("Job in TL and QB: " + TLJobSubJobName + ". Insert into Table Adapter?", MsgBoxStyle.YesNo, "Warning!") = MsgBoxResult.Yes) Then
                     My.Forms.MAIN.History("Adding " + TLJobSubJobName + " With the TL_ID " + TL_ID.ToString + " to data sync table", "i")
                     JobSubJobAdapter.Insert(.ListID.GetValue, TL_ID, .Name.GetValue, TLJobSubJobName) 'QBJobSubJobName
                 End If
@@ -289,7 +296,7 @@ Public Class Sync_TLtoQB_JoborItem
 
         If TimeLiveIDs.Count = 1 Then
             result = 1
-            My.Forms.MAIN.History("One record found in QB sync table for: " + myqbName, "i")
+            My.Forms.MAIN.History("One record found in QB sync table for:  " + myqbName, "i")
         End If
 
         If TimeLiveIDs.Count = 0 Then

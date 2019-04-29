@@ -156,7 +156,7 @@ Public Class TLtoQB_TimeEntry
                         empId = Get_QB_ID_ForTL_EmployeeName(EmployeeName)
                     End If
 
-                    Dim jobID As String = Get_QB_ID_ForTL_JobName(.ClientName.ToString + .ProjectName.ToString + ":" + .TaskWithParent.ToString)
+                    Dim jobID As String = Get_QB_ID_ForTL_JobName(.ClientName.ToString + ":" + .ProjectName.ToString + ":" + .TaskWithParent.ToString)
                     Dim Item_SubItemID As String = Get_QB_ID_ForTL_ItemName(empId, jobID).ToString.Trim
                     'My.Forms.MAIN.History(Item_SubItemID, "i")
 

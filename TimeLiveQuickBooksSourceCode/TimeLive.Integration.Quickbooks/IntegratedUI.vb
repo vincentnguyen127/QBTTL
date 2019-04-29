@@ -175,10 +175,11 @@ Public Class IntegratedUI
             End If
             ' Jobs/Subjobs and Items/Subitems show full name too
             If Type = 13 Or Type = 14 Then
+                Dim full_name As String = element.FullName.ToString().Replace(":", MAIN.colonReplacer)
                 If QBtoTLRadioButton.Checked Then
-                    QBDataGridView.Rows.Add(element.RecSelect, element.FullName.ToString(), element.QB_Name.ToString(), element.QBModTime.ToString(), element.NewlyAdded)
+                    QBDataGridView.Rows.Add(element.RecSelect, full_name, element.QB_Name.ToString(), element.QBModTime.ToString(), element.NewlyAdded)
                 Else
-                    QBDataGridView.Rows.Add(element.FullName.ToString(), element.QB_Name.ToString(), element.QBModTime.ToString(), element.NewlyAdded)
+                    QBDataGridView.Rows.Add(full_name, element.QB_Name.ToString(), element.QBModTime.ToString(), element.NewlyAdded)
                 End If
             Else
                 If QBtoTLRadioButton.Checked Then
@@ -296,11 +297,11 @@ Public Class IntegratedUI
                 ' Jobs/Subjobs
                 Case 13
                     If element.GetType Is (New Services.TimeLive.Projects.Project).GetType Then
-                        name = element.projectName
-                        ID = objServices.GetProjectId(name)
+                        name = element.ClientName + MAIN.colonReplacer + element.projectName
+                        ID = objServices.GetProjectId(element.projectName)
                     Else
-                        name = element.TaskName
-                        ID = objServices2.GetTaskId(name)
+                        name = element.JobParent.replace(":", MAIN.colonReplacer) + MAIN.colonReplacer + element.TaskName
+                        ID = objServices2.GetTaskId(element.TaskName)
                     End If
 
                     ' Do not show Items
@@ -311,12 +312,13 @@ Public Class IntegratedUI
 
                 ' Items/SubItems
                 Case 14
+                    ' TODO: will need to change name to full path
                     If element.GetType Is (New Services.TimeLive.Projects.Project).GetType Then
                         name = element.projectName
-                        ID = objServices.GetProjectId(name)
+                        ID = objServices.GetProjectId(element.projectName)
                     Else
                         name = element.TaskName
-                        ID = objServices2.GetTaskId(name)
+                        ID = objServices2.GetTaskId(element.TaskName)
                     End If
                     ' Do not show Jobs
                     If Job_SubJobAdapter.numTasksSubTasksWithTL_ID(ID) Then
@@ -465,33 +467,36 @@ Public Class IntegratedUI
         col1.Name = "ckBox"
         col1.HeaderText = "Check Box"
         DataGridView2.Columns.Add(col1)
-        Dim colname As New DataGridViewTextBoxColumn
-        colname.Name = "Employee"
-        DataGridView2.Columns.Add(colname)
         Dim col2 As New DataGridViewTextBoxColumn
-        col2.Name = "Date"
+        col2.Name = "Employee"
         DataGridView2.Columns.Add(col2)
         Dim col3 As New DataGridViewTextBoxColumn
-        col3.Name = "Customer"
+        col3.Name = "Date"
         DataGridView2.Columns.Add(col3)
         Dim col4 As New DataGridViewTextBoxColumn
-        col4.Name = "Job"
+        col4.Name = "Task"
         DataGridView2.Columns.Add(col4)
+        'Dim col3 As New DataGridViewTextBoxColumn
+        'col3.Name = "Customer"
+        'DataGridView2.Columns.Add(col3)
+        'Dim col4 As New DataGridViewTextBoxColumn
+        'col4.Name = "Job"
+        'DataGridView2.Columns.Add(col4)
+        'Dim col5 As New DataGridViewTextBoxColumn
+        'col5.Name = "SubJob"
+        'DataGridView2.Columns.Add(col5)
         Dim col5 As New DataGridViewTextBoxColumn
-        col5.Name = "SubJob"
+        col5.Name = "Time"
         DataGridView2.Columns.Add(col5)
         Dim col6 As New DataGridViewTextBoxColumn
-        col6.Name = "Time"
+        col6.Name = "Class"
         DataGridView2.Columns.Add(col6)
         Dim col7 As New DataGridViewTextBoxColumn
-        col7.Name = "Class"
+        col7.Name = "Payroll Item"
         DataGridView2.Columns.Add(col7)
         Dim col8 As New DataGridViewTextBoxColumn
-        col8.Name = "Payroll Item"
+        col8.Name = "Item SubItem"
         DataGridView2.Columns.Add(col8)
-        Dim col9 As New DataGridViewTextBoxColumn
-        col9.Name = "Item SubItem"
-        DataGridView2.Columns.Add(col9)
     End Sub
 
     Public Sub IntegratedUI_Load(sender As Object, e As EventArgs) Handles MyBase.Load
@@ -505,6 +510,8 @@ Public Class IntegratedUI
         Me.Show()
         DataGridView1.AutoSize = False
         DataGridView1.AutoSizeRowsMode = False
+        DataGridView2.AutoSize = False
+        DataGridView2.AutoSizeRowsMode = False
         btn_currentweek_Click(sender, e)
 
         'for type Customers, Employees, Vendors, Jobs/Subjobs, and Items/Subitems
@@ -713,6 +720,9 @@ Public Class IntegratedUI
 
             My.Settings.TimeTrackingLastSync = DateTime.Now.ToString()
             My.Settings.Save()
+        Else
+            ' Refresh after processing
+            display_UI()
         End If
 
         'wait for one second so user can see progress bar
@@ -770,6 +780,21 @@ Public Class IntegratedUI
         Next
     End Sub
 
+    ' Returns a list of the full names for the selected TimeLive entities
+    Private Function TL_Set_Selected_Items()
+        Dim TL_Names As List(Of String) = New List(Of String)
+        For Each row As DataGridViewRow In DataGridView1.Rows
+            If row.Cells("Name").Value IsNot Nothing And row.Cells("ckBox").Value Then
+                Dim full_name As String = row.Cells("Name").Value.ToString.Replace(MAIN.colonReplacer, ":")
+
+                TL_Names.Add(full_name)
+                My.Forms.MAIN.History("Item selected for processing: " + row.Cells("Name").Value, "n")
+            End If
+        Next
+
+        Return TL_Names
+    End Function
+
     Private Sub QB_Set_Selected_Customer()
         For Each row As DataGridViewRow In DataGridView1.Rows
             If row.Cells("Name").Value IsNot Nothing And row.Cells("ckBox").Value = True Then
@@ -784,18 +809,6 @@ Public Class IntegratedUI
             End If
         Next
     End Sub
-
-    Private Function TL_Set_Selected_Items()
-        Dim TL_Names As List(Of String) = New List(Of String)
-        For Each row As DataGridViewRow In DataGridView1.Rows
-            If row.Cells("Name").Value IsNot Nothing And row.Cells("ckBox").Value Then
-                TL_Names.Add(row.Cells("Name").Value.ToString)
-                My.Forms.MAIN.History("Item selected for processing: " + row.Cells("Name").Value, "n")
-            End If
-        Next
-
-        Return TL_Names
-    End Function
 
     Private Sub Set_Selected_Employee()
         For Each row As DataGridViewRow In DataGridView1.Rows

@@ -140,12 +140,13 @@ Public Class Sync_TLtoQB_Vendor
                     End If
                     ' check if its in our database if not then add to it.
                     Dim VendorAdapter As New QB_TL_IDsTableAdapters.VendorsTableAdapter()
-
                     If ISQBID_In_VendorDataTable(.Name.GetValue.ToString, .ListID.GetValue) <= 0 Then
-                        My.Forms.MAIN.History("Adding to sync database: " + .Name.GetValue, "i")
-                        VendorAdapter.Insert(.ListID.GetValue, TL_ID, .Name.GetValue, TLEmployeeName)
+                        If Not UI Or MsgBox("Vendor in TL and QB: " + TLEmployeeName + ". Insert into Table Adapter?", MsgBoxStyle.YesNo, "Warning!") = MsgBoxResult.Yes Then
+                            My.Forms.MAIN.History("Adding to sync database: " + .Name.GetValue, "i")
+                            VendorAdapter.Insert(.ListID.GetValue, TL_ID, .Name.GetValue, TLEmployeeName)
+                        End If
                     Else
-                        VendorAdapter.Update(.ListID.GetValue, TL_ID, .Name.GetValue, TLEmployeeName)
+                        'VendorAdapter.Update(.ListID.GetValue, TL_ID, .Name.GetValue, TLEmployeeName)
                     End If
                 End With
             Else
@@ -187,12 +188,12 @@ Public Class Sync_TLtoQB_Vendor
 
         If TimeLiveIDs.Count = 0 Then
             result = 0
-            My.Forms.MAIN.History("No records found on QB sync table for:" + myqbName, "i")
+            My.Forms.MAIN.History("No records found in QB sync table for:" + myqbName, "i")
         End If
 
         If TimeLiveIDs.Count > 1 Then
             result = 2
-            My.Forms.MAIN.History("More than one record found for:" + myqbName, "I")
+            My.Forms.MAIN.History("More than one record found in QB sync table for:" + myqbName, "I")
         End If
 
         Return result

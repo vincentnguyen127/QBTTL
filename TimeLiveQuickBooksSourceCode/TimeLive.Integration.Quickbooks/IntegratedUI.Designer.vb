@@ -63,9 +63,9 @@ Partial Class IntegratedUI
         Me.SelectAllCheckBox = New System.Windows.Forms.CheckBox()
         Me.DataGridView1 = New System.Windows.Forms.DataGridView()
         Me.ckBox = New System.Windows.Forms.DataGridViewCheckBoxColumn()
+        Me.TimeEntrySelectAll = New System.Windows.Forms.CheckBox()
         Me.DataGridView2 = New System.Windows.Forms.DataGridView()
         Me.TransferTimeButton = New System.Windows.Forms.Button()
-        Me.TimeEntrySelectAll = New System.Windows.Forms.CheckBox()
         Me.GroupBox1.SuspendLayout()
         Me.TabPageTimeTransfer.SuspendLayout()
         Me.TabControl1.SuspendLayout()
@@ -472,7 +472,6 @@ Partial Class IntegratedUI
         '
         'SyncToLabel
         '
-        Me.SyncToLabel.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.SyncToLabel.AutoSize = True
         Me.SyncToLabel.Location = New System.Drawing.Point(3, 10)
         Me.SyncToLabel.Name = "SyncToLabel"
@@ -532,11 +531,22 @@ Partial Class IntegratedUI
         Me.ckBox.HeaderText = "Check Name"
         Me.ckBox.Name = "ckBox"
         '
+        'TimeEntrySelectAll
+        '
+        Me.TimeEntrySelectAll.AutoSize = True
+        Me.TimeEntrySelectAll.Location = New System.Drawing.Point(69, 9)
+        Me.TimeEntrySelectAll.Name = "TimeEntrySelectAll"
+        Me.TimeEntrySelectAll.Size = New System.Drawing.Size(70, 17)
+        Me.TimeEntrySelectAll.TabIndex = 44
+        Me.TimeEntrySelectAll.Text = "Select All"
+        Me.TimeEntrySelectAll.UseVisualStyleBackColor = True
+        '
         'DataGridView2
         '
         Me.DataGridView2.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
             Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.DataGridView2.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells
         Me.DataGridView2.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
         Me.DataGridView2.Location = New System.Drawing.Point(3, 31)
         Me.DataGridView2.Name = "DataGridView2"
@@ -553,16 +563,6 @@ Partial Class IntegratedUI
         Me.TransferTimeButton.TabIndex = 45
         Me.TransferTimeButton.Text = "Transfer Time"
         Me.TransferTimeButton.UseVisualStyleBackColor = True
-        '
-        'TimeEntrySelectAll
-        '
-        Me.TimeEntrySelectAll.AutoSize = True
-        Me.TimeEntrySelectAll.Location = New System.Drawing.Point(69, 9)
-        Me.TimeEntrySelectAll.Name = "TimeEntrySelectAll"
-        Me.TimeEntrySelectAll.Size = New System.Drawing.Size(70, 17)
-        Me.TimeEntrySelectAll.TabIndex = 44
-        Me.TimeEntrySelectAll.Text = "Select All"
-        Me.TimeEntrySelectAll.UseVisualStyleBackColor = True
         '
         'IntegratedUI
         '

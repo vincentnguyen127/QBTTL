@@ -8,7 +8,7 @@ Public Class MAIN
     Private p_token As String
     Private p_AccountId As String
     <ThreadStatic> Public Shared SESSMANAGER As QBSessionManager
-
+    Public Shared colonReplacer = ">"
 
 
     Private Sub PARENT_LOAD(SENDER As System.Object, E As System.EventArgs) Handles MyBase.Load

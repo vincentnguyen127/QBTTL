@@ -91,7 +91,8 @@ Public Class IntUI_2ndSelect
                 With element
                     If element.RecSelect = True Then
                         My.Forms.MAIN.History("Processing: " + element.FullName.ToString(), "n")
-                        LoadSelectedTimeEntryItems(element.AccountEmployeeId, element.FullName, DataGridView1)
+                        ' Function updated
+                        'LoadSelectedTimeEntryItems(element.AccountEmployeeId, element.FullName, DataGridView1)
                         'deselect as not to load again
                         element.RecSelect = False
                         Exit For
@@ -147,9 +148,9 @@ Public Class IntUI_2ndSelect
                     Dim payrollDisp As String = If(.PayrollName Is Nothing, .PayrollItem, .PayrollName)
                     Dim ServiceDisp As String = If(.ServiceName Is Nothing, .ServiceItem, .ServiceName)
 
+                    Dim full_name As String = .CustomerName.ToString() + MAIN.colonReplacer + .ProjectName.ToString() + MAIN.colonReplacer + .TaskWithParent.ToString()
 
-                    DataGridView.Rows.Add(.RecSelect, .EmployeeName, .TimeEntryDate.ToString("MM/dd/yyyy"), .CustomerName.ToString(),
-                                           .ProjectName.ToString(), .TaskWithParent.ToString(),
+                    DataGridView.Rows.Add(.RecSelect, .EmployeeName, .TimeEntryDate.ToString("MM/dd/yyyy"), full_name,
                                            (TotalHour + TotalMin).ToString, .TimeEntryClass, payrollDisp, ServiceDisp)
                     element.RecSelect = True
                 End With
@@ -214,7 +215,8 @@ Public Class IntUI_2ndSelect
                         '                     CDate(EndDate).Date.ToString, 201)
 
                         My.Forms.MAIN.History("Processing: " + element1.FullName.ToString(), "n")
-                        LoadSelectedTimeEntryItems(element1.AccountEmployeeId, element1.FullName, DataGridView1)
+                        'Function updated
+                        'LoadSelectedTimeEntryItems(element1.AccountEmployeeId, element1.FullName, DataGridView1)
                         NextItemFound = True
                         'deselect as not to load again
                         element1.RecSelect = False
@@ -241,19 +243,20 @@ Public Class IntUI_2ndSelect
         For Each row As DataGridViewRow In DataGridView.Rows
             If row.Cells("Date").Value IsNot Nothing And row.Cells("ckBox").Value And TimeEntryData.NoItems Then
                 Dim i = 0
+                Dim full_name As String = row.Cells("Task").Value.ToString()
+
                 TimeEntryData.DataArray.ForEach(
                     Sub(timeentry)
                         If (timeentry.EmployeeName = row.Cells("Employee").Value.ToString And
-                           timeentry.CustomerName = row.Cells("Customer").Value.ToString And
-                           timeentry.ProjectName = row.Cells("Job").Value.ToString And
-                           timeentry.TaskWithParent = row.Cells("Subjob").Value.ToString And
+                           timeentry.CustomerName + MAIN.colonReplacer + timeentry.ProjectName + MAIN.colonReplacer + timeentry.TaskWithParent = full_name And
                            timeentry.TimeEntryDate.ToString("MM/dd/yyyy") = row.Cells("Date").Value.ToString) Then
+                            i += 1
                             timeentry.RecSelect = True
                         End If
                     End Sub
                 )
                 'TimeEntryData.DataArray(row.Index).RecSelect = True
-                My.Forms.MAIN.History("Selected for processing: " + row.Cells("Date").Value, "n")
+                My.Forms.MAIN.History("Selected for processing: " + row.Cells("Employee").Value.ToString + " with task " + row.Cells("Task").Value.ToString + " on " + row.Cells("Date").Value.ToString, "n")
             End If
         Next
     End Sub

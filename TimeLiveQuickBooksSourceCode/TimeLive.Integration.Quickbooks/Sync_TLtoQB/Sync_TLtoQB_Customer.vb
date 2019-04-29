@@ -139,8 +139,10 @@ Public Class Sync_TLtoQB_Customer
                     ' check if its in our database if not then add to it.
                     Dim CustomerAdapter As New QB_TL_IDsTableAdapters.CustomersTableAdapter()
                     If Not CBool(ISQBID_In_CustomerDataTable(.Name.GetValue.ToString, .ListID.GetValue)) Then
-                        My.Forms.MAIN.History("Adding customer to sync database: " + TLClientName, "i")
-                        CustomerAdapter.Insert(.ListID.GetValue, TL_ID, .Name.GetValue, TLClientName)
+                        If Not UI Or MsgBox("Customer in TL and QB: " + TLClientName + ". Insert into Table Adapter?", MsgBoxStyle.YesNo, "Warning!") = MsgBoxResult.Yes Then
+                            My.Forms.MAIN.History("Adding customer to sync database: " + TLClientName, "i")
+                            CustomerAdapter.Insert(.ListID.GetValue, TL_ID, .Name.GetValue, TLClientName)
+                        End If
                     Else
                         ' CustomerAdapter.Update(.ListID.GetValue, TL_ID, .Name.GetValue, TLClientName)
                     End If

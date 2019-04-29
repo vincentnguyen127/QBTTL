@@ -154,9 +154,10 @@ Public Class Sync_TLtoQB_Employee
                         'If firstmiddlelastname.Length = 1 Then
                         '    employeename = firstmiddlelastname(0)
                         'End If
-
-                        My.Forms.MAIN.History("Adding employee to sync database: " + TLEmployeeName, "i")
-                        EmployeeAdapter.Insert(.ListID.GetValue, TL_ID, .Name.GetValue, TLEmployeeName)
+                        If Not UI Or MsgBox("Employee in TL and QB: " + TLEmployeeName + ". Insert into Table Adapter?", MsgBoxStyle.YesNo, "Warning!") = MsgBoxResult.Yes Then
+                            My.Forms.MAIN.History("Adding employee to sync database: " + TLEmployeeName, "i")
+                            EmployeeAdapter.Insert(.ListID.GetValue, TL_ID, .Name.GetValue, TLEmployeeName)
+                        End If
                     Else
                         ' EmployeeAdapter.Update(.ListID.GetValue, TL_ID, .Name.GetValue, TLEmployeeName)
                     End If
