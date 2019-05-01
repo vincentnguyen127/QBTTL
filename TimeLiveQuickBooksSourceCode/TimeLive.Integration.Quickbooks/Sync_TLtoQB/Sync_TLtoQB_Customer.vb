@@ -80,7 +80,7 @@ Public Class Sync_TLtoQB_Customer
                 Dim create As Boolean = True
 
                 If UI Then
-                    create = MsgBox("New customer found in TimeLive: " + TLClientName + ". Create in QuickBooks?", MsgBoxStyle.YesNo, "Warning!") = MsgBoxResult.Yes
+                    'create = MsgBox("New customer found in TimeLive: " + TLClientName + ". Create in QuickBooks?", MsgBoxStyle.YesNo, "Warning!") = MsgBoxResult.Yes
                 End If
 
                 If create Then
@@ -139,12 +139,10 @@ Public Class Sync_TLtoQB_Customer
                     ' check if its in our database if not then add to it.
                     Dim CustomerAdapter As New QB_TL_IDsTableAdapters.CustomersTableAdapter()
                     If Not CBool(ISQBID_In_CustomerDataTable(.Name.GetValue.ToString, .ListID.GetValue)) Then
-                        If Not UI Or MsgBox("Customer in TL and QB: " + TLClientName + ". Insert into Table Adapter?", MsgBoxStyle.YesNo, "Warning!") = MsgBoxResult.Yes Then
-                            My.Forms.MAIN.History("Adding customer to sync database: " + TLClientName, "i")
-                            CustomerAdapter.Insert(.ListID.GetValue, TL_ID, .Name.GetValue, TLClientName)
-                        End If
+                        My.Forms.MAIN.History("Adding customer to sync database: " + TLClientName, "i")
+                        CustomerAdapter.Insert(.ListID.GetValue, TL_ID, .Name.GetValue, TLClientName)
                     Else
-                        ' CustomerAdapter.Update(.ListID.GetValue, TL_ID, .Name.GetValue, TLClientName)
+                        CustomerAdapter.Update(.ListID.GetValue, TL_ID, .Name.GetValue, TLClientName)
                     End If
                 End With
             End If

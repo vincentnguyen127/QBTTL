@@ -116,9 +116,9 @@ Public Class Sync_TLtoQB_JoborItem
             Next
         Catch ex As System.Web.Services.Protocols.SoapException
             If UI Then
-                MsgBox("Make sure all Tasks and Jobs have a Code: " + ex.Message)
+                MsgBox("Make sure all Tasks and Jobs have a Code in TimeLive: " + ex.Message)
             Else
-                Throw New Exception("Make sure all Tasks and Jobs have a Code: " + ex.Message)
+                Throw New Exception("Make sure all Tasks and Jobs have a Code in Timelive: " + ex.Message)
             End If
         Catch ex As Exception
             If UI Then
@@ -210,7 +210,7 @@ Public Class Sync_TLtoQB_JoborItem
 
                 Dim create As Boolean = True
                 If UI Then
-                    create = MsgBox("New " + jobOrTask + " found in TimeLive: " + TLJobSubJobName + ". Create in QuickBooks?", MsgBoxStyle.YesNo, "Warning!") = MsgBoxResult.Yes
+                    'create = MsgBox("New " + jobOrTask + " found in TimeLive: " + TLJobSubJobName + ". Create in QuickBooks?", MsgBoxStyle.YesNo, "Warning!") = MsgBoxResult.Yes
                 End If
 
                 If create Then
@@ -259,8 +259,7 @@ Public Class Sync_TLtoQB_JoborItem
                 'MsgBox("Hit:" + .ListID.GetValue + "-- " + TL_ID.ToString)
 
                 ' Add to table adapter
-                If ISQBID_In_JobSubJobDataTable(.Name.GetValue.ToString, .ListID.GetValue) = 0 And
-                (Not UI Or MsgBox("Job in TL and QB: " + TLJobSubJobName + ". Insert into Table Adapter?", MsgBoxStyle.YesNo, "Warning!") = MsgBoxResult.Yes) Then
+                If ISQBID_In_JobSubJobDataTable(.Name.GetValue.ToString, .ListID.GetValue) = 0 Then
                     My.Forms.MAIN.History("Adding " + TLJobSubJobName + " With the TL_ID " + TL_ID.ToString + " to data sync table", "i")
                     JobSubJobAdapter.Insert(.ListID.GetValue, TL_ID, .Name.GetValue, TLJobSubJobName) 'QBJobSubJobName
                 End If

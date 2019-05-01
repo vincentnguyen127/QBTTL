@@ -176,7 +176,7 @@ Public Class QBtoTL_Customer
                 Dim create As Boolean = True
                 ' Do not show Message Box when UI = false, instead just create the new customer
                 If UI And Not CBool(DT_has_QBID) Then
-                    create = MsgBox("New customer found: " + element.QB_Name + ". Create?", MsgBoxStyle.YesNo, "Warning!") = MsgBoxResult.Yes
+                    'create = MsgBox("New customer found: " + element.QB_Name + ". Create?", MsgBoxStyle.YesNo, "Warning!") = MsgBoxResult.Yes
                 End If
                 If create Then
                     If DT_has_QBID Then
@@ -184,7 +184,21 @@ Public Class QBtoTL_Customer
                         If TL_ID Is Nothing Then
                             My.Forms.MAIN.History("Detected empty sync record (No TL ID). Needs to be manually sync or deleted." + element.QB_Name, "i")
                         End If
-                        Dim customerInTL As Boolean = Array.Exists(objClientServices.GetClients, Function(e As Services.TimeLive.Clients.Client) e.ClientName = element.QB_Name)
+                        Dim customerInTL As Boolean = False
+                        ' Check if TL has the TL ID that the DB has
+                        Array.ForEach(objClientServices.GetClients,
+                                      Sub(e As Services.TimeLive.Clients.Client)
+                                          If objClientServices.GetClientIdByName(e.ClientName) = TL_ID Then
+                                              customerInTL = True
+                                              ' QB and TL have different names, change in DB and alert the user
+                                              ' Note: If we change this, then might need to change jobs/subjobs DB
+                                              If Not e.ClientName = element.QB_Name Then
+                                                  Dim CustomerAdapter As New QB_TL_IDsTableAdapters.CustomersTableAdapter()
+                                                  CustomerAdapter.updateCustomerNames(element.QB_Name, e.ClientName, element.QB_ID, Trim(TL_ID))
+                                                  My.Forms.MAIN.History("Name Conflict: TL Name: " + e.ClientName + " QB Name: " + element.QB_Name, "N")
+                                              End If
+                                          End If
+                                      End Sub)
                         If customerInTL Then
                             ' TL already has this value and so does our DB, so just move to next element after updating Progress Bar
                             If UI Then
@@ -193,6 +207,15 @@ Public Class QBtoTL_Customer
                             End If
                             ' TODO: Update TL
                             Continue For
+                        End If
+                        ' Not in local Database
+                    Else
+                        ' TimeLive has a data entry with the same name, treat as the same and add into DB
+                        If Array.Exists(objClientServices.GetClients, Function(e As Services.TimeLive.Clients.Client) e.ClientName = element.QB_Name) Then
+                            My.Forms.MAIN.History("Customer " + element.QB_Name + " in both TimeLive and Quickbooks added to sync database", "i")
+                            Dim CustomerAdapter As New QB_TL_IDsTableAdapters.CustomersTableAdapter()
+                            CustomerAdapter.Insert(element.QB_ID, objClientServices.GetClientIdByName(element.QB_Name), element.QB_Name, element.QB_Name)
+                            Continue For ' Already in TL, so just continue to next element in QB
                         End If
                     End If
 
@@ -212,13 +235,11 @@ Public Class QBtoTL_Customer
                             Dim customerInTL As Boolean = Array.Exists(objClientServices.GetClients,
                                                                        Function(e As Services.TimeLive.Clients.Client) e.ClientName = element.QB_Name)
                             If customerInTL Then
-                                If Not UI Or MsgBox("Customer in QB and TL: " + element.QB_Name + ". Insert into Table Adapter?", MsgBoxStyle.YesNo, "Warning!") = MsgBoxResult.Yes Then
-                                    Dim TLClientID As String = objClientServices.GetClientIdByName(element.QB_Name)
-                                    My.Forms.MAIN.History("TimeLive Client ID: " + TLClientID, "i")
-                                    My.Forms.MAIN.History("Inserting new client into sync db.", "i")
-                                    Dim CustomerAdapter As New QB_TL_IDsTableAdapters.CustomersTableAdapter()
-                                    CustomerAdapter.Insert(element.QB_ID, TLClientID, element.QB_Name, element.QB_Name)
-                                End If
+                                Dim TLClientID As String = objClientServices.GetClientIdByName(element.QB_Name)
+                                My.Forms.MAIN.History("TimeLive Client ID: " + TLClientID, "i")
+                                My.Forms.MAIN.History("Inserting new client into sync db.", "i")
+                                Dim CustomerAdapter As New QB_TL_IDsTableAdapters.CustomersTableAdapter()
+                                CustomerAdapter.Insert(element.QB_ID, TLClientID, element.QB_Name, element.QB_Name)
                             Else
                                 My.Forms.MAIN.History("Error creating record in TimeLive", "N")
                             End If

@@ -176,7 +176,7 @@ Public Class QBtoTL_Employee
                 Dim create As Boolean = True
                 ' Do not show Message Box when no UI or when QB ID is in our Data Table, just create employee
                 If UI And Not CBool(DT_has_QBID) Then
-                    create = MsgBox("New employee found: " + element.QB_Name + ". Create?", MsgBoxStyle.YesNo, "Warning!") = MsgBoxResult.Yes
+                    'create = MsgBox("New employee found: " + element.QB_Name + ". Create?", MsgBoxStyle.YesNo, "Warning!") = MsgBoxResult.Yes
                 End If
                 If create Then
                     ' If QB_ID is in the DB, check if TL ID is too
@@ -185,10 +185,22 @@ Public Class QBtoTL_Employee
                         If TL_ID Is Nothing Then
                             My.Forms.MAIN.History("Detected empty sync record (No TL ID). Needs to be manually sync or deleted." + element.QB_Name, "i")
                         End If
-                        Dim employeeInTL As Boolean = Array.Exists(objEmployeeServices.GetEmployees,
-                                                                   Function(e As Services.TimeLive.Employees.Employee)
-                                                                       Return e.EmployeeName = element.QB_Name
-                                                                   End Function)
+                        Dim employeeInTL As Boolean = False
+                        ' Check if TL has the TL ID that the DB has
+                        Array.ForEach(objEmployeeServices.GetEmployees,
+                                      Sub(e As Services.TimeLive.Employees.Employee)
+                                          If objEmployeeServices.GetEmployeeId(e.EmployeeName) = Trim(TL_ID) Then
+                                              My.Forms.MAIN.History(CStr(objEmployeeServices.GetEmployeeId(e.EmployeeName)) + "_", "i")
+                                              employeeInTL = True
+                                              ' QB and TL have different names, change in DB and alert the user
+                                              ' Note: If we change this, then might need to change jobs/subjobs DB
+                                              If Not e.EmployeeName = element.QB_Name Then
+                                                  Dim EmployeeAdapter As New QB_TL_IDsTableAdapters.EmployeesTableAdapter()
+                                                  EmployeeAdapter.updateEmployeeNames(element.QB_Name, e.EmployeeName, element.QB_ID, Trim(TL_ID))
+                                                  My.Forms.MAIN.History("Name Conflict: TL Name: " + e.EmployeeName + " QB Name: " + element.QB_Name, "N")
+                                              End If
+                                          End If
+                                      End Sub)
                         If employeeInTL Then
                             ' TL already has this value and so does our DB, so just move to next element after updating Progress Bar
                             If UI Then
@@ -197,6 +209,15 @@ Public Class QBtoTL_Employee
                             End If
                             ' TODO: Update TL, based on commented out code below
                             Continue For
+                        End If
+                        ' Not in local Database
+                    Else
+                        ' TimeLive has a data entry with the same name, treat as the same and add into DB
+                        If Array.Exists(objEmployeeServices.GetEmployees, Function(e As Services.TimeLive.Employees.Employee) e.EmployeeName = element.QB_Name) Then
+                            My.Forms.MAIN.History("Employee " + element.QB_Name + " in both TimeLive and Quickbooks added to sync database", "i")
+                            Dim EmployeeAdapter As New QB_TL_IDsTableAdapters.EmployeesTableAdapter()
+                            EmployeeAdapter.Insert(element.QB_ID, objEmployeeServices.GetEmployeeId(element.QB_Name), element.QB_Name, element.QB_Name)
+                            Continue For ' Already in TL, so just continue to next element in QB
                         End If
                     End If
                     ' Create the element in TL:
@@ -207,16 +228,16 @@ Public Class QBtoTL_Employee
                     'Insert record into TimeLive
                     With element
                         Try
-                            EmailAddress = GetEmailAddress(.Email, token, .QB_ID)
                             FirstName = GetValue(.QB_Name, "FirstName")
                             FirstName = FirstName.Replace(",", "")
                             LastName = GetValue(.QB_Name, "LastName")
                             LastName = LastName.Replace(",", "")
                             HiredDate = GetValue(.HiredDate, "HiredDate")
                             EmployeeName = FirstName + " " + LastName ' Changed "," to " "
+                            EmailAddress = GetEmailAddress(.Email, token, FirstName(0) + LastName)
 
                             ' Add user with username and password = emailAddress
-                            objEmployeeServices.InsertEmployee(EmailAddress, EmailAddress, FirstName, LastName, EmailAddress, "",
+                            objEmployeeServices.InsertEmployee(EmailAddress, CreatePassword(HiredDate), FirstName, LastName, EmailAddress, .QB_Name,
                                                                nDepartmentId, nRoleId, nLocationId, 233, nBillingTypeId, Now.Date,
                                                                -1, 0, 6, 0, 0, nEmployeeTypeId, nEmployeeStatusId, "", HiredDate,
                                                                Now.Date, nWorkingDayTypeId, System.Guid.Empty, 0, System.Guid.Empty,
@@ -231,13 +252,11 @@ Public Class QBtoTL_Employee
                                                                    End Function)
                                 If employeeInTL Then
                                     'Note: if EmployeeName is changed back to "firstName,lastName", change to GetEmployeeID(firstName + " " + lastName)
-                                    If Not UI Or MsgBox("Employee in QB and TL: " + .QB_Name + ". Insert into Table Adapter?", MsgBoxStyle.YesNo, "Warning!") = MsgBoxResult.Yes Then
-                                        Dim TLClientID As String = objEmployeeServices.GetEmployeeId(EmployeeName)
-                                        My.Forms.MAIN.History("TimeLive Employee ID: " + TLClientID, "i")
-                                        My.Forms.MAIN.History("Inserting new employee into sync db.", "i")
-                                        Dim EmployeesAdapter As New QB_TL_IDsTableAdapters.EmployeesTableAdapter()
-                                        EmployeesAdapter.Insert(.QB_ID, TLClientID, .QB_Name, EmployeeName)
-                                    End If
+                                    Dim TLClientID As String = objEmployeeServices.GetEmployeeId(EmployeeName)
+                                    My.Forms.MAIN.History("TimeLive Employee ID: " + TLClientID, "i")
+                                    My.Forms.MAIN.History("Inserting new employee into sync db.", "i")
+                                    Dim EmployeesAdapter As New QB_TL_IDsTableAdapters.EmployeesTableAdapter()
+                                    EmployeesAdapter.Insert(.QB_ID, TLClientID, .QB_Name, EmployeeName)
                                 Else
                                     My.Forms.MAIN.History("Error creating record in TimeLive", "N")
                                 End If
@@ -257,6 +276,8 @@ Public Class QBtoTL_Employee
                             '    My.Forms.MAIN.History("ID:" + e_element.EmployeeId.ToString(), "i")
                             'Next
 
+                        Catch ex As System.Web.Services.Protocols.SoapException
+                            My.Forms.MAIN.History("Employee Already has that email address, try a different one")
                         Catch ex As Exception
                             My.Forms.MAIN.History("Transfer failed." + ex.ToString, "N")
                         End Try
@@ -489,11 +510,13 @@ Public Class QBtoTL_Employee
         Dim EmployeeAdapter As New QB_TL_IDsTableAdapters.EmployeesTableAdapter()
         Dim TimeLiveIDs As QB_TL_IDs.EmployeesDataTable = EmployeeAdapter.GetCorrespondingTL_ID(myqbID)
 
+        If TimeLiveIDs.Rows.Count = 0 Then Return Nothing
+
         If String.IsNullOrEmpty(Trim(TimeLiveIDs(0).TimeLive_ID.ToString())) Then
             My.Forms.MAIN.History("Record has a TLID of Nothing", "I")
         Else
             My.Forms.MAIN.History("Record has a TLID of: " + TimeLiveIDs(0).TimeLive_ID.ToString(), "i")
-            result = TimeLiveIDs(0).TimeLive_ID.ToString()
+            result = Trim(TimeLiveIDs(0).TimeLive_ID.ToString())
         End If
 
         Return result
@@ -503,23 +526,31 @@ Public Class QBtoTL_Employee
         Return str.Substring(0, Math.Min(50, str.Length))
     End Function
 
-    Public Function GetValue(Value As String, ColumnName As String) As Object
-        If Not Value Is Nothing And ColumnName = "HiredDate" Then
-            Return Value
-        ElseIf Value Is Nothing And ColumnName = "HiredDate" Then
-            Return Now.Date
+    Private Function CreatePassword(Date_string As String) As String
+        Dim Date_array() As String = Date_string.Split("/")
+        If Date_array.Length < 3 Then
+            Return Date_string
+        End If
+
+        Return Date_array(1) + MonthName(Date_array(0)) + Date_array(2)
+    End Function
+
+
+    Public Shared Function GetValue(Value As String, ColumnName As String) As Object
+        If ColumnName = "HiredDate" Then
+            Return If(Value Is Nothing Or Value = "", Now.Date, Value)
         Else
             Return GetEmployeeValue(Value, ColumnName)
         End If
     End Function
 
-    Public Function GetEmployeeValue(Value As String, ColumnName As String)
-        Dim EmployeeName() As String = Value.Split(" ")
+    Public Shared Function GetEmployeeValue(Value As String, ColumnName As String)
+        Dim EmployeeName() As String = If(Value.Contains(","), Value.Split(","), Value.Split(" "))
         If EmployeeName.Length = 2 Then
             If ColumnName = "FirstName" Then
-                Return EmployeeName(0)
+                Return If(Value.Contains(","), Trim(EmployeeName(1)), Trim(EmployeeName(0)))
             ElseIf ColumnName = "LastName" Then
-                Return EmployeeName(1)
+                Return If(Value.Contains(","), Trim(EmployeeName(0)), Trim(EmployeeName(1)))
             End If
         ElseIf EmployeeName.Length = 1 Then
             If ColumnName = "FirstName" Then
@@ -527,7 +558,7 @@ Public Class QBtoTL_Employee
             ElseIf ColumnName = "LastName" Then
                 Return EmployeeName(0)
             End If
-        ElseIf EmployeeName.Length = 3 Then
+        ElseIf EmployeeName.Length = 3 And Not Value.Contains(",") Then
             If ColumnName = "FirstName" Then
                 Return EmployeeName(0)
             ElseIf ColumnName = "LastName" Then
@@ -537,21 +568,32 @@ Public Class QBtoTL_Employee
         Return EmployeeName(0) ' Should never get here
     End Function
 
-    Public Function GetEmailAddress(Value As String, p_token As String, ListID As String) As String
+    Public Shared Function GetEmailAddress(EmailAddress As String, p_token As String, default_addr As String) As String
+        ' Return default if email address is empty of nothing
+
+        ' Connect to TimeLive
         Dim objEmployeeServices As New Services.TimeLive.Employees.Employees
         Dim authentication As New Services.TimeLive.Employees.SecuredWebServiceHeader
         authentication.AuthenticatedToken = p_token
         objEmployeeServices.SecuredWebServiceHeaderValue = authentication
-        If Not Value Is Nothing Then
-            Dim EmailAddress As String = Value
-            If objEmployeeServices.IsEmployeeExistsByEmailAddress(EmailAddress) Then
-                Return ListID
-            Else
-                Return EmailAddress
-            End If
-        Else
-            Return ListID
+
+        ' For when more than one employee has the same last name and first letter of first name
+        Dim counter As Integer = 0
+        If objEmployeeServices.IsEmployeeExistsByEmailAddress(default_addr + "@teltrium.com") Then
+            default_addr += CStr(counter)
+            While objEmployeeServices.IsEmployeeExistsByEmailAddress(default_addr + "@teltrium.com")
+                default_addr.Remove(default_addr.Length - 1, 1)
+                default_addr += CStr(counter)
+                counter += 1
+            End While
         End If
+        default_addr += "@teltrium.com"
+
+        If EmailAddress Is Nothing Or EmailAddress = "" Then
+            Return default_addr
+        End If
+
+        Return If(objEmployeeServices.IsEmployeeExistsByEmailAddress(EmailAddress), EmailAddress, default_addr)
     End Function
 End Class
 

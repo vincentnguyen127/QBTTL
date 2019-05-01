@@ -260,7 +260,7 @@ Public Class QBtoTL_JobOrItem
                     'If DT_has_QBID = 0 Then
                     Dim create As Boolean = True
                     If UI And Not CBool(DT_has_QBID) Then
-                        create = MsgBox("New job or subjob found: " + element.FullName.Replace(":", MAIN.colonReplacer) + ". Create?", MsgBoxStyle.YesNo, "Warning!") = MsgBoxResult.Yes
+                        'create = MsgBox("New job or subjob found: " + element.FullName.Replace(":", MAIN.colonReplacer) + ". Create?", MsgBoxStyle.YesNo, "Warning!") = MsgBoxResult.Yes
                     End If
                     If create Then
                         ' If QB_ID is in the DB, check if TL ID is too
@@ -397,12 +397,10 @@ Public Class QBtoTL_JobOrItem
                                 Array.Exists(objProjectServices.GetProjects, Function(e As Services.TimeLive.Projects.Project) e.ClientName + ":" + e.ProjectName = element.FullName)
 
                             If project_or_task_inTL Then
-                                If Not UI Or MsgBox("Job/SubJob in QB and TL: " + element.FullName.Replace(":", MAIN.colonReplacer) + ". Insert into Table Adapter?", MsgBoxStyle.YesNo, "Warning!") = MsgBoxResult.Yes Then
-                                    Dim JobAdapter As New QB_TL_IDsTableAdapters.Jobs_SubJobsTableAdapter
-                                    ' Currently does not support the same job name with different parent customers / same subjob name with different parent jobs
-                                    Dim proj_or_task_ID As Integer = If(PTArray.Length = 2, objProjectServices.GetProjectId(element.QB_Name), objTaskServices.GetTaskId(element.QB_Name))
-                                    JobAdapter.Insert(element.QB_ID, proj_or_task_ID, element.QB_Name, element.FullName)
-                                End If
+                                Dim JobAdapter As New QB_TL_IDsTableAdapters.Jobs_SubJobsTableAdapter
+                                ' Currently does not support the same job name with different parent customers / same subjob name with different parent jobs
+                                Dim proj_or_task_ID As Integer = If(PTArray.Length = 2, objProjectServices.GetProjectId(element.QB_Name), objTaskServices.GetTaskId(element.QB_Name))
+                                JobAdapter.Insert(element.QB_ID, proj_or_task_ID, element.QB_Name, element.FullName)
                             Else
                                 Dim errStr As String = If(PTArray.Length = 2, " client in timelive has a project with name ", " project in timelive has a task with name ")
                                 My.Forms.MAIN.History("Error creating record In TimeLive: Make sure that no other " + errStr + element.QB_Name, "N")

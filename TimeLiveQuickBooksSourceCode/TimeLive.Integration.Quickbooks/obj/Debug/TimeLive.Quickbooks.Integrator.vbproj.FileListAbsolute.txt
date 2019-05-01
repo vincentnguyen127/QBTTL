@@ -151,3 +151,4 @@ C:\Users\Dev1Teltrium\Source\Repos2\TimeLive.Quickbooks.Integrator\TimeLiveQuick
 C:\Users\Dev1Teltrium\Source\Repos2\TimeLive.Quickbooks.Integrator\TimeLiveQuickBooksSourceCode\TimeLive.Integration.Quickbooks\obj\Debug\TimeLive.Quickbooks.Integrator.vbproj.GenerateResource.Cache
 C:\Users\Dev1Teltrium\Source\Repos2\TimeLive.Quickbooks.Integrator\TimeLiveQuickBooksSourceCode\TimeLive.Integration.Quickbooks\obj\Debug\TimeLive.Quickbooks.Integrator.exe.manifest
 C:\Users\Dev1Teltrium\Source\Repos2\TimeLive.Quickbooks.Integrator\TimeLiveQuickBooksSourceCode\TimeLive.Integration.Quickbooks\obj\Debug\TimeLive.Quickbooks.Integrator.application
+C:\Users\Dev1Teltrium\Source\Repos2\TimeLive.Quickbooks.Integrator\TimeLiveQuickBooksSourceCode\TimeLive.Integration.Quickbooks\obj\Debug\TimeLive.Quickbooks.Integrator.vbprojResolveAssemblyReference.cache

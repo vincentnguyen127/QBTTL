@@ -77,7 +77,7 @@ Public Class Sync_TLtoQB_Vendor
             If Not inQB Then
                 Dim create As Boolean = True
                 If UI Then
-                    create = MsgBox("New vendor found in TimeLive: " + TLEmployeeName + ". Create in QuickBooks?", MsgBoxStyle.YesNo, "Warning!") = MsgBoxResult.Yes
+                    'create = MsgBox("New vendor found in TimeLive: " + TLEmployeeName + ". Create in QuickBooks?", MsgBoxStyle.YesNo, "Warning!") = MsgBoxResult.Yes
                 End If
                 If create Then
                     Dim newMsgSetRq As IMsgSetRequest = MAIN.SESSMANAGER.CreateMsgSetRequest("US", 2, 0)
@@ -141,12 +141,10 @@ Public Class Sync_TLtoQB_Vendor
                     ' check if its in our database if not then add to it.
                     Dim VendorAdapter As New QB_TL_IDsTableAdapters.VendorsTableAdapter()
                     If ISQBID_In_VendorDataTable(.Name.GetValue.ToString, .ListID.GetValue) <= 0 Then
-                        If Not UI Or MsgBox("Vendor in TL and QB: " + TLEmployeeName + ". Insert into Table Adapter?", MsgBoxStyle.YesNo, "Warning!") = MsgBoxResult.Yes Then
-                            My.Forms.MAIN.History("Adding to sync database: " + .Name.GetValue, "i")
-                            VendorAdapter.Insert(.ListID.GetValue, TL_ID, .Name.GetValue, TLEmployeeName)
-                        End If
+                        My.Forms.MAIN.History("Adding to sync database: " + .Name.GetValue, "i")
+                        VendorAdapter.Insert(.ListID.GetValue, TL_ID, .Name.GetValue, TLEmployeeName)
                     Else
-                        'VendorAdapter.Update(.ListID.GetValue, TL_ID, .Name.GetValue, TLEmployeeName)
+                        VendorAdapter.Update(.ListID.GetValue, TL_ID, .Name.GetValue, TLEmployeeName)
                     End If
                 End With
             Else

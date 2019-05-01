@@ -94,14 +94,13 @@ Public Class QBtoTL_Vendor
                             LastName = If(.LastName Is Nothing, "", .LastName.GetValue)
                             CreateTime = If(.TimeCreated Is Nothing, "", .TimeCreated.GetValue.ToString)
                             ModTime = If(.TimeModified Is Nothing, CreateTime, .TimeModified.GetValue.ToString)
-                            IsVendorEligibleFor1099 = ((Not .IsVendorEligibleFor1099 Is Nothing) And
-                                                    .IsVendorEligibleFor1099.GetValue)
                             ' will check which type data should be added 
-
-                            Dim TL_ID_Count = ISQBID_In_DataTable(.Name.GetValue, .ListID.GetValue)
-                            NewlyAdd = If(TL_ID_Count, "", "N") ' N if new
-                            VendorData.NoItems += 1
-                            VendorData.DataArray.Add(New Vendor(NewlyAdd, .Name.GetValue, EmailAddress, .ListID.GetValue, FirstName, LastName, "", ModTime, CreateTime, IsVendorEligibleFor1099))
+                            If .IsVendorEligibleFor1099.GetValue Then
+                                Dim TL_ID_Count = ISQBID_In_DataTable(.Name.GetValue, .ListID.GetValue)
+                                NewlyAdd = If(TL_ID_Count, "", "N") ' N if new
+                                VendorData.NoItems += 1
+                                VendorData.DataArray.Add(New Vendor(NewlyAdd, .Name.GetValue, EmailAddress, .ListID.GetValue, FirstName, LastName, "", ModTime, CreateTime, .IsVendorEligibleFor1099.GetValue))
+                            End If
                         End If
                     End With
                     If UI Then
@@ -177,7 +176,7 @@ Public Class QBtoTL_Vendor
                 'If TL_ID_Return = 0 Then
                 Dim create As Boolean = True
                 If UI And Not CBool(DT_has_QBID) Then
-                    create = MsgBox("New  vendor found: " + element.QB_Name + ". Create?", MsgBoxStyle.YesNo, "Warning!") = MsgBoxResult.Yes
+                    'create = MsgBox("New  vendor found: " + element.QB_Name + ". Create?", MsgBoxStyle.YesNo, "Warning!") = MsgBoxResult.Yes
                 End If
                 If create Then
                     ' If QB_ID is in the DB, check if TL ID is too
@@ -187,15 +186,45 @@ Public Class QBtoTL_Vendor
                             My.Forms.MAIN.History("Detected empty sync record (No TL ID). Needs to be manually sync or deleted." + element.QB_Name, "i")
                         End If
 
-                        Dim vendorInTL As Boolean = Array.Exists(objEmployeeServices.GetEmployees, Function(e As Services.TimeLive.Employees.Employee) e.EmployeeName = element.QB_Name)
+                        Dim vendorInTL As Boolean = False
+                        ' Check if TL has the TL ID that the DB has
+                        Dim first_name = QBtoTL_Employee.GetValue(element.QB_Name, "FirstName")
+                        Dim last_name = QBtoTL_Employee.GetValue(element.QB_Name, "LastName")
+                        Dim full_name As String = first_name + " " + last_name
+
+                        Array.ForEach(objEmployeeServices.GetEmployees,
+                                      Sub(e As Services.TimeLive.Employees.Employee)
+                                          If objEmployeeServices.GetEmployeeId(e.EmployeeName) = TL_ID Then
+                                              vendorInTL = True
+                                              ' QB and TL have different names, change in DB and alert the user
+                                              ' Note: If we change this, then might need to change jobs/subjobs DB
+                                              If Not e.EmployeeName = full_name Then
+                                                  Dim VendorAdapter As New QB_TL_IDsTableAdapters.VendorsTableAdapter()
+                                                  VendorAdapter.updateVendorNames(element.QB_Name, e.EmployeeName, element.QB_ID, Trim(TL_ID))
+                                                  My.Forms.MAIN.History("Name Conflict: TL Name: " + e.EmployeeName + " QB Name: " + element.QB_Name, "N")
+                                              End If
+                                          End If
+                                      End Sub)
                         If vendorInTL Then
                             ' TL already has this value and so does our DB, so just move to next element after updating Progress Bar
-                        If UI Then
+                            If UI Then
                                 incrementbar += 1
                                 IntegratedUIForm.ProgressBar1.Value = incrementbar
                             End If
                             ' TODO: Update TL, based on commented out code below
                             Continue For
+                        End If
+                        ' Not in local Database
+                    Else
+                        ' TimeLive has a data entry with the same name, treat as the same and add into DB
+                        Dim first_name = QBtoTL_Employee.GetValue(element.QB_Name, "FirstName")
+                        Dim last_name = QBtoTL_Employee.GetValue(element.QB_Name, "LastName")
+                        Dim full_name As String = first_name + " " + last_name
+                        If Array.Exists(objEmployeeServices.GetEmployees, Function(e As Services.TimeLive.Employees.Employee) e.EmployeeName = full_name) Then
+                            My.Forms.MAIN.History("Vendor " + full_name + " in both TimeLive and Quickbooks added to sync database", "i")
+                            Dim VendorAdapter As New QB_TL_IDsTableAdapters.VendorsTableAdapter()
+                            VendorAdapter.Insert(element.QB_ID, objEmployeeServices.GetEmployeeId(element.QB_Name), element.QB_Name, full_name)
+                            Continue For ' Already in TL, so just continue to next element in QB
                         End If
                     End If
 
@@ -209,19 +238,17 @@ Public Class QBtoTL_Vendor
                             My.Forms.MAIN.History("1099 : " + .IsVendorEligibleFor1099.ToString, "i")
                             If .IsVendorEligibleFor1099 Then
                                 NoRecordsCreatedorUpdated += 1
-                                My.Forms.MAIN.History("TL_ID1111 : " + DT_has_QBID.ToString, "i")
-                                EmailAddress = GetEmailAddress(.Email, token, .QB_ID)
-                                'FirstName = If(.FirstName = "", .QB_Name, .FirstName)
-                                'LastName = If(.LastName = "", .QB_Name, .LastName)
-                                EmployeeCode = .QB_Name 'GetValue(.QB_Name, "EmployeeCode")
-                                FirstName = GetValue(.QB_Name, "FirstName")
-                                LastName = GetValue(.QB_Name, "LastName")
-                                HiredDate = GetValue(.HiredDate, "HiredDate")
-                                EmployeeName = FirstName + " " + LastName
+                                My.Forms.MAIN.History("TimeLive ID: " + DT_has_QBID.ToString, "i")
 
-                                ' Changed Employee Code from "" to EmployeeCode
-                                objEmployeeServices.InsertEmployee(EmailAddress, EmailAddress, FirstName,
-                                        LastName, EmailAddress, EmployeeCode, nDepartmentId, nRoleId, nLocationId,
+                                FirstName = QBtoTL_Employee.GetValue(.QB_Name, "FirstName")
+                                LastName = QBtoTL_Employee.GetValue(.QB_Name, "LastName")
+                                HiredDate = QBtoTL_Employee.GetValue(.HiredDate, "HiredDate") '.HiredDate
+                                EmployeeName = FirstName + " " + LastName
+                                ' Defalt Email Address: <first_letter_first><last> AT teltrium DOT com
+                                EmailAddress = QBtoTL_Employee.GetEmailAddress(.Email, token, If(FirstName.Length = 0, "", FirstName.Chars(0)) + LastName)
+                                Dim val_2 As String = CreatePassword(HiredDate)
+                                objEmployeeServices.InsertEmployee(EmailAddress, CreatePassword(HiredDate), FirstName,
+                                        LastName, EmailAddress, .QB_Name, nDepartmentId, nRoleId, nLocationId,
                                         233, nBillingTypeId, Now.Date, -1, 0, 6, 0, 0, nEmployeeTypeId, nEmployeeStatusId,
                                         "", Now.Date, Now.Date, nWorkingDayTypeId, System.Guid.Empty, 0, System.Guid.Empty, False,
                                         "", "", "", "", "", "", "", "", "", "Mr.", True)
@@ -229,16 +256,14 @@ Public Class QBtoTL_Vendor
 
                                 'Insert record into sync database if not in it
                                 If Not CBool(DT_has_QBID) Then
-                                    Dim vendorInTL As Boolean = Array.Exists(objEmployeeServices.GetEmployees, Function(e As Services.TimeLive.Employees.Employee) EmployeeName = .QB_Name)
+                                    Dim vendorInTL As Boolean = Array.Exists(objEmployeeServices.GetEmployees, Function(e As Services.TimeLive.Employees.Employee) e.EmployeeName = EmployeeName)
                                     If vendorInTL Then
-                                        If Not UI Or MsgBox("Vendor in QB and TL: " + .QB_Name + ". Insert into Table Adapter?", MsgBoxStyle.YesNo, "Warning!") = MsgBoxResult.Yes Then
-                                            'Note: if EmployeeName is changed back to "firstName,lastName", change to GetEmployeeID(firstName + " " + lastName)
-                                            Dim TLClientID As String = objEmployeeServices.GetEmployeeId(EmployeeName)
-                                            My.Forms.MAIN.History("TimeLive Vendor (as Employee) ID: " + TLClientID, "i")
-                                            My.Forms.MAIN.History("Inserting new vendor into sync db.", "i")
-                                            Dim VendorAdapter As New QB_TL_IDsTableAdapters.VendorsTableAdapter()
-                                            VendorAdapter.Insert(.QB_ID, objEmployeeServices.GetEmployeeId(EmployeeName), .QB_Name, EmployeeName)
-                                        End If
+                                        'Note: if EmployeeName is changed back to "firstName,lastName", change to GetEmployeeID(firstName + " " + lastName)
+                                        Dim TLClientID As String = objEmployeeServices.GetEmployeeId(EmployeeName)
+                                        My.Forms.MAIN.History("TimeLive Vendor (as Employee) ID: " + TLClientID, "i")
+                                        My.Forms.MAIN.History("Inserting new vendor into sync db.", "i")
+                                        Dim VendorAdapter As New QB_TL_IDsTableAdapters.VendorsTableAdapter()
+                                        VendorAdapter.Insert(.QB_ID, TLClientID, .QB_Name, EmployeeName)
                                     Else
                                         My.Forms.MAIN.History("Error creating record in TimeLive", "N")
                                     End If
@@ -449,9 +474,9 @@ Public Class QBtoTL_Vendor
                 'if no, UI skip
             End If
             If UI Then
-                    incrementbar += 1
-                    IntegratedUIForm.ProgressBar1.Value = incrementbar
-                End If
+                incrementbar += 1
+                IntegratedUIForm.ProgressBar1.Value = incrementbar
+            End If
         Next
 
         Return NoRecordsCreatedorUpdated
@@ -464,8 +489,6 @@ Public Class QBtoTL_Vendor
     ''' <param name="myqbID"></param>
     ''' <returns></returns>
     Public Function ISQBID_In_DataTable(ByVal myqbName As String, ByVal myqbID As String) As Int16
-        Dim result As Int16 = 0
-
         'Dim EmployeeAdapter As New QB_TL_IDsTableAdapters.EmployeesTableAdapter()
         'For Each TimeLiveID As QB_TL_IDs.EmployeesRow In EmployeeAdapter.GetEmployees()
         '    If String.Compare(Trim(TimeLiveID.QuickBooks_ID), Trim(myqbID)) = 0 Then
@@ -475,21 +498,13 @@ Public Class QBtoTL_Vendor
         'Next
         Dim VendorAdapter As New QB_TL_IDsTableAdapters.VendorsTableAdapter()
         Dim TimeLiveIDs As QB_TL_IDs.VendorsDataTable = VendorAdapter.GetCorrespondingTL_ID(myqbID)
+        Dim result As Int16 = Math.Min(TimeLiveIDs.Count, 2)
 
         If TimeLiveIDs.Count = 1 Then
-            result = 1
             My.Forms.MAIN.History("One record found in QB sync table for: " + myqbName, "i")
-        End If
-
-
-        If TimeLiveIDs.Count = 0 Then
-            result = 0
+        ElseIf TimeLiveIDs.Count = 0 Then
             My.Forms.MAIN.History("No records found on QB sync table for:" + myqbName, "i")
-        End If
-
-
-        If TimeLiveIDs.Count > 1 Then
-            result = 2
+        ElseIf TimeLiveIDs.Count > 1 Then
             My.Forms.MAIN.History("More than one record found for:" + myqbName, "I")
         End If
         Return result
@@ -508,13 +523,13 @@ Public Class QBtoTL_Vendor
         Dim result As String = Nothing
         Dim VendorAdapter As New QB_TL_IDsTableAdapters.VendorsTableAdapter()
         Dim TimeLiveIDs As QB_TL_IDs.VendorsDataTable = VendorAdapter.GetCorrespondingTL_ID(myqbID)
+        If TimeLiveIDs.Rows.Count = 0 Then Return Nothing
 
         If String.IsNullOrEmpty(Trim(TimeLiveIDs(0).TimeLive_ID.ToString())) Then
             My.Forms.MAIN.History("Record has a TLID of Nothing", "I")
         Else
-
             My.Forms.MAIN.History("Record has a TLID of: " + TimeLiveIDs(0).TimeLive_ID.ToString(), "i")
-            result = TimeLiveIDs(0).TimeLive_ID.ToString()
+            result = Trim(TimeLiveIDs(0).TimeLive_ID.ToString())
         End If
 
         Return result
@@ -525,6 +540,15 @@ Public Class QBtoTL_Vendor
             str = str.Substring(0, 50)
         End If
         Return str
+    End Function
+
+    Private Function CreatePassword(Date_string As String) As String
+        Dim Date_array() As String = Date_string.Split("/")
+        If Date_array.Length < 3 Then
+            Return Date_string
+        End If
+
+        Return Date_array(1) + MonthName(Date_array(0)) + Date_array(2)
     End Function
 
     Public Function GetValue(Value As String, ColumnName As String) As Object
@@ -538,12 +562,12 @@ Public Class QBtoTL_Vendor
     End Function
 
     Public Function GetEmployeeValue(Value As String, ColumnName As String)
-        Dim EmployeeName() As String = Value.Split(" ")
+        Dim EmployeeName() As String = If(Value.Contains(","), Value.Split(","), Value.Split(" "))
         If EmployeeName.Length = 2 Then
             If ColumnName = "FirstName" Then
-                Return EmployeeName(0)
+                Return If(Value.Contains(","), Trim(EmployeeName(1)), Trim(EmployeeName(0)))
             ElseIf ColumnName = "LastName" Then
-                Return EmployeeName(1)
+                Return If(Value.Contains(","), Trim(EmployeeName(0)), Trim(EmployeeName(1)))
             End If
         ElseIf EmployeeName.Length = 1 Then
             If ColumnName = "FirstName" Then
@@ -551,7 +575,7 @@ Public Class QBtoTL_Vendor
             ElseIf ColumnName = "LastName" Then
                 Return EmployeeName(0)
             End If
-        ElseIf EmployeeName.Length = 3 Then
+        ElseIf EmployeeName.Length = 3 And Not Value.Contains(",") Then
             If ColumnName = "FirstName" Then
                 Return EmployeeName(0)
             ElseIf ColumnName = "LastName" Then
@@ -561,21 +585,17 @@ Public Class QBtoTL_Vendor
         Return EmployeeName(0) ' Should never get here
     End Function
 
-    Public Function GetEmailAddress(Value As String, p_token As String, ListID As String) As String
+    Public Function GetEmailAddress(EmailAddress As String, p_token As String, default_addr As String) As String
+        ' Return default if email address is empty of nothing
+        If EmailAddress Is Nothing Or EmailAddress = "" Then Return default_addr
+
+        ' Connect to TimeLive
         Dim objEmployeeServices As New Services.TimeLive.Employees.Employees
         Dim authentication As New Services.TimeLive.Employees.SecuredWebServiceHeader
         authentication.AuthenticatedToken = p_token
         objEmployeeServices.SecuredWebServiceHeaderValue = authentication
-        If Not Value Is Nothing Then
-            Dim EmailAddress As String = Value
-            If objEmployeeServices.IsEmployeeExistsByEmailAddress(EmailAddress) Then
-                Return ListID
-            Else
-                Return EmailAddress
-            End If
-        Else
-            Return ListID
-        End If
+
+        Return If(objEmployeeServices.IsEmployeeExistsByEmailAddress(EmailAddress), EmailAddress, default_addr)
     End Function
 End Class
 
