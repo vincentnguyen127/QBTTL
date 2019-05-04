@@ -32,8 +32,125 @@ Public Class IntegratedUI
     Dim vendorData As New QBtoTL_Vendor.VendorDataStructureQB
     Dim vendor_TLSync As Sync_TLtoQB_Vendor = New Sync_TLtoQB_Vendor
 
-    Dim timetry_tltoqb As TLtoQB_TimeEntry = New TLtoQB_TimeEntry
+    Dim timeentry_tltoqb As TLtoQB_TimeEntry = New TLtoQB_TimeEntry
+    Dim TimeEntryData As New TLtoQB_TimeEntry.TimeEntryDataStructureQB
+
     Dim selectedEmployeeData As New TLtoQB_TimeEntry.EmployeeDataStructure
+
+    Private Sub handleTag(sender As Object, e As EventArgs) Handles AttributeTabControl.SelectedIndexChanged
+        Select Case AttributeTabControl.SelectedIndex
+            ' Customers
+            Case 0
+                If Type = 10 Then Exit Sub
+                Type = 10
+            ' Employees
+            Case 1
+                If Type = 11 Then Exit Sub
+                Type = 11
+            ' Vendors
+            Case 2
+                If Type = 12 Then Exit Sub
+                Type = 12
+            ' Jobs / Items
+            Case 3
+                If My.Settings.JobORItemHierarchy Is Nothing Or My.Settings.JobORItemHierarchy = "" Then
+                    My.Settings.JobORItemHierarchy = 0
+                End If
+
+                If My.Settings.JobORItemHierarchy Then
+                    If Type = 14 Then Exit Sub
+                    Type = 14
+                Else
+                    If Type = 13 Then Exit Sub
+                    Type = 13
+                End If
+            ' Time Entries
+            Case 4
+                If Type = 20 Then Exit Sub
+                Type = 20
+        End Select
+
+        If Type = 20 Then
+            display_TimeEntry_UI()
+        Else
+            display_UI()
+        End If
+    End Sub
+
+    Private Function display_TimeEntry_UI()
+        Dim ItemLastSync As DateTime
+        ' Delete all rows and columns from the DataGridView's except the "Check Name" column in DataGridView1
+        Try
+            DataGridView1.Rows.Clear()
+        Catch nullEx As NullReferenceException
+            ' Do Nothing - just don't throw the exception
+        End Try
+        While DataGridView1.ColumnCount > 1
+            Try
+                DataGridView1.Columns.RemoveAt(1)
+            Catch nullEx As NullReferenceException
+                ' Do nothing - just don't throw the exception
+            End Try
+        End While
+
+        Try
+            DataGridView2.Rows.Clear()
+            DataGridView2.Columns.Clear()
+        Catch nullEx As NullReferenceException
+            DataGridView2 = New DataGridView()
+        End Try
+
+        TabPageTimeTransfer.Visible = True
+        AttributeTabControl.SelectedIndex = 4
+
+        SyncFromLabel.Text = "Employees"
+        SyncToLabel.Text = "Time"
+
+        'load grid 1
+        Dim col2 As New DataGridViewTextBoxColumn
+        col2.Name = "Name"
+        DataGridView1.Columns.Add(col2)
+        Dim col3 As New DataGridViewTextBoxColumn
+        col3.Name = "Employee ID"
+        DataGridView1.Columns.Add(col3)
+
+        SelectAllCheckBox.Checked = True
+
+        If String.IsNullOrEmpty(My.Settings.TimeTrackingLastSync.ToString()) Then
+            ItemLastSync = #1/1/2000#
+        Else
+            ItemLastSync = Convert.ToDateTime(My.Settings.TimeTrackingLastSync)
+        End If
+
+        My.Forms.MAIN.History("Synchonizing time entries items since:   " + ItemLastSync.ToString(), "n")
+
+        Dim objEmployeeServices As New Services.TimeLive.Employees.Employees
+        Dim authentication As New Services.TimeLive.Employees.SecuredWebServiceHeader
+        authentication.AuthenticatedToken = p_token
+        objEmployeeServices.SecuredWebServiceHeaderValue = authentication
+        Dim dv As New DataView(objEmployeeServices.GetEmployeesData)
+
+        Dim employees As New DataTable
+        employees = objEmployeeServices.GetEmployeesData
+
+        For Each row As DataRow In employees.Rows
+            selectedEmployeeData.NoItems = selectedEmployeeData.NoItems + 1
+            selectedEmployeeData.DataArray.Add(New TLtoQB_TimeEntry.Employee(True, row("FullName"), row("AccountEmployeeId")))
+        Next
+        Dim items_read As Integer = selectedEmployeeData.NoItems
+        For Each element As TLtoQB_TimeEntry.Employee In selectedEmployeeData.DataArray
+            'My.Forms.MAIN.History("Debug:   " + element.RecSelect.ToString(), "n")
+            DataGridView1.Rows.Add(element.RecSelect, element.FullName.ToString(), element.AccountEmployeeId.ToString())
+        Next
+
+        Time_Entry_Times()
+
+        System.Threading.Thread.Sleep(150)
+        System.Windows.Forms.Application.DoEvents()
+        Me.ProgressBar1.Value = 0
+
+        Return items_read
+    End Function
 
     ' Note: This is the new, up to date one that does TL -> QB too, replace display_UI with this once done testing
     Private Function display_UI() Handles QBtoTLCustomerRadioButton.CheckedChanged, QBtoTLEmployeeRadioButton.CheckedChanged,
@@ -44,7 +161,7 @@ Public Class IntegratedUI
         Dim Data
         Dim attribute As String
         Dim QBtoTLRadioButton As RadioButton
-        TransferTimeButton.Visible = False
+        'TransferTimeButton.Visible = False
         TimeEntrySelectAll.Visible = False
         ' Unselect the select all check box
         SelectAllCheckBox.Checked = False
@@ -53,7 +170,7 @@ Public Class IntegratedUI
             ' Customers
             Case 10
                 TabPageCustomers.Visible = True
-                TabControl1.SelectedIndex = 0
+                AttributeTabControl.SelectedIndex = 0
                 lastSync = My.Settings.CustomerLastSync
                 customerData = customer_qbtotl.GetCustomerQBData(Me, True)
                 Data = customerData
@@ -64,7 +181,7 @@ Public Class IntegratedUI
             Case 11
                 TabPageEmployees.Visible = True
                 CustomerSyncDirection.Visible = True
-                TabControl1.SelectedIndex = 1
+                AttributeTabControl.SelectedIndex = 1
                 lastSync = My.Settings.EmployeeLastSync
                 employeeData = employee_qbtotl.GetEmployeeQBData(Me, True)
                 Data = employeeData
@@ -74,7 +191,7 @@ Public Class IntegratedUI
             ' Vendors
             Case 12
                 TabPageVendor.Visible = True
-                TabControl1.SelectedIndex = 2
+                AttributeTabControl.SelectedIndex = 2
                 lastSync = My.Settings.VendorLastSync
                 vendorData = vendor_qbtotl.GetVendorQBData(Me, True)
                 Data = vendorData
@@ -84,7 +201,7 @@ Public Class IntegratedUI
             ' Jobs / Subjobs
             Case 13
                 TabPageJobsItems.Visible = True
-                TabControl1.SelectedIndex = 3
+                AttributeTabControl.SelectedIndex = 3
                 lastSync = My.Settings.JobLastSync
                 JobData = job_qbtotl.GetJobSubJobData(Me, p_token, True)
                 Data = JobData
@@ -94,7 +211,7 @@ Public Class IntegratedUI
             ' Items / SubItems
             Case 14
                 TabPageJobsItems.Visible = True
-                TabControl1.SelectedIndex = 3
+                AttributeTabControl.SelectedIndex = 3
                 lastSync = My.Settings.ItemlastSync
                 JobData = job_qbtotl.GetItemSubItemData(Me, p_token, True)
                 Data = JobData
@@ -115,14 +232,26 @@ Public Class IntegratedUI
         End If
         My.Forms.MAIN.History("Synchonizing modified " + attribute + " since: " + ItemLastSync.ToString(), "n")
 
-        ' Delete all rows and columns from the DataGridView's execpt the "Check Name" column in DataGridView1
-        DataGridView1.Rows.Clear()
+        ' Delete all rows and columns from the DataGridView's except the "Check Name" column in DataGridView1
+        Try
+            DataGridView1.Rows.Clear()
+        Catch nullEx As NullReferenceException
+            ' Do Nothing - just don't throw the exception
+        End Try
         While DataGridView1.ColumnCount > 1
-            DataGridView1.Columns.RemoveAt(1)
+            Try
+                DataGridView1.Columns.RemoveAt(1)
+            Catch nullEx As NullReferenceException
+                ' Do nothing - just don't throw the exception
+            End Try
         End While
 
-        DataGridView2.Rows.Clear()
-        DataGridView2.Columns.Clear()
+        Try
+            DataGridView2.Rows.Clear()
+            DataGridView2.Columns.Clear()
+        Catch nullEx As NullReferenceException
+            DataGridView2 = New DataGridView()
+        End Try
 
         '-----------------------------------------
         'load grid for QuickBooks (might be easier way)
@@ -237,7 +366,8 @@ Public Class IntegratedUI
                 authentication1.AuthenticatedToken = p_token
                 objProjectServices.SecuredWebServiceHeaderValue = authentication1
                 objServices = objProjectServices
-                list.AddRange(objServices.GetProjects())
+                TLItemsArray = objServices.GetProjects()
+                list.AddRange(TLItemsArray)
 
                 Dim objTaskServices As New Services.TimeLive.Tasks.Tasks
                 Dim authentication2 As New Services.TimeLive.Tasks.SecuredWebServiceHeader
@@ -250,6 +380,13 @@ Public Class IntegratedUI
 
         End Select
 
+        ' Populate the table based on the TineLive elements
+        If Me.ProgressBar1.Maximum = Nothing Then
+            Me.ProgressBar1.Maximum = 0
+        End If
+
+        Me.ProgressBar1.Maximum += If(TLItemsArray Is Nothing, 0, TLItemsArray.Length)
+
         If TLItemsArray Is Nothing Or TLItemsArray.Length = 0 Then
             My.Forms.MAIN.History("No TimeLive " + attribute + " data", "n")
         End If
@@ -260,7 +397,6 @@ Public Class IntegratedUI
         Dim Job_SubJobAdapter As New QB_TL_IDsTableAdapters.Jobs_SubJobsTableAdapter()
         Dim Item_SubItemAdapter As New QB_TL_IDsTableAdapters.Items_SubItemsTableAdapter()
 
-        ' Populate the table based on the TineLive elements
         For Each element In TLItemsArray
             Dim ID As Integer = 0
             Dim name As String = ""
@@ -302,7 +438,13 @@ Public Class IntegratedUI
                         ID = objServices.GetProjectId(element.projectName)
                     Else
                         name = element.JobParent.replace(":", MAIN.colonReplacer) + MAIN.colonReplacer + element.TaskName
-                        ID = objServices2.GetTaskId(element.TaskName)
+                        Try
+                            ID = objServices2.GetTaskId(element.TaskName)
+                        Catch ex As System.Web.Services.Protocols.SoapException
+                            My.Forms.MAIN.History("Could not get TL ID of TL task '" + name +
+                                                  "' Make sure that it has a 'code' attribute in TimeLive", "i")
+                            ID = -1
+                        End Try
                     End If
 
                     ' Do not show Items
@@ -334,6 +476,8 @@ Public Class IntegratedUI
             Else
                 TLDataGridView.Rows.Add(False, name, isNew)
             End If
+
+            ProgressBar1.Value += 1
         Next
 
         System.Threading.Thread.Sleep(150)
@@ -353,7 +497,7 @@ Public Class IntegratedUI
             ' Customers
             Case 10
                 TabPageCustomers.Visible = True
-                TabControl1.SelectedIndex = 0
+                AttributeTabControl.SelectedIndex = 0
                 lastSync = My.Settings.CustomerLastSync
                 customerData = customer_qbtotl.GetCustomerQBData(Me, True)
                 Data = customerData
@@ -362,7 +506,7 @@ Public Class IntegratedUI
             ' Employees
             Case 11
                 TabPageEmployees.Visible = True
-                TabControl1.SelectedIndex = 1
+                AttributeTabControl.SelectedIndex = 1
                 lastSync = My.Settings.EmployeeLastSync
                 employeeData = employee_qbtotl.GetEmployeeQBData(Me, True)
                 Data = employeeData
@@ -371,7 +515,7 @@ Public Class IntegratedUI
             ' Vendors
             Case 12
                 TabPageVendor.Visible = True
-                TabControl1.SelectedIndex = 2
+                AttributeTabControl.SelectedIndex = 2
                 lastSync = My.Settings.VendorLastSync
                 vendorData = vendor_qbtotl.GetVendorQBData(Me, True)
                 Data = vendorData
@@ -380,7 +524,7 @@ Public Class IntegratedUI
             ' Jobs / Subjobs
             Case 13
                 TabPageJobsItems.Visible = True
-                TabControl1.SelectedIndex = 3
+                AttributeTabControl.SelectedIndex = 3
                 lastSync = My.Settings.JobLastSync
                 JobData = job_qbtotl.GetJobSubJobData(Me, p_token, True)
                 Data = JobData
@@ -389,7 +533,7 @@ Public Class IntegratedUI
             ' Items / SubItems
             Case 14
                 TabPageJobsItems.Visible = True
-                TabControl1.SelectedIndex = 3
+                AttributeTabControl.SelectedIndex = 3
                 lastSync = My.Settings.ItemlastSync
                 JobData = job_qbtotl.GetItemSubItemData(Me, p_token, True)
                 Data = JobData
@@ -523,54 +667,7 @@ Public Class IntegratedUI
         'for type Time Items
         ' Might add this to display_UI() or as its own private function
         If Type = 20 Then
-            TabPageTimeTransfer.Visible = True
-            TabControl1.SelectedIndex = 4
-
-            SyncFromLabel.Text = "Employees"
-            SyncToLabel.Text = "Time"
-
-            'load grid 1
-            Dim col2 As New DataGridViewTextBoxColumn
-            col2.Name = "Name"
-            DataGridView1.Columns.Add(col2)
-            Dim col3 As New DataGridViewTextBoxColumn
-            col3.Name = "Employee ID"
-            DataGridView1.Columns.Add(col3)
-
-            SelectAllCheckBox.Checked = True
-
-            If String.IsNullOrEmpty(My.Settings.TimeTrackingLastSync.ToString()) Then
-                ItemLastSync = #1/1/2000#
-            Else
-                ItemLastSync = Convert.ToDateTime(My.Settings.TimeTrackingLastSync)
-            End If
-
-            My.Forms.MAIN.History("Synchonizing time entries items since:   " + ItemLastSync.ToString(), "n")
-
-            Dim objEmployeeServices As New Services.TimeLive.Employees.Employees
-            Dim authentication As New Services.TimeLive.Employees.SecuredWebServiceHeader
-            authentication.AuthenticatedToken = p_token
-            objEmployeeServices.SecuredWebServiceHeaderValue = authentication
-            Dim dv As New DataView(objEmployeeServices.GetEmployeesData)
-
-            Dim employees As New DataTable
-            employees = objEmployeeServices.GetEmployeesData
-
-            For Each row As DataRow In employees.Rows
-                selectedEmployeeData.NoItems = selectedEmployeeData.NoItems + 1
-                selectedEmployeeData.DataArray.Add(New TLtoQB_TimeEntry.Employee(True, row("FullName"), row("AccountEmployeeId")))
-            Next
-            ReadItems = selectedEmployeeData.NoItems
-            For Each element As TLtoQB_TimeEntry.Employee In selectedEmployeeData.DataArray
-                'My.Forms.MAIN.History("Debug:   " + element.RecSelect.ToString(), "n")
-                DataGridView1.Rows.Add(element.RecSelect, element.FullName.ToString(), element.AccountEmployeeId.ToString())
-            Next
-
-            'Time_Entry_Times()
-
-            System.Threading.Thread.Sleep(150)
-            System.Windows.Forms.Application.DoEvents()
-            Me.ProgressBar1.Value = 0
+            ReadItems = display_TimeEntry_UI()
         End If
 
         My.Forms.MAIN.History(ReadItems.ToString() + " items were read from Quickbooks", "n")
@@ -601,9 +698,48 @@ Public Class IntegratedUI
     End Sub
 
     Private Sub btnclose_Click(sender As Object, e As EventArgs) Handles bntclose.Click
-        TransferTimeButton.Visible = False
+        'TransferTimeButton.Visible = False
         TimeEntrySelectAll.Visible = False
         Me.Close()
+    End Sub
+
+    Private Sub btnRefreshTimeTransfer_Click(sender As Object, e As EventArgs) Handles RefreshTimeTransfer.Click
+        'TransferTimeButton.Visible = True
+        TimeEntrySelectAll.Visible = True
+        TimeEntrySelectAll.Checked = True
+        Reset_Checked_SelectedEmployee_Value(selectedEmployeeData)
+        Set_Selected_SelectedEmployee()
+        'Dim IntUI_2ndSelect As New IntUI_2ndSelect
+        Time_Entry_Times()
+        'IntUI_2ndSelect.init_vars(p_token, p_AccountId, selectedEmployeeData, CDate(dpStartDate.Value).Date, CDate(dpEndDate.Value).Date.ToString)
+        Dim StartDate As DateTime = CDate(dpStartDate.Value).Date
+        Dim endDate As DateTime = CDate(dpEndDate.Value).Date
+        TimeEntryData.clear()
+
+        Me.ProgressBar1.Maximum = selectedEmployeeData.NoItems
+        For Each element As TLtoQB_TimeEntry.Employee In selectedEmployeeData.DataArray
+            With element
+                If element.RecSelect = True Then
+                    My.Forms.MAIN.History("Processing: " + element.FullName.ToString(), "n")
+                    LoadSelectedTimeEntryItems(element.AccountEmployeeId, element.FullName, DataGridView2, StartDate, endDate, True)
+                    'deselect as not to load again
+                    element.RecSelect = False
+                    'Exit For
+                End If
+            End With
+            Me.ProgressBar1.Value += 1
+        Next
+        'IntUI_2ndSelect.Owner = Me
+        'IntUI_2ndSelect.Show(p_token, p_AccountId, selectedEmployeeData,
+        'CDate(dpStartDate.Value).Date,
+        'CDate(dpEndDate.Value).Date.ToString, 201)
+        'wait for one second so user can see progress bar
+        System.Threading.Thread.Sleep(150)
+        System.Windows.Forms.Application.DoEvents()
+
+        Me.ProgressBar1.Value = 0
+        My.Settings.TimeTrackingLastSync = DateTime.Now.ToString()
+        My.Settings.Save()
     End Sub
 
     Private Sub btnTransfer_Click(sender As Object, e As EventArgs) Handles btnTransfer.Click
@@ -641,8 +777,8 @@ Public Class IntegratedUI
             End If
         End If
 
-            'When processing vendor
-            If Type = 12 Then
+        'When processing vendor
+        If Type = 12 Then
             Reset_Checked_Vendor_Value(vendorData)
             If QBtoTLVendorRadioButton.Checked Then
                 Set_Selected_Vendor()
@@ -694,33 +830,14 @@ Public Class IntegratedUI
 
         'When processing Time Transfer
         If Type = 20 Then
-            TransferTimeButton.Visible = True
-            TimeEntrySelectAll.Visible = True
-            TimeEntrySelectAll.Checked = True
-            Reset_Checked_SelectedEmployee_Value(selectedEmployeeData)
-            Set_Selected_SelectedEmployee()
-            'Dim IntUI_2ndSelect As New IntUI_2ndSelect
-            Time_Entry_Times()
-            IntUI_2ndSelect.init_vars(p_token, p_AccountId, selectedEmployeeData, CDate(dpStartDate.Value).Date, CDate(dpEndDate.Value).Date.ToString)
+            Reset_Checked_TimeEntry_Value(TimeEntryData)
+            Set_Selected_TimeEntry(DataGridView2)
 
-            For Each element As TLtoQB_TimeEntry.Employee In selectedEmployeeData.DataArray
-                With element
-                    If element.RecSelect = True Then
-                        My.Forms.MAIN.History("Processing: " + element.FullName.ToString(), "n")
-                        IntUI_2ndSelect.LoadSelectedTimeEntryItems(element.AccountEmployeeId, element.FullName, DataGridView2, True)
-                        'deselect as not to load again
-                        element.RecSelect = False
-                        'Exit For
-                    End If
-                End With
-            Next
-            'IntUI_2ndSelect.Owner = Me
-            'IntUI_2ndSelect.Show(p_token, p_AccountId, selectedEmployeeData,
-            '                                 CDate(dpStartDate.Value).Date,
-            '                                 CDate(dpEndDate.Value).Date.ToString, 201)
+            ' Transfer Time Entry data from TL to QB
+            ItemsProcessed = timeentry_tltoqb.TLTransferTimeToQB(TimeEntryData, p_token, Me, True)
+            'IntUI_2ndSelect.time_transfer(DataGridView2, Me)
+            My.Forms.MAIN.History(ItemsProcessed.ToString() + If(ItemsProcessed = 1, "Time Entry was", "Time Entries were") + " created or updated", "i")
 
-            My.Settings.TimeTrackingLastSync = DateTime.Now.ToString()
-            My.Settings.Save()
         Else
             ' Refresh after processing
             display_UI()
@@ -731,18 +848,6 @@ Public Class IntegratedUI
         System.Windows.Forms.Application.DoEvents()
 
         Me.ProgressBar1.Value = 0
-    End Sub
-
-    Private Sub transfer_time(sender As Object, e As EventArgs) Handles TransferTimeButton.Click
-        'IntUI_2ndSelect.Set_Selected_TimeEntry(DataGridView2)
-        IntUI_2ndSelect.time_transfer(DataGridView2)
-
-        'wait for one second so user can see progress bar
-        'System.Threading.Thread.Sleep(150)
-        'System.Windows.Forms.Application.DoEvents()
-        'Me.ProgressBar1.Value = 0
-
-        'MessageBox.Show("Last employee processed")
     End Sub
 
     Private Sub Reset_Checked_Customer_Value(ByRef customerObj As QBtoTL_Customer.CustomerDataStructureQB)
@@ -789,6 +894,37 @@ Public Class IntegratedUI
                 'My.Forms.MAIN.History("Time selection:  Reseting employees:   " + element.RecSelect.ToString(), "n")
             Next
         End If
+    End Sub
+
+    Private Sub Reset_Checked_TimeEntry_Value(ByRef TimeEntryObj As TLtoQB_TimeEntry.TimeEntryDataStructureQB)
+        ' reset the check value to zero
+        For Each element As TLtoQB_TimeEntry.TimeEntry In TimeEntryObj.DataArray
+            element.RecSelect = False
+        Next
+    End Sub
+
+    Private Sub Set_Selected_TimeEntry(ByRef DataGridView As DataGridView)
+        Me.ProgressBar1.Maximum = DataGridView.Rows.Count
+        For Each row As DataGridViewRow In DataGridView.Rows
+            If row.Cells("Date").Value IsNot Nothing And row.Cells("ckBox").Value And TimeEntryData.NoItems Then
+                Dim i = 0
+                Dim full_name As String = row.Cells("Task").Value.ToString()
+
+                TimeEntryData.DataArray.ForEach(
+                    Sub(timeentry)
+                        If (timeentry.EmployeeName = row.Cells("Employee").Value.ToString And
+                           timeentry.CustomerName + MAIN.colonReplacer + timeentry.ProjectName + MAIN.colonReplacer + timeentry.TaskWithParent = full_name And
+                           timeentry.TimeEntryDate.ToString("MM/dd/yyyy") = row.Cells("Date").Value.ToString) Then
+                            i += 1
+                            timeentry.RecSelect = True
+                        End If
+                    End Sub
+                )
+                'TimeEntryData.DataArray(row.Index).RecSelect = True
+                My.Forms.MAIN.History("Selected for processing: " + row.Cells("Employee").Value.ToString + " with task " + row.Cells("Task").Value.ToString + " on " + row.Cells("Date").Value.ToString, "n")
+                Me.ProgressBar1.Value += 1
+            End If
+        Next
     End Sub
 
     ' Returns a list of the full names for the selected TimeLive entities
@@ -897,6 +1033,55 @@ Public Class IntegratedUI
                 row.Cells("ckBox").Value = TimeEntrySelectAll.Checked
             End If
         Next
+    End Sub
+
+    Public Sub LoadSelectedTimeEntryItems(AccountEmployeeId As String, EmployeeName As String, ByRef DataGridView As DataGridView, ByVal StartDate As DateTime, ByVal EndDate As DateTime, Optional combine As Boolean = False)
+        Dim temp As New TLtoQB_TimeEntry.TimeEntryDataStructureQB
+
+        Dim emplTLData As TLtoQB_TimeEntry.TimeEntryDataStructureQB = timeentry_tltoqb.GetTimeEntryTLData(AccountEmployeeId, StartDate, EndDate, Me, p_token, False)
+        If combine Then
+            TimeEntryData.combine(emplTLData)
+        Else
+            TimeEntryData = emplTLData
+        End If
+
+        Dim TotalHour As Integer
+        Dim TotalMin As Double
+        If TimeEntryData IsNot Nothing Then
+            For Each element As TLtoQB_TimeEntry.TimeEntry In emplTLData.DataArray
+                With element
+                    Dim Item_SubItemID As String = Nothing
+
+                    TotalHour = .TotalTime.ToString("%h")
+                    'Turn hour to 24 hour time
+                    TotalHour = TotalHour Mod 12
+                    If Not .TotalTime.ToString.Contains("AM") Then
+                        TotalHour += 12
+                    End If
+
+                    TotalMin = .TotalTime.ToString("%m")
+                    TotalMin = (TotalMin / 60).ToString("00.00")
+
+                    Dim payrollDisp As String = If(.PayrollName Is Nothing, .PayrollItem, .PayrollName)
+                    Dim ServiceDisp As String = If(.ServiceName Is Nothing, .ServiceItem, .ServiceName)
+
+                    Dim full_name As String = .CustomerName.ToString() + MAIN.colonReplacer + .ProjectName.ToString() + MAIN.colonReplacer + .TaskWithParent.ToString()
+
+                    DataGridView.Rows.Add(.RecSelect, .EmployeeName, .TimeEntryDate.ToString("MM/dd/yyyy"), full_name,
+                                           (TotalHour + TotalMin).ToString, .TimeEntryClass, payrollDisp, ServiceDisp)
+                    element.RecSelect = True
+                End With
+            Next
+        End If
+
+        'Select All
+        For Each row As DataGridViewRow In DataGridView.Rows
+            If row.Cells("Date").Value IsNot Nothing Then
+                row.Cells("ckBox").Value = True
+            End If
+        Next
+
+        'MsgBox(" at the end " + TimeEntryData.NoItems.ToString)
     End Sub
 
     '--- Timer Options Functions
@@ -1040,5 +1225,9 @@ Public Class IntegratedUI
     Private Sub cbWageType_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cbWageType.SelectedIndexChanged
         My.Settings.QBWageType = cbWageType.SelectedIndex
         My.Settings.Save()
+    End Sub
+
+    Private Sub display_UI(sender As Object, e As EventArgs) Handles RefreshVendors.Click, RefreshJobsOrItems.Click, RefreshEmployees.Click, RefreshCustomers.Click, QBtoTLVendorRadioButton.CheckedChanged, QBtoTLJobItemRadioButton.CheckedChanged, QBtoTLEmployeeRadioButton.CheckedChanged, QBtoTLCustomerRadioButton.CheckedChanged
+
     End Sub
 End Class

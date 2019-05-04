@@ -1,6 +1,6 @@
 ﻿Imports QBFC13Lib
 
-Public Class Sync_TLtoQB_Vendor
+Public Class Sync_TLtoQB_TimeEntry
     '---------------------Sync Vendor TL Data to QB---------------------------------------
     'Note need to detect contractors; these need to be linked as vendors
     ''' <summary>

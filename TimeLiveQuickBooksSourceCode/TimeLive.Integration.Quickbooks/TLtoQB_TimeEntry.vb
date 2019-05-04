@@ -80,7 +80,7 @@ Public Class TLtoQB_TimeEntry
     End Class
 
     Public Function GetTimeEntryTLData(AccountEmployeeId As Integer, dpStartDate As DateTime, dpEndDate As DateTime,
-                                       IntUI_2ndSelectForm As IntUI_2ndSelect, ByVal token As String, UI As Boolean) As TimeEntryDataStructureQB
+                                       IntegratedUI As IntegratedUI, ByVal token As String, UI As Boolean) As TimeEntryDataStructureQB
         Dim TimeEntryData As New TimeEntryDataStructureQB
         Dim timeentry_tltoqb As TLtoQB_TimeEntry = New TLtoQB_TimeEntry
         Dim temp As String = Nothing
@@ -97,13 +97,9 @@ Public Class TLtoQB_TimeEntry
             Dim objTimeEntry As New Services.TimeLive.TimeEntries.TimeEntry
 
             'sets status bar. If no, UI skip
-            Dim incrementbar As Integer = 0
             If UI Then
-                Dim pblenth As Integer = objTimeEntryArray.Length - 1
-                If pblenth >= 0 Then
-                    IntUI_2ndSelectForm.ProgressBar1.Maximum = pblenth
-                    IntUI_2ndSelectForm.ProgressBar1.Value = 0
-                End If
+                IntegratedUI.ProgressBar1.Maximum = objTimeEntryArray.Length
+                IntegratedUI.ProgressBar1.Value = 0
             End If
 
             'Dim EmployeeName As String = Nothing
@@ -171,7 +167,7 @@ Public Class TLtoQB_TimeEntry
                         ItemName = ItemName.Trim
                         My.Forms.MAIN.History("Item name: " + ItemName, "i")
                     Else
-                        My.Forms.MAIN.History("Item ID: " + Item_SubItemID, "i")
+                        'My.Forms.MAIN.History("Item ID: " + Item_SubItemID, "i")
                     End If
 
                     If Item_SubItemID = "" Then
@@ -185,7 +181,7 @@ Public Class TLtoQB_TimeEntry
                         PayrollName = PayrollName.Trim
                         My.Forms.MAIN.History("Payroll Name: " + PayrollName, "i")
                     Else
-                        My.Forms.MAIN.History("Payroll ID: " + Payroll_Item_SubItemID, "i")
+                        'My.Forms.MAIN.History("Payroll ID: " + Payroll_Item_SubItemID, "i")
                     End If
 
                     If Payroll_Item_SubItemID = "" Then
@@ -201,7 +197,7 @@ Public Class TLtoQB_TimeEntry
                 End With
 
                 If UI Then
-                    IntUI_2ndSelectForm.ProgressBar1.Value = n
+                    IntegratedUI.ProgressBar1.Value += 1
                 End If
             Next
 
@@ -214,15 +210,11 @@ Public Class TLtoQB_TimeEntry
     End Function
 
     Public Function TLTransferTimeToQB(ByRef objData As TLtoQB_TimeEntry.TimeEntryDataStructureQB,
-                                   ByVal token As String, IntUI_2ndSelectForm As IntUI_2ndSelect, UI As Boolean) As Integer
+                                   ByVal token As String, IntegratedUI As IntegratedUI, UI As Boolean) As Integer
         'sets status bar. If no, UI skip
-        Dim incrementbar As Integer = 0
         If UI Then
-            Dim pblenth As Integer = objData.DataArray.Count - 1
-            If pblenth >= 0 Then
-                IntUI_2ndSelectForm.ProgressBar1.Maximum = pblenth
-                IntUI_2ndSelectForm.ProgressBar1.Value = 0
-            End If
+            IntegratedUI.ProgressBar1.Maximum = objData.DataArray.Count
+            IntegratedUI.ProgressBar1.Value = 0
         End If
 
         Dim NoRecordsCreatedorUpdated = 0
@@ -291,8 +283,7 @@ Public Class TLtoQB_TimeEntry
                 End If
                 'if no UI, then skip
                 If UI Then
-                    IntUI_2ndSelectForm.ProgressBar1.Value = incrementbar
-                    incrementbar += 1
+                    IntegratedUI.ProgressBar1.Value += 1
                 End If
             Next
         Catch ex As Exception
@@ -347,7 +338,7 @@ Public Class TLtoQB_TimeEntry
             result = If(EmployeeQBID.Count, EmployeeQBID(0)(0).ToString, "")
         End If
 
-        My.Forms.MAIN.History("QB Employee ID: " + result, "i")
+        'My.Forms.MAIN.History("QB Employee ID: " + result, "i")
         ' Return string of the ID (Empty string if none found)
         Return result
     End Function

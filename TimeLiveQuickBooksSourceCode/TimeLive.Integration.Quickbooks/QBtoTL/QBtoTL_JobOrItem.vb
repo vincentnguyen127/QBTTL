@@ -229,7 +229,6 @@ Public Class QBtoTL_JobOrItem
         objServices.SecuredWebServiceHeaderValue = authentication4
 
         'sets status bar. If no, UI skip
-        Dim incrementbar As Integer = 0
         If UI Then
             Dim pblenth As Integer = objData.DataArray.Count
             'If pblenth >= 0 Then
@@ -275,8 +274,7 @@ Public Class QBtoTL_JobOrItem
                             If project_or_task_inTL Then
                                 ' TL already has this value and so does our DB, so just move to next element after updating Progress Bar
                                 If UI Then
-                                    incrementbar += 1
-                                    IntegratedUIForm.ProgressBar1.Value = incrementbar
+                                    IntegratedUIForm.ProgressBar1.Value += 1
                                 End If
                                 ' TODO: Update TL
                                 ' NoRecordsCreatedorUpdated += 1
@@ -294,8 +292,7 @@ Public Class QBtoTL_JobOrItem
                             My.Forms.MAIN.History("Could not Get Client ID. It is likely that the client associated with this project does not exist. Try adding the client " +
                                                           PTArray(0) + " and then try again", "i")
                             If UI Then
-                                incrementbar += 1
-                                IntegratedUIForm.ProgressBar1.Value = incrementbar
+                                IntegratedUIForm.ProgressBar1.Value += 1
                             End If
                             Continue For
                         End If
@@ -429,8 +426,7 @@ Public Class QBtoTL_JobOrItem
             End If
             'if no, UI skip
             If UI Then
-                incrementbar += 1
-                IntegratedUIForm.ProgressBar1.Value = incrementbar
+                IntegratedUIForm.ProgressBar1.Value += 1
             End If
             'Catch ex As Exception
             'My.Forms.MAIN.History(ex.ToString, "C")
@@ -470,13 +466,9 @@ Public Class QBtoTL_JobOrItem
         objServices.SecuredWebServiceHeaderValue = authentication4
 
         'sets status bar. If no, UI skip
-        Dim incrementbar As Integer = 0
         If UI Then
-            Dim pblenth As Integer = objData.DataArray.Count - 1
-            If pblenth >= 0 Then
-                IntegratedUIForm.ProgressBar1.Maximum = pblenth
-                IntegratedUIForm.ProgressBar1.Value = 0
-            End If
+            IntegratedUIForm.ProgressBar1.Maximum = objData.DataArray.Count
+            IntegratedUIForm.ProgressBar1.Value = 0
         End If
 
         Dim NoRecordsCreatedorUpdated As Integer = 0
@@ -591,8 +583,7 @@ Public Class QBtoTL_JobOrItem
                 End If
                 'if no UI, then skip
                 If UI Then
-                    IntegratedUIForm.ProgressBar1.Value = incrementbar
-                    incrementbar += 1
+                    IntegratedUIForm.ProgressBar1.Value += 1
                 End If
             Next
 
@@ -666,6 +657,10 @@ Public Class QBtoTL_JobOrItem
         Dim result As String = Nothing
         Dim JobAdapter As New QB_TL_IDsTableAdapters.Jobs_SubJobsTableAdapter
         Dim TimeLiveIDs As QB_TL_IDs.Jobs_SubJobsDataTable = JobAdapter.GetCorrespondingTL_ID(myqbID)
+
+        If TimeLiveIDs Is Nothing Then Return Nothing
+        If TimeLiveIDs.Rows.Count = 0 Then Return Nothing
+
 
         If String.IsNullOrEmpty(Trim(TimeLiveIDs(0).TimeLive_ID.ToString())) Then
             My.Forms.MAIN.History("Record has a TLID of Nothing", "I")

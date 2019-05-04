@@ -324,6 +324,10 @@ Public Class QBtoTL_Customer
         Dim CustomerAdapter As New QB_TL_IDsTableAdapters.CustomersTableAdapter()
         Dim TimeLiveIDs As QB_TL_IDs.CustomersDataTable = CustomerAdapter.GetCorrespondingTL_ID(myqbID)
 
+        If TimeLiveIDs Is Nothing Then Return Nothing
+        If TimeLiveIDs.Rows.Count = 0 Then Return Nothing
+
+
         If String.IsNullOrEmpty(Trim(TimeLiveIDs(0).TimeLive_ID.ToString())) Then
             My.Forms.MAIN.History("Record has a TLID of Nothing", "I")
         Else

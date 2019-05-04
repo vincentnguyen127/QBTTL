@@ -27,6 +27,7 @@ Partial Class IntegratedUI
         Me.GroupBox1 = New System.Windows.Forms.GroupBox()
         Me.ProgressBar1 = New System.Windows.Forms.ProgressBar()
         Me.TabPageTimeTransfer = New System.Windows.Forms.TabPage()
+        Me.RefreshTimeTransfer = New System.Windows.Forms.Button()
         Me.cbWageType = New System.Windows.Forms.ComboBox()
         Me.lblWageType = New System.Windows.Forms.Label()
         Me.preWeek = New System.Windows.Forms.Button()
@@ -36,7 +37,7 @@ Partial Class IntegratedUI
         Me.dpStartDate = New System.Windows.Forms.DateTimePicker()
         Me.nextWeek = New System.Windows.Forms.Button()
         Me.btn_currentweek = New System.Windows.Forms.Button()
-        Me.TabControl1 = New System.Windows.Forms.TabControl()
+        Me.AttributeTabControl = New System.Windows.Forms.TabControl()
         Me.TabPageCustomers = New System.Windows.Forms.TabPage()
         Me.RefreshCustomers = New System.Windows.Forms.Button()
         Me.CustomerSyncDirection = New System.Windows.Forms.GroupBox()
@@ -65,10 +66,9 @@ Partial Class IntegratedUI
         Me.ckBox = New System.Windows.Forms.DataGridViewCheckBoxColumn()
         Me.TimeEntrySelectAll = New System.Windows.Forms.CheckBox()
         Me.DataGridView2 = New System.Windows.Forms.DataGridView()
-        Me.TransferTimeButton = New System.Windows.Forms.Button()
         Me.GroupBox1.SuspendLayout()
         Me.TabPageTimeTransfer.SuspendLayout()
-        Me.TabControl1.SuspendLayout()
+        Me.AttributeTabControl.SuspendLayout()
         Me.TabPageCustomers.SuspendLayout()
         Me.CustomerSyncDirection.SuspendLayout()
         Me.TabPageEmployees.SuspendLayout()
@@ -130,6 +130,7 @@ Partial Class IntegratedUI
         '
         'TabPageTimeTransfer
         '
+        Me.TabPageTimeTransfer.Controls.Add(Me.RefreshTimeTransfer)
         Me.TabPageTimeTransfer.Controls.Add(Me.cbWageType)
         Me.TabPageTimeTransfer.Controls.Add(Me.lblWageType)
         Me.TabPageTimeTransfer.Controls.Add(Me.preWeek)
@@ -142,10 +143,19 @@ Partial Class IntegratedUI
         Me.TabPageTimeTransfer.Location = New System.Drawing.Point(4, 22)
         Me.TabPageTimeTransfer.Name = "TabPageTimeTransfer"
         Me.TabPageTimeTransfer.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPageTimeTransfer.Size = New System.Drawing.Size(629, 82)
+        Me.TabPageTimeTransfer.Size = New System.Drawing.Size(978, 82)
         Me.TabPageTimeTransfer.TabIndex = 2
         Me.TabPageTimeTransfer.Text = "Time Transfer Options"
         Me.TabPageTimeTransfer.UseVisualStyleBackColor = True
+        '
+        'RefreshTimeTransfer
+        '
+        Me.RefreshTimeTransfer.Location = New System.Drawing.Point(691, 21)
+        Me.RefreshTimeTransfer.Name = "RefreshTimeTransfer"
+        Me.RefreshTimeTransfer.Size = New System.Drawing.Size(97, 30)
+        Me.RefreshTimeTransfer.TabIndex = 45
+        Me.RefreshTimeTransfer.Text = "Refresh"
+        Me.RefreshTimeTransfer.UseVisualStyleBackColor = True
         '
         'cbWageType
         '
@@ -229,18 +239,20 @@ Partial Class IntegratedUI
         Me.btn_currentweek.Text = "Current Week"
         Me.btn_currentweek.UseVisualStyleBackColor = True
         '
-        'TabControl1
+        'AttributeTabControl
         '
-        Me.TabControl1.Controls.Add(Me.TabPageCustomers)
-        Me.TabControl1.Controls.Add(Me.TabPageEmployees)
-        Me.TabControl1.Controls.Add(Me.TabPageVendor)
-        Me.TabControl1.Controls.Add(Me.TabPageJobsItems)
-        Me.TabControl1.Controls.Add(Me.TabPageTimeTransfer)
-        Me.TabControl1.Location = New System.Drawing.Point(2, -1)
-        Me.TabControl1.Name = "TabControl1"
-        Me.TabControl1.SelectedIndex = 0
-        Me.TabControl1.Size = New System.Drawing.Size(637, 108)
-        Me.TabControl1.TabIndex = 40
+        Me.AttributeTabControl.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.AttributeTabControl.Controls.Add(Me.TabPageCustomers)
+        Me.AttributeTabControl.Controls.Add(Me.TabPageEmployees)
+        Me.AttributeTabControl.Controls.Add(Me.TabPageVendor)
+        Me.AttributeTabControl.Controls.Add(Me.TabPageJobsItems)
+        Me.AttributeTabControl.Controls.Add(Me.TabPageTimeTransfer)
+        Me.AttributeTabControl.Location = New System.Drawing.Point(2, -1)
+        Me.AttributeTabControl.Name = "AttributeTabControl"
+        Me.AttributeTabControl.SelectedIndex = 0
+        Me.AttributeTabControl.Size = New System.Drawing.Size(986, 108)
+        Me.AttributeTabControl.TabIndex = 40
         '
         'TabPageCustomers
         '
@@ -249,7 +261,7 @@ Partial Class IntegratedUI
         Me.TabPageCustomers.Location = New System.Drawing.Point(4, 22)
         Me.TabPageCustomers.Name = "TabPageCustomers"
         Me.TabPageCustomers.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPageCustomers.Size = New System.Drawing.Size(629, 82)
+        Me.TabPageCustomers.Size = New System.Drawing.Size(978, 82)
         Me.TabPageCustomers.TabIndex = 3
         Me.TabPageCustomers.Text = "Customers Options"
         Me.TabPageCustomers.UseVisualStyleBackColor = True
@@ -304,7 +316,7 @@ Partial Class IntegratedUI
         Me.TabPageEmployees.Location = New System.Drawing.Point(4, 22)
         Me.TabPageEmployees.Name = "TabPageEmployees"
         Me.TabPageEmployees.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPageEmployees.Size = New System.Drawing.Size(629, 82)
+        Me.TabPageEmployees.Size = New System.Drawing.Size(978, 82)
         Me.TabPageEmployees.TabIndex = 4
         Me.TabPageEmployees.Text = "Employees Options"
         Me.TabPageEmployees.UseVisualStyleBackColor = True
@@ -359,7 +371,7 @@ Partial Class IntegratedUI
         Me.TabPageVendor.Location = New System.Drawing.Point(4, 22)
         Me.TabPageVendor.Name = "TabPageVendor"
         Me.TabPageVendor.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPageVendor.Size = New System.Drawing.Size(629, 82)
+        Me.TabPageVendor.Size = New System.Drawing.Size(978, 82)
         Me.TabPageVendor.TabIndex = 5
         Me.TabPageVendor.Text = "Vendors Options"
         Me.TabPageVendor.UseVisualStyleBackColor = True
@@ -413,7 +425,7 @@ Partial Class IntegratedUI
         Me.TabPageJobsItems.Controls.Add(Me.JobItemSyncDirection)
         Me.TabPageJobsItems.Location = New System.Drawing.Point(4, 22)
         Me.TabPageJobsItems.Name = "TabPageJobsItems"
-        Me.TabPageJobsItems.Size = New System.Drawing.Size(629, 82)
+        Me.TabPageJobsItems.Size = New System.Drawing.Size(978, 82)
         Me.TabPageJobsItems.TabIndex = 6
         Me.TabPageJobsItems.Text = "Jobs/Items Options"
         Me.TabPageJobsItems.UseVisualStyleBackColor = True
@@ -553,25 +565,13 @@ Partial Class IntegratedUI
         Me.DataGridView2.Size = New System.Drawing.Size(496, 388)
         Me.DataGridView2.TabIndex = 42
         '
-        'TransferTimeButton
-        '
-        Me.TransferTimeButton.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.TransferTimeButton.ImeMode = System.Windows.Forms.ImeMode.NoControl
-        Me.TransferTimeButton.Location = New System.Drawing.Point(697, 597)
-        Me.TransferTimeButton.Name = "TransferTimeButton"
-        Me.TransferTimeButton.Size = New System.Drawing.Size(97, 23)
-        Me.TransferTimeButton.TabIndex = 45
-        Me.TransferTimeButton.Text = "Transfer Time"
-        Me.TransferTimeButton.UseVisualStyleBackColor = True
-        '
         'IntegratedUI
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(990, 631)
-        Me.Controls.Add(Me.TransferTimeButton)
         Me.Controls.Add(Me.SplitContainer1)
-        Me.Controls.Add(Me.TabControl1)
+        Me.Controls.Add(Me.AttributeTabControl)
         Me.Controls.Add(Me.bntclose)
         Me.Controls.Add(Me.btnTransfer)
         Me.Controls.Add(Me.GroupBox1)
@@ -581,7 +581,7 @@ Partial Class IntegratedUI
         Me.GroupBox1.ResumeLayout(False)
         Me.TabPageTimeTransfer.ResumeLayout(False)
         Me.TabPageTimeTransfer.PerformLayout()
-        Me.TabControl1.ResumeLayout(False)
+        Me.AttributeTabControl.ResumeLayout(False)
         Me.TabPageCustomers.ResumeLayout(False)
         Me.CustomerSyncDirection.ResumeLayout(False)
         Me.CustomerSyncDirection.PerformLayout()
@@ -618,7 +618,7 @@ Partial Class IntegratedUI
     Friend WithEvents dpStartDate As DateTimePicker
     Friend WithEvents nextWeek As Button
     Friend WithEvents btn_currentweek As Button
-    Friend WithEvents TabControl1 As TabControl
+    Friend WithEvents AttributeTabControl As TabControl
     Friend WithEvents TabPageCustomers As TabPage
     Friend WithEvents TabPageEmployees As TabPage
     Friend WithEvents TabPageJobsItems As TabPage
@@ -646,6 +646,6 @@ Partial Class IntegratedUI
     Friend WithEvents RefreshEmployees As Button
     Friend WithEvents RefreshVendors As Button
     Friend WithEvents RefreshJobsOrItems As Button
-    Friend WithEvents TransferTimeButton As Button
     Friend WithEvents TimeEntrySelectAll As CheckBox
+    Friend WithEvents RefreshTimeTransfer As Button
 End Class

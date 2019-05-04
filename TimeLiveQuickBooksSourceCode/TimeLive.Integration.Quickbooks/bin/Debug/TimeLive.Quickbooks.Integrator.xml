@@ -295,15 +295,18 @@ Used to sort self-referenced table's rows
  <param name="ParentName"></param>
  <returns></returns>
 </member>
-<member name="M:TimeLive.Quickbooks.Integrator.Sync_TLtoQB_JoborItem.checkQBJobSubJobExist(System.String@,System.String@,System.Int32,System.Boolean)">
+<member name="M:TimeLive.Quickbooks.Integrator.Sync_TLtoQB_JoborItem.checkQBJobSubJobExist(System.String@,System.String@,System.Int32,System.Boolean,System.String)">
  <summary>
  Verifies a Job exists in QB, adding it to the Data Table if necessary
  </summary>
  <param name="TL_Name"></param>
  <param name="TL_ID"></param>
  <returns>
- False: does not exist in QB
- True: does exist in QB, and we add it to the Data Table if not present
+ Integer: the number of items added into QB
+     -1 -> Did not exist in QB, not added to QB
+     0 -> Already exists in QB
+     1 -> Did not exist in QB, added to QB
+     2+ -> Did not exist in QB, and 1 or more of its parents did not exist in QB either, all added to QB
  </returns>
 </member>
 <member name="M:TimeLive.Quickbooks.Integrator.Sync_TLtoQB_JoborItem.ISQBID_In_JobSubJobDataTable(System.String,System.String)">
@@ -329,6 +332,34 @@ Used to sort self-referenced table's rows
  </summary>
  <param name="chargingRelationshipAdapter"></param>
  <param name="row">Row with an employee and job/subjob</param>
+</member>
+<member name="M:TimeLive.Quickbooks.Integrator.Sync_TLtoQB_TimeEntry.SyncVendorData(System.String,TimeLive.Quickbooks.Integrator.IntegratedUI,System.Boolean,System.Collections.Generic.List{System.String})">
+ <summary>
+ Sync the vendor data from QB. Print out vendors that are in TL but not QB
+ </summary>
+</member>
+<member name="M:TimeLive.Quickbooks.Integrator.Sync_TLtoQB_TimeEntry.checkQBVendorExist(System.String@,System.Int32,TimeLive.Quickbooks.Integrator.Services.TimeLive.Employees.Employee,System.Boolean)">
+ <summary>
+ Verifies a vendor exists in QB, adding it to the Data Table if necessary
+ </summary>
+ <param name="TLEmployeeName"></param>
+ <param name="TL_ID"></param>
+ <returns>
+ False: does not exist in QB
+ True: does exist in QB, and we add it to the Data Table if not present
+ </returns>
+</member>
+<member name="M:TimeLive.Quickbooks.Integrator.Sync_TLtoQB_TimeEntry.ISQBID_In_VendorDataTable(System.String,System.String)">
+ <summary>
+ Check if QB ID is in vendor data table
+ </summary>
+ <param name="myqbName"></param>
+ <param name="myqbID"></param>
+ <returns>
+ 0 -> not in data table
+ 1 -> one record in data table
+ 2 -> more than one record in data table
+ </returns>
 </member>
 <member name="M:TimeLive.Quickbooks.Integrator.Sync_TLtoQB_Vendor.SyncVendorData(System.String,TimeLive.Quickbooks.Integrator.IntegratedUI,System.Boolean,System.Collections.Generic.List{System.String})">
  <summary>

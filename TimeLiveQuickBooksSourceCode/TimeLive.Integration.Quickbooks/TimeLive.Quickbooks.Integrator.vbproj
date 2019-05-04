@@ -140,6 +140,7 @@
     </Compile>
     <Compile Include="Sync_TLtoQB\Sync_TLtoQB_JoborItem.vb" />
     <Compile Include="Sync_TLtoQB\Sync_TLtoQB_Relationships.vb" />
+    <Compile Include="Sync_TLtoQB\Sync_TLtoQB_TimeEntry.vb" />
     <Compile Include="Sync_TLtoQB\Sync_TLtoQB_Vendor.vb" />
     <Compile Include="Sync_TLtoQB\Sync_TLtoQB_Employee.vb" />
     <Compile Include="Sync_TLtoQB\Sync_TLtoQB_Customer.vb" />

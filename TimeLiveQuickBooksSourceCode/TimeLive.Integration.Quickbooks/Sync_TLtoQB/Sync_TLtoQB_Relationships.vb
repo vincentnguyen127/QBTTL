@@ -26,13 +26,31 @@ Public Class Sync_TLtoQB_Relationships
             Dim TLTaskRelationships As TimeLiveDataSet.AccountProjectTaskEmployeeDataTable = TLTaskRelationshipAdapter.GetTaskEmployeeData()
 
             Dim TLTaskAdapter As New QB_TL_IDsTableAdapters.Jobs_SubJobsTableAdapter
+            Dim TLEmployeeAdapter As New QB_TL_IDsTableAdapters.EmployeesTableAdapter
+            Dim TLJobAdapter As New QB_TL_IDsTableAdapters.Jobs_SubJobsTableAdapter
 
             For Each row As DataRow In TLTaskRelationships.Select
                 ' Note: NumSubTasks assumes TL_Name in Tasks DB formatted - Customer:Job:SubJob:SubSubJob:...
                 ' row(2) corresponds to the TimeLive ID of the Task/SubTask
+                Dim a = row(1)
+                Dim b = row(2)
+                Dim c = row(4)
+                'Dim d = row(5)
                 Dim numSubTasks As Integer = TLTaskAdapter.NumSubTasks(row(2).ToString.Trim)
                 If numSubTasks = 0 Then
-                    Add_Relationship(chargingRelationshipAdapter, row)
+                    Dim job As String = TLJobAdapter.GetNamefromTLID(row(2).ToString)
+                    Dim employee As String = TLEmployeeAdapter.GetNamefromTLID(row(3).ToString)
+
+                    Dim create As Boolean = employee IsNot Nothing And job IsNot Nothing
+                    If UI And create Then
+                        employee = employee.Trim
+                        job = job.Trim
+                        create = MsgBox("Add new relationship between" + vbCrLf + "employee: " + employee + vbCrLf + "task: " +
+                                        job + " from TimeLive?", MsgBoxStyle.YesNo, "Warning!") = MsgBoxResult.Yes
+                    End If
+                    If create Then
+                        Add_Relationship(chargingRelationshipAdapter, row)
+                    End If
                 End If
             Next
         Catch ex As Exception
@@ -50,8 +68,8 @@ Public Class Sync_TLtoQB_Relationships
     ''' <param name="chargingRelationshipAdapter"></param>
     ''' <param name="row">Row with an employee and job/subjob</param>
     Sub Add_Relationship(ByRef chargingRelationshipAdapter As QB_TL_IDsTableAdapters.ChargingRelationshipsTableAdapter, ByVal row As DataRow)
-        Dim TLProjectID As String = row(2).ToString.Trim ' AccountProjectID
-        Dim TLEmployeeID As String = row(3).ToString.Trim ' AccountEmployeeID
+        Dim TLProjectID As String = row(2).ToString ' AccountProjectID
+        Dim TLEmployeeID As String = row(3).ToString ' AccountEmployeeID
 
         Dim EmployeeAdapter As New QB_TL_IDsTableAdapters.EmployeesTableAdapter
         Dim VendorAdapter As New QB_TL_IDsTableAdapters.VendorsTableAdapter
