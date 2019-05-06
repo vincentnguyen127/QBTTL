@@ -836,7 +836,7 @@ Public Class IntegratedUI
             ' Transfer Time Entry data from TL to QB
             ItemsProcessed = timeentry_tltoqb.TLTransferTimeToQB(TimeEntryData, p_token, Me, True)
             'IntUI_2ndSelect.time_transfer(DataGridView2, Me)
-            My.Forms.MAIN.History(ItemsProcessed.ToString() + If(ItemsProcessed = 1, "Time Entry was", "Time Entries were") + " created or updated", "i")
+            My.Forms.MAIN.History(ItemsProcessed.ToString() + If(ItemsProcessed = 1, " Time Entry was", " Time Entries were") + " created or updated", "i")
 
         Else
             ' Refresh after processing
@@ -1192,7 +1192,6 @@ Public Class IntegratedUI
 
     End Sub
     Private Function ISQBID_In_DataTable(ByVal myqbID As String) As Int16
-        Dim result As Int16 = 0
 
         'Dim CustomerAdapter As New QB_TL_IDsTableAdapters.CustomersTableAdapter()
         'For Each TimeLiveID As QB_TL_IDs.CustomersRow In CustomerAdapter.GetCustomers()
@@ -1204,19 +1203,14 @@ Public Class IntegratedUI
         Dim CustomerAdapter As New QB_TL_IDsTableAdapters.CustomersTableAdapter()
         Dim TimeLiveIDs As QB_TL_IDs.CustomersDataTable = CustomerAdapter.GetCorrespondingTL_ID(myqbID)
 
+        Dim result As Int16 = Math.Min(TimeLiveIDs.Count, 2)
+
         If TimeLiveIDs.Count = 1 Then
-            result = 1
-            My.Forms.MAIN.History("One record found in QB sync table", "i")
-        End If
-
-        If TimeLiveIDs.Count = 0 Then
-            result = 0
-            My.Forms.MAIN.History("No records found on QB sync table", "i")
-        End If
-
-        If TimeLiveIDs.Count > 1 Then
-            result = 2
-            My.Forms.MAIN.History("More than one record found", "I")
+            My.Forms.MAIN.History("One record found in local database", "i")
+        ElseIf TimeLiveIDs.Count = 0 Then
+            My.Forms.MAIN.History("No records found in local database", "i")
+        ElseIf TimeLiveIDs.Count > 1 Then
+            My.Forms.MAIN.History("More than one record found in local database", "I")
         End If
 
         Return result

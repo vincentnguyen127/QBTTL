@@ -212,7 +212,7 @@ Public Class QBtoTL_Customer
                     Else
                         ' TimeLive has a data entry with the same name, treat as the same and add into DB
                         If Array.Exists(objClientServices.GetClients, Function(e As Services.TimeLive.Clients.Client) e.ClientName = element.QB_Name) Then
-                            My.Forms.MAIN.History("Customer " + element.QB_Name + " in both TimeLive and Quickbooks added to sync database", "i")
+                            My.Forms.MAIN.History("Customer " + element.QB_Name + " in both TimeLive and Quickbooks added to local database", "i")
                             Dim CustomerAdapter As New QB_TL_IDsTableAdapters.CustomersTableAdapter()
                             CustomerAdapter.Insert(element.QB_ID, objClientServices.GetClientIdByName(element.QB_Name), element.QB_Name, element.QB_Name)
                             Continue For ' Already in TL, so just continue to next element in QB
@@ -220,7 +220,7 @@ Public Class QBtoTL_Customer
                     End If
 
                     NoRecordsCreatedorUpdated += 1
-                    Dim whereInsert As String = If(DT_has_QBID, "TimeLive: ", "sync database and TimeLive: ")
+                    Dim whereInsert As String = If(DT_has_QBID, "TimeLive: ", "local database and TimeLive: ")
                     ' if it does not exist create a new record on both the sync database and on TL
                     My.Forms.MAIN.History("Inserting customer into " + whereInsert + element.QB_Name, "i")
                     Try
@@ -306,7 +306,7 @@ Public Class QBtoTL_Customer
                 numRecords = "More than one record"
         End Select
 
-        My.Forms.MAIN.History(numRecords + " found in QB sync table for: " + myqbName, "i")
+        My.Forms.MAIN.History(numRecords + " found in local database for: " + myqbName, "i")
         Return result
     End Function
 

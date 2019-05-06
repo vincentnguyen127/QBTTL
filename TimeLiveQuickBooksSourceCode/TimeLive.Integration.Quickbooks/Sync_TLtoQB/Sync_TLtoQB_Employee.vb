@@ -154,7 +154,7 @@ Public Class Sync_TLtoQB_Employee
                         'If firstmiddlelastname.Length = 1 Then
                         '    employeename = firstmiddlelastname(0)
                         'End If
-                        My.Forms.MAIN.History("Adding employee to sync database: " + TLEmployeeName, "i")
+                        My.Forms.MAIN.History("Adding employee to local database: " + TLEmployeeName, "i")
                         EmployeeAdapter.Insert(.ListID.GetValue, TL_ID, .Name.GetValue, TLEmployeeName)
                     Else
                         ' EmployeeAdapter.Update(.ListID.GetValue, TL_ID, .Name.GetValue, TLEmployeeName)
@@ -185,23 +185,17 @@ Public Class Sync_TLtoQB_Employee
     ''' 2 -> more than one record in data table
     ''' </returns>
     Private Function ISQBID_In_EmployeeDataTable(ByVal myqbName As String, ByVal myqbID As String) As Int16
-        Dim result As Int16 = 0
         Dim EmployeeAdapter As New QB_TL_IDsTableAdapters.EmployeesTableAdapter
         Dim TimeLiveIDs As QB_TL_IDs.EmployeesDataTable = EmployeeAdapter.GetCorrespondingTL_ID(myqbID)
 
+        Dim result As Int16 = Math.Min(2, TimeLiveIDs.Count)
+
         If TimeLiveIDs.Count = 1 Then
-            result = 1
-            My.Forms.MAIN.History("One record found in QB sync table for: " + myqbName, "i")
-        End If
-
-        If TimeLiveIDs.Count = 0 Then
-            result = 0
-            My.Forms.MAIN.History("No records found on QB sync table for:" + myqbName, "i")
-        End If
-
-        If TimeLiveIDs.Count > 1 Then
-            result = 2
-            My.Forms.MAIN.History("More than one record found for:" + myqbName, "I")
+            My.Forms.MAIN.History("One record found in local database for: " + myqbName, "i")
+        ElseIf TimeLiveIDs.Count = 0 Then
+            My.Forms.MAIN.History("No records found in local database for:" + myqbName, "i")
+        ElseIf TimeLiveIDs.Count > 1 Then
+            My.Forms.MAIN.History("More than one record found in local database for:" + myqbName, "I")
         End If
 
         Return result

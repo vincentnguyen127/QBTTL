@@ -214,7 +214,7 @@ Public Class QBtoTL_Employee
                     Else
                         ' TimeLive has a data entry with the same name, treat as the same and add into DB
                         If Array.Exists(objEmployeeServices.GetEmployees, Function(e As Services.TimeLive.Employees.Employee) e.EmployeeName = element.QB_Name) Then
-                            My.Forms.MAIN.History("Employee " + element.QB_Name + " in both TimeLive and Quickbooks added to sync database", "i")
+                            My.Forms.MAIN.History("Employee " + element.QB_Name + " in both TimeLive and Quickbooks added to local database", "i")
                             Dim EmployeeAdapter As New QB_TL_IDsTableAdapters.EmployeesTableAdapter()
                             EmployeeAdapter.Insert(element.QB_ID, objEmployeeServices.GetEmployeeId(element.QB_Name), element.QB_Name, element.QB_Name)
                             Continue For ' Already in TL, so just continue to next element in QB
@@ -222,7 +222,7 @@ Public Class QBtoTL_Employee
                     End If
                     ' Create the element in TL:
                     NoRecordsCreatedorUpdated += 1
-                    Dim whereToInsert As String = If(DT_has_QBID, "TimeLive: ", "sync database and TimeLive: ")
+                    Dim whereToInsert As String = If(DT_has_QBID, "TimeLive: ", "local database and TimeLive: ")
                     My.Forms.MAIN.History("Inserting employee into " + whereToInsert + element.QB_Name, "i")
 
                     'Insert record into TimeLive
@@ -489,7 +489,7 @@ Public Class QBtoTL_Employee
                 recordsFoundStr = "More than one record"
         End Select
 
-        My.Forms.MAIN.History(recordsFoundStr + " found in QB sync table for: " + myqbName, "i")
+        My.Forms.MAIN.History(recordsFoundStr + " found in local database for: " + myqbName, "i")
 
         Return result
     End Function

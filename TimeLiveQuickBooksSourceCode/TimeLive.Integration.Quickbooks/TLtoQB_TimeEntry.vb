@@ -232,7 +232,6 @@ Public Class TLtoQB_TimeEntry
                     Dim TL_ID_Return = 0 'ISQBID_In_DataTable(element.QB_ID)
                     'if none create
                     If TL_ID_Return = 0 Then
-                        NoRecordsCreatedorUpdated += 1
                         Try
                             'Insert record into quickbooks
                             Dim RecordTxnID As String = Nothing
@@ -254,6 +253,7 @@ Public Class TLtoQB_TimeEntry
                                 'Else
                                 'My.Forms.MAIN.History("Error creating record in TimeLive", "N")
                                 'End If
+                                NoRecordsCreatedorUpdated += 1
                             End With
                         Catch ex As Exception
                             My.Forms.MAIN.History("Error inserting time into quickbooks:  " + ex.Message, "n")
@@ -314,7 +314,7 @@ Public Class TLtoQB_TimeEntry
                 numResults = "More than one record"
         End Select
 
-        My.Forms.MAIN.History(numResults + " found in TL sync table", "i")
+        My.Forms.MAIN.History(numResults + " found in local database", "i")
         Return result
     End Function
 

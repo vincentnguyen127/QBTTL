@@ -105,6 +105,8 @@ Public Class QBtoTL_JobOrItem
                         If Not .ParentRef Is Nothing Then
                             Dim PTArray() As String = Split(.FullName.GetValue, ":")
                             If PTArray.Length >= 2 Then
+                                Dim name = .Name.GetValue
+                                Dim full_name = .FullName.GetValue
                                 EmailAddress = If(.Email Is Nothing, "", .Email.GetValue)
                                 Telephone1 = If(.Phone Is Nothing, "", .Phone.GetValue)
                                 Fax = If(.Fax Is Nothing, "", .Fax.GetValue)
@@ -246,6 +248,8 @@ Public Class QBtoTL_JobOrItem
         Dim nProjectManagerId As Integer = objProjectServices.GetProjectManagerId()
         Dim nProjectBillingRateTypeId As Integer = objProjectServices.GetProjectBillingRateTypeId()
         'Dim val As Integer = objProjectServices.GetAccountEmployeeId
+
+
         For Each element As QBtoTL_JobOrItem.Job_Subjob In objData.DataArray
             'Try
             ' check if the check value is true
@@ -286,11 +290,16 @@ Public Class QBtoTL_JobOrItem
                         Dim nClientId As Integer = 0
 
                         ' Set client ID if the client exists, otherwise print an error message and continue the for loop
-                        If Array.Exists(objClientServices.GetClients, Function(clnt As Services.TimeLive.Clients.Client) clnt.ClientName = PTArray(0)) Then
-                            nClientId = objClientServices.GetClientIdByName(element.parent) ' May want to switch this to PTArray(0)
+                        Dim CustomerAdapter As New QB_TL_IDsTableAdapters.CustomersTableAdapter()
+                        Dim TL_Client As String = CustomerAdapter.GetTL_NameFromQB_Name(PTArray(0))
+                        TL_Client = If(TL_Client Is Nothing, PTArray(0), TL_Client.Trim)
+                        Dim QB_Parent As String = TL_Client + element.FullName.Substring(element.FullName.IndexOf(":"))
+
+                        If Array.Exists(objClientServices.GetClients, Function(clnt As Services.TimeLive.Clients.Client) clnt.ClientName = TL_Client) Then
+                            nClientId = objClientServices.GetClientIdByName(TL_Client) ' May want to switch this to PTArray(0)
                         Else
-                            My.Forms.MAIN.History("Could not Get Client ID. It is likely that the client associated with this project does not exist. Try adding the client " +
-                                                          PTArray(0) + " and then try again", "i")
+                            My.Forms.MAIN.History("Could not Get Client ID. It is likely that the client associated with this project does not exist. Try adding the client '" +
+                                                          PTArray(0) + "' and then try again", "i")
                             If UI Then
                                 IntegratedUIForm.ProgressBar1.Value += 1
                             End If
@@ -325,7 +334,7 @@ Public Class QBtoTL_JobOrItem
                             ' SubJob
                         ElseIf PTArray.Length = 3 Then ' Subjob
                             Dim hasParentProject As Boolean = Array.Exists(objProjectServices.GetProjects,
-                                                                Function(proj As Services.TimeLive.Projects.Project) proj.ClientName + ":" + proj.ProjectName = PTArray(0) + ":" + PTArray(1))
+                                                                Function(proj As Services.TimeLive.Projects.Project) proj.ClientName + ":" + proj.ProjectName = TL_Client + ":" + PTArray(1))
                             If Not hasParentProject Then
                                 ' Currently decrement because we do not add the task
                                 ' TODO: Add Project then the task, which would mean we would then increment this value (ie we have added 2 instead of 0)
@@ -339,7 +348,7 @@ Public Class QBtoTL_JobOrItem
                                 End Try
                                 nProjectTypeId = objProjectServices.GetProjectTypeId() ' Not sure if this is needed, to update project id or something
                                 NoRecordsCreatedorUpdated += 1
-                                My.Forms.MAIN.History("Successfully inserted project " + PTArray(0) + ":" + PTArray(1), "i")
+                                My.Forms.MAIN.History("Successfully inserted QuickBooks project '" + PTArray(0) + ":" + PTArray(1) + "' as '" + TL_Client + ":" + PTArray(1) + "' in TimeLive", "i")
                                 'My.Forms.MAIN.History(ex.ToString, "C")
                                 'Continue For
                             End If
@@ -351,11 +360,21 @@ Public Class QBtoTL_JobOrItem
                             Dim nPriorityId As Integer = objTaskServices.GetTaskPriorityId()
                             Dim nProjectMilestoneId As Integer = objProjectServices.GetProjectMilestoneIdByProjectId(nProjectId)
                             Dim nCurrencyId As Integer = objServices.GetCurrencyId()
+                            Dim t As New Services.TimeLive.Tasks.Task
+                            Dim iPar As String = element.FullName.Substring(element.FullName.IndexOf(":") + 1, element.FullName.Length - element.parent.Length - element.QB_Name.Length - 2)
 
                             objTaskServices.InsertTask(nProjectId, 0, element.QB_Name, element.QB_Name,
                                                        nTaskTypeId, 1, "Months", 0, False, Now.AddMonths(1).Date, nTaskStatusId, nPriorityId,
                                                        nProjectMilestoneId, False, False, Now.Date, nTeamLeadId, Now.Date, nTeamLeadId, 0,
                                                        0, "Days", True, element.QB_Name, 0, False, nCurrencyId)
+
+                            For Each task As Services.TimeLive.Tasks.Task In objTaskServices.GetTasks
+                                Dim v = task
+                                If task.TaskName = element.QB_Name Then
+                                    My.Forms.MAIN.History("Added this", "i")
+                                End If
+                            Next
+
                             My.Forms.MAIN.History("Successfully inserted task " + element.QB_Name, "i")
 
                         Else ' Subjob of a subjob
@@ -379,50 +398,50 @@ Public Class QBtoTL_JobOrItem
                             Dim nCurrencyId As Integer = objServices.GetCurrencyId()
 
                             objTaskServices.InsertTask(nProjectId, nParentTaskId, element.QB_Name, element.QB_Name,
-                                            nTaskTypeId, 1, "Months", 0, False, Now.AddMonths(1).Date, nTaskStatusId, nPriorityId,
-                                            nProjectMilestoneId, False, False, Now.Date, nTeamLeadId, Now.Date, nTeamLeadId, 0, 0, "Days",
-                                            True, element.QB_Name, 0, False, nCurrencyId)
+                                                       nTaskTypeId, 1, "Months", 0, False, Now.AddMonths(1).Date, nTaskStatusId, nPriorityId,
+                                                       nProjectMilestoneId, False, False, Now.Date, nTeamLeadId, Now.Date, nTeamLeadId, 0, 0, "Days",
+                                                       True, element.QB_Name, 0, False, nCurrencyId)
                             My.Forms.MAIN.History("Successfully inserted task " + element.QB_Name, "i")
-                            'Dim JobAdapter As New QB_TL_IDsTableAdapters.Jobs_SubJobsTableAdapter
-                            'JobAdapter.Insert(element.QB_ID, objTaskServices.GetTaskId(element.QB_Name), element.QB_Name, element.FullName)
-                        End If
+                                'Dim JobAdapter As New QB_TL_IDsTableAdapters.Jobs_SubJobsTableAdapter
+                                'JobAdapter.Insert(element.QB_ID, objTaskServices.GetTaskId(element.QB_Name), element.QB_Name, element.FullName)
+                            End If
 
-                        'Insert record into sync database if Not in it
-                        If Not CBool(DT_has_QBID) Then
-                            Dim project_or_task_inTL As Boolean =
+                            'Insert record into sync database if Not in it
+                            If Not CBool(DT_has_QBID) Then
+                                Dim project_or_task_inTL As Boolean =
                                 Array.Exists(objTaskServices.GetTasks, Function(e As Services.TimeLive.Tasks.Task) e.JobParent + ":" + e.TaskName = element.FullName) Or
                                 Array.Exists(objProjectServices.GetProjects, Function(e As Services.TimeLive.Projects.Project) e.ClientName + ":" + e.ProjectName = element.FullName)
 
-                            If project_or_task_inTL Then
-                                Dim JobAdapter As New QB_TL_IDsTableAdapters.Jobs_SubJobsTableAdapter
-                                ' Currently does not support the same job name with different parent customers / same subjob name with different parent jobs
-                                Dim proj_or_task_ID As Integer = If(PTArray.Length = 2, objProjectServices.GetProjectId(element.QB_Name), objTaskServices.GetTaskId(element.QB_Name))
-                                JobAdapter.Insert(element.QB_ID, proj_or_task_ID, element.QB_Name, element.FullName)
-                            Else
-                                Dim errStr As String = If(PTArray.Length = 2, " client in timelive has a project with name ", " project in timelive has a task with name ")
-                                My.Forms.MAIN.History("Error creating record In TimeLive: Make sure that no other " + errStr + element.QB_Name, "N")
+                                If project_or_task_inTL Then
+                                    Dim JobAdapter As New QB_TL_IDsTableAdapters.Jobs_SubJobsTableAdapter
+                                    ' Currently does not support the same job name with different parent customers / same subjob name with different parent jobs
+                                    Dim proj_or_task_ID As Integer = If(PTArray.Length = 2, objProjectServices.GetProjectId(element.QB_Name), objTaskServices.GetTaskId(element.QB_Name))
+                                    JobAdapter.Insert(element.QB_ID, proj_or_task_ID, element.QB_Name, element.FullName)
+                                Else
+                                    Dim errStr As String = If(PTArray.Length = 2, " client in timelive has a project with name ", " project in timelive has a task with name ")
+                                    My.Forms.MAIN.History("Error creating record In TimeLive: Make sure that no other " + errStr + element.QB_Name, "N")
+                                End If
                             End If
+
                         End If
+                        'If TL_ID_Return = 1 Then
+
+                        '    Dim TL_ID As String = ISTLID_In_DataTableForJobs(element.QB_ID)
+                        '    If TL_ID Is Nothing Then
+                        '        My.Forms.MAIN.History("Detected empty sync record (No TL ID).Needs To be manually sync Or deleted." + element.QB_Name, "i")
+
+                        '    Else
+                        '        NoRecordsCreatedorUpdated = NoRecordsCreatedorUpdated + 1
+                        '        My.Forms.MAIN.History("Updating TL record For: " + element.QB_Name, "i")
+
+
+                        '        '-----------------------------------------------------------------------------------------------------------------------------------------------------------------
+                        '        ' ----------------------------------------------this part is the update-------------------------------------------------------------------------------------------
+                        '        '-----------------------------------------------------------------------------------------------------------------------------------------------------------------
+                        '    End If
+                        'End If
 
                     End If
-                    'If TL_ID_Return = 1 Then
-
-                    '    Dim TL_ID As String = ISTLID_In_DataTableForJobs(element.QB_ID)
-                    '    If TL_ID Is Nothing Then
-                    '        My.Forms.MAIN.History("Detected empty sync record (No TL ID).Needs To be manually sync Or deleted." + element.QB_Name, "i")
-
-                    '    Else
-                    '        NoRecordsCreatedorUpdated = NoRecordsCreatedorUpdated + 1
-                    '        My.Forms.MAIN.History("Updating TL record For: " + element.QB_Name, "i")
-
-
-                    '        '-----------------------------------------------------------------------------------------------------------------------------------------------------------------
-                    '        ' ----------------------------------------------this part is the update-------------------------------------------------------------------------------------------
-                    '        '-----------------------------------------------------------------------------------------------------------------------------------------------------------------
-                    '    End If
-                    'End If
-
-                End If
             End If
             'if no, UI skip
             If UI Then
@@ -613,7 +632,7 @@ Public Class QBtoTL_JobOrItem
                 numResults = "More than one record"
         End Select
 
-        My.Forms.MAIN.History(numResults + " found in QB sync table for: " + myqbName, "i")
+        My.Forms.MAIN.History(numResults + " found in local database for: " + myqbName, "i")
 
         Return result
     End Function
@@ -633,7 +652,7 @@ Public Class QBtoTL_JobOrItem
                 numResults = "More than one record"
         End Select
 
-        My.Forms.MAIN.History(numResults + " found in QB sync table for: " + myqbName, "i")
+        My.Forms.MAIN.History(numResults + " found in local database for: " + myqbName, "i")
 
         Return result
     End Function

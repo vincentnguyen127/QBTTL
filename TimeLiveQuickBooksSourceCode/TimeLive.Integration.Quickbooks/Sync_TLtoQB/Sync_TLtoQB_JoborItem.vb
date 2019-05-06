@@ -241,7 +241,8 @@ Public Class Sync_TLtoQB_JoborItem
                         Try
                             client_TL_ID = objClientServices.GetClientIdByName(Parent)
                         Catch ex As Exception
-                            My.Forms.MAIN.History("Project" + TLJobSubJobName + "'s parent client " + Parent + " does not exist in TimeLive", "i")
+                            My.Forms.MAIN.History("The parent client : '" + Parent + "' of Project: '" + TLJobSubJobName + "' does not exist in TimeLive", "i")
+
                             Return -1
                         End Try
                         Dim syncCust As Sync_TLtoQB_Customer = New Sync_TLtoQB_Customer()
@@ -261,7 +262,7 @@ Public Class Sync_TLtoQB_JoborItem
                             Try
                                 parent_TL_ID = objProjectServices.GetProjectId(parent_name)
                             Catch ex As System.Web.Services.Protocols.SoapException
-                                My.Forms.MAIN.History("Verify that " + parent_name + " in TimeLive has a code set:" + ex.ToString, "i")
+                                My.Forms.MAIN.History("Verify that '" + parent_name + "' in TimeLive has a code set:" + ex.ToString, "i")
                             End Try
 
                         Else ' Parent is a task
@@ -273,7 +274,7 @@ Public Class Sync_TLtoQB_JoborItem
                             Try
                                 parent_TL_ID = objTaskServices.GetTaskId(parent_name)
                             Catch ex As System.Web.Services.Protocols.SoapException
-                                My.Forms.MAIN.History("Verify that " + parent_name + " in TimeLive has a code set:" + ex.ToString, "i")
+                                My.Forms.MAIN.History("Verify that '" + parent_name + "' in TimeLive has a code set:" + ex.ToString, "i")
                             End Try
                         End If
 
@@ -283,7 +284,7 @@ Public Class Sync_TLtoQB_JoborItem
                                 Return -1
                             End If
                         Else
-                            My.Forms.MAIN.History("Parent is not in TimeLive. Add " + Parent + " first.", "i")
+                            My.Forms.MAIN.History("Parent: '" + Parent + "'of Task: " + TLJobSubJobName + " is not in TimeLive.", "i")
                             Return -1 ' Exit Function
                         End If
                     End If
@@ -291,7 +292,13 @@ Public Class Sync_TLtoQB_JoborItem
                     ' Add TL Job to QB
                     Dim jobAdd As ICustomerAdd = newMsgSetRq.AppendCustomerAddRq
 
-                    jobAdd.ParentRef.FullName.SetValue(Parent)
+                    ' TODO: 
+                    ' Change client name to corresponding quickbooks 
+                    Dim CustomerAdapter As New QB_TL_IDsTableAdapters.CustomersTableAdapter()
+                    Dim QB_Customer As String = CustomerAdapter.GetQB_NameFromTL_Name(ParentArray(0))
+                    QB_Customer = If(QB_Customer Is Nothing, ParentArray(0), QB_Customer.Trim)
+                    Dim QB_Parent As String = QB_Customer + Parent.Substring(Parent.IndexOf(":"))
+                    jobAdd.ParentRef.FullName.SetValue(QB_Parent)
                     jobAdd.Name.SetValue(TL_Name)
 
                     'step2: send the request
@@ -335,8 +342,8 @@ Public Class Sync_TLtoQB_JoborItem
 
                 ' Add to table adapter
                 If ISQBID_In_JobSubJobDataTable(.Name.GetValue.ToString, .ListID.GetValue) = 0 Then
-                    My.Forms.MAIN.History("Adding " + TLJobSubJobName + " With the TL_ID " + TL_ID.ToString + " to data sync table", "i")
                     JobSubJobAdapter.Insert(.ListID.GetValue, TL_ID, .Name.GetValue, TLJobSubJobName) 'QBJobSubJobName
+                    My.Forms.MAIN.History("Added '" + TLJobSubJobName + "' With the TL_ID " + TL_ID.ToString + " to local database", "i")
                 End If
             End With
 
@@ -370,17 +377,17 @@ Public Class Sync_TLtoQB_JoborItem
 
         If TimeLiveIDs.Count = 1 Then
             result = 1
-            My.Forms.MAIN.History("One record found in QB sync table for:  " + myqbName, "i")
+            My.Forms.MAIN.History("One record found in local database for:  " + myqbName, "i")
         End If
 
         If TimeLiveIDs.Count = 0 Then
             result = 0
-            My.Forms.MAIN.History("No records found on QB sync table for:" + myqbName, "i")
+            My.Forms.MAIN.History("No records found in local database for:" + myqbName, "i")
         End If
 
         If TimeLiveIDs.Count > 1 Then
             result = 2
-            My.Forms.MAIN.History("More than one record found for:" + myqbName, "I")
+            My.Forms.MAIN.History("More than one record found in local database for:" + myqbName, "I")
         End If
 
         Return result

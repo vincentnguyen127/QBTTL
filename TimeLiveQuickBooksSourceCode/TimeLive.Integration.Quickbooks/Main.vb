@@ -179,7 +179,7 @@ Public Class MAIN
         'Specify senders gmail address
         Dim SendersAddress As String = "teltrium@gmail.com"
         'Specify The Address You want to send Email To(can be any valid email address)
-        Dim ReceiversAddress As String = "cpetrelle@teltrium.com" '"ywang@teltrium.com"
+        Dim ReceiversAddress As String = "operations@teltrium.com" '"ywang@teltrium.com"
 
         'Specify The password of gmail account u are using to sent mail(pw of sender@gmail.com)
         If UI Then

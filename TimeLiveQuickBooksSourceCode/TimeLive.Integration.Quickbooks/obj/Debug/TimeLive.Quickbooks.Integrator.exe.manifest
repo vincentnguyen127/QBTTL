@@ -50,19 +50,19 @@
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <dsig:DigestValue>9fsG20J37X1XHMRUALIsjIbqW1k=</dsig:DigestValue>
+        <dsig:DigestValue>LclSzMEfUvJpyVX6Owd4Ga33jKg=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="TimeLive.Quickbooks.Integrator.exe" size="1656832">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="TimeLive.Quickbooks.Integrator.exe" size="1657344">
       <assemblyIdentity name="TimeLive.Quickbooks.Integrator" version="1.0.0.0" language="neutral" processorArchitecture="x86" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <dsig:DigestValue>SmnYnGzpwLMHg03Lf5HRamW025w=</dsig:DigestValue>
+        <dsig:DigestValue>zgxJ2jT3kOMzpvBXQ2dWhc6OV9o=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>

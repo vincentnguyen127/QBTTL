@@ -141,7 +141,7 @@ Public Class Sync_TLtoQB_Vendor
                     ' check if its in our database if not then add to it.
                     Dim VendorAdapter As New QB_TL_IDsTableAdapters.VendorsTableAdapter()
                     If ISQBID_In_VendorDataTable(.Name.GetValue.ToString, .ListID.GetValue) <= 0 Then
-                        My.Forms.MAIN.History("Adding to sync database: " + .Name.GetValue, "i")
+                        My.Forms.MAIN.History("Adding to local database: " + .Name.GetValue, "i")
                         VendorAdapter.Insert(.ListID.GetValue, TL_ID, .Name.GetValue, TLEmployeeName)
                     Else
                         VendorAdapter.Update(.ListID.GetValue, TL_ID, .Name.GetValue, TLEmployeeName)
@@ -175,23 +175,16 @@ Public Class Sync_TLtoQB_Vendor
     ''' 2 -> more than one record in data table
     ''' </returns>
     Private Function ISQBID_In_VendorDataTable(ByVal myqbName As String, ByVal myqbID As String) As Int16
-        Dim result As Int16 = 0
         Dim VendorAdapter As New QB_TL_IDsTableAdapters.VendorsTableAdapter
         Dim TimeLiveIDs As QB_TL_IDs.VendorsDataTable = VendorAdapter.GetCorrespondingTL_ID(myqbID)
+        Dim result As Int16 = Math.Min(2, TimeLiveIDs.Count)
 
         If TimeLiveIDs.Count = 1 Then
-            result = 1
-            My.Forms.MAIN.History("One record found in QB sync table for: " + myqbName, "i")
-        End If
-
-        If TimeLiveIDs.Count = 0 Then
-            result = 0
-            My.Forms.MAIN.History("No records found in QB sync table for:" + myqbName, "i")
-        End If
-
-        If TimeLiveIDs.Count > 1 Then
-            result = 2
-            My.Forms.MAIN.History("More than one record found in QB sync table for:" + myqbName, "I")
+            My.Forms.MAIN.History("One record found in local database for: " + myqbName, "i")
+        ElseIf TimeLiveIDs.Count = 0 Then
+            My.Forms.MAIN.History("No records found in local database for:" + myqbName, "i")
+        ElseIf TimeLiveIDs.Count > 1 Then
+            My.Forms.MAIN.History("More than one record found in local database for:" + myqbName, "I")
         End If
 
         Return result

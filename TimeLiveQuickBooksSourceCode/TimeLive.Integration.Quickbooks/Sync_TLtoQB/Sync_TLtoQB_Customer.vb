@@ -139,7 +139,7 @@ Public Class Sync_TLtoQB_Customer
                     ' check if its in our database if not then add to it.
                     Dim CustomerAdapter As New QB_TL_IDsTableAdapters.CustomersTableAdapter()
                     If Not CBool(ISQBID_In_CustomerDataTable(.Name.GetValue.ToString, .ListID.GetValue)) Then
-                        My.Forms.MAIN.History("Adding customer to sync database: " + TLClientName, "i")
+                        My.Forms.MAIN.History("Adding customer to local database: " + TLClientName, "i")
                         CustomerAdapter.Insert(.ListID.GetValue, TL_ID, .Name.GetValue, TLClientName)
                     Else
                         CustomerAdapter.Update(.ListID.GetValue, TL_ID, .Name.GetValue, TLClientName)
@@ -170,23 +170,16 @@ Public Class Sync_TLtoQB_Customer
     ''' 2 -> more than one record in data table
     ''' </returns>
     Private Function ISQBID_In_CustomerDataTable(ByVal myqbName As String, ByVal myqbID As String) As Int16
-        Dim result As Int16 = 0
 
         Dim CustomerAdapter As New QB_TL_IDsTableAdapters.CustomersTableAdapter()
         Dim TimeLiveIDs As QB_TL_IDs.CustomersDataTable = CustomerAdapter.GetCorrespondingTL_ID(myqbID)
 
+        Dim result As Int16 = Math.Min(TimeLiveIDs.Count, 2)
         If TimeLiveIDs.Count = 1 Then
-            result = 1
-            My.Forms.MAIN.History("One record found in QB sync table for: " + myqbName, "i")
-        End If
-
-        If TimeLiveIDs.Count = 0 Then
-            result = 0
-            My.Forms.MAIN.History("No records found on QB sync table for:" + myqbName, "i")
-        End If
-
-        If TimeLiveIDs.Count > 1 Then
-            result = 2
+            My.Forms.MAIN.History("One record found in local database for: " + myqbName, "i")
+        ElseIf TimeLiveIDs.Count = 0 Then
+            My.Forms.MAIN.History("No records found in local database for:" + myqbName, "i")
+        ElseIf TimeLiveIDs.Count > 1 Then
             My.Forms.MAIN.History("More than one record found for:" + myqbName, "I")
         End If
 

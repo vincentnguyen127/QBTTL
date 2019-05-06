@@ -221,7 +221,7 @@ Public Class QBtoTL_Vendor
                         Dim last_name = QBtoTL_Employee.GetValue(element.QB_Name, "LastName")
                         Dim full_name As String = first_name + " " + last_name
                         If Array.Exists(objEmployeeServices.GetEmployees, Function(e As Services.TimeLive.Employees.Employee) e.EmployeeName = full_name) Then
-                            My.Forms.MAIN.History("Vendor " + full_name + " in both TimeLive and Quickbooks added to sync database", "i")
+                            My.Forms.MAIN.History("Vendor " + full_name + " in both TimeLive and Quickbooks added to local database", "i")
                             Dim VendorAdapter As New QB_TL_IDsTableAdapters.VendorsTableAdapter()
                             VendorAdapter.Insert(element.QB_ID, objEmployeeServices.GetEmployeeId(element.QB_Name), element.QB_Name, full_name)
                             Continue For ' Already in TL, so just continue to next element in QB
@@ -229,7 +229,7 @@ Public Class QBtoTL_Vendor
                     End If
 
                     ' if it does not exist create a new record on both the sync database and on TL
-                    Dim whereToInsert As String = If(DT_has_QBID, "TimeLive: ", "sync database and TimeLive: ")
+                    Dim whereToInsert As String = If(DT_has_QBID, "TimeLive: ", "local database and TimeLive: ")
                     My.Forms.MAIN.History("Inserting vendor into " + whereToInsert + element.QB_Name, "i")
 
                     'Insert record into TimeLive
@@ -501,11 +501,11 @@ Public Class QBtoTL_Vendor
         Dim result As Int16 = Math.Min(TimeLiveIDs.Count, 2)
 
         If TimeLiveIDs.Count = 1 Then
-            My.Forms.MAIN.History("One record found in QB sync table for: " + myqbName, "i")
+            My.Forms.MAIN.History("One record found in local database for: " + myqbName, "i")
         ElseIf TimeLiveIDs.Count = 0 Then
-            My.Forms.MAIN.History("No records found on QB sync table for:" + myqbName, "i")
+            My.Forms.MAIN.History("No records found in local database for:" + myqbName, "i")
         ElseIf TimeLiveIDs.Count > 1 Then
-            My.Forms.MAIN.History("More than one record found for:" + myqbName, "I")
+            My.Forms.MAIN.History("More than one record found in local database for:" + myqbName, "I")
         End If
         Return result
     End Function

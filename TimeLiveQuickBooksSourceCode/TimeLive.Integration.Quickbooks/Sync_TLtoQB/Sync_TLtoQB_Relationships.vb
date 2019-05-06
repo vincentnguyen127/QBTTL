@@ -25,20 +25,18 @@ Public Class Sync_TLtoQB_Relationships
             Dim TLTaskRelationshipAdapter As New TimeLiveDataSetTableAdapters.AccountProjectTaskEmployeeTableAdapter
             Dim TLTaskRelationships As TimeLiveDataSet.AccountProjectTaskEmployeeDataTable = TLTaskRelationshipAdapter.GetTaskEmployeeData()
 
-            Dim TLTaskAdapter As New QB_TL_IDsTableAdapters.Jobs_SubJobsTableAdapter
             Dim TLEmployeeAdapter As New QB_TL_IDsTableAdapters.EmployeesTableAdapter
             Dim TLJobAdapter As New QB_TL_IDsTableAdapters.Jobs_SubJobsTableAdapter
 
             For Each row As DataRow In TLTaskRelationships.Select
                 ' Note: NumSubTasks assumes TL_Name in Tasks DB formatted - Customer:Job:SubJob:SubSubJob:...
-                ' row(2) corresponds to the TimeLive ID of the Task/SubTask
-                Dim a = row(1)
-                Dim b = row(2)
-                Dim c = row(4)
-                'Dim d = row(5)
-                Dim numSubTasks As Integer = TLTaskAdapter.NumSubTasks(row(2).ToString.Trim)
+
+                ' Note: Checks number subtasks based on first entry that has the corresponding TimeLive ID
+                '       If multiple jobs have same TL_ID stored, will get the wrong name and thus search for the wrong sub task
+                Dim numSubTasks As Integer = TLJobAdapter.NumSubTasks(row(2).ToString.Trim)
                 If numSubTasks = 0 Then
                     Dim job As String = TLJobAdapter.GetNamefromTLID(row(2).ToString)
+
                     Dim employee As String = TLEmployeeAdapter.GetNamefromTLID(row(3).ToString)
 
                     Dim create As Boolean = employee IsNot Nothing And job IsNot Nothing
@@ -46,7 +44,7 @@ Public Class Sync_TLtoQB_Relationships
                         employee = employee.Trim
                         job = job.Trim
                         create = MsgBox("Add new relationship between" + vbCrLf + "employee: " + employee + vbCrLf + "task: " +
-                                        job + " from TimeLive?", MsgBoxStyle.YesNo, "Warning!") = MsgBoxResult.Yes
+                                        job + vbCrLf + " from TimeLive?", MsgBoxStyle.YesNo, "Warning!") = MsgBoxResult.Yes
                     End If
                     If create Then
                         Add_Relationship(chargingRelationshipAdapter, row)
