@@ -2,6 +2,7 @@
 
     Public which_rbj As Integer
     Public job_item_btn_option As Integer
+    Public debug_mode As Boolean
 
     Private Sub Settings_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         dtp_autoruntime.Format = DateTimePickerFormat.Custom
@@ -151,6 +152,8 @@
         ' saving all the parameters 
         My.Settings.JobHierarchy = which_rbj
 
+        '------Save display mode options
+        debug_mode = chk_debug.Checked
 
         '------Save job or item data transfer options
         If job_subJobs_btn.Checked Then

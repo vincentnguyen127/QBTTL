@@ -223,32 +223,53 @@ Public Class MAIN
         My.Forms.MAIN.History(relationship, "c")
     End Sub
 
-    Public Sub History(ByVal input As String, Type As String)
-        If String.Compare("n", Type, False) = 0 Then
-            StatusWindow.Text += vbNewLine + ">> " + input
-        End If
-        If String.Compare("N", Type, False) = 0 Then
-            StatusWindow.Text += vbNewLine + "***********************"
-            StatusWindow.Text += vbNewLine + ">> " + input
-            StatusWindow.Text += vbNewLine + "***********************"
-        End If
-        If String.Compare("c", Type, False) = 0 Then
-            StatusWindow.Text += ", " + input
-        End If
-        If String.Compare("C", Type, False) = 0 Then
-            StatusWindow.Text += ", " + input
-        End If
-        If String.Compare("i", Type, False) = 0 Then
-            StatusWindow.Text += vbNewLine + vbTab + "- " + input
-        End If
-        If String.Compare("I", Type, False) = 0 Then
-            StatusWindow.Text += vbNewLine + vbTab + "***********************"
-            StatusWindow.Text += vbNewLine + vbTab + "- " + input
-            StatusWindow.Text += vbNewLine + vbTab + "***********************"
-        End If
+    Public Sub History(ByVal input As String, Type As String) ' Change to Type to "Char" after testing
+        If AppSettings.debug_mode Then
+            ' Still need to test this
+            Select Case Type
+                Case "n"
+                    StatusWindow.Text += vbNewLine + ">> " + input
+                Case "N"
+                    Dim s As String = vbNewLine + "***********************" + vbNewLine + ">> " + input + vbNewLine + "***********************"
+                    'StatusWindow.Text += vbNewLine + "***********************"
+                    'StatusWindow.Text += vbNewLine + ">> " + input
+                    'StatusWindow.Text += vbNewLine + "***********************"
+                    StatusWindow.Text += s
+                Case "c"
+                    StatusWindow.Text += ", " + input
+                Case "C"
+                    StatusWindow.Text += ", " + input
+                Case "i"
+                    StatusWindow.Text += vbNewLine + vbTab + "- " + input
+                Case "I"
+                    Dim s As String = vbNewLine + "***********************" + vbNewLine + "- " + input + vbNewLine + "***********************"
+                    'StatusWindow.Text += vbNewLine + vbTab + "***********************"
+                    'StatusWindow.Text += vbNewLine + vbTab + "- " + input
+                    'StatusWindow.Text += vbNewLine + vbTab + "***********************"
+                    StatusWindow.Text += s
+            End Select
 
-        StatusWindow.SelectionStart = StatusWindow.TextLength
-        StatusWindow.ScrollToCaret()
+            'If String.Compare("n", Type, False) = 0 Then
+            '    StatusWindow.Text += vbNewLine + ">> " + input
+            'ElseIf String.Compare("N", Type, False) = 0 Then
+            '    StatusWindow.Text += vbNewLine + "***********************"
+            '    StatusWindow.Text += vbNewLine + ">> " + input
+            '    StatusWindow.Text += vbNewLine + "***********************"
+            'ElseIf String.Compare("c", Type, False) = 0 Then
+            '    StatusWindow.Text += ", " + input
+            'ElseIf String.Compare("C", Type, False) = 0 Then
+            '    StatusWindow.Text += ", " + input
+            'ElseIf String.Compare("i", Type, False) = 0 Then
+            '    StatusWindow.Text += vbNewLine + vbTab + "- " + input
+            'ElseIf String.Compare("I", Type, False) = 0 Then
+            '    StatusWindow.Text += vbNewLine + vbTab + "***********************"
+            '    StatusWindow.Text += vbNewLine + vbTab + "- " + input
+            '    StatusWindow.Text += vbNewLine + vbTab + "***********************"
+            'End If
+
+            StatusWindow.SelectionStart = StatusWindow.TextLength
+            StatusWindow.ScrollToCaret()
+        End If
     End Sub
 
     Private Function AutoExecute() As Integer
