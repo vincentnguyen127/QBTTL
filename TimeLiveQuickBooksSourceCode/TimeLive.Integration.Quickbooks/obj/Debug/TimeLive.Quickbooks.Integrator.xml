@@ -280,6 +280,7 @@ Used to sort self-referenced table's rows
 <member name="M:TimeLive.Quickbooks.Integrator.Sync_TLtoQB_JoborItem.SyncJobsSubJobData2(System.String)">
  <summary>
  Sync the Jobs data from QB. Print out Projects and Tasks that are in TL but not QB
+ Note: Currently not used, using SyncJobsSubJobData
  </summary>
 </member>
 <member name="M:TimeLive.Quickbooks.Integrator.Sync_TLtoQB_JoborItem.SyncJobsSubJobData(System.String,TimeLive.Quickbooks.Integrator.MAIN,System.Boolean,System.Collections.Generic.List{System.String})">

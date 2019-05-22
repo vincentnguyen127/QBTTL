@@ -172,6 +172,10 @@
         My.Settings.TransferToPayroll = chkPayrollTimesheet.Checked
 
         My.Settings.DebugMode = chk_debugMode.Checked
+
+        ' Only show StatusWindow when in Debug Mode
+        MAIN.SplitContainer2.Panel2Collapsed = Not Convert.ToBoolean(My.Settings.DebugMode)
+
         My.Settings.SyncElbVendor = chk_syncElgibleVendor.Checked
         My.Settings.SyncJobOrItem = chk_jobsitems.Checked
 
@@ -208,6 +212,10 @@
     End Sub
 
     Private Sub Label4_Click(sender As Object, e As EventArgs) Handles Label4.Click
+
+    End Sub
+
+    Private Sub chk_debugMode_CheckedChanged(sender As Object, e As EventArgs) Handles chk_debugMode.CheckedChanged
 
     End Sub
 End Class

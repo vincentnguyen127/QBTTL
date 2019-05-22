@@ -12,7 +12,7 @@ Public Class MAIN
     Private p_token As String
     Private p_AccountId As String
     <ThreadStatic> Public Shared SESSMANAGER As QBSessionManager
-    Public Shared colonReplacer = "->"
+    Public Shared colonReplacer = " --> "
     Public Shared TIMERTHREAD As Threading.Thread
 
     Private LoggedIn As Boolean
@@ -1863,4 +1863,7 @@ Public Class MAIN
         ChargingRelationship.Show()
     End Sub
 
+    Private Sub SplitContainer2_SplitterMoved(sender As Object, e As SplitterEventArgs) Handles SplitContainer2.SplitterMoved
+
+    End Sub
 End Class
