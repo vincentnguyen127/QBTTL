@@ -3910,11 +3910,11 @@ Namespace QB_TL_IDsTableAdapters
                 End If
             End Try
         End Function
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0"),  _
-         Global.System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter"),  _
-         Global.System.ComponentModel.DataObjectMethodAttribute(Global.System.ComponentModel.DataObjectMethodType.Insert, true)>  _
+
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0"),
+         Global.System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter"),
+         Global.System.ComponentModel.DataObjectMethodAttribute(Global.System.ComponentModel.DataObjectMethodType.Insert, True)>
         Public Overloads Overridable Function Insert(ByVal QuickBooks_ID As String, ByVal TimeLive_ID As String, ByVal QuickBooks_Name As String, ByVal TimeLive_Name As String) As Integer
             If (QuickBooks_ID Is Nothing) Then
                 Throw New Global.System.ArgumentNullException("QuickBooks_ID")

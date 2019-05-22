@@ -55,7 +55,7 @@ Public Class QBtoTL_JobOrItem
     End Class
 
     '---------------------------------------Get Job Data ---------------------------------
-    Public Function GetJobSubJobData(IntegratedUIForm As IntegratedUI, p_token As String, UI As Boolean) As JobDataStructureQB
+    Public Function GetJobSubJobData(MainForm As MAIN, p_token As String, UI As Boolean) As JobDataStructureQB
         Dim EmailAddress As String
         Dim Telephone1 As String
         Dim Fax As String
@@ -92,7 +92,7 @@ Public Class QBtoTL_JobOrItem
                 If UI Then
                     Dim pblenth As Integer = If(ptRetList Is Nothing, -1, ptRetList.Count)
                     If pblenth >= 0 Then
-                        IntegratedUIForm.ProgressBar1.Maximum = pblenth - 1
+                        My.Forms.MAIN.ProgressBar1.Maximum = pblenth - 1
                     End If
                 End If
 
@@ -124,7 +124,7 @@ Public Class QBtoTL_JobOrItem
                         End If
                     End With
                     If UI Then
-                        IntegratedUIForm.ProgressBar1.Value = i
+                        My.Forms.MAIN.ProgressBar1.Value = i
                     End If
                 Next
             End If
@@ -141,7 +141,7 @@ Public Class QBtoTL_JobOrItem
     End Function
 
     '---------------------------------------Get Item Data -----------------------------------------------------------------'
-    Public Function GetItemSubItemData(IntegratedUIForm As IntegratedUI, p_token As String, UI As Boolean) As JobDataStructureQB
+    Public Function GetItemSubItemData(MainForm As MAIN, p_token As String, UI As Boolean) As JobDataStructureQB
         Dim ModTime As String
         Dim CreateTime As String
         Dim ItemData As New JobDataStructureQB
@@ -167,7 +167,7 @@ Public Class QBtoTL_JobOrItem
             If UI Then
                 Dim pblenth As Integer = respList.Count
                 If pblenth >= 0 Then
-                    IntegratedUIForm.ProgressBar1.Maximum = pblenth - 1
+                    My.Forms.MAIN.ProgressBar1.Maximum = pblenth - 1
                 End If
             End If
 
@@ -208,7 +208,7 @@ Public Class QBtoTL_JobOrItem
 
     '---------------------------------------Transfer Job Data -----------------------------------------------------------------
     Public Function QBTransferJobstoTL(ByRef objData As QBtoTL_JobOrItem.JobDataStructureQB,
-                                   ByVal p_token As String, IntegratedUIForm As IntegratedUI, UI As Boolean) As Integer
+                                   ByVal p_token As String, MainForm As MAIN, UI As Boolean) As Integer
 
         Dim objProjectServices As New Services.TimeLive.Projects.Projects
         Dim authentication As New Services.TimeLive.Projects.SecuredWebServiceHeader
@@ -234,8 +234,8 @@ Public Class QBtoTL_JobOrItem
         If UI Then
             Dim pblenth As Integer = objData.DataArray.Count
             'If pblenth >= 0 Then
-            IntegratedUIForm.ProgressBar1.Maximum = pblenth
-            IntegratedUIForm.ProgressBar1.Value = 0
+            My.Forms.MAIN.ProgressBar1.Maximum = pblenth
+            My.Forms.MAIN.ProgressBar1.Value = 0
             'End If
         End If
 
@@ -278,7 +278,7 @@ Public Class QBtoTL_JobOrItem
                             If project_or_task_inTL Then
                                 ' TL already has this value and so does our DB, so just move to next element after updating Progress Bar
                                 If UI Then
-                                    IntegratedUIForm.ProgressBar1.Value += 1
+                                    My.Forms.MAIN.ProgressBar1.Value += 1
                                 End If
                                 ' TODO: Update TL
                                 ' NoRecordsCreatedorUpdated += 1
@@ -301,7 +301,7 @@ Public Class QBtoTL_JobOrItem
                             My.Forms.MAIN.History("Could not Get Client ID. It is likely that the client associated with this project does not exist. Try adding the client '" +
                                                           PTArray(0) + "' and then try again", "i")
                             If UI Then
-                                IntegratedUIForm.ProgressBar1.Value += 1
+                                My.Forms.MAIN.ProgressBar1.Value += 1
                             End If
                             Continue For
                         End If
@@ -323,7 +323,7 @@ Public Class QBtoTL_JobOrItem
                             My.Forms.MAIN.History("Successfully inserted project " + element.QB_Name, "i")
                             'If Not Array.Exists(objClientServices.GetClients, Function(clnt As Services.TimeLive.Clients.Client) clnt.ClientName = PTArray(0)) Then
                             '   NoRecordsCreatedorUpdated -= 1
-                            '   My.Forms.MAIN.History("Could Not Get Client ID. It Is likely that the client associated With this project does Not exist. Try adding the client " +
+                            '   My.Forms.Main.History("Could Not Get Client ID. It Is likely that the client associated With this project does Not exist. Try adding the client " +
                             '   element.parent + " And Then Try again", "i")
                             '   Continue For
                             'End If
@@ -349,7 +349,7 @@ Public Class QBtoTL_JobOrItem
                                 nProjectTypeId = objProjectServices.GetProjectTypeId() ' Not sure if this is needed, to update project id or something
                                 NoRecordsCreatedorUpdated += 1
                                 My.Forms.MAIN.History("Successfully inserted QuickBooks project '" + PTArray(0) + ":" + PTArray(1) + "' as '" + TL_Client + ":" + PTArray(1) + "' in TimeLive", "i")
-                                'My.Forms.MAIN.History(ex.ToString, "C")
+                                'My.Forms.Main.History(ex.ToString, "C")
                                 'Continue For
                             End If
 
@@ -402,58 +402,58 @@ Public Class QBtoTL_JobOrItem
                                                        nProjectMilestoneId, False, False, Now.Date, nTeamLeadId, Now.Date, nTeamLeadId, 0, 0, "Days",
                                                        True, element.QB_Name, 0, False, nCurrencyId)
                             My.Forms.MAIN.History("Successfully inserted task " + element.QB_Name, "i")
-                                'Dim JobAdapter As New QB_TL_IDsTableAdapters.Jobs_SubJobsTableAdapter
-                                'JobAdapter.Insert(element.QB_ID, objTaskServices.GetTaskId(element.QB_Name), element.QB_Name, element.FullName)
-                            End If
+                            'Dim JobAdapter As New QB_TL_IDsTableAdapters.Jobs_SubJobsTableAdapter
+                            'JobAdapter.Insert(element.QB_ID, objTaskServices.GetTaskId(element.QB_Name), element.QB_Name, element.FullName)
+                        End If
 
-                            'Insert record into sync database if Not in it
-                            If Not CBool(DT_has_QBID) Then
-                                Dim project_or_task_inTL As Boolean =
+                        'Insert record into sync database if Not in it
+                        If Not CBool(DT_has_QBID) Then
+                            Dim project_or_task_inTL As Boolean =
                                 Array.Exists(objTaskServices.GetTasks, Function(e As Services.TimeLive.Tasks.Task) e.JobParent + ":" + e.TaskName = element.FullName) Or
                                 Array.Exists(objProjectServices.GetProjects, Function(e As Services.TimeLive.Projects.Project) e.ClientName + ":" + e.ProjectName = element.FullName)
 
-                                If project_or_task_inTL Then
-                                    Dim JobAdapter As New QB_TL_IDsTableAdapters.Jobs_SubJobsTableAdapter
-                                    ' Currently does not support the same job name with different parent customers / same subjob name with different parent jobs
-                                    Dim proj_or_task_ID As Integer = If(PTArray.Length = 2, objProjectServices.GetProjectId(element.QB_Name), objTaskServices.GetTaskId(element.QB_Name))
-                                    JobAdapter.Insert(element.QB_ID, proj_or_task_ID, element.QB_Name, element.FullName)
-                                Else
-                                    Dim errStr As String = If(PTArray.Length = 2, " client in timelive has a project with name ", " project in timelive has a task with name ")
-                                    My.Forms.MAIN.History("Error creating record In TimeLive: Make sure that no other " + errStr + element.QB_Name, "N")
-                                End If
+                            If project_or_task_inTL Then
+                                Dim JobAdapter As New QB_TL_IDsTableAdapters.Jobs_SubJobsTableAdapter
+                                ' Currently does not support the same job name with different parent customers / same subjob name with different parent jobs
+                                Dim proj_or_task_ID As Integer = If(PTArray.Length = 2, objProjectServices.GetProjectId(element.QB_Name), objTaskServices.GetTaskId(element.QB_Name))
+                                JobAdapter.Insert(element.QB_ID, proj_or_task_ID, element.QB_Name, element.FullName)
+                            Else
+                                Dim errStr As String = If(PTArray.Length = 2, " client in timelive has a project with name ", " project in timelive has a task with name ")
+                                My.Forms.MAIN.History("Error creating record In TimeLive: Make sure that no other " + errStr + element.QB_Name, "N")
                             End If
-
                         End If
-                        'If TL_ID_Return = 1 Then
-
-                        '    Dim TL_ID As String = ISTLID_In_DataTableForJobs(element.QB_ID)
-                        '    If TL_ID Is Nothing Then
-                        '        My.Forms.MAIN.History("Detected empty sync record (No TL ID).Needs To be manually sync Or deleted." + element.QB_Name, "i")
-
-                        '    Else
-                        '        NoRecordsCreatedorUpdated = NoRecordsCreatedorUpdated + 1
-                        '        My.Forms.MAIN.History("Updating TL record For: " + element.QB_Name, "i")
-
-
-                        '        '-----------------------------------------------------------------------------------------------------------------------------------------------------------------
-                        '        ' ----------------------------------------------this part is the update-------------------------------------------------------------------------------------------
-                        '        '-----------------------------------------------------------------------------------------------------------------------------------------------------------------
-                        '    End If
-                        'End If
 
                     End If
+                    'If TL_ID_Return = 1 Then
+
+                    '    Dim TL_ID As String = ISTLID_In_DataTableForJobs(element.QB_ID)
+                    '    If TL_ID Is Nothing Then
+                    '        My.Forms.Main.History("Detected empty sync record (No TL ID).Needs To be manually sync Or deleted." + element.QB_Name, "i")
+
+                    '    Else
+                    '        NoRecordsCreatedorUpdated = NoRecordsCreatedorUpdated + 1
+                    '        My.Forms.Main.History("Updating TL record For: " + element.QB_Name, "i")
+
+
+                    '        '-----------------------------------------------------------------------------------------------------------------------------------------------------------------
+                    '        ' ----------------------------------------------this part is the update-------------------------------------------------------------------------------------------
+                    '        '-----------------------------------------------------------------------------------------------------------------------------------------------------------------
+                    '    End If
+                    'End If
+
+                End If
             End If
             'if no, UI skip
             If UI Then
-                IntegratedUIForm.ProgressBar1.Value += 1
+                My.Forms.MAIN.ProgressBar1.Value += 1
             End If
             'Catch ex As Exception
-            'My.Forms.MAIN.History(ex.ToString, "C")
+            'My.Forms.Main.History(ex.ToString, "C")
             'Throw ex
             'End Try
         Next
         'Catch ex As Exception
-        'My.Forms.MAIN.History(ex.ToString, "C")
+        'My.Forms.Main.History(ex.ToString, "C")
         'Throw ex
         'End Try
 
@@ -463,7 +463,7 @@ Public Class QBtoTL_JobOrItem
 
     '---------------------------------------Transfer Item Data -----------------------------------------------------------------'
     Public Function QBTransferItemsToTL(ByRef objData As QBtoTL_JobOrItem.JobDataStructureQB,
-                                   ByVal p_token As String, IntegratedUIForm As IntegratedUI, UI As Boolean) As Integer
+                                   ByVal p_token As String, MainForm As MAIN, UI As Boolean) As Integer
         Dim objProjectServices As New Services.TimeLive.Projects.Projects
         Dim authentication As New Services.TimeLive.Projects.SecuredWebServiceHeader
         authentication.AuthenticatedToken = p_token
@@ -486,8 +486,8 @@ Public Class QBtoTL_JobOrItem
 
         'sets status bar. If no, UI skip
         If UI Then
-            IntegratedUIForm.ProgressBar1.Maximum = objData.DataArray.Count
-            IntegratedUIForm.ProgressBar1.Value = 0
+            My.Forms.MAIN.ProgressBar1.Maximum = objData.DataArray.Count
+            My.Forms.MAIN.ProgressBar1.Value = 0
         End If
 
         Dim NoRecordsCreatedorUpdated As Integer = 0
@@ -563,7 +563,7 @@ Public Class QBtoTL_JobOrItem
                                         ' TODO: Add Project then the task, which would mean we would then increment this value (ie add 2 instead of 0)
                                         NoRecordsCreatedorUpdated -= 1
                                         My.Forms.MAIN.History("Could not Get Project ID. It is likely that the project for this task does not exist. Try adding the Project First", "i")
-                                        'My.Forms.MAIN.History(ex.ToString, "C")
+                                        'My.Forms.Main.History(ex.ToString, "C")
                                         Continue For
                                     End If
                                     Dim nProjectMilestoneId As Integer = objProjectServices.GetProjectMilestoneIdByProjectId(nProjectId)
@@ -584,11 +584,11 @@ Public Class QBtoTL_JobOrItem
 
                                 '    Dim TL_ID As String = ISQBID_In_DataTableForItems(element.QB_ID)
                                 '    If TL_ID Is Nothing Then
-                                '        My.Forms.MAIN.History("Detected empty sync record (No TL ID). Needs to be manually sync or deleted." + element.QB_Name, "i")
+                                '        My.Forms.Main.History("Detected empty sync record (No TL ID). Needs to be manually sync or deleted." + element.QB_Name, "i")
 
                                 '    Else
                                 '        NoRecordsCreatedorUpdated = NoRecordsCreatedorUpdated + 1
-                                '        My.Forms.MAIN.History("Updating TL record for: " + element.QB_Name, "i")
+                                '        My.Forms.Main.History("Updating TL record for: " + element.QB_Name, "i")
 
 
                                 '        '-----------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -602,7 +602,7 @@ Public Class QBtoTL_JobOrItem
                 End If
                 'if no UI, then skip
                 If UI Then
-                    IntegratedUIForm.ProgressBar1.Value += 1
+                    My.Forms.MAIN.ProgressBar1.Value += 1
                 End If
             Next
 
@@ -663,9 +663,9 @@ Public Class QBtoTL_JobOrItem
     '    Dim TimeLiveIDs As QB_TL_IDs.Items_SubItemsDataTable = ItemAdapter.GetCorrespondingTL_ID(myqbID)
 
     '    If String.IsNullOrEmpty(Trim(TimeLiveIDs(0).TimeLive_ID.ToString())) Then
-    '        My.Forms.MAIN.History("Record has a TLID of Nothing", "I")
+    '        My.Forms.Main.History("Record has a TLID of Nothing", "I")
     '    Else
-    '        My.Forms.MAIN.History("Record has a TLID of: " + TimeLiveIDs(0).TimeLive_ID.ToString(), "i")
+    '        My.Forms.Main.History("Record has a TLID of: " + TimeLiveIDs(0).TimeLive_ID.ToString(), "i")
     '        result = TimeLiveIDs(0).TimeLive_ID.ToString()
     '    End If
 

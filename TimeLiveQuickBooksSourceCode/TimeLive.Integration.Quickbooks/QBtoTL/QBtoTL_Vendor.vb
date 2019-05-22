@@ -42,7 +42,7 @@ Public Class QBtoTL_Vendor
         End Sub
     End Class
 
-    Public Function GetVendorQBData(IntegratedUIForm As IntegratedUI, UI As Boolean) As VendorDataStructureQB
+    Public Function GetVendorQBData(MainForm As MAIN, UI As Boolean) As VendorDataStructureQB
         Dim EmailAddress As String
         Dim FirstName As String
         Dim LastName As String
@@ -82,7 +82,7 @@ Public Class QBtoTL_Vendor
                 If UI Then
                     pblenth = If(vendorRetList Is Nothing, -1, vendorRetList.Count)
                     If pblenth >= 0 Then
-                        IntegratedUIForm.ProgressBar1.Maximum = pblenth - 1
+                        My.Forms.MAIN.ProgressBar1.Maximum = pblenth - 1
                     End If
                 End If
                 For i As Integer = 0 To If(vendorRetList Is Nothing, -1, vendorRetList.Count - 1)
@@ -104,7 +104,7 @@ Public Class QBtoTL_Vendor
                         End If
                     End With
                     If UI Then
-                        IntegratedUIForm.ProgressBar1.Value = i
+                        My.Forms.MAIN.ProgressBar1.Value = i
                     End If
                 Next
             End If
@@ -126,7 +126,7 @@ Public Class QBtoTL_Vendor
     End Function
 
     Public Function QBTransferVendorToTL(ByRef objData As QBtoTL_Vendor.VendorDataStructureQB,
-                                   ByVal token As String, IntegratedUIForm As IntegratedUI, UI As Boolean) As Integer
+                                   ByVal token As String, MainForm As MAIN, UI As Boolean) As Integer
 
         Dim objEmployeeServices As New Services.TimeLive.Employees.Employees
         Dim authentication As New Services.TimeLive.Employees.SecuredWebServiceHeader
@@ -154,8 +154,8 @@ Public Class QBtoTL_Vendor
         Dim incrementbar As Integer = 0
         If UI = True Then
             Dim pblenth As Integer = objData.DataArray.Count
-            IntegratedUIForm.ProgressBar1.Maximum = pblenth
-            IntegratedUIForm.ProgressBar1.Value = 0
+            My.Forms.MAIN.ProgressBar1.Maximum = pblenth
+            My.Forms.MAIN.ProgressBar1.Value = 0
         End If
 
         Dim NoRecordsCreatedorUpdated = 0
@@ -209,7 +209,7 @@ Public Class QBtoTL_Vendor
                             ' TL already has this value and so does our DB, so just move to next element after updating Progress Bar
                             If UI Then
                                 incrementbar += 1
-                                IntegratedUIForm.ProgressBar1.Value = incrementbar
+                                My.Forms.MAIN.ProgressBar1.Value = incrementbar
                             End If
                             ' TODO: Update TL, based on commented out code below
                             Continue For
@@ -283,11 +283,11 @@ Public Class QBtoTL_Vendor
                 'If TL_ID_Return = 1 Then
                 'Dim TL_ID As String = ISTLID_In_DataTableForVendor(element.QB_ID)
                 'If TL_ID Is Nothing Then
-                'My.Forms.MAIN.History("Detected empty sync record (No TL ID). Needs to be manually sync or deleted." + element.QB_Name, "i")
+                'My.Forms.Main.History("Detected empty sync record (No TL ID). Needs to be manually sync or deleted." + element.QB_Name, "i")
 
                 'Else
                 'NoRecordsCreatedorUpdated += 1
-                'My.Forms.MAIN.History("Updating TL record for: " + element.QB_Name, "i")
+                'My.Forms.Main.History("Updating TL record for: " + element.QB_Name, "i")
                 'Update TimeLife Record
 
 
@@ -461,10 +461,10 @@ Public Class QBtoTL_Vendor
                 '                       TimeOffApprovalTypeId, AccountHolidayTypeId, IsForcePasswordChange,
                 '                       "", False)
 
-                'My.Forms.MAIN.History("Record update commented out -- Defect", "N")
+                'My.Forms.Main.History("Record update commented out -- Defect", "N")
 
                 'Catch ex As Exception
-                'My.Forms.MAIN.History("Update failed." + ex.ToString, "N")
+                'My.Forms.Main.History("Update failed." + ex.ToString, "N")
                 'End Try
                 'End With
 
@@ -475,7 +475,7 @@ Public Class QBtoTL_Vendor
             End If
             If UI Then
                 incrementbar += 1
-                IntegratedUIForm.ProgressBar1.Value = incrementbar
+                My.Forms.MAIN.ProgressBar1.Value = incrementbar
             End If
         Next
 

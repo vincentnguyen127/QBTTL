@@ -37,7 +37,7 @@ Public Class QBtoTL_Customer
         End Sub
     End Class
 
-    Public Function GetCustomerQBData(IntegratedUIForm As IntegratedUI, UI As Boolean) As CustomerDataStructureQB
+    Public Function GetCustomerQBData(MainForm As MAIN, UI As Boolean) As CustomerDataStructureQB
         Dim EmailAddress As String
         Dim Telephone1 As String
         Dim Fax As String
@@ -80,7 +80,7 @@ Public Class QBtoTL_Customer
             If UI Then
                 Dim pblength As Integer = If(custRetList Is Nothing, -1, custRetList.Count)
                 If pblength >= 0 Then
-                    IntegratedUIForm.ProgressBar1.Maximum = pblength - 1
+                    My.Forms.MAIN.ProgressBar1.Maximum = pblength - 1
                 End If
             End If
 
@@ -112,7 +112,7 @@ Public Class QBtoTL_Customer
                     End If
                 End With
                 If UI Then
-                    IntegratedUIForm.ProgressBar1.Value = i
+                    My.Forms.MAIN.ProgressBar1.Value = i
                 End If
             Next
             'End If
@@ -130,7 +130,7 @@ Public Class QBtoTL_Customer
             'For Each customerRow As DataRow In customers.Rows
             'isActive = CustomerData.DataArray.Exists(Function(x As Customer) x.QB_ID = customerRow(1))
             'If Not isActive.GetValue Then
-            'My.Forms.MAIN.History(customerRow.Item(2), "i")
+            'History(customerRow.Item(2), "i")
             'End If
             'Next
             ' for each element in Customers
@@ -145,7 +145,7 @@ Public Class QBtoTL_Customer
     End Function
 
     Public Function QBTransferCustomerToTL(ByRef objData As QBtoTL_Customer.CustomerDataStructureQB,
-                                   ByVal token As String, IntegratedUIForm As IntegratedUI, UI As Boolean) As Integer
+                                   ByVal token As String, MainForm As MAIN, UI As Boolean) As Integer
 
         Dim objClientServices As New Services.TimeLive.Clients.Clients
         Dim objClient As New Services.TimeLive.Clients.Client ' Unused
@@ -157,8 +157,8 @@ Public Class QBtoTL_Customer
         Dim incrementbar As Integer = 0
         If UI Then
             Dim pblength As Integer = objData.NoItems - objData.NoInactive
-            IntegratedUIForm.ProgressBar1.Maximum = pblength
-            IntegratedUIForm.ProgressBar1.Value = 0
+            My.Forms.MAIN.ProgressBar1.Maximum = pblength
+            My.Forms.MAIN.ProgressBar1.Value = 0
         End If
 
         Dim NoRecordsCreatedorUpdated As Integer = 0
@@ -203,7 +203,7 @@ Public Class QBtoTL_Customer
                             ' TL already has this value and so does our DB, so just move to next element after updating Progress Bar
                             If UI Then
                                 incrementbar += 1
-                                IntegratedUIForm.ProgressBar1.Value = incrementbar
+                                My.Forms.MAIN.ProgressBar1.Value = incrementbar
                             End If
                             ' TODO: Update TL
                             Continue For
@@ -257,10 +257,10 @@ Public Class QBtoTL_Customer
                 'If TL_ID_Return = 1 Then
                 'Dim TL_ID As String = ISTLID_In_DataTable(element.QB_ID)
                 'If TL_ID Is Nothing Then
-                'My.Forms.MAIN.History("Detected empty sync record (No TL ID). Needs to be manually sync or deleted." + element.QB_Name, "i")
+                'History("Detected empty sync record (No TL ID). Needs to be manually sync or deleted." + element.QB_Name, "i")
                 'Else
                 '   NoRecordsCreatedorUpdated += 1
-                '  My.Forms.MAIN.History("Updating TL record for: " + element.QB_Name, "i")
+                '  History("Updating TL record for: " + element.QB_Name, "i")
                 '-----------------------------------------------------------------------------------------------------------------------------------------------------------------
                 ' --------------------------------------------- this part is the update ------------------------------------------------------------------------------------------
                 '-----------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -272,7 +272,7 @@ Public Class QBtoTL_Customer
             'if no UI, then skip
             If element.Enabled And UI Then ' Only increment for active customers
                 incrementbar += 1
-                IntegratedUIForm.ProgressBar1.Value = incrementbar
+                My.Forms.MAIN.ProgressBar1.Value = incrementbar
             End If
         Next
 
@@ -345,7 +345,7 @@ Public Class QBtoTL_Customer
 End Class
 
 'Update database record code
-'My.Forms.MAIN.History("Inserting TL key into sync database and inserting to TimeLife:  " + element.Name)
+'History("Inserting TL key into sync database and inserting to TimeLife:  " + element.Name)
 ''Insert record into Time Life
 'objClientServices.InsertClient(element.Name, SetLength(element.Name),
 '    element.Email, "", "", 233, "", "", "", element.Telephone1, "no telephone 2 yet", element.Fax, 0, "", element.QB_ID, False,

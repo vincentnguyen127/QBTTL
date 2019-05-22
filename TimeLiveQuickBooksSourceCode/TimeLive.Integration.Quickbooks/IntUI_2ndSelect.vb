@@ -121,7 +121,7 @@ Public Class IntUI_2ndSelect
     Public Sub LoadSelectedTimeEntryItems(AccountEmployeeId As String, EmployeeName As String, ByRef DataGridView As DataGridView, Optional combine As Boolean = False)
         Dim temp As New TLtoQB_TimeEntry.TimeEntryDataStructureQB
 
-        Dim emplTLData As TLtoQB_TimeEntry.TimeEntryDataStructureQB = timeentry_tltoqb.GetTimeEntryTLData(AccountEmployeeId, StartDate, EndDate, New IntegratedUI, p_token, False)
+        Dim emplTLData As TLtoQB_TimeEntry.TimeEntryDataStructureQB = timeentry_tltoqb.GetTimeEntryTLData(AccountEmployeeId, StartDate, EndDate, New MAIN, p_token, False)
         If combine Then
             TimeEntryData.combine(emplTLData)
         Else
@@ -168,14 +168,14 @@ Public Class IntUI_2ndSelect
         'MsgBox(" at the end " + TimeEntryData.NoItems.ToString)
     End Sub
 
-    Public Sub time_transfer(ByRef DataGridView As DataGridView, Integrated_UI As IntegratedUI)
+    Public Sub time_transfer(ByRef DataGridView As DataGridView, Integrated_UI As MAIN)
         Reset_Checked_TimeEntry_Value(TimeEntryData)
         Set_Selected_TimeEntry(DataGridView)
 
         ' Set TimeEntryData
 
         ' Transfer Time Entry data from TL to QB
-        timeentry_tltoqb.TLTransferTimeToQB(TimeEntryData, p_token, IntegratedUI, True)
+        timeentry_tltoqb.TLTransferTimeToQB(TimeEntryData, p_token, MAIN, True)
     End Sub
 
     Private Sub btnclose_Click(sender As Object, e As EventArgs) Handles bntclose.Click
@@ -193,7 +193,7 @@ Public Class IntUI_2ndSelect
 
             Dim element As New TLtoQB_TimeEntry.EmployeeDataStructure
             element = selectedEmployeeData
-            timeentry_tltoqb.TLTransferTimeToQB(TimeEntryData, p_token, New IntegratedUI, True)
+            timeentry_tltoqb.TLTransferTimeToQB(TimeEntryData, p_token, New MAIN, True)
 
             'wait for one second so user can see progress bar
             System.Threading.Thread.Sleep(150)

@@ -282,7 +282,7 @@ Used to sort self-referenced table's rows
  Sync the Jobs data from QB. Print out Projects and Tasks that are in TL but not QB
  </summary>
 </member>
-<member name="M:TimeLive.Quickbooks.Integrator.Sync_TLtoQB_JoborItem.SyncJobsSubJobData(System.String,TimeLive.Quickbooks.Integrator.IntegratedUI,System.Boolean,System.Collections.Generic.List{System.String})">
+<member name="M:TimeLive.Quickbooks.Integrator.Sync_TLtoQB_JoborItem.SyncJobsSubJobData(System.String,TimeLive.Quickbooks.Integrator.MAIN,System.Boolean,System.Collections.Generic.List{System.String})">
  <summary>
  Sync the Jobs from QB. Print out Projects and Tasks in TL but not QB
  </summary>
@@ -333,7 +333,7 @@ Used to sort self-referenced table's rows
  <param name="chargingRelationshipAdapter"></param>
  <param name="row">Row with an employee and job/subjob</param>
 </member>
-<member name="M:TimeLive.Quickbooks.Integrator.Sync_TLtoQB_Vendor.SyncVendorData(System.String,TimeLive.Quickbooks.Integrator.IntegratedUI,System.Boolean,System.Collections.Generic.List{System.String})">
+<member name="M:TimeLive.Quickbooks.Integrator.Sync_TLtoQB_Vendor.SyncVendorData(System.String,TimeLive.Quickbooks.Integrator.MAIN,System.Boolean,System.Collections.Generic.List{System.String})">
  <summary>
  Sync the vendor data from QB. Print out vendors that are in TL but not QB
  </summary>
@@ -361,7 +361,7 @@ Used to sort self-referenced table's rows
  2 -> more than one record in data table
  </returns>
 </member>
-<member name="M:TimeLive.Quickbooks.Integrator.Sync_TLtoQB_Employee.SyncEmployeeData(System.String,TimeLive.Quickbooks.Integrator.IntegratedUI,System.Boolean,System.Collections.Generic.List{System.String})">
+<member name="M:TimeLive.Quickbooks.Integrator.Sync_TLtoQB_Employee.SyncEmployeeData(System.String,TimeLive.Quickbooks.Integrator.MAIN,System.Boolean,System.Collections.Generic.List{System.String})">
  <summary>
  Sync the employee data from QB. Print out employees that are in TL but not QB
  </summary>
@@ -389,7 +389,7 @@ Used to sort self-referenced table's rows
  2 -> more than one record in data table
  </returns>
 </member>
-<member name="M:TimeLive.Quickbooks.Integrator.Sync_TLtoQB_Customer.SyncCustomerData(System.String,TimeLive.Quickbooks.Integrator.IntegratedUI,System.Boolean,System.Collections.Generic.List{System.String})">
+<member name="M:TimeLive.Quickbooks.Integrator.Sync_TLtoQB_Customer.SyncCustomerData(System.String,TimeLive.Quickbooks.Integrator.MAIN,System.Boolean,System.Collections.Generic.List{System.String})">
  <summary>
  Sync the customer data from QB. Print out customers that are in TL but not QB
  </summary>

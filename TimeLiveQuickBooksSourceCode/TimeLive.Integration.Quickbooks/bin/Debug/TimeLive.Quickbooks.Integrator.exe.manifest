@@ -50,19 +50,19 @@
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <dsig:DigestValue>LclSzMEfUvJpyVX6Owd4Ga33jKg=</dsig:DigestValue>
+        <dsig:DigestValue>9mhYMPjGrT+QJy/s8aR0UQjFtZQ=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="TimeLive.Quickbooks.Integrator.exe" size="1657344">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="TimeLive.Quickbooks.Integrator.exe" size="1640960">
       <assemblyIdentity name="TimeLive.Quickbooks.Integrator" version="1.0.0.0" language="neutral" processorArchitecture="x86" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <dsig:DigestValue>zgxJ2jT3kOMzpvBXQ2dWhc6OV9o=</dsig:DigestValue>
+        <dsig:DigestValue>ACZb8QqR6ORnt+cjaw5tTDOcEN0=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
@@ -84,13 +84,13 @@
       <dsig:DigestValue>YRbjbVToKDoq6xElQYVUOaUWmr4=</dsig:DigestValue>
     </hash>
   </file>
-  <file name="TimeLive.Quickbooks.Integrator.exe.config" size="4944">
+  <file name="TimeLive.Quickbooks.Integrator.exe.config" size="4856">
     <hash>
       <dsig:Transforms>
         <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
       </dsig:Transforms>
       <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-      <dsig:DigestValue>a3A3AvxWoJLQ2nVl7lLtEL0jOps=</dsig:DigestValue>
+      <dsig:DigestValue>7O73J1eicaYCNOIPXstL9FHSRng=</dsig:DigestValue>
     </hash>
   </file>
   <file name="TimeLiveQuickBooks.ico" size="370070">

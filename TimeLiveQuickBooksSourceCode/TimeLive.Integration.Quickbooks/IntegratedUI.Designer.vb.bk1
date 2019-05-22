@@ -22,9 +22,10 @@ Partial Class IntegratedUI
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
-        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(IntegratedUI))
         Me.bntclose = New System.Windows.Forms.Button()
         Me.btnTransfer = New System.Windows.Forms.Button()
+        Me.GroupBox1 = New System.Windows.Forms.GroupBox()
+        Me.ProgressBar1 = New System.Windows.Forms.ProgressBar()
         Me.TabPageTimeTransfer = New System.Windows.Forms.TabPage()
         Me.RefreshTimeTransfer = New System.Windows.Forms.Button()
         Me.cbWageType = New System.Windows.Forms.ComboBox()
@@ -65,19 +66,7 @@ Partial Class IntegratedUI
         Me.ckBox = New System.Windows.Forms.DataGridViewCheckBoxColumn()
         Me.TimeEntrySelectAll = New System.Windows.Forms.CheckBox()
         Me.DataGridView2 = New System.Windows.Forms.DataGridView()
-        Me.SplitContainer2 = New System.Windows.Forms.SplitContainer()
-        Me.StatusWindow = New System.Windows.Forms.TextBox()
-        Me.StatusStrip = New System.Windows.Forms.StatusStrip()
-        Me.CurrentTime = New System.Windows.Forms.ToolStripStatusLabel()
-        Me.NextProcessingTime = New System.Windows.Forms.ToolStripStatusLabel()
-        Me.ToolStrip1 = New System.Windows.Forms.ToolStrip()
-        Me.settingbtn = New System.Windows.Forms.ToolStripButton()
-        Me.loginbtn = New System.Windows.Forms.ToolStripButton()
-        Me.btn_systemsync = New System.Windows.Forms.ToolStripButton()
-        Me.btn_relationships = New System.Windows.Forms.ToolStripButton()
-        Me.clearlogbtn = New System.Windows.Forms.ToolStripButton()
-        Me.Exitbtn = New System.Windows.Forms.ToolStripButton()
-        Me.ProgressBar1 = New System.Windows.Forms.ProgressBar()
+        Me.GroupBox1.SuspendLayout()
         Me.TabPageTimeTransfer.SuspendLayout()
         Me.AttributeTabControl.SuspendLayout()
         Me.TabPageCustomers.SuspendLayout()
@@ -93,18 +82,13 @@ Partial Class IntegratedUI
         Me.SplitContainer1.SuspendLayout()
         CType(Me.DataGridView1, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.DataGridView2, System.ComponentModel.ISupportInitialize).BeginInit()
-        Me.SplitContainer2.Panel1.SuspendLayout()
-        Me.SplitContainer2.Panel2.SuspendLayout()
-        Me.SplitContainer2.SuspendLayout()
-        Me.StatusStrip.SuspendLayout()
-        Me.ToolStrip1.SuspendLayout()
         Me.SuspendLayout()
         '
         'bntclose
         '
         Me.bntclose.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.bntclose.ImeMode = System.Windows.Forms.ImeMode.NoControl
-        Me.bntclose.Location = New System.Drawing.Point(637, 583)
+        Me.bntclose.Location = New System.Drawing.Point(903, 597)
         Me.bntclose.Name = "bntclose"
         Me.bntclose.Size = New System.Drawing.Size(75, 23)
         Me.bntclose.TabIndex = 32
@@ -115,12 +99,34 @@ Partial Class IntegratedUI
         '
         Me.btnTransfer.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.btnTransfer.ImeMode = System.Windows.Forms.ImeMode.NoControl
-        Me.btnTransfer.Location = New System.Drawing.Point(545, 583)
+        Me.btnTransfer.Location = New System.Drawing.Point(813, 597)
         Me.btnTransfer.Name = "btnTransfer"
         Me.btnTransfer.Size = New System.Drawing.Size(75, 23)
         Me.btnTransfer.TabIndex = 31
         Me.btnTransfer.Text = "Process"
         Me.btnTransfer.UseVisualStyleBackColor = True
+        '
+        'GroupBox1
+        '
+        Me.GroupBox1.Anchor = CType(((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.GroupBox1.Controls.Add(Me.ProgressBar1)
+        Me.GroupBox1.Location = New System.Drawing.Point(2, 554)
+        Me.GroupBox1.Name = "GroupBox1"
+        Me.GroupBox1.Size = New System.Drawing.Size(986, 37)
+        Me.GroupBox1.TabIndex = 39
+        Me.GroupBox1.TabStop = False
+        Me.GroupBox1.Text = "Progress Bar"
+        '
+        'ProgressBar1
+        '
+        Me.ProgressBar1.Anchor = CType(((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.ProgressBar1.Location = New System.Drawing.Point(10, 17)
+        Me.ProgressBar1.Maximum = 10
+        Me.ProgressBar1.Name = "ProgressBar1"
+        Me.ProgressBar1.Size = New System.Drawing.Size(966, 14)
+        Me.ProgressBar1.TabIndex = 0
         '
         'TabPageTimeTransfer
         '
@@ -137,7 +143,7 @@ Partial Class IntegratedUI
         Me.TabPageTimeTransfer.Location = New System.Drawing.Point(4, 22)
         Me.TabPageTimeTransfer.Name = "TabPageTimeTransfer"
         Me.TabPageTimeTransfer.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPageTimeTransfer.Size = New System.Drawing.Size(716, 82)
+        Me.TabPageTimeTransfer.Size = New System.Drawing.Size(978, 82)
         Me.TabPageTimeTransfer.TabIndex = 2
         Me.TabPageTimeTransfer.Text = "Time Transfer Options"
         Me.TabPageTimeTransfer.UseVisualStyleBackColor = True
@@ -242,10 +248,10 @@ Partial Class IntegratedUI
         Me.AttributeTabControl.Controls.Add(Me.TabPageVendor)
         Me.AttributeTabControl.Controls.Add(Me.TabPageJobsItems)
         Me.AttributeTabControl.Controls.Add(Me.TabPageTimeTransfer)
-        Me.AttributeTabControl.Location = New System.Drawing.Point(0, 53)
+        Me.AttributeTabControl.Location = New System.Drawing.Point(2, -1)
         Me.AttributeTabControl.Name = "AttributeTabControl"
         Me.AttributeTabControl.SelectedIndex = 0
-        Me.AttributeTabControl.Size = New System.Drawing.Size(724, 108)
+        Me.AttributeTabControl.Size = New System.Drawing.Size(986, 108)
         Me.AttributeTabControl.TabIndex = 40
         '
         'TabPageCustomers
@@ -255,7 +261,7 @@ Partial Class IntegratedUI
         Me.TabPageCustomers.Location = New System.Drawing.Point(4, 22)
         Me.TabPageCustomers.Name = "TabPageCustomers"
         Me.TabPageCustomers.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPageCustomers.Size = New System.Drawing.Size(716, 82)
+        Me.TabPageCustomers.Size = New System.Drawing.Size(978, 82)
         Me.TabPageCustomers.TabIndex = 3
         Me.TabPageCustomers.Text = "Customers Options"
         Me.TabPageCustomers.UseVisualStyleBackColor = True
@@ -310,7 +316,7 @@ Partial Class IntegratedUI
         Me.TabPageEmployees.Location = New System.Drawing.Point(4, 22)
         Me.TabPageEmployees.Name = "TabPageEmployees"
         Me.TabPageEmployees.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPageEmployees.Size = New System.Drawing.Size(716, 82)
+        Me.TabPageEmployees.Size = New System.Drawing.Size(978, 82)
         Me.TabPageEmployees.TabIndex = 4
         Me.TabPageEmployees.Text = "Employees Options"
         Me.TabPageEmployees.UseVisualStyleBackColor = True
@@ -365,7 +371,7 @@ Partial Class IntegratedUI
         Me.TabPageVendor.Location = New System.Drawing.Point(4, 22)
         Me.TabPageVendor.Name = "TabPageVendor"
         Me.TabPageVendor.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPageVendor.Size = New System.Drawing.Size(716, 82)
+        Me.TabPageVendor.Size = New System.Drawing.Size(978, 82)
         Me.TabPageVendor.TabIndex = 5
         Me.TabPageVendor.Text = "Vendors Options"
         Me.TabPageVendor.UseVisualStyleBackColor = True
@@ -419,7 +425,7 @@ Partial Class IntegratedUI
         Me.TabPageJobsItems.Controls.Add(Me.JobItemSyncDirection)
         Me.TabPageJobsItems.Location = New System.Drawing.Point(4, 22)
         Me.TabPageJobsItems.Name = "TabPageJobsItems"
-        Me.TabPageJobsItems.Size = New System.Drawing.Size(716, 82)
+        Me.TabPageJobsItems.Size = New System.Drawing.Size(978, 82)
         Me.TabPageJobsItems.TabIndex = 6
         Me.TabPageJobsItems.Text = "Jobs/Items Options"
         Me.TabPageJobsItems.UseVisualStyleBackColor = True
@@ -490,7 +496,7 @@ Partial Class IntegratedUI
         Me.SplitContainer1.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
             Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.SplitContainer1.Location = New System.Drawing.Point(6, 3)
+        Me.SplitContainer1.Location = New System.Drawing.Point(2, 126)
         Me.SplitContainer1.Name = "SplitContainer1"
         '
         'SplitContainer1.Panel1
@@ -504,8 +510,8 @@ Partial Class IntegratedUI
         Me.SplitContainer1.Panel2.Controls.Add(Me.TimeEntrySelectAll)
         Me.SplitContainer1.Panel2.Controls.Add(Me.SyncToLabel)
         Me.SplitContainer1.Panel2.Controls.Add(Me.DataGridView2)
-        Me.SplitContainer1.Size = New System.Drawing.Size(720, 402)
-        Me.SplitContainer1.SplitterDistance = 344
+        Me.SplitContainer1.Size = New System.Drawing.Size(986, 422)
+        Me.SplitContainer1.SplitterDistance = 473
         Me.SplitContainer1.TabIndex = 44
         '
         'SelectAllCheckBox
@@ -526,9 +532,9 @@ Partial Class IntegratedUI
         Me.DataGridView1.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells
         Me.DataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
         Me.DataGridView1.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.ckBox})
-        Me.DataGridView1.Location = New System.Drawing.Point(0, 31)
+        Me.DataGridView1.Location = New System.Drawing.Point(4, 31)
         Me.DataGridView1.Name = "DataGridView1"
-        Me.DataGridView1.Size = New System.Drawing.Size(341, 280)
+        Me.DataGridView1.Size = New System.Drawing.Size(466, 388)
         Me.DataGridView1.TabIndex = 38
         '
         'ckBox
@@ -554,190 +560,25 @@ Partial Class IntegratedUI
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.DataGridView2.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells
         Me.DataGridView2.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
-        Me.DataGridView2.Location = New System.Drawing.Point(0, 31)
+        Me.DataGridView2.Location = New System.Drawing.Point(3, 31)
         Me.DataGridView2.Name = "DataGridView2"
-        Me.DataGridView2.Size = New System.Drawing.Size(363, 280)
+        Me.DataGridView2.Size = New System.Drawing.Size(496, 388)
         Me.DataGridView2.TabIndex = 42
-        '
-        'SplitContainer2
-        '
-        Me.SplitContainer2.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-            Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.SplitContainer2.Location = New System.Drawing.Point(0, 156)
-        Me.SplitContainer2.Name = "SplitContainer2"
-        Me.SplitContainer2.Orientation = System.Windows.Forms.Orientation.Horizontal
-        '
-        'SplitContainer2.Panel1
-        '
-        Me.SplitContainer2.Panel1.Controls.Add(Me.SplitContainer1)
-        '
-        'SplitContainer2.Panel2
-        '
-        Me.SplitContainer2.Panel2.Controls.Add(Me.StatusWindow)
-        Me.SplitContainer2.Size = New System.Drawing.Size(720, 400)
-        Me.SplitContainer2.SplitterDistance = 282
-        Me.SplitContainer2.TabIndex = 1
-        '
-        'StatusWindow
-        '
-        Me.StatusWindow.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-            Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.StatusWindow.BackColor = System.Drawing.SystemColors.ActiveCaptionText
-        Me.StatusWindow.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.StatusWindow.ForeColor = System.Drawing.SystemColors.ButtonHighlight
-        Me.StatusWindow.ImeMode = System.Windows.Forms.ImeMode.NoControl
-        Me.StatusWindow.Location = New System.Drawing.Point(4, 2)
-        Me.StatusWindow.Multiline = True
-        Me.StatusWindow.Name = "StatusWindow"
-        Me.StatusWindow.ReadOnly = True
-        Me.StatusWindow.ScrollBars = System.Windows.Forms.ScrollBars.Vertical
-        Me.StatusWindow.Size = New System.Drawing.Size(720, 109)
-        Me.StatusWindow.TabIndex = 13
-        '
-        'StatusStrip
-        '
-        Me.StatusStrip.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.CurrentTime, Me.NextProcessingTime})
-        Me.StatusStrip.Location = New System.Drawing.Point(0, 617)
-        Me.StatusStrip.Name = "StatusStrip"
-        Me.StatusStrip.Size = New System.Drawing.Size(724, 24)
-        Me.StatusStrip.TabIndex = 42
-        Me.StatusStrip.Text = "StatusStrip"
-        '
-        'CurrentTime
-        '
-        Me.CurrentTime.AutoSize = False
-        Me.CurrentTime.BorderSides = CType((((System.Windows.Forms.ToolStripStatusLabelBorderSides.Left Or System.Windows.Forms.ToolStripStatusLabelBorderSides.Top) _
-            Or System.Windows.Forms.ToolStripStatusLabelBorderSides.Right) _
-            Or System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom), System.Windows.Forms.ToolStripStatusLabelBorderSides)
-        Me.CurrentTime.BorderStyle = System.Windows.Forms.Border3DStyle.SunkenInner
-        Me.CurrentTime.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
-        Me.CurrentTime.Name = "CurrentTime"
-        Me.CurrentTime.Size = New System.Drawing.Size(100, 19)
-        Me.CurrentTime.Text = "Current Time"
-        Me.CurrentTime.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.CurrentTime.TextDirection = System.Windows.Forms.ToolStripTextDirection.Horizontal
-        '
-        'NextProcessingTime
-        '
-        Me.NextProcessingTime.AutoSize = False
-        Me.NextProcessingTime.BorderSides = CType((((System.Windows.Forms.ToolStripStatusLabelBorderSides.Left Or System.Windows.Forms.ToolStripStatusLabelBorderSides.Top) _
-            Or System.Windows.Forms.ToolStripStatusLabelBorderSides.Right) _
-            Or System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom), System.Windows.Forms.ToolStripStatusLabelBorderSides)
-        Me.NextProcessingTime.BorderStyle = System.Windows.Forms.Border3DStyle.SunkenInner
-        Me.NextProcessingTime.Name = "NextProcessingTime"
-        Me.NextProcessingTime.Size = New System.Drawing.Size(300, 19)
-        Me.NextProcessingTime.Text = "Next Procesing Time"
-        Me.NextProcessingTime.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.NextProcessingTime.TextDirection = System.Windows.Forms.ToolStripTextDirection.Horizontal
-        '
-        'ToolStrip1
-        '
-        Me.ToolStrip1.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.ToolStrip1.AutoSize = False
-        Me.ToolStrip1.Dock = System.Windows.Forms.DockStyle.None
-        Me.ToolStrip1.ImageScalingSize = New System.Drawing.Size(32, 32)
-        Me.ToolStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.settingbtn, Me.loginbtn, Me.btn_systemsync, Me.btn_relationships, Me.clearlogbtn, Me.Exitbtn})
-        Me.ToolStrip1.Location = New System.Drawing.Point(0, 0)
-        Me.ToolStrip1.Name = "ToolStrip1"
-        Me.ToolStrip1.Size = New System.Drawing.Size(724, 50)
-        Me.ToolStrip1.TabIndex = 43
-        Me.ToolStrip1.Text = "ToolStrip1"
-        '
-        'settingbtn
-        '
-        Me.settingbtn.AutoSize = False
-        Me.settingbtn.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
-        Me.settingbtn.Image = CType(resources.GetObject("settingbtn.Image"), System.Drawing.Image)
-        Me.settingbtn.ImageTransparentColor = System.Drawing.Color.Magenta
-        Me.settingbtn.Name = "settingbtn"
-        Me.settingbtn.Size = New System.Drawing.Size(50, 50)
-        Me.settingbtn.Text = "Clear Log"
-        Me.settingbtn.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText
-        Me.settingbtn.ToolTipText = "Clear Log"
-        '
-        'loginbtn
-        '
-        Me.loginbtn.AutoSize = False
-        Me.loginbtn.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
-        Me.loginbtn.Image = CType(resources.GetObject("loginbtn.Image"), System.Drawing.Image)
-        Me.loginbtn.ImageTransparentColor = System.Drawing.Color.Magenta
-        Me.loginbtn.Name = "loginbtn"
-        Me.loginbtn.Size = New System.Drawing.Size(50, 50)
-        Me.loginbtn.Text = "Login"
-        Me.loginbtn.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText
-        '
-        'btn_systemsync
-        '
-        Me.btn_systemsync.AutoSize = False
-        Me.btn_systemsync.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
-        Me.btn_systemsync.Image = CType(resources.GetObject("btn_systemsync.Image"), System.Drawing.Image)
-        Me.btn_systemsync.ImageTransparentColor = System.Drawing.Color.Magenta
-        Me.btn_systemsync.Name = "btn_systemsync"
-        Me.btn_systemsync.Size = New System.Drawing.Size(50, 50)
-        Me.btn_systemsync.Text = "TL to QB Sync"
-        Me.btn_systemsync.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText
-        '
-        'btn_relationships
-        '
-        Me.btn_relationships.AutoSize = False
-        Me.btn_relationships.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
-        Me.btn_relationships.Image = CType(resources.GetObject("btn_relationships.Image"), System.Drawing.Image)
-        Me.btn_relationships.ImageTransparentColor = System.Drawing.Color.Magenta
-        Me.btn_relationships.Name = "btn_relationships"
-        Me.btn_relationships.Size = New System.Drawing.Size(50, 50)
-        Me.btn_relationships.Text = "Relationships"
-        Me.btn_relationships.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText
-        '
-        'clearlogbtn
-        '
-        Me.clearlogbtn.AutoSize = False
-        Me.clearlogbtn.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
-        Me.clearlogbtn.Image = CType(resources.GetObject("clearlogbtn.Image"), System.Drawing.Image)
-        Me.clearlogbtn.ImageTransparentColor = System.Drawing.Color.Magenta
-        Me.clearlogbtn.Name = "clearlogbtn"
-        Me.clearlogbtn.Size = New System.Drawing.Size(50, 50)
-        Me.clearlogbtn.Text = "Exit"
-        Me.clearlogbtn.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText
-        '
-        'Exitbtn
-        '
-        Me.Exitbtn.AutoSize = False
-        Me.Exitbtn.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
-        Me.Exitbtn.Image = CType(resources.GetObject("Exitbtn.Image"), System.Drawing.Image)
-        Me.Exitbtn.ImageTransparentColor = System.Drawing.Color.Magenta
-        Me.Exitbtn.Name = "Exitbtn"
-        Me.Exitbtn.Size = New System.Drawing.Size(50, 50)
-        Me.Exitbtn.Text = "Exit"
-        Me.Exitbtn.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText
-        '
-        'ProgressBar1
-        '
-        Me.ProgressBar1.Anchor = CType(((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.ProgressBar1.Location = New System.Drawing.Point(0, 558)
-        Me.ProgressBar1.Maximum = 10
-        Me.ProgressBar1.Name = "ProgressBar1"
-        Me.ProgressBar1.Size = New System.Drawing.Size(720, 15)
-        Me.ProgressBar1.TabIndex = 0
         '
         'IntegratedUI
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(724, 641)
-        Me.Controls.Add(Me.ProgressBar1)
-        Me.Controls.Add(Me.ToolStrip1)
-        Me.Controls.Add(Me.StatusStrip)
-        Me.Controls.Add(Me.SplitContainer2)
+        Me.ClientSize = New System.Drawing.Size(990, 631)
+        Me.Controls.Add(Me.SplitContainer1)
         Me.Controls.Add(Me.AttributeTabControl)
         Me.Controls.Add(Me.bntclose)
         Me.Controls.Add(Me.btnTransfer)
+        Me.Controls.Add(Me.GroupBox1)
         Me.Name = "IntegratedUI"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
         Me.Text = "IntegratedUI"
+        Me.GroupBox1.ResumeLayout(False)
         Me.TabPageTimeTransfer.ResumeLayout(False)
         Me.TabPageTimeTransfer.PerformLayout()
         Me.AttributeTabControl.ResumeLayout(False)
@@ -760,20 +601,13 @@ Partial Class IntegratedUI
         Me.SplitContainer1.ResumeLayout(False)
         CType(Me.DataGridView1, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.DataGridView2, System.ComponentModel.ISupportInitialize).EndInit()
-        Me.SplitContainer2.Panel1.ResumeLayout(False)
-        Me.SplitContainer2.Panel2.ResumeLayout(False)
-        Me.SplitContainer2.Panel2.PerformLayout()
-        Me.SplitContainer2.ResumeLayout(False)
-        Me.StatusStrip.ResumeLayout(False)
-        Me.StatusStrip.PerformLayout()
-        Me.ToolStrip1.ResumeLayout(False)
-        Me.ToolStrip1.PerformLayout()
         Me.ResumeLayout(False)
-        Me.PerformLayout()
 
     End Sub
     Friend WithEvents bntclose As Button
     Friend WithEvents btnTransfer As Button
+    Friend WithEvents GroupBox1 As GroupBox
+    Friend WithEvents ProgressBar1 As ProgressBar
     Friend WithEvents TabPageTimeTransfer As TabPage
     Friend WithEvents cbWageType As ComboBox
     Friend WithEvents lblWageType As Label
@@ -814,17 +648,4 @@ Partial Class IntegratedUI
     Friend WithEvents RefreshJobsOrItems As Button
     Friend WithEvents TimeEntrySelectAll As CheckBox
     Friend WithEvents RefreshTimeTransfer As Button
-    Friend WithEvents SplitContainer2 As SplitContainer
-    Friend WithEvents StatusWindow As TextBox
-    Friend WithEvents StatusStrip As StatusStrip
-    Friend WithEvents CurrentTime As ToolStripStatusLabel
-    Friend WithEvents NextProcessingTime As ToolStripStatusLabel
-    Friend WithEvents ToolStrip1 As ToolStrip
-    Friend WithEvents ProgressBar1 As ProgressBar
-    Friend WithEvents settingbtn As ToolStripButton
-    Friend WithEvents loginbtn As ToolStripButton
-    Friend WithEvents btn_systemsync As ToolStripButton
-    Friend WithEvents btn_relationships As ToolStripButton
-    Friend WithEvents Exitbtn As ToolStripButton
-    Friend WithEvents clearlogbtn As ToolStripButton
 End Class

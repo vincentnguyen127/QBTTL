@@ -1,22 +1,16 @@
-﻿Imports System.Windows.Forms
-Imports System.Threading
+﻿'Imports QBFC11Lib
 Imports QBFC13Lib
 
+Imports System.Net.Mail
 Imports System.Data.SqlClient
 Imports System.Text
 Imports System.Globalization
 
-Imports System.Net.Mail
-Public Class MAIN
 
+Public Class IntegratedUI
+    Inherits System.Windows.Forms.Form
     Private p_token As String
     Private p_AccountId As String
-    <ThreadStatic> Public Shared SESSMANAGER As QBSessionManager
-    Public Shared colonReplacer = "->"
-    Public Shared TIMERTHREAD As Threading.Thread
-
-
-
     Private Type As Integer
     Private emailBody As String
 
@@ -43,76 +37,7 @@ Public Class MAIN
 
     Dim selectedEmployeeData As New TLtoQB_TimeEntry.EmployeeDataStructure
 
-    'Dim UIRelatedFunctions As IntegratedUIFuntions = New IntegratedUIFuntions
-
-
-    Private Sub PARENT_LOAD(SENDER As System.Object, E As System.EventArgs) Handles MyBase.Load
-        Try
-            VALIDATEQBSESSION()
-            Me.Show()
-            History("Welcome to QB2TL Sync by Telrium", "n")
-            Using newForm = New Login()
-                If DialogResult.OK = newForm.ShowDialog() Then
-                    p_token = newForm.ReturnValue1
-                    p_AccountId = newForm.ReturnValue2
-                    History("You are logged into TimeLive", "n")
-                    History("", "n")
-                Else
-                    History("You will need to log into TimeLive before using this utility.", "n")
-                    History("", "n")
-                End If
-            End Using
-
-            Dim ChargingRelationship As New ChargingRelationship
-
-            'SPIN OFF THREAD FOR TIMER
-            TIMERTHREAD_func()
-            Dim NextRunDateTime As Date = Convert.ToDateTime(My.Settings.AutoRunTime)
-            NextProcessingTime.Text = "Auto Processing Time: " + NextRunDateTime.ToString("MM/dd/yy HH:mm")
-
-            '------------
-            Dim RetunValue As Integer
-            Type = 10
-
-            Dim ItemLastSync As DateTime
-            Dim ReadItems As Integer = 0
-            'hide all tabstrips
-            TabPageCustomers.Visible = False
-            TabPageEmployees.Visible = False
-            TabPageTimeTransfer.Visible = False
-
-            Show()
-            DataGridView1.AutoSize = False
-            DataGridView1.AutoSizeRowsMode = False
-            DataGridView2.AutoSize = False
-            DataGridView2.AutoSizeRowsMode = False
-            btn_currentweek_Click(SENDER, E)
-
-            'for type Customers, Employees, Vendors, Jobs/Subjobs, and Items/Subitems
-            If Type >= 10 And Type < 15 Then
-                ReadItems = display_UI()
-            End If
-
-            'for type Time Items
-            ' Might add this to display_UI() or as its own private function
-            If Type = 20 Then
-                'ReadItems = display_TimeEntry_UI()
-                ReadItems = display_TimeEntry_UI()
-            End If
-
-            History(ReadItems.ToString() + " items were read from Quickbooks", "n")
-
-            '-------------------------------
-
-        Catch EX As Exception
-            MsgBox(EX.Message)
-            Me.Close()
-        End Try
-    End Sub
-
     Private Sub handleTag(sender As Object, e As EventArgs) Handles AttributeTabControl.SelectedIndexChanged
-        Dim ReadItems As Integer = 0
-
         Select Case AttributeTabControl.SelectedIndex
             ' Customers
             Case 0
@@ -145,396 +70,12 @@ Public Class MAIN
                 Type = 20
         End Select
 
-        'for type Customers, Employees, Vendors, Jobs/Subjobs, and Items/Subitems
-        If Type >= 10 And Type < 15 Then
-            ReadItems = display_UI()
-        End If
-
-        'for type Time Items
-        ' Might add this to display_UI() or as its own private function
         If Type = 20 Then
-            'ReadItems = display_TimeEntry_UI()
-            ReadItems = display_TimeEntry_UI()
-        End If
-
-    End Sub
-
-    Public Sub TIMERTHREAD_func()
-        'TIMERTHREAD _
-        'As New Threading.Thread(
-        '    AddressOf TIMERMULTITHREADING)
-        TIMERTHREAD = New Threading.Thread(AddressOf TIMERMULTITHREADING)
-        TIMERTHREAD.Start()
-    End Sub
-
-    Public Sub TIMERMULTITHREADING()
-        While True
-            SETTEXT()
-            Thread.Sleep(61000)
-        End While
-    End Sub
-
-
-    Delegate Sub StatusWindowCALLBACK(ByVal TEXT As String)
-    Private Sub SETTEXT()
-        If StatusStrip.InvokeRequired Then
-            Dim D As StatusWindowCALLBACK = New StatusWindowCALLBACK(AddressOf SETTEXT)
-            Me.Invoke(D, New Object() {Text})
+            display_TimeEntry_UI()
         Else
-            'Dim result As Integer = DateTime.Compare(Convert.ToDateTime(My.Settings.AutoRunTime), DateTime.Now)
-            Dim AutoRundt As Date = Convert.ToDateTime(My.Settings.AutoRunTime)
-            AutoRundt = AutoRundt.AddSeconds(-AutoRundt.Second)
-            Dim Currentdt As Date = DateTime.Now
-            Currentdt = Currentdt.AddSeconds(-Currentdt.Second)
-            Dim result As Integer = String.Compare(AutoRundt.ToString(), Currentdt.ToString())
-
-            If result = 0 Then
-                History("Executing selected sync processes: " + Currentdt.ToString(), "n")
-
-                'Execution code goes here
-                Dim ItemsProcessed As Integer = AutoExecute()
-                History(ItemsProcessed.ToString() + " TimeLive record(s) was created or updated", "N")
-
-                Dim NextRunDateTime As Date = Convert.ToDateTime(My.Settings.AutoRunTime)
-                NextRunDateTime = NextRunDateTime.AddHours(Convert.ToInt16(My.Settings.AutoRunInterval))
-                My.Settings.AutoRunTime = NextRunDateTime
-                My.Settings.Save()
-
-                NextProcessingTime.Text = "Auto Processing Time: " + Convert.ToDateTime(My.Settings.AutoRunTime)
-            End If
-            CurrentTime.Text = "Time: " + DateTime.Now.ToString("HH:mm")
+            display_UI()
         End If
     End Sub
-
-
-    Public Sub VALIDATEQBSESSION()
-        'Dim SESSMANAGER As QBSessionManager ' Made global
-        Try
-            SESSMANAGER = New QBSessionManagerClass()
-            'SESSMANAGER.OpenConnection("APP", "TIMELIVE QUICKBOOKS") 
-            SESSMANAGER.OpenConnection("App", "Timelive Quickbooks")
-            SESSMANAGER.BeginSession("", ENOpenMode.omDontCare)
-        Catch EX As Exception
-            Throw New Exception("QUICKBOOKS IS NOT OPEN. PLEASE OPEN IT AND THEN TRY AGAIN.")
-        End Try
-    End Sub
-
-    Public Sub QUITQBSESSION()
-        ' close the session manager if it is open
-        Dim val = SESSMANAGER.ConnectionType
-        If MAIN.SESSMANAGER IsNot Nothing Then
-            MAIN.SESSMANAGER.EndSession()
-            MAIN.SESSMANAGER.CloseConnection()
-        End If
-    End Sub
-
-    Public Sub TIMERTHREADSESSION()
-        If TIMERTHREAD IsNot Nothing Then
-            TIMERTHREAD.Abort()
-        End If
-    End Sub
-
-    'Private Sub settingbtn_Click(sender As Object, e As EventArgs) Handles settingbtn.Click
-    '    Using newsettingsForm = New AppSettings()
-    '        If DialogResult.OK = newsettingsForm.ShowDialog() Then
-    '            Dim NextRunDateTime As Date = Convert.ToDateTime(My.Settings.AutoRunTime)
-    '            NextProcessingTime.Text = "Auto Processing Time: " + NextRunDateTime.ToString("MM/dd/yy HH:mm")
-    '        End If
-    '    End Using
-    'End Sub
-
-    'Private Sub loginbtn_Click(sender As Object, e As EventArgs) Handles loginbtn.Click
-    '    If p_token Is Nothing Then
-    '        Using newForm = New Login()
-    '            If DialogResult.OK = newForm.ShowDialog() Then
-    '                p_token = newForm.ReturnValue1
-    '                p_AccountId = newForm.ReturnValue2
-    '            End If
-    '        End Using
-    '    Else
-    '        MsgBox("You are already logged in")
-    '    End If
-    'End Sub
-
-    'Private Sub clearlogbtn_Click(sender As Object, e As EventArgs) Handles clearlogbtn.Click
-    '    StatusWindow.Clear()
-    'End Sub
-
-    'Private Sub Exitbtn_Click(sender As Object, e As EventArgs) Handles Exitbtn.Click
-    '    QUITQBSESSION() ' Close QB session before exiting
-    '    If TIMERTHREAD IsNot Nothing Then
-    '        TIMERTHREAD.Abort()
-    '    End If
-    '    Me.Close()
-    'End Sub
-
-
-    ' Will be using the following integers for the different types of items that are synched
-    ' 0 - customers
-    ' 1 - employees
-    ' 2 - vendors
-    ' 3 - jobs_items
-    ' 4 - ODC and travel accounts 
-    ' 5 - Time Transfer 
-    ' 6 - Customer Expenses
-    'Private Sub customer_btn_Click(sender As Object, e As EventArgs) Handles customer_btn.Click
-    '    Dim IntegratedUI As New IntegratedUI
-    '    IntegratedUI.Owner = Me
-    '    IntegratedUI.Show(p_token, p_AccountId, 10)
-    'End Sub
-
-    'Private Sub employees_btn_Click(sender As Object, e As EventArgs) Handles employees_btn.Click
-    '    Dim IntegratedUI As New IntegratedUI
-    '    IntegratedUI.Owner = Me
-    '    IntegratedUI.Show(p_token, p_AccountId, 11)
-    'End Sub
-
-    'Private Sub timeentries_btn_Click(sender As Object, e As EventArgs) Handles timeentries_btn.Click
-    '    ' excluded from this project. 
-
-    '    'Dim QBTimeTracking As New QBTimeTracking
-    '    IntegratedUI.Owner = Me
-    '    IntegratedUI.Show(p_token, p_AccountId, 20)
-    'End Sub
-
-
-    Public Shared Sub SendGMail(Subject__1 As String, BodyText As String, UI As Boolean)
-        'Specify senders gmail address
-        Dim SendersAddress As String = "teltrium@gmail.com"
-        'Specify The Address You want to send Email To(can be any valid email address)
-        Dim ReceiversAddress As String = "operations@teltrium.com"
-
-        'Specify The password of gmail account u are using to sent mail(pw of sender@gmail.com)
-        If UI Then
-            MsgBox("--> Sending email to: " + ReceiversAddress + " From: " + SendersAddress)
-        End If
-        Dim SendersPassword As String = "1October2014"
-
-        'Write the contents of your mail
-        Dim body As String = BodyText
-        Try
-            Dim smtp As New SmtpClient()
-            With smtp
-                'used to be Key.Host
-
-                .Host = "smtp.gmail.com"
-                .Port = 587
-                .EnableSsl = True
-                .DeliveryMethod = SmtpDeliveryMethod.Network
-
-                .Credentials = New Net.NetworkCredential(SendersAddress, SendersPassword)
-                .Timeout = 3000
-            End With
-            'MailMessage represents a mail message
-            'it is 4 parameters(From,TO,subject,body)
-            Dim message As New MailMessage(SendersAddress, ReceiversAddress, Subject__1, body)
-            'WE use smtp sever we specified above to send the message(MailMessage message)
-
-            smtp.Send(message)
-            If UI Then
-                MsgBox("Sent!")
-            End If
-        Catch ex As Exception
-            MsgBox(ex.Message)
-        End Try
-    End Sub
-
-    Public Sub FlagChangedItemsResults(Name As String, result As Integer)
-        History("Item: " + Name, "i")
-        Dim relationship As String = If(result < 0, "Not modified before last run",
-                                        "******* Created or modified after last run *******")
-        History(relationship, "c")
-    End Sub
-
-
-    Private Function AutoExecute() As Integer
-        Dim ItemsProcessed As Integer = 0
-        Dim emailBody As String = ""
-        If (MAIN.SESSMANAGER Is Nothing) Then
-            VALIDATEQBSESSION()
-        End If
-
-        ' Customers
-        If My.Settings.SyncCustomers Then
-            Dim customer_qbtotl As QBtoTL_Customer = New QBtoTL_Customer
-            Dim customerData As QBtoTL_Customer.CustomerDataStructureQB
-            Dim ItemLastSync As DateTime = Convert.ToDateTime(My.Settings.CustomerLastSync)
-            History("Synchonizing modified customers since: " + ItemLastSync.ToString(), "n")
-            customerData = customer_qbtotl.GetCustomerQBData(Nothing, False)
-            History((customerData.NoItems - customerData.NoInactive).ToString() + " active items were read from Quickbooks", "i")
-
-            For Each element As QBtoTL_Customer.Customer In customerData.DataArray
-                Dim result As Integer = DateTime.Compare(Convert.ToDateTime(element.QBModTime.ToString()),
-            ItemLastSync)
-
-                If result >= 0 Then
-                    element.RecSelect = True
-                End If
-                If element.Enabled Then ' Note: Not sure if this is entirely right
-                    FlagChangedItemsResults(element.QB_Name.ToString(), result)
-                End If
-            Next
-
-            Dim customersProcessed As Integer = customer_qbtotl.QBTransferCustomerToTL(customerData, p_token, Nothing, False)
-            emailBody += "Customers Processed: " + customersProcessed.ToString & vbCrLf
-            My.Settings.CustomerLastSync = DateTime.Now.ToString()
-            History(customersProcessed.ToString() + " TimeLive customer(s) was created or updated", "i")
-            ItemsProcessed += customersProcessed
-        End If
-
-        ' Employees
-        If My.Settings.SyncEmployees Then
-            Dim employee_qbtotl As QBtoTL_Employee = New QBtoTL_Employee
-            Dim employeeData As QBtoTL_Employee.EmployeeDataStructureQB
-
-            Dim ItemLastSync As DateTime = Convert.ToDateTime(My.Settings.EmployeeLastSync)
-            History("Synchonizing modified employees since: " + ItemLastSync.ToString(), "n")
-            employeeData = employee_qbtotl.GetEmployeeQBData(Nothing, False)
-            ' Change to "employeeData.NoItems - employeeData.NoInactive" once we begin storing inactive employees
-            History(employeeData.NoItems.ToString() + " active items were read from Quickbooks", "i")
-
-            For Each element As QBtoTL_Employee.Employee In employeeData.DataArray
-                Dim result As Integer = DateTime.Compare(Convert.ToDateTime(element.QBModTime.ToString()),
-            ItemLastSync)
-
-                If result >= 0 Then
-                    element.RecSelect = True
-                End If
-                'If element.Enabled Then ' Note: Will need to check if employee is enabled first once we start tracking inactive employees
-                FlagChangedItemsResults(element.QB_Name.ToString(), result)
-                'End If
-            Next
-
-            Dim employeesProcessed As Integer = employee_qbtotl.QBTransferEmployeeToTL(employeeData, p_token, Nothing, False)
-            emailBody += "Employees Processed: " + employeesProcessed.ToString & vbCrLf
-            My.Settings.EmployeeLastSync = DateTime.Now.ToString()
-            History(employeesProcessed.ToString() + " TimeLive employee(s) was created or updated", "i")
-            ItemsProcessed += employeesProcessed
-        End If
-
-        ' Vendors/Consultants
-        If My.Settings.SyncConsultants Then ' Sync Vendors
-            Dim vendor_qbtotl As QBtoTL_Vendor = New QBtoTL_Vendor
-            Dim vendorData As QBtoTL_Vendor.VendorDataStructureQB
-
-            Dim ItemLastSync As DateTime = Convert.ToDateTime(My.Settings.VendorLastSync)
-            History("Synchonizing modified vendors since: " + ItemLastSync.ToString(), "n")
-            vendorData = vendor_qbtotl.GetVendorQBData(Nothing, False)
-            ' Change to "employeeData.NoItems - employeeData.NoInactive" if we begin storing inactive vendors
-            History(vendorData.NoItems.ToString() + " active items were read from Quickbooks", "i")
-
-            For Each element As QBtoTL_Vendor.Vendor In vendorData.DataArray
-                Dim result As Integer = DateTime.Compare(Convert.ToDateTime(element.QBModTime.ToString()),
-            ItemLastSync)
-
-                If result >= 0 Then
-                    element.RecSelect = True
-                End If
-                'If element.Enabled Then ' Note: Will need to check if vendor is enabled first if we start tracking inactive vendors
-                FlagChangedItemsResults(element.QB_Name.ToString(), result)
-                'End If
-            Next
-
-            Dim vendorsProcessed As Integer = vendor_qbtotl.QBTransferVendorToTL(vendorData, p_token, Nothing, False)
-            emailBody += "Vendors Processed: " + vendorsProcessed.ToString & vbCrLf
-            My.Settings.VendorLastSync = DateTime.Now.ToString()
-            History(vendorsProcessed.ToString() + " TimeLive employee(s) was created or updated from vendors", "i")
-            ItemsProcessed += vendorsProcessed
-        End If
-
-        ' Jobs/Subjobs
-        If My.Settings.SyncJobs_Items Then
-            Dim job_item_qbtotl As QBtoTL_JobOrItem = New QBtoTL_JobOrItem
-            Dim job_itemData As QBtoTL_JobOrItem.JobDataStructureQB
-
-            Dim ItemLastSync As DateTime = Convert.ToDateTime(My.Settings.JobLastSync)
-            History("Synchonizing modified jobs since: " + ItemLastSync.ToString(), "n")
-            If True Then
-                job_itemData = job_item_qbtotl.GetJobSubJobData(Nothing, "", False)
-            Else
-                job_itemData = job_item_qbtotl.GetItemSubItemData(Nothing, "", False)
-            End If
-
-            ' Change to "employeeData.NoItems - employeeData.NoInactive" if we begin storing inactive vendors
-            History(job_itemData.NoItems.ToString() + " active items were read from Quickbooks", "i")
-
-            For Each element As QBtoTL_JobOrItem.Job_Subjob In job_itemData.DataArray ' Or should this be job_item?
-                Dim result As Integer = DateTime.Compare(Convert.ToDateTime(element.QBModTime.ToString()),
-            ItemLastSync)
-
-                If result >= 0 Then
-                    element.RecSelect = True
-                End If
-                'If element.Enabled Then ' Note: Will need to check if vendor is enabled first if we start tracking inactive vendors
-                FlagChangedItemsResults(element.QB_Name.ToString(), result)
-                'End If
-            Next
-
-            Dim jobsProcessed As Integer = job_item_qbtotl.QBTransferJobstoTL(job_itemData, p_token, Nothing, False)
-            If True Then
-                My.Settings.JobLastSync = DateTime.Now.ToString()
-            Else
-                My.Settings.ItemlastSync = DateTime.Now.ToString()
-            End If
-
-            emailBody += "Jobs Processed: " + jobsProcessed.ToString & vbCrLf
-            History(jobsProcessed.ToString() + " TimeLive project(s)/task(s) was created or updated from jobs", "i")
-            ItemsProcessed += jobsProcessed
-        End If
-
-        emailBody += "Total items Processed: " + ItemsProcessed.ToString
-        MAIN.SendGMail("QuickBooks to TimeLive Auto transfer", emailBody, False)
-        My.Settings.Save()
-
-        Return ItemsProcessed
-    End Function
-
-    'Private Sub btn_systemsync_Click(sender As Object, e As EventArgs) Handles btn_systemsync.Click
-    '    If MsgBox("Are you to perform a sync?", MsgBoxStyle.YesNo, "Warning!") = MsgBoxResult.Yes Then ' If you select yes in the MsgBox then it will close the window
-    '        Dim CurrentSystemSync As New CurrentSystemSync
-    '        CurrentSystemSync.PassToken(p_token, p_AccountId)
-    '    End If
-    'End Sub
-
-    'Private Sub contractor_btn_Click(sender As Object, e As EventArgs) Handles vendor_btn.Click
-    '    Dim IntegratedUI As New IntegratedUI
-    '    IntegratedUI.Owner = Me
-    '    IntegratedUI.Show(p_token, p_AccountId, 12)
-    'End Sub
-
-    'Private Sub jobs_items_btn_Click(sender As Object, e As EventArgs) Handles jobs_items_btn.Click
-    '    Dim IntegratedUI As New IntegratedUI
-    '    IntegratedUI.Owner = Me
-    '    If Not (My.Settings.JobORItemHierarchy Is Nothing Or My.Settings.JobORItemHierarchy = "") Then
-    '        If My.Settings.JobORItemHierarchy = 0 Then
-    '            IntegratedUI.Show(p_token, p_AccountId, 13)
-    '        Else
-    '            IntegratedUI.Show(p_token, p_AccountId, 14)
-    '        End If
-    '    Else
-    '        MsgBox("Seems that settings are not set. Please set application settings.")
-    '    End If
-    'End Sub
-
-    'Private Sub btn_relationships_Click(sender As Object, e As EventArgs) Handles btn_relationships.Click
-    '    ChargingRelationship.Owner = Me
-    '    ChargingRelationship.Show()
-    'End Sub
-
-    Private Sub MAIN_FormClosed(sender As Object, e As FormClosedEventArgs) Handles MyBase.FormClosed
-        Me.Dispose()
-    End Sub
-
-    Private Sub QBTime2SQLbtn_Click(sender As Object, e As EventArgs)
-        Dim CurrentSystemSync As New CurrentSystemSync
-        CurrentSystemSync.GetTime()
-    End Sub
-
-    Friend Sub History(v As Object)
-        Throw New NotImplementedException()
-    End Sub
-
-
 
     Private Function display_TimeEntry_UI()
         Dim ItemLastSync As DateTime
@@ -581,7 +122,7 @@ Public Class MAIN
             ItemLastSync = Convert.ToDateTime(My.Settings.TimeTrackingLastSync)
         End If
 
-        History("Synchonizing time entries items since:   " + ItemLastSync.ToString(), "n")
+        My.Forms.MAIN.History("Synchonizing time entries items since:   " + ItemLastSync.ToString(), "n")
 
         Dim objEmployeeServices As New Services.TimeLive.Employees.Employees
         Dim authentication As New Services.TimeLive.Employees.SecuredWebServiceHeader
@@ -598,7 +139,7 @@ Public Class MAIN
         Next
         Dim items_read As Integer = selectedEmployeeData.NoItems
         For Each element As TLtoQB_TimeEntry.Employee In selectedEmployeeData.DataArray
-            'History("Debug:   " + element.RecSelect.ToString(), "n")
+            'My.Forms.MAIN.History("Debug:   " + element.RecSelect.ToString(), "n")
             DataGridView1.Rows.Add(element.RecSelect, element.FullName.ToString(), element.AccountEmployeeId.ToString())
         Next
 
@@ -606,12 +147,11 @@ Public Class MAIN
 
         System.Threading.Thread.Sleep(150)
         System.Windows.Forms.Application.DoEvents()
-        ProgressBar1.Value = 0
+        Me.ProgressBar1.Value = 0
 
         Return items_read
     End Function
 
-    ' Note: This is the new, up to date one that does TL -> QB too, replace display_UI with this once done testing
     ' Note: This is the new, up to date one that does TL -> QB too, replace display_UI with this once done testing
     Private Function display_UI() Handles QBtoTLCustomerRadioButton.CheckedChanged, QBtoTLEmployeeRadioButton.CheckedChanged,
                                            QBtoTLVendorRadioButton.CheckedChanged, QBtoTLJobItemRadioButton.CheckedChanged,
@@ -690,9 +230,9 @@ Public Class MAIN
         Else
             ItemLastSync = Convert.ToDateTime(lastSync)
         End If
-        History("Synchonizing modified " + attribute + " since: " + ItemLastSync.ToString(), "n")
+        My.Forms.MAIN.History("Synchonizing modified " + attribute + " since: " + ItemLastSync.ToString(), "n")
 
-        ' Delete all rows and columns from the DataGridView's except the "Check Name" column in  DataGridView1
+        ' Delete all rows and columns from the DataGridView's except the "Check Name" column in DataGridView1
         Try
             DataGridView1.Rows.Clear()
         Catch nullEx As NullReferenceException
@@ -741,7 +281,7 @@ Public Class MAIN
 
         Dim element
         If Data Is Nothing Then
-            History("No QuickBooks " + attribute + " data", "n")
+            My.Forms.MAIN.History("No QuickBooks " + attribute + " data", "n")
         Else
             ' Note: Currently only customer stored both active and inactive; If changed, then change this line accordingly
             readItems = If(Type = 10, Data.NoItems - Data.NoInactive, Data.NoItems)
@@ -841,14 +381,14 @@ Public Class MAIN
         End Select
 
         ' Populate the table based on the TineLive elements
-        If ProgressBar1.Maximum = Nothing Then
-            ProgressBar1.Maximum = 0
+        If Me.ProgressBar1.Maximum = Nothing Then
+            Me.ProgressBar1.Maximum = 0
         End If
 
-        ProgressBar1.Maximum += If(TLItemsArray Is Nothing, 0, TLItemsArray.Length)
+        Me.ProgressBar1.Maximum += If(TLItemsArray Is Nothing, 0, TLItemsArray.Length)
 
         If TLItemsArray Is Nothing Or TLItemsArray.Length = 0 Then
-            History("No TimeLive " + attribute + " data", "n")
+            My.Forms.MAIN.History("No TimeLive " + attribute + " data", "n")
         End If
 
         Dim CustomerAdapter As New QB_TL_IDsTableAdapters.CustomersTableAdapter()
@@ -901,7 +441,7 @@ Public Class MAIN
                         Try
                             ID = objServices2.GetTaskId(element.TaskName)
                         Catch ex As System.Web.Services.Protocols.SoapException
-                            History("Could not get TL ID of TL task '" + name +
+                            My.Forms.MAIN.History("Could not get TL ID of TL task '" + name +
                                                   "' Make sure that it has a 'code' attribute in TimeLive", "i")
                             ID = -1
                         End Try
@@ -942,122 +482,123 @@ Public Class MAIN
 
         System.Threading.Thread.Sleep(150)
         System.Windows.Forms.Application.DoEvents()
-        ProgressBar1.Value = 0
+        Me.ProgressBar1.Value = 0
         Return readItems
     End Function
+
     ' Depreciated. Will remove once display_UI is fully integrated
-    'Private Function display_UI_Old()
-    '    Dim ItemLastSync As DateTime
-    '    Dim lastSync As String
-    '    Dim Data
-    '    Dim attribute As String
+    Private Function display_UI_Old()
+        Dim ItemLastSync As DateTime
+        Dim lastSync As String
+        Dim Data
+        Dim attribute As String
 
-    '    Select Case Type
-    '        ' Customers
-    '        Case 10
-    '            TabPageCustomers.Visible = True
-    '            AttributeTabControl.SelectedIndex = 0
-    '            lastSync = My.Settings.CustomerLastSync
-    '            customerData = customer_qbtotl.GetCustomerQBData(Me, True)
-    '            Data = customerData
-    '            attribute = "customer"
+        Select Case Type
+            ' Customers
+            Case 10
+                TabPageCustomers.Visible = True
+                AttributeTabControl.SelectedIndex = 0
+                lastSync = My.Settings.CustomerLastSync
+                customerData = customer_qbtotl.GetCustomerQBData(Me, True)
+                Data = customerData
+                attribute = "customer"
 
-    '        ' Employees
-    '        Case 11
-    '            TabPageEmployees.Visible = True
-    '            AttributeTabControl.SelectedIndex = 1
-    '            lastSync = My.Settings.EmployeeLastSync
-    '            employeeData = employee_qbtotl.GetEmployeeQBData(Me, True)
-    '            Data = employeeData
-    '            attribute = "employee"
+            ' Employees
+            Case 11
+                TabPageEmployees.Visible = True
+                AttributeTabControl.SelectedIndex = 1
+                lastSync = My.Settings.EmployeeLastSync
+                employeeData = employee_qbtotl.GetEmployeeQBData(Me, True)
+                Data = employeeData
+                attribute = "employee"
 
-    '        ' Vendors
-    '        Case 12
-    '            TabPageVendor.Visible = True
-    '            AttributeTabControl.SelectedIndex = 2
-    '            lastSync = My.Settings.VendorLastSync
-    '            vendorData = vendor_qbtotl.GetVendorQBData(Me, True)
-    '            Data = vendorData
-    '            attribute = "vendor"
+            ' Vendors
+            Case 12
+                TabPageVendor.Visible = True
+                AttributeTabControl.SelectedIndex = 2
+                lastSync = My.Settings.VendorLastSync
+                vendorData = vendor_qbtotl.GetVendorQBData(Me, True)
+                Data = vendorData
+                attribute = "vendor"
 
-    '        ' Jobs / Subjobs
-    '        Case 13
-    '            TabPageJobsItems.Visible = True
-    '            AttributeTabControl.SelectedIndex = 3
-    '            lastSync = My.Settings.JobLastSync
-    '            JobData = job_qbtotl.GetJobSubJobData(Me, p_token, True)
-    '            Data = JobData
-    '            attribute = "job/subjob"
+            ' Jobs / Subjobs
+            Case 13
+                TabPageJobsItems.Visible = True
+                AttributeTabControl.SelectedIndex = 3
+                lastSync = My.Settings.JobLastSync
+                JobData = job_qbtotl.GetJobSubJobData(Me, p_token, True)
+                Data = JobData
+                attribute = "job/subjob"
 
-    '        ' Items / SubItems
-    '        Case 14
-    '            TabPageJobsItems.Visible = True
-    '            AttributeTabControl.SelectedIndex = 3
-    '            lastSync = My.Settings.ItemlastSync
-    '            JobData = job_qbtotl.GetItemSubItemData(Me, p_token, True)
-    '            Data = JobData
-    '            attribute = "item/subitem"
+            ' Items / SubItems
+            Case 14
+                TabPageJobsItems.Visible = True
+                AttributeTabControl.SelectedIndex = 3
+                lastSync = My.Settings.ItemlastSync
+                JobData = job_qbtotl.GetItemSubItemData(Me, p_token, True)
+                Data = JobData
+                attribute = "item/subitem"
 
-    '        Case Else
-    '            Return 0
-    '    End Select
+            Case Else
+                Return 0
+        End Select
 
-    '    If String.IsNullOrEmpty(lastSync) Then
-    '        ItemLastSync = #1/1/2000#
-    '    Else
-    '        ItemLastSync = Convert.ToDateTime(lastSync)
-    '    End If
-    '    History("Synchonizing modified " + attribute + " since: " + ItemLastSync.ToString(), "n")
+        If String.IsNullOrEmpty(lastSync) Then
+            ItemLastSync = #1/1/2000#
+        Else
+            ItemLastSync = Convert.ToDateTime(lastSync)
+        End If
+        My.Forms.MAIN.History("Synchonizing modified " + attribute + " since: " + ItemLastSync.ToString(), "n")
 
-    '    Dim readItems As Integer = Data.NoItems
-
-
-    '    'load grid (there might be an easire way)
-    '    ' Add Full Name Column for Job/Subjob and Item/SubItem
-    '    If Type = 13 Or Type = 14 Then
-    '        Dim col0 As New DataGridViewTextBoxColumn
-    '        col0.Name = "Full Name"
-    '        DataGridView1.Columns.Add(col0)
-    '    End If
-    '    Dim col2 As New DataGridViewTextBoxColumn
-    '    col2.Name = "Name"
-    '    DataGridView1.Columns.Add(col2)
-    '    Dim col3 As New DataGridViewTextBoxColumn
-    '    col3.Name = "Last Modified"
-    '    DataGridView1.Columns.Add(col3)
-    '    Dim col4 As New DataGridViewTextBoxColumn
-    '    col4.Name = "New"
-    '    DataGridView1.Columns.Add(col4)
-
-    '    If Data Is Nothing Then
-    '        History("No " + attribute + " data", "n")
-    '    End If
+        Dim readItems As Integer = Data.NoItems
 
 
-    '    Dim element
-    '    For Each element In Data.DataArray
-    '        Dim result As Integer = DateTime.Compare(Convert.ToDateTime(element.QBModTime.ToString()),
-    '    ItemLastSync)
-    '        If result >= 0 Then
-    '            element.RecSelect = True
-    '        End If
-    '        'MAIN.FlagChangedItemsResults(element.QB_Name.ToString(), result)
-    '    Next
-    '    For Each element In Data.DataArray
-    '        ' Full Name column for Job/Subjob and Item/Subitem
-    '        If Type = 13 Or Type = 14 Then
-    '            DataGridView1.Rows.Add(element.RecSelect, element.FullName.ToString(), element.QB_Name.ToString(), element.QBModTime.ToString(), element.NewlyAdded)
-    '        Else
-    '            DataGridView1.Rows.Add(element.RecSelect, element.QB_Name.ToString(), element.QBModTime.ToString(), element.NewlyAdded)
-    '        End If
-    '    Next
+        'load grid (there might be an easire way)
+        ' Add Full Name Column for Job/Subjob and Item/SubItem
+        If Type = 13 Or Type = 14 Then
+            Dim col0 As New DataGridViewTextBoxColumn
+            col0.Name = "Full Name"
+            DataGridView1.Columns.Add(col0)
+        End If
+        Dim col2 As New DataGridViewTextBoxColumn
+        col2.Name = "Name"
+        DataGridView1.Columns.Add(col2)
+        Dim col3 As New DataGridViewTextBoxColumn
+        col3.Name = "Last Modified"
+        DataGridView1.Columns.Add(col3)
+        Dim col4 As New DataGridViewTextBoxColumn
+        col4.Name = "New"
+        DataGridView1.Columns.Add(col4)
 
-    '    ' Might not be wanted for every attribute, check if that is the case
-    '    System.Threading.Thread.Sleep(150)
-    '    System.Windows.Forms.Application.DoEvents()
-    '    ProgressBar1.Value = 0
-    '    Return readItems
-    'End Function
+        If Data Is Nothing Then
+            My.Forms.MAIN.History("No " + attribute + " data", "n")
+        End If
+
+
+        Dim element
+        For Each element In Data.DataArray
+            Dim result As Integer = DateTime.Compare(Convert.ToDateTime(element.QBModTime.ToString()),
+        ItemLastSync)
+            If result >= 0 Then
+                element.RecSelect = True
+            End If
+            'MAIN.FlagChangedItemsResults(element.QB_Name.ToString(), result)
+        Next
+        For Each element In Data.DataArray
+            ' Full Name column for Job/Subjob and Item/Subitem
+            If Type = 13 Or Type = 14 Then
+                DataGridView1.Rows.Add(element.RecSelect, element.FullName.ToString(), element.QB_Name.ToString(), element.QBModTime.ToString(), element.NewlyAdded)
+            Else
+                DataGridView1.Rows.Add(element.RecSelect, element.QB_Name.ToString(), element.QBModTime.ToString(), element.NewlyAdded)
+            End If
+        Next
+
+        ' Might not be wanted for every attribute, check if that is the case
+        System.Threading.Thread.Sleep(150)
+        System.Windows.Forms.Application.DoEvents()
+        Me.ProgressBar1.Value = 0
+        Return readItems
+    End Function
 
     Private Sub Time_Entry_Times()
         DataGridView2.AutoSize = False
@@ -1103,81 +644,63 @@ Public Class MAIN
         DataGridView2.Columns.Add(col8)
     End Sub
 
-    'Public Sub IntegratedUI_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-    '    Dim ItemLastSync As DateTime
-    '    Dim ReadItems As Integer = 0
-    '    'hide all tabstrips
-    '    TabPageCustomers.Visible = False
-    '    TabPageEmployees.Visible = False
-    '    TabPageTimeTransfer.Visible = False
+    Public Sub IntegratedUI_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        Dim ItemLastSync As DateTime
+        Dim ReadItems As Integer = 0
+        'hide all tabstrips
+        TabPageCustomers.Visible = False
+        TabPageEmployees.Visible = False
+        TabPageTimeTransfer.Visible = False
 
-    '    Show()
-    '    DataGridView1.AutoSize = False
-    '    DataGridView1.AutoSizeRowsMode = False
-    '    DataGridView2.AutoSize = False
-    '    DataGridView2.AutoSizeRowsMode = False
-    '    btn_currentweek_Click(sender, e)
+        Me.Show()
+        DataGridView1.AutoSize = False
+        DataGridView1.AutoSizeRowsMode = False
+        DataGridView2.AutoSize = False
+        DataGridView2.AutoSizeRowsMode = False
+        btn_currentweek_Click(sender, e)
 
-    '    'for type Customers, Employees, Vendors, Jobs/Subjobs, and Items/Subitems
-    '    If Type >= 10 And Type < 15 Then
-    '        ReadItems = display_UI()
-    '    End If
+        'for type Customers, Employees, Vendors, Jobs/Subjobs, and Items/Subitems
+        If Type >= 10 And Type < 15 Then
+            ReadItems = display_UI()
+        End If
 
-    '    'for type Time Items
-    '    ' Might add this to display_UI() or as its own private function
-    '    If Type = 20 Then
-    '        'ReadItems = display_TimeEntry_UI()
-    '        ReadItems = display_TimeEntry_UI()
-    '    End If
+        'for type Time Items
+        ' Might add this to display_UI() or as its own private function
+        If Type = 20 Then
+            ReadItems = display_TimeEntry_UI()
+        End If
 
-    '    History(ReadItems.ToString() + " items were read from Quickbooks", "n")
-    'End Sub
+        My.Forms.MAIN.History(ReadItems.ToString() + " items were read from Quickbooks", "n")
+    End Sub
 
 
     Public Overloads Sub Show(ByVal token As String, ByVal AccountId As String, TypeSelected As Integer)
 
-
-        History("Welcome to QB2TL Sync by Telrium", "n")
-        Using newForm = New Login()
-            If DialogResult.OK = newForm.ShowDialog() Then
-                p_token = newForm.ReturnValue1
-                p_AccountId = newForm.ReturnValue2
-                History("You are logged into TimeLive", "n")
-                History("", "n")
-            Else
-                History("You will need to log into TimeLive before using this utility.", "n")
-                History("", "n")
-            End If
-        End Using
-
-
-
-
         Type = TypeSelected
-        'If token Is Nothing Then
-        'MsgBox("Please Login")
-        'Else
-        'p_AccountId = AccountId
-        'p_token = token
-        MyBase.Show()
-
-        'Commented out, changes the display ordering which affects the check box matching with the respective row
-        'DataGridView1.Sort(DataGridView1.Columns(1), System.ComponentModel.ListSortDirection.Ascending)
-
-        'Change the number to the column index that you want to sort
-        '--------   cbWageType 
-        If My.Settings.QBClass = "" Then
-            cbWageType.SelectedIndex = 0
+        If token Is Nothing Then
+            MsgBox("Please Login")
         Else
-            cbWageType.SelectedIndex = My.Settings.QBClass
+            p_AccountId = AccountId
+            p_token = token
+            MyBase.Show()
+
+            'Commented out, changes the display ordering which affects the check box matching with the respective row
+            'DataGridView1.Sort(DataGridView1.Columns(1), System.ComponentModel.ListSortDirection.Ascending)
+
+            'Change the number to the column index that you want to sort
+            '--------   cbWageType 
+            If My.Settings.QBClass = "" Then
+                cbWageType.SelectedIndex = 0
+            Else
+                cbWageType.SelectedIndex = My.Settings.QBClass
+            End If
         End If
-        'End If
     End Sub
 
     Private Sub btnclose_Click(sender As Object, e As EventArgs) Handles bntclose.Click
         'TransferTimeButton.Visible = False
         TimeEntrySelectAll.Visible = False
-        Close()
+        Me.Close()
     End Sub
 
     Private Sub btnRefreshTimeTransfer_Click(sender As Object, e As EventArgs) Handles RefreshTimeTransfer.Click
@@ -1193,18 +716,18 @@ Public Class MAIN
         Dim endDate As DateTime = CDate(dpEndDate.Value).Date
         TimeEntryData.clear()
 
-        ProgressBar1.Maximum = selectedEmployeeData.NoItems
+        Me.ProgressBar1.Maximum = selectedEmployeeData.NoItems
         For Each element As TLtoQB_TimeEntry.Employee In selectedEmployeeData.DataArray
             With element
                 If element.RecSelect = True Then
-                    History("Processing: " + element.FullName.ToString(), "n")
+                    My.Forms.MAIN.History("Processing: " + element.FullName.ToString(), "n")
                     LoadSelectedTimeEntryItems(element.AccountEmployeeId, element.FullName, DataGridView2, StartDate, endDate, True)
                     'deselect as not to load again
                     element.RecSelect = False
                     'Exit For
                 End If
             End With
-            ProgressBar1.Value += 1
+            Me.ProgressBar1.Value += 1
         Next
         'IntUI_2ndSelect.Owner = Me
         'IntUI_2ndSelect.Show(p_token, p_AccountId, selectedEmployeeData,
@@ -1214,7 +737,7 @@ Public Class MAIN
         System.Threading.Thread.Sleep(150)
         System.Windows.Forms.Application.DoEvents()
 
-        ProgressBar1.Value = 0
+        Me.ProgressBar1.Value = 0
         My.Settings.TimeTrackingLastSync = DateTime.Now.ToString()
         My.Settings.Save()
     End Sub
@@ -1228,13 +751,13 @@ Public Class MAIN
             If QBtoTLCustomerRadioButton.Checked Then
                 QB_Set_Selected_Customer()
                 ItemsProcessed = customer_qbtotl.QBTransferCustomerToTL(customerData, p_token, Me, True)
-                History(ItemsProcessed.ToString() + " TimeLive record" + If(ItemsProcessed = 1, " was", "s were") + " created or updated", "i")
+                My.Forms.MAIN.History(ItemsProcessed.ToString() + " TimeLive record" + If(ItemsProcessed = 1, " was", "s were") + " created or updated", "i")
                 My.Settings.CustomerLastSync = DateTime.Now.ToString()
                 My.Settings.Save()
             Else
                 Dim customersToCheck As List(Of String) = TL_Set_Selected_Items()
                 ItemsProcessed = customer_TLSync.SyncCustomerData(p_token, Me, True, customersToCheck)
-                History(ItemsProcessed.ToString() + " QuickBooks customer" + If(ItemsProcessed = 1, " was", "s were") + " created or updated", "i")
+                My.Forms.MAIN.History(ItemsProcessed.ToString() + " QuickBooks customer" + If(ItemsProcessed = 1, " was", "s were") + " created or updated", "i")
             End If
         End If
 
@@ -1244,13 +767,13 @@ Public Class MAIN
             If QBtoTLEmployeeRadioButton.Checked Then
                 Set_Selected_Employee()
                 ItemsProcessed = employee_qbtotl.QBTransferEmployeeToTL(employeeData, p_token, Me, True)
-                History(ItemsProcessed.ToString() + " TimeLive records were created or updated", "i")
+                My.Forms.MAIN.History(ItemsProcessed.ToString() + " TimeLive records were created or updated", "i")
                 My.Settings.EmployeeLastSync = DateTime.Now.ToString()
                 My.Settings.Save()
             Else
                 Dim employeesToCheck As List(Of String) = TL_Set_Selected_Items()
                 ItemsProcessed = employee_TLSync.SyncEmployeeData(p_token, Me, True, employeesToCheck)
-                History(ItemsProcessed.ToString() + " QuickBooks employee" + If(ItemsProcessed = 1, " was", "s were") + " created or updated", "i")
+                My.Forms.MAIN.History(ItemsProcessed.ToString() + " QuickBooks employee" + If(ItemsProcessed = 1, " was", "s were") + " created or updated", "i")
             End If
         End If
 
@@ -1260,13 +783,13 @@ Public Class MAIN
             If QBtoTLVendorRadioButton.Checked Then
                 Set_Selected_Vendor()
                 ItemsProcessed = vendor_qbtotl.QBTransferVendorToTL(vendorData, p_token, Me, True)
-                History(ItemsProcessed.ToString() + " TimeLive records were created or updated", "i")
+                My.Forms.MAIN.History(ItemsProcessed.ToString() + " TimeLive records were created or updated", "i")
                 My.Settings.VendorLastSync = DateTime.Now.ToString()
                 My.Settings.Save()
             Else
                 Dim vendorsToCheck As List(Of String) = TL_Set_Selected_Items()
                 ItemsProcessed = vendor_TLSync.SyncVendorData(p_token, Me, True, vendorsToCheck)
-                History(ItemsProcessed.ToString() + " QuickBooks vendor" + If(ItemsProcessed = 1, " was", "s were") + " created or updated", "i")
+                My.Forms.MAIN.History(ItemsProcessed.ToString() + " QuickBooks vendor" + If(ItemsProcessed = 1, " was", "s were") + " created or updated", "i")
             End If
         End If
 
@@ -1277,18 +800,18 @@ Public Class MAIN
                 Set_Selected_Job_Item()
                 If Type = 13 Then
                     ItemsProcessed = job_qbtotl.QBTransferJobstoTL(JobData, p_token, Me, True)
-                    History(ItemsProcessed.ToString() + " TimeLive records were created or updated", "i")
+                    My.Forms.MAIN.History(ItemsProcessed.ToString() + " TimeLive records were created or updated", "i")
                     My.Settings.JobLastSync = DateTime.Now.ToString()
                 Else
                     ItemsProcessed = job_qbtotl.QBTransferItemsToTL(JobData, p_token, Me, True)
-                    History(ItemsProcessed.ToString() + " TimeLive records were created or updated", "i")
+                    My.Forms.MAIN.History(ItemsProcessed.ToString() + " TimeLive records were created or updated", "i")
                     My.Settings.ItemlastSync = DateTime.Now.ToString()
                 End If
                 My.Settings.Save()
             Else
                 Dim jobsToCheck As List(Of String) = TL_Set_Selected_Items()
                 ItemsProcessed = job_TLSync.SyncJobsSubJobData(p_token, Me, True, jobsToCheck)
-                History(ItemsProcessed.ToString() + " QuickBooks job/item" + If(ItemsProcessed = 1, " was", "s were") + " created or updated", "i")
+                My.Forms.MAIN.History(ItemsProcessed.ToString() + " QuickBooks job/item" + If(ItemsProcessed = 1, " was", "s were") + " created or updated", "i")
             End If
         End If
 
@@ -1298,7 +821,7 @@ Public Class MAIN
         '    If QBtoTLJobItemRadioButton.Checked Then
         '        Set_Selected_Job_Item()
         '        ItemsProcessed = job_qbtotl.QBTransferItemsToTL(JobData, p_token, Me, True)
-        '        History(ItemsProcessed.ToString() + " TimeLive records were created or updated", "i")
+        '        My.Forms.MAIN.History(ItemsProcessed.ToString() + " TimeLive records were created or updated", "i")
         '        My.Settings.ItemlastSync = DateTime.Now.ToString()
         '        My.Settings.Save()
         '    Else
@@ -1313,7 +836,7 @@ Public Class MAIN
             ' Transfer Time Entry data from TL to QB
             ItemsProcessed = timeentry_tltoqb.TLTransferTimeToQB(TimeEntryData, p_token, Me, True)
             'IntUI_2ndSelect.time_transfer(DataGridView2, Me)
-            History(ItemsProcessed.ToString() + If(ItemsProcessed = 1, " Time Entry was", " Time Entries were") + " created or updated", "i")
+            My.Forms.MAIN.History(ItemsProcessed.ToString() + If(ItemsProcessed = 1, " Time Entry was", " Time Entries were") + " created or updated", "i")
 
         Else
             ' Refresh after processing
@@ -1324,7 +847,7 @@ Public Class MAIN
         System.Threading.Thread.Sleep(150)
         System.Windows.Forms.Application.DoEvents()
 
-        ProgressBar1.Value = 0
+        Me.ProgressBar1.Value = 0
     End Sub
 
     Private Sub Reset_Checked_Customer_Value(ByRef customerObj As QBtoTL_Customer.CustomerDataStructureQB)
@@ -1368,7 +891,7 @@ Public Class MAIN
         If SelectedEmployeeObj IsNot Nothing Then
             For Each element As TLtoQB_TimeEntry.Employee In SelectedEmployeeObj.DataArray
                 element.RecSelect = False
-                'History("Time selection:  Reseting employees:   " + element.RecSelect.ToString(), "n")
+                'My.Forms.MAIN.History("Time selection:  Reseting employees:   " + element.RecSelect.ToString(), "n")
             Next
         End If
     End Sub
@@ -1381,7 +904,7 @@ Public Class MAIN
     End Sub
 
     Private Sub Set_Selected_TimeEntry(ByRef DataGridView As DataGridView)
-        ProgressBar1.Maximum = DataGridView.Rows.Count
+        Me.ProgressBar1.Maximum = DataGridView.Rows.Count
         For Each row As DataGridViewRow In DataGridView.Rows
             If row.Cells("Date").Value IsNot Nothing And row.Cells("ckBox").Value And TimeEntryData.NoItems Then
                 Dim i = 0
@@ -1398,20 +921,20 @@ Public Class MAIN
                     End Sub
                 )
                 'TimeEntryData.DataArray(row.Index).RecSelect = True
-                History("Selected for processing: " + row.Cells("Employee").Value.ToString + " with task " + row.Cells("Task").Value.ToString + " on " + row.Cells("Date").Value.ToString, "n")
-                ProgressBar1.Value += 1
+                My.Forms.MAIN.History("Selected for processing: " + row.Cells("Employee").Value.ToString + " with task " + row.Cells("Task").Value.ToString + " on " + row.Cells("Date").Value.ToString, "n")
+                Me.ProgressBar1.Value += 1
             End If
         Next
     End Sub
 
-    'Returns a list Of the full names For the selected TimeLive entities
+    ' Returns a list of the full names for the selected TimeLive entities
     Private Function TL_Set_Selected_Items()
         Dim TL_Names As List(Of String) = New List(Of String)
         For Each row As DataGridViewRow In DataGridView1.Rows
             If row.Cells("Name").Value IsNot Nothing And row.Cells("ckBox").Value Then
                 Dim full_name As String = row.Cells("Name").Value.ToString.Replace(MAIN.colonReplacer, ":")
                 TL_Names.Add(full_name)
-                History("Item selected for processing: " + row.Cells("Name").Value, "n")
+                My.Forms.MAIN.History("Item selected for processing: " + row.Cells("Name").Value, "n")
             End If
         Next
 
@@ -1428,7 +951,7 @@ Public Class MAIN
                         End If
                     End Sub
                 )
-                History("Customers selected for processing: " + row.Cells("Name").Value, "n")
+                My.Forms.MAIN.History("Customers selected for processing: " + row.Cells("Name").Value, "n")
             End If
         Next
     End Sub
@@ -1443,23 +966,24 @@ Public Class MAIN
                         End If
                     End Sub
                 )
-                History("Employees selected for processing: " + row.Cells("Name").Value, "n")
+                My.Forms.MAIN.History("Employees selected for processing: " + row.Cells("Name").Value, "n")
             End If
         Next
     End Sub
 
-    'For Time Transfer
+    ' For Time Transfer
     Private Sub Set_Selected_SelectedEmployee()
         For Each row As DataGridViewRow In DataGridView1.Rows
             If row.Cells("Name").Value IsNot Nothing And row.Cells("ckBox").Value = True Then
                 selectedEmployeeData.DataArray.ForEach(
                     Sub(selectedEmployee)
+                        My.Forms.MAIN.History(selectedEmployee.FullName + " vs " + row.Cells("Name").Value.ToString, "i")
                         If selectedEmployee.FullName = row.Cells("Name").Value.ToString Then
                             selectedEmployee.RecSelect = True
                         End If
                     End Sub
                 )
-                History("Selected employee for time transfer: " + row.Cells("Name").Value, "n")
+                My.Forms.MAIN.History("Selected employee for time transfer: " + row.Cells("Name").Value, "n")
             End If
         Next
     End Sub
@@ -1474,7 +998,7 @@ Public Class MAIN
                         End If
                     End Sub
                 )
-                History("Vendors selected for processing: " + row.Cells("Name").Value, "n")
+                My.Forms.MAIN.History("Vendors selected for processing: " + row.Cells("Name").Value, "n")
             End If
         Next
     End Sub
@@ -1490,7 +1014,7 @@ Public Class MAIN
                         End If
                     End Sub
                 )
-                History("Job or items selected for processing: " + row.Cells("Full Name").Value, "n")
+                My.Forms.MAIN.History("Job or items selected for processing: " + row.Cells("Full Name").Value, "n")
             End If
         Next
     End Sub
@@ -1582,7 +1106,7 @@ Public Class MAIN
         ' Friday to Saturday
         '-----------------------------
 
-        Dim sat As Date = firstdateofweek(Now.Year, cur_week, DayOfWeek.Saturday)
+        Dim sat As Date = FirstDateOfWeek(Now.Year, cur_week, DayOfWeek.Saturday)
         'sat.AddDays(-1)
 
         If Now.DayOfWeek.CompareTo(sat.DayOfWeek) > 0 Then
@@ -1617,7 +1141,7 @@ Public Class MAIN
 
     Private Sub nextWeek_Click(sender As Object, e As EventArgs) Handles nextWeek.Click
         cur_week = cur_week + 1
-        Dim sat = firstdateofweek(Now.Year.ToString, cur_week, DayOfWeek.Saturday)
+        Dim sat = FirstDateOfWeek(Now.Year.ToString, cur_week, DayOfWeek.Saturday)
         If Now.DayOfWeek.CompareTo(sat.DayOfWeek) > 0 Then
             dpStartDate.Value = sat.AddDays(-1)
             dpEndDate.Value = sat.AddDays(6)
@@ -1629,14 +1153,13 @@ Public Class MAIN
 
     End Sub
 
-    Public Function firstdateofweek(ByVal year As Integer, ByVal week As Integer, Optional firstdayofweek As DayOfWeek = DayOfWeek.Monday) As Date
-        Dim dt As Date = New Date(year, 1, 1)
+    Public Function FirstDateOfWeek(ByVal Year As Integer, ByVal Week As Integer, Optional FirstDayOfWeek As DayOfWeek = DayOfWeek.Monday) As Date
+        Dim dt As Date = New Date(Year, 1, 1)
         If dt.DayOfWeek > 4 Then dt = dt.AddDays(7 - dt.DayOfWeek) Else dt = dt.AddDays(-dt.DayOfWeek)
-        dt = dt.AddDays(firstdayofweek)
-        Return dt.AddDays(7 * (week - 1))
+        dt = dt.AddDays(FirstDayOfWeek)
+        Return dt.AddDays(7 * (Week - 1))
     End Function
 
-    'Not Used
     Private Sub preWeek_Click(sender As Object, e As EventArgs) Handles preWeek.Click
         'cur_week = cur_week - 1
         'Dim start_day_in_cur_week = FirstDateOfWeek(Now.Year.ToString, cur_week, DayOfWeek.Saturday)
@@ -1668,110 +1191,37 @@ Public Class MAIN
         End If
 
     End Sub
+    Private Function ISQBID_In_DataTable(ByVal myqbID As String) As Int16
 
-    'Not Used
-    'Private Function isqbid_in_datatable(ByVal myqbid As String) As Int16
+        'Dim CustomerAdapter As New QB_TL_IDsTableAdapters.CustomersTableAdapter()
+        'For Each TimeLiveID As QB_TL_IDs.CustomersRow In CustomerAdapter.GetCustomers()
+        '    If String.Compare(Trim(TimeLiveID.QuickBooks_ID), Trim(myqbID)) = 0 Then
+        '        Return True
+        '        Exit For
+        '    End If
+        'Next
+        Dim CustomerAdapter As New QB_TL_IDsTableAdapters.CustomersTableAdapter()
+        Dim TimeLiveIDs As QB_TL_IDs.CustomersDataTable = CustomerAdapter.GetCorrespondingTL_ID(myqbID)
 
-    '    'dim customeradapter as new qb_tl_idstableadapters.customerstableadapter()
-    '    'for each timeliveid as qb_tl_ids.customersrow in customeradapter.getcustomers()
-    '    '    if string.compare(trim(timeliveid.quickbooks_id), trim(myqbid)) = 0 then
-    '    '        return true
-    '    '        exit for
-    '    '    end if
-    '    'next
-    '    Dim customeradapter As New QB_TL_IDsTableAdapters.CustomersTableAdapter()
-    '    Dim timeliveids As QB_TL_IDs.CustomersDataTable = customeradapter.GetCorrespondingTL_ID(myqbid)
+        Dim result As Int16 = Math.Min(TimeLiveIDs.Count, 2)
 
-    '    Dim result As Int16 = Math.Min(timeliveids.Count, 2)
+        If TimeLiveIDs.Count = 1 Then
+            My.Forms.MAIN.History("One record found in local database", "i")
+        ElseIf TimeLiveIDs.Count = 0 Then
+            My.Forms.MAIN.History("No records found in local database", "i")
+        ElseIf TimeLiveIDs.Count > 1 Then
+            My.Forms.MAIN.History("More than one record found in local database", "I")
+        End If
 
-    '    If timeliveids.Count = 1 Then
-    '        History("one record found in local database", "i")
-    '    ElseIf timeliveids.Count = 0 Then
-    '        History("no records found in local database", "i")
-    '    ElseIf timeliveids.Count > 1 Then
-    '        History("more than one record found in local database", "i")
-    '    End If
-
-    '    Return result
-    'End Function
+        Return result
+    End Function
 
     Private Sub cbWageType_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cbWageType.SelectedIndexChanged
         My.Settings.QBWageType = cbWageType.SelectedIndex
         My.Settings.Save()
     End Sub
 
-    Public Sub History(ByVal input As String, Type As String)
-        If String.Compare("n", Type, False) = 0 Then
-            StatusWindow.Text += vbNewLine + ">> " + input
-        End If
-        If String.Compare("N", Type, False) = 0 Then
-            StatusWindow.Text += vbNewLine + "***********************"
-            StatusWindow.Text += vbNewLine + ">> " + input
-            StatusWindow.Text += vbNewLine + "***********************"
-        End If
-        If String.Compare("c", Type, False) = 0 Then
-            StatusWindow.Text += ", " + input
-        End If
-        If String.Compare("C", Type, False) = 0 Then
-            StatusWindow.Text += ", " + input
-        End If
-        If String.Compare("i", Type, False) = 0 Then
-            StatusWindow.Text += vbNewLine + vbTab + "- " + input
-        End If
-        If String.Compare("I", Type, False) = 0 Then
-            StatusWindow.Text += vbNewLine + vbTab + "***********************"
-            StatusWindow.Text += vbNewLine + vbTab + "- " + input
-            StatusWindow.Text += vbNewLine + vbTab + "***********************"
-        End If
+    Private Sub display_UI(sender As Object, e As EventArgs) Handles RefreshVendors.Click, RefreshJobsOrItems.Click, RefreshEmployees.Click, RefreshCustomers.Click, QBtoTLVendorRadioButton.CheckedChanged, QBtoTLJobItemRadioButton.CheckedChanged, QBtoTLEmployeeRadioButton.CheckedChanged, QBtoTLCustomerRadioButton.CheckedChanged
 
-        StatusWindow.SelectionStart = StatusWindow.TextLength
-        StatusWindow.ScrollToCaret()
     End Sub
-
-
-
-    Private Sub settingbtn_Click(sender As Object, e As EventArgs) Handles settingbtn.Click
-        Using newsettingsForm = New AppSettings()
-            If DialogResult.OK = newsettingsForm.ShowDialog() Then
-                Dim NextRunDateTime As Date = Convert.ToDateTime(My.Settings.AutoRunTime)
-                NextProcessingTime.Text = "Auto Processing Time: " + NextRunDateTime.ToString("MM/dd/yy HH:mm")
-            End If
-        End Using
-    End Sub
-
-    Private Sub loginbtn_Click(sender As Object, e As EventArgs) Handles loginbtn.Click
-        If p_token Is Nothing Then
-            Using newForm = New Login()
-                If DialogResult.OK = newForm.ShowDialog() Then
-                    p_token = newForm.ReturnValue1
-                    p_AccountId = newForm.ReturnValue2
-                End If
-            End Using
-        Else
-            MsgBox("You are already logged in")
-        End If
-    End Sub
-
-    Private Sub clearlogbtn_Click(sender As Object, e As EventArgs) Handles clearlogbtn.Click
-        StatusWindow.Clear()
-    End Sub
-
-    Private Sub Exitbtn_Click(sender As Object, e As EventArgs) Handles Exitbtn.Click
-        My.Forms.MAIN.QUITQBSESSION() ' Close QB session before exiting
-        My.Forms.MAIN.TIMERTHREADSESSION() ' Close TimerThread session before exiting
-        Me.Close()
-    End Sub
-
-    Private Sub btn_systemsync_Click(sender As Object, e As EventArgs) Handles btn_systemsync.Click
-        If MsgBox("Are you to perform a sync?", MsgBoxStyle.YesNo, "Warning!") = MsgBoxResult.Yes Then ' If you select yes in the MsgBox then it will close the window
-            Dim CurrentSystemSync As New CurrentSystemSync
-            CurrentSystemSync.PassToken(p_token, p_AccountId)
-        End If
-    End Sub
-
-    Private Sub btn_relationships_Click(sender As Object, e As EventArgs) Handles btn_relationships.Click
-        ChargingRelationship.Owner = Me
-        ChargingRelationship.Show()
-    End Sub
-
 End Class

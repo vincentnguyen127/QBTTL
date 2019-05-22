@@ -56,6 +56,13 @@ Partial Class AppSettings
         Me.GroupBox4 = New System.Windows.Forms.GroupBox()
         Me.item_subItems_btn = New System.Windows.Forms.RadioButton()
         Me.job_subJobs_btn = New System.Windows.Forms.RadioButton()
+        Me.tab_email = New System.Windows.Forms.TabPage()
+        Me.TextBox1 = New System.Windows.Forms.TextBox()
+        Me.TextBox2 = New System.Windows.Forms.TextBox()
+        Me.TextBox3 = New System.Windows.Forms.TextBox()
+        Me.Label3 = New System.Windows.Forms.Label()
+        Me.Label4 = New System.Windows.Forms.Label()
+        Me.Label5 = New System.Windows.Forms.Label()
         Me.Tab_HoursOptions.SuspendLayout()
         Me.GroupBox3.SuspendLayout()
         Me.TabPage2.SuspendLayout()
@@ -66,6 +73,7 @@ Partial Class AppSettings
         Me.TabControl1.SuspendLayout()
         Me.Tab_ItemsJobs.SuspendLayout()
         Me.GroupBox4.SuspendLayout()
+        Me.tab_email.SuspendLayout()
         Me.SuspendLayout()
         '
         'Button1
@@ -380,6 +388,7 @@ Partial Class AppSettings
         Me.TabControl1.Controls.Add(Me.TabPage2)
         Me.TabControl1.Controls.Add(Me.Tab_HoursOptions)
         Me.TabControl1.Controls.Add(Me.Tab_ItemsJobs)
+        Me.TabControl1.Controls.Add(Me.tab_email)
         Me.TabControl1.Location = New System.Drawing.Point(12, 12)
         Me.TabControl1.Name = "TabControl1"
         Me.TabControl1.SelectedIndex = 0
@@ -429,6 +438,70 @@ Partial Class AppSettings
         Me.job_subJobs_btn.Text = "Jobs/Sub Jobs"
         Me.job_subJobs_btn.UseVisualStyleBackColor = True
         '
+        'tab_email
+        '
+        Me.tab_email.Controls.Add(Me.Label5)
+        Me.tab_email.Controls.Add(Me.Label4)
+        Me.tab_email.Controls.Add(Me.Label3)
+        Me.tab_email.Controls.Add(Me.TextBox3)
+        Me.tab_email.Controls.Add(Me.TextBox2)
+        Me.tab_email.Controls.Add(Me.TextBox1)
+        Me.tab_email.Location = New System.Drawing.Point(4, 22)
+        Me.tab_email.Name = "tab_email"
+        Me.tab_email.Padding = New System.Windows.Forms.Padding(3)
+        Me.tab_email.Size = New System.Drawing.Size(453, 198)
+        Me.tab_email.TabIndex = 4
+        Me.tab_email.Text = "eMail"
+        Me.tab_email.UseVisualStyleBackColor = True
+        '
+        'TextBox1
+        '
+        Me.TextBox1.Location = New System.Drawing.Point(95, 27)
+        Me.TextBox1.Name = "TextBox1"
+        Me.TextBox1.Size = New System.Drawing.Size(304, 20)
+        Me.TextBox1.TabIndex = 0
+        '
+        'TextBox2
+        '
+        Me.TextBox2.Location = New System.Drawing.Point(95, 68)
+        Me.TextBox2.Name = "TextBox2"
+        Me.TextBox2.Size = New System.Drawing.Size(304, 20)
+        Me.TextBox2.TabIndex = 1
+        '
+        'TextBox3
+        '
+        Me.TextBox3.Location = New System.Drawing.Point(95, 113)
+        Me.TextBox3.Name = "TextBox3"
+        Me.TextBox3.Size = New System.Drawing.Size(304, 20)
+        Me.TextBox3.TabIndex = 2
+        '
+        'Label3
+        '
+        Me.Label3.AutoSize = True
+        Me.Label3.Location = New System.Drawing.Point(7, 27)
+        Me.Label3.Name = "Label3"
+        Me.Label3.Size = New System.Drawing.Size(79, 13)
+        Me.Label3.TabIndex = 3
+        Me.Label3.Text = "Gmail Account:"
+        '
+        'Label4
+        '
+        Me.Label4.AutoSize = True
+        Me.Label4.Location = New System.Drawing.Point(6, 71)
+        Me.Label4.Name = "Label4"
+        Me.Label4.Size = New System.Drawing.Size(56, 13)
+        Me.Label4.TabIndex = 4
+        Me.Label4.Text = "Password:"
+        '
+        'Label5
+        '
+        Me.Label5.AutoSize = True
+        Me.Label5.Location = New System.Drawing.Point(7, 116)
+        Me.Label5.Name = "Label5"
+        Me.Label5.Size = New System.Drawing.Size(47, 13)
+        Me.Label5.TabIndex = 5
+        Me.Label5.Text = "Send to:"
+        '
         'AppSettings
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -456,6 +529,8 @@ Partial Class AppSettings
         Me.Tab_ItemsJobs.ResumeLayout(False)
         Me.GroupBox4.ResumeLayout(False)
         Me.GroupBox4.PerformLayout()
+        Me.tab_email.ResumeLayout(False)
+        Me.tab_email.PerformLayout()
         Me.ResumeLayout(False)
 
     End Sub
@@ -493,4 +568,11 @@ Partial Class AppSettings
     Friend WithEvents GroupBox4 As GroupBox
     Friend WithEvents item_subItems_btn As RadioButton
     Friend WithEvents job_subJobs_btn As RadioButton
+    Friend WithEvents tab_email As TabPage
+    Friend WithEvents TextBox3 As TextBox
+    Friend WithEvents TextBox2 As TextBox
+    Friend WithEvents TextBox1 As TextBox
+    Friend WithEvents Label4 As Label
+    Friend WithEvents Label3 As Label
+    Friend WithEvents Label5 As Label
 End Class

@@ -52,7 +52,7 @@ Public Class Sync_TLtoQB_JoborItem
             Next
 
         Catch ex As Exception
-            MsgBox(ex.Message)
+            MsgBox("Here 1: " + ex.Message)
         End Try
 
     End Sub
@@ -61,7 +61,7 @@ Public Class Sync_TLtoQB_JoborItem
     ''' Sync the Jobs from QB. Print out Projects and Tasks in TL but not QB
     ''' </summary>
     ''' <param name="p_token"></param>
-    Function SyncJobsSubJobData(ByVal p_token As String, Optional IntegratedUIForm As IntegratedUI = Nothing,
+    Function SyncJobsSubJobData(ByVal p_token As String, Optional MainForm As MAIN = Nothing,
                                 Optional ByVal UI As Boolean = True, Optional ByVal nameList As List(Of String) = Nothing)
         Dim numSynced As Integer = 0
         My.Forms.MAIN.History("Syncing JobSubJob Data", "n")
@@ -84,11 +84,15 @@ Public Class Sync_TLtoQB_JoborItem
             Dim objTask As New Services.TimeLive.Tasks.Task
 
             ' Only change progress bar if one exists
-            If Not IntegratedUIForm Is Nothing Then IntegratedUIForm.ProgressBar1.Maximum = nameList.Count
+            If Not MainForm Is Nothing Then My.Forms.MAIN.ProgressBar1.Maximum = nameList.Count
+
 
             ' Iterate through all projects
             For n As Integer = 0 To objProjectArray.Length - 1
+
+
                 objProject = objProjectArray(n)
+
                 ' Done this way since field .ProjectID just returned 0
                 Dim projectID As Integer
                 Try
@@ -97,15 +101,23 @@ Public Class Sync_TLtoQB_JoborItem
                     My.Forms.MAIN.History("Make sure that " + objProject.ProjectName + " has a code attribute", "i")
                     Continue For
                 End Try
+
+
                 Dim full_name As String = objProject.ClientName + ":" + objProject.ProjectName
                 Dim create As Boolean = If(nameList Is Nothing, True, nameList.Contains(full_name))
 
+
+
                 If create Then
+
                     numSynced += Math.Max(0, checkQBJobSubJobExist(objProject.ClientName, objProject.ProjectName, projectID.ToString, UI, p_token))
+
+
                 End If
 
-                If Not IntegratedUIForm Is Nothing And create Then IntegratedUIForm.ProgressBar1.Value += 1
+                If Not MainForm Is Nothing And create Then My.Forms.MAIN.ProgressBar1.Value += 1
             Next
+
 
             ' Iterate through all tasks
             For n As Integer = 0 To objTaskArray.Length - 1
@@ -124,7 +136,7 @@ Public Class Sync_TLtoQB_JoborItem
                     numSynced += Math.Max(0, checkQBJobSubJobExist(objTask.JobParent, objTask.TaskName, taskID.ToString, UI, p_token))
                 End If
 
-                If Not IntegratedUIForm Is Nothing And create Then IntegratedUIForm.ProgressBar1.Value += 1
+                If Not MainForm Is Nothing And create Then My.Forms.MAIN.ProgressBar1.Value += 1
             Next
         Catch ex As System.Web.Services.Protocols.SoapException
             If UI Then
@@ -135,7 +147,7 @@ Public Class Sync_TLtoQB_JoborItem
             End If
         Catch ex As Exception
             If UI Then
-                MsgBox(ex.Message)
+                MsgBox("Here 2: " + ex.Message)
             Else
                 Throw ex
             End If
@@ -176,7 +188,7 @@ Public Class Sync_TLtoQB_JoborItem
             Next
 
         Catch ex As Exception
-            MsgBox(ex.Message)
+            MsgBox("Here 3: " + ex.Message)
         End Try
         Return SubJobsOrSubData
     End Function
@@ -197,7 +209,7 @@ Public Class Sync_TLtoQB_JoborItem
     Public Function checkQBJobSubJobExist(ByRef Parent As String, ByRef TL_Name As String, ByVal TL_ID As Integer, ByVal UI As Boolean, ByVal p_token As String) As Integer
         'Dim sessManager As QBSessionManager
 
-        ' My.Forms.MAIN.History("Searching in QB for: " + QBJobSubJobName, "i")
+        ' My.Forms.Main.History("Searching in QB for: " + QBJobSubJobName, "i")
 
         Try
             Dim numAdded As Integer = 0
@@ -221,14 +233,14 @@ Public Class Sync_TLtoQB_JoborItem
 
             Dim inQB As Boolean = Not jobsubjobsRetList Is Nothing
 
-            If Not inQB Then
-                Dim newMsgSetRq As IMsgSetRequest = MAIN.SESSMANAGER.CreateMsgSetRequest("US", 2, 0)
-                newMsgSetRq.Attributes.OnError = ENRqOnError.roeContinue
+            Dim newMsgSetRq As IMsgSetRequest = MAIN.SESSMANAGER.CreateMsgSetRequest("US", 2, 0)
+            newMsgSetRq.Attributes.OnError = ENRqOnError.roeContinue
 
-                Dim create As Boolean = True
-                If UI Then
-                    create = MsgBox("New " + jobOrTask + " found in TimeLive: " & vbCrLf & TLJobSubJobName & vbCrLf & "Create in QuickBooks?", MsgBoxStyle.YesNo, "Warning!") = MsgBoxResult.Yes
-                End If
+                If Parent.IndexOf(":") > 0 Then
+                    Dim create As Boolean = True
+                    If UI Then
+                        create = MsgBox("New " + jobOrTask + " found in TimeLive: " & vbCrLf & TLJobSubJobName & vbCrLf & "Create in QuickBooks?", MsgBoxStyle.YesNo, "Warning!") = MsgBoxResult.Yes
+                    End If
 
                 If create Then
                     Dim ParentArray() As String = Parent.Split(":")
@@ -249,7 +261,11 @@ Public Class Sync_TLtoQB_JoborItem
                         ' Note: Will note transfer over email address since we are just passing in new client instead of the actual client - can change this
                         numAdded += If(syncCust.checkQBCustomerExist(Parent, client_TL_ID, New Services.TimeLive.Clients.Client, UI), 0, 1)
 
+
+
                     ElseIf ParentArray.Length > 1 Then ' Check if parent of the task is in QB 
+
+
                         Dim parent_name As String = ParentArray(ParentArray.Length - 1)
                         Dim parents_parent As String = Parent.Substring(0, Parent.LastIndexOf(":"))
                         Dim parent_TL_ID As Integer = -1
@@ -289,7 +305,7 @@ Public Class Sync_TLtoQB_JoborItem
                         End If
                     End If
 
-                    ' Add TL Job to QB
+
                     Dim jobAdd As ICustomerAdd = newMsgSetRq.AppendCustomerAddRq
 
                     ' TODO: 
@@ -297,7 +313,10 @@ Public Class Sync_TLtoQB_JoborItem
                     Dim CustomerAdapter As New QB_TL_IDsTableAdapters.CustomersTableAdapter()
                     Dim QB_Customer As String = CustomerAdapter.GetQB_NameFromTL_Name(ParentArray(0))
                     QB_Customer = If(QB_Customer Is Nothing, ParentArray(0), QB_Customer.Trim)
+
                     Dim QB_Parent As String = QB_Customer + Parent.Substring(Parent.IndexOf(":"))
+
+
                     jobAdd.ParentRef.FullName.SetValue(QB_Parent)
                     jobAdd.Name.SetValue(TL_Name)
 
@@ -318,15 +337,19 @@ Public Class Sync_TLtoQB_JoborItem
                     msgSetRq.Attributes.OnError = ENRqOnError.roeContinue
 
                     TaskSubTaskQueryRq = msgSetRq.AppendCustomerQueryRq
+
+
                     TaskSubTaskQueryRq.ORCustomerListQuery.FullNameList.Add(TLJobSubJobName)
 
                     msgSetRs = MAIN.SESSMANAGER.DoRequests(msgSetRq)
                     response = msgSetRs.ResponseList.GetAt(0)
                     jobsubjobsRetList = response.Detail
                     numAdded += 1
+
                 Else
                     Return -1
                 End If
+
             End If
             'Assume only one return
             Dim JobSubJobsRet As ICustomerRet

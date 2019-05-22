@@ -7,7 +7,7 @@ Public Class Sync_TLtoQB_Customer
     ''' <summary>
     ''' Sync the customer data from QB. Print out customers that are in TL but not QB
     ''' </summary>
-    Function SyncCustomerData(ByVal p_token As String, Optional ByVal IntegratedUIForm As IntegratedUI = Nothing,
+    Function SyncCustomerData(ByVal p_token As String, Optional ByVal MainForm As MAIN = Nothing,
                               Optional ByVal UI As Boolean = True, Optional ByVal nameList As List(Of String) = Nothing)
         Dim numSynced As Integer = 0
         My.Forms.MAIN.History("Syncing Clients Data", "n")
@@ -21,7 +21,7 @@ Public Class Sync_TLtoQB_Customer
             objClientArray = objClientServices.GetClients()
             Dim objClient As New Services.TimeLive.Clients.Client
 
-            If Not IntegratedUIForm Is Nothing Then IntegratedUIForm.ProgressBar1.Maximum = objClientArray.Length
+            If Not MainForm Is Nothing Then My.Forms.MAIN.ProgressBar1.Maximum = objClientArray.Length
 
             For n As Integer = 0 To objClientArray.Length - 1
                 objClient = objClientArray(n)
@@ -31,7 +31,7 @@ Public Class Sync_TLtoQB_Customer
                 If create Then
                     numSynced += If(checkQBCustomerExist(objClient.ClientName.ToString, clientID, objClient, UI), 0, 1)
                 End If
-                If Not IntegratedUIForm Is Nothing Then IntegratedUIForm.ProgressBar1.Value += 1
+                If Not MainForm Is Nothing Then My.Forms.MAIN.ProgressBar1.Value += 1
             Next
 
         Catch ex As Exception
@@ -109,7 +109,7 @@ Public Class Sync_TLtoQB_Customer
                     ' In our case, it's ICustomerRet
                     ' Dim TimeEntryRet As ICustomerRet
                     ' TimeEntryRet = res.Detail
-                    ' My.Forms.MAIN.History("Added: " + TimeEntryRet.FullName, "i")
+                    ' My.Forms.MainHistory("Added: " + TimeEntryRet.FullName, "i")
                 Else
                     Return False ' Do not add to QB nor sync table
                 End If

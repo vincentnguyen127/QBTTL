@@ -48,7 +48,7 @@ Public Class CurrentSystemSync
             End If
 
             My.Forms.MAIN.History("Sync Complete", "n")
-            End If
+        End If
     End Sub
 
     ''' <summary>

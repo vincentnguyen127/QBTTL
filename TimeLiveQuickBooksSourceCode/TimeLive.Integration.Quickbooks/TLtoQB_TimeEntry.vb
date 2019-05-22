@@ -80,7 +80,7 @@ Public Class TLtoQB_TimeEntry
     End Class
 
     Public Function GetTimeEntryTLData(AccountEmployeeId As Integer, dpStartDate As DateTime, dpEndDate As DateTime,
-                                       IntegratedUI As IntegratedUI, ByVal token As String, UI As Boolean) As TimeEntryDataStructureQB
+                                       MainForm As MAIN, ByVal token As String, UI As Boolean) As TimeEntryDataStructureQB
         Dim TimeEntryData As New TimeEntryDataStructureQB
         Dim timeentry_tltoqb As TLtoQB_TimeEntry = New TLtoQB_TimeEntry
         Dim temp As String = Nothing
@@ -98,8 +98,8 @@ Public Class TLtoQB_TimeEntry
 
             'sets status bar. If no, UI skip
             If UI Then
-                IntegratedUI.ProgressBar1.Maximum = objTimeEntryArray.Length
-                IntegratedUI.ProgressBar1.Value = 0
+                My.Forms.MAIN.ProgressBar1.Maximum = objTimeEntryArray.Length
+                My.Forms.MAIN.ProgressBar1.Value = 0
             End If
 
             'Dim EmployeeName As String = Nothing
@@ -115,7 +115,7 @@ Public Class TLtoQB_TimeEntry
                     'objTimeTrackingServices.GetTimesheetApprovalTypeId()
                     TimeEntryData.NoItems += 1
 
-                    'My.Forms.MAIN.History("................+++++++++++: " + TimeEntryData.NoItems.ToString, "i")
+                    'My.Forms.MainHistory("................+++++++++++: " + TimeEntryData.NoItems.ToString, "i")
                     'Query for Item_SubIemID
 
                     ' Commented out code searches based on "Last, First", which is incorrect
@@ -154,7 +154,7 @@ Public Class TLtoQB_TimeEntry
 
                     Dim jobID As String = Get_QB_ID_ForTL_JobName(.ClientName.ToString + ":" + .ProjectName.ToString + ":" + .TaskWithParent.ToString)
                     Dim Item_SubItemID As String = Get_QB_ID_ForTL_ItemName(empId, jobID).ToString.Trim
-                    'My.Forms.MAIN.History(Item_SubItemID, "i")
+                    'My.Forms.MainHistory(Item_SubItemID, "i")
 
                     Dim Payroll_Item_SubItemID As String = Get_QB_PayrollItemID(empId, jobID).ToString.Trim
 
@@ -167,7 +167,7 @@ Public Class TLtoQB_TimeEntry
                         ItemName = ItemName.Trim
                         My.Forms.MAIN.History("Item name: " + ItemName, "i")
                     Else
-                        'My.Forms.MAIN.History("Item ID: " + Item_SubItemID, "i")
+                        'My.Forms.MainHistory("Item ID: " + Item_SubItemID, "i")
                     End If
 
                     If Item_SubItemID = "" Then
@@ -181,7 +181,7 @@ Public Class TLtoQB_TimeEntry
                         PayrollName = PayrollName.Trim
                         My.Forms.MAIN.History("Payroll Name: " + PayrollName, "i")
                     Else
-                        'My.Forms.MAIN.History("Payroll ID: " + Payroll_Item_SubItemID, "i")
+                        'My.Forms.MainHistory("Payroll ID: " + Payroll_Item_SubItemID, "i")
                     End If
 
                     If Payroll_Item_SubItemID = "" Then
@@ -197,7 +197,7 @@ Public Class TLtoQB_TimeEntry
                 End With
 
                 If UI Then
-                    IntegratedUI.ProgressBar1.Value += 1
+                    My.Forms.MAIN.ProgressBar1.Value += 1
                 End If
             Next
 
@@ -210,11 +210,11 @@ Public Class TLtoQB_TimeEntry
     End Function
 
     Public Function TLTransferTimeToQB(ByRef objData As TLtoQB_TimeEntry.TimeEntryDataStructureQB,
-                                   ByVal token As String, IntegratedUI As IntegratedUI, UI As Boolean) As Integer
+                                   ByVal token As String, MainForm As MAIN, UI As Boolean) As Integer
         'sets status bar. If no, UI skip
         If UI Then
-            IntegratedUI.ProgressBar1.Maximum = objData.DataArray.Count
-            IntegratedUI.ProgressBar1.Value = 0
+            My.Forms.MAIN.ProgressBar1.Maximum = objData.DataArray.Count
+            My.Forms.MAIN.ProgressBar1.Value = 0
         End If
 
         Dim NoRecordsCreatedorUpdated = 0
@@ -227,8 +227,8 @@ Public Class TLtoQB_TimeEntry
                 ' check if the check value is true
                 If element.RecSelect Then
                     'Check number of QB records that match ID
-                    'My.Forms.MAIN.History("Processing: " + element.EmployeeName, "n")
-                    'My.Forms.MAIN.History("get QB_ID:   " + na.ToString + " Name is : " + element.EmployeeName, "i")
+                    'My.Forms.MainHistory("Processing: " + element.EmployeeName, "n")
+                    'My.Forms.MainHistory("get QB_ID:   " + na.ToString + " Name is : " + element.EmployeeName, "i")
                     Dim TL_ID_Return = 0 'ISQBID_In_DataTable(element.QB_ID)
                     'if none create
                     If TL_ID_Return = 0 Then
@@ -243,7 +243,7 @@ Public Class TLtoQB_TimeEntry
                                 My.Forms.MAIN.History("Inserted time entry for " + .EmployeeName + " on " + .TimeEntryDate + " for task " + .TaskWithParent, "i")
 
                                 ' if it does not exist create a new record on both the sync database and on TL
-                                'My.Forms.MAIN.History("Inserting QB & TL keys into sync database and inserting to TimeLife:  " + element.EmployeeName, "i")
+                                'My.Forms.MainHistory("Inserting QB & TL keys into sync database and inserting to TimeLife:  " + element.EmployeeName, "i")
 
                                 'Insert record into sync database 
                                 'Not sure how to get TL record ID
@@ -251,7 +251,7 @@ Public Class TLtoQB_TimeEntry
                                 'Dim TimeEntryAdapter As New QB_TL_IDsTableAdapters.TimeEntriesTableAdapter()
                                 'TimeEntryAdapter.Insert(RecordTxnID, "")
                                 'Else
-                                'My.Forms.MAIN.History("Error creating record in TimeLive", "N")
+                                'My.Forms.MainHistory("Error creating record in TimeLive", "N")
                                 'End If
                                 NoRecordsCreatedorUpdated += 1
                             End With
@@ -268,11 +268,11 @@ Public Class TLtoQB_TimeEntry
 
                     'Dim TL_ID As String = ISTLID_In_DataTable(TimeEntryLiveIDGoesHere)
                     'If TL_ID Is Nothing Then
-                    'My.Forms.MAIN.History("Detected empty sync record (No TL ID). Needs to be manually sync or deleted." + element.QB_Name, "i")
+                    'My.Forms.MainHistory("Detected empty sync record (No TL ID). Needs to be manually sync or deleted." + element.QB_Name, "i")
 
                     'Else
                     'NoRecordsCreatedorUpdated = NoRecordsCreatedorUpdated + 1
-                    'My.Forms.MAIN.History("Updating QB record for: " + element.QB_Name, "i")
+                    'My.Forms.MainHistory("Updating QB record for: " + element.QB_Name, "i")
 
                     '-----------------------------------------------------------------------------------------------------------------------------------------------------------------
                     ' ----------------------------------------------this part is the update--------------------------------------------------------------------------------------------. 
@@ -283,7 +283,7 @@ Public Class TLtoQB_TimeEntry
                 End If
                 'if no UI, then skip
                 If UI Then
-                    IntegratedUI.ProgressBar1.Value += 1
+                    My.Forms.MAIN.ProgressBar1.Value += 1
                 End If
             Next
         Catch ex As Exception
@@ -338,7 +338,7 @@ Public Class TLtoQB_TimeEntry
             result = If(EmployeeQBID.Count, EmployeeQBID(0)(0).ToString, "")
         End If
 
-        'My.Forms.MAIN.History("QB Employee ID: " + result, "i")
+        'My.Forms.MainHistory("QB Employee ID: " + result, "i")
         ' Return string of the ID (Empty string if none found)
         Return result
     End Function
@@ -352,9 +352,9 @@ Public Class TLtoQB_TimeEntry
     Public Function Get_QB_ID_ForTL_ItemName(ByVal EmployeeQBID As String, ByVal jobQBID As String) As String
         Dim result As String
         ' check this to get Item Id
-        'My.Forms.MAIN.History("Finding Item ID using QB employee ID and QB Job ID.", "n")
-        'My.Forms.MAIN.History("QB Employee ID: " + EmployeeQBID, "i")
-        'My.Forms.MAIN.History("QB Job ID: " + jobQBID, "i")
+        'My.Forms.MainHistory("Finding Item ID using QB employee ID and QB Job ID.", "n")
+        'My.Forms.MainHistory("QB Employee ID: " + EmployeeQBID, "i")
+        'My.Forms.MainHistory("QB Job ID: " + jobQBID, "i")
         Dim ItemAdapter As New QB_TL_IDsTableAdapters.ChargingRelationshipsTableAdapter
         Dim ItemQBID As QB_TL_IDs.ChargingRelationshipsDataTable = ItemAdapter.GetIItemIDByEmployeeIDAndJob_SubJobID(EmployeeQBID, jobQBID)
 
@@ -731,7 +731,7 @@ Public Class TLtoQB_TimeEntry
             Dim PayrollItemAdd As IPayrollItemWageAdd = msgSetRq.AppendPayrollItemWageAddRq
             PayrollItemAdd.Name.SetValue(PayrollItem)
             PayrollItemAdd.ExpenseAccountRef.FullName.SetValue("Payroll Expenses")
-            PayrollItemAdd.WageType.SetValue(GetWageType(IntegratedUI.cbWageType.SelectedItem))
+            PayrollItemAdd.WageType.SetValue(GetWageType(My.Forms.MAIN.cbWageType.SelectedItem))
 
             'step2: send the request
             msgSetRs = MAIN.SESSMANAGER.DoRequests(msgSetRq)

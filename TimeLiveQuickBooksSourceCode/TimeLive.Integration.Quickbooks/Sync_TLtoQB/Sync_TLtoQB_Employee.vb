@@ -5,7 +5,7 @@ Public Class Sync_TLtoQB_Employee
     ''' <summary>
     ''' Sync the employee data from QB. Print out employees that are in TL but not QB
     ''' </summary>
-    Function SyncEmployeeData(ByVal p_token As String, Optional ByVal IntegratedUIForm As IntegratedUI = Nothing,
+    Function SyncEmployeeData(ByVal p_token As String, Optional ByVal MainForm As MAIN = Nothing,
                               Optional ByVal UI As Boolean = True, Optional ByVal nameList As List(Of String) = Nothing)
         Dim numSynced As Integer = 0
         My.Forms.MAIN.History("Syncing Employees Data", "n")
@@ -19,7 +19,7 @@ Public Class Sync_TLtoQB_Employee
             objEmployeeArray = objEmployeeServices.GetEmployees
             Dim objEmployee As New Services.TimeLive.Employees.Employee
 
-            If Not IntegratedUIForm Is Nothing Then IntegratedUIForm.ProgressBar1.Maximum = objEmployeeArray.Length
+            If Not My.Forms.MAIN Is Nothing Then My.Forms.MAIN.ProgressBar1.Maximum = objEmployeeArray.Length
 
 
             ' Print employees within TimeLive that are not in QB
@@ -32,7 +32,7 @@ Public Class Sync_TLtoQB_Employee
                         numSynced += If(checkQBEmployeeExist(.EmployeeName.ToString, .EmployeeId, objEmployee, UI), 0, 1)
                     End If
                 End With
-                If Not IntegratedUIForm Is Nothing Then IntegratedUIForm.ProgressBar1.Value += 1
+                If Not My.Forms.MAIN Is Nothing Then My.Forms.MAIN.ProgressBar1.Value += 1
             Next
         Catch ex As Exception
             If UI Then
