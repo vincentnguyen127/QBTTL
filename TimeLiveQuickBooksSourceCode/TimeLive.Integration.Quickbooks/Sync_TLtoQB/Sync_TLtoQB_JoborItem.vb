@@ -236,11 +236,11 @@ Public Class Sync_TLtoQB_JoborItem
             Dim newMsgSetRq As IMsgSetRequest = MAIN.SESSMANAGER.CreateMsgSetRequest("US", 2, 0)
             newMsgSetRq.Attributes.OnError = ENRqOnError.roeContinue
 
-                If Parent.IndexOf(":") > 0 Then
-                    Dim create As Boolean = True
-                    If UI Then
-                        create = MsgBox("New " + jobOrTask + " found in TimeLive: " & vbCrLf & TLJobSubJobName & vbCrLf & "Create in QuickBooks?", MsgBoxStyle.YesNo, "Warning!") = MsgBoxResult.Yes
-                    End If
+            If Parent.IndexOf(":") > 0 Then
+                Dim create As Boolean = True
+                If UI Then
+                    create = MsgBox("New " + jobOrTask + " found in TimeLive: " & vbCrLf & TLJobSubJobName & vbCrLf & "Create in QuickBooks?", MsgBoxStyle.YesNo, "Warning!") = MsgBoxResult.Yes
+                End If
 
                 If create Then
                     Dim ParentArray() As String = Parent.Split(":")

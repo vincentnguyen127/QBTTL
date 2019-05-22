@@ -1,9 +1,9 @@
-﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
+﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()>
 Partial Class AppSettings
     Inherits System.Windows.Forms.Form
 
     'Form overrides dispose to clean up the component list.
-    <System.Diagnostics.DebuggerNonUserCode()> _
+    <System.Diagnostics.DebuggerNonUserCode()>
     Protected Overrides Sub Dispose(ByVal disposing As Boolean)
         Try
             If disposing AndAlso components IsNot Nothing Then
@@ -20,7 +20,7 @@ Partial Class AppSettings
     'NOTE: The following procedure is required by the Windows Form Designer
     'It can be modified using the Windows Form Designer.  
     'Do not modify it using the code editor.
-    <System.Diagnostics.DebuggerStepThrough()> _
+    <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
         Me.Button1 = New System.Windows.Forms.Button()
         Me.btnSave = New System.Windows.Forms.Button()
@@ -35,6 +35,7 @@ Partial Class AppSettings
         Me.rbtJobitems = New System.Windows.Forms.RadioButton()
         Me.rbJob = New System.Windows.Forms.RadioButton()
         Me.TabPage2 = New System.Windows.Forms.TabPage()
+        Me.chk_debugMode = New System.Windows.Forms.CheckBox()
         Me.chk_syncElgibleVendor = New System.Windows.Forms.CheckBox()
         Me.Tab_Sync = New System.Windows.Forms.TabPage()
         Me.GroupBox2 = New System.Windows.Forms.GroupBox()
@@ -53,16 +54,16 @@ Partial Class AppSettings
         Me.dtp_autoruntime = New System.Windows.Forms.DateTimePicker()
         Me.TabControl1 = New System.Windows.Forms.TabControl()
         Me.Tab_ItemsJobs = New System.Windows.Forms.TabPage()
-        Me.GroupBox4 = New System.Windows.Forms.GroupBox()
+        Me.Job_or_Item_Selection = New System.Windows.Forms.GroupBox()
         Me.item_subItems_btn = New System.Windows.Forms.RadioButton()
         Me.job_subJobs_btn = New System.Windows.Forms.RadioButton()
         Me.tab_email = New System.Windows.Forms.TabPage()
-        Me.TextBox1 = New System.Windows.Forms.TextBox()
-        Me.TextBox2 = New System.Windows.Forms.TextBox()
-        Me.TextBox3 = New System.Windows.Forms.TextBox()
-        Me.Label3 = New System.Windows.Forms.Label()
-        Me.Label4 = New System.Windows.Forms.Label()
         Me.Label5 = New System.Windows.Forms.Label()
+        Me.Label4 = New System.Windows.Forms.Label()
+        Me.Label3 = New System.Windows.Forms.Label()
+        Me.TextBox3 = New System.Windows.Forms.TextBox()
+        Me.TextBox2 = New System.Windows.Forms.TextBox()
+        Me.TextBox1 = New System.Windows.Forms.TextBox()
         Me.Tab_HoursOptions.SuspendLayout()
         Me.GroupBox3.SuspendLayout()
         Me.TabPage2.SuspendLayout()
@@ -72,7 +73,7 @@ Partial Class AppSettings
         CType(Me.autoruninterval_btn, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.TabControl1.SuspendLayout()
         Me.Tab_ItemsJobs.SuspendLayout()
-        Me.GroupBox4.SuspendLayout()
+        Me.Job_or_Item_Selection.SuspendLayout()
         Me.tab_email.SuspendLayout()
         Me.SuspendLayout()
         '
@@ -206,19 +207,32 @@ Partial Class AppSettings
         '
         'TabPage2
         '
+        Me.TabPage2.Controls.Add(Me.chk_debugMode)
         Me.TabPage2.Controls.Add(Me.chk_syncElgibleVendor)
         Me.TabPage2.Location = New System.Drawing.Point(4, 22)
         Me.TabPage2.Name = "TabPage2"
         Me.TabPage2.Padding = New System.Windows.Forms.Padding(3)
         Me.TabPage2.Size = New System.Drawing.Size(453, 198)
         Me.TabPage2.TabIndex = 1
-        Me.TabPage2.Text = "Vendor"
+        Me.TabPage2.Text = "Sync Options"
         Me.TabPage2.UseVisualStyleBackColor = True
+        '
+        'chk_debugMode
+        '
+        Me.chk_debugMode.AutoSize = True
+        Me.chk_debugMode.Checked = True
+        Me.chk_debugMode.CheckState = System.Windows.Forms.CheckState.Checked
+        Me.chk_debugMode.Location = New System.Drawing.Point(24, 25)
+        Me.chk_debugMode.Name = "chk_debugMode"
+        Me.chk_debugMode.Size = New System.Drawing.Size(88, 17)
+        Me.chk_debugMode.TabIndex = 1
+        Me.chk_debugMode.Text = "Debug Mode"
+        Me.chk_debugMode.UseVisualStyleBackColor = True
         '
         'chk_syncElgibleVendor
         '
         Me.chk_syncElgibleVendor.AutoSize = True
-        Me.chk_syncElgibleVendor.Location = New System.Drawing.Point(24, 29)
+        Me.chk_syncElgibleVendor.Location = New System.Drawing.Point(24, 63)
         Me.chk_syncElgibleVendor.Name = "chk_syncElgibleVendor"
         Me.chk_syncElgibleVendor.Size = New System.Drawing.Size(226, 17)
         Me.chk_syncElgibleVendor.TabIndex = 0
@@ -238,7 +252,7 @@ Partial Class AppSettings
         Me.Tab_Sync.Padding = New System.Windows.Forms.Padding(3)
         Me.Tab_Sync.Size = New System.Drawing.Size(453, 198)
         Me.Tab_Sync.TabIndex = 0
-        Me.Tab_Sync.Text = "Sync Options"
+        Me.Tab_Sync.Text = "Auto Sync"
         '
         'GroupBox2
         '
@@ -397,7 +411,7 @@ Partial Class AppSettings
         '
         'Tab_ItemsJobs
         '
-        Me.Tab_ItemsJobs.Controls.Add(Me.GroupBox4)
+        Me.Tab_ItemsJobs.Controls.Add(Me.Job_or_Item_Selection)
         Me.Tab_ItemsJobs.Location = New System.Drawing.Point(4, 22)
         Me.Tab_ItemsJobs.Name = "Tab_ItemsJobs"
         Me.Tab_ItemsJobs.Padding = New System.Windows.Forms.Padding(3)
@@ -406,15 +420,15 @@ Partial Class AppSettings
         Me.Tab_ItemsJobs.Text = "Items/Jobs"
         Me.Tab_ItemsJobs.UseVisualStyleBackColor = True
         '
-        'GroupBox4
+        'Job_or_Item_Selection
         '
-        Me.GroupBox4.Controls.Add(Me.item_subItems_btn)
-        Me.GroupBox4.Controls.Add(Me.job_subJobs_btn)
-        Me.GroupBox4.Location = New System.Drawing.Point(6, 23)
-        Me.GroupBox4.Name = "GroupBox4"
-        Me.GroupBox4.Size = New System.Drawing.Size(409, 46)
-        Me.GroupBox4.TabIndex = 47
-        Me.GroupBox4.TabStop = False
+        Me.Job_or_Item_Selection.Controls.Add(Me.item_subItems_btn)
+        Me.Job_or_Item_Selection.Controls.Add(Me.job_subJobs_btn)
+        Me.Job_or_Item_Selection.Location = New System.Drawing.Point(6, 23)
+        Me.Job_or_Item_Selection.Name = "Job_or_Item_Selection"
+        Me.Job_or_Item_Selection.Size = New System.Drawing.Size(409, 46)
+        Me.Job_or_Item_Selection.TabIndex = 47
+        Me.Job_or_Item_Selection.TabStop = False
         '
         'item_subItems_btn
         '
@@ -454,35 +468,14 @@ Partial Class AppSettings
         Me.tab_email.Text = "eMail"
         Me.tab_email.UseVisualStyleBackColor = True
         '
-        'TextBox1
+        'Label5
         '
-        Me.TextBox1.Location = New System.Drawing.Point(95, 27)
-        Me.TextBox1.Name = "TextBox1"
-        Me.TextBox1.Size = New System.Drawing.Size(304, 20)
-        Me.TextBox1.TabIndex = 0
-        '
-        'TextBox2
-        '
-        Me.TextBox2.Location = New System.Drawing.Point(95, 68)
-        Me.TextBox2.Name = "TextBox2"
-        Me.TextBox2.Size = New System.Drawing.Size(304, 20)
-        Me.TextBox2.TabIndex = 1
-        '
-        'TextBox3
-        '
-        Me.TextBox3.Location = New System.Drawing.Point(95, 113)
-        Me.TextBox3.Name = "TextBox3"
-        Me.TextBox3.Size = New System.Drawing.Size(304, 20)
-        Me.TextBox3.TabIndex = 2
-        '
-        'Label3
-        '
-        Me.Label3.AutoSize = True
-        Me.Label3.Location = New System.Drawing.Point(7, 27)
-        Me.Label3.Name = "Label3"
-        Me.Label3.Size = New System.Drawing.Size(79, 13)
-        Me.Label3.TabIndex = 3
-        Me.Label3.Text = "Gmail Account:"
+        Me.Label5.AutoSize = True
+        Me.Label5.Location = New System.Drawing.Point(7, 116)
+        Me.Label5.Name = "Label5"
+        Me.Label5.Size = New System.Drawing.Size(47, 13)
+        Me.Label5.TabIndex = 5
+        Me.Label5.Text = "Send to:"
         '
         'Label4
         '
@@ -493,14 +486,35 @@ Partial Class AppSettings
         Me.Label4.TabIndex = 4
         Me.Label4.Text = "Password:"
         '
-        'Label5
+        'Label3
         '
-        Me.Label5.AutoSize = True
-        Me.Label5.Location = New System.Drawing.Point(7, 116)
-        Me.Label5.Name = "Label5"
-        Me.Label5.Size = New System.Drawing.Size(47, 13)
-        Me.Label5.TabIndex = 5
-        Me.Label5.Text = "Send to:"
+        Me.Label3.AutoSize = True
+        Me.Label3.Location = New System.Drawing.Point(7, 27)
+        Me.Label3.Name = "Label3"
+        Me.Label3.Size = New System.Drawing.Size(79, 13)
+        Me.Label3.TabIndex = 3
+        Me.Label3.Text = "Gmail Account:"
+        '
+        'TextBox3
+        '
+        Me.TextBox3.Location = New System.Drawing.Point(95, 113)
+        Me.TextBox3.Name = "TextBox3"
+        Me.TextBox3.Size = New System.Drawing.Size(304, 20)
+        Me.TextBox3.TabIndex = 2
+        '
+        'TextBox2
+        '
+        Me.TextBox2.Location = New System.Drawing.Point(95, 68)
+        Me.TextBox2.Name = "TextBox2"
+        Me.TextBox2.Size = New System.Drawing.Size(304, 20)
+        Me.TextBox2.TabIndex = 1
+        '
+        'TextBox1
+        '
+        Me.TextBox1.Location = New System.Drawing.Point(95, 27)
+        Me.TextBox1.Name = "TextBox1"
+        Me.TextBox1.Size = New System.Drawing.Size(304, 20)
+        Me.TextBox1.TabIndex = 0
         '
         'AppSettings
         '
@@ -527,13 +541,14 @@ Partial Class AppSettings
         CType(Me.autoruninterval_btn, System.ComponentModel.ISupportInitialize).EndInit()
         Me.TabControl1.ResumeLayout(False)
         Me.Tab_ItemsJobs.ResumeLayout(False)
-        Me.GroupBox4.ResumeLayout(False)
-        Me.GroupBox4.PerformLayout()
+        Me.Job_or_Item_Selection.ResumeLayout(False)
+        Me.Job_or_Item_Selection.PerformLayout()
         Me.tab_email.ResumeLayout(False)
         Me.tab_email.PerformLayout()
         Me.ResumeLayout(False)
 
     End Sub
+
     Friend WithEvents Button1 As Button
     Friend WithEvents btnSave As Button
     Friend WithEvents Tab_HoursOptions As TabPage
@@ -547,6 +562,7 @@ Partial Class AppSettings
     Friend WithEvents rbItem As RadioButton
     Friend WithEvents rbJob As RadioButton
     Friend WithEvents TabPage2 As TabPage
+    Friend WithEvents chk_debugMode As CheckBox
     Friend WithEvents chk_syncElgibleVendor As CheckBox
     Friend WithEvents Tab_Sync As TabPage
     Friend WithEvents GroupBox2 As GroupBox
@@ -565,7 +581,7 @@ Partial Class AppSettings
     Friend WithEvents dtp_autoruntime As DateTimePicker
     Friend WithEvents TabControl1 As TabControl
     Friend WithEvents Tab_ItemsJobs As TabPage
-    Friend WithEvents GroupBox4 As GroupBox
+    Friend WithEvents Job_or_Item_Selection As GroupBox
     Friend WithEvents item_subItems_btn As RadioButton
     Friend WithEvents job_subJobs_btn As RadioButton
     Friend WithEvents tab_email As TabPage

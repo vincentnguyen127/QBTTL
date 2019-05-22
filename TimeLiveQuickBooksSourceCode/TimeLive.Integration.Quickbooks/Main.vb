@@ -15,11 +15,9 @@ Public Class MAIN
     Public Shared colonReplacer = "->"
     Public Shared TIMERTHREAD As Threading.Thread
 
-
-
+    Private LoggedIn As Boolean
     Private Type As Integer
     Private emailBody As String
-
     Private cur_week
 
     Dim customer_qbtotl As QBtoTL_Customer = New QBtoTL_Customer
@@ -55,9 +53,11 @@ Public Class MAIN
                 If DialogResult.OK = newForm.ShowDialog() Then
                     p_token = newForm.ReturnValue1
                     p_AccountId = newForm.ReturnValue2
+                    LoggedIn = True
                     History("You are logged into TimeLive", "n")
                     History("", "n")
                 Else
+                    LoggedIn = False
                     History("You will need to log into TimeLive before using this utility.", "n")
                     History("", "n")
                 End If
@@ -70,11 +70,8 @@ Public Class MAIN
             Dim NextRunDateTime As Date = Convert.ToDateTime(My.Settings.AutoRunTime)
             NextProcessingTime.Text = "Auto Processing Time: " + NextRunDateTime.ToString("MM/dd/yy HH:mm")
 
-            '------------
-            Dim RetunValue As Integer
             Type = 10
 
-            Dim ItemLastSync As DateTime
             Dim ReadItems As Integer = 0
             'hide all tabstrips
             TabPageCustomers.Visible = False
@@ -100,9 +97,9 @@ Public Class MAIN
                 ReadItems = display_TimeEntry_UI()
             End If
 
-            History(ReadItems.ToString() + " items were read from Quickbooks", "n")
-
-            '-------------------------------
+            If LoggedIn Then
+                History(ReadItems.ToString() + " items were read from Quickbooks", "n")
+            End If
 
         Catch EX As Exception
             MsgBox(EX.Message)
@@ -160,9 +157,6 @@ Public Class MAIN
     End Sub
 
     Public Sub TIMERTHREAD_func()
-        'TIMERTHREAD _
-        'As New Threading.Thread(
-        '    AddressOf TIMERMULTITHREADING)
         TIMERTHREAD = New Threading.Thread(AddressOf TIMERMULTITHREADING)
         TIMERTHREAD.Start()
     End Sub
@@ -346,6 +340,54 @@ Public Class MAIN
         History(relationship, "c")
     End Sub
 
+    Public Sub History(ByVal input As String, Type As String) ' Change to Type to "Char" after testing
+        If My.Settings.DebugMode Then
+            ' Still need to test this
+            Select Case Type
+                Case "n"
+                    StatusWindow.Text += vbNewLine + ">> " + input
+                Case "N"
+                    Dim s As String = vbNewLine + "***********************" + vbNewLine + ">> " + input + vbNewLine + "***********************"
+                    'StatusWindow.Text += vbNewLine + "***********************"
+                    'StatusWindow.Text += vbNewLine + ">> " + input
+                    'StatusWindow.Text += vbNewLine + "***********************"
+                    StatusWindow.Text += s
+                Case "c"
+                    StatusWindow.Text += ", " + input
+                Case "C"
+                    StatusWindow.Text += ", " + input
+                Case "i"
+                    StatusWindow.Text += vbNewLine + vbTab + "- " + input
+                Case "I"
+                    Dim s As String = vbNewLine + "***********************" + vbNewLine + "- " + input + vbNewLine + "***********************"
+                    'StatusWindow.Text += vbNewLine + vbTab + "***********************"
+                    'StatusWindow.Text += vbNewLine + vbTab + "- " + input
+                    'StatusWindow.Text += vbNewLine + vbTab + "***********************"
+                    StatusWindow.Text += s
+            End Select
+
+            'If String.Compare("n", Type, False) = 0 Then
+            '    StatusWindow.Text += vbNewLine + ">> " + input
+            'ElseIf String.Compare("N", Type, False) = 0 Then
+            '    StatusWindow.Text += vbNewLine + "***********************"
+            '    StatusWindow.Text += vbNewLine + ">> " + input
+            '    StatusWindow.Text += vbNewLine + "***********************"
+            'ElseIf String.Compare("c", Type, False) = 0 Then
+            '    StatusWindow.Text += ", " + input
+            'ElseIf String.Compare("C", Type, False) = 0 Then
+            '    StatusWindow.Text += ", " + input
+            'ElseIf String.Compare("i", Type, False) = 0 Then
+            '    StatusWindow.Text += vbNewLine + vbTab + "- " + input
+            'ElseIf String.Compare("I", Type, False) = 0 Then
+            '    StatusWindow.Text += vbNewLine + vbTab + "***********************"
+            '    StatusWindow.Text += vbNewLine + vbTab + "- " + input
+            '    StatusWindow.Text += vbNewLine + vbTab + "***********************"
+            'End If
+
+            StatusWindow.SelectionStart = StatusWindow.TextLength
+            StatusWindow.ScrollToCaret()
+        End If
+    End Sub
 
     Private Function AutoExecute() As Integer
         Dim ItemsProcessed As Integer = 0
@@ -537,6 +579,10 @@ Public Class MAIN
 
 
     Private Function display_TimeEntry_UI()
+        If Not LoggedIn Then
+            Return 0
+        End If
+
         Dim ItemLastSync As DateTime
         ' Delete all rows and columns from the DataGridView's except the "Check Name" column in DataGridView1
         Try
@@ -616,11 +662,16 @@ Public Class MAIN
     Private Function display_UI() Handles QBtoTLCustomerRadioButton.CheckedChanged, QBtoTLEmployeeRadioButton.CheckedChanged,
                                            QBtoTLVendorRadioButton.CheckedChanged, QBtoTLJobItemRadioButton.CheckedChanged,
                                            RefreshCustomers.Click, RefreshEmployees.Click, RefreshVendors.Click, RefreshJobsOrItems.Click
+        If Not LoggedIn Then
+            Return 0
+        End If
+
         Dim ItemLastSync As DateTime
         Dim lastSync As String
         Dim Data
         Dim attribute As String
         Dim QBtoTLRadioButton As RadioButton
+
         'TransferTimeButton.Visible = False
         TimeEntrySelectAll.Visible = False
         ' Unselect the select all check box
@@ -1174,13 +1225,11 @@ Public Class MAIN
         'End If
     End Sub
 
-    Private Sub btnclose_Click(sender As Object, e As EventArgs) Handles bntclose.Click
-        'TransferTimeButton.Visible = False
-        TimeEntrySelectAll.Visible = False
-        Close()
-    End Sub
-
     Private Sub btnRefreshTimeTransfer_Click(sender As Object, e As EventArgs) Handles RefreshTimeTransfer.Click
+        If Not LoggedIn Then
+            Exit Sub
+        End If
+
         'TransferTimeButton.Visible = True
         TimeEntrySelectAll.Visible = True
         TimeEntrySelectAll.Checked = True
@@ -1220,6 +1269,10 @@ Public Class MAIN
     End Sub
 
     Private Sub btnTransfer_Click(sender As Object, e As EventArgs) Handles btnTransfer.Click
+        If Not LoggedIn Then
+            Exit Sub
+        End If
+
         Dim ItemsProcessed As Integer = 0
 
         'When processing customers
@@ -1407,45 +1460,51 @@ Public Class MAIN
     'Returns a list Of the full names For the selected TimeLive entities
     Private Function TL_Set_Selected_Items()
         Dim TL_Names As List(Of String) = New List(Of String)
-        For Each row As DataGridViewRow In DataGridView1.Rows
-            If row.Cells("Name").Value IsNot Nothing And row.Cells("ckBox").Value Then
-                Dim full_name As String = row.Cells("Name").Value.ToString.Replace(MAIN.colonReplacer, ":")
-                TL_Names.Add(full_name)
-                History("Item selected for processing: " + row.Cells("Name").Value, "n")
-            End If
-        Next
+        If DataGridView1 IsNot Nothing Then
+            For Each row As DataGridViewRow In DataGridView1.Rows
+                If row.Cells("Name").Value IsNot Nothing And row.Cells("ckBox").Value Then
+                    Dim full_name As String = row.Cells("Name").Value.ToString.Replace(MAIN.colonReplacer, ":")
+                    TL_Names.Add(full_name)
+                    History("Item selected for processing: " + row.Cells("Name").Value, "n")
+                End If
+            Next
+        End If
 
         Return TL_Names
     End Function
 
     Private Sub QB_Set_Selected_Customer()
-        For Each row As DataGridViewRow In DataGridView1.Rows
-            If row.Cells("Name").Value IsNot Nothing And row.Cells("ckBox").Value = True Then
-                customerData.DataArray.ForEach(
-                    Sub(customer)
-                        If customer.QB_Name = row.Cells("Name").Value.ToString Then
-                            customer.RecSelect = True
-                        End If
-                    End Sub
-                )
-                History("Customers selected for processing: " + row.Cells("Name").Value, "n")
-            End If
-        Next
+        If DataGridView1 IsNot Nothing Then
+            For Each row As DataGridViewRow In DataGridView1.Rows
+                If row.Cells("Name").Value IsNot Nothing And row.Cells("ckBox").Value = True Then
+                    customerData.DataArray.ForEach(
+                        Sub(customer)
+                            If customer.QB_Name = row.Cells("Name").Value.ToString Then
+                                customer.RecSelect = True
+                            End If
+                        End Sub
+                    )
+                    History("Customers selected for processing: " + row.Cells("Name").Value, "n")
+                End If
+            Next
+        End If
     End Sub
 
     Private Sub Set_Selected_Employee()
-        For Each row As DataGridViewRow In DataGridView1.Rows
-            If row.Cells("Name").Value IsNot Nothing And row.Cells("ckBox").Value = True Then
-                employeeData.DataArray.ForEach(
-                    Sub(employee)
-                        If employee.QB_Name = row.Cells("Name").Value.ToString Then
-                            employee.RecSelect = True
-                        End If
-                    End Sub
-                )
-                History("Employees selected for processing: " + row.Cells("Name").Value, "n")
-            End If
-        Next
+        If DataGridView1 IsNot Nothing Then
+            For Each row As DataGridViewRow In DataGridView1.Rows
+                If row.Cells("Name").Value IsNot Nothing And row.Cells("ckBox").Value = True Then
+                    employeeData.DataArray.ForEach(
+                        Sub(employee)
+                            If employee.QB_Name = row.Cells("Name").Value.ToString Then
+                                employee.RecSelect = True
+                            End If
+                        End Sub
+                    )
+                    History("Employees selected for processing: " + row.Cells("Name").Value, "n")
+                End If
+            Next
+        End If
     End Sub
 
     'For Time Transfer
@@ -1465,50 +1524,58 @@ Public Class MAIN
     End Sub
 
     Private Sub Set_Selected_Vendor()
-        For Each row As DataGridViewRow In DataGridView1.Rows
-            If row.Cells("Name").Value IsNot Nothing And row.Cells("ckBox").Value Then
-                vendorData.DataArray.ForEach(
-                    Sub(vendor)
-                        If vendor.QB_Name = row.Cells("Name").Value.ToString Then
-                            vendor.RecSelect = True
-                        End If
-                    End Sub
-                )
-                History("Vendors selected for processing: " + row.Cells("Name").Value, "n")
-            End If
-        Next
+        If DataGridView1 IsNot Nothing Then
+            For Each row As DataGridViewRow In DataGridView1.Rows
+                If row.Cells("Name").Value IsNot Nothing And row.Cells("ckBox").Value Then
+                    vendorData.DataArray.ForEach(
+                        Sub(vendor)
+                            If vendor.QB_Name = row.Cells("Name").Value.ToString Then
+                                vendor.RecSelect = True
+                            End If
+                        End Sub
+                    )
+                    History("Vendors selected for processing: " + row.Cells("Name").Value, "n")
+                End If
+            Next
+        End If
     End Sub
 
     Private Sub Set_Selected_Job_Item()
-        For Each row As DataGridViewRow In DataGridView1.Rows
-            If row.Cells("Name").Value IsNot Nothing And row.Cells("ckBox").Value = True Then
-                JobData.DataArray.ForEach(
-                    Sub(job)
-                        Dim full_name As String = row.Cells("Full Name").Value.ToString.Replace(MAIN.colonReplacer, ":")
-                        If job.FullName = full_name Then
-                            job.RecSelect = True
-                        End If
-                    End Sub
-                )
-                History("Job or items selected for processing: " + row.Cells("Full Name").Value, "n")
-            End If
-        Next
+        If DataGridView1 IsNot Nothing Then
+            For Each row As DataGridViewRow In DataGridView1.Rows
+                If row.Cells("Name").Value IsNot Nothing And row.Cells("ckBox").Value = True Then
+                    JobData.DataArray.ForEach(
+                        Sub(job)
+                            Dim full_name As String = row.Cells("Full Name").Value.ToString.Replace(MAIN.colonReplacer, ":")
+                            If job.FullName = full_name Then
+                                job.RecSelect = True
+                            End If
+                        End Sub
+                    )
+                    History("Job or items selected for processing: " + row.Cells("Full Name").Value, "n")
+                End If
+            Next
+        End If
     End Sub
 
     Private Sub selectall_checkbox(sender As Object, e As EventArgs) Handles SelectAllCheckBox.CheckedChanged
-        For Each row As DataGridViewRow In DataGridView1.Rows
-            If row.Cells("Name").Value IsNot Nothing Then
-                row.Cells("ckBox").Value = SelectAllCheckBox.Checked
-            End If
-        Next
+        If DataGridView1 IsNot Nothing Then
+            For Each row As DataGridViewRow In DataGridView1.Rows
+                If row.Cells("Name").Value IsNot Nothing Then
+                    row.Cells("ckBox").Value = SelectAllCheckBox.Checked
+                End If
+            Next
+        End If
     End Sub
 
     Private Sub timeEntry_selectall_checkbox(sender As Object, e As EventArgs) Handles TimeEntrySelectAll.CheckedChanged
-        For Each row As DataGridViewRow In DataGridView2.Rows
-            If row.Cells("Employee").Value IsNot Nothing Then
-                row.Cells("ckBox").Value = TimeEntrySelectAll.Checked
-            End If
-        Next
+        If DataGridView2 IsNot Nothing Then
+            For Each row As DataGridViewRow In DataGridView2.Rows
+                If row.Cells("Employee").Value IsNot Nothing Then
+                    row.Cells("ckBox").Value = TimeEntrySelectAll.Checked
+                End If
+            Next
+        End If
     End Sub
 
     Public Sub LoadSelectedTimeEntryItems(AccountEmployeeId As String, EmployeeName As String, ByRef DataGridView As DataGridView, ByVal StartDate As DateTime, ByVal EndDate As DateTime, Optional combine As Boolean = False)
@@ -1651,7 +1718,7 @@ Public Class MAIN
         'dpEndDate.Value = sat.AddDays(5).
         cur_week -= 1
 
-        Dim sat = FirstDateOfWeek(Now.Year.ToString, cur_week, DayOfWeek.Saturday)
+        Dim sat = firstdateofweek(Now.Year.ToString, cur_week, DayOfWeek.Saturday)
 
         'Dim sat As Date = GetFirstDayOfWeek(Now.Year, cur_week)
         If Now.DayOfWeek.CompareTo(sat.DayOfWeek) > 0 Then
@@ -1700,33 +1767,33 @@ Public Class MAIN
         My.Settings.Save()
     End Sub
 
-    Public Sub History(ByVal input As String, Type As String)
-        If String.Compare("n", Type, False) = 0 Then
-            StatusWindow.Text += vbNewLine + ">> " + input
-        End If
-        If String.Compare("N", Type, False) = 0 Then
-            StatusWindow.Text += vbNewLine + "***********************"
-            StatusWindow.Text += vbNewLine + ">> " + input
-            StatusWindow.Text += vbNewLine + "***********************"
-        End If
-        If String.Compare("c", Type, False) = 0 Then
-            StatusWindow.Text += ", " + input
-        End If
-        If String.Compare("C", Type, False) = 0 Then
-            StatusWindow.Text += ", " + input
-        End If
-        If String.Compare("i", Type, False) = 0 Then
-            StatusWindow.Text += vbNewLine + vbTab + "- " + input
-        End If
-        If String.Compare("I", Type, False) = 0 Then
-            StatusWindow.Text += vbNewLine + vbTab + "***********************"
-            StatusWindow.Text += vbNewLine + vbTab + "- " + input
-            StatusWindow.Text += vbNewLine + vbTab + "***********************"
-        End If
+    'Public Sub History(ByVal input As String, Type As String)
+    '    If String.Compare("n", Type, False) = 0 Then
+    '        StatusWindow.Text += vbNewLine + ">> " + input
+    '    End If
+    '    If String.Compare("N", Type, False) = 0 Then
+    '        StatusWindow.Text += vbNewLine + "***********************"
+    '        StatusWindow.Text += vbNewLine + ">> " + input
+    '        StatusWindow.Text += vbNewLine + "***********************"
+    '    End If
+    '    If String.Compare("c", Type, False) = 0 Then
+    '        StatusWindow.Text += ", " + input
+    '    End If
+    '    If String.Compare("C", Type, False) = 0 Then
+    '        StatusWindow.Text += ", " + input
+    '    End If
+    '    If String.Compare("i", Type, False) = 0 Then
+    '        StatusWindow.Text += vbNewLine + vbTab + "- " + input
+    '    End If
+    '    If String.Compare("I", Type, False) = 0 Then
+    '        StatusWindow.Text += vbNewLine + vbTab + "***********************"
+    '        StatusWindow.Text += vbNewLine + vbTab + "- " + input
+    '        StatusWindow.Text += vbNewLine + vbTab + "***********************"
+    '    End If
 
-        StatusWindow.SelectionStart = StatusWindow.TextLength
-        StatusWindow.ScrollToCaret()
-    End Sub
+    '    StatusWindow.SelectionStart = StatusWindow.TextLength
+    '    StatusWindow.ScrollToCaret()
+    'End Sub
 
 
 
@@ -1740,11 +1807,29 @@ Public Class MAIN
     End Sub
 
     Private Sub loginbtn_Click(sender As Object, e As EventArgs) Handles loginbtn.Click
+        Dim readItems As Integer
         If p_token Is Nothing Then
             Using newForm = New Login()
                 If DialogResult.OK = newForm.ShowDialog() Then
+                    LoggedIn = True
                     p_token = newForm.ReturnValue1
                     p_AccountId = newForm.ReturnValue2
+
+                    'for type Customers, Employees, Vendors, Jobs/Subjobs, and Items/Subitems
+                    If Type >= 10 And Type < 15 Then
+                        ReadItems = display_UI()
+                    End If
+
+                    'for type Time Items
+                    ' Might add this to display_UI() or as its own private function
+                    If Type = 20 Then
+                        'ReadItems = display_TimeEntry_UI()
+                        ReadItems = display_TimeEntry_UI()
+                    End If
+
+                    If LoggedIn Then
+                        History(ReadItems.ToString() + " items were read from Quickbooks", "n")
+                    End If
                 End If
             End Using
         Else

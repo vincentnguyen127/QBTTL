@@ -293,7 +293,6 @@ Namespace My
         End Property
 
 
-
         <Global.System.Configuration.UserScopedSettingAttribute(),
          DebuggerNonUserCode(),
          Global.System.Configuration.DefaultSettingValueAttribute("")>
@@ -303,6 +302,19 @@ Namespace My
             End Get
             Set
                 Me("SyncExpenseEntries") = Value
+            End Set
+        End Property
+
+
+        <Global.System.Configuration.UserScopedSettingAttribute(),
+         DebuggerNonUserCode(),
+         Global.System.Configuration.DefaultSettingValueAttribute("")>
+        Public Property DebugMode() As String
+            Get
+                Return CType(Me("DebugMode"), String)
+            End Get
+            Set
+                Me("DebugMode") = Value
             End Set
         End Property
 

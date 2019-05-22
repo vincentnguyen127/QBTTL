@@ -2,6 +2,7 @@
 
     Public which_rbj As Integer
     Public job_item_btn_option As Integer
+    'Public debug_mode As Boolean
 
     Private Sub Settings_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         dtp_autoruntime.Format = DateTimePickerFormat.Custom
@@ -67,6 +68,12 @@
             chk_syncElgibleVendor.Checked = Convert.ToBoolean(My.Settings.SyncElbVendor)
         End If
 
+        If My.Settings.DebugMode = Nothing Then
+            chk_debugMode.Checked = True
+        Else
+            chk_debugMode.Checked = Convert.ToBoolean(My.Settings.DebugMode)
+        End If
+
         If My.Settings.SyncJobOrItem = Nothing Then
             chk_jobsitems.Checked = False
         Else
@@ -88,13 +95,13 @@
         End If
 
         '----------Job, Item Settings (Project, task) data----
-        If My.Settings.JobOrItemHierarchy = "" Then
+        If My.Settings.JobORItemHierarchy = "" Then
             job_subJobs_btn.Checked = True
         Else
-            If My.Settings.JobOrItemHierarchy = 0 Then
+            If My.Settings.JobORItemHierarchy = 0 Then
                 job_subJobs_btn.Checked = True
             End If
-            If My.Settings.JobOrItemHierarchy = 1 Then
+            If My.Settings.JobORItemHierarchy = 1 Then
                 item_subItems_btn.Checked = True
             End If
         End If
@@ -151,7 +158,6 @@
         ' saving all the parameters 
         My.Settings.JobHierarchy = which_rbj
 
-
         '------Save job or item data transfer options
         If job_subJobs_btn.Checked Then
             job_item_btn_option = 0
@@ -159,11 +165,13 @@
             job_item_btn_option = 1
         End If
 
-        My.Settings.JobOrItemHierarchy = job_item_btn_option
+        My.Settings.JobORItemHierarchy = job_item_btn_option
 
         My.Settings.QBClass = cbClass.SelectedIndex
         My.Settings.QBPayrollItem = cbPayrollItem.SelectedIndex
         My.Settings.TransferToPayroll = chkPayrollTimesheet.Checked
+
+        My.Settings.DebugMode = chk_debugMode.Checked
         My.Settings.SyncElbVendor = chk_syncElgibleVendor.Checked
         My.Settings.SyncJobOrItem = chk_jobsitems.Checked
 

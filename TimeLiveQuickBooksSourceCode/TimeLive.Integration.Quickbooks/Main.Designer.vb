@@ -80,7 +80,6 @@ Partial Class MAIN
         Me.dpStartDate = New System.Windows.Forms.DateTimePicker()
         Me.nextWeek = New System.Windows.Forms.Button()
         Me.btn_currentweek = New System.Windows.Forms.Button()
-        Me.bntclose = New System.Windows.Forms.Button()
         Me.btnTransfer = New System.Windows.Forms.Button()
         Me.JobItemSyncDirection.SuspendLayout()
         Me.SplitContainer1.Panel1.SuspendLayout()
@@ -352,7 +351,6 @@ Partial Class MAIN
         Me.settingbtn.Size = New System.Drawing.Size(50, 50)
         Me.settingbtn.Text = "Settings"
         Me.settingbtn.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText
-        Me.settingbtn.ToolTipText = "Clear Log"
         '
         'loginbtn
         '
@@ -710,22 +708,11 @@ Partial Class MAIN
         Me.btn_currentweek.Text = "Current Week"
         Me.btn_currentweek.UseVisualStyleBackColor = True
         '
-        'bntclose
-        '
-        Me.bntclose.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.bntclose.ImeMode = System.Windows.Forms.ImeMode.NoControl
-        Me.bntclose.Location = New System.Drawing.Point(635, 583)
-        Me.bntclose.Name = "bntclose"
-        Me.bntclose.Size = New System.Drawing.Size(75, 23)
-        Me.bntclose.TabIndex = 47
-        Me.bntclose.Text = "Close"
-        Me.bntclose.UseVisualStyleBackColor = True
-        '
         'btnTransfer
         '
         Me.btnTransfer.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.btnTransfer.ImeMode = System.Windows.Forms.ImeMode.NoControl
-        Me.btnTransfer.Location = New System.Drawing.Point(543, 583)
+        Me.btnTransfer.Location = New System.Drawing.Point(627, 583)
         Me.btnTransfer.Name = "btnTransfer"
         Me.btnTransfer.Size = New System.Drawing.Size(75, 23)
         Me.btnTransfer.TabIndex = 46
@@ -743,7 +730,6 @@ Partial Class MAIN
         Me.Controls.Add(Me.ToolStrip1)
         Me.Controls.Add(Me.ProgressBar1)
         Me.Controls.Add(Me.AttributeTabControl)
-        Me.Controls.Add(Me.bntclose)
         Me.Controls.Add(Me.btnTransfer)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
@@ -840,6 +826,5 @@ Partial Class MAIN
     Friend WithEvents dpStartDate As DateTimePicker
     Friend WithEvents nextWeek As Button
     Friend WithEvents btn_currentweek As Button
-    Friend WithEvents bntclose As Button
     Friend WithEvents btnTransfer As Button
 End Class
