@@ -629,26 +629,30 @@ Public Class MAIN
 
         History("Synchonizing time entries items since:   " + ItemLastSync.ToString(), "n")
 
-        Dim objEmployeeServices As New Services.TimeLive.Employees.Employees
-        Dim authentication As New Services.TimeLive.Employees.SecuredWebServiceHeader
-        authentication.AuthenticatedToken = p_token
-        objEmployeeServices.SecuredWebServiceHeaderValue = authentication
-        Dim dv As New DataView(objEmployeeServices.GetEmployeesData)
+        ' Add all employees to selectedEmployeeData if it is empty
+        If selectedEmployeeData.NoItems = 0 Then
+            Dim objEmployeeServices As New Services.TimeLive.Employees.Employees
+            Dim authentication As New Services.TimeLive.Employees.SecuredWebServiceHeader
+            authentication.AuthenticatedToken = p_token
+            objEmployeeServices.SecuredWebServiceHeaderValue = authentication
+            Dim dv As New DataView(objEmployeeServices.GetEmployeesData)
 
-        Dim employees As New DataTable
-        employees = objEmployeeServices.GetEmployeesData
+            Dim employees As New DataTable
+            employees = objEmployeeServices.GetEmployeesData
 
-        For Each row As DataRow In employees.Rows
-            selectedEmployeeData.NoItems = selectedEmployeeData.NoItems + 1
-            selectedEmployeeData.DataArray.Add(New TLtoQB_TimeEntry.Employee(True, row("FullName"), row("AccountEmployeeId")))
-        Next
+            For Each row As DataRow In employees.Rows
+                selectedEmployeeData.NoItems += 1
+                selectedEmployeeData.DataArray.Add(New TLtoQB_TimeEntry.Employee(True, row("FullName"), row("AccountEmployeeId")))
+            Next
+        End If
+
         Dim items_read As Integer = selectedEmployeeData.NoItems
         For Each element As TLtoQB_TimeEntry.Employee In selectedEmployeeData.DataArray
             'History("Debug:   " + element.RecSelect.ToString(), "n")
             DataGridView1.Rows.Add(element.RecSelect, element.FullName.ToString(), element.AccountEmployeeId.ToString())
         Next
 
-        Time_Entry_Times()
+            Time_Entry_Times()
 
         System.Threading.Thread.Sleep(150)
         System.Windows.Forms.Application.DoEvents()
