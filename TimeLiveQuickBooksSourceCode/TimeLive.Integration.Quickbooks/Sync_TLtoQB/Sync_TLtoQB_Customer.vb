@@ -11,6 +11,7 @@ Public Class Sync_TLtoQB_Customer
                               Optional ByVal UI As Boolean = True, Optional ByVal nameList As List(Of String) = Nothing)
         Dim numSynced As Integer = 0
         My.Forms.MAIN.History("Syncing Clients Data", "n")
+
         Try
             ' connect to Timelive
             Dim objClientServices As New Services.TimeLive.Clients.Clients
@@ -21,7 +22,10 @@ Public Class Sync_TLtoQB_Customer
             objClientArray = objClientServices.GetClients()
             Dim objClient As New Services.TimeLive.Clients.Client
 
-            If Not MainForm Is Nothing Then My.Forms.MAIN.ProgressBar1.Maximum = objClientArray.Length
+            If Not MainForm Is Nothing Then
+                MainForm.ProgressBar1.Maximum = objClientArray.Length
+                MainForm.ProgressBar1.Value = 0
+            End If
 
             For n As Integer = 0 To objClientArray.Length - 1
                 objClient = objClientArray(n)
@@ -31,7 +35,7 @@ Public Class Sync_TLtoQB_Customer
                 If create Then
                     numSynced += If(checkQBCustomerExist(objClient.ClientName.ToString, clientID, objClient, UI), 0, 1)
                 End If
-                If Not MainForm Is Nothing Then My.Forms.MAIN.ProgressBar1.Value += 1
+                If Not MainForm Is Nothing Then MainForm.ProgressBar1.Value += 1
             Next
 
         Catch ex As Exception

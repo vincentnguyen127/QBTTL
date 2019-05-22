@@ -283,7 +283,7 @@ Used to sort self-referenced table's rows
  Note: Currently not used, using SyncJobsSubJobData
  </summary>
 </member>
-<member name="M:TimeLive.Quickbooks.Integrator.Sync_TLtoQB_JoborItem.SyncJobsSubJobData(System.String,TimeLive.Quickbooks.Integrator.MAIN,System.Boolean,System.Collections.Generic.List{System.String})">
+<member name="M:TimeLive.Quickbooks.Integrator.Sync_TLtoQB_JoborItem.SyncJobsSubJobData(System.String,TimeLive.Quickbooks.Integrator.MAIN,System.Boolean,System.Collections.Generic.List{System.String},System.Boolean)">
  <summary>
  Sync the Jobs from QB. Print out Projects and Tasks in TL but not QB
  </summary>
@@ -296,7 +296,7 @@ Used to sort self-referenced table's rows
  <param name="ParentName"></param>
  <returns></returns>
 </member>
-<member name="M:TimeLive.Quickbooks.Integrator.Sync_TLtoQB_JoborItem.checkQBJobSubJobExist(System.String@,System.String@,System.Int32,System.Boolean,System.String)">
+<member name="M:TimeLive.Quickbooks.Integrator.Sync_TLtoQB_JoborItem.checkQBJobSubJobExist(System.String@,System.String@,System.Int32,System.Boolean,System.String,System.Boolean)">
  <summary>
  Verifies a Job exists in QB, adding it to the Data Table if necessary
  </summary>

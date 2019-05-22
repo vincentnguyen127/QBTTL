@@ -20,8 +20,11 @@ Public Class Sync_TLtoQB_Vendor
             Dim objEmployeeArray() As Object
             objEmployeeArray = objEmployeeServices.GetEmployees
             Dim objEmployee As New Services.TimeLive.Employees.Employee
-            If Not My.Forms.MAIN Is Nothing Then My.Forms.MAIN.ProgressBar1.Maximum = objEmployeeArray.Length
-
+            If MainForm IsNot Nothing Then
+                MainForm.ProgressBar1.Maximum = objEmployeeArray.Length
+                MainForm.ProgressBar1.Value = 0
+            End If
+            My.Forms.MAIN.ProgressBar1.Value = 0
             For n As Integer = 0 To objEmployeeArray.Length - 1
                 objEmployee = objEmployeeArray(n)
                 With objEmployee
@@ -30,7 +33,7 @@ Public Class Sync_TLtoQB_Vendor
                         numSynced += If(checkQBVendorExist(.EmployeeName.ToString, .EmployeeId, objEmployee, UI), 0, 1)
                     End If
                 End With
-                If Not My.Forms.MAIN Is Nothing Then My.Forms.MAIN.ProgressBar1.Value += 1
+                If Not MainForm Is Nothing Then MainForm.ProgressBar1.Value += 1
             Next
         Catch ex As Exception
             If UI Then

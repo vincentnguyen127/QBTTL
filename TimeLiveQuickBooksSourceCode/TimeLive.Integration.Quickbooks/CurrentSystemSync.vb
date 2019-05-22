@@ -38,7 +38,7 @@ Public Class CurrentSystemSync
             ' Sync Jobs/SubJobs
             Dim syncJobs As New Sync_TLtoQB_JoborItem
             If MsgBox("Sync Jobs/SubJobs?", MsgBoxStyle.YesNo, "Warning!") = MsgBoxResult.Yes Then
-                syncJobs.SyncJobsSubJobData(p_token)
+                syncJobs.SyncJobsSubJobData(p_token, , , , True)
             End If
 
             ' Sync Relationships
@@ -55,24 +55,18 @@ Public Class CurrentSystemSync
     ''' Gets Time Entries from QB
     ''' </summary>
     Public Sub GetTime()
-        'Dim sessManager As QBSessionManager
-
         My.Forms.MAIN.History("Searching in QB for all time: ", "i")
 
         Try
-            'sessManager = New QBSessionManagerClass()
             Dim msgSetRq As IMsgSetRequest = MAIN.SESSMANAGER.CreateMsgSetRequest("US", 2, 0)
 
             msgSetRq.Attributes.OnError = ENRqOnError.roeContinue
-            'Dim TimeQueryRq As ICustomerQuery = msgSetRq.AppendCustomerQueryRq
 
             Dim TimeQueryRq As ITimeTrackingQuery = msgSetRq.AppendTimeTrackingQueryRq
 
             Dim FromDate As New DateTime(2018, 1, 1, 0, 0, 0)
             TimeQueryRq.ORTimeTrackingTxnQuery.TimeTrackingTxnFilter.ORDateRangeFilter.ModifiedDateRangeFilter.FromModifiedDate.SetValue(FromDate, True)
 
-            'sessManager.OpenConnection("App", "TimeLive Quickbooks")
-            'sessManager.BeginSession("", ENOpenMode.omDontCare)
             Dim msgSetRs As IMsgSetResponse = MAIN.SESSMANAGER.DoRequests(msgSetRq)
             Dim response As IResponse = msgSetRs.ResponseList.GetAt(0)
             Dim TimeRetList As ITimeTrackingRetList
@@ -95,13 +89,7 @@ Public Class CurrentSystemSync
             End If
 
         Catch ex As Exception
-            'MAIN.QUITQBSESSION()
             Throw ex
-            'Finally
-            '    If Not sessManager Is Nothing Then
-            '       sessManager.EndSession()
-            '       sessManager.CloseConnection()
-            '    End If
         End Try
     End Sub
 

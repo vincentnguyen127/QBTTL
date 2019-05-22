@@ -48,6 +48,8 @@ Public Class MAIN
         Try
             VALIDATEQBSESSION()
             Me.Show()
+            ' Only show StatusWindow when in Debug Mode
+            SplitContainer2.Panel2Collapsed = Not Convert.ToBoolean(My.Settings.DebugMode)
             History("Welcome to QB2TL Sync by Telrium", "n")
             Using newForm = New Login()
                 If DialogResult.OK = newForm.ShowDialog() Then
@@ -1205,9 +1207,6 @@ Public Class MAIN
             End If
         End Using
 
-
-
-
         Type = TypeSelected
         'If token Is Nothing Then
         'MsgBox("Please Login")
@@ -1226,6 +1225,7 @@ Public Class MAIN
         Else
             cbWageType.SelectedIndex = My.Settings.QBClass
         End If
+
         'End If
     End Sub
 
