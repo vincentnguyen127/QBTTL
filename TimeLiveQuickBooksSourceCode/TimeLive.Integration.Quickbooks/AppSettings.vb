@@ -171,7 +171,7 @@
         My.Settings.QBPayrollItem = cbPayrollItem.SelectedIndex
         My.Settings.TransferToPayroll = chkPayrollTimesheet.Checked
 
-        My.Settings.DebugMode = chk_debugMode.Checked
+        My.Settings.DebugMode = Convert.ToString(chk_debugMode.Checked)
 
         ' Only show StatusWindow when in Debug Mode
         MAIN.SplitContainer2.Panel2Collapsed = Not Convert.ToBoolean(My.Settings.DebugMode)

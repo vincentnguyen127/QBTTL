@@ -49,7 +49,10 @@ Public Class MAIN
             VALIDATEQBSESSION()
             Me.Show()
             ' Only show StatusWindow when in Debug Mode
-            SplitContainer2.Panel2Collapsed = Not Convert.ToBoolean(My.Settings.DebugMode)
+            If My.Settings.DebugMode IsNot Nothing And Not My.Settings.DebugMode = "" Then
+                SplitContainer2.Panel2Collapsed = Not Convert.ToBoolean(My.Settings.DebugMode)
+            End If
+
             History("Welcome to QB2TL Sync by Telrium", "n")
             Using newForm = New Login()
                 If DialogResult.OK = newForm.ShowDialog() Then
@@ -67,44 +70,44 @@ Public Class MAIN
 
             Dim ChargingRelationship As New ChargingRelationship
 
-            'SPIN OFF THREAD FOR TIMER
-            TIMERTHREAD_func()
-            Dim NextRunDateTime As Date = Convert.ToDateTime(My.Settings.AutoRunTime)
-            NextProcessingTime.Text = "Auto Processing Time: " + NextRunDateTime.ToString("MM/dd/yy HH:mm")
+                'SPIN OFF THREAD FOR TIMER
+                TIMERTHREAD_func()
+                Dim NextRunDateTime As Date = Convert.ToDateTime(My.Settings.AutoRunTime)
+                NextProcessingTime.Text = "Auto Processing Time: " + NextRunDateTime.ToString("MM/dd/yy HH:mm")
 
-            Type = 10
+                Type = 10
 
-            Dim ReadItems As Integer = 0
-            'hide all tabstrips
-            TabPageCustomers.Visible = False
-            TabPageEmployees.Visible = False
-            TabPageTimeTransfer.Visible = False
+                Dim ReadItems As Integer = 0
+                'hide all tabstrips
+                TabPageCustomers.Visible = False
+                TabPageEmployees.Visible = False
+                TabPageTimeTransfer.Visible = False
 
-            Show()
-            DataGridView1.AutoSize = False
-            DataGridView1.AutoSizeRowsMode = False
-            DataGridView2.AutoSize = False
-            DataGridView2.AutoSizeRowsMode = False
-            btn_currentweek_Click(SENDER, E)
+                Show()
+                DataGridView1.AutoSize = False
+                DataGridView1.AutoSizeRowsMode = False
+                DataGridView2.AutoSize = False
+                DataGridView2.AutoSizeRowsMode = False
+                btn_currentweek_Click(SENDER, E)
 
-            'for type Customers, Employees, Vendors, Jobs/Subjobs, and Items/Subitems
-            If Type >= 10 And Type < 15 Then
-                ReadItems = display_UI()
-            End If
+                'for type Customers, Employees, Vendors, Jobs/Subjobs, and Items/Subitems
+                If Type >= 10 And Type < 15 Then
+                    ReadItems = display_UI()
+                End If
 
-            'for type Time Items
-            ' Might add this to display_UI() or as its own private function
-            If Type = 20 Then
-                'ReadItems = display_TimeEntry_UI()
-                ReadItems = display_TimeEntry_UI()
-            End If
+                'for type Time Items
+                ' Might add this to display_UI() or as its own private function
+                If Type = 20 Then
+                    'ReadItems = display_TimeEntry_UI()
+                    ReadItems = display_TimeEntry_UI()
+                End If
 
-            If LoggedIn Then
-                History(ReadItems.ToString() + " items were read from Quickbooks", "n")
-            End If
+                If LoggedIn Then
+                    History(ReadItems.ToString() + " items were read from Quickbooks", "n")
+                End If
 
-        Catch EX As Exception
-            MsgBox(EX.Message)
+            Catch EX As Exception
+                MsgBox(EX.Message)
             Me.Close()
         End Try
     End Sub
@@ -343,7 +346,8 @@ Public Class MAIN
     End Sub
 
     Public Sub History(ByVal input As String, Type As String) ' Change to Type to "Char" after testing
-        If My.Settings.DebugMode Then
+        Dim can_display As Boolean = If(My.Settings.DebugMode Is Nothing Or My.Settings.DebugMode = "", True, CBool(My.Settings.DebugMode))
+        If can_display Then
             ' Still need to test this
             Select Case Type
                 Case "n"
