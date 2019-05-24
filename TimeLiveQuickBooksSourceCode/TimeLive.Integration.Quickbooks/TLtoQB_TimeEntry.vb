@@ -12,10 +12,13 @@ Public Class TLtoQB_TimeEntry
         Public RecSelect As Boolean
         Public FullName As String
         Public AccountEmployeeId As String
-        Sub New(ByVal RecSelect_in As Boolean, ByVal FullName_in As String, ByVal AccountEmployeeId_in As String)
+        Public HoursWorked As Double
+        Sub New(ByVal RecSelect_in As Boolean, ByVal FullName_in As String,
+                ByVal AccountEmployeeId_in As String, Optional Hours_in As Double = 0)
             RecSelect = RecSelect_in
             FullName = FullName_in
             AccountEmployeeId = AccountEmployeeId_in
+            HoursWorked = Hours_in
         End Sub
     End Class
 
@@ -78,6 +81,7 @@ Public Class TLtoQB_TimeEntry
             End If
         End Sub
     End Class
+
 
     Public Function GetTimeEntryTLData(AccountEmployeeId As Integer, dpStartDate As DateTime, dpEndDate As DateTime,
                                        MainForm As MAIN, ByVal token As String, UI As Boolean) As TimeEntryDataStructureQB
@@ -393,9 +397,8 @@ Public Class TLtoQB_TimeEntry
 
     Private Function Get_QB_PayrollItemID(ByVal EmployeeQBID As String, ByVal jobQBID As String) As String
         Dim result As String
-        My.Forms.MAIN.History("Finding Payroll Item ID using QB employee ID and QB Job ID.", "n")
-        My.Forms.MAIN.History("QB Employee ID: " + EmployeeQBID, "i")
-        My.Forms.MAIN.History("QB Job ID: " + jobQBID, "i")
+        My.Forms.MAIN.History("Finding Payroll Item ID using QB employee ID " + EmployeeQBID +
+                              " and QB Job ID " + jobQBID + ".", "n")
         Dim payrollItemId As New QB_TL_IDsTableAdapters.ChargingRelationshipsTableAdapter
         Dim PayrollQBID As QB_TL_IDs.ChargingRelationshipsDataTable = payrollItemId.GetPayrollItemIDByEmployeeIDAndJob_SubJobID(EmployeeQBID, jobQBID)
         If PayrollQBID.Count > 1 Then

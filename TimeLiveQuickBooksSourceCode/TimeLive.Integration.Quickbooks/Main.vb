@@ -582,9 +582,7 @@ Public Class MAIN
         Throw New NotImplementedException()
     End Sub
 
-
-
-    Private Function display_TimeEntry_UI()
+    Private Function display_TimeEntry_UI() Handles RefreshTimeTransfer.Click
         If Not LoggedIn Then
             Return 0
         End If
@@ -622,7 +620,7 @@ Public Class MAIN
         col2.Name = "Name"
         DataGridView1.Columns.Add(col2)
         Dim col3 As New DataGridViewTextBoxColumn
-        col3.Name = "Employee ID"
+        col3.Name = "Hours"
         DataGridView1.Columns.Add(col3)
 
         SelectAllCheckBox.Checked = True
@@ -635,30 +633,43 @@ Public Class MAIN
 
         History("Synchonizing time entries items since:   " + ItemLastSync.ToString(), "n")
 
-        ' Add all employees to selectedEmployeeData if it is empty
-        If selectedEmployeeData.NoItems = 0 Then
-            Dim objEmployeeServices As New Services.TimeLive.Employees.Employees
-            Dim authentication As New Services.TimeLive.Employees.SecuredWebServiceHeader
-            authentication.AuthenticatedToken = p_token
-            objEmployeeServices.SecuredWebServiceHeaderValue = authentication
-            Dim dv As New DataView(objEmployeeServices.GetEmployeesData)
+        ' Add all employees with their total hours worked to selectedEmployeeData only if it is empty
+        selectedEmployeeData.NoItems = 0
+        selectedEmployeeData.DataArray = New List(Of TLtoQB_TimeEntry.Employee)
+        'If selectedEmployeeData.NoItems = 0 Then
+        ' Connect to TimeLive employees
+        Dim objEmployeeServices As New Services.TimeLive.Employees.Employees
+        Dim authentication As New Services.TimeLive.Employees.SecuredWebServiceHeader
+        authentication.AuthenticatedToken = p_token
+        objEmployeeServices.SecuredWebServiceHeaderValue = authentication
 
-            Dim employees As New DataTable
-            employees = objEmployeeServices.GetEmployeesData
+        ' Connect to TimeLive Time Entries to get total hours per employee
+        Dim objTimeTrackingServices As New Services.TimeLive.TimeEntries.TimeEntries
+        Dim authentication2 As New Services.TimeLive.TimeEntries.SecuredWebServiceHeader
+        authentication2.AuthenticatedToken = p_token
+        objTimeTrackingServices.SecuredWebServiceHeaderValue = authentication2
 
-            For Each row As DataRow In employees.Rows
-                selectedEmployeeData.NoItems += 1
-                selectedEmployeeData.DataArray.Add(New TLtoQB_TimeEntry.Employee(True, row("FullName"), row("AccountEmployeeId")))
-            Next
-        End If
+        Dim employees As New DataTable
+        employees = objEmployeeServices.GetEmployeesData
+
+        For Each row As DataRow In employees.Rows
+            selectedEmployeeData.NoItems += 1
+            Dim emplID = row("AccountEmployeeId")
+            Dim emplName = row("FullName")
+            Dim hoursWorked As Double = GetTotalHours(emplID, objTimeTrackingServices, dpStartDate.Value, dpEndDate.Value)
+            selectedEmployeeData.DataArray.Add(New TLtoQB_TimeEntry.Employee(True, row("FullName"), emplID, hoursWorked))
+            DataGridView1.Rows.Add(True, emplName, hoursWorked)
+        Next
+        'End If
 
         Dim items_read As Integer = selectedEmployeeData.NoItems
-        For Each element As TLtoQB_TimeEntry.Employee In selectedEmployeeData.DataArray
-            'History("Debug:   " + element.RecSelect.ToString(), "n")
-            DataGridView1.Rows.Add(element.RecSelect, element.FullName.ToString(), element.AccountEmployeeId.ToString())
-        Next
 
-            Time_Entry_Times()
+        'For Each element As TLtoQB_TimeEntry.Employee In selectedEmployeeData.DataArray
+        'History("Debug:   " + element.RecSelect.ToString(), "n")
+        'DataGridView1.Rows.Add(element.RecSelect, element.FullName.ToString(), element.HoursWorked.ToString())
+        'Next
+
+        Time_Entry_Times()
 
         System.Threading.Thread.Sleep(150)
         System.Windows.Forms.Application.DoEvents()
@@ -667,14 +678,14 @@ Public Class MAIN
         Return items_read
     End Function
 
-    ' Note: This is the new, up to date one that does TL -> QB too, replace display_UI with this once done testing
-    ' Note: This is the new, up to date one that does TL -> QB too, replace display_UI with this once done testing
     Private Function display_UI() Handles QBtoTLCustomerRadioButton.CheckedChanged, QBtoTLEmployeeRadioButton.CheckedChanged,
                                            QBtoTLVendorRadioButton.CheckedChanged, QBtoTLJobItemRadioButton.CheckedChanged,
                                            RefreshCustomers.Click, RefreshEmployees.Click, RefreshVendors.Click, RefreshJobsOrItems.Click
         If Not LoggedIn Then
             Return 0
         End If
+
+        UpdateTimeTransfer.Visible = False
 
         Dim ItemLastSync As DateTime
         Dim lastSync As String
@@ -1006,119 +1017,6 @@ Public Class MAIN
         ProgressBar1.Value = 0
         Return readItems
     End Function
-    ' Depreciated. Will remove once display_UI is fully integrated
-    'Private Function display_UI_Old()
-    '    Dim ItemLastSync As DateTime
-    '    Dim lastSync As String
-    '    Dim Data
-    '    Dim attribute As String
-
-    '    Select Case Type
-    '        ' Customers
-    '        Case 10
-    '            TabPageCustomers.Visible = True
-    '            AttributeTabControl.SelectedIndex = 0
-    '            lastSync = My.Settings.CustomerLastSync
-    '            customerData = customer_qbtotl.GetCustomerQBData(Me, True)
-    '            Data = customerData
-    '            attribute = "customer"
-
-    '        ' Employees
-    '        Case 11
-    '            TabPageEmployees.Visible = True
-    '            AttributeTabControl.SelectedIndex = 1
-    '            lastSync = My.Settings.EmployeeLastSync
-    '            employeeData = employee_qbtotl.GetEmployeeQBData(Me, True)
-    '            Data = employeeData
-    '            attribute = "employee"
-
-    '        ' Vendors
-    '        Case 12
-    '            TabPageVendor.Visible = True
-    '            AttributeTabControl.SelectedIndex = 2
-    '            lastSync = My.Settings.VendorLastSync
-    '            vendorData = vendor_qbtotl.GetVendorQBData(Me, True)
-    '            Data = vendorData
-    '            attribute = "vendor"
-
-    '        ' Jobs / Subjobs
-    '        Case 13
-    '            TabPageJobsItems.Visible = True
-    '            AttributeTabControl.SelectedIndex = 3
-    '            lastSync = My.Settings.JobLastSync
-    '            JobData = job_qbtotl.GetJobSubJobData(Me, p_token, True)
-    '            Data = JobData
-    '            attribute = "job/subjob"
-
-    '        ' Items / SubItems
-    '        Case 14
-    '            TabPageJobsItems.Visible = True
-    '            AttributeTabControl.SelectedIndex = 3
-    '            lastSync = My.Settings.ItemlastSync
-    '            JobData = job_qbtotl.GetItemSubItemData(Me, p_token, True)
-    '            Data = JobData
-    '            attribute = "item/subitem"
-
-    '        Case Else
-    '            Return 0
-    '    End Select
-
-    '    If String.IsNullOrEmpty(lastSync) Then
-    '        ItemLastSync = #1/1/2000#
-    '    Else
-    '        ItemLastSync = Convert.ToDateTime(lastSync)
-    '    End If
-    '    History("Synchonizing modified " + attribute + " since: " + ItemLastSync.ToString(), "n")
-
-    '    Dim readItems As Integer = Data.NoItems
-
-
-    '    'load grid (there might be an easire way)
-    '    ' Add Full Name Column for Job/Subjob and Item/SubItem
-    '    If Type = 13 Or Type = 14 Then
-    '        Dim col0 As New DataGridViewTextBoxColumn
-    '        col0.Name = "Full Name"
-    '        DataGridView1.Columns.Add(col0)
-    '    End If
-    '    Dim col2 As New DataGridViewTextBoxColumn
-    '    col2.Name = "Name"
-    '    DataGridView1.Columns.Add(col2)
-    '    Dim col3 As New DataGridViewTextBoxColumn
-    '    col3.Name = "Last Modified"
-    '    DataGridView1.Columns.Add(col3)
-    '    Dim col4 As New DataGridViewTextBoxColumn
-    '    col4.Name = "New"
-    '    DataGridView1.Columns.Add(col4)
-
-    '    If Data Is Nothing Then
-    '        History("No " + attribute + " data", "n")
-    '    End If
-
-
-    '    Dim element
-    '    For Each element In Data.DataArray
-    '        Dim result As Integer = DateTime.Compare(Convert.ToDateTime(element.QBModTime.ToString()),
-    '    ItemLastSync)
-    '        If result >= 0 Then
-    '            element.RecSelect = True
-    '        End If
-    '        'MAIN.FlagChangedItemsResults(element.QB_Name.ToString(), result)
-    '    Next
-    '    For Each element In Data.DataArray
-    '        ' Full Name column for Job/Subjob and Item/Subitem
-    '        If Type = 13 Or Type = 14 Then
-    '            DataGridView1.Rows.Add(element.RecSelect, element.FullName.ToString(), element.QB_Name.ToString(), element.QBModTime.ToString(), element.NewlyAdded)
-    '        Else
-    '            DataGridView1.Rows.Add(element.RecSelect, element.QB_Name.ToString(), element.QBModTime.ToString(), element.NewlyAdded)
-    '        End If
-    '    Next
-
-    '    ' Might not be wanted for every attribute, check if that is the case
-    '    System.Threading.Thread.Sleep(150)
-    '    System.Windows.Forms.Application.DoEvents()
-    '    ProgressBar1.Value = 0
-    '    Return readItems
-    'End Function
 
     Private Sub Time_Entry_Times()
         DataGridView2.AutoSize = False
@@ -1126,6 +1024,8 @@ Public Class MAIN
 
         DataGridView2.Rows.Clear()
         DataGridView2.Columns.Clear()
+
+        UpdateTimeTransfer.Visible = True
 
         ' load grid 2
         Dim col1 As New DataGridViewCheckBoxColumn
@@ -1163,37 +1063,6 @@ Public Class MAIN
         col8.Name = "Item SubItem"
         DataGridView2.Columns.Add(col8)
     End Sub
-
-    'Public Sub IntegratedUI_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-    '    Dim ItemLastSync As DateTime
-    '    Dim ReadItems As Integer = 0
-    '    'hide all tabstrips
-    '    TabPageCustomers.Visible = False
-    '    TabPageEmployees.Visible = False
-    '    TabPageTimeTransfer.Visible = False
-
-    '    Show()
-    '    DataGridView1.AutoSize = False
-    '    DataGridView1.AutoSizeRowsMode = False
-    '    DataGridView2.AutoSize = False
-    '    DataGridView2.AutoSizeRowsMode = False
-    '    btn_currentweek_Click(sender, e)
-
-    '    'for type Customers, Employees, Vendors, Jobs/Subjobs, and Items/Subitems
-    '    If Type >= 10 And Type < 15 Then
-    '        ReadItems = display_UI()
-    '    End If
-
-    '    'for type Time Items
-    '    ' Might add this to display_UI() or as its own private function
-    '    If Type = 20 Then
-    '        'ReadItems = display_TimeEntry_UI()
-    '        ReadItems = display_TimeEntry_UI()
-    '    End If
-
-    '    History(ReadItems.ToString() + " items were read from Quickbooks", "n")
-    'End Sub
-
 
     Public Overloads Sub Show(ByVal token As String, ByVal AccountId As String, TypeSelected As Integer)
 
@@ -1233,7 +1102,7 @@ Public Class MAIN
         'End If
     End Sub
 
-    Private Sub btnRefreshTimeTransfer_Click(sender As Object, e As EventArgs) Handles RefreshTimeTransfer.Click
+    Private Sub btnUpdateTimeTransfer_Click(sender As Object, e As EventArgs) Handles UpdateTimeTransfer.Click
         If Not LoggedIn Then
             Exit Sub
         End If
@@ -1387,6 +1256,18 @@ Public Class MAIN
 
         ProgressBar1.Value = 0
     End Sub
+
+    Private Function GetTotalHours(emplID As String, TLTimeTracker As Services.TimeLive.TimeEntries.TimeEntries,
+                                  startDate As DateTime, endDate As DateTime) As Integer
+        Dim times() As Object = TLTimeTracker.GetTimeEntriesByEmployeeIdAndDateRange(emplID, startDate, endDate)
+        Dim totalHours As Double = 0
+        Dim time
+        For Each time In times
+            totalHours += TotalTimeToHours(time.TotalTime)
+        Next
+
+        Return totalHours
+    End Function
 
     Private Sub Reset_Checked_Customer_Value(ByRef customerObj As QBtoTL_Customer.CustomerDataStructureQB)
         ' reset the check value to zero
@@ -1596,30 +1477,20 @@ Public Class MAIN
             TimeEntryData = emplTLData
         End If
 
-        Dim TotalHour As Integer
-        Dim TotalMin As Double
         If TimeEntryData IsNot Nothing Then
             For Each element As TLtoQB_TimeEntry.TimeEntry In emplTLData.DataArray
                 With element
                     Dim Item_SubItemID As String = Nothing
 
-                    TotalHour = .TotalTime.ToString("%h")
-                    'Turn hour to 24 hour time
-                    TotalHour = TotalHour Mod 12
-                    If Not .TotalTime.ToString.Contains("AM") Then
-                        TotalHour += 12
-                    End If
+                    Dim TotalHours As Double = TotalTimeToHours(.TotalTime)
 
-                    TotalMin = .TotalTime.ToString("%m")
-                    TotalMin = (TotalMin / 60).ToString("00.00")
-
-                    Dim payrollDisp As String = If(.PayrollName Is Nothing, .PayrollItem, .PayrollName)
+                    Dim payrollDisp As String = .PayrollItem 'If(.PayrollName Is Nothing, .PayrollItem, .PayrollName)
                     Dim ServiceDisp As String = If(.ServiceName Is Nothing, .ServiceItem, .ServiceName)
 
                     Dim full_name As String = .CustomerName.ToString() + MAIN.colonReplacer + .ProjectName.ToString() + MAIN.colonReplacer + .TaskWithParent.ToString()
 
                     DataGridView.Rows.Add(.RecSelect, .EmployeeName, .TimeEntryDate.ToString("MM/dd/yyyy"), full_name,
-                                           (TotalHour + TotalMin).ToString, .TimeEntryClass, payrollDisp, ServiceDisp)
+                                           TotalHours.ToString, .TimeEntryClass, payrollDisp, ServiceDisp)
                     element.RecSelect = True
                 End With
             Next
@@ -1634,6 +1505,22 @@ Public Class MAIN
 
         'MsgBox(" at the end " + TimeEntryData.NoItems.ToString)
     End Sub
+
+    Private Function TotalTimeToHours(TotalTime As Date) As Double
+        Dim TotalHour As Integer
+        Dim TotalMin As Double
+        TotalHour = TotalTime.ToString("%h")
+        'Turn hour to 24 hour time
+        TotalHour = TotalHour Mod 12
+        If Not TotalTime.ToString.Contains("AM") Then
+            TotalHour += 12
+        End If
+
+        TotalMin = TotalTime.ToString("%m")
+        TotalMin = (TotalMin / 60).ToString("00.00")
+
+        Return TotalHour + TotalMin
+    End Function
 
     '--- Timer Options Functions
     Private Sub btn_currentweek_Click(sender As Object, e As EventArgs) Handles btn_currentweek.Click
@@ -1868,6 +1755,10 @@ Public Class MAIN
     End Sub
 
     Private Sub SplitContainer2_SplitterMoved(sender As Object, e As SplitterEventArgs) Handles SplitContainer2.SplitterMoved
+
+    End Sub
+
+    Private Sub display_UI(sender As Object, e As EventArgs) Handles RefreshVendors.Click, RefreshJobsOrItems.Click, RefreshEmployees.Click, RefreshCustomers.Click, QBtoTLVendorRadioButton.CheckedChanged, QBtoTLJobItemRadioButton.CheckedChanged, QBtoTLEmployeeRadioButton.CheckedChanged, QBtoTLCustomerRadioButton.CheckedChanged
 
     End Sub
 End Class
