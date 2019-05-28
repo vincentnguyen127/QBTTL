@@ -33,11 +33,12 @@ Public Class Sync_TLtoQB_Relationships
 
                 ' Note: Checks number subtasks based on first entry that has the corresponding TimeLive ID
                 '       If multiple jobs have same TL_ID stored, will get the wrong name and thus search for the wrong sub task
-                Dim numSubTasks As Integer = TLJobAdapter.NumSubTasks(row(2).ToString.Trim)
+                Dim job_id As String = row(2).ToString.Trim
+                Dim employee_id As String = row(3).ToString.Trim
+                Dim numSubTasks As Integer = TLJobAdapter.NumSubTasks(job_id)
                 If numSubTasks = 0 Then
-                    Dim job As String = TLJobAdapter.GetNamefromTLID(row(2).ToString)
-
-                    Dim employee As String = TLEmployeeAdapter.GetNamefromTLID(row(3).ToString)
+                    Dim job As String = TLJobAdapter.GetNamefromTLID(job_id)
+                    Dim employee As String = TLEmployeeAdapter.GetNamefromTLID(employee_id)
 
                     Dim create As Boolean = employee IsNot Nothing And job IsNot Nothing
                     If UI And create Then
@@ -99,7 +100,7 @@ Public Class Sync_TLtoQB_Relationships
             End If
 
             If numRel = 0 Then
-                My.Forms.MAIN.History("Adding Time Relationship between " + EmployeeName + " and " + JobSubJobName, "N")
+                My.Forms.MAIN.History("Adding Time Relationship between " + EmployeeName + " and " + JobSubJobName + " to local database", "N")
                 chargingRelationshipAdapter.AddEmployeeJobRelationship(QBEmployeeID, QBJobSubJobID)
             Else
                 My.Forms.MAIN.History(If(numRel > 1, "More than one ", "One ") + " relationship" + " between " + EmployeeName + " and " + JobSubJobName + " already exists", "i")

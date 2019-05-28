@@ -80,6 +80,7 @@ Partial Class MAIN
         Me.dpStartDate = New System.Windows.Forms.DateTimePicker()
         Me.nextWeek = New System.Windows.Forms.Button()
         Me.btn_currentweek = New System.Windows.Forms.Button()
+        Me.UpdateTimeTransfer = New System.Windows.Forms.Button()
         Me.btnTransfer = New System.Windows.Forms.Button()
         Me.JobItemSyncDirection.SuspendLayout()
         Me.SplitContainer1.Panel1.SuspendLayout()
@@ -190,16 +191,18 @@ Partial Class MAIN
         '
         'SplitContainer1.Panel1
         '
+        Me.SplitContainer1.Panel1.AutoScroll = True
         Me.SplitContainer1.Panel1.Controls.Add(Me.SelectAllCheckBox)
         Me.SplitContainer1.Panel1.Controls.Add(Me.SyncFromLabel)
         Me.SplitContainer1.Panel1.Controls.Add(Me.DataGridView1)
         '
         'SplitContainer1.Panel2
         '
+        Me.SplitContainer1.Panel2.AutoScroll = True
         Me.SplitContainer1.Panel2.Controls.Add(Me.TimeEntrySelectAll)
         Me.SplitContainer1.Panel2.Controls.Add(Me.SyncToLabel)
         Me.SplitContainer1.Panel2.Controls.Add(Me.DataGridView2)
-        Me.SplitContainer1.Size = New System.Drawing.Size(720, 402)
+        Me.SplitContainer1.Size = New System.Drawing.Size(720, 401)
         Me.SplitContainer1.SplitterDistance = 344
         Me.SplitContainer1.TabIndex = 44
         '
@@ -218,12 +221,12 @@ Partial Class MAIN
         Me.DataGridView1.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
             Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.DataGridView1.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells
+        Me.DataGridView1.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.DisplayedCells
         Me.DataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
         Me.DataGridView1.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.ckBox})
         Me.DataGridView1.Location = New System.Drawing.Point(0, 31)
         Me.DataGridView1.Name = "DataGridView1"
-        Me.DataGridView1.Size = New System.Drawing.Size(341, 248)
+        Me.DataGridView1.Size = New System.Drawing.Size(333, 248)
         Me.DataGridView1.TabIndex = 38
         '
         'ckBox
@@ -247,7 +250,7 @@ Partial Class MAIN
         Me.DataGridView2.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
             Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.DataGridView2.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells
+        Me.DataGridView2.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.DisplayedCells
         Me.DataGridView2.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
         Me.DataGridView2.Location = New System.Drawing.Point(0, 31)
         Me.DataGridView2.Name = "DataGridView2"
@@ -271,7 +274,7 @@ Partial Class MAIN
         '
         Me.SplitContainer2.Panel2.Controls.Add(Me.StatusWindow)
         Me.SplitContainer2.Size = New System.Drawing.Size(720, 400)
-        Me.SplitContainer2.SplitterDistance = 282
+        Me.SplitContainer2.SplitterDistance = 281
         Me.SplitContainer2.TabIndex = 45
         '
         'StatusWindow
@@ -288,11 +291,12 @@ Partial Class MAIN
         Me.StatusWindow.Name = "StatusWindow"
         Me.StatusWindow.ReadOnly = True
         Me.StatusWindow.ScrollBars = System.Windows.Forms.ScrollBars.Vertical
-        Me.StatusWindow.Size = New System.Drawing.Size(720, 109)
+        Me.StatusWindow.Size = New System.Drawing.Size(720, 111)
         Me.StatusWindow.TabIndex = 13
         '
         'StatusStrip
         '
+        Me.StatusStrip.ImageScalingSize = New System.Drawing.Size(24, 24)
         Me.StatusStrip.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.CurrentTime, Me.NextProcessingTime})
         Me.StatusStrip.Location = New System.Drawing.Point(0, 613)
         Me.StatusStrip.Name = "StatusStrip"
@@ -619,7 +623,7 @@ Partial Class MAIN
         '
         'RefreshTimeTransfer
         '
-        Me.RefreshTimeTransfer.Location = New System.Drawing.Point(691, 21)
+        Me.RefreshTimeTransfer.Location = New System.Drawing.Point(667, 26)
         Me.RefreshTimeTransfer.Name = "RefreshTimeTransfer"
         Me.RefreshTimeTransfer.Size = New System.Drawing.Size(97, 30)
         Me.RefreshTimeTransfer.TabIndex = 45
@@ -708,6 +712,17 @@ Partial Class MAIN
         Me.btn_currentweek.Text = "Current Week"
         Me.btn_currentweek.UseVisualStyleBackColor = True
         '
+        'UpdateTimeTransfer
+        '
+        Me.UpdateTimeTransfer.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.UpdateTimeTransfer.Location = New System.Drawing.Point(535, 583)
+        Me.UpdateTimeTransfer.Name = "UpdateTimeTransfer"
+        Me.UpdateTimeTransfer.Size = New System.Drawing.Size(75, 23)
+        Me.UpdateTimeTransfer.TabIndex = 45
+        Me.UpdateTimeTransfer.Text = "Show Times"
+        Me.UpdateTimeTransfer.UseVisualStyleBackColor = True
+        Me.UpdateTimeTransfer.Visible = False
+        '
         'btnTransfer
         '
         Me.btnTransfer.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
@@ -725,6 +740,7 @@ Partial Class MAIN
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.AutoSize = True
         Me.ClientSize = New System.Drawing.Size(720, 637)
+        Me.Controls.Add(Me.UpdateTimeTransfer)
         Me.Controls.Add(Me.SplitContainer2)
         Me.Controls.Add(Me.StatusStrip)
         Me.Controls.Add(Me.ToolStrip1)
@@ -816,7 +832,7 @@ Partial Class MAIN
     Friend WithEvents VendorSyncDirection As GroupBox
     Friend WithEvents QBtoTLVendorRadioButton As RadioButton
     Friend WithEvents TabPageTimeTransfer As TabPage
-    Friend WithEvents RefreshTimeTransfer As Button
+    Friend WithEvents UpdateTimeTransfer As Button
     Friend WithEvents cbWageType As ComboBox
     Friend WithEvents lblWageType As Label
     Friend WithEvents preWeek As Button
@@ -827,4 +843,5 @@ Partial Class MAIN
     Friend WithEvents nextWeek As Button
     Friend WithEvents btn_currentweek As Button
     Friend WithEvents btnTransfer As Button
+    Friend WithEvents RefreshTimeTransfer As Button
 End Class
