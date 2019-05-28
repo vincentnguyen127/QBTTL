@@ -13,35 +13,35 @@ Option Explicit On
 
 
 Namespace My
-
-    <Global.System.Runtime.CompilerServices.CompilerGeneratedAttribute(),
-     Global.System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "14.0.0.0"),
-     Global.System.ComponentModel.EditorBrowsableAttribute(Global.System.ComponentModel.EditorBrowsableState.Advanced)>
+    
+    <Global.System.Runtime.CompilerServices.CompilerGeneratedAttribute(),  _
+     Global.System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "14.0.0.0"),  _
+     Global.System.ComponentModel.EditorBrowsableAttribute(Global.System.ComponentModel.EditorBrowsableState.Advanced)>  _
     Partial Friend NotInheritable Class MySettings
         Inherits Global.System.Configuration.ApplicationSettingsBase
-
-        Private Shared defaultInstance As MySettings = CType(Global.System.Configuration.ApplicationSettingsBase.Synchronized(New MySettings()), MySettings)
-
+        
+        Private Shared defaultInstance As MySettings = CType(Global.System.Configuration.ApplicationSettingsBase.Synchronized(New MySettings()),MySettings)
+        
 #Region "My.Settings Auto-Save Functionality"
 #If _MyType = "WindowsForms" Then
-        Private Shared addedHandler As Boolean
+    Private Shared addedHandler As Boolean
 
-        Private Shared addedHandlerLockObject As New Object
+    Private Shared addedHandlerLockObject As New Object
 
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(), Global.System.ComponentModel.EditorBrowsableAttribute(Global.System.ComponentModel.EditorBrowsableState.Advanced)>
-        Private Shared Sub AutoSaveSettings(ByVal sender As Global.System.Object, ByVal e As Global.System.EventArgs)
-            If My.Application.SaveMySettingsOnExit Then
-                My.Settings.Save()
-            End If
-        End Sub
+    <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(), Global.System.ComponentModel.EditorBrowsableAttribute(Global.System.ComponentModel.EditorBrowsableState.Advanced)> _
+    Private Shared Sub AutoSaveSettings(ByVal sender As Global.System.Object, ByVal e As Global.System.EventArgs)
+        If My.Application.SaveMySettingsOnExit Then
+            My.Settings.Save()
+        End If
+    End Sub
 #End If
 #End Region
-
+        
         Public Shared ReadOnly Property [Default]() As MySettings
             Get
-
+                
 #If _MyType = "WindowsForms" Then
-                If Not addedHandler Then
+               If Not addedHandler Then
                     SyncLock addedHandlerLockObject
                         If Not addedHandler Then
                             AddHandler My.Application.Shutdown, AddressOf AutoSaveSettings
@@ -53,164 +53,152 @@ Namespace My
                 Return defaultInstance
             End Get
         End Property
-
-        <Global.System.Configuration.UserScopedSettingAttribute(),
-         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),
-         Global.System.Configuration.SpecialSettingAttribute(Global.System.Configuration.SpecialSetting.WebServiceUrl),
-         Global.System.Configuration.DefaultSettingValueAttribute("http://demo.livetecs.com/Services/TimeLiveServices.asmx"),
-         Global.System.Configuration.SettingsManageabilityAttribute(Global.System.Configuration.SettingsManageability.Roaming)>
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.SpecialSettingAttribute(Global.System.Configuration.SpecialSetting.WebServiceUrl),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("http://demo.livetecs.com/Services/TimeLiveServices.asmx"),  _
+         Global.System.Configuration.SettingsManageabilityAttribute(Global.System.Configuration.SettingsManageability.Roaming)>  _
         Public Property TimeLive_Integration_Quickbooks_Services_TimeLiveServices() As String
             Get
-                Return CType(Me("TimeLive_Integration_Quickbooks_Services_TimeLiveServices"), String)
+                Return CType(Me("TimeLive_Integration_Quickbooks_Services_TimeLiveServices"),String)
             End Get
             Set
-                Me("TimeLive_Integration_Quickbooks_Services_TimeLiveServices") = Value
+                Me("TimeLive_Integration_Quickbooks_Services_TimeLiveServices") = value
             End Set
         End Property
-
-        <Global.System.Configuration.UserScopedSettingAttribute(),
-         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),
-         Global.System.Configuration.SpecialSettingAttribute(Global.System.Configuration.SpecialSetting.WebServiceUrl),
-         Global.System.Configuration.DefaultSettingValueAttribute("http://demo.livetecs.com/Services/Employees.asmx"),
-         Global.System.Configuration.SettingsManageabilityAttribute(Global.System.Configuration.SettingsManageability.Roaming)>
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.SpecialSettingAttribute(Global.System.Configuration.SpecialSetting.WebServiceUrl),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("http://demo.livetecs.com/Services/Employees.asmx"),  _
+         Global.System.Configuration.SettingsManageabilityAttribute(Global.System.Configuration.SettingsManageability.Roaming)>  _
         Public Property TimeLive_Integration_Quickbooks_Services_TimeLive_Employees_Employees() As String
             Get
-                Return CType(Me("TimeLive_Integration_Quickbooks_Services_TimeLive_Employees_Employees"), String)
+                Return CType(Me("TimeLive_Integration_Quickbooks_Services_TimeLive_Employees_Employees"),String)
             End Get
             Set
-                Me("TimeLive_Integration_Quickbooks_Services_TimeLive_Employees_Employees") = Value
+                Me("TimeLive_Integration_Quickbooks_Services_TimeLive_Employees_Employees") = value
             End Set
         End Property
-
-        <Global.System.Configuration.UserScopedSettingAttribute(),
-         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),
-         Global.System.Configuration.SpecialSettingAttribute(Global.System.Configuration.SpecialSetting.WebServiceUrl),
-         Global.System.Configuration.DefaultSettingValueAttribute("http://demo.livetecs.com/Services/Clients.asmx"),
-         Global.System.Configuration.SettingsManageabilityAttribute(Global.System.Configuration.SettingsManageability.Roaming)>
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.SpecialSettingAttribute(Global.System.Configuration.SpecialSetting.WebServiceUrl),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("http://demo.livetecs.com/Services/Clients.asmx"),  _
+         Global.System.Configuration.SettingsManageabilityAttribute(Global.System.Configuration.SettingsManageability.Roaming)>  _
         Public Property TimeLive_Integration_Quickbooks_Services_TimeLive_Clients_Clients() As String
             Get
-                Return CType(Me("TimeLive_Integration_Quickbooks_Services_TimeLive_Clients_Clients"), String)
+                Return CType(Me("TimeLive_Integration_Quickbooks_Services_TimeLive_Clients_Clients"),String)
             End Get
             Set
-                Me("TimeLive_Integration_Quickbooks_Services_TimeLive_Clients_Clients") = Value
+                Me("TimeLive_Integration_Quickbooks_Services_TimeLive_Clients_Clients") = value
             End Set
         End Property
-
-        <Global.System.Configuration.UserScopedSettingAttribute(),
-         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),
-         Global.System.Configuration.SpecialSettingAttribute(Global.System.Configuration.SpecialSetting.WebServiceUrl),
-         Global.System.Configuration.DefaultSettingValueAttribute("http://demo.livetecs.com/Services/Projects.asmx"),
-         Global.System.Configuration.SettingsManageabilityAttribute(Global.System.Configuration.SettingsManageability.Roaming)>
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.SpecialSettingAttribute(Global.System.Configuration.SpecialSetting.WebServiceUrl),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("http://demo.livetecs.com/Services/Projects.asmx"),  _
+         Global.System.Configuration.SettingsManageabilityAttribute(Global.System.Configuration.SettingsManageability.Roaming)>  _
         Public Property TimeLive_Integration_Quickbooks_Services_TimeLive_Projects_Projects() As String
             Get
-                Return CType(Me("TimeLive_Integration_Quickbooks_Services_TimeLive_Projects_Projects"), String)
+                Return CType(Me("TimeLive_Integration_Quickbooks_Services_TimeLive_Projects_Projects"),String)
             End Get
             Set
-                Me("TimeLive_Integration_Quickbooks_Services_TimeLive_Projects_Projects") = Value
+                Me("TimeLive_Integration_Quickbooks_Services_TimeLive_Projects_Projects") = value
             End Set
         End Property
-
-        <Global.System.Configuration.UserScopedSettingAttribute(),
-         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),
-         Global.System.Configuration.SpecialSettingAttribute(Global.System.Configuration.SpecialSetting.WebServiceUrl),
-         Global.System.Configuration.DefaultSettingValueAttribute("http://demo.livetecs.com/Services/Tasks.asmx"),
-         Global.System.Configuration.SettingsManageabilityAttribute(Global.System.Configuration.SettingsManageability.Roaming)>
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.SpecialSettingAttribute(Global.System.Configuration.SpecialSetting.WebServiceUrl),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("http://demo.livetecs.com/Services/Tasks.asmx"),  _
+         Global.System.Configuration.SettingsManageabilityAttribute(Global.System.Configuration.SettingsManageability.Roaming)>  _
         Public Property TimeLive_Integration_Quickbooks_Services_TimeLive_Tasks_Tasks() As String
             Get
-                Return CType(Me("TimeLive_Integration_Quickbooks_Services_TimeLive_Tasks_Tasks"), String)
+                Return CType(Me("TimeLive_Integration_Quickbooks_Services_TimeLive_Tasks_Tasks"),String)
             End Get
             Set
-                Me("TimeLive_Integration_Quickbooks_Services_TimeLive_Tasks_Tasks") = Value
+                Me("TimeLive_Integration_Quickbooks_Services_TimeLive_Tasks_Tasks") = value
             End Set
         End Property
-
-        <Global.System.Configuration.UserScopedSettingAttribute(),
-         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),
-         Global.System.Configuration.SpecialSettingAttribute(Global.System.Configuration.SpecialSetting.WebServiceUrl),
-         Global.System.Configuration.DefaultSettingValueAttribute("http://demo.livetecs.com/Services/TimeEntries.asmx"),
-         Global.System.Configuration.SettingsManageabilityAttribute(Global.System.Configuration.SettingsManageability.Roaming)>
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.SpecialSettingAttribute(Global.System.Configuration.SpecialSetting.WebServiceUrl),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("http://demo.livetecs.com/Services/TimeEntries.asmx"),  _
+         Global.System.Configuration.SettingsManageabilityAttribute(Global.System.Configuration.SettingsManageability.Roaming)>  _
         Public Property TimeLive_Integration_Quickbooks_Services_TimeLive_TimeEntries_TimeEntries() As String
             Get
-                Return CType(Me("TimeLive_Integration_Quickbooks_Services_TimeLive_TimeEntries_TimeEntries"), String)
+                Return CType(Me("TimeLive_Integration_Quickbooks_Services_TimeLive_TimeEntries_TimeEntries"),String)
             End Get
             Set
-                Me("TimeLive_Integration_Quickbooks_Services_TimeLive_TimeEntries_TimeEntries") = Value
+                Me("TimeLive_Integration_Quickbooks_Services_TimeLive_TimeEntries_TimeEntries") = value
             End Set
         End Property
-
-        <Global.System.Configuration.UserScopedSettingAttribute(),
-         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),
-         Global.System.Configuration.SpecialSettingAttribute(Global.System.Configuration.SpecialSetting.WebServiceUrl),
-         Global.System.Configuration.DefaultSettingValueAttribute("http://demo.livetecs.com/Services/ExpenseEntries.asmx"),
-         Global.System.Configuration.SettingsManageabilityAttribute(Global.System.Configuration.SettingsManageability.Roaming)>
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.SpecialSettingAttribute(Global.System.Configuration.SpecialSetting.WebServiceUrl),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("http://demo.livetecs.com/Services/ExpenseEntries.asmx"),  _
+         Global.System.Configuration.SettingsManageabilityAttribute(Global.System.Configuration.SettingsManageability.Roaming)>  _
         Public Property TimeLive_Integration_Quickbooks_Services_TimeLive_ExpenseEntries_ExpenseEntries() As String
             Get
-                Return CType(Me("TimeLive_Integration_Quickbooks_Services_TimeLive_ExpenseEntries_ExpenseEntries"), String)
+                Return CType(Me("TimeLive_Integration_Quickbooks_Services_TimeLive_ExpenseEntries_ExpenseEntries"),String)
             End Get
             Set
-                Me("TimeLive_Integration_Quickbooks_Services_TimeLive_ExpenseEntries_ExpenseEntries") = Value
+                Me("TimeLive_Integration_Quickbooks_Services_TimeLive_ExpenseEntries_ExpenseEntries") = value
             End Set
         End Property
-
-        <Global.System.Configuration.UserScopedSettingAttribute(),
-         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),
-         Global.System.Configuration.DefaultSettingValueAttribute(""),
-         Global.System.Configuration.SettingsManageabilityAttribute(Global.System.Configuration.SettingsManageability.Roaming)>
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute(""),  _
+         Global.System.Configuration.SettingsManageabilityAttribute(Global.System.Configuration.SettingsManageability.Roaming)>  _
         Public Property WebServiceURL() As String
             Get
-                Return CType(Me("WebServiceURL"), String)
+                Return CType(Me("WebServiceURL"),String)
             End Get
             Set
-                Me("WebServiceURL") = Value
+                Me("WebServiceURL") = value
             End Set
         End Property
-
-        <Global.System.Configuration.UserScopedSettingAttribute(),
-         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),
-         Global.System.Configuration.DefaultSettingValueAttribute(""),
-         Global.System.Configuration.SettingsManageabilityAttribute(Global.System.Configuration.SettingsManageability.Roaming)>
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute(""),  _
+         Global.System.Configuration.SettingsManageabilityAttribute(Global.System.Configuration.SettingsManageability.Roaming)>  _
         Public Property Username() As String
             Get
-                Return CType(Me("Username"), String)
+                Return CType(Me("Username"),String)
             End Get
             Set
-                Me("Username") = Value
+                Me("Username") = value
             End Set
         End Property
-
-        <Global.System.Configuration.UserScopedSettingAttribute(),
-         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),
-         Global.System.Configuration.DefaultSettingValueAttribute("")>
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("")>  _
         Public Property Password() As String
             Get
-                Return CType(Me("Password"), String)
+                Return CType(Me("Password"),String)
             End Get
             Set
-                Me("Password") = Value
+                Me("Password") = value
             End Set
         End Property
-
-        <Global.System.Configuration.UserScopedSettingAttribute(),
-         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),
-         Global.System.Configuration.DefaultSettingValueAttribute("")>
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("")>  _
         Public Property JobHierarchy() As String
             Get
-                Return CType(Me("JobHierarchy"), String)
+                Return CType(Me("JobHierarchy"),String)
             End Get
             Set
-                Me("JobHierarchy") = Value
-            End Set
-        End Property
-
-        <Global.System.Configuration.UserScopedSettingAttribute(),
-         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),
-         Global.System.Configuration.DefaultSettingValueAttribute("")>
-        Public Property QBPayrollItem() As String
-            Get
-                Return CType(Me("QBPayrollItem"), String)
-            End Get
-            Set
-                Me("QBPayrollItem") = Value
+                Me("JobHierarchy") = value
             End Set
         End Property
 
@@ -478,61 +466,84 @@ Namespace My
             End Set
         End Property
 
-        <Global.System.Configuration.UserScopedSettingAttribute(),
-         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),
-         Global.System.Configuration.DefaultSettingValueAttribute("")>
-        Public Property TransferToPayroll() As String
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("")>  _
+        Public Property QBPayrollItem() As String
             Get
-                Return CType(Me("TransferToPayroll"), String)
+                Return CType(Me("QBPayrollItem"),String)
             End Get
             Set
-                Me("TransferToPayroll") = Value
+                Me("QBPayrollItem") = value
             End Set
         End Property
-
-        <Global.System.Configuration.ApplicationScopedSettingAttribute(),
-         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),
-         Global.System.Configuration.SpecialSettingAttribute(Global.System.Configuration.SpecialSetting.ConnectionString),
-         Global.System.Configuration.DefaultSettingValueAttribute("Data Source=TIMELIVEDEV\TIMELIVE;Initial Catalog=TimeLive;User ID=sa;Password=$ba" &
-            "seline00")>
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("")>  _
+        Public Property TransferToPayroll() As String
+            Get
+                Return CType(Me("TransferToPayroll"),String)
+            End Get
+            Set
+                Me("TransferToPayroll") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.ApplicationScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.SpecialSettingAttribute(Global.System.Configuration.SpecialSetting.ConnectionString),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("Data Source=TIMELIVEDEV\TIMELIVE;Initial Catalog=TimeLive;User ID=sa;Password=$ba"& _ 
+            "seline00")>  _
         Public ReadOnly Property TimeLiveConnectionString() As String
             Get
-                Return CType(Me("TimeLiveConnectionString"), String)
+                Return CType(Me("TimeLiveConnectionString"),String)
+            End Get
+        End Property
+        
+        <Global.System.Configuration.ApplicationScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.SpecialSettingAttribute(Global.System.Configuration.SpecialSetting.ConnectionString),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("Data Source=teltriumsrv3;Initial Catalog=TL_QB_Relationship_Dev;User ID=sa;Passwo"& _ 
+            "rd=$baseline00")>  _
+        Public ReadOnly Property TL_QB_RelationshipConnectionString() As String
+            Get
+                Return CType(Me("TL_QB_RelationshipConnectionString"),String)
             End Get
         End Property
 
         <Global.System.Configuration.ApplicationScopedSettingAttribute(),
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),
          Global.System.Configuration.SpecialSettingAttribute(Global.System.Configuration.SpecialSetting.ConnectionString),
-         Global.System.Configuration.DefaultSettingValueAttribute("Data Source=teltriumsrv3;Initial Catalog=TimeLiveDev;User ID=sa;Passwo" &
-            "rd=$baseline00")>
+         Global.System.Configuration.DefaultSettingValueAttribute("Data Source=teltriumsrv3;Initial Catalog=TimeLiveDev;User ID=sa;Password=$baselin" &
+            "e00")>
         Public ReadOnly Property TimeLiveDevConnectionString() As String
             Get
                 Return CType(Me("TimeLiveDevConnectionString"), String)
             End Get
         End Property
 
-        <Global.System.Configuration.ApplicationScopedSettingAttribute(),
-         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),
-         Global.System.Configuration.SpecialSettingAttribute(Global.System.Configuration.SpecialSetting.ConnectionString),
-         Global.System.Configuration.DefaultSettingValueAttribute("Data Source=teltriumsrv3;Initial Catalog=TL_QB_Relationship_Dev;User ID=sa;Passwo" &
-            "rd=$baseline00")>
-        Public ReadOnly Property TL_QB_RelationshipConnectionString() As String
+        <Global.System.Configuration.ApplicationScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.SpecialSettingAttribute(Global.System.Configuration.SpecialSetting.ConnectionString),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("Data Source=TELTRIUMSRV3;Initial Catalog=TimeLive;User ID=sa;Password=$baseline00"& _ 
+            ";Encrypt=False;TrustServerCertificate=True")>  _
+        Public ReadOnly Property TimeLiveConnectionString1() As String
             Get
-                Return CType(Me("TL_QB_RelationshipConnectionString"), String)
+                Return CType(Me("TimeLiveConnectionString1"),String)
             End Get
         End Property
     End Class
 End Namespace
 
 Namespace My
-
-    <Global.Microsoft.VisualBasic.HideModuleNameAttribute(),
-     Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),
-     Global.System.Runtime.CompilerServices.CompilerGeneratedAttribute()>
+    
+    <Global.Microsoft.VisualBasic.HideModuleNameAttribute(),  _
+     Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+     Global.System.Runtime.CompilerServices.CompilerGeneratedAttribute()>  _
     Friend Module MySettingsProperty
-
-        <Global.System.ComponentModel.Design.HelpKeywordAttribute("My.Settings")>
+        
+        <Global.System.ComponentModel.Design.HelpKeywordAttribute("My.Settings")>  _
         Friend ReadOnly Property Settings() As Global.TimeLive.Quickbooks.Integrator.My.MySettings
             Get
                 Return Global.TimeLive.Quickbooks.Integrator.My.MySettings.Default

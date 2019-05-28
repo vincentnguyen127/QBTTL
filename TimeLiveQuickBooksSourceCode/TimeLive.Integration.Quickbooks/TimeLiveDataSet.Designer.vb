@@ -31,6 +31,8 @@ Partial Public Class TimeLiveDataSet
     
     Private tableAccountProjectEmployee As AccountProjectEmployeeDataTable
     
+    Private tableAccountEmployeeTimeEntryPeriod As AccountEmployeeTimeEntryPeriodDataTable
+    
     Private _schemaSerializationMode As Global.System.Data.SchemaSerializationMode = Global.System.Data.SchemaSerializationMode.IncludeSchema
     
     <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
@@ -68,6 +70,9 @@ Partial Public Class TimeLiveDataSet
             End If
             If (Not (ds.Tables("AccountProjectEmployee")) Is Nothing) Then
                 MyBase.Tables.Add(New AccountProjectEmployeeDataTable(ds.Tables("AccountProjectEmployee")))
+            End If
+            If (Not (ds.Tables("AccountEmployeeTimeEntryPeriod")) Is Nothing) Then
+                MyBase.Tables.Add(New AccountEmployeeTimeEntryPeriodDataTable(ds.Tables("AccountEmployeeTimeEntryPeriod")))
             End If
             Me.DataSetName = ds.DataSetName
             Me.Prefix = ds.Prefix
@@ -113,6 +118,16 @@ Partial Public Class TimeLiveDataSet
     Public ReadOnly Property AccountProjectEmployee() As AccountProjectEmployeeDataTable
         Get
             Return Me.tableAccountProjectEmployee
+        End Get
+    End Property
+    
+    <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+     Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0"),  _
+     Global.System.ComponentModel.Browsable(false),  _
+     Global.System.ComponentModel.DesignerSerializationVisibility(Global.System.ComponentModel.DesignerSerializationVisibility.Content)>  _
+    Public ReadOnly Property AccountEmployeeTimeEntryPeriod() As AccountEmployeeTimeEntryPeriodDataTable
+        Get
+            Return Me.tableAccountEmployeeTimeEntryPeriod
         End Get
     End Property
     
@@ -192,6 +207,9 @@ Partial Public Class TimeLiveDataSet
             If (Not (ds.Tables("AccountProjectEmployee")) Is Nothing) Then
                 MyBase.Tables.Add(New AccountProjectEmployeeDataTable(ds.Tables("AccountProjectEmployee")))
             End If
+            If (Not (ds.Tables("AccountEmployeeTimeEntryPeriod")) Is Nothing) Then
+                MyBase.Tables.Add(New AccountEmployeeTimeEntryPeriodDataTable(ds.Tables("AccountEmployeeTimeEntryPeriod")))
+            End If
             Me.DataSetName = ds.DataSetName
             Me.Prefix = ds.Prefix
             Me.Namespace = ds.Namespace
@@ -242,6 +260,12 @@ Partial Public Class TimeLiveDataSet
                 Me.tableAccountProjectEmployee.InitVars
             End If
         End If
+        Me.tableAccountEmployeeTimeEntryPeriod = CType(MyBase.Tables("AccountEmployeeTimeEntryPeriod"),AccountEmployeeTimeEntryPeriodDataTable)
+        If (initTable = true) Then
+            If (Not (Me.tableAccountEmployeeTimeEntryPeriod) Is Nothing) Then
+                Me.tableAccountEmployeeTimeEntryPeriod.InitVars
+            End If
+        End If
     End Sub
     
     <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
@@ -258,6 +282,8 @@ Partial Public Class TimeLiveDataSet
         MyBase.Tables.Add(Me.tableAccountProjectTaskEmployee)
         Me.tableAccountProjectEmployee = New AccountProjectEmployeeDataTable()
         MyBase.Tables.Add(Me.tableAccountProjectEmployee)
+        Me.tableAccountEmployeeTimeEntryPeriod = New AccountEmployeeTimeEntryPeriodDataTable()
+        MyBase.Tables.Add(Me.tableAccountEmployeeTimeEntryPeriod)
     End Sub
     
     <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
@@ -275,6 +301,12 @@ Partial Public Class TimeLiveDataSet
     <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
      Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
     Private Function ShouldSerializeAccountProjectEmployee() As Boolean
+        Return false
+    End Function
+    
+    <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+     Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+    Private Function ShouldSerializeAccountEmployeeTimeEntryPeriod() As Boolean
         Return false
     End Function
     
@@ -344,6 +376,9 @@ Partial Public Class TimeLiveDataSet
     
     <Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
     Public Delegate Sub AccountProjectEmployeeRowChangeEventHandler(ByVal sender As Object, ByVal e As AccountProjectEmployeeRowChangeEvent)
+    
+    <Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+    Public Delegate Sub AccountEmployeeTimeEntryPeriodRowChangeEventHandler(ByVal sender As Object, ByVal e As AccountEmployeeTimeEntryPeriodRowChangeEvent)
     
     '''<summary>
     '''Represents the strongly named DataTable class.
@@ -1935,6 +1970,566 @@ Partial Public Class TimeLiveDataSet
     End Class
     
     '''<summary>
+    '''Represents the strongly named DataTable class.
+    '''</summary>
+    <Global.System.Serializable(),  _
+     Global.System.Xml.Serialization.XmlSchemaProviderAttribute("GetTypedTableSchema")>  _
+    Partial Public Class AccountEmployeeTimeEntryPeriodDataTable
+        Inherits Global.System.Data.DataTable
+        Implements Global.System.Collections.IEnumerable
+        
+        Private columnAccountEmployeeTimeEntryPeriodId As Global.System.Data.DataColumn
+        
+        Private columnAccountId As Global.System.Data.DataColumn
+        
+        Private columnAccountEmployeeId As Global.System.Data.DataColumn
+        
+        Private columnTimeEntryStartDate As Global.System.Data.DataColumn
+        
+        Private columnTimeEntryEndDate As Global.System.Data.DataColumn
+        
+        Private columnTimeEntryViewType As Global.System.Data.DataColumn
+        
+        Private columnSubmitted As Global.System.Data.DataColumn
+        
+        Private columnApproved As Global.System.Data.DataColumn
+        
+        Private columnRejected As Global.System.Data.DataColumn
+        
+        Private columnInApproval As Global.System.Data.DataColumn
+        
+        Private columnSubmittedDate As Global.System.Data.DataColumn
+        
+        Private columnApprovedOn As Global.System.Data.DataColumn
+        
+        Private columnApprovedByEmployeeId As Global.System.Data.DataColumn
+        
+        Private columnRejectedOn As Global.System.Data.DataColumn
+        
+        Private columnRejectedByEmployeeId As Global.System.Data.DataColumn
+        
+        Private columnSubmittedBy As Global.System.Data.DataColumn
+        
+        Private columnCreatedByEmployeeId As Global.System.Data.DataColumn
+        
+        Private columnModifiedByEmployeeId As Global.System.Data.DataColumn
+        
+        Private columnPeriodDescription As Global.System.Data.DataColumn
+        
+        Private columnCreatedOn As Global.System.Data.DataColumn
+        
+        Private columnModifiedOn As Global.System.Data.DataColumn
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public Sub New()
+            MyBase.New
+            Me.TableName = "AccountEmployeeTimeEntryPeriod"
+            Me.BeginInit
+            Me.InitClass
+            Me.EndInit
+        End Sub
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Friend Sub New(ByVal table As Global.System.Data.DataTable)
+            MyBase.New
+            Me.TableName = table.TableName
+            If (table.CaseSensitive <> table.DataSet.CaseSensitive) Then
+                Me.CaseSensitive = table.CaseSensitive
+            End If
+            If (table.Locale.ToString <> table.DataSet.Locale.ToString) Then
+                Me.Locale = table.Locale
+            End If
+            If (table.Namespace <> table.DataSet.Namespace) Then
+                Me.Namespace = table.Namespace
+            End If
+            Me.Prefix = table.Prefix
+            Me.MinimumCapacity = table.MinimumCapacity
+        End Sub
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Protected Sub New(ByVal info As Global.System.Runtime.Serialization.SerializationInfo, ByVal context As Global.System.Runtime.Serialization.StreamingContext)
+            MyBase.New(info, context)
+            Me.InitVars
+        End Sub
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public ReadOnly Property AccountEmployeeTimeEntryPeriodIdColumn() As Global.System.Data.DataColumn
+            Get
+                Return Me.columnAccountEmployeeTimeEntryPeriodId
+            End Get
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public ReadOnly Property AccountIdColumn() As Global.System.Data.DataColumn
+            Get
+                Return Me.columnAccountId
+            End Get
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public ReadOnly Property AccountEmployeeIdColumn() As Global.System.Data.DataColumn
+            Get
+                Return Me.columnAccountEmployeeId
+            End Get
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public ReadOnly Property TimeEntryStartDateColumn() As Global.System.Data.DataColumn
+            Get
+                Return Me.columnTimeEntryStartDate
+            End Get
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public ReadOnly Property TimeEntryEndDateColumn() As Global.System.Data.DataColumn
+            Get
+                Return Me.columnTimeEntryEndDate
+            End Get
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public ReadOnly Property TimeEntryViewTypeColumn() As Global.System.Data.DataColumn
+            Get
+                Return Me.columnTimeEntryViewType
+            End Get
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public ReadOnly Property SubmittedColumn() As Global.System.Data.DataColumn
+            Get
+                Return Me.columnSubmitted
+            End Get
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public ReadOnly Property ApprovedColumn() As Global.System.Data.DataColumn
+            Get
+                Return Me.columnApproved
+            End Get
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public ReadOnly Property RejectedColumn() As Global.System.Data.DataColumn
+            Get
+                Return Me.columnRejected
+            End Get
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public ReadOnly Property InApprovalColumn() As Global.System.Data.DataColumn
+            Get
+                Return Me.columnInApproval
+            End Get
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public ReadOnly Property SubmittedDateColumn() As Global.System.Data.DataColumn
+            Get
+                Return Me.columnSubmittedDate
+            End Get
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public ReadOnly Property ApprovedOnColumn() As Global.System.Data.DataColumn
+            Get
+                Return Me.columnApprovedOn
+            End Get
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public ReadOnly Property ApprovedByEmployeeIdColumn() As Global.System.Data.DataColumn
+            Get
+                Return Me.columnApprovedByEmployeeId
+            End Get
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public ReadOnly Property RejectedOnColumn() As Global.System.Data.DataColumn
+            Get
+                Return Me.columnRejectedOn
+            End Get
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public ReadOnly Property RejectedByEmployeeIdColumn() As Global.System.Data.DataColumn
+            Get
+                Return Me.columnRejectedByEmployeeId
+            End Get
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public ReadOnly Property SubmittedByColumn() As Global.System.Data.DataColumn
+            Get
+                Return Me.columnSubmittedBy
+            End Get
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public ReadOnly Property CreatedByEmployeeIdColumn() As Global.System.Data.DataColumn
+            Get
+                Return Me.columnCreatedByEmployeeId
+            End Get
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public ReadOnly Property ModifiedByEmployeeIdColumn() As Global.System.Data.DataColumn
+            Get
+                Return Me.columnModifiedByEmployeeId
+            End Get
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public ReadOnly Property PeriodDescriptionColumn() As Global.System.Data.DataColumn
+            Get
+                Return Me.columnPeriodDescription
+            End Get
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public ReadOnly Property CreatedOnColumn() As Global.System.Data.DataColumn
+            Get
+                Return Me.columnCreatedOn
+            End Get
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public ReadOnly Property ModifiedOnColumn() As Global.System.Data.DataColumn
+            Get
+                Return Me.columnModifiedOn
+            End Get
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0"),  _
+         Global.System.ComponentModel.Browsable(false)>  _
+        Public ReadOnly Property Count() As Integer
+            Get
+                Return Me.Rows.Count
+            End Get
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public Default ReadOnly Property Item(ByVal index As Integer) As AccountEmployeeTimeEntryPeriodRow
+            Get
+                Return CType(Me.Rows(index),AccountEmployeeTimeEntryPeriodRow)
+            End Get
+        End Property
+        
+        <Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public Event AccountEmployeeTimeEntryPeriodRowChanging As AccountEmployeeTimeEntryPeriodRowChangeEventHandler
+        
+        <Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public Event AccountEmployeeTimeEntryPeriodRowChanged As AccountEmployeeTimeEntryPeriodRowChangeEventHandler
+        
+        <Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public Event AccountEmployeeTimeEntryPeriodRowDeleting As AccountEmployeeTimeEntryPeriodRowChangeEventHandler
+        
+        <Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public Event AccountEmployeeTimeEntryPeriodRowDeleted As AccountEmployeeTimeEntryPeriodRowChangeEventHandler
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public Overloads Sub AddAccountEmployeeTimeEntryPeriodRow(ByVal row As AccountEmployeeTimeEntryPeriodRow)
+            Me.Rows.Add(row)
+        End Sub
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public Overloads Function AddAccountEmployeeTimeEntryPeriodRow( _
+                    ByVal AccountEmployeeTimeEntryPeriodId As System.Guid,  _
+                    ByVal AccountId As Integer,  _
+                    ByVal AccountEmployeeId As Integer,  _
+                    ByVal TimeEntryStartDate As Date,  _
+                    ByVal TimeEntryEndDate As Date,  _
+                    ByVal TimeEntryViewType As String,  _
+                    ByVal Submitted As Boolean,  _
+                    ByVal Approved As Boolean,  _
+                    ByVal Rejected As Boolean,  _
+                    ByVal InApproval As Boolean,  _
+                    ByVal SubmittedDate As Date,  _
+                    ByVal ApprovedOn As Date,  _
+                    ByVal ApprovedByEmployeeId As Integer,  _
+                    ByVal RejectedOn As Date,  _
+                    ByVal RejectedByEmployeeId As Integer,  _
+                    ByVal SubmittedBy As Integer,  _
+                    ByVal CreatedByEmployeeId As Integer,  _
+                    ByVal ModifiedByEmployeeId As Integer,  _
+                    ByVal PeriodDescription As String,  _
+                    ByVal CreatedOn As Date,  _
+                    ByVal ModifiedOn As Date) As AccountEmployeeTimeEntryPeriodRow
+            Dim rowAccountEmployeeTimeEntryPeriodRow As AccountEmployeeTimeEntryPeriodRow = CType(Me.NewRow,AccountEmployeeTimeEntryPeriodRow)
+            Dim columnValuesArray() As Object = New Object() {AccountEmployeeTimeEntryPeriodId, AccountId, AccountEmployeeId, TimeEntryStartDate, TimeEntryEndDate, TimeEntryViewType, Submitted, Approved, Rejected, InApproval, SubmittedDate, ApprovedOn, ApprovedByEmployeeId, RejectedOn, RejectedByEmployeeId, SubmittedBy, CreatedByEmployeeId, ModifiedByEmployeeId, PeriodDescription, CreatedOn, ModifiedOn}
+            rowAccountEmployeeTimeEntryPeriodRow.ItemArray = columnValuesArray
+            Me.Rows.Add(rowAccountEmployeeTimeEntryPeriodRow)
+            Return rowAccountEmployeeTimeEntryPeriodRow
+        End Function
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public Function FindByAccountEmployeeTimeEntryPeriodId(ByVal AccountEmployeeTimeEntryPeriodId As System.Guid) As AccountEmployeeTimeEntryPeriodRow
+            Return CType(Me.Rows.Find(New Object() {AccountEmployeeTimeEntryPeriodId}),AccountEmployeeTimeEntryPeriodRow)
+        End Function
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public Overridable Function GetEnumerator() As Global.System.Collections.IEnumerator Implements Global.System.Collections.IEnumerable.GetEnumerator
+            Return Me.Rows.GetEnumerator
+        End Function
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public Overrides Function Clone() As Global.System.Data.DataTable
+            Dim cln As AccountEmployeeTimeEntryPeriodDataTable = CType(MyBase.Clone,AccountEmployeeTimeEntryPeriodDataTable)
+            cln.InitVars
+            Return cln
+        End Function
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Protected Overrides Function CreateInstance() As Global.System.Data.DataTable
+            Return New AccountEmployeeTimeEntryPeriodDataTable()
+        End Function
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Friend Sub InitVars()
+            Me.columnAccountEmployeeTimeEntryPeriodId = MyBase.Columns("AccountEmployeeTimeEntryPeriodId")
+            Me.columnAccountId = MyBase.Columns("AccountId")
+            Me.columnAccountEmployeeId = MyBase.Columns("AccountEmployeeId")
+            Me.columnTimeEntryStartDate = MyBase.Columns("TimeEntryStartDate")
+            Me.columnTimeEntryEndDate = MyBase.Columns("TimeEntryEndDate")
+            Me.columnTimeEntryViewType = MyBase.Columns("TimeEntryViewType")
+            Me.columnSubmitted = MyBase.Columns("Submitted")
+            Me.columnApproved = MyBase.Columns("Approved")
+            Me.columnRejected = MyBase.Columns("Rejected")
+            Me.columnInApproval = MyBase.Columns("InApproval")
+            Me.columnSubmittedDate = MyBase.Columns("SubmittedDate")
+            Me.columnApprovedOn = MyBase.Columns("ApprovedOn")
+            Me.columnApprovedByEmployeeId = MyBase.Columns("ApprovedByEmployeeId")
+            Me.columnRejectedOn = MyBase.Columns("RejectedOn")
+            Me.columnRejectedByEmployeeId = MyBase.Columns("RejectedByEmployeeId")
+            Me.columnSubmittedBy = MyBase.Columns("SubmittedBy")
+            Me.columnCreatedByEmployeeId = MyBase.Columns("CreatedByEmployeeId")
+            Me.columnModifiedByEmployeeId = MyBase.Columns("ModifiedByEmployeeId")
+            Me.columnPeriodDescription = MyBase.Columns("PeriodDescription")
+            Me.columnCreatedOn = MyBase.Columns("CreatedOn")
+            Me.columnModifiedOn = MyBase.Columns("ModifiedOn")
+        End Sub
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Private Sub InitClass()
+            Me.columnAccountEmployeeTimeEntryPeriodId = New Global.System.Data.DataColumn("AccountEmployeeTimeEntryPeriodId", GetType(Global.System.Guid), Nothing, Global.System.Data.MappingType.Element)
+            MyBase.Columns.Add(Me.columnAccountEmployeeTimeEntryPeriodId)
+            Me.columnAccountId = New Global.System.Data.DataColumn("AccountId", GetType(Integer), Nothing, Global.System.Data.MappingType.Element)
+            MyBase.Columns.Add(Me.columnAccountId)
+            Me.columnAccountEmployeeId = New Global.System.Data.DataColumn("AccountEmployeeId", GetType(Integer), Nothing, Global.System.Data.MappingType.Element)
+            MyBase.Columns.Add(Me.columnAccountEmployeeId)
+            Me.columnTimeEntryStartDate = New Global.System.Data.DataColumn("TimeEntryStartDate", GetType(Date), Nothing, Global.System.Data.MappingType.Element)
+            MyBase.Columns.Add(Me.columnTimeEntryStartDate)
+            Me.columnTimeEntryEndDate = New Global.System.Data.DataColumn("TimeEntryEndDate", GetType(Date), Nothing, Global.System.Data.MappingType.Element)
+            MyBase.Columns.Add(Me.columnTimeEntryEndDate)
+            Me.columnTimeEntryViewType = New Global.System.Data.DataColumn("TimeEntryViewType", GetType(String), Nothing, Global.System.Data.MappingType.Element)
+            MyBase.Columns.Add(Me.columnTimeEntryViewType)
+            Me.columnSubmitted = New Global.System.Data.DataColumn("Submitted", GetType(Boolean), Nothing, Global.System.Data.MappingType.Element)
+            MyBase.Columns.Add(Me.columnSubmitted)
+            Me.columnApproved = New Global.System.Data.DataColumn("Approved", GetType(Boolean), Nothing, Global.System.Data.MappingType.Element)
+            MyBase.Columns.Add(Me.columnApproved)
+            Me.columnRejected = New Global.System.Data.DataColumn("Rejected", GetType(Boolean), Nothing, Global.System.Data.MappingType.Element)
+            MyBase.Columns.Add(Me.columnRejected)
+            Me.columnInApproval = New Global.System.Data.DataColumn("InApproval", GetType(Boolean), Nothing, Global.System.Data.MappingType.Element)
+            MyBase.Columns.Add(Me.columnInApproval)
+            Me.columnSubmittedDate = New Global.System.Data.DataColumn("SubmittedDate", GetType(Date), Nothing, Global.System.Data.MappingType.Element)
+            MyBase.Columns.Add(Me.columnSubmittedDate)
+            Me.columnApprovedOn = New Global.System.Data.DataColumn("ApprovedOn", GetType(Date), Nothing, Global.System.Data.MappingType.Element)
+            MyBase.Columns.Add(Me.columnApprovedOn)
+            Me.columnApprovedByEmployeeId = New Global.System.Data.DataColumn("ApprovedByEmployeeId", GetType(Integer), Nothing, Global.System.Data.MappingType.Element)
+            MyBase.Columns.Add(Me.columnApprovedByEmployeeId)
+            Me.columnRejectedOn = New Global.System.Data.DataColumn("RejectedOn", GetType(Date), Nothing, Global.System.Data.MappingType.Element)
+            MyBase.Columns.Add(Me.columnRejectedOn)
+            Me.columnRejectedByEmployeeId = New Global.System.Data.DataColumn("RejectedByEmployeeId", GetType(Integer), Nothing, Global.System.Data.MappingType.Element)
+            MyBase.Columns.Add(Me.columnRejectedByEmployeeId)
+            Me.columnSubmittedBy = New Global.System.Data.DataColumn("SubmittedBy", GetType(Integer), Nothing, Global.System.Data.MappingType.Element)
+            MyBase.Columns.Add(Me.columnSubmittedBy)
+            Me.columnCreatedByEmployeeId = New Global.System.Data.DataColumn("CreatedByEmployeeId", GetType(Integer), Nothing, Global.System.Data.MappingType.Element)
+            MyBase.Columns.Add(Me.columnCreatedByEmployeeId)
+            Me.columnModifiedByEmployeeId = New Global.System.Data.DataColumn("ModifiedByEmployeeId", GetType(Integer), Nothing, Global.System.Data.MappingType.Element)
+            MyBase.Columns.Add(Me.columnModifiedByEmployeeId)
+            Me.columnPeriodDescription = New Global.System.Data.DataColumn("PeriodDescription", GetType(String), Nothing, Global.System.Data.MappingType.Element)
+            MyBase.Columns.Add(Me.columnPeriodDescription)
+            Me.columnCreatedOn = New Global.System.Data.DataColumn("CreatedOn", GetType(Date), Nothing, Global.System.Data.MappingType.Element)
+            MyBase.Columns.Add(Me.columnCreatedOn)
+            Me.columnModifiedOn = New Global.System.Data.DataColumn("ModifiedOn", GetType(Date), Nothing, Global.System.Data.MappingType.Element)
+            MyBase.Columns.Add(Me.columnModifiedOn)
+            Me.Constraints.Add(New Global.System.Data.UniqueConstraint("Constraint1", New Global.System.Data.DataColumn() {Me.columnAccountEmployeeTimeEntryPeriodId}, true))
+            Me.columnAccountEmployeeTimeEntryPeriodId.AllowDBNull = false
+            Me.columnAccountEmployeeTimeEntryPeriodId.Unique = true
+            Me.columnAccountId.AllowDBNull = false
+            Me.columnAccountEmployeeId.AllowDBNull = false
+            Me.columnTimeEntryStartDate.AllowDBNull = false
+            Me.columnTimeEntryEndDate.AllowDBNull = false
+            Me.columnTimeEntryViewType.AllowDBNull = false
+            Me.columnTimeEntryViewType.MaxLength = 50
+            Me.columnSubmitted.AllowDBNull = false
+            Me.columnApproved.AllowDBNull = false
+            Me.columnRejected.AllowDBNull = false
+            Me.columnInApproval.AllowDBNull = false
+            Me.columnPeriodDescription.MaxLength = 2000
+        End Sub
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public Function NewAccountEmployeeTimeEntryPeriodRow() As AccountEmployeeTimeEntryPeriodRow
+            Return CType(Me.NewRow,AccountEmployeeTimeEntryPeriodRow)
+        End Function
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Protected Overrides Function NewRowFromBuilder(ByVal builder As Global.System.Data.DataRowBuilder) As Global.System.Data.DataRow
+            Return New AccountEmployeeTimeEntryPeriodRow(builder)
+        End Function
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Protected Overrides Function GetRowType() As Global.System.Type
+            Return GetType(AccountEmployeeTimeEntryPeriodRow)
+        End Function
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Protected Overrides Sub OnRowChanged(ByVal e As Global.System.Data.DataRowChangeEventArgs)
+            MyBase.OnRowChanged(e)
+            If (Not (Me.AccountEmployeeTimeEntryPeriodRowChangedEvent) Is Nothing) Then
+                RaiseEvent AccountEmployeeTimeEntryPeriodRowChanged(Me, New AccountEmployeeTimeEntryPeriodRowChangeEvent(CType(e.Row,AccountEmployeeTimeEntryPeriodRow), e.Action))
+            End If
+        End Sub
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Protected Overrides Sub OnRowChanging(ByVal e As Global.System.Data.DataRowChangeEventArgs)
+            MyBase.OnRowChanging(e)
+            If (Not (Me.AccountEmployeeTimeEntryPeriodRowChangingEvent) Is Nothing) Then
+                RaiseEvent AccountEmployeeTimeEntryPeriodRowChanging(Me, New AccountEmployeeTimeEntryPeriodRowChangeEvent(CType(e.Row,AccountEmployeeTimeEntryPeriodRow), e.Action))
+            End If
+        End Sub
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Protected Overrides Sub OnRowDeleted(ByVal e As Global.System.Data.DataRowChangeEventArgs)
+            MyBase.OnRowDeleted(e)
+            If (Not (Me.AccountEmployeeTimeEntryPeriodRowDeletedEvent) Is Nothing) Then
+                RaiseEvent AccountEmployeeTimeEntryPeriodRowDeleted(Me, New AccountEmployeeTimeEntryPeriodRowChangeEvent(CType(e.Row,AccountEmployeeTimeEntryPeriodRow), e.Action))
+            End If
+        End Sub
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Protected Overrides Sub OnRowDeleting(ByVal e As Global.System.Data.DataRowChangeEventArgs)
+            MyBase.OnRowDeleting(e)
+            If (Not (Me.AccountEmployeeTimeEntryPeriodRowDeletingEvent) Is Nothing) Then
+                RaiseEvent AccountEmployeeTimeEntryPeriodRowDeleting(Me, New AccountEmployeeTimeEntryPeriodRowChangeEvent(CType(e.Row,AccountEmployeeTimeEntryPeriodRow), e.Action))
+            End If
+        End Sub
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public Sub RemoveAccountEmployeeTimeEntryPeriodRow(ByVal row As AccountEmployeeTimeEntryPeriodRow)
+            Me.Rows.Remove(row)
+        End Sub
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public Shared Function GetTypedTableSchema(ByVal xs As Global.System.Xml.Schema.XmlSchemaSet) As Global.System.Xml.Schema.XmlSchemaComplexType
+            Dim type As Global.System.Xml.Schema.XmlSchemaComplexType = New Global.System.Xml.Schema.XmlSchemaComplexType()
+            Dim sequence As Global.System.Xml.Schema.XmlSchemaSequence = New Global.System.Xml.Schema.XmlSchemaSequence()
+            Dim ds As TimeLiveDataSet = New TimeLiveDataSet()
+            Dim any1 As Global.System.Xml.Schema.XmlSchemaAny = New Global.System.Xml.Schema.XmlSchemaAny()
+            any1.Namespace = "http://www.w3.org/2001/XMLSchema"
+            any1.MinOccurs = New Decimal(0)
+            any1.MaxOccurs = Decimal.MaxValue
+            any1.ProcessContents = Global.System.Xml.Schema.XmlSchemaContentProcessing.Lax
+            sequence.Items.Add(any1)
+            Dim any2 As Global.System.Xml.Schema.XmlSchemaAny = New Global.System.Xml.Schema.XmlSchemaAny()
+            any2.Namespace = "urn:schemas-microsoft-com:xml-diffgram-v1"
+            any2.MinOccurs = New Decimal(1)
+            any2.ProcessContents = Global.System.Xml.Schema.XmlSchemaContentProcessing.Lax
+            sequence.Items.Add(any2)
+            Dim attribute1 As Global.System.Xml.Schema.XmlSchemaAttribute = New Global.System.Xml.Schema.XmlSchemaAttribute()
+            attribute1.Name = "namespace"
+            attribute1.FixedValue = ds.Namespace
+            type.Attributes.Add(attribute1)
+            Dim attribute2 As Global.System.Xml.Schema.XmlSchemaAttribute = New Global.System.Xml.Schema.XmlSchemaAttribute()
+            attribute2.Name = "tableTypeName"
+            attribute2.FixedValue = "AccountEmployeeTimeEntryPeriodDataTable"
+            type.Attributes.Add(attribute2)
+            type.Particle = sequence
+            Dim dsSchema As Global.System.Xml.Schema.XmlSchema = ds.GetSchemaSerializable
+            If xs.Contains(dsSchema.TargetNamespace) Then
+                Dim s1 As Global.System.IO.MemoryStream = New Global.System.IO.MemoryStream()
+                Dim s2 As Global.System.IO.MemoryStream = New Global.System.IO.MemoryStream()
+                Try 
+                    Dim schema As Global.System.Xml.Schema.XmlSchema = Nothing
+                    dsSchema.Write(s1)
+                    Dim schemas As Global.System.Collections.IEnumerator = xs.Schemas(dsSchema.TargetNamespace).GetEnumerator
+                    Do While schemas.MoveNext
+                        schema = CType(schemas.Current,Global.System.Xml.Schema.XmlSchema)
+                        s2.SetLength(0)
+                        schema.Write(s2)
+                        If (s1.Length = s2.Length) Then
+                            s1.Position = 0
+                            s2.Position = 0
+                            
+                            Do While ((s1.Position <> s1.Length)  _
+                                        AndAlso (s1.ReadByte = s2.ReadByte))
+                                
+                                
+                            Loop
+                            If (s1.Position = s1.Length) Then
+                                Return type
+                            End If
+                        End If
+                        
+                    Loop
+                Finally
+                    If (Not (s1) Is Nothing) Then
+                        s1.Close
+                    End If
+                    If (Not (s2) Is Nothing) Then
+                        s2.Close
+                    End If
+                End Try
+            End If
+            xs.Add(dsSchema)
+            Return type
+        End Function
+    End Class
+    
+    '''<summary>
     '''Represents strongly named DataRow class.
     '''</summary>
     Partial Public Class AccountPartyRow
@@ -3213,6 +3808,440 @@ Partial Public Class TimeLiveDataSet
     End Class
     
     '''<summary>
+    '''Represents strongly named DataRow class.
+    '''</summary>
+    Partial Public Class AccountEmployeeTimeEntryPeriodRow
+        Inherits Global.System.Data.DataRow
+        
+        Private tableAccountEmployeeTimeEntryPeriod As AccountEmployeeTimeEntryPeriodDataTable
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Friend Sub New(ByVal rb As Global.System.Data.DataRowBuilder)
+            MyBase.New(rb)
+            Me.tableAccountEmployeeTimeEntryPeriod = CType(Me.Table,AccountEmployeeTimeEntryPeriodDataTable)
+        End Sub
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public Property AccountEmployeeTimeEntryPeriodId() As System.Guid
+            Get
+                Return CType(Me(Me.tableAccountEmployeeTimeEntryPeriod.AccountEmployeeTimeEntryPeriodIdColumn),Global.System.Guid)
+            End Get
+            Set
+                Me(Me.tableAccountEmployeeTimeEntryPeriod.AccountEmployeeTimeEntryPeriodIdColumn) = value
+            End Set
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public Property AccountId() As Integer
+            Get
+                Return CType(Me(Me.tableAccountEmployeeTimeEntryPeriod.AccountIdColumn),Integer)
+            End Get
+            Set
+                Me(Me.tableAccountEmployeeTimeEntryPeriod.AccountIdColumn) = value
+            End Set
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public Property AccountEmployeeId() As Integer
+            Get
+                Return CType(Me(Me.tableAccountEmployeeTimeEntryPeriod.AccountEmployeeIdColumn),Integer)
+            End Get
+            Set
+                Me(Me.tableAccountEmployeeTimeEntryPeriod.AccountEmployeeIdColumn) = value
+            End Set
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public Property TimeEntryStartDate() As Date
+            Get
+                Return CType(Me(Me.tableAccountEmployeeTimeEntryPeriod.TimeEntryStartDateColumn),Date)
+            End Get
+            Set
+                Me(Me.tableAccountEmployeeTimeEntryPeriod.TimeEntryStartDateColumn) = value
+            End Set
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public Property TimeEntryEndDate() As Date
+            Get
+                Return CType(Me(Me.tableAccountEmployeeTimeEntryPeriod.TimeEntryEndDateColumn),Date)
+            End Get
+            Set
+                Me(Me.tableAccountEmployeeTimeEntryPeriod.TimeEntryEndDateColumn) = value
+            End Set
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public Property TimeEntryViewType() As String
+            Get
+                Return CType(Me(Me.tableAccountEmployeeTimeEntryPeriod.TimeEntryViewTypeColumn),String)
+            End Get
+            Set
+                Me(Me.tableAccountEmployeeTimeEntryPeriod.TimeEntryViewTypeColumn) = value
+            End Set
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public Property Submitted() As Boolean
+            Get
+                Return CType(Me(Me.tableAccountEmployeeTimeEntryPeriod.SubmittedColumn),Boolean)
+            End Get
+            Set
+                Me(Me.tableAccountEmployeeTimeEntryPeriod.SubmittedColumn) = value
+            End Set
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public Property Approved() As Boolean
+            Get
+                Return CType(Me(Me.tableAccountEmployeeTimeEntryPeriod.ApprovedColumn),Boolean)
+            End Get
+            Set
+                Me(Me.tableAccountEmployeeTimeEntryPeriod.ApprovedColumn) = value
+            End Set
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public Property Rejected() As Boolean
+            Get
+                Return CType(Me(Me.tableAccountEmployeeTimeEntryPeriod.RejectedColumn),Boolean)
+            End Get
+            Set
+                Me(Me.tableAccountEmployeeTimeEntryPeriod.RejectedColumn) = value
+            End Set
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public Property InApproval() As Boolean
+            Get
+                Return CType(Me(Me.tableAccountEmployeeTimeEntryPeriod.InApprovalColumn),Boolean)
+            End Get
+            Set
+                Me(Me.tableAccountEmployeeTimeEntryPeriod.InApprovalColumn) = value
+            End Set
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public Property SubmittedDate() As Date
+            Get
+                Try 
+                    Return CType(Me(Me.tableAccountEmployeeTimeEntryPeriod.SubmittedDateColumn),Date)
+                Catch e As Global.System.InvalidCastException
+                    Throw New Global.System.Data.StrongTypingException("The value for column 'SubmittedDate' in table 'AccountEmployeeTimeEntryPeriod' is"& _ 
+                            " DBNull.", e)
+                End Try
+            End Get
+            Set
+                Me(Me.tableAccountEmployeeTimeEntryPeriod.SubmittedDateColumn) = value
+            End Set
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public Property ApprovedOn() As Date
+            Get
+                Try 
+                    Return CType(Me(Me.tableAccountEmployeeTimeEntryPeriod.ApprovedOnColumn),Date)
+                Catch e As Global.System.InvalidCastException
+                    Throw New Global.System.Data.StrongTypingException("The value for column 'ApprovedOn' in table 'AccountEmployeeTimeEntryPeriod' is DB"& _ 
+                            "Null.", e)
+                End Try
+            End Get
+            Set
+                Me(Me.tableAccountEmployeeTimeEntryPeriod.ApprovedOnColumn) = value
+            End Set
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public Property ApprovedByEmployeeId() As Integer
+            Get
+                Try 
+                    Return CType(Me(Me.tableAccountEmployeeTimeEntryPeriod.ApprovedByEmployeeIdColumn),Integer)
+                Catch e As Global.System.InvalidCastException
+                    Throw New Global.System.Data.StrongTypingException("The value for column 'ApprovedByEmployeeId' in table 'AccountEmployeeTimeEntryPer"& _ 
+                            "iod' is DBNull.", e)
+                End Try
+            End Get
+            Set
+                Me(Me.tableAccountEmployeeTimeEntryPeriod.ApprovedByEmployeeIdColumn) = value
+            End Set
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public Property RejectedOn() As Date
+            Get
+                Try 
+                    Return CType(Me(Me.tableAccountEmployeeTimeEntryPeriod.RejectedOnColumn),Date)
+                Catch e As Global.System.InvalidCastException
+                    Throw New Global.System.Data.StrongTypingException("The value for column 'RejectedOn' in table 'AccountEmployeeTimeEntryPeriod' is DB"& _ 
+                            "Null.", e)
+                End Try
+            End Get
+            Set
+                Me(Me.tableAccountEmployeeTimeEntryPeriod.RejectedOnColumn) = value
+            End Set
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public Property RejectedByEmployeeId() As Integer
+            Get
+                Try 
+                    Return CType(Me(Me.tableAccountEmployeeTimeEntryPeriod.RejectedByEmployeeIdColumn),Integer)
+                Catch e As Global.System.InvalidCastException
+                    Throw New Global.System.Data.StrongTypingException("The value for column 'RejectedByEmployeeId' in table 'AccountEmployeeTimeEntryPer"& _ 
+                            "iod' is DBNull.", e)
+                End Try
+            End Get
+            Set
+                Me(Me.tableAccountEmployeeTimeEntryPeriod.RejectedByEmployeeIdColumn) = value
+            End Set
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public Property SubmittedBy() As Integer
+            Get
+                Try 
+                    Return CType(Me(Me.tableAccountEmployeeTimeEntryPeriod.SubmittedByColumn),Integer)
+                Catch e As Global.System.InvalidCastException
+                    Throw New Global.System.Data.StrongTypingException("The value for column 'SubmittedBy' in table 'AccountEmployeeTimeEntryPeriod' is D"& _ 
+                            "BNull.", e)
+                End Try
+            End Get
+            Set
+                Me(Me.tableAccountEmployeeTimeEntryPeriod.SubmittedByColumn) = value
+            End Set
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public Property CreatedByEmployeeId() As Integer
+            Get
+                Try 
+                    Return CType(Me(Me.tableAccountEmployeeTimeEntryPeriod.CreatedByEmployeeIdColumn),Integer)
+                Catch e As Global.System.InvalidCastException
+                    Throw New Global.System.Data.StrongTypingException("The value for column 'CreatedByEmployeeId' in table 'AccountEmployeeTimeEntryPeri"& _ 
+                            "od' is DBNull.", e)
+                End Try
+            End Get
+            Set
+                Me(Me.tableAccountEmployeeTimeEntryPeriod.CreatedByEmployeeIdColumn) = value
+            End Set
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public Property ModifiedByEmployeeId() As Integer
+            Get
+                Try 
+                    Return CType(Me(Me.tableAccountEmployeeTimeEntryPeriod.ModifiedByEmployeeIdColumn),Integer)
+                Catch e As Global.System.InvalidCastException
+                    Throw New Global.System.Data.StrongTypingException("The value for column 'ModifiedByEmployeeId' in table 'AccountEmployeeTimeEntryPer"& _ 
+                            "iod' is DBNull.", e)
+                End Try
+            End Get
+            Set
+                Me(Me.tableAccountEmployeeTimeEntryPeriod.ModifiedByEmployeeIdColumn) = value
+            End Set
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public Property PeriodDescription() As String
+            Get
+                Try 
+                    Return CType(Me(Me.tableAccountEmployeeTimeEntryPeriod.PeriodDescriptionColumn),String)
+                Catch e As Global.System.InvalidCastException
+                    Throw New Global.System.Data.StrongTypingException("The value for column 'PeriodDescription' in table 'AccountEmployeeTimeEntryPeriod"& _ 
+                            "' is DBNull.", e)
+                End Try
+            End Get
+            Set
+                Me(Me.tableAccountEmployeeTimeEntryPeriod.PeriodDescriptionColumn) = value
+            End Set
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public Property CreatedOn() As Date
+            Get
+                Try 
+                    Return CType(Me(Me.tableAccountEmployeeTimeEntryPeriod.CreatedOnColumn),Date)
+                Catch e As Global.System.InvalidCastException
+                    Throw New Global.System.Data.StrongTypingException("The value for column 'CreatedOn' in table 'AccountEmployeeTimeEntryPeriod' is DBN"& _ 
+                            "ull.", e)
+                End Try
+            End Get
+            Set
+                Me(Me.tableAccountEmployeeTimeEntryPeriod.CreatedOnColumn) = value
+            End Set
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public Property ModifiedOn() As Date
+            Get
+                Try 
+                    Return CType(Me(Me.tableAccountEmployeeTimeEntryPeriod.ModifiedOnColumn),Date)
+                Catch e As Global.System.InvalidCastException
+                    Throw New Global.System.Data.StrongTypingException("The value for column 'ModifiedOn' in table 'AccountEmployeeTimeEntryPeriod' is DB"& _ 
+                            "Null.", e)
+                End Try
+            End Get
+            Set
+                Me(Me.tableAccountEmployeeTimeEntryPeriod.ModifiedOnColumn) = value
+            End Set
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public Function IsSubmittedDateNull() As Boolean
+            Return Me.IsNull(Me.tableAccountEmployeeTimeEntryPeriod.SubmittedDateColumn)
+        End Function
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public Sub SetSubmittedDateNull()
+            Me(Me.tableAccountEmployeeTimeEntryPeriod.SubmittedDateColumn) = Global.System.Convert.DBNull
+        End Sub
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public Function IsApprovedOnNull() As Boolean
+            Return Me.IsNull(Me.tableAccountEmployeeTimeEntryPeriod.ApprovedOnColumn)
+        End Function
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public Sub SetApprovedOnNull()
+            Me(Me.tableAccountEmployeeTimeEntryPeriod.ApprovedOnColumn) = Global.System.Convert.DBNull
+        End Sub
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public Function IsApprovedByEmployeeIdNull() As Boolean
+            Return Me.IsNull(Me.tableAccountEmployeeTimeEntryPeriod.ApprovedByEmployeeIdColumn)
+        End Function
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public Sub SetApprovedByEmployeeIdNull()
+            Me(Me.tableAccountEmployeeTimeEntryPeriod.ApprovedByEmployeeIdColumn) = Global.System.Convert.DBNull
+        End Sub
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public Function IsRejectedOnNull() As Boolean
+            Return Me.IsNull(Me.tableAccountEmployeeTimeEntryPeriod.RejectedOnColumn)
+        End Function
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public Sub SetRejectedOnNull()
+            Me(Me.tableAccountEmployeeTimeEntryPeriod.RejectedOnColumn) = Global.System.Convert.DBNull
+        End Sub
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public Function IsRejectedByEmployeeIdNull() As Boolean
+            Return Me.IsNull(Me.tableAccountEmployeeTimeEntryPeriod.RejectedByEmployeeIdColumn)
+        End Function
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public Sub SetRejectedByEmployeeIdNull()
+            Me(Me.tableAccountEmployeeTimeEntryPeriod.RejectedByEmployeeIdColumn) = Global.System.Convert.DBNull
+        End Sub
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public Function IsSubmittedByNull() As Boolean
+            Return Me.IsNull(Me.tableAccountEmployeeTimeEntryPeriod.SubmittedByColumn)
+        End Function
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public Sub SetSubmittedByNull()
+            Me(Me.tableAccountEmployeeTimeEntryPeriod.SubmittedByColumn) = Global.System.Convert.DBNull
+        End Sub
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public Function IsCreatedByEmployeeIdNull() As Boolean
+            Return Me.IsNull(Me.tableAccountEmployeeTimeEntryPeriod.CreatedByEmployeeIdColumn)
+        End Function
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public Sub SetCreatedByEmployeeIdNull()
+            Me(Me.tableAccountEmployeeTimeEntryPeriod.CreatedByEmployeeIdColumn) = Global.System.Convert.DBNull
+        End Sub
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public Function IsModifiedByEmployeeIdNull() As Boolean
+            Return Me.IsNull(Me.tableAccountEmployeeTimeEntryPeriod.ModifiedByEmployeeIdColumn)
+        End Function
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public Sub SetModifiedByEmployeeIdNull()
+            Me(Me.tableAccountEmployeeTimeEntryPeriod.ModifiedByEmployeeIdColumn) = Global.System.Convert.DBNull
+        End Sub
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public Function IsPeriodDescriptionNull() As Boolean
+            Return Me.IsNull(Me.tableAccountEmployeeTimeEntryPeriod.PeriodDescriptionColumn)
+        End Function
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public Sub SetPeriodDescriptionNull()
+            Me(Me.tableAccountEmployeeTimeEntryPeriod.PeriodDescriptionColumn) = Global.System.Convert.DBNull
+        End Sub
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public Function IsCreatedOnNull() As Boolean
+            Return Me.IsNull(Me.tableAccountEmployeeTimeEntryPeriod.CreatedOnColumn)
+        End Function
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public Sub SetCreatedOnNull()
+            Me(Me.tableAccountEmployeeTimeEntryPeriod.CreatedOnColumn) = Global.System.Convert.DBNull
+        End Sub
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public Function IsModifiedOnNull() As Boolean
+            Return Me.IsNull(Me.tableAccountEmployeeTimeEntryPeriod.ModifiedOnColumn)
+        End Function
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public Sub SetModifiedOnNull()
+            Me(Me.tableAccountEmployeeTimeEntryPeriod.ModifiedOnColumn) = Global.System.Convert.DBNull
+        End Sub
+    End Class
+    
+    '''<summary>
     '''Row event argument class
     '''</summary>
     <Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
@@ -3306,6 +4335,42 @@ Partial Public Class TimeLiveDataSet
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
         Public ReadOnly Property Row() As AccountProjectEmployeeRow
+            Get
+                Return Me.eventRow
+            End Get
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public ReadOnly Property Action() As Global.System.Data.DataRowAction
+            Get
+                Return Me.eventAction
+            End Get
+        End Property
+    End Class
+    
+    '''<summary>
+    '''Row event argument class
+    '''</summary>
+    <Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+    Public Class AccountEmployeeTimeEntryPeriodRowChangeEvent
+        Inherits Global.System.EventArgs
+        
+        Private eventRow As AccountEmployeeTimeEntryPeriodRow
+        
+        Private eventAction As Global.System.Data.DataRowAction
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public Sub New(ByVal row As AccountEmployeeTimeEntryPeriodRow, ByVal action As Global.System.Data.DataRowAction)
+            MyBase.New
+            Me.eventRow = row
+            Me.eventAction = action
+        End Sub
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public ReadOnly Property Row() As AccountEmployeeTimeEntryPeriodRow
             Get
                 Return Me.eventRow
             End Get
@@ -3632,15 +4697,15 @@ Namespace TimeLiveDataSetTableAdapters
                 "yeeId, @CustomField1, @CustomField2, @CustomField3, @CustomField4, @CustomField5"& _ 
                 ", @CustomField6, @CustomField7, @CustomField8, @CustomField9, @CustomField10, @C"& _ 
                 "ustomField11, @CustomField12, @CustomField13, @CustomField14, @CustomField15, @F"& _ 
-                "ixedBidBillingMode, @FixedCost);"&Global.Microsoft.VisualBasic.ChrW(13)&Global.Microsoft.VisualBasic.ChrW(10)&"SELECT AccountPartyId, PartyTypeId, AccountId,"& _ 
-                " PartyName, PartyNick, EMailAddress, Address1, Address2, CountryId, State, City,"& _ 
-                " ZipCode, Telephone1, Telephone2, Fax, DefaultCurrencyId, DefaultBillingRate, We"& _ 
-                "bsite, Notes, IsDisabled, IsDeleted, CreatedOn, CreatedByEmployeeId, ModifiedOn,"& _ 
-                " ModifiedByEmployeeId, CustomField1, CustomField2, CustomField3, CustomField4, C"& _ 
-                "ustomField5, CustomField6, CustomField7, CustomField8, CustomField9, CustomField"& _ 
-                "10, CustomField11, CustomField12, CustomField13, CustomField14, CustomField15, F"& _ 
-                "ixedBidBillingMode, FixedCost FROM AccountParty WHERE (AccountPartyId = SCOPE_ID"& _ 
-                "ENTITY())"
+                "ixedBidBillingMode, @FixedCost);"&Global.Microsoft.VisualBasic.ChrW(10)&"SELECT AccountPartyId, PartyTypeId, AccountId, "& _ 
+                "PartyName, PartyNick, EMailAddress, Address1, Address2, CountryId, State, City, "& _ 
+                "ZipCode, Telephone1, Telephone2, Fax, DefaultCurrencyId, DefaultBillingRate, Web"& _ 
+                "site, Notes, IsDisabled, IsDeleted, CreatedOn, CreatedByEmployeeId, ModifiedOn, "& _ 
+                "ModifiedByEmployeeId, CustomField1, CustomField2, CustomField3, CustomField4, Cu"& _ 
+                "stomField5, CustomField6, CustomField7, CustomField8, CustomField9, CustomField1"& _ 
+                "0, CustomField11, CustomField12, CustomField13, CustomField14, CustomField15, Fi"& _ 
+                "xedBidBillingMode, FixedCost FROM AccountParty WHERE (AccountPartyId = SCOPE_IDE"& _ 
+                "NTITY())"
             Me._adapter.InsertCommand.CommandType = Global.System.Data.CommandType.Text
             Me._adapter.InsertCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@PartyTypeId", Global.System.Data.SqlDbType.SmallInt, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "PartyTypeId", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
             Me._adapter.InsertCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@AccountId", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "AccountId", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
@@ -3746,14 +4811,14 @@ Namespace TimeLiveDataSetTableAdapters
                 "stomField15)) AND ((@IsNull_FixedBidBillingMode = 1 AND [FixedBidBillingMode] IS"& _ 
                 " NULL) OR ([FixedBidBillingMode] = @Original_FixedBidBillingMode)) AND ((@IsNull"& _ 
                 "_FixedCost = 1 AND [FixedCost] IS NULL) OR ([FixedCost] = @Original_FixedCost)))"& _ 
-                ";"&Global.Microsoft.VisualBasic.ChrW(13)&Global.Microsoft.VisualBasic.ChrW(10)&"SELECT AccountPartyId, PartyTypeId, AccountId, PartyName, PartyNick, EMailAdd"& _ 
-                "ress, Address1, Address2, CountryId, State, City, ZipCode, Telephone1, Telephone"& _ 
-                "2, Fax, DefaultCurrencyId, DefaultBillingRate, Website, Notes, IsDisabled, IsDel"& _ 
-                "eted, CreatedOn, CreatedByEmployeeId, ModifiedOn, ModifiedByEmployeeId, CustomFi"& _ 
-                "eld1, CustomField2, CustomField3, CustomField4, CustomField5, CustomField6, Cust"& _ 
-                "omField7, CustomField8, CustomField9, CustomField10, CustomField11, CustomField1"& _ 
-                "2, CustomField13, CustomField14, CustomField15, FixedBidBillingMode, FixedCost F"& _ 
-                "ROM AccountParty WHERE (AccountPartyId = @AccountPartyId)"
+                ";"&Global.Microsoft.VisualBasic.ChrW(10)&"SELECT AccountPartyId, PartyTypeId, AccountId, PartyName, PartyNick, EMailAddr"& _ 
+                "ess, Address1, Address2, CountryId, State, City, ZipCode, Telephone1, Telephone2"& _ 
+                ", Fax, DefaultCurrencyId, DefaultBillingRate, Website, Notes, IsDisabled, IsDele"& _ 
+                "ted, CreatedOn, CreatedByEmployeeId, ModifiedOn, ModifiedByEmployeeId, CustomFie"& _ 
+                "ld1, CustomField2, CustomField3, CustomField4, CustomField5, CustomField6, Custo"& _ 
+                "mField7, CustomField8, CustomField9, CustomField10, CustomField11, CustomField12"& _ 
+                ", CustomField13, CustomField14, CustomField15, FixedBidBillingMode, FixedCost FR"& _ 
+                "OM AccountParty WHERE (AccountPartyId = @AccountPartyId)"
             Me._adapter.UpdateCommand.CommandType = Global.System.Data.CommandType.Text
             Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@PartyTypeId", Global.System.Data.SqlDbType.SmallInt, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "PartyTypeId", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
             Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@AccountId", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "AccountId", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
@@ -5238,9 +6303,9 @@ Namespace TimeLiveDataSetTableAdapters
             Me._adapter.InsertCommand.Connection = Me.Connection
             Me._adapter.InsertCommand.CommandText = "INSERT INTO [dbo].[AccountProjectTaskEmployee] ([AccountId], [AccountProjectTaskI"& _ 
                 "d], [AccountEmployeeId], [AllocationUnits]) VALUES (@AccountId, @AccountProjectT"& _ 
-                "askId, @AccountEmployeeId, @AllocationUnits);"&Global.Microsoft.VisualBasic.ChrW(13)&Global.Microsoft.VisualBasic.ChrW(10)&"SELECT AccountProjectTaskEmployee"& _ 
-                "Id, AccountId, AccountProjectTaskId, AccountEmployeeId, AllocationUnits FROM Acc"& _ 
-                "ountProjectTaskEmployee WHERE (AccountProjectTaskEmployeeId = SCOPE_IDENTITY())"
+                "askId, @AccountEmployeeId, @AllocationUnits);"&Global.Microsoft.VisualBasic.ChrW(10)&"SELECT AccountProjectTaskEmployeeI"& _ 
+                "d, AccountId, AccountProjectTaskId, AccountEmployeeId, AllocationUnits FROM Acco"& _ 
+                "untProjectTaskEmployee WHERE (AccountProjectTaskEmployeeId = SCOPE_IDENTITY())"
             Me._adapter.InsertCommand.CommandType = Global.System.Data.CommandType.Text
             Me._adapter.InsertCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@AccountId", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "AccountId", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
             Me._adapter.InsertCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@AccountProjectTaskId", Global.System.Data.SqlDbType.BigInt, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "AccountProjectTaskId", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
@@ -5254,10 +6319,10 @@ Namespace TimeLiveDataSetTableAdapters
                 "Original_AccountProjectTaskEmployeeId) AND ([AccountId] = @Original_AccountId) A"& _ 
                 "ND ([AccountProjectTaskId] = @Original_AccountProjectTaskId) AND ([AccountEmploy"& _ 
                 "eeId] = @Original_AccountEmployeeId) AND ((@IsNull_AllocationUnits = 1 AND [Allo"& _ 
-                "cationUnits] IS NULL) OR ([AllocationUnits] = @Original_AllocationUnits)));"&Global.Microsoft.VisualBasic.ChrW(13)&Global.Microsoft.VisualBasic.ChrW(10)&"SEL"& _ 
-                "ECT AccountProjectTaskEmployeeId, AccountId, AccountProjectTaskId, AccountEmploy"& _ 
-                "eeId, AllocationUnits FROM AccountProjectTaskEmployee WHERE (AccountProjectTaskE"& _ 
-                "mployeeId = @AccountProjectTaskEmployeeId)"
+                "cationUnits] IS NULL) OR ([AllocationUnits] = @Original_AllocationUnits)));"&Global.Microsoft.VisualBasic.ChrW(10)&"SELE"& _ 
+                "CT AccountProjectTaskEmployeeId, AccountId, AccountProjectTaskId, AccountEmploye"& _ 
+                "eId, AllocationUnits FROM AccountProjectTaskEmployee WHERE (AccountProjectTaskEm"& _ 
+                "ployeeId = @AccountProjectTaskEmployeeId)"
             Me._adapter.UpdateCommand.CommandType = Global.System.Data.CommandType.Text
             Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@AccountId", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "AccountId", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
             Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@AccountProjectTaskId", Global.System.Data.SqlDbType.BigInt, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "AccountProjectTaskId", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
@@ -5624,11 +6689,11 @@ Namespace TimeLiveDataSetTableAdapters
                 "ountEmployeeId], [TaskCompletedPercentage], [TaskCompleted], [AccountRoleId], [A"& _ 
                 "ccountBillingRateId], [AccountProjectEmployeeTemplateId]) VALUES (@AccountId, @A"& _ 
                 "ccountProjectId, @AccountEmployeeId, @TaskCompletedPercentage, @TaskCompleted, @"& _ 
-                "AccountRoleId, @AccountBillingRateId, @AccountProjectEmployeeTemplateId);"&Global.Microsoft.VisualBasic.ChrW(13)&Global.Microsoft.VisualBasic.ChrW(10)&"SELEC"& _ 
-                "T AccountProjectEmployeeId, AccountId, AccountProjectId, AccountEmployeeId, Task"& _ 
-                "CompletedPercentage, TaskCompleted, AccountRoleId, AccountBillingRateId, Account"& _ 
-                "ProjectEmployeeTemplateId FROM AccountProjectEmployee WHERE (AccountProjectEmplo"& _ 
-                "yeeId = SCOPE_IDENTITY())"
+                "AccountRoleId, @AccountBillingRateId, @AccountProjectEmployeeTemplateId);"&Global.Microsoft.VisualBasic.ChrW(10)&"SELECT"& _ 
+                " AccountProjectEmployeeId, AccountId, AccountProjectId, AccountEmployeeId, TaskC"& _ 
+                "ompletedPercentage, TaskCompleted, AccountRoleId, AccountBillingRateId, AccountP"& _ 
+                "rojectEmployeeTemplateId FROM AccountProjectEmployee WHERE (AccountProjectEmploy"& _ 
+                "eeId = SCOPE_IDENTITY())"
             Me._adapter.InsertCommand.CommandType = Global.System.Data.CommandType.Text
             Me._adapter.InsertCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@AccountId", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "AccountId", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
             Me._adapter.InsertCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@AccountProjectId", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "AccountProjectId", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
@@ -5656,11 +6721,11 @@ Namespace TimeLiveDataSetTableAdapters
                 "IsNull_AccountBillingRateId = 1 AND [AccountBillingRateId] IS NULL) OR ([Account"& _ 
                 "BillingRateId] = @Original_AccountBillingRateId)) AND ((@IsNull_AccountProjectEm"& _ 
                 "ployeeTemplateId = 1 AND [AccountProjectEmployeeTemplateId] IS NULL) OR ([Accoun"& _ 
-                "tProjectEmployeeTemplateId] = @Original_AccountProjectEmployeeTemplateId)));"&Global.Microsoft.VisualBasic.ChrW(13)&Global.Microsoft.VisualBasic.ChrW(10)&"SE"& _ 
-                "LECT AccountProjectEmployeeId, AccountId, AccountProjectId, AccountEmployeeId, T"& _ 
-                "askCompletedPercentage, TaskCompleted, AccountRoleId, AccountBillingRateId, Acco"& _ 
-                "untProjectEmployeeTemplateId FROM AccountProjectEmployee WHERE (AccountProjectEm"& _ 
-                "ployeeId = @AccountProjectEmployeeId)"
+                "tProjectEmployeeTemplateId] = @Original_AccountProjectEmployeeTemplateId)));"&Global.Microsoft.VisualBasic.ChrW(10)&"SEL"& _ 
+                "ECT AccountProjectEmployeeId, AccountId, AccountProjectId, AccountEmployeeId, Ta"& _ 
+                "skCompletedPercentage, TaskCompleted, AccountRoleId, AccountBillingRateId, Accou"& _ 
+                "ntProjectEmployeeTemplateId FROM AccountProjectEmployee WHERE (AccountProjectEmp"& _ 
+                "loyeeId = @AccountProjectEmployeeId)"
             Me._adapter.UpdateCommand.CommandType = Global.System.Data.CommandType.Text
             Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@AccountId", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "AccountId", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
             Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@AccountProjectId", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "AccountProjectId", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
@@ -6019,6 +7084,972 @@ Namespace TimeLiveDataSetTableAdapters
     End Class
     
     '''<summary>
+    '''Represents the connection and commands used to retrieve and save data.
+    '''</summary>
+    <Global.System.ComponentModel.DesignerCategoryAttribute("code"),  _
+     Global.System.ComponentModel.ToolboxItem(true),  _
+     Global.System.ComponentModel.DataObjectAttribute(true),  _
+     Global.System.ComponentModel.DesignerAttribute("Microsoft.VSDesigner.DataSource.Design.TableAdapterDesigner, Microsoft.VSDesigner"& _ 
+        ", Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a"),  _
+     Global.System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")>  _
+    Partial Public Class AccountEmployeeTimeEntryPeriodTableAdapter
+        Inherits Global.System.ComponentModel.Component
+        
+        Private WithEvents _adapter As Global.System.Data.SqlClient.SqlDataAdapter
+        
+        Private _connection As Global.System.Data.SqlClient.SqlConnection
+        
+        Private _transaction As Global.System.Data.SqlClient.SqlTransaction
+        
+        Private _commandCollection() As Global.System.Data.SqlClient.SqlCommand
+        
+        Private _clearBeforeFill As Boolean
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public Sub New()
+            MyBase.New
+            Me.ClearBeforeFill = true
+        End Sub
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Protected Friend ReadOnly Property Adapter() As Global.System.Data.SqlClient.SqlDataAdapter
+            Get
+                If (Me._adapter Is Nothing) Then
+                    Me.InitAdapter
+                End If
+                Return Me._adapter
+            End Get
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Friend Property Connection() As Global.System.Data.SqlClient.SqlConnection
+            Get
+                If (Me._connection Is Nothing) Then
+                    Me.InitConnection
+                End If
+                Return Me._connection
+            End Get
+            Set
+                Me._connection = value
+                If (Not (Me.Adapter.InsertCommand) Is Nothing) Then
+                    Me.Adapter.InsertCommand.Connection = value
+                End If
+                If (Not (Me.Adapter.DeleteCommand) Is Nothing) Then
+                    Me.Adapter.DeleteCommand.Connection = value
+                End If
+                If (Not (Me.Adapter.UpdateCommand) Is Nothing) Then
+                    Me.Adapter.UpdateCommand.Connection = value
+                End If
+                Dim i As Integer = 0
+                Do While (i < Me.CommandCollection.Length)
+                    If (Not (Me.CommandCollection(i)) Is Nothing) Then
+                        CType(Me.CommandCollection(i),Global.System.Data.SqlClient.SqlCommand).Connection = value
+                    End If
+                    i = (i + 1)
+                Loop
+            End Set
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Friend Property Transaction() As Global.System.Data.SqlClient.SqlTransaction
+            Get
+                Return Me._transaction
+            End Get
+            Set
+                Me._transaction = value
+                Dim i As Integer = 0
+                Do While (i < Me.CommandCollection.Length)
+                    Me.CommandCollection(i).Transaction = Me._transaction
+                    i = (i + 1)
+                Loop
+                If ((Not (Me.Adapter) Is Nothing)  _
+                            AndAlso (Not (Me.Adapter.DeleteCommand) Is Nothing)) Then
+                    Me.Adapter.DeleteCommand.Transaction = Me._transaction
+                End If
+                If ((Not (Me.Adapter) Is Nothing)  _
+                            AndAlso (Not (Me.Adapter.InsertCommand) Is Nothing)) Then
+                    Me.Adapter.InsertCommand.Transaction = Me._transaction
+                End If
+                If ((Not (Me.Adapter) Is Nothing)  _
+                            AndAlso (Not (Me.Adapter.UpdateCommand) Is Nothing)) Then
+                    Me.Adapter.UpdateCommand.Transaction = Me._transaction
+                End If
+            End Set
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Protected ReadOnly Property CommandCollection() As Global.System.Data.SqlClient.SqlCommand()
+            Get
+                If (Me._commandCollection Is Nothing) Then
+                    Me.InitCommandCollection
+                End If
+                Return Me._commandCollection
+            End Get
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public Property ClearBeforeFill() As Boolean
+            Get
+                Return Me._clearBeforeFill
+            End Get
+            Set
+                Me._clearBeforeFill = value
+            End Set
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Private Sub InitAdapter()
+            Me._adapter = New Global.System.Data.SqlClient.SqlDataAdapter()
+            Dim tableMapping As Global.System.Data.Common.DataTableMapping = New Global.System.Data.Common.DataTableMapping()
+            tableMapping.SourceTable = "Table"
+            tableMapping.DataSetTable = "AccountEmployeeTimeEntryPeriod"
+            tableMapping.ColumnMappings.Add("AccountEmployeeTimeEntryPeriodId", "AccountEmployeeTimeEntryPeriodId")
+            tableMapping.ColumnMappings.Add("AccountId", "AccountId")
+            tableMapping.ColumnMappings.Add("AccountEmployeeId", "AccountEmployeeId")
+            tableMapping.ColumnMappings.Add("TimeEntryStartDate", "TimeEntryStartDate")
+            tableMapping.ColumnMappings.Add("TimeEntryEndDate", "TimeEntryEndDate")
+            tableMapping.ColumnMappings.Add("TimeEntryViewType", "TimeEntryViewType")
+            tableMapping.ColumnMappings.Add("Submitted", "Submitted")
+            tableMapping.ColumnMappings.Add("Approved", "Approved")
+            tableMapping.ColumnMappings.Add("Rejected", "Rejected")
+            tableMapping.ColumnMappings.Add("InApproval", "InApproval")
+            tableMapping.ColumnMappings.Add("SubmittedDate", "SubmittedDate")
+            tableMapping.ColumnMappings.Add("ApprovedOn", "ApprovedOn")
+            tableMapping.ColumnMappings.Add("ApprovedByEmployeeId", "ApprovedByEmployeeId")
+            tableMapping.ColumnMappings.Add("RejectedOn", "RejectedOn")
+            tableMapping.ColumnMappings.Add("RejectedByEmployeeId", "RejectedByEmployeeId")
+            tableMapping.ColumnMappings.Add("SubmittedBy", "SubmittedBy")
+            tableMapping.ColumnMappings.Add("CreatedByEmployeeId", "CreatedByEmployeeId")
+            tableMapping.ColumnMappings.Add("ModifiedByEmployeeId", "ModifiedByEmployeeId")
+            tableMapping.ColumnMappings.Add("PeriodDescription", "PeriodDescription")
+            tableMapping.ColumnMappings.Add("CreatedOn", "CreatedOn")
+            tableMapping.ColumnMappings.Add("ModifiedOn", "ModifiedOn")
+            Me._adapter.TableMappings.Add(tableMapping)
+            Me._adapter.DeleteCommand = New Global.System.Data.SqlClient.SqlCommand()
+            Me._adapter.DeleteCommand.Connection = Me.Connection
+            Me._adapter.DeleteCommand.CommandText = "DELETE FROM [dbo].[AccountEmployeeTimeEntryPeriod] WHERE (([AccountEmployeeTimeEn"& _ 
+                "tryPeriodId] = @Original_AccountEmployeeTimeEntryPeriodId) AND ([AccountId] = @O"& _ 
+                "riginal_AccountId) AND ([AccountEmployeeId] = @Original_AccountEmployeeId) AND ("& _ 
+                "[TimeEntryStartDate] = @Original_TimeEntryStartDate) AND ([TimeEntryEndDate] = @"& _ 
+                "Original_TimeEntryEndDate) AND ([TimeEntryViewType] = @Original_TimeEntryViewTyp"& _ 
+                "e) AND ([Submitted] = @Original_Submitted) AND ([Approved] = @Original_Approved)"& _ 
+                " AND ([Rejected] = @Original_Rejected) AND ([InApproval] = @Original_InApproval)"& _ 
+                " AND ((@IsNull_SubmittedDate = 1 AND [SubmittedDate] IS NULL) OR ([SubmittedDate"& _ 
+                "] = @Original_SubmittedDate)) AND ((@IsNull_ApprovedOn = 1 AND [ApprovedOn] IS N"& _ 
+                "ULL) OR ([ApprovedOn] = @Original_ApprovedOn)) AND ((@IsNull_ApprovedByEmployeeI"& _ 
+                "d = 1 AND [ApprovedByEmployeeId] IS NULL) OR ([ApprovedByEmployeeId] = @Original"& _ 
+                "_ApprovedByEmployeeId)) AND ((@IsNull_RejectedOn = 1 AND [RejectedOn] IS NULL) O"& _ 
+                "R ([RejectedOn] = @Original_RejectedOn)) AND ((@IsNull_RejectedByEmployeeId = 1 "& _ 
+                "AND [RejectedByEmployeeId] IS NULL) OR ([RejectedByEmployeeId] = @Original_Rejec"& _ 
+                "tedByEmployeeId)) AND ((@IsNull_SubmittedBy = 1 AND [SubmittedBy] IS NULL) OR (["& _ 
+                "SubmittedBy] = @Original_SubmittedBy)) AND ((@IsNull_CreatedByEmployeeId = 1 AND"& _ 
+                " [CreatedByEmployeeId] IS NULL) OR ([CreatedByEmployeeId] = @Original_CreatedByE"& _ 
+                "mployeeId)) AND ((@IsNull_ModifiedByEmployeeId = 1 AND [ModifiedByEmployeeId] IS"& _ 
+                " NULL) OR ([ModifiedByEmployeeId] = @Original_ModifiedByEmployeeId)) AND ((@IsNu"& _ 
+                "ll_PeriodDescription = 1 AND [PeriodDescription] IS NULL) OR ([PeriodDescription"& _ 
+                "] = @Original_PeriodDescription)) AND ((@IsNull_CreatedOn = 1 AND [CreatedOn] IS"& _ 
+                " NULL) OR ([CreatedOn] = @Original_CreatedOn)) AND ((@IsNull_ModifiedOn = 1 AND "& _ 
+                "[ModifiedOn] IS NULL) OR ([ModifiedOn] = @Original_ModifiedOn)))"
+            Me._adapter.DeleteCommand.CommandType = Global.System.Data.CommandType.Text
+            Me._adapter.DeleteCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_AccountEmployeeTimeEntryPeriodId", Global.System.Data.SqlDbType.UniqueIdentifier, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "AccountEmployeeTimeEntryPeriodId", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
+            Me._adapter.DeleteCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_AccountId", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "AccountId", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
+            Me._adapter.DeleteCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_AccountEmployeeId", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "AccountEmployeeId", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
+            Me._adapter.DeleteCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_TimeEntryStartDate", Global.System.Data.SqlDbType.DateTime, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "TimeEntryStartDate", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
+            Me._adapter.DeleteCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_TimeEntryEndDate", Global.System.Data.SqlDbType.DateTime, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "TimeEntryEndDate", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
+            Me._adapter.DeleteCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_TimeEntryViewType", Global.System.Data.SqlDbType.NVarChar, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "TimeEntryViewType", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
+            Me._adapter.DeleteCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_Submitted", Global.System.Data.SqlDbType.Bit, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "Submitted", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
+            Me._adapter.DeleteCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_Approved", Global.System.Data.SqlDbType.Bit, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "Approved", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
+            Me._adapter.DeleteCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_Rejected", Global.System.Data.SqlDbType.Bit, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "Rejected", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
+            Me._adapter.DeleteCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_InApproval", Global.System.Data.SqlDbType.Bit, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "InApproval", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
+            Me._adapter.DeleteCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@IsNull_SubmittedDate", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "SubmittedDate", Global.System.Data.DataRowVersion.Original, true, Nothing, "", "", ""))
+            Me._adapter.DeleteCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_SubmittedDate", Global.System.Data.SqlDbType.DateTime, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "SubmittedDate", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
+            Me._adapter.DeleteCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@IsNull_ApprovedOn", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "ApprovedOn", Global.System.Data.DataRowVersion.Original, true, Nothing, "", "", ""))
+            Me._adapter.DeleteCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_ApprovedOn", Global.System.Data.SqlDbType.DateTime, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "ApprovedOn", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
+            Me._adapter.DeleteCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@IsNull_ApprovedByEmployeeId", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "ApprovedByEmployeeId", Global.System.Data.DataRowVersion.Original, true, Nothing, "", "", ""))
+            Me._adapter.DeleteCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_ApprovedByEmployeeId", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "ApprovedByEmployeeId", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
+            Me._adapter.DeleteCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@IsNull_RejectedOn", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "RejectedOn", Global.System.Data.DataRowVersion.Original, true, Nothing, "", "", ""))
+            Me._adapter.DeleteCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_RejectedOn", Global.System.Data.SqlDbType.DateTime, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "RejectedOn", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
+            Me._adapter.DeleteCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@IsNull_RejectedByEmployeeId", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "RejectedByEmployeeId", Global.System.Data.DataRowVersion.Original, true, Nothing, "", "", ""))
+            Me._adapter.DeleteCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_RejectedByEmployeeId", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "RejectedByEmployeeId", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
+            Me._adapter.DeleteCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@IsNull_SubmittedBy", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "SubmittedBy", Global.System.Data.DataRowVersion.Original, true, Nothing, "", "", ""))
+            Me._adapter.DeleteCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_SubmittedBy", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "SubmittedBy", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
+            Me._adapter.DeleteCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@IsNull_CreatedByEmployeeId", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "CreatedByEmployeeId", Global.System.Data.DataRowVersion.Original, true, Nothing, "", "", ""))
+            Me._adapter.DeleteCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_CreatedByEmployeeId", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "CreatedByEmployeeId", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
+            Me._adapter.DeleteCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@IsNull_ModifiedByEmployeeId", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "ModifiedByEmployeeId", Global.System.Data.DataRowVersion.Original, true, Nothing, "", "", ""))
+            Me._adapter.DeleteCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_ModifiedByEmployeeId", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "ModifiedByEmployeeId", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
+            Me._adapter.DeleteCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@IsNull_PeriodDescription", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "PeriodDescription", Global.System.Data.DataRowVersion.Original, true, Nothing, "", "", ""))
+            Me._adapter.DeleteCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_PeriodDescription", Global.System.Data.SqlDbType.NVarChar, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "PeriodDescription", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
+            Me._adapter.DeleteCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@IsNull_CreatedOn", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "CreatedOn", Global.System.Data.DataRowVersion.Original, true, Nothing, "", "", ""))
+            Me._adapter.DeleteCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_CreatedOn", Global.System.Data.SqlDbType.DateTime, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "CreatedOn", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
+            Me._adapter.DeleteCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@IsNull_ModifiedOn", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "ModifiedOn", Global.System.Data.DataRowVersion.Original, true, Nothing, "", "", ""))
+            Me._adapter.DeleteCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_ModifiedOn", Global.System.Data.SqlDbType.DateTime, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "ModifiedOn", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
+            Me._adapter.InsertCommand = New Global.System.Data.SqlClient.SqlCommand()
+            Me._adapter.InsertCommand.Connection = Me.Connection
+            Me._adapter.InsertCommand.CommandText = "INSERT INTO [dbo].[AccountEmployeeTimeEntryPeriod] ([AccountEmployeeTimeEntryPeri"& _ 
+                "odId], [AccountId], [AccountEmployeeId], [TimeEntryStartDate], [TimeEntryEndDate"& _ 
+                "], [TimeEntryViewType], [Submitted], [Approved], [Rejected], [InApproval], [Subm"& _ 
+                "ittedDate], [ApprovedOn], [ApprovedByEmployeeId], [RejectedOn], [RejectedByEmplo"& _ 
+                "yeeId], [SubmittedBy], [CreatedByEmployeeId], [ModifiedByEmployeeId], [PeriodDes"& _ 
+                "cription], [CreatedOn], [ModifiedOn]) VALUES (@AccountEmployeeTimeEntryPeriodId,"& _ 
+                " @AccountId, @AccountEmployeeId, @TimeEntryStartDate, @TimeEntryEndDate, @TimeEn"& _ 
+                "tryViewType, @Submitted, @Approved, @Rejected, @InApproval, @SubmittedDate, @App"& _ 
+                "rovedOn, @ApprovedByEmployeeId, @RejectedOn, @RejectedByEmployeeId, @SubmittedBy"& _ 
+                ", @CreatedByEmployeeId, @ModifiedByEmployeeId, @PeriodDescription, @CreatedOn, @"& _ 
+                "ModifiedOn);"&Global.Microsoft.VisualBasic.ChrW(13)&Global.Microsoft.VisualBasic.ChrW(10)&"SELECT AccountEmployeeTimeEntryPeriodId, AccountId, AccountEmploye"& _ 
+                "eId, TimeEntryStartDate, TimeEntryEndDate, TimeEntryViewType, Submitted, Approve"& _ 
+                "d, Rejected, InApproval, SubmittedDate, ApprovedOn, ApprovedByEmployeeId, Reject"& _ 
+                "edOn, RejectedByEmployeeId, SubmittedBy, CreatedByEmployeeId, ModifiedByEmployee"& _ 
+                "Id, PeriodDescription, CreatedOn, ModifiedOn FROM AccountEmployeeTimeEntryPeriod"& _ 
+                " WHERE (AccountEmployeeTimeEntryPeriodId = @AccountEmployeeTimeEntryPeriodId)"
+            Me._adapter.InsertCommand.CommandType = Global.System.Data.CommandType.Text
+            Me._adapter.InsertCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@AccountEmployeeTimeEntryPeriodId", Global.System.Data.SqlDbType.UniqueIdentifier, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "AccountEmployeeTimeEntryPeriodId", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
+            Me._adapter.InsertCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@AccountId", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "AccountId", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
+            Me._adapter.InsertCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@AccountEmployeeId", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "AccountEmployeeId", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
+            Me._adapter.InsertCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@TimeEntryStartDate", Global.System.Data.SqlDbType.DateTime, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "TimeEntryStartDate", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
+            Me._adapter.InsertCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@TimeEntryEndDate", Global.System.Data.SqlDbType.DateTime, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "TimeEntryEndDate", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
+            Me._adapter.InsertCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@TimeEntryViewType", Global.System.Data.SqlDbType.NVarChar, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "TimeEntryViewType", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
+            Me._adapter.InsertCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Submitted", Global.System.Data.SqlDbType.Bit, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "Submitted", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
+            Me._adapter.InsertCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Approved", Global.System.Data.SqlDbType.Bit, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "Approved", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
+            Me._adapter.InsertCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Rejected", Global.System.Data.SqlDbType.Bit, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "Rejected", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
+            Me._adapter.InsertCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@InApproval", Global.System.Data.SqlDbType.Bit, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "InApproval", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
+            Me._adapter.InsertCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@SubmittedDate", Global.System.Data.SqlDbType.DateTime, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "SubmittedDate", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
+            Me._adapter.InsertCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@ApprovedOn", Global.System.Data.SqlDbType.DateTime, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "ApprovedOn", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
+            Me._adapter.InsertCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@ApprovedByEmployeeId", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "ApprovedByEmployeeId", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
+            Me._adapter.InsertCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@RejectedOn", Global.System.Data.SqlDbType.DateTime, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "RejectedOn", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
+            Me._adapter.InsertCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@RejectedByEmployeeId", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "RejectedByEmployeeId", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
+            Me._adapter.InsertCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@SubmittedBy", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "SubmittedBy", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
+            Me._adapter.InsertCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@CreatedByEmployeeId", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "CreatedByEmployeeId", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
+            Me._adapter.InsertCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@ModifiedByEmployeeId", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "ModifiedByEmployeeId", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
+            Me._adapter.InsertCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@PeriodDescription", Global.System.Data.SqlDbType.NVarChar, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "PeriodDescription", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
+            Me._adapter.InsertCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@CreatedOn", Global.System.Data.SqlDbType.DateTime, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "CreatedOn", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
+            Me._adapter.InsertCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@ModifiedOn", Global.System.Data.SqlDbType.DateTime, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "ModifiedOn", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
+            Me._adapter.UpdateCommand = New Global.System.Data.SqlClient.SqlCommand()
+            Me._adapter.UpdateCommand.Connection = Me.Connection
+            Me._adapter.UpdateCommand.CommandText = "UPDATE [dbo].[AccountEmployeeTimeEntryPeriod] SET [AccountEmployeeTimeEntryPeriod"& _ 
+                "Id] = @AccountEmployeeTimeEntryPeriodId, [AccountId] = @AccountId, [AccountEmplo"& _ 
+                "yeeId] = @AccountEmployeeId, [TimeEntryStartDate] = @TimeEntryStartDate, [TimeEn"& _ 
+                "tryEndDate] = @TimeEntryEndDate, [TimeEntryViewType] = @TimeEntryViewType, [Subm"& _ 
+                "itted] = @Submitted, [Approved] = @Approved, [Rejected] = @Rejected, [InApproval"& _ 
+                "] = @InApproval, [SubmittedDate] = @SubmittedDate, [ApprovedOn] = @ApprovedOn, ["& _ 
+                "ApprovedByEmployeeId] = @ApprovedByEmployeeId, [RejectedOn] = @RejectedOn, [Reje"& _ 
+                "ctedByEmployeeId] = @RejectedByEmployeeId, [SubmittedBy] = @SubmittedBy, [Create"& _ 
+                "dByEmployeeId] = @CreatedByEmployeeId, [ModifiedByEmployeeId] = @ModifiedByEmplo"& _ 
+                "yeeId, [PeriodDescription] = @PeriodDescription, [CreatedOn] = @CreatedOn, [Modi"& _ 
+                "fiedOn] = @ModifiedOn WHERE (([AccountEmployeeTimeEntryPeriodId] = @Original_Acc"& _ 
+                "ountEmployeeTimeEntryPeriodId) AND ([AccountId] = @Original_AccountId) AND ([Acc"& _ 
+                "ountEmployeeId] = @Original_AccountEmployeeId) AND ([TimeEntryStartDate] = @Orig"& _ 
+                "inal_TimeEntryStartDate) AND ([TimeEntryEndDate] = @Original_TimeEntryEndDate) A"& _ 
+                "ND ([TimeEntryViewType] = @Original_TimeEntryViewType) AND ([Submitted] = @Origi"& _ 
+                "nal_Submitted) AND ([Approved] = @Original_Approved) AND ([Rejected] = @Original"& _ 
+                "_Rejected) AND ([InApproval] = @Original_InApproval) AND ((@IsNull_SubmittedDate"& _ 
+                " = 1 AND [SubmittedDate] IS NULL) OR ([SubmittedDate] = @Original_SubmittedDate)"& _ 
+                ") AND ((@IsNull_ApprovedOn = 1 AND [ApprovedOn] IS NULL) OR ([ApprovedOn] = @Ori"& _ 
+                "ginal_ApprovedOn)) AND ((@IsNull_ApprovedByEmployeeId = 1 AND [ApprovedByEmploye"& _ 
+                "eId] IS NULL) OR ([ApprovedByEmployeeId] = @Original_ApprovedByEmployeeId)) AND "& _ 
+                "((@IsNull_RejectedOn = 1 AND [RejectedOn] IS NULL) OR ([RejectedOn] = @Original_"& _ 
+                "RejectedOn)) AND ((@IsNull_RejectedByEmployeeId = 1 AND [RejectedByEmployeeId] I"& _ 
+                "S NULL) OR ([RejectedByEmployeeId] = @Original_RejectedByEmployeeId)) AND ((@IsN"& _ 
+                "ull_SubmittedBy = 1 AND [SubmittedBy] IS NULL) OR ([SubmittedBy] = @Original_Sub"& _ 
+                "mittedBy)) AND ((@IsNull_CreatedByEmployeeId = 1 AND [CreatedByEmployeeId] IS NU"& _ 
+                "LL) OR ([CreatedByEmployeeId] = @Original_CreatedByEmployeeId)) AND ((@IsNull_Mo"& _ 
+                "difiedByEmployeeId = 1 AND [ModifiedByEmployeeId] IS NULL) OR ([ModifiedByEmploy"& _ 
+                "eeId] = @Original_ModifiedByEmployeeId)) AND ((@IsNull_PeriodDescription = 1 AND"& _ 
+                " [PeriodDescription] IS NULL) OR ([PeriodDescription] = @Original_PeriodDescript"& _ 
+                "ion)) AND ((@IsNull_CreatedOn = 1 AND [CreatedOn] IS NULL) OR ([CreatedOn] = @Or"& _ 
+                "iginal_CreatedOn)) AND ((@IsNull_ModifiedOn = 1 AND [ModifiedOn] IS NULL) OR ([M"& _ 
+                "odifiedOn] = @Original_ModifiedOn)));"&Global.Microsoft.VisualBasic.ChrW(13)&Global.Microsoft.VisualBasic.ChrW(10)&"SELECT AccountEmployeeTimeEntryPeriodId, "& _ 
+                "AccountId, AccountEmployeeId, TimeEntryStartDate, TimeEntryEndDate, TimeEntryVie"& _ 
+                "wType, Submitted, Approved, Rejected, InApproval, SubmittedDate, ApprovedOn, App"& _ 
+                "rovedByEmployeeId, RejectedOn, RejectedByEmployeeId, SubmittedBy, CreatedByEmplo"& _ 
+                "yeeId, ModifiedByEmployeeId, PeriodDescription, CreatedOn, ModifiedOn FROM Accou"& _ 
+                "ntEmployeeTimeEntryPeriod WHERE (AccountEmployeeTimeEntryPeriodId = @AccountEmpl"& _ 
+                "oyeeTimeEntryPeriodId)"
+            Me._adapter.UpdateCommand.CommandType = Global.System.Data.CommandType.Text
+            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@AccountEmployeeTimeEntryPeriodId", Global.System.Data.SqlDbType.UniqueIdentifier, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "AccountEmployeeTimeEntryPeriodId", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
+            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@AccountId", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "AccountId", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
+            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@AccountEmployeeId", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "AccountEmployeeId", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
+            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@TimeEntryStartDate", Global.System.Data.SqlDbType.DateTime, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "TimeEntryStartDate", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
+            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@TimeEntryEndDate", Global.System.Data.SqlDbType.DateTime, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "TimeEntryEndDate", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
+            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@TimeEntryViewType", Global.System.Data.SqlDbType.NVarChar, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "TimeEntryViewType", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
+            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Submitted", Global.System.Data.SqlDbType.Bit, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "Submitted", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
+            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Approved", Global.System.Data.SqlDbType.Bit, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "Approved", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
+            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Rejected", Global.System.Data.SqlDbType.Bit, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "Rejected", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
+            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@InApproval", Global.System.Data.SqlDbType.Bit, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "InApproval", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
+            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@SubmittedDate", Global.System.Data.SqlDbType.DateTime, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "SubmittedDate", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
+            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@ApprovedOn", Global.System.Data.SqlDbType.DateTime, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "ApprovedOn", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
+            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@ApprovedByEmployeeId", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "ApprovedByEmployeeId", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
+            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@RejectedOn", Global.System.Data.SqlDbType.DateTime, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "RejectedOn", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
+            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@RejectedByEmployeeId", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "RejectedByEmployeeId", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
+            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@SubmittedBy", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "SubmittedBy", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
+            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@CreatedByEmployeeId", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "CreatedByEmployeeId", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
+            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@ModifiedByEmployeeId", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "ModifiedByEmployeeId", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
+            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@PeriodDescription", Global.System.Data.SqlDbType.NVarChar, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "PeriodDescription", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
+            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@CreatedOn", Global.System.Data.SqlDbType.DateTime, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "CreatedOn", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
+            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@ModifiedOn", Global.System.Data.SqlDbType.DateTime, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "ModifiedOn", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
+            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_AccountEmployeeTimeEntryPeriodId", Global.System.Data.SqlDbType.UniqueIdentifier, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "AccountEmployeeTimeEntryPeriodId", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
+            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_AccountId", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "AccountId", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
+            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_AccountEmployeeId", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "AccountEmployeeId", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
+            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_TimeEntryStartDate", Global.System.Data.SqlDbType.DateTime, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "TimeEntryStartDate", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
+            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_TimeEntryEndDate", Global.System.Data.SqlDbType.DateTime, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "TimeEntryEndDate", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
+            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_TimeEntryViewType", Global.System.Data.SqlDbType.NVarChar, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "TimeEntryViewType", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
+            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_Submitted", Global.System.Data.SqlDbType.Bit, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "Submitted", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
+            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_Approved", Global.System.Data.SqlDbType.Bit, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "Approved", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
+            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_Rejected", Global.System.Data.SqlDbType.Bit, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "Rejected", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
+            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_InApproval", Global.System.Data.SqlDbType.Bit, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "InApproval", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
+            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@IsNull_SubmittedDate", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "SubmittedDate", Global.System.Data.DataRowVersion.Original, true, Nothing, "", "", ""))
+            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_SubmittedDate", Global.System.Data.SqlDbType.DateTime, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "SubmittedDate", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
+            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@IsNull_ApprovedOn", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "ApprovedOn", Global.System.Data.DataRowVersion.Original, true, Nothing, "", "", ""))
+            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_ApprovedOn", Global.System.Data.SqlDbType.DateTime, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "ApprovedOn", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
+            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@IsNull_ApprovedByEmployeeId", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "ApprovedByEmployeeId", Global.System.Data.DataRowVersion.Original, true, Nothing, "", "", ""))
+            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_ApprovedByEmployeeId", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "ApprovedByEmployeeId", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
+            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@IsNull_RejectedOn", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "RejectedOn", Global.System.Data.DataRowVersion.Original, true, Nothing, "", "", ""))
+            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_RejectedOn", Global.System.Data.SqlDbType.DateTime, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "RejectedOn", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
+            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@IsNull_RejectedByEmployeeId", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "RejectedByEmployeeId", Global.System.Data.DataRowVersion.Original, true, Nothing, "", "", ""))
+            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_RejectedByEmployeeId", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "RejectedByEmployeeId", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
+            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@IsNull_SubmittedBy", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "SubmittedBy", Global.System.Data.DataRowVersion.Original, true, Nothing, "", "", ""))
+            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_SubmittedBy", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "SubmittedBy", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
+            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@IsNull_CreatedByEmployeeId", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "CreatedByEmployeeId", Global.System.Data.DataRowVersion.Original, true, Nothing, "", "", ""))
+            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_CreatedByEmployeeId", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "CreatedByEmployeeId", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
+            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@IsNull_ModifiedByEmployeeId", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "ModifiedByEmployeeId", Global.System.Data.DataRowVersion.Original, true, Nothing, "", "", ""))
+            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_ModifiedByEmployeeId", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "ModifiedByEmployeeId", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
+            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@IsNull_PeriodDescription", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "PeriodDescription", Global.System.Data.DataRowVersion.Original, true, Nothing, "", "", ""))
+            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_PeriodDescription", Global.System.Data.SqlDbType.NVarChar, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "PeriodDescription", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
+            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@IsNull_CreatedOn", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "CreatedOn", Global.System.Data.DataRowVersion.Original, true, Nothing, "", "", ""))
+            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_CreatedOn", Global.System.Data.SqlDbType.DateTime, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "CreatedOn", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
+            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@IsNull_ModifiedOn", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "ModifiedOn", Global.System.Data.DataRowVersion.Original, true, Nothing, "", "", ""))
+            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_ModifiedOn", Global.System.Data.SqlDbType.DateTime, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "ModifiedOn", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
+        End Sub
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Private Sub InitConnection()
+            Me._connection = New Global.System.Data.SqlClient.SqlConnection()
+            Me._connection.ConnectionString = Global.TimeLive.Quickbooks.Integrator.My.MySettings.Default.TimeLiveConnectionString1
+        End Sub
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Private Sub InitCommandCollection()
+            Me._commandCollection = New Global.System.Data.SqlClient.SqlCommand(1) {}
+            Me._commandCollection(0) = New Global.System.Data.SqlClient.SqlCommand()
+            Me._commandCollection(0).Connection = Me.Connection
+            Me._commandCollection(0).CommandText = "SELECT AccountEmployeeTimeEntryPeriodId, AccountId, AccountEmployeeId, TimeEntryS"& _ 
+                "tartDate, TimeEntryEndDate, TimeEntryViewType, Submitted, Approved, Rejected, In"& _ 
+                "Approval, SubmittedDate, ApprovedOn, ApprovedByEmployeeId, RejectedOn, RejectedB"& _ 
+                "yEmployeeId, SubmittedBy, CreatedByEmployeeId, ModifiedByEmployeeId, PeriodDescr"& _ 
+                "iption, CreatedOn, ModifiedOn FROM dbo.AccountEmployeeTimeEntryPeriod"
+            Me._commandCollection(0).CommandType = Global.System.Data.CommandType.Text
+            Me._commandCollection(1) = New Global.System.Data.SqlClient.SqlCommand()
+            Me._commandCollection(1).Connection = Me.Connection
+            Me._commandCollection(1).CommandText = "SELECT Approved"&Global.Microsoft.VisualBasic.ChrW(13)&Global.Microsoft.VisualBasic.ChrW(10)&"FROM AccountEmployeeTimeEntryPeriod"&Global.Microsoft.VisualBasic.ChrW(13)&Global.Microsoft.VisualBasic.ChrW(10)&"WHERE (AccountEmployeeId = "& _ 
+                "@EmployeeId AND TimeEntryStartDate <= @Date AND TimeEntryEndDate >= @Date)"
+            Me._commandCollection(1).CommandType = Global.System.Data.CommandType.Text
+            Me._commandCollection(1).Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@EmployeeId", Global.System.Data.SqlDbType.Int, 4, Global.System.Data.ParameterDirection.Input, 0, 0, "AccountEmployeeId", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
+            Me._commandCollection(1).Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Date", Global.System.Data.SqlDbType.DateTime, 8, Global.System.Data.ParameterDirection.Input, 0, 0, "TimeEntryStartDate", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
+        End Sub
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0"),  _
+         Global.System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter"),  _
+         Global.System.ComponentModel.DataObjectMethodAttribute(Global.System.ComponentModel.DataObjectMethodType.Fill, true)>  _
+        Public Overloads Overridable Function Fill(ByVal dataTable As TimeLiveDataSet.AccountEmployeeTimeEntryPeriodDataTable) As Integer
+            Me.Adapter.SelectCommand = Me.CommandCollection(0)
+            If (Me.ClearBeforeFill = true) Then
+                dataTable.Clear
+            End If
+            Dim returnValue As Integer = Me.Adapter.Fill(dataTable)
+            Return returnValue
+        End Function
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0"),  _
+         Global.System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter"),  _
+         Global.System.ComponentModel.DataObjectMethodAttribute(Global.System.ComponentModel.DataObjectMethodType.[Select], true)>  _
+        Public Overloads Overridable Function GetData() As TimeLiveDataSet.AccountEmployeeTimeEntryPeriodDataTable
+            Me.Adapter.SelectCommand = Me.CommandCollection(0)
+            Dim dataTable As TimeLiveDataSet.AccountEmployeeTimeEntryPeriodDataTable = New TimeLiveDataSet.AccountEmployeeTimeEntryPeriodDataTable()
+            Me.Adapter.Fill(dataTable)
+            Return dataTable
+        End Function
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0"),  _
+         Global.System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")>  _
+        Public Overloads Overridable Function Update(ByVal dataTable As TimeLiveDataSet.AccountEmployeeTimeEntryPeriodDataTable) As Integer
+            Return Me.Adapter.Update(dataTable)
+        End Function
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0"),  _
+         Global.System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")>  _
+        Public Overloads Overridable Function Update(ByVal dataSet As TimeLiveDataSet) As Integer
+            Return Me.Adapter.Update(dataSet, "AccountEmployeeTimeEntryPeriod")
+        End Function
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0"),  _
+         Global.System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")>  _
+        Public Overloads Overridable Function Update(ByVal dataRow As Global.System.Data.DataRow) As Integer
+            Return Me.Adapter.Update(New Global.System.Data.DataRow() {dataRow})
+        End Function
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0"),  _
+         Global.System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")>  _
+        Public Overloads Overridable Function Update(ByVal dataRows() As Global.System.Data.DataRow) As Integer
+            Return Me.Adapter.Update(dataRows)
+        End Function
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0"),  _
+         Global.System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter"),  _
+         Global.System.ComponentModel.DataObjectMethodAttribute(Global.System.ComponentModel.DataObjectMethodType.Delete, true)>  _
+        Public Overloads Overridable Function Delete( _
+                    ByVal Original_AccountEmployeeTimeEntryPeriodId As System.Guid,  _
+                    ByVal Original_AccountId As Integer,  _
+                    ByVal Original_AccountEmployeeId As Integer,  _
+                    ByVal Original_TimeEntryStartDate As Date,  _
+                    ByVal Original_TimeEntryEndDate As Date,  _
+                    ByVal Original_TimeEntryViewType As String,  _
+                    ByVal Original_Submitted As Boolean,  _
+                    ByVal Original_Approved As Boolean,  _
+                    ByVal Original_Rejected As Boolean,  _
+                    ByVal Original_InApproval As Boolean,  _
+                    ByVal Original_SubmittedDate As Global.System.Nullable(Of Date),  _
+                    ByVal Original_ApprovedOn As Global.System.Nullable(Of Date),  _
+                    ByVal Original_ApprovedByEmployeeId As Global.System.Nullable(Of Integer),  _
+                    ByVal Original_RejectedOn As Global.System.Nullable(Of Date),  _
+                    ByVal Original_RejectedByEmployeeId As Global.System.Nullable(Of Integer),  _
+                    ByVal Original_SubmittedBy As Global.System.Nullable(Of Integer),  _
+                    ByVal Original_CreatedByEmployeeId As Global.System.Nullable(Of Integer),  _
+                    ByVal Original_ModifiedByEmployeeId As Global.System.Nullable(Of Integer),  _
+                    ByVal Original_PeriodDescription As String,  _
+                    ByVal Original_CreatedOn As Global.System.Nullable(Of Date),  _
+                    ByVal Original_ModifiedOn As Global.System.Nullable(Of Date)) As Integer
+            Me.Adapter.DeleteCommand.Parameters(0).Value = CType(Original_AccountEmployeeTimeEntryPeriodId,System.Guid)
+            Me.Adapter.DeleteCommand.Parameters(1).Value = CType(Original_AccountId,Integer)
+            Me.Adapter.DeleteCommand.Parameters(2).Value = CType(Original_AccountEmployeeId,Integer)
+            Me.Adapter.DeleteCommand.Parameters(3).Value = CType(Original_TimeEntryStartDate,Date)
+            Me.Adapter.DeleteCommand.Parameters(4).Value = CType(Original_TimeEntryEndDate,Date)
+            If (Original_TimeEntryViewType Is Nothing) Then
+                Throw New Global.System.ArgumentNullException("Original_TimeEntryViewType")
+            Else
+                Me.Adapter.DeleteCommand.Parameters(5).Value = CType(Original_TimeEntryViewType,String)
+            End If
+            Me.Adapter.DeleteCommand.Parameters(6).Value = CType(Original_Submitted,Boolean)
+            Me.Adapter.DeleteCommand.Parameters(7).Value = CType(Original_Approved,Boolean)
+            Me.Adapter.DeleteCommand.Parameters(8).Value = CType(Original_Rejected,Boolean)
+            Me.Adapter.DeleteCommand.Parameters(9).Value = CType(Original_InApproval,Boolean)
+            If (Original_SubmittedDate.HasValue = true) Then
+                Me.Adapter.DeleteCommand.Parameters(10).Value = CType(0,Object)
+                Me.Adapter.DeleteCommand.Parameters(11).Value = CType(Original_SubmittedDate.Value,Date)
+            Else
+                Me.Adapter.DeleteCommand.Parameters(10).Value = CType(1,Object)
+                Me.Adapter.DeleteCommand.Parameters(11).Value = Global.System.DBNull.Value
+            End If
+            If (Original_ApprovedOn.HasValue = true) Then
+                Me.Adapter.DeleteCommand.Parameters(12).Value = CType(0,Object)
+                Me.Adapter.DeleteCommand.Parameters(13).Value = CType(Original_ApprovedOn.Value,Date)
+            Else
+                Me.Adapter.DeleteCommand.Parameters(12).Value = CType(1,Object)
+                Me.Adapter.DeleteCommand.Parameters(13).Value = Global.System.DBNull.Value
+            End If
+            If (Original_ApprovedByEmployeeId.HasValue = true) Then
+                Me.Adapter.DeleteCommand.Parameters(14).Value = CType(0,Object)
+                Me.Adapter.DeleteCommand.Parameters(15).Value = CType(Original_ApprovedByEmployeeId.Value,Integer)
+            Else
+                Me.Adapter.DeleteCommand.Parameters(14).Value = CType(1,Object)
+                Me.Adapter.DeleteCommand.Parameters(15).Value = Global.System.DBNull.Value
+            End If
+            If (Original_RejectedOn.HasValue = true) Then
+                Me.Adapter.DeleteCommand.Parameters(16).Value = CType(0,Object)
+                Me.Adapter.DeleteCommand.Parameters(17).Value = CType(Original_RejectedOn.Value,Date)
+            Else
+                Me.Adapter.DeleteCommand.Parameters(16).Value = CType(1,Object)
+                Me.Adapter.DeleteCommand.Parameters(17).Value = Global.System.DBNull.Value
+            End If
+            If (Original_RejectedByEmployeeId.HasValue = true) Then
+                Me.Adapter.DeleteCommand.Parameters(18).Value = CType(0,Object)
+                Me.Adapter.DeleteCommand.Parameters(19).Value = CType(Original_RejectedByEmployeeId.Value,Integer)
+            Else
+                Me.Adapter.DeleteCommand.Parameters(18).Value = CType(1,Object)
+                Me.Adapter.DeleteCommand.Parameters(19).Value = Global.System.DBNull.Value
+            End If
+            If (Original_SubmittedBy.HasValue = true) Then
+                Me.Adapter.DeleteCommand.Parameters(20).Value = CType(0,Object)
+                Me.Adapter.DeleteCommand.Parameters(21).Value = CType(Original_SubmittedBy.Value,Integer)
+            Else
+                Me.Adapter.DeleteCommand.Parameters(20).Value = CType(1,Object)
+                Me.Adapter.DeleteCommand.Parameters(21).Value = Global.System.DBNull.Value
+            End If
+            If (Original_CreatedByEmployeeId.HasValue = true) Then
+                Me.Adapter.DeleteCommand.Parameters(22).Value = CType(0,Object)
+                Me.Adapter.DeleteCommand.Parameters(23).Value = CType(Original_CreatedByEmployeeId.Value,Integer)
+            Else
+                Me.Adapter.DeleteCommand.Parameters(22).Value = CType(1,Object)
+                Me.Adapter.DeleteCommand.Parameters(23).Value = Global.System.DBNull.Value
+            End If
+            If (Original_ModifiedByEmployeeId.HasValue = true) Then
+                Me.Adapter.DeleteCommand.Parameters(24).Value = CType(0,Object)
+                Me.Adapter.DeleteCommand.Parameters(25).Value = CType(Original_ModifiedByEmployeeId.Value,Integer)
+            Else
+                Me.Adapter.DeleteCommand.Parameters(24).Value = CType(1,Object)
+                Me.Adapter.DeleteCommand.Parameters(25).Value = Global.System.DBNull.Value
+            End If
+            If (Original_PeriodDescription Is Nothing) Then
+                Me.Adapter.DeleteCommand.Parameters(26).Value = CType(1,Object)
+                Me.Adapter.DeleteCommand.Parameters(27).Value = Global.System.DBNull.Value
+            Else
+                Me.Adapter.DeleteCommand.Parameters(26).Value = CType(0,Object)
+                Me.Adapter.DeleteCommand.Parameters(27).Value = CType(Original_PeriodDescription,String)
+            End If
+            If (Original_CreatedOn.HasValue = true) Then
+                Me.Adapter.DeleteCommand.Parameters(28).Value = CType(0,Object)
+                Me.Adapter.DeleteCommand.Parameters(29).Value = CType(Original_CreatedOn.Value,Date)
+            Else
+                Me.Adapter.DeleteCommand.Parameters(28).Value = CType(1,Object)
+                Me.Adapter.DeleteCommand.Parameters(29).Value = Global.System.DBNull.Value
+            End If
+            If (Original_ModifiedOn.HasValue = true) Then
+                Me.Adapter.DeleteCommand.Parameters(30).Value = CType(0,Object)
+                Me.Adapter.DeleteCommand.Parameters(31).Value = CType(Original_ModifiedOn.Value,Date)
+            Else
+                Me.Adapter.DeleteCommand.Parameters(30).Value = CType(1,Object)
+                Me.Adapter.DeleteCommand.Parameters(31).Value = Global.System.DBNull.Value
+            End If
+            Dim previousConnectionState As Global.System.Data.ConnectionState = Me.Adapter.DeleteCommand.Connection.State
+            If ((Me.Adapter.DeleteCommand.Connection.State And Global.System.Data.ConnectionState.Open)  _
+                        <> Global.System.Data.ConnectionState.Open) Then
+                Me.Adapter.DeleteCommand.Connection.Open
+            End If
+            Try 
+                Dim returnValue As Integer = Me.Adapter.DeleteCommand.ExecuteNonQuery
+                Return returnValue
+            Finally
+                If (previousConnectionState = Global.System.Data.ConnectionState.Closed) Then
+                    Me.Adapter.DeleteCommand.Connection.Close
+                End If
+            End Try
+        End Function
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0"),  _
+         Global.System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter"),  _
+         Global.System.ComponentModel.DataObjectMethodAttribute(Global.System.ComponentModel.DataObjectMethodType.Insert, true)>  _
+        Public Overloads Overridable Function Insert( _
+                    ByVal AccountEmployeeTimeEntryPeriodId As System.Guid,  _
+                    ByVal AccountId As Integer,  _
+                    ByVal AccountEmployeeId As Integer,  _
+                    ByVal TimeEntryStartDate As Date,  _
+                    ByVal TimeEntryEndDate As Date,  _
+                    ByVal TimeEntryViewType As String,  _
+                    ByVal Submitted As Boolean,  _
+                    ByVal Approved As Boolean,  _
+                    ByVal Rejected As Boolean,  _
+                    ByVal InApproval As Boolean,  _
+                    ByVal SubmittedDate As Global.System.Nullable(Of Date),  _
+                    ByVal ApprovedOn As Global.System.Nullable(Of Date),  _
+                    ByVal ApprovedByEmployeeId As Global.System.Nullable(Of Integer),  _
+                    ByVal RejectedOn As Global.System.Nullable(Of Date),  _
+                    ByVal RejectedByEmployeeId As Global.System.Nullable(Of Integer),  _
+                    ByVal SubmittedBy As Global.System.Nullable(Of Integer),  _
+                    ByVal CreatedByEmployeeId As Global.System.Nullable(Of Integer),  _
+                    ByVal ModifiedByEmployeeId As Global.System.Nullable(Of Integer),  _
+                    ByVal PeriodDescription As String,  _
+                    ByVal CreatedOn As Global.System.Nullable(Of Date),  _
+                    ByVal ModifiedOn As Global.System.Nullable(Of Date)) As Integer
+            Me.Adapter.InsertCommand.Parameters(0).Value = CType(AccountEmployeeTimeEntryPeriodId,System.Guid)
+            Me.Adapter.InsertCommand.Parameters(1).Value = CType(AccountId,Integer)
+            Me.Adapter.InsertCommand.Parameters(2).Value = CType(AccountEmployeeId,Integer)
+            Me.Adapter.InsertCommand.Parameters(3).Value = CType(TimeEntryStartDate,Date)
+            Me.Adapter.InsertCommand.Parameters(4).Value = CType(TimeEntryEndDate,Date)
+            If (TimeEntryViewType Is Nothing) Then
+                Throw New Global.System.ArgumentNullException("TimeEntryViewType")
+            Else
+                Me.Adapter.InsertCommand.Parameters(5).Value = CType(TimeEntryViewType,String)
+            End If
+            Me.Adapter.InsertCommand.Parameters(6).Value = CType(Submitted,Boolean)
+            Me.Adapter.InsertCommand.Parameters(7).Value = CType(Approved,Boolean)
+            Me.Adapter.InsertCommand.Parameters(8).Value = CType(Rejected,Boolean)
+            Me.Adapter.InsertCommand.Parameters(9).Value = CType(InApproval,Boolean)
+            If (SubmittedDate.HasValue = true) Then
+                Me.Adapter.InsertCommand.Parameters(10).Value = CType(SubmittedDate.Value,Date)
+            Else
+                Me.Adapter.InsertCommand.Parameters(10).Value = Global.System.DBNull.Value
+            End If
+            If (ApprovedOn.HasValue = true) Then
+                Me.Adapter.InsertCommand.Parameters(11).Value = CType(ApprovedOn.Value,Date)
+            Else
+                Me.Adapter.InsertCommand.Parameters(11).Value = Global.System.DBNull.Value
+            End If
+            If (ApprovedByEmployeeId.HasValue = true) Then
+                Me.Adapter.InsertCommand.Parameters(12).Value = CType(ApprovedByEmployeeId.Value,Integer)
+            Else
+                Me.Adapter.InsertCommand.Parameters(12).Value = Global.System.DBNull.Value
+            End If
+            If (RejectedOn.HasValue = true) Then
+                Me.Adapter.InsertCommand.Parameters(13).Value = CType(RejectedOn.Value,Date)
+            Else
+                Me.Adapter.InsertCommand.Parameters(13).Value = Global.System.DBNull.Value
+            End If
+            If (RejectedByEmployeeId.HasValue = true) Then
+                Me.Adapter.InsertCommand.Parameters(14).Value = CType(RejectedByEmployeeId.Value,Integer)
+            Else
+                Me.Adapter.InsertCommand.Parameters(14).Value = Global.System.DBNull.Value
+            End If
+            If (SubmittedBy.HasValue = true) Then
+                Me.Adapter.InsertCommand.Parameters(15).Value = CType(SubmittedBy.Value,Integer)
+            Else
+                Me.Adapter.InsertCommand.Parameters(15).Value = Global.System.DBNull.Value
+            End If
+            If (CreatedByEmployeeId.HasValue = true) Then
+                Me.Adapter.InsertCommand.Parameters(16).Value = CType(CreatedByEmployeeId.Value,Integer)
+            Else
+                Me.Adapter.InsertCommand.Parameters(16).Value = Global.System.DBNull.Value
+            End If
+            If (ModifiedByEmployeeId.HasValue = true) Then
+                Me.Adapter.InsertCommand.Parameters(17).Value = CType(ModifiedByEmployeeId.Value,Integer)
+            Else
+                Me.Adapter.InsertCommand.Parameters(17).Value = Global.System.DBNull.Value
+            End If
+            If (PeriodDescription Is Nothing) Then
+                Me.Adapter.InsertCommand.Parameters(18).Value = Global.System.DBNull.Value
+            Else
+                Me.Adapter.InsertCommand.Parameters(18).Value = CType(PeriodDescription,String)
+            End If
+            If (CreatedOn.HasValue = true) Then
+                Me.Adapter.InsertCommand.Parameters(19).Value = CType(CreatedOn.Value,Date)
+            Else
+                Me.Adapter.InsertCommand.Parameters(19).Value = Global.System.DBNull.Value
+            End If
+            If (ModifiedOn.HasValue = true) Then
+                Me.Adapter.InsertCommand.Parameters(20).Value = CType(ModifiedOn.Value,Date)
+            Else
+                Me.Adapter.InsertCommand.Parameters(20).Value = Global.System.DBNull.Value
+            End If
+            Dim previousConnectionState As Global.System.Data.ConnectionState = Me.Adapter.InsertCommand.Connection.State
+            If ((Me.Adapter.InsertCommand.Connection.State And Global.System.Data.ConnectionState.Open)  _
+                        <> Global.System.Data.ConnectionState.Open) Then
+                Me.Adapter.InsertCommand.Connection.Open
+            End If
+            Try 
+                Dim returnValue As Integer = Me.Adapter.InsertCommand.ExecuteNonQuery
+                Return returnValue
+            Finally
+                If (previousConnectionState = Global.System.Data.ConnectionState.Closed) Then
+                    Me.Adapter.InsertCommand.Connection.Close
+                End If
+            End Try
+        End Function
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0"),  _
+         Global.System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter"),  _
+         Global.System.ComponentModel.DataObjectMethodAttribute(Global.System.ComponentModel.DataObjectMethodType.Update, true)>  _
+        Public Overloads Overridable Function Update( _
+                    ByVal AccountEmployeeTimeEntryPeriodId As System.Guid,  _
+                    ByVal AccountId As Integer,  _
+                    ByVal AccountEmployeeId As Integer,  _
+                    ByVal TimeEntryStartDate As Date,  _
+                    ByVal TimeEntryEndDate As Date,  _
+                    ByVal TimeEntryViewType As String,  _
+                    ByVal Submitted As Boolean,  _
+                    ByVal Approved As Boolean,  _
+                    ByVal Rejected As Boolean,  _
+                    ByVal InApproval As Boolean,  _
+                    ByVal SubmittedDate As Global.System.Nullable(Of Date),  _
+                    ByVal ApprovedOn As Global.System.Nullable(Of Date),  _
+                    ByVal ApprovedByEmployeeId As Global.System.Nullable(Of Integer),  _
+                    ByVal RejectedOn As Global.System.Nullable(Of Date),  _
+                    ByVal RejectedByEmployeeId As Global.System.Nullable(Of Integer),  _
+                    ByVal SubmittedBy As Global.System.Nullable(Of Integer),  _
+                    ByVal CreatedByEmployeeId As Global.System.Nullable(Of Integer),  _
+                    ByVal ModifiedByEmployeeId As Global.System.Nullable(Of Integer),  _
+                    ByVal PeriodDescription As String,  _
+                    ByVal CreatedOn As Global.System.Nullable(Of Date),  _
+                    ByVal ModifiedOn As Global.System.Nullable(Of Date),  _
+                    ByVal Original_AccountEmployeeTimeEntryPeriodId As System.Guid,  _
+                    ByVal Original_AccountId As Integer,  _
+                    ByVal Original_AccountEmployeeId As Integer,  _
+                    ByVal Original_TimeEntryStartDate As Date,  _
+                    ByVal Original_TimeEntryEndDate As Date,  _
+                    ByVal Original_TimeEntryViewType As String,  _
+                    ByVal Original_Submitted As Boolean,  _
+                    ByVal Original_Approved As Boolean,  _
+                    ByVal Original_Rejected As Boolean,  _
+                    ByVal Original_InApproval As Boolean,  _
+                    ByVal Original_SubmittedDate As Global.System.Nullable(Of Date),  _
+                    ByVal Original_ApprovedOn As Global.System.Nullable(Of Date),  _
+                    ByVal Original_ApprovedByEmployeeId As Global.System.Nullable(Of Integer),  _
+                    ByVal Original_RejectedOn As Global.System.Nullable(Of Date),  _
+                    ByVal Original_RejectedByEmployeeId As Global.System.Nullable(Of Integer),  _
+                    ByVal Original_SubmittedBy As Global.System.Nullable(Of Integer),  _
+                    ByVal Original_CreatedByEmployeeId As Global.System.Nullable(Of Integer),  _
+                    ByVal Original_ModifiedByEmployeeId As Global.System.Nullable(Of Integer),  _
+                    ByVal Original_PeriodDescription As String,  _
+                    ByVal Original_CreatedOn As Global.System.Nullable(Of Date),  _
+                    ByVal Original_ModifiedOn As Global.System.Nullable(Of Date)) As Integer
+            Me.Adapter.UpdateCommand.Parameters(0).Value = CType(AccountEmployeeTimeEntryPeriodId,System.Guid)
+            Me.Adapter.UpdateCommand.Parameters(1).Value = CType(AccountId,Integer)
+            Me.Adapter.UpdateCommand.Parameters(2).Value = CType(AccountEmployeeId,Integer)
+            Me.Adapter.UpdateCommand.Parameters(3).Value = CType(TimeEntryStartDate,Date)
+            Me.Adapter.UpdateCommand.Parameters(4).Value = CType(TimeEntryEndDate,Date)
+            If (TimeEntryViewType Is Nothing) Then
+                Throw New Global.System.ArgumentNullException("TimeEntryViewType")
+            Else
+                Me.Adapter.UpdateCommand.Parameters(5).Value = CType(TimeEntryViewType,String)
+            End If
+            Me.Adapter.UpdateCommand.Parameters(6).Value = CType(Submitted,Boolean)
+            Me.Adapter.UpdateCommand.Parameters(7).Value = CType(Approved,Boolean)
+            Me.Adapter.UpdateCommand.Parameters(8).Value = CType(Rejected,Boolean)
+            Me.Adapter.UpdateCommand.Parameters(9).Value = CType(InApproval,Boolean)
+            If (SubmittedDate.HasValue = true) Then
+                Me.Adapter.UpdateCommand.Parameters(10).Value = CType(SubmittedDate.Value,Date)
+            Else
+                Me.Adapter.UpdateCommand.Parameters(10).Value = Global.System.DBNull.Value
+            End If
+            If (ApprovedOn.HasValue = true) Then
+                Me.Adapter.UpdateCommand.Parameters(11).Value = CType(ApprovedOn.Value,Date)
+            Else
+                Me.Adapter.UpdateCommand.Parameters(11).Value = Global.System.DBNull.Value
+            End If
+            If (ApprovedByEmployeeId.HasValue = true) Then
+                Me.Adapter.UpdateCommand.Parameters(12).Value = CType(ApprovedByEmployeeId.Value,Integer)
+            Else
+                Me.Adapter.UpdateCommand.Parameters(12).Value = Global.System.DBNull.Value
+            End If
+            If (RejectedOn.HasValue = true) Then
+                Me.Adapter.UpdateCommand.Parameters(13).Value = CType(RejectedOn.Value,Date)
+            Else
+                Me.Adapter.UpdateCommand.Parameters(13).Value = Global.System.DBNull.Value
+            End If
+            If (RejectedByEmployeeId.HasValue = true) Then
+                Me.Adapter.UpdateCommand.Parameters(14).Value = CType(RejectedByEmployeeId.Value,Integer)
+            Else
+                Me.Adapter.UpdateCommand.Parameters(14).Value = Global.System.DBNull.Value
+            End If
+            If (SubmittedBy.HasValue = true) Then
+                Me.Adapter.UpdateCommand.Parameters(15).Value = CType(SubmittedBy.Value,Integer)
+            Else
+                Me.Adapter.UpdateCommand.Parameters(15).Value = Global.System.DBNull.Value
+            End If
+            If (CreatedByEmployeeId.HasValue = true) Then
+                Me.Adapter.UpdateCommand.Parameters(16).Value = CType(CreatedByEmployeeId.Value,Integer)
+            Else
+                Me.Adapter.UpdateCommand.Parameters(16).Value = Global.System.DBNull.Value
+            End If
+            If (ModifiedByEmployeeId.HasValue = true) Then
+                Me.Adapter.UpdateCommand.Parameters(17).Value = CType(ModifiedByEmployeeId.Value,Integer)
+            Else
+                Me.Adapter.UpdateCommand.Parameters(17).Value = Global.System.DBNull.Value
+            End If
+            If (PeriodDescription Is Nothing) Then
+                Me.Adapter.UpdateCommand.Parameters(18).Value = Global.System.DBNull.Value
+            Else
+                Me.Adapter.UpdateCommand.Parameters(18).Value = CType(PeriodDescription,String)
+            End If
+            If (CreatedOn.HasValue = true) Then
+                Me.Adapter.UpdateCommand.Parameters(19).Value = CType(CreatedOn.Value,Date)
+            Else
+                Me.Adapter.UpdateCommand.Parameters(19).Value = Global.System.DBNull.Value
+            End If
+            If (ModifiedOn.HasValue = true) Then
+                Me.Adapter.UpdateCommand.Parameters(20).Value = CType(ModifiedOn.Value,Date)
+            Else
+                Me.Adapter.UpdateCommand.Parameters(20).Value = Global.System.DBNull.Value
+            End If
+            Me.Adapter.UpdateCommand.Parameters(21).Value = CType(Original_AccountEmployeeTimeEntryPeriodId,System.Guid)
+            Me.Adapter.UpdateCommand.Parameters(22).Value = CType(Original_AccountId,Integer)
+            Me.Adapter.UpdateCommand.Parameters(23).Value = CType(Original_AccountEmployeeId,Integer)
+            Me.Adapter.UpdateCommand.Parameters(24).Value = CType(Original_TimeEntryStartDate,Date)
+            Me.Adapter.UpdateCommand.Parameters(25).Value = CType(Original_TimeEntryEndDate,Date)
+            If (Original_TimeEntryViewType Is Nothing) Then
+                Throw New Global.System.ArgumentNullException("Original_TimeEntryViewType")
+            Else
+                Me.Adapter.UpdateCommand.Parameters(26).Value = CType(Original_TimeEntryViewType,String)
+            End If
+            Me.Adapter.UpdateCommand.Parameters(27).Value = CType(Original_Submitted,Boolean)
+            Me.Adapter.UpdateCommand.Parameters(28).Value = CType(Original_Approved,Boolean)
+            Me.Adapter.UpdateCommand.Parameters(29).Value = CType(Original_Rejected,Boolean)
+            Me.Adapter.UpdateCommand.Parameters(30).Value = CType(Original_InApproval,Boolean)
+            If (Original_SubmittedDate.HasValue = true) Then
+                Me.Adapter.UpdateCommand.Parameters(31).Value = CType(0,Object)
+                Me.Adapter.UpdateCommand.Parameters(32).Value = CType(Original_SubmittedDate.Value,Date)
+            Else
+                Me.Adapter.UpdateCommand.Parameters(31).Value = CType(1,Object)
+                Me.Adapter.UpdateCommand.Parameters(32).Value = Global.System.DBNull.Value
+            End If
+            If (Original_ApprovedOn.HasValue = true) Then
+                Me.Adapter.UpdateCommand.Parameters(33).Value = CType(0,Object)
+                Me.Adapter.UpdateCommand.Parameters(34).Value = CType(Original_ApprovedOn.Value,Date)
+            Else
+                Me.Adapter.UpdateCommand.Parameters(33).Value = CType(1,Object)
+                Me.Adapter.UpdateCommand.Parameters(34).Value = Global.System.DBNull.Value
+            End If
+            If (Original_ApprovedByEmployeeId.HasValue = true) Then
+                Me.Adapter.UpdateCommand.Parameters(35).Value = CType(0,Object)
+                Me.Adapter.UpdateCommand.Parameters(36).Value = CType(Original_ApprovedByEmployeeId.Value,Integer)
+            Else
+                Me.Adapter.UpdateCommand.Parameters(35).Value = CType(1,Object)
+                Me.Adapter.UpdateCommand.Parameters(36).Value = Global.System.DBNull.Value
+            End If
+            If (Original_RejectedOn.HasValue = true) Then
+                Me.Adapter.UpdateCommand.Parameters(37).Value = CType(0,Object)
+                Me.Adapter.UpdateCommand.Parameters(38).Value = CType(Original_RejectedOn.Value,Date)
+            Else
+                Me.Adapter.UpdateCommand.Parameters(37).Value = CType(1,Object)
+                Me.Adapter.UpdateCommand.Parameters(38).Value = Global.System.DBNull.Value
+            End If
+            If (Original_RejectedByEmployeeId.HasValue = true) Then
+                Me.Adapter.UpdateCommand.Parameters(39).Value = CType(0,Object)
+                Me.Adapter.UpdateCommand.Parameters(40).Value = CType(Original_RejectedByEmployeeId.Value,Integer)
+            Else
+                Me.Adapter.UpdateCommand.Parameters(39).Value = CType(1,Object)
+                Me.Adapter.UpdateCommand.Parameters(40).Value = Global.System.DBNull.Value
+            End If
+            If (Original_SubmittedBy.HasValue = true) Then
+                Me.Adapter.UpdateCommand.Parameters(41).Value = CType(0,Object)
+                Me.Adapter.UpdateCommand.Parameters(42).Value = CType(Original_SubmittedBy.Value,Integer)
+            Else
+                Me.Adapter.UpdateCommand.Parameters(41).Value = CType(1,Object)
+                Me.Adapter.UpdateCommand.Parameters(42).Value = Global.System.DBNull.Value
+            End If
+            If (Original_CreatedByEmployeeId.HasValue = true) Then
+                Me.Adapter.UpdateCommand.Parameters(43).Value = CType(0,Object)
+                Me.Adapter.UpdateCommand.Parameters(44).Value = CType(Original_CreatedByEmployeeId.Value,Integer)
+            Else
+                Me.Adapter.UpdateCommand.Parameters(43).Value = CType(1,Object)
+                Me.Adapter.UpdateCommand.Parameters(44).Value = Global.System.DBNull.Value
+            End If
+            If (Original_ModifiedByEmployeeId.HasValue = true) Then
+                Me.Adapter.UpdateCommand.Parameters(45).Value = CType(0,Object)
+                Me.Adapter.UpdateCommand.Parameters(46).Value = CType(Original_ModifiedByEmployeeId.Value,Integer)
+            Else
+                Me.Adapter.UpdateCommand.Parameters(45).Value = CType(1,Object)
+                Me.Adapter.UpdateCommand.Parameters(46).Value = Global.System.DBNull.Value
+            End If
+            If (Original_PeriodDescription Is Nothing) Then
+                Me.Adapter.UpdateCommand.Parameters(47).Value = CType(1,Object)
+                Me.Adapter.UpdateCommand.Parameters(48).Value = Global.System.DBNull.Value
+            Else
+                Me.Adapter.UpdateCommand.Parameters(47).Value = CType(0,Object)
+                Me.Adapter.UpdateCommand.Parameters(48).Value = CType(Original_PeriodDescription,String)
+            End If
+            If (Original_CreatedOn.HasValue = true) Then
+                Me.Adapter.UpdateCommand.Parameters(49).Value = CType(0,Object)
+                Me.Adapter.UpdateCommand.Parameters(50).Value = CType(Original_CreatedOn.Value,Date)
+            Else
+                Me.Adapter.UpdateCommand.Parameters(49).Value = CType(1,Object)
+                Me.Adapter.UpdateCommand.Parameters(50).Value = Global.System.DBNull.Value
+            End If
+            If (Original_ModifiedOn.HasValue = true) Then
+                Me.Adapter.UpdateCommand.Parameters(51).Value = CType(0,Object)
+                Me.Adapter.UpdateCommand.Parameters(52).Value = CType(Original_ModifiedOn.Value,Date)
+            Else
+                Me.Adapter.UpdateCommand.Parameters(51).Value = CType(1,Object)
+                Me.Adapter.UpdateCommand.Parameters(52).Value = Global.System.DBNull.Value
+            End If
+            Dim previousConnectionState As Global.System.Data.ConnectionState = Me.Adapter.UpdateCommand.Connection.State
+            If ((Me.Adapter.UpdateCommand.Connection.State And Global.System.Data.ConnectionState.Open)  _
+                        <> Global.System.Data.ConnectionState.Open) Then
+                Me.Adapter.UpdateCommand.Connection.Open
+            End If
+            Try 
+                Dim returnValue As Integer = Me.Adapter.UpdateCommand.ExecuteNonQuery
+                Return returnValue
+            Finally
+                If (previousConnectionState = Global.System.Data.ConnectionState.Closed) Then
+                    Me.Adapter.UpdateCommand.Connection.Close
+                End If
+            End Try
+        End Function
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0"),  _
+         Global.System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter"),  _
+         Global.System.ComponentModel.DataObjectMethodAttribute(Global.System.ComponentModel.DataObjectMethodType.Update, true)>  _
+        Public Overloads Overridable Function Update( _
+                    ByVal AccountId As Integer,  _
+                    ByVal AccountEmployeeId As Integer,  _
+                    ByVal TimeEntryStartDate As Date,  _
+                    ByVal TimeEntryEndDate As Date,  _
+                    ByVal TimeEntryViewType As String,  _
+                    ByVal Submitted As Boolean,  _
+                    ByVal Approved As Boolean,  _
+                    ByVal Rejected As Boolean,  _
+                    ByVal InApproval As Boolean,  _
+                    ByVal SubmittedDate As Global.System.Nullable(Of Date),  _
+                    ByVal ApprovedOn As Global.System.Nullable(Of Date),  _
+                    ByVal ApprovedByEmployeeId As Global.System.Nullable(Of Integer),  _
+                    ByVal RejectedOn As Global.System.Nullable(Of Date),  _
+                    ByVal RejectedByEmployeeId As Global.System.Nullable(Of Integer),  _
+                    ByVal SubmittedBy As Global.System.Nullable(Of Integer),  _
+                    ByVal CreatedByEmployeeId As Global.System.Nullable(Of Integer),  _
+                    ByVal ModifiedByEmployeeId As Global.System.Nullable(Of Integer),  _
+                    ByVal PeriodDescription As String,  _
+                    ByVal CreatedOn As Global.System.Nullable(Of Date),  _
+                    ByVal ModifiedOn As Global.System.Nullable(Of Date),  _
+                    ByVal Original_AccountEmployeeTimeEntryPeriodId As System.Guid,  _
+                    ByVal Original_AccountId As Integer,  _
+                    ByVal Original_AccountEmployeeId As Integer,  _
+                    ByVal Original_TimeEntryStartDate As Date,  _
+                    ByVal Original_TimeEntryEndDate As Date,  _
+                    ByVal Original_TimeEntryViewType As String,  _
+                    ByVal Original_Submitted As Boolean,  _
+                    ByVal Original_Approved As Boolean,  _
+                    ByVal Original_Rejected As Boolean,  _
+                    ByVal Original_InApproval As Boolean,  _
+                    ByVal Original_SubmittedDate As Global.System.Nullable(Of Date),  _
+                    ByVal Original_ApprovedOn As Global.System.Nullable(Of Date),  _
+                    ByVal Original_ApprovedByEmployeeId As Global.System.Nullable(Of Integer),  _
+                    ByVal Original_RejectedOn As Global.System.Nullable(Of Date),  _
+                    ByVal Original_RejectedByEmployeeId As Global.System.Nullable(Of Integer),  _
+                    ByVal Original_SubmittedBy As Global.System.Nullable(Of Integer),  _
+                    ByVal Original_CreatedByEmployeeId As Global.System.Nullable(Of Integer),  _
+                    ByVal Original_ModifiedByEmployeeId As Global.System.Nullable(Of Integer),  _
+                    ByVal Original_PeriodDescription As String,  _
+                    ByVal Original_CreatedOn As Global.System.Nullable(Of Date),  _
+                    ByVal Original_ModifiedOn As Global.System.Nullable(Of Date)) As Integer
+            Return Me.Update(Original_AccountEmployeeTimeEntryPeriodId, AccountId, AccountEmployeeId, TimeEntryStartDate, TimeEntryEndDate, TimeEntryViewType, Submitted, Approved, Rejected, InApproval, SubmittedDate, ApprovedOn, ApprovedByEmployeeId, RejectedOn, RejectedByEmployeeId, SubmittedBy, CreatedByEmployeeId, ModifiedByEmployeeId, PeriodDescription, CreatedOn, ModifiedOn, Original_AccountEmployeeTimeEntryPeriodId, Original_AccountId, Original_AccountEmployeeId, Original_TimeEntryStartDate, Original_TimeEntryEndDate, Original_TimeEntryViewType, Original_Submitted, Original_Approved, Original_Rejected, Original_InApproval, Original_SubmittedDate, Original_ApprovedOn, Original_ApprovedByEmployeeId, Original_RejectedOn, Original_RejectedByEmployeeId, Original_SubmittedBy, Original_CreatedByEmployeeId, Original_ModifiedByEmployeeId, Original_PeriodDescription, Original_CreatedOn, Original_ModifiedOn)
+        End Function
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0"),  _
+         Global.System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")>  _
+        Public Overloads Overridable Function GetTimeApproval(ByVal EmployeeId As Integer, ByVal _Date As Date) As Global.System.Nullable(Of Boolean)
+            Dim command As Global.System.Data.SqlClient.SqlCommand = Me.CommandCollection(1)
+            command.Parameters(0).Value = CType(EmployeeId,Integer)
+            command.Parameters(1).Value = CType(_Date,Date)
+            Dim previousConnectionState As Global.System.Data.ConnectionState = command.Connection.State
+            If ((command.Connection.State And Global.System.Data.ConnectionState.Open)  _
+                        <> Global.System.Data.ConnectionState.Open) Then
+                command.Connection.Open
+            End If
+            Dim returnValue As Object
+            Try 
+                returnValue = command.ExecuteScalar
+            Finally
+                If (previousConnectionState = Global.System.Data.ConnectionState.Closed) Then
+                    command.Connection.Close
+                End If
+            End Try
+            If ((returnValue Is Nothing)  _
+                        OrElse (returnValue.GetType Is GetType(Global.System.DBNull))) Then
+                Return New Global.System.Nullable(Of Boolean)()
+            Else
+                Return New Global.System.Nullable(Of Boolean)(CType(returnValue,Boolean))
+            End If
+        End Function
+    End Class
+    
+    '''<summary>
     '''TableAdapterManager is used to coordinate TableAdapters in the dataset to enable Hierarchical Update scenarios
     '''</summary>
     <Global.System.ComponentModel.DesignerCategoryAttribute("code"),  _
@@ -6036,6 +8067,8 @@ Namespace TimeLiveDataSetTableAdapters
         Private _accountProjectTaskEmployeeTableAdapter As AccountProjectTaskEmployeeTableAdapter
         
         Private _accountProjectEmployeeTableAdapter As AccountProjectEmployeeTableAdapter
+        
+        Private _accountEmployeeTimeEntryPeriodTableAdapter As AccountEmployeeTimeEntryPeriodTableAdapter
         
         Private _backupDataSetBeforeUpdate As Boolean
         
@@ -6095,6 +8128,20 @@ Namespace TimeLiveDataSetTableAdapters
         End Property
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0"),  _
+         Global.System.ComponentModel.EditorAttribute("Microsoft.VSDesigner.DataSource.Design.TableAdapterManagerPropertyEditor, Microso"& _ 
+            "ft.VSDesigner, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3"& _ 
+            "a", "System.Drawing.Design.UITypeEditor")>  _
+        Public Property AccountEmployeeTimeEntryPeriodTableAdapter() As AccountEmployeeTimeEntryPeriodTableAdapter
+            Get
+                Return Me._accountEmployeeTimeEntryPeriodTableAdapter
+            End Get
+            Set
+                Me._accountEmployeeTimeEntryPeriodTableAdapter = value
+            End Set
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
         Public Property BackupDataSetBeforeUpdate() As Boolean
             Get
@@ -6125,6 +8172,10 @@ Namespace TimeLiveDataSetTableAdapters
                             AndAlso (Not (Me._accountProjectEmployeeTableAdapter.Connection) Is Nothing)) Then
                     Return Me._accountProjectEmployeeTableAdapter.Connection
                 End If
+                If ((Not (Me._accountEmployeeTimeEntryPeriodTableAdapter) Is Nothing)  _
+                            AndAlso (Not (Me._accountEmployeeTimeEntryPeriodTableAdapter.Connection) Is Nothing)) Then
+                    Return Me._accountEmployeeTimeEntryPeriodTableAdapter.Connection
+                End If
                 Return Nothing
             End Get
             Set
@@ -6145,6 +8196,9 @@ Namespace TimeLiveDataSetTableAdapters
                     count = (count + 1)
                 End If
                 If (Not (Me._accountProjectEmployeeTableAdapter) Is Nothing) Then
+                    count = (count + 1)
+                End If
+                If (Not (Me._accountEmployeeTimeEntryPeriodTableAdapter) Is Nothing) Then
                     count = (count + 1)
                 End If
                 Return count
@@ -6185,6 +8239,15 @@ Namespace TimeLiveDataSetTableAdapters
                     allChangedRows.AddRange(updatedRows)
                 End If
             End If
+            If (Not (Me._accountEmployeeTimeEntryPeriodTableAdapter) Is Nothing) Then
+                Dim updatedRows() As Global.System.Data.DataRow = dataSet.AccountEmployeeTimeEntryPeriod.Select(Nothing, Nothing, Global.System.Data.DataViewRowState.ModifiedCurrent)
+                updatedRows = Me.GetRealUpdatedRows(updatedRows, allAddedRows)
+                If ((Not (updatedRows) Is Nothing)  _
+                            AndAlso (0 < updatedRows.Length)) Then
+                    result = (result + Me._accountEmployeeTimeEntryPeriodTableAdapter.Update(updatedRows))
+                    allChangedRows.AddRange(updatedRows)
+                End If
+            End If
             Return result
         End Function
         
@@ -6219,6 +8282,14 @@ Namespace TimeLiveDataSetTableAdapters
                     allAddedRows.AddRange(addedRows)
                 End If
             End If
+            If (Not (Me._accountEmployeeTimeEntryPeriodTableAdapter) Is Nothing) Then
+                Dim addedRows() As Global.System.Data.DataRow = dataSet.AccountEmployeeTimeEntryPeriod.Select(Nothing, Nothing, Global.System.Data.DataViewRowState.Added)
+                If ((Not (addedRows) Is Nothing)  _
+                            AndAlso (0 < addedRows.Length)) Then
+                    result = (result + Me._accountEmployeeTimeEntryPeriodTableAdapter.Update(addedRows))
+                    allAddedRows.AddRange(addedRows)
+                End If
+            End If
             Return result
         End Function
         
@@ -6229,6 +8300,14 @@ Namespace TimeLiveDataSetTableAdapters
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
         Private Function UpdateDeletedRows(ByVal dataSet As TimeLiveDataSet, ByVal allChangedRows As Global.System.Collections.Generic.List(Of Global.System.Data.DataRow)) As Integer
             Dim result As Integer = 0
+            If (Not (Me._accountEmployeeTimeEntryPeriodTableAdapter) Is Nothing) Then
+                Dim deletedRows() As Global.System.Data.DataRow = dataSet.AccountEmployeeTimeEntryPeriod.Select(Nothing, Nothing, Global.System.Data.DataViewRowState.Deleted)
+                If ((Not (deletedRows) Is Nothing)  _
+                            AndAlso (0 < deletedRows.Length)) Then
+                    result = (result + Me._accountEmployeeTimeEntryPeriodTableAdapter.Update(deletedRows))
+                    allChangedRows.AddRange(deletedRows)
+                End If
+            End If
             If (Not (Me._accountProjectEmployeeTableAdapter) Is Nothing) Then
                 Dim deletedRows() As Global.System.Data.DataRow = dataSet.AccountProjectEmployee.Select(Nothing, Nothing, Global.System.Data.DataViewRowState.Deleted)
                 If ((Not (deletedRows) Is Nothing)  _
@@ -6309,6 +8388,11 @@ Namespace TimeLiveDataSetTableAdapters
                 Throw New Global.System.ArgumentException("All TableAdapters managed by a TableAdapterManager must use the same connection s"& _ 
                         "tring.")
             End If
+            If ((Not (Me._accountEmployeeTimeEntryPeriodTableAdapter) Is Nothing)  _
+                        AndAlso (Me.MatchTableAdapterConnection(Me._accountEmployeeTimeEntryPeriodTableAdapter.Connection) = false)) Then
+                Throw New Global.System.ArgumentException("All TableAdapters managed by a TableAdapterManager must use the same connection s"& _ 
+                        "tring.")
+            End If
             Dim workConnection As Global.System.Data.IDbConnection = Me.Connection
             If (workConnection Is Nothing) Then
                 Throw New Global.System.ApplicationException("TableAdapterManager contains no connection information. Set each TableAdapterMana"& _ 
@@ -6366,6 +8450,15 @@ Namespace TimeLiveDataSetTableAdapters
                     If Me._accountProjectEmployeeTableAdapter.Adapter.AcceptChangesDuringUpdate Then
                         Me._accountProjectEmployeeTableAdapter.Adapter.AcceptChangesDuringUpdate = false
                         adaptersWithAcceptChangesDuringUpdate.Add(Me._accountProjectEmployeeTableAdapter.Adapter)
+                    End If
+                End If
+                If (Not (Me._accountEmployeeTimeEntryPeriodTableAdapter) Is Nothing) Then
+                    revertConnections.Add(Me._accountEmployeeTimeEntryPeriodTableAdapter, Me._accountEmployeeTimeEntryPeriodTableAdapter.Connection)
+                    Me._accountEmployeeTimeEntryPeriodTableAdapter.Connection = CType(workConnection,Global.System.Data.SqlClient.SqlConnection)
+                    Me._accountEmployeeTimeEntryPeriodTableAdapter.Transaction = CType(workTransaction,Global.System.Data.SqlClient.SqlTransaction)
+                    If Me._accountEmployeeTimeEntryPeriodTableAdapter.Adapter.AcceptChangesDuringUpdate Then
+                        Me._accountEmployeeTimeEntryPeriodTableAdapter.Adapter.AcceptChangesDuringUpdate = false
+                        adaptersWithAcceptChangesDuringUpdate.Add(Me._accountEmployeeTimeEntryPeriodTableAdapter.Adapter)
                     End If
                 End If
                 '
@@ -6439,6 +8532,10 @@ Namespace TimeLiveDataSetTableAdapters
                 If (Not (Me._accountProjectEmployeeTableAdapter) Is Nothing) Then
                     Me._accountProjectEmployeeTableAdapter.Connection = CType(revertConnections(Me._accountProjectEmployeeTableAdapter),Global.System.Data.SqlClient.SqlConnection)
                     Me._accountProjectEmployeeTableAdapter.Transaction = Nothing
+                End If
+                If (Not (Me._accountEmployeeTimeEntryPeriodTableAdapter) Is Nothing) Then
+                    Me._accountEmployeeTimeEntryPeriodTableAdapter.Connection = CType(revertConnections(Me._accountEmployeeTimeEntryPeriodTableAdapter),Global.System.Data.SqlClient.SqlConnection)
+                    Me._accountEmployeeTimeEntryPeriodTableAdapter.Transaction = Nothing
                 End If
                 If (0 < adaptersWithAcceptChangesDuringUpdate.Count) Then
                     Dim adapters((adaptersWithAcceptChangesDuringUpdate.Count) - 1) As Global.System.Data.Common.DataAdapter

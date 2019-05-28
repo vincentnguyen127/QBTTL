@@ -454,6 +454,11 @@ Represents the strongly named DataTable class.
 Represents the strongly named DataTable class.
 </summary>
 </member>
+<member name="T:TimeLive.Quickbooks.Integrator.TimeLiveDataSet.AccountEmployeeTimeEntryPeriodDataTable">
+<summary>
+Represents the strongly named DataTable class.
+</summary>
+</member>
 <member name="T:TimeLive.Quickbooks.Integrator.TimeLiveDataSet.AccountPartyRow">
 <summary>
 Represents strongly named DataRow class.
@@ -465,6 +470,11 @@ Represents strongly named DataRow class.
 </summary>
 </member>
 <member name="T:TimeLive.Quickbooks.Integrator.TimeLiveDataSet.AccountProjectEmployeeRow">
+<summary>
+Represents strongly named DataRow class.
+</summary>
+</member>
+<member name="T:TimeLive.Quickbooks.Integrator.TimeLiveDataSet.AccountEmployeeTimeEntryPeriodRow">
 <summary>
 Represents strongly named DataRow class.
 </summary>
@@ -484,6 +494,11 @@ Row event argument class
 Row event argument class
 </summary>
 </member>
+<member name="T:TimeLive.Quickbooks.Integrator.TimeLiveDataSet.AccountEmployeeTimeEntryPeriodRowChangeEvent">
+<summary>
+Row event argument class
+</summary>
+</member>
 <member name="T:TimeLive.Quickbooks.Integrator.TimeLiveDataSetTableAdapters.AccountPartyTableAdapter">
 <summary>
 Represents the connection and commands used to retrieve and save data.
@@ -495,6 +510,11 @@ Represents the connection and commands used to retrieve and save data.
 </summary>
 </member>
 <member name="T:TimeLive.Quickbooks.Integrator.TimeLiveDataSetTableAdapters.AccountProjectEmployeeTableAdapter">
+<summary>
+Represents the connection and commands used to retrieve and save data.
+</summary>
+</member>
+<member name="T:TimeLive.Quickbooks.Integrator.TimeLiveDataSetTableAdapters.AccountEmployeeTimeEntryPeriodTableAdapter">
 <summary>
 Represents the connection and commands used to retrieve and save data.
 </summary>

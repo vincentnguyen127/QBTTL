@@ -70,44 +70,44 @@ Public Class MAIN
 
             Dim ChargingRelationship As New ChargingRelationship
 
-                'SPIN OFF THREAD FOR TIMER
-                TIMERTHREAD_func()
-                Dim NextRunDateTime As Date = Convert.ToDateTime(My.Settings.AutoRunTime)
-                NextProcessingTime.Text = "Auto Processing Time: " + NextRunDateTime.ToString("MM/dd/yy HH:mm")
+            'SPIN OFF THREAD FOR TIMER
+            TIMERTHREAD_func()
+            Dim NextRunDateTime As Date = Convert.ToDateTime(My.Settings.AutoRunTime)
+            NextProcessingTime.Text = "Auto Processing Time: " + NextRunDateTime.ToString("MM/dd/yy HH:mm")
 
-                Type = 10
+            Type = 10
 
-                Dim ReadItems As Integer = 0
-                'hide all tabstrips
-                TabPageCustomers.Visible = False
-                TabPageEmployees.Visible = False
-                TabPageTimeTransfer.Visible = False
+            Dim ReadItems As Integer = 0
+            'hide all tabstrips
+            TabPageCustomers.Visible = False
+            TabPageEmployees.Visible = False
+            TabPageTimeTransfer.Visible = False
 
-                Show()
-                DataGridView1.AutoSize = False
-                DataGridView1.AutoSizeRowsMode = False
-                DataGridView2.AutoSize = False
-                DataGridView2.AutoSizeRowsMode = False
-                btn_currentweek_Click(SENDER, E)
+            Show()
+            DataGridView1.AutoSize = False
+            DataGridView1.AutoSizeRowsMode = False
+            DataGridView2.AutoSize = False
+            DataGridView2.AutoSizeRowsMode = False
+            btn_currentweek_Click(SENDER, E)
 
-                'for type Customers, Employees, Vendors, Jobs/Subjobs, and Items/Subitems
-                If Type >= 10 And Type < 15 Then
-                    ReadItems = display_UI()
-                End If
+            'for type Customers, Employees, Vendors, Jobs/Subjobs, and Items/Subitems
+            If Type >= 10 And Type < 15 Then
+                ReadItems = display_UI()
+            End If
 
-                'for type Time Items
-                ' Might add this to display_UI() or as its own private function
-                If Type = 20 Then
-                    'ReadItems = display_TimeEntry_UI()
-                    ReadItems = display_TimeEntry_UI()
-                End If
+            'for type Time Items
+            ' Might add this to display_UI() or as its own private function
+            If Type = 20 Then
+                'ReadItems = display_TimeEntry_UI()
+                ReadItems = display_TimeEntry_UI()
+            End If
 
-                If LoggedIn Then
-                    History(ReadItems.ToString() + " items were read from Quickbooks", "n")
-                End If
+            If LoggedIn Then
+                History(ReadItems.ToString() + " items were read from Quickbooks", "n")
+            End If
 
-            Catch EX As Exception
-                MsgBox(EX.Message)
+        Catch EX As Exception
+            MsgBox(EX.Message)
             Me.Close()
         End Try
     End Sub
@@ -348,47 +348,19 @@ Public Class MAIN
     Public Sub History(ByVal input As String, Type As String) ' Change to Type to "Char" after testing
         Dim can_display As Boolean = If(My.Settings.DebugMode Is Nothing Or My.Settings.DebugMode = "", True, CBool(My.Settings.DebugMode))
         If can_display Then
-            ' Still need to test this
-            Select Case Type
-                Case "n"
-                    StatusWindow.Text += vbNewLine + ">> " + input
-                Case "N"
-                    Dim s As String = vbNewLine + "***********************" + vbNewLine + ">> " + input + vbNewLine + "***********************"
-                    'StatusWindow.Text += vbNewLine + "***********************"
-                    'StatusWindow.Text += vbNewLine + ">> " + input
-                    'StatusWindow.Text += vbNewLine + "***********************"
-                    StatusWindow.Text += s
-                Case "c"
-                    StatusWindow.Text += ", " + input
-                Case "C"
-                    StatusWindow.Text += ", " + input
-                Case "i"
-                    StatusWindow.Text += vbNewLine + vbTab + "- " + input
-                Case "I"
-                    Dim s As String = vbNewLine + "***********************" + vbNewLine + "- " + input + vbNewLine + "***********************"
-                    'StatusWindow.Text += vbNewLine + vbTab + "***********************"
-                    'StatusWindow.Text += vbNewLine + vbTab + "- " + input
-                    'StatusWindow.Text += vbNewLine + vbTab + "***********************"
-                    StatusWindow.Text += s
-            End Select
-
-            'If String.Compare("n", Type, False) = 0 Then
-            '    StatusWindow.Text += vbNewLine + ">> " + input
-            'ElseIf String.Compare("N", Type, False) = 0 Then
-            '    StatusWindow.Text += vbNewLine + "***********************"
-            '    StatusWindow.Text += vbNewLine + ">> " + input
-            '    StatusWindow.Text += vbNewLine + "***********************"
-            'ElseIf String.Compare("c", Type, False) = 0 Then
-            '    StatusWindow.Text += ", " + input
-            'ElseIf String.Compare("C", Type, False) = 0 Then
-            '    StatusWindow.Text += ", " + input
-            'ElseIf String.Compare("i", Type, False) = 0 Then
-            '    StatusWindow.Text += vbNewLine + vbTab + "- " + input
-            'ElseIf String.Compare("I", Type, False) = 0 Then
-            '    StatusWindow.Text += vbNewLine + vbTab + "***********************"
-            '    StatusWindow.Text += vbNewLine + vbTab + "- " + input
-            '    StatusWindow.Text += vbNewLine + vbTab + "***********************"
-            'End If
+            If String.Compare("n", Type, False) = 0 Then
+                StatusWindow.Text += vbNewLine + ">> " + input
+            ElseIf String.Compare("N", Type, False) = 0 Then
+                Dim s As String = vbNewLine + "***********************" + vbNewLine + ">> " + input + vbNewLine + "***********************"
+                StatusWindow.Text += s
+            ElseIf String.Compare("c", Type, True) = 0 Then
+                StatusWindow.Text += ", " + input
+            ElseIf String.Compare("i", Type, False) = 0 Then
+                StatusWindow.Text += vbNewLine + vbTab + "- " + input
+            ElseIf String.Compare("I", Type, False) = 0 Then
+                Dim s As String = vbNewLine + vbTab + "***********************" + vbNewLine + vbTab + "- " + input + vbNewLine + vbTab + "***********************"
+                StatusWindow.Text += s
+            End If
 
             StatusWindow.SelectionStart = StatusWindow.TextLength
             StatusWindow.ScrollToCaret()
@@ -1477,6 +1449,8 @@ Public Class MAIN
             TimeEntryData = emplTLData
         End If
 
+        Dim TL_TimeEntries As New TimeLiveDataSetTableAdapters.AccountEmployeeTimeEntryPeriodTableAdapter
+
         If TimeEntryData IsNot Nothing Then
             For Each element As TLtoQB_TimeEntry.TimeEntry In emplTLData.DataArray
                 With element
@@ -1487,19 +1461,29 @@ Public Class MAIN
                     Dim payrollDisp As String = .PayrollItem 'If(.PayrollName Is Nothing, .PayrollItem, .PayrollName)
                     Dim ServiceDisp As String = If(.ServiceName Is Nothing, .ServiceItem, .ServiceName)
 
-                    Dim full_name As String = .CustomerName.ToString() + MAIN.colonReplacer + .ProjectName.ToString() + MAIN.colonReplacer + .TaskWithParent.ToString()
+                    ' Check if a time entry has yet to be approved
+                    Dim TimeEntryApproved As Boolean = TL_TimeEntries.GetTimeApproval(AccountEmployeeId, .TimeEntryDate)
 
-                    DataGridView.Rows.Add(.RecSelect, .EmployeeName, .TimeEntryDate.ToString("MM/dd/yyyy"), full_name,
-                                           TotalHours.ToString, .TimeEntryClass, payrollDisp, ServiceDisp)
+                    Dim full_name As String = .CustomerName.ToString() + MAIN.colonReplacer + .ProjectName.ToString() + MAIN.colonReplacer + .TaskWithParent.ToString().Replace(":", MAIN.colonReplacer)
+                    If TimeEntryApproved Then
+                        DataGridView.Rows.Add(True, .EmployeeName, .TimeEntryDate.ToString("MM/dd/yyyy"), full_name,
+                                              TotalHours.ToString, .TimeEntryClass, payrollDisp, ServiceDisp) ' .RecSelect replaced with true
+                    Else
+                        My.Forms.MAIN.History("Time entry not approved for " + .EmployeeName + " on the week of " + .TimeEntryDate, "N")
+                        DataGridView.Rows.Add(False, .EmployeeName, .TimeEntryDate.ToString("MM/dd/yyyy"), full_name,
+                                              TotalHours.ToString, .TimeEntryClass, payrollDisp, ServiceDisp)
+                    End If
                     element.RecSelect = True
                 End With
             Next
         End If
 
-        'Select All
+        'Make all non-approved rows have a check box that cannot be selected
         For Each row As DataGridViewRow In DataGridView.Rows
-            If row.Cells("Date").Value IsNot Nothing Then
-                row.Cells("ckBox").Value = True
+            If row.Cells("ckBox").Value = False And Not row.Index = DataGridView.Rows.Count - 1 Then
+                'row.Cells("ckBox").Style.BackColor = Color.Black
+                row.Cells("ckBox").ReadOnly = True
+                row.DefaultCellStyle.BackColor = Color.DarkGray
             End If
         Next
 
@@ -1712,18 +1696,18 @@ Public Class MAIN
 
                     'for type Customers, Employees, Vendors, Jobs/Subjobs, and Items/Subitems
                     If Type >= 10 And Type < 15 Then
-                        ReadItems = display_UI()
+                        readItems = display_UI()
                     End If
 
                     'for type Time Items
                     ' Might add this to display_UI() or as its own private function
                     If Type = 20 Then
                         'ReadItems = display_TimeEntry_UI()
-                        ReadItems = display_TimeEntry_UI()
+                        readItems = display_TimeEntry_UI()
                     End If
 
                     If LoggedIn Then
-                        History(ReadItems.ToString() + " items were read from Quickbooks", "n")
+                        History(readItems.ToString() + " items were read from Quickbooks", "n")
                     End If
                 End If
             End Using

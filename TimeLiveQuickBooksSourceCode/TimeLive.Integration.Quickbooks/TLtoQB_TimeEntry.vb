@@ -111,6 +111,7 @@ Public Class TLtoQB_TimeEntry
 
             For n As Integer = 0 To objTimeEntryArray.Length - 1
                 objTimeEntry = objTimeEntryArray(n)
+
                 With objTimeEntry
                     ' Dim val = objTimeEntry.TaskWithParent
                     ' will check which type data should be added 
@@ -195,6 +196,9 @@ Public Class TLtoQB_TimeEntry
 
                     Dim ClassName = If(My.Settings.TransferToPayroll = "", "<None>", If(My.Settings.TransferToPayroll, GetClass(objTimeEntry), "<None>"))
 
+                    ' Check if a time entry has yet to be approved
+                    'Dim TL_TimeEntries As New TimeLiveDataSetTableAdapters.AccountEmployeeTimeEntryPeriodTableAdapter
+                    'Dim TimeEntryApproved As Boolean = TL_TimeEntries.GetTimeApproval(AccountEmployeeId, .TimeEntryDate)
                     TimeEntryData.DataArray.Add(New TimeEntry(.ClientName, .EmployeeName, .IsBillable, .ProjectName, .TaskWithParent, .TotalTime,
                                                               .TimeEntryDate, ClassName, PayrollItem_TypeName, Payroll_Item_SubItemID,
                                                               ServiceItem_TypeName, Item_SubItemID, PayrollName, ItemName))
@@ -205,7 +209,6 @@ Public Class TLtoQB_TimeEntry
                 End If
             Next
 
-            'Return TimeEntryData
         Catch ex As Exception
             My.Forms.MAIN.History("Error retrieving time entries: " + ex.Message, "N")
         End Try
@@ -338,7 +341,7 @@ Public Class TLtoQB_TimeEntry
             result = If(VendorQBID.Count, VendorQBID(0)(0).ToString, "")
         Else
             My.Forms.MAIN.History("Found " + EmployeeQBID.Count.ToString + " matching employee ID" +
-                                  If(EmployeeQBID.Count = 1, "", "s") + " for: " + employeeName, "I")
+                                  If(EmployeeQBID.Count = 1, "", "s") + " for: " + employeeName, "i")
             result = If(EmployeeQBID.Count, EmployeeQBID(0)(0).ToString, "")
         End If
 
