@@ -559,6 +559,44 @@ Update Order Option
 Used to sort self-referenced table's rows
 </summary>
 </member>
+<member name="M:TimeLive.Quickbooks.Integrator.MAIN.Payroll_IDName_Dict">
+ <summary>
+ Connects to QuickBooks to get a dictionary with key value pairs being {Payroll_Id: Payroll_Name}
+ </summary>
+ <returns>A Dictionary with keys being Payroll IDs and values being the corresponding Payroll Name</returns>
+</member>
+<member name="M:TimeLive.Quickbooks.Integrator.MAIN.ItemSubItem_IDName_Dict">
+ <summary>
+ Connects to QuickBooks to get a dictionary with key value pairs being {Item_Id: Item_Name}
+ </summary>
+ <returns>A Dictionary with keys being Item/SubItem IDs and values being the corresponding Item/SubItem Name</returns>
+</member>
+<member name="M:TimeLive.Quickbooks.Integrator.MAIN.btnUpdateTimeTransfer_Click(System.Object,System.EventArgs)">
+ <summary>
+ Displays the Time Entries for the selected employees within the specified time range
+ - White rows correspond to approved time entries
+ - Gray rows correspond to non-approved time entries
+ </summary>
+ <param name="sender"></param>
+ <param name="e"></param>
+</member>
+<member name="M:TimeLive.Quickbooks.Integrator.MAIN.btnTransfer_Click(System.Object,System.EventArgs)">
+ <summary>
+ Transfers the selected customers, employees, vendors, jobs/subjobs or item/subitems, from TL to QB, or QB to TL depending on which is selected
+ </summary>
+ <param name="sender"></param>
+ <param name="e"></param>
+</member>
+<member name="M:TimeLive.Quickbooks.Integrator.MAIN.GetTotalHours(System.String,TimeLive.Quickbooks.Integrator.Services.TimeLive.TimeEntries.TimeEntries,System.DateTime,System.DateTime)">
+ <summary>
+ Gets the total number of hours worked for the employee with the given ID from startDate to endDate
+ </summary>
+ <param name="emplID"></param>
+ <param name="TLTimeTracker"></param>
+ <param name="startDate"></param>
+ <param name="endDate"></param>
+ <returns></returns>
+</member>
 <member name="M:TimeLive.Quickbooks.Integrator.TLtoQB_TimeEntry.ISTLID_In_DataTable(System.String)">
  <summary>
  'Checks if QBID is in sync database
