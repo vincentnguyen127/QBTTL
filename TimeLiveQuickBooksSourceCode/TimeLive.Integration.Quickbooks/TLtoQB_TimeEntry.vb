@@ -189,15 +189,15 @@ Public Class TLtoQB_TimeEntry
                     End If
 
                     If Payroll_Item_SubItemID = "" Then
-                        Payroll_Item_SubItemID = PayrollName 'GetPayrollItem(objTimeEntry)
+                        Payroll_Item_SubItemID = PayrollName ' GetPayrollItem(objTimeEntry)
                         PayrollItem_TypeName = True
                     End If
 
-                    TimeEntryData.DataArray.Add(New TimeEntry(.ClientName, .EmployeeName, .IsBillable, .ProjectName, .TaskWithParent,
-                                                     .TotalTime, .TimeEntryDate,
-                                                     IIf(My.Settings.TransferToPayroll = True, GetClass(objTimeEntry), "<None>"),
-                                                     PayrollItem_TypeName, Payroll_Item_SubItemID, ServiceItem_TypeName,
-                                                     Item_SubItemID, PayrollName, ItemName))
+                    Dim ClassName = If(My.Settings.TransferToPayroll = "", "<None>", If(My.Settings.TransferToPayroll, GetClass(objTimeEntry), "<None>"))
+
+                    TimeEntryData.DataArray.Add(New TimeEntry(.ClientName, .EmployeeName, .IsBillable, .ProjectName, .TaskWithParent, .TotalTime,
+                                                              .TimeEntryDate, ClassName, PayrollItem_TypeName, Payroll_Item_SubItemID,
+                                                              ServiceItem_TypeName, Item_SubItemID, PayrollName, ItemName))
                 End With
 
                 If UI Then
@@ -676,21 +676,24 @@ Public Class TLtoQB_TimeEntry
         Dim PayrollItem As String = "<None>"
 
         ' not sure code below works as options are not the payroll type options
-        With objTimeEntry
-            Dim QBPayrollItem_AppSettings As Integer = My.Settings.QBPayrollItem
+        If Not My.Settings.QBPayrollItem = "" Then
+            With objTimeEntry
+                Dim QBPayrollItem_AppSettings As Integer = My.Settings.QBPayrollItem
 
-            If QBPayrollItem_AppSettings = 1 Then
-                Return .CostCenter
-            ElseIf QBPayrollItem_AppSettings = 2 Then
-                Return .EmployeeDepartment
-            ElseIf QBPayrollItem_AppSettings = 3 Then
-                Return .EmployeeType
-            ElseIf QBPayrollItem_AppSettings = 4 Then
-                Return .Milestone
-            ElseIf QBPayrollItem_AppSettings = 5 Then
-                Return .WorkType
-            End If
-        End With
+                If QBPayrollItem_AppSettings = 1 Then
+                    Return .CostCenter
+                ElseIf QBPayrollItem_AppSettings = 2 Then
+                    Return .EmployeeDepartment
+                ElseIf QBPayrollItem_AppSettings = 3 Then
+                    Return .EmployeeType
+                ElseIf QBPayrollItem_AppSettings = 4 Then
+                    Return .Milestone
+                ElseIf QBPayrollItem_AppSettings = 5 Then
+                    Return .WorkType
+                End If
+            End With
+        End If
+
 
         Return PayrollItem
     End Function
