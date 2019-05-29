@@ -227,14 +227,15 @@ Public Class QBtoTL_Vendor
                             If QB_ID_fromDB.Count = 0 Then
                                 ' No record of the data entry in our data table, then add it
                                 VendorAdapter.Insert(element.QB_ID, objEmployeeServices.GetEmployeeId(element.QB_Name), element.QB_Name, full_name)
+                                My.Forms.MAIN.History("Vendor '" + full_name + "' found in both TimeLive and Quickbooks added to local database", "i")
                             Else
                                 ' Record exists just with an incorrect QB ID, so update it
                                 Dim correctTL_ID As String = QB_ID_fromDB(0)(1)
                                 If correctTL_ID IsNot Nothing Then
                                     VendorAdapter.UpdateQBID(element.QB_ID, Trim(correctTL_ID))
+                                    My.Forms.MAIN.History("Updated QuickBooks ID of vendor '" + element.QB_Name + "' in local database", "i")
                                 End If
                             End If
-                            My.Forms.MAIN.History("Vendor " + full_name + " in both TimeLive and Quickbooks added to local database", "i")
                             Continue For ' Already in TL, so just continue to next element in QB
                         End If
                     End If

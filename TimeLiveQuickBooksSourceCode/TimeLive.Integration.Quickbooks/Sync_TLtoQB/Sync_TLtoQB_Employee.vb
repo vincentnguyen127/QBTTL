@@ -152,11 +152,15 @@ Public Class Sync_TLtoQB_Employee
                             EmployeeAdapter.Insert(.ListID.GetValue, TL_ID, .Name.GetValue, TLEmployeeName)
                         Else
                             ' In local database with a different QuickBooks ID
+                            My.Forms.MAIN.History("Updating employee QuickBooks ID in local database: " + TLEmployeeName, "i")
                             EmployeeAdapter.UpdateQBID(.ListID.GetValue, TL_ID)
                         End If
                     Else
-                        ' in local database with a different TimeLive ID
-                        EmployeeAdapter.UpdateTLID(TL_ID, .ListID.GetValue)
+                        If IsTLID_In_EmployeeDataTable(TL_ID) = 0 Then
+                            ' In local database with a different TimeLive ID
+                            My.Forms.MAIN.History("Updating employee TimeLive ID in local database: " + TLEmployeeName, "i")
+                            EmployeeAdapter.UpdateTLID(TL_ID, .ListID.GetValue)
+                        End If
                     End If
                 End With
             End If

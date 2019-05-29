@@ -144,16 +144,20 @@ Public Class Sync_TLtoQB_Vendor
                     ' check if its in our database if not then add to it.
                     Dim VendorAdapter As New QB_TL_IDsTableAdapters.VendorsTableAdapter()
                     If IsQBID_In_VendorDataTable(.Name.GetValue.ToString, .ListID.GetValue) = 0 Then
-                        If IsTLID_In_EmployeeDataTable(TL_ID) = 0 Then
+                        If IsTLID_In_VendorDataTable(TL_ID) = 0 Then
                             ' Not in local database
                             My.Forms.MAIN.History("Adding to local database: " + .Name.GetValue, "i")
                             VendorAdapter.Insert(.ListID.GetValue, TL_ID, .Name.GetValue, TLEmployeeName)
                         Else
-                            ' In local database with a different QuickBooks ID
-                            VendorAdapter.UpdateQBID(.ListID.GetValue, TL_ID)
+                            If IsTLID_In_VendorDataTable(TL_ID) = 0 Then
+                                ' In local database with a different QuickBooks ID
+                                My.Forms.MAIN.History("Updating vendor QuickBooks ID in local database: " + TLEmployeeName, "i")
+                                VendorAdapter.UpdateQBID(.ListID.GetValue, TL_ID)
+                            End If
                         End If
                     Else
                         ' in local database with a different TimeLive ID
+                        My.Forms.MAIN.History("Updating vendor TimeLive ID in local database: " + TLEmployeeName, "i")
                         VendorAdapter.UpdateTLID(TL_ID, .ListID.GetValue)
                     End If
                 End With
@@ -161,14 +165,8 @@ Public Class Sync_TLtoQB_Vendor
                 My.Forms.MAIN.History("Error when adding " + TLEmployeeName + " to Quickbooks", "i")
             End If
             Return inQB
-
         Catch ex As Exception
             Throw ex
-            'Finally
-            '    If Not sessManager Is Nothing Then
-            '       sessManager.EndSession()
-            '       sessManager.CloseConnection()
-            '    End If
         End Try
 
 
@@ -209,7 +207,7 @@ Public Class Sync_TLtoQB_Vendor
     ''' 1 -> one record in data table
     ''' 2 -> more than one record in data table
     ''' </returns>
-    Private Function IsTLID_In_EmployeeDataTable(ByVal mytlID As String) As Int16
+    Private Function IsTLID_In_VendorDataTable(ByVal mytlID As String) As Int16
         Dim VendorAdapter As New QB_TL_IDsTableAdapters.VendorsTableAdapter
         Dim quickbooksIDs As QB_TL_IDs.VendorsDataTable = VendorAdapter.GetVendorsByTLID(mytlID)
         Return Math.Min(2, quickbooksIDs.Count)

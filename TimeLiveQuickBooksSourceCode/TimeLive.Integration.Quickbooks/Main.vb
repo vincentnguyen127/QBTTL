@@ -149,6 +149,7 @@ Public Class MAIN
 
         'for type Customers, Employees, Vendors, Jobs/Subjobs, and Items/Subitems
         If Type >= 10 And Type < 15 Then
+            My.Forms.MAIN.History("Refreshing", "n")
             ReadItems = display_UI()
         End If
 
@@ -646,10 +647,7 @@ Public Class MAIN
         Return items_read
     End Function
 
-    Private Function display_UI(Optional sender As Object = Nothing, Optional e As EventArgs = Nothing) Handles QBtoTLCustomerRadioButton.CheckedChanged, QBtoTLEmployeeRadioButton.CheckedChanged,
-                                                                                                                QBtoTLVendorRadioButton.CheckedChanged, QBtoTLJobItemRadioButton.CheckedChanged,
-                                                                                                                RefreshCustomers.Click, RefreshEmployees.Click, RefreshVendors.Click,
-                                                                                                                RefreshJobsOrItems.Click
+    Private Function display_UI(Optional sender As Object = Nothing, Optional e As EventArgs = Nothing)
         If Not LoggedIn Then
             Return 0
         End If
@@ -987,6 +985,18 @@ Public Class MAIN
         Return readItems
     End Function
 
+    Private Function refresh_display_UI(sender As Object, e As EventArgs) Handles RefreshCustomers.Click, RefreshEmployees.Click, RefreshVendors.Click, RefreshJobsOrItems.Click,
+                                                                                  QBtoTLCustomerRadioButton.CheckedChanged, QBtoTLEmployeeRadioButton.CheckedChanged,
+                                                                                  QBtoTLVendorRadioButton.CheckedChanged, QBtoTLJobItemRadioButton.CheckedChanged
+        Try
+            My.Forms.MAIN.History("Refreshing", "n")
+        Catch ex As Exception
+            ' Need this to catch exception on start-up: harmless and does nothing
+        End Try
+
+        Return display_UI()
+    End Function
+
     Private Sub Time_Entry_Times()
         DataGridView2.AutoSize = False
         DataGridView2.AutoSizeRowsMode = False
@@ -1263,6 +1273,7 @@ Public Class MAIN
 
         Else
             ' Refresh after processing
+            My.Forms.MAIN.History("Refreshing after processing", "n")
             display_UI()
         End If
 
