@@ -215,16 +215,26 @@ Public Class QBtoTL_Vendor
                             ' TODO: Update TL, based on commented out code below
                             Continue For
                         End If
-                        ' Not in local Database
                     Else
-                        ' TimeLive has a data entry with the same name, treat as the same and add into DB
+                        ' QB ID is not in local Database
                         Dim first_name = QBtoTL_Employee.GetValue(element.QB_Name, "FirstName")
                         Dim last_name = QBtoTL_Employee.GetValue(element.QB_Name, "LastName")
                         Dim full_name As String = first_name + " " + last_name
                         If Array.Exists(objEmployeeServices.GetEmployees, Function(e As Services.TimeLive.Employees.Employee) e.EmployeeName = full_name) Then
-                            My.Forms.MAIN.History("Vendor " + full_name + " in both TimeLive and Quickbooks added to local database", "i")
+                            ' TimeLive has a data entry with the same name, treat as the same and add into DB
                             Dim VendorAdapter As New QB_TL_IDsTableAdapters.VendorsTableAdapter()
-                            VendorAdapter.Insert(element.QB_ID, objEmployeeServices.GetEmployeeId(element.QB_Name), element.QB_Name, full_name)
+                            Dim QB_ID_fromDB As QB_TL_IDs.VendorsDataTable = VendorAdapter.GetCorrespondingQB_IDbyQB_Name(element.QB_Name)
+                            If QB_ID_fromDB.Count = 0 Then
+                                ' No record of the data entry in our data table, then add it
+                                VendorAdapter.Insert(element.QB_ID, objEmployeeServices.GetEmployeeId(element.QB_Name), element.QB_Name, full_name)
+                            Else
+                                ' Record exists just with an incorrect QB ID, so update it
+                                Dim correctTL_ID As String = QB_ID_fromDB(0)(1)
+                                If correctTL_ID IsNot Nothing Then
+                                    VendorAdapter.UpdateQBID(element.QB_ID, Trim(correctTL_ID))
+                                End If
+                            End If
+                            My.Forms.MAIN.History("Vendor " + full_name + " in both TimeLive and Quickbooks added to local database", "i")
                             Continue For ' Already in TL, so just continue to next element in QB
                         End If
                     End If

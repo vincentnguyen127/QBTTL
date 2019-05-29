@@ -201,7 +201,7 @@ Public Class Sync_TLtoQB_Employee
     End Function
 
     ''' <summary>
-    ''' Check if QB ID is in employee data table
+    ''' Check if TL ID is in employee data table
     ''' </summary>
     ''' <param name="mytlID"></param>
     ''' <returns>

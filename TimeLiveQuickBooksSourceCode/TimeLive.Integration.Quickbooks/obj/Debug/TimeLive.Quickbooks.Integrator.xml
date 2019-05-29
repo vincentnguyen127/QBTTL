@@ -350,12 +350,23 @@ Used to sort self-referenced table's rows
  True: does exist in QB, and we add it to the Data Table if not present
  </returns>
 </member>
-<member name="M:TimeLive.Quickbooks.Integrator.Sync_TLtoQB_Vendor.ISQBID_In_VendorDataTable(System.String,System.String)">
+<member name="M:TimeLive.Quickbooks.Integrator.Sync_TLtoQB_Vendor.IsQBID_In_VendorDataTable(System.String,System.String)">
  <summary>
  Check if QB ID is in vendor data table
  </summary>
  <param name="myqbName"></param>
  <param name="myqbID"></param>
+ <returns>
+ 0 -> not in data table
+ 1 -> one record in data table
+ 2 -> more than one record in data table
+ </returns>
+</member>
+<member name="M:TimeLive.Quickbooks.Integrator.Sync_TLtoQB_Vendor.IsTLID_In_EmployeeDataTable(System.String)">
+ <summary>
+ Check if TL ID is in employee data table
+ </summary>
+ <param name="mytlID"></param>
  <returns>
  0 -> not in data table
  1 -> one record in data table
@@ -392,7 +403,7 @@ Used to sort self-referenced table's rows
 </member>
 <member name="M:TimeLive.Quickbooks.Integrator.Sync_TLtoQB_Employee.IsTLID_In_EmployeeDataTable(System.String)">
  <summary>
- Check if QB ID is in employee data table
+ Check if TL ID is in employee data table
  </summary>
  <param name="mytlID"></param>
  <returns>

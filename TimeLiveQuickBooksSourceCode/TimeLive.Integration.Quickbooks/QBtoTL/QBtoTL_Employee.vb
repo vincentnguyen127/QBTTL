@@ -211,17 +211,16 @@ Public Class QBtoTL_Employee
                             Continue For
                         End If
                     Else
-                        ' Not in local Database
-
+                        ' QB ID is not in local Database
                         If Array.Exists(objEmployeeServices.GetEmployees, Function(e As Services.TimeLive.Employees.Employee) e.EmployeeName = element.QB_Name) Then
                             ' TimeLive has a data entry with the same name, treat as the same and add into DB
                             Dim EmployeeAdapter As New QB_TL_IDsTableAdapters.EmployeesTableAdapter()
                             Dim QB_ID_fromDB As QB_TL_IDs.EmployeesDataTable = EmployeeAdapter.GetCorrespondingQB_IDbyQB_Name(element.QB_Name)
                             If QB_ID_fromDB.Count = 0 Then
-                                ' If there is no record of the data entry in our data table, then add it
+                                ' No record of the data entry in our data table, then add it
                                 EmployeeAdapter.Insert(element.QB_ID, objEmployeeServices.GetEmployeeId(element.QB_Name), element.QB_Name, element.QB_Name)
                             Else
-                                ' Otherwise, it exists just with an incorrect QB ID, so update it
+                                ' Record exists just with an incorrect QB ID, so update it
                                 Dim correctTL_ID As String = QB_ID_fromDB(0)(1)
                                 If correctTL_ID IsNot Nothing Then
                                     EmployeeAdapter.UpdateQBID(element.QB_ID, Trim(correctTL_ID))
