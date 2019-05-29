@@ -205,6 +205,28 @@ Namespace My
         <Global.System.Configuration.UserScopedSettingAttribute(),
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),
          Global.System.Configuration.DefaultSettingValueAttribute("")>
+        Public Property QBPayrollItem() As String
+            Get
+                Return CType(Me("QBPayrollItem"), String)
+            End Get
+            Set
+                Me("QBPayrollItem") = Value
+            End Set
+        End Property
+
+        <Global.System.Configuration.UserScopedSettingAttribute(),
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),
+         Global.System.Configuration.DefaultSettingValueAttribute("")>
+        Public Property TransferToPayroll() As String
+            Get
+                Return CType(Me("TransferToPayroll"), String)
+            End Get
+            Set
+                Me("TransferToPayroll") = Value
+            End Set
+        End Property
+
+        <Global.System.Configuration.UserScopedSettingAttribute(),         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),         Global.System.Configuration.DefaultSettingValueAttribute("")>
         Public Property SyncConsultants() As String
             Get
                 Return CType(Me("SyncConsultants"), String)
@@ -237,6 +259,7 @@ Namespace My
                 Me("SyncLaborItems") = Value
             End Set
         End Property
+
 
         <Global.System.Configuration.UserScopedSettingAttribute(),
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),
@@ -286,17 +309,14 @@ Namespace My
             End Set
         End Property
 
-        <Global.System.Configuration.UserScopedSettingAttribute(),
-         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),
-         Global.System.Configuration.DefaultSettingValueAttribute("")>
-        Public Property SyncJobs_Items() As String
-            Get
+        <Global.System.Configuration.UserScopedSettingAttribute(),         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),         Global.System.Configuration.DefaultSettingValueAttribute("")>        Public Property SyncJobs_Items() As String            Get
                 Return CType(Me("SyncJobs_Items"), String)
             End Get
             Set
                 Me("SyncJobs_Items") = Value
             End Set
         End Property
+
 
         <Global.System.Configuration.UserScopedSettingAttribute(),
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),
@@ -466,71 +486,46 @@ Namespace My
             End Set
         End Property
 
-        <Global.System.Configuration.UserScopedSettingAttribute(),  _
-         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("")>  _
-        Public Property QBPayrollItem() As String
-            Get
-                Return CType(Me("QBPayrollItem"),String)
-            End Get
-            Set
-                Me("QBPayrollItem") = value
-            End Set
-        End Property
-        
-        <Global.System.Configuration.UserScopedSettingAttribute(),  _
-         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("")>  _
-        Public Property TransferToPayroll() As String
-            Get
-                Return CType(Me("TransferToPayroll"),String)
-            End Get
-            Set
-                Me("TransferToPayroll") = value
-            End Set
-        End Property
-        
-        <Global.System.Configuration.ApplicationScopedSettingAttribute(),  _
-         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.SpecialSettingAttribute(Global.System.Configuration.SpecialSetting.ConnectionString),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("Data Source=TIMELIVEDEV\TIMELIVE;Initial Catalog=TimeLive;User ID=sa;Password=$ba"& _ 
-            "seline00")>  _
+        <Global.System.Configuration.ApplicationScopedSettingAttribute(),
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),
+         Global.System.Configuration.SpecialSettingAttribute(Global.System.Configuration.SpecialSetting.ConnectionString),
+         Global.System.Configuration.DefaultSettingValueAttribute("Data Source=TIMELIVEDEV\TIMELIVE;Initial Catalog=TimeLive;User ID=sa;Password=$ba" &
+            "seline00")>
         Public ReadOnly Property TimeLiveConnectionString() As String
             Get
-                Return CType(Me("TimeLiveConnectionString"),String)
-            End Get
-        End Property
-        
-        <Global.System.Configuration.ApplicationScopedSettingAttribute(),  _
-         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.SpecialSettingAttribute(Global.System.Configuration.SpecialSetting.ConnectionString),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("Data Source=teltriumsrv3;Initial Catalog=TL_QB_Relationship_Dev;User ID=sa;Passwo"& _ 
-            "rd=$baseline00")>  _
-        Public ReadOnly Property TL_QB_RelationshipConnectionString() As String
-            Get
-                Return CType(Me("TL_QB_RelationshipConnectionString"),String)
+                Return CType(Me("TimeLiveConnectionString"), String)
             End Get
         End Property
 
         <Global.System.Configuration.ApplicationScopedSettingAttribute(),
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),
          Global.System.Configuration.SpecialSettingAttribute(Global.System.Configuration.SpecialSetting.ConnectionString),
-         Global.System.Configuration.DefaultSettingValueAttribute("Data Source=teltriumsrv3;Initial Catalog=TimeLiveDev;User ID=sa;Password=$baselin" &
-            "e00")>
+         Global.System.Configuration.DefaultSettingValueAttribute("Data Source=SQL01;Initial Catalog=TL_QB_Relationship_Dev;User ID=sa;Password=$bas" &
+            "eline00")>
+        Public ReadOnly Property TL_QB_RelationshipConnectionString() As String
+            Get
+                Return CType(Me("TL_QB_RelationshipConnectionString"), String)
+            End Get
+        End Property
+
+        <Global.System.Configuration.ApplicationScopedSettingAttribute(),
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),
+         Global.System.Configuration.SpecialSettingAttribute(Global.System.Configuration.SpecialSetting.ConnectionString),
+         Global.System.Configuration.DefaultSettingValueAttribute("Data Source=SQL01;Initial Catalog=TimeLiveDev;User ID=sa;Password=$baseline00")>
         Public ReadOnly Property TimeLiveDevConnectionString() As String
             Get
                 Return CType(Me("TimeLiveDevConnectionString"), String)
             End Get
         End Property
 
-        <Global.System.Configuration.ApplicationScopedSettingAttribute(),  _
-         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.SpecialSettingAttribute(Global.System.Configuration.SpecialSetting.ConnectionString),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("Data Source=TELTRIUMSRV3;Initial Catalog=TimeLive;User ID=sa;Password=$baseline00"& _ 
-            ";Encrypt=False;TrustServerCertificate=True")>  _
+        <Global.System.Configuration.ApplicationScopedSettingAttribute(),
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),
+         Global.System.Configuration.SpecialSettingAttribute(Global.System.Configuration.SpecialSetting.ConnectionString),
+         Global.System.Configuration.DefaultSettingValueAttribute("Data Source=TELTRIUMSRV3;Initial Catalog=TimeLive;User ID=sa;Password=$baseline00" &
+            ";Encrypt=False;TrustServerCertificate=True")>
         Public ReadOnly Property TimeLiveConnectionString1() As String
             Get
-                Return CType(Me("TimeLiveConnectionString1"),String)
+                Return CType(Me("TimeLiveConnectionString1"), String)
             End Get
         End Property
     End Class

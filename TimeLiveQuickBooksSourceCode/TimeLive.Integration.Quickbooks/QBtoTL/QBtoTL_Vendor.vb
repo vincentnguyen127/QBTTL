@@ -88,7 +88,8 @@ Public Class QBtoTL_Vendor
                 For i As Integer = 0 To If(vendorRetList Is Nothing, -1, vendorRetList.Count - 1)
                     vendorRet = vendorRetList.GetAt(i)
                     With vendorRet
-                        If (Not My.Settings.SyncElbVendor = "") And My.Settings.SyncElbVendor Or .IsVendorEligibleFor1099.GetValue Then
+                        Dim syncElbVendor As Boolean = If(My.Settings.SyncElbVendor = "", False, My.Settings.SyncElbVendor)
+                        If syncElbVendor Or .IsVendorEligibleFor1099.GetValue Then
                             EmailAddress = If(.Email Is Nothing, "", .Email.GetValue)
                             FirstName = If(.FirstName Is Nothing, "", .FirstName.GetValue)
                             LastName = If(.LastName Is Nothing, "", .LastName.GetValue)

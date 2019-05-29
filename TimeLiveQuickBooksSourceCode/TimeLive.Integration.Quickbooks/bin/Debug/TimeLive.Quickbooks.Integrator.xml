@@ -6,22 +6,6 @@ TimeLive.Quickbooks.Integrator
 </name>
 </assembly>
 <members>
-<member name="T:TimeLive.Quickbooks.Integrator.My.Resources.Resources">
-<summary>
-  A strongly-typed resource class, for looking up localized strings, etc.
-</summary>
-</member>
-<member name="P:TimeLive.Quickbooks.Integrator.My.Resources.Resources.ResourceManager">
-<summary>
-  Returns the cached ResourceManager instance used by this class.
-</summary>
-</member>
-<member name="P:TimeLive.Quickbooks.Integrator.My.Resources.Resources.Culture">
-<summary>
-  Overrides the current thread's CurrentUICulture property for all
-  resource lookups using this strongly typed resource class.
-</summary>
-</member>
 <member name="M:TimeLive.Quickbooks.Integrator.ChargingRelationship.QBData(System.Int32)">
  <summary>
  Helper Function to get the desired data for the attribute
@@ -394,12 +378,23 @@ Used to sort self-referenced table's rows
  True: does exist in QB, and we add it to the Data Table if not present
  </returns>
 </member>
-<member name="M:TimeLive.Quickbooks.Integrator.Sync_TLtoQB_Employee.ISQBID_In_EmployeeDataTable(System.String,System.String)">
+<member name="M:TimeLive.Quickbooks.Integrator.Sync_TLtoQB_Employee.IsQBID_In_EmployeeDataTable(System.String,System.String)">
  <summary>
  Check if QB ID is in employee data table
  </summary>
  <param name="myqbName"></param>
  <param name="myqbID"></param>
+ <returns>
+ 0 -> not in data table
+ 1 -> one record in data table
+ 2 -> more than one record in data table
+ </returns>
+</member>
+<member name="M:TimeLive.Quickbooks.Integrator.Sync_TLtoQB_Employee.IsTLID_In_EmployeeDataTable(System.String)">
+ <summary>
+ Check if QB ID is in employee data table
+ </summary>
+ <param name="mytlID"></param>
  <returns>
  0 -> not in data table
  1 -> one record in data table
@@ -596,6 +591,22 @@ Used to sort self-referenced table's rows
  <param name="startDate"></param>
  <param name="endDate"></param>
  <returns></returns>
+</member>
+<member name="T:TimeLive.Quickbooks.Integrator.My.Resources.Resources">
+<summary>
+  A strongly-typed resource class, for looking up localized strings, etc.
+</summary>
+</member>
+<member name="P:TimeLive.Quickbooks.Integrator.My.Resources.Resources.ResourceManager">
+<summary>
+  Returns the cached ResourceManager instance used by this class.
+</summary>
+</member>
+<member name="P:TimeLive.Quickbooks.Integrator.My.Resources.Resources.Culture">
+<summary>
+  Overrides the current thread's CurrentUICulture property for all
+  resource lookups using this strongly typed resource class.
+</summary>
 </member>
 <member name="M:TimeLive.Quickbooks.Integrator.TLtoQB_TimeEntry.ISTLID_In_DataTable(System.String)">
  <summary>

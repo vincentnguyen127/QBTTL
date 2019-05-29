@@ -145,23 +145,18 @@ Public Class Sync_TLtoQB_Employee
                     Dim EmployeeAdapter As New QB_TL_IDsTableAdapters.EmployeesTableAdapter()
 
                     ' Add QB employee to Data Table if not present
-                    If ISQBID_In_EmployeeDataTable(.Name.GetValue.ToString, .ListID.GetValue) = 0 Then
-
-                        'Dim firstmiddlelastname() As String = TLEmployeeName.Split(" ")
-                        'Dim employeename As String = Nothing
-                        'If firstmiddlelastname.Length = 3 Then
-                        '    'employeename = firstmiddlelastname(2) + ", " + firstmiddlelastname(0) + " " + firstmiddlelastname(1)
-                        'End If
-                        'If firstmiddlelastname.Length = 2 Then
-                        '    employeename = firstmiddlelastname(1) + ", " + firstmiddlelastname(0)
-                        'End If
-                        'If firstmiddlelastname.Length = 1 Then
-                        '    employeename = firstmiddlelastname(0)
-                        'End If
-                        My.Forms.MAIN.History("Adding employee to local database: " + TLEmployeeName, "i")
-                        EmployeeAdapter.Insert(.ListID.GetValue, TL_ID, .Name.GetValue, TLEmployeeName)
+                    If IsQBID_In_EmployeeDataTable(.Name.GetValue.ToString, .ListID.GetValue) = 0 Then
+                        If IsTLID_In_EmployeeDataTable(TL_ID) = 0 Then
+                            ' Not in local database
+                            My.Forms.MAIN.History("Adding employee to local database: " + TLEmployeeName, "i")
+                            EmployeeAdapter.Insert(.ListID.GetValue, TL_ID, .Name.GetValue, TLEmployeeName)
+                        Else
+                            ' In local database with a different QuickBooks ID
+                            EmployeeAdapter.UpdateQBID(.ListID.GetValue, TL_ID)
+                        End If
                     Else
-                        ' EmployeeAdapter.Update(.ListID.GetValue, TL_ID, .Name.GetValue, TLEmployeeName)
+                        ' in local database with a different TimeLive ID
+                        EmployeeAdapter.UpdateTLID(TL_ID, .ListID.GetValue)
                     End If
                 End With
             End If
@@ -188,7 +183,7 @@ Public Class Sync_TLtoQB_Employee
     ''' 1 -> one record in data table
     ''' 2 -> more than one record in data table
     ''' </returns>
-    Private Function ISQBID_In_EmployeeDataTable(ByVal myqbName As String, ByVal myqbID As String) As Int16
+    Private Function IsQBID_In_EmployeeDataTable(ByVal myqbName As String, ByVal myqbID As String) As Int16
         Dim EmployeeAdapter As New QB_TL_IDsTableAdapters.EmployeesTableAdapter
         Dim TimeLiveIDs As QB_TL_IDs.EmployeesDataTable = EmployeeAdapter.GetCorrespondingTL_ID(myqbID)
 
@@ -203,5 +198,20 @@ Public Class Sync_TLtoQB_Employee
         End If
 
         Return result
+    End Function
+
+    ''' <summary>
+    ''' Check if QB ID is in employee data table
+    ''' </summary>
+    ''' <param name="mytlID"></param>
+    ''' <returns>
+    ''' 0 -> not in data table
+    ''' 1 -> one record in data table
+    ''' 2 -> more than one record in data table
+    ''' </returns>
+    Private Function IsTLID_In_EmployeeDataTable(ByVal mytlID As String) As Int16
+        Dim EmployeeAdapter As New QB_TL_IDsTableAdapters.EmployeesTableAdapter
+        Dim quickbooksIDs As QB_TL_IDs.EmployeesDataTable = EmployeeAdapter.GetEmployeesByTLID(mytlID)
+        Return Math.Min(2, quickbooksIDs.Count)
     End Function
 End Class

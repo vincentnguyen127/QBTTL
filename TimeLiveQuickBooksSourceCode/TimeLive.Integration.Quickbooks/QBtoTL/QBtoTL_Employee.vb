@@ -210,13 +210,24 @@ Public Class QBtoTL_Employee
                             ' TODO: Update TL, based on commented out code below
                             Continue For
                         End If
-                        ' Not in local Database
                     Else
-                        ' TimeLive has a data entry with the same name, treat as the same and add into DB
+                        ' Not in local Database
+
                         If Array.Exists(objEmployeeServices.GetEmployees, Function(e As Services.TimeLive.Employees.Employee) e.EmployeeName = element.QB_Name) Then
-                            My.Forms.MAIN.History("Employee " + element.QB_Name + " in both TimeLive and Quickbooks added to local database", "i")
+                            ' TimeLive has a data entry with the same name, treat as the same and add into DB
                             Dim EmployeeAdapter As New QB_TL_IDsTableAdapters.EmployeesTableAdapter()
-                            EmployeeAdapter.Insert(element.QB_ID, objEmployeeServices.GetEmployeeId(element.QB_Name), element.QB_Name, element.QB_Name)
+                            Dim QB_ID_fromDB As QB_TL_IDs.EmployeesDataTable = EmployeeAdapter.GetCorrespondingQB_IDbyQB_Name(element.QB_Name)
+                            If QB_ID_fromDB.Count = 0 Then
+                                ' If there is no record of the data entry in our data table, then add it
+                                EmployeeAdapter.Insert(element.QB_ID, objEmployeeServices.GetEmployeeId(element.QB_Name), element.QB_Name, element.QB_Name)
+                            Else
+                                ' Otherwise, it exists just with an incorrect QB ID, so update it
+                                Dim correctTL_ID As String = QB_ID_fromDB(0)(1)
+                                If correctTL_ID IsNot Nothing Then
+                                    EmployeeAdapter.UpdateQBID(element.QB_ID, Trim(correctTL_ID))
+                                End If
+                            End If
+                            My.Forms.MAIN.History("Employee " + element.QB_Name + " in both TimeLive and Quickbooks added to local database", "i")
                             Continue For ' Already in TL, so just continue to next element in QB
                         End If
                     End If
