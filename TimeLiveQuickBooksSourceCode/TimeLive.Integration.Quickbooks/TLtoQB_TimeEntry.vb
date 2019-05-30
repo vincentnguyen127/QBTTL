@@ -597,12 +597,13 @@ Public Class TLtoQB_TimeEntry
                 timeAdd.ClassRef.FullName.SetValue(TimeEntryClass)
             End If
 
-            If PayrollItem_TypeName Then
-                timeAdd.PayrollItemWageRef.FullName.SetValue(PayrollItem)
-            Else
-                timeAdd.PayrollItemWageRef.ListID.SetValue(PayrollItem.ToString.Trim)
+            If Not PayrollItem = "<None>" Then
+                If PayrollItem_TypeName Then
+                    timeAdd.PayrollItemWageRef.FullName.SetValue(PayrollItem)
+                Else
+                    timeAdd.PayrollItemWageRef.ListID.SetValue(PayrollItem.ToString.Trim)
+                End If
             End If
-
             'step2: send the request
             msgSetRs = MAIN.SESSMANAGER.DoRequests(msgSetRq)
 

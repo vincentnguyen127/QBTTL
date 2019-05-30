@@ -60,11 +60,9 @@ Public Class MAIN
                     p_AccountId = newForm.ReturnValue2
                     LoggedIn = True
                     History("You are logged into TimeLive", "n")
-                    History("", "n")
                 Else
                     LoggedIn = False
                     History("You will need to log into TimeLive before using this utility.", "n")
-                    History("", "n")
                 End If
             End Using
 
@@ -108,7 +106,7 @@ Public Class MAIN
 
         Catch EX As Exception
             MsgBox(EX.Message)
-            Me.Close()
+            Exitbtn_Click() ' Close
         End Try
     End Sub
 
@@ -1361,14 +1359,12 @@ Public Class MAIN
         ProgressBar1.Maximum = DataGridView.Rows.Count
         For Each row As DataGridViewRow In DataGridView.Rows
             If row.Cells("Date").Value IsNot Nothing And row.Cells("ckBox").Value And TimeEntryData.NoItems Then
-                Dim i = 0
                 Dim full_name As String = row.Cells("Task").Value.ToString()
                 TimeEntryData.DataArray.ForEach(
                     Sub(timeentry)
                         If (timeentry.EmployeeName = row.Cells("Employee").Value.ToString And
                            timeentry.CustomerName + MAIN.colonReplacer + timeentry.ProjectName + MAIN.colonReplacer + timeentry.TaskWithParent.Replace(":", MAIN.colonReplacer) = full_name And
                            timeentry.TimeEntryDate.ToString("MM/dd/yyyy") = row.Cells("Date").Value.ToString) Then
-                            i += 1
                             History("Selected for processing: " + row.Cells("Employee").Value.ToString + " with task " + row.Cells("Task").Value.ToString + " on " + row.Cells("Date").Value.ToString, "n")
                             timeentry.RecSelect = True
                         End If
@@ -1786,7 +1782,7 @@ Public Class MAIN
         StatusWindow.Clear()
     End Sub
 
-    Private Sub Exitbtn_Click(sender As Object, e As EventArgs) Handles Exitbtn.Click
+    Private Sub Exitbtn_Click(Optional sender As Object = Nothing, Optional e As EventArgs = Nothing) Handles Exitbtn.Click
         My.Forms.MAIN.QUITQBSESSION() ' Close QB session before exiting
         My.Forms.MAIN.TIMERTHREADSESSION() ' Close TimerThread session before exiting
         Me.Close()

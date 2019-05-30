@@ -169,7 +169,6 @@ Public Class QBtoTL_Vendor
                 Dim EmailAddress As String
                 Dim FirstName As String
                 Dim LastName As String
-                Dim EmployeeCode As String
                 Dim EmployeeName As String
                 Dim HiredDate As String
                 Dim DT_has_QBID = ISQBID_In_DataTable(element.QB_Name, element.QB_ID)

@@ -310,12 +310,23 @@ Used to sort self-referenced table's rows
      2+ -> Did not exist in QB, and 1 or more of its parents did not exist in QB either, all added to QB
  </returns>
 </member>
-<member name="M:TimeLive.Quickbooks.Integrator.Sync_TLtoQB_JoborItem.ISQBID_In_JobSubJobDataTable(System.String,System.String)">
+<member name="M:TimeLive.Quickbooks.Integrator.Sync_TLtoQB_JoborItem.IsQBID_In_JobSubJobDataTable(System.String,System.String)">
  <summary>
  Check if QB ID is in job/subjob data table
  </summary>
  <param name="myqbName"></param>
  <param name="myqbID"></param>
+ <returns>
+ 0 -> not in data table
+ 1 -> one record in data table
+ 2 -> more than one record in data table
+ </returns>
+</member>
+<member name="M:TimeLive.Quickbooks.Integrator.Sync_TLtoQB_JoborItem.IsTLID_In_JobsSubJobsDataTable(System.String)">
+ <summary>
+ Check if TL ID is in employee data table
+ </summary>
+ <param name="mytlID"></param>
  <returns>
  0 -> not in data table
  1 -> one record in data table

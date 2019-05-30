@@ -201,331 +201,314 @@ Namespace My
                 Me("JobHierarchy") = value
             End Set
         End Property
-
-        <Global.System.Configuration.UserScopedSettingAttribute(),
-         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),
-         Global.System.Configuration.DefaultSettingValueAttribute("")>
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("")>  _
         Public Property QBPayrollItem() As String
             Get
-                Return CType(Me("QBPayrollItem"), String)
+                Return CType(Me("QBPayrollItem"),String)
             End Get
             Set
-                Me("QBPayrollItem") = Value
+                Me("QBPayrollItem") = value
             End Set
         End Property
-
-        <Global.System.Configuration.UserScopedSettingAttribute(),
-         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),
-         Global.System.Configuration.DefaultSettingValueAttribute("")>
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("")>  _
         Public Property TransferToPayroll() As String
             Get
-                Return CType(Me("TransferToPayroll"), String)
+                Return CType(Me("TransferToPayroll"),String)
             End Get
             Set
-                Me("TransferToPayroll") = Value
+                Me("TransferToPayroll") = value
             End Set
         End Property
-
-        <Global.System.Configuration.UserScopedSettingAttribute(),         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),         Global.System.Configuration.DefaultSettingValueAttribute("")>
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("")>  _
         Public Property SyncConsultants() As String
             Get
-                Return CType(Me("SyncConsultants"), String)
+                Return CType(Me("SyncConsultants"),String)
             End Get
             Set
-                Me("SyncConsultants") = Value
+                Me("SyncConsultants") = value
             End Set
         End Property
-
-        <Global.System.Configuration.UserScopedSettingAttribute(),
-         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),
-         Global.System.Configuration.DefaultSettingValueAttribute("")>
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("")>  _
         Public Property SyncEmployees() As String
             Get
-                Return CType(Me("SyncEmployees"), String)
+                Return CType(Me("SyncEmployees"),String)
             End Get
             Set
-                Me("SyncEmployees") = Value
+                Me("SyncEmployees") = value
             End Set
         End Property
-
-        <Global.System.Configuration.UserScopedSettingAttribute(),
-         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),
-         Global.System.Configuration.DefaultSettingValueAttribute("")>
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("")>  _
         Public Property SyncLaborItems() As String
             Get
-                Return CType(Me("SyncLaborItems"), String)
+                Return CType(Me("SyncLaborItems"),String)
             End Get
             Set
-                Me("SyncLaborItems") = Value
+                Me("SyncLaborItems") = value
             End Set
         End Property
-
-
-        <Global.System.Configuration.UserScopedSettingAttribute(),
-         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),
-         Global.System.Configuration.DefaultSettingValueAttribute("")>
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("")>  _
         Public Property SyncAccounts() As String
             Get
-                Return CType(Me("SyncAccounts"), String)
+                Return CType(Me("SyncAccounts"),String)
             End Get
             Set
-                Me("SyncAccounts") = Value
+                Me("SyncAccounts") = value
             End Set
         End Property
-
-        <Global.System.Configuration.UserScopedSettingAttribute(),
-         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),
-         Global.System.Configuration.DefaultSettingValueAttribute("")>
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("")>  _
         Public Property SyncCustomers() As String
             Get
-                Return CType(Me("SyncCustomers"), String)
+                Return CType(Me("SyncCustomers"),String)
             End Get
             Set
-                Me("SyncCustomers") = Value
+                Me("SyncCustomers") = value
             End Set
         End Property
-
-        <Global.System.Configuration.UserScopedSettingAttribute(),
-         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),
-         Global.System.Configuration.DefaultSettingValueAttribute("")>
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("")>  _
         Public Property SyncJobOrItem() As String
             Get
-                Return CType(Me("SyncJobOrItem"), String)
+                Return CType(Me("SyncJobOrItem"),String)
             End Get
             Set
-                Me("SyncJobOrItem") = Value
+                Me("SyncJobOrItem") = value
             End Set
         End Property
-
-        <Global.System.Configuration.UserScopedSettingAttribute(),
-         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),
-         Global.System.Configuration.DefaultSettingValueAttribute("")>
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("")>  _
         Public Property SyncElbVendor() As String
             Get
-                Return CType(Me("SyncElbVendor"), String)
+                Return CType(Me("SyncElbVendor"),String)
             End Get
             Set
-                Me("SyncElbVendor") = Value
+                Me("SyncElbVendor") = value
             End Set
         End Property
-
-        <Global.System.Configuration.UserScopedSettingAttribute(),         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),         Global.System.Configuration.DefaultSettingValueAttribute("")>        Public Property SyncJobs_Items() As String            Get
-                Return CType(Me("SyncJobs_Items"), String)
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("")>  _
+        Public Property SyncJobs_Items() As String
+            Get
+                Return CType(Me("SyncJobs_Items"),String)
             End Get
             Set
-                Me("SyncJobs_Items") = Value
+                Me("SyncJobs_Items") = value
             End Set
         End Property
-
-
-        <Global.System.Configuration.UserScopedSettingAttribute(),
-         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),
-         Global.System.Configuration.DefaultSettingValueAttribute("")>
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("")>  _
         Public Property SyncTimeEntries() As String
             Get
-                Return CType(Me("SyncTimeEntries"), String)
+                Return CType(Me("SyncTimeEntries"),String)
             End Get
             Set
-                Me("SyncTimeEntries") = Value
+                Me("SyncTimeEntries") = value
             End Set
         End Property
-
-        <Global.System.Configuration.UserScopedSettingAttribute(),
-         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),
-         Global.System.Configuration.DefaultSettingValueAttribute("")>
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("")>  _
         Public Property SyncExpenseEntries() As String
             Get
-                Return CType(Me("SyncExpenseEntries"), String)
+                Return CType(Me("SyncExpenseEntries"),String)
             End Get
             Set
-                Me("SyncExpenseEntries") = Value
+                Me("SyncExpenseEntries") = value
             End Set
         End Property
-
-        <Global.System.Configuration.UserScopedSettingAttribute(),
-         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),
-         Global.System.Configuration.DefaultSettingValueAttribute("")>
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("")>  _
         Public Property DebugMode() As String
             Get
-                Return CType(Me("DebugMode"), String)
+                Return CType(Me("DebugMode"),String)
             End Get
             Set
-                Me("DebugMode") = Value
+                Me("DebugMode") = value
             End Set
         End Property
-
-        <Global.System.Configuration.UserScopedSettingAttribute(),
-         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),
-         Global.System.Configuration.DefaultSettingValueAttribute("")>
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("")>  _
         Public Property AutoRunTime() As String
             Get
-                Return CType(Me("AutoRunTime"), String)
+                Return CType(Me("AutoRunTime"),String)
             End Get
             Set
-                Me("AutoRunTime") = Value
+                Me("AutoRunTime") = value
             End Set
         End Property
-
-        <Global.System.Configuration.UserScopedSettingAttribute(),
-         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),
-         Global.System.Configuration.DefaultSettingValueAttribute("")>
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("")>  _
         Public Property AutoRunInterval() As String
             Get
-                Return CType(Me("AutoRunInterval"), String)
+                Return CType(Me("AutoRunInterval"),String)
             End Get
             Set
-                Me("AutoRunInterval") = Value
+                Me("AutoRunInterval") = value
             End Set
         End Property
-
-        <Global.System.Configuration.UserScopedSettingAttribute(),
-         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),
-         Global.System.Configuration.DefaultSettingValueAttribute("")>
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("")>  _
         Public Property JobORItemHierarchy() As String
             Get
-                Return CType(Me("JobORItemHierarchy"), String)
+                Return CType(Me("JobORItemHierarchy"),String)
             End Get
             Set
-                Me("JobORItemHierarchy") = Value
+                Me("JobORItemHierarchy") = value
             End Set
         End Property
-
-        <Global.System.Configuration.UserScopedSettingAttribute(),
-         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),
-         Global.System.Configuration.DefaultSettingValueAttribute("")>
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("")>  _
         Public Property QBClass() As String
             Get
-                Return CType(Me("QBClass"), String)
+                Return CType(Me("QBClass"),String)
             End Get
             Set
-                Me("QBClass") = Value
+                Me("QBClass") = value
             End Set
         End Property
-
-        <Global.System.Configuration.UserScopedSettingAttribute(),
-         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),
-         Global.System.Configuration.DefaultSettingValueAttribute("")>
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("")>  _
         Public Property CustomerLastSync() As String
             Get
-                Return CType(Me("CustomerLastSync"), String)
+                Return CType(Me("CustomerLastSync"),String)
             End Get
             Set
-                Me("CustomerLastSync") = Value
+                Me("CustomerLastSync") = value
             End Set
         End Property
-
-        <Global.System.Configuration.UserScopedSettingAttribute(),
-         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),
-         Global.System.Configuration.DefaultSettingValueAttribute("")>
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("")>  _
         Public Property EmployeeLastSync() As String
             Get
-                Return CType(Me("EmployeeLastSync"), String)
+                Return CType(Me("EmployeeLastSync"),String)
             End Get
             Set
-                Me("EmployeeLastSync") = Value
+                Me("EmployeeLastSync") = value
             End Set
         End Property
-
-        <Global.System.Configuration.UserScopedSettingAttribute(),
-         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),
-         Global.System.Configuration.DefaultSettingValueAttribute("")>
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("")>  _
         Public Property VendorLastSync() As String
             Get
-                Return CType(Me("VendorLastSync"), String)
+                Return CType(Me("VendorLastSync"),String)
             End Get
             Set
-                Me("VendorLastSync") = Value
+                Me("VendorLastSync") = value
             End Set
         End Property
-
-        <Global.System.Configuration.UserScopedSettingAttribute(),
-         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),
-         Global.System.Configuration.DefaultSettingValueAttribute("")>
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("")>  _
         Public Property JobLastSync() As String
             Get
-                Return CType(Me("JobLastSync"), String)
+                Return CType(Me("JobLastSync"),String)
             End Get
             Set
-                Me("JobLastSync") = Value
+                Me("JobLastSync") = value
             End Set
         End Property
-
-        <Global.System.Configuration.UserScopedSettingAttribute(),
-         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),
-         Global.System.Configuration.DefaultSettingValueAttribute("")>
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("")>  _
         Public Property ItemlastSync() As String
             Get
-                Return CType(Me("ItemlastSync"), String)
+                Return CType(Me("ItemlastSync"),String)
             End Get
             Set
-                Me("ItemlastSync") = Value
+                Me("ItemlastSync") = value
             End Set
         End Property
-
-        <Global.System.Configuration.UserScopedSettingAttribute(),
-         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),
-         Global.System.Configuration.DefaultSettingValueAttribute("")>
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("")>  _
         Public Property TimeTrackingLastSync() As String
             Get
-                Return CType(Me("TimeTrackingLastSync"), String)
+                Return CType(Me("TimeTrackingLastSync"),String)
             End Get
             Set
-                Me("TimeTrackingLastSync") = Value
+                Me("TimeTrackingLastSync") = value
             End Set
         End Property
-
-        <Global.System.Configuration.UserScopedSettingAttribute(),
-         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),
-         Global.System.Configuration.DefaultSettingValueAttribute("")>
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("")>  _
         Public Property QBWageType() As String
             Get
-                Return CType(Me("QBWageType"), String)
+                Return CType(Me("QBWageType"),String)
             End Get
             Set
-                Me("QBWageType") = Value
+                Me("QBWageType") = value
             End Set
         End Property
-
-        <Global.System.Configuration.ApplicationScopedSettingAttribute(),
-         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),
-         Global.System.Configuration.SpecialSettingAttribute(Global.System.Configuration.SpecialSetting.ConnectionString),
-         Global.System.Configuration.DefaultSettingValueAttribute("Data Source=TIMELIVEDEV\TIMELIVE;Initial Catalog=TimeLive;User ID=sa;Password=$ba" &
-            "seline00")>
-        Public ReadOnly Property TimeLiveConnectionString() As String
-            Get
-                Return CType(Me("TimeLiveConnectionString"), String)
-            End Get
-        End Property
-
-        <Global.System.Configuration.ApplicationScopedSettingAttribute(),
-         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),
-         Global.System.Configuration.SpecialSettingAttribute(Global.System.Configuration.SpecialSetting.ConnectionString),
-         Global.System.Configuration.DefaultSettingValueAttribute("Data Source=SQL01;Initial Catalog=TL_QB_Relationship_Dev;User ID=sa;Password=$bas" &
-            "eline00")>
+        
+        <Global.System.Configuration.ApplicationScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.SpecialSettingAttribute(Global.System.Configuration.SpecialSetting.ConnectionString),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("Data Source=SQL01;Initial Catalog=TL_QB_Relationship_Dev;User ID=sa;Password=$bas"& _ 
+            "eline00")>  _
         Public ReadOnly Property TL_QB_RelationshipConnectionString() As String
             Get
-                Return CType(Me("TL_QB_RelationshipConnectionString"), String)
+                Return CType(Me("TL_QB_RelationshipConnectionString"),String)
             End Get
         End Property
-
-        <Global.System.Configuration.ApplicationScopedSettingAttribute(),
-         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),
-         Global.System.Configuration.SpecialSettingAttribute(Global.System.Configuration.SpecialSetting.ConnectionString),
-         Global.System.Configuration.DefaultSettingValueAttribute("Data Source=SQL01;Initial Catalog=TimeLiveDev;User ID=sa;Password=$baseline00")>
+        
+        <Global.System.Configuration.ApplicationScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.SpecialSettingAttribute(Global.System.Configuration.SpecialSetting.ConnectionString),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("Data Source=teltriumsrv3;Initial Catalog=TimeLive;User ID=sa;Password=$baseline00"& _ 
+            "")>  _
         Public ReadOnly Property TimeLiveDevConnectionString() As String
             Get
-                Return CType(Me("TimeLiveDevConnectionString"), String)
-            End Get
-        End Property
-
-        <Global.System.Configuration.ApplicationScopedSettingAttribute(),
-         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),
-         Global.System.Configuration.SpecialSettingAttribute(Global.System.Configuration.SpecialSetting.ConnectionString),
-         Global.System.Configuration.DefaultSettingValueAttribute("Data Source=TELTRIUMSRV3;Initial Catalog=TimeLive;User ID=sa;Password=$baseline00" &
-            ";Encrypt=False;TrustServerCertificate=True")>
-        Public ReadOnly Property TimeLiveConnectionString1() As String
-            Get
-                Return CType(Me("TimeLiveConnectionString1"), String)
+                Return CType(Me("TimeLiveDevConnectionString"),String)
             End Get
         End Property
     End Class
