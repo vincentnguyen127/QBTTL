@@ -408,15 +408,29 @@ Public Class QBtoTL_JobOrItem
 
                         'Insert record into sync database if Not in it
                         If Not CBool(DT_has_QBID) Then
+                            ' QB ID is not in local database
                             Dim project_or_task_inTL As Boolean =
                                 Array.Exists(objTaskServices.GetTasks, Function(e As Services.TimeLive.Tasks.Task) e.JobParent + ":" + e.TaskName = element.FullName) Or
                                 Array.Exists(objProjectServices.GetProjects, Function(e As Services.TimeLive.Projects.Project) e.ClientName + ":" + e.ProjectName = element.FullName)
 
                             If project_or_task_inTL Then
+                                ' TimeLive has a data entry with the same name, treat as the same and add into DB
                                 Dim JobAdapter As New QB_TL_IDsTableAdapters.Jobs_SubJobsTableAdapter
                                 ' Currently does not support the same job name with different parent customers / same subjob name with different parent jobs
                                 Dim proj_or_task_ID As Integer = If(PTArray.Length = 2, objProjectServices.GetProjectId(element.QB_Name), objTaskServices.GetTaskId(element.QB_Name))
-                                JobAdapter.Insert(element.QB_ID, proj_or_task_ID, element.QB_Name, element.FullName)
+                                Dim QB_ID_fromDB As QB_TL_IDs.Jobs_SubJobsDataTable = JobAdapter.GetCorrespondingQB_ID(element.FullName)
+                                If QB_ID_fromDB.Count = 0 Then
+                                    ' No record of the data entry in our data table, then add it
+                                    JobAdapter.Insert(element.QB_ID, proj_or_task_ID, element.QB_Name, element.FullName)
+                                    My.Forms.MAIN.History("Job/Subjob '" + element.QB_Name + "' found in both TimeLive and Quickbooks added to local database", "i")
+                                Else
+                                    ' Record exists just with an incorrect QB ID, so update it
+                                    Dim correctTL_ID As String = QB_ID_fromDB(0)(1)
+                                    If correctTL_ID IsNot Nothing Then
+                                        JobAdapter.UpdateQBID(element.QB_ID, Trim(correctTL_ID))
+                                        My.Forms.MAIN.History("Updated QuickBooks ID of employee '" + element.QB_Name + "' in local database", "i")
+                                    End If
+                                End If
                             Else
                                 Dim errStr As String = If(PTArray.Length = 2, " client in timelive has a project with name ", " project in timelive has a task with name ")
                                 My.Forms.MAIN.History("Error creating record In TimeLive: Make sure that no other " + errStr + element.QB_Name, "N")

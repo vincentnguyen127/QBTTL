@@ -4697,15 +4697,15 @@ Namespace TimeLiveDataSetTableAdapters
                 "yeeId, @CustomField1, @CustomField2, @CustomField3, @CustomField4, @CustomField5"& _ 
                 ", @CustomField6, @CustomField7, @CustomField8, @CustomField9, @CustomField10, @C"& _ 
                 "ustomField11, @CustomField12, @CustomField13, @CustomField14, @CustomField15, @F"& _ 
-                "ixedBidBillingMode, @FixedCost);"&Global.Microsoft.VisualBasic.ChrW(10)&"SELECT AccountPartyId, PartyTypeId, AccountId, "& _ 
-                "PartyName, PartyNick, EMailAddress, Address1, Address2, CountryId, State, City, "& _ 
-                "ZipCode, Telephone1, Telephone2, Fax, DefaultCurrencyId, DefaultBillingRate, Web"& _ 
-                "site, Notes, IsDisabled, IsDeleted, CreatedOn, CreatedByEmployeeId, ModifiedOn, "& _ 
-                "ModifiedByEmployeeId, CustomField1, CustomField2, CustomField3, CustomField4, Cu"& _ 
-                "stomField5, CustomField6, CustomField7, CustomField8, CustomField9, CustomField1"& _ 
-                "0, CustomField11, CustomField12, CustomField13, CustomField14, CustomField15, Fi"& _ 
-                "xedBidBillingMode, FixedCost FROM AccountParty WHERE (AccountPartyId = SCOPE_IDE"& _ 
-                "NTITY())"
+                "ixedBidBillingMode, @FixedCost);"&Global.Microsoft.VisualBasic.ChrW(13)&Global.Microsoft.VisualBasic.ChrW(10)&"SELECT AccountPartyId, PartyTypeId, AccountId,"& _ 
+                " PartyName, PartyNick, EMailAddress, Address1, Address2, CountryId, State, City,"& _ 
+                " ZipCode, Telephone1, Telephone2, Fax, DefaultCurrencyId, DefaultBillingRate, We"& _ 
+                "bsite, Notes, IsDisabled, IsDeleted, CreatedOn, CreatedByEmployeeId, ModifiedOn,"& _ 
+                " ModifiedByEmployeeId, CustomField1, CustomField2, CustomField3, CustomField4, C"& _ 
+                "ustomField5, CustomField6, CustomField7, CustomField8, CustomField9, CustomField"& _ 
+                "10, CustomField11, CustomField12, CustomField13, CustomField14, CustomField15, F"& _ 
+                "ixedBidBillingMode, FixedCost FROM AccountParty WHERE (AccountPartyId = SCOPE_ID"& _ 
+                "ENTITY())"
             Me._adapter.InsertCommand.CommandType = Global.System.Data.CommandType.Text
             Me._adapter.InsertCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@PartyTypeId", Global.System.Data.SqlDbType.SmallInt, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "PartyTypeId", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
             Me._adapter.InsertCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@AccountId", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "AccountId", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
@@ -4811,14 +4811,14 @@ Namespace TimeLiveDataSetTableAdapters
                 "stomField15)) AND ((@IsNull_FixedBidBillingMode = 1 AND [FixedBidBillingMode] IS"& _ 
                 " NULL) OR ([FixedBidBillingMode] = @Original_FixedBidBillingMode)) AND ((@IsNull"& _ 
                 "_FixedCost = 1 AND [FixedCost] IS NULL) OR ([FixedCost] = @Original_FixedCost)))"& _ 
-                ";"&Global.Microsoft.VisualBasic.ChrW(10)&"SELECT AccountPartyId, PartyTypeId, AccountId, PartyName, PartyNick, EMailAddr"& _ 
-                "ess, Address1, Address2, CountryId, State, City, ZipCode, Telephone1, Telephone2"& _ 
-                ", Fax, DefaultCurrencyId, DefaultBillingRate, Website, Notes, IsDisabled, IsDele"& _ 
-                "ted, CreatedOn, CreatedByEmployeeId, ModifiedOn, ModifiedByEmployeeId, CustomFie"& _ 
-                "ld1, CustomField2, CustomField3, CustomField4, CustomField5, CustomField6, Custo"& _ 
-                "mField7, CustomField8, CustomField9, CustomField10, CustomField11, CustomField12"& _ 
-                ", CustomField13, CustomField14, CustomField15, FixedBidBillingMode, FixedCost FR"& _ 
-                "OM AccountParty WHERE (AccountPartyId = @AccountPartyId)"
+                ";"&Global.Microsoft.VisualBasic.ChrW(13)&Global.Microsoft.VisualBasic.ChrW(10)&"SELECT AccountPartyId, PartyTypeId, AccountId, PartyName, PartyNick, EMailAdd"& _ 
+                "ress, Address1, Address2, CountryId, State, City, ZipCode, Telephone1, Telephone"& _ 
+                "2, Fax, DefaultCurrencyId, DefaultBillingRate, Website, Notes, IsDisabled, IsDel"& _ 
+                "eted, CreatedOn, CreatedByEmployeeId, ModifiedOn, ModifiedByEmployeeId, CustomFi"& _ 
+                "eld1, CustomField2, CustomField3, CustomField4, CustomField5, CustomField6, Cust"& _ 
+                "omField7, CustomField8, CustomField9, CustomField10, CustomField11, CustomField1"& _ 
+                "2, CustomField13, CustomField14, CustomField15, FixedBidBillingMode, FixedCost F"& _ 
+                "ROM AccountParty WHERE (AccountPartyId = @AccountPartyId)"
             Me._adapter.UpdateCommand.CommandType = Global.System.Data.CommandType.Text
             Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@PartyTypeId", Global.System.Data.SqlDbType.SmallInt, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "PartyTypeId", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
             Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@AccountId", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "AccountId", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
@@ -6303,9 +6303,9 @@ Namespace TimeLiveDataSetTableAdapters
             Me._adapter.InsertCommand.Connection = Me.Connection
             Me._adapter.InsertCommand.CommandText = "INSERT INTO [dbo].[AccountProjectTaskEmployee] ([AccountId], [AccountProjectTaskI"& _ 
                 "d], [AccountEmployeeId], [AllocationUnits]) VALUES (@AccountId, @AccountProjectT"& _ 
-                "askId, @AccountEmployeeId, @AllocationUnits);"&Global.Microsoft.VisualBasic.ChrW(10)&"SELECT AccountProjectTaskEmployeeI"& _ 
-                "d, AccountId, AccountProjectTaskId, AccountEmployeeId, AllocationUnits FROM Acco"& _ 
-                "untProjectTaskEmployee WHERE (AccountProjectTaskEmployeeId = SCOPE_IDENTITY())"
+                "askId, @AccountEmployeeId, @AllocationUnits);"&Global.Microsoft.VisualBasic.ChrW(13)&Global.Microsoft.VisualBasic.ChrW(10)&"SELECT AccountProjectTaskEmployee"& _ 
+                "Id, AccountId, AccountProjectTaskId, AccountEmployeeId, AllocationUnits FROM Acc"& _ 
+                "ountProjectTaskEmployee WHERE (AccountProjectTaskEmployeeId = SCOPE_IDENTITY())"
             Me._adapter.InsertCommand.CommandType = Global.System.Data.CommandType.Text
             Me._adapter.InsertCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@AccountId", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "AccountId", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
             Me._adapter.InsertCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@AccountProjectTaskId", Global.System.Data.SqlDbType.BigInt, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "AccountProjectTaskId", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
@@ -6319,10 +6319,10 @@ Namespace TimeLiveDataSetTableAdapters
                 "Original_AccountProjectTaskEmployeeId) AND ([AccountId] = @Original_AccountId) A"& _ 
                 "ND ([AccountProjectTaskId] = @Original_AccountProjectTaskId) AND ([AccountEmploy"& _ 
                 "eeId] = @Original_AccountEmployeeId) AND ((@IsNull_AllocationUnits = 1 AND [Allo"& _ 
-                "cationUnits] IS NULL) OR ([AllocationUnits] = @Original_AllocationUnits)));"&Global.Microsoft.VisualBasic.ChrW(10)&"SELE"& _ 
-                "CT AccountProjectTaskEmployeeId, AccountId, AccountProjectTaskId, AccountEmploye"& _ 
-                "eId, AllocationUnits FROM AccountProjectTaskEmployee WHERE (AccountProjectTaskEm"& _ 
-                "ployeeId = @AccountProjectTaskEmployeeId)"
+                "cationUnits] IS NULL) OR ([AllocationUnits] = @Original_AllocationUnits)));"&Global.Microsoft.VisualBasic.ChrW(13)&Global.Microsoft.VisualBasic.ChrW(10)&"SEL"& _ 
+                "ECT AccountProjectTaskEmployeeId, AccountId, AccountProjectTaskId, AccountEmploy"& _ 
+                "eeId, AllocationUnits FROM AccountProjectTaskEmployee WHERE (AccountProjectTaskE"& _ 
+                "mployeeId = @AccountProjectTaskEmployeeId)"
             Me._adapter.UpdateCommand.CommandType = Global.System.Data.CommandType.Text
             Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@AccountId", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "AccountId", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
             Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@AccountProjectTaskId", Global.System.Data.SqlDbType.BigInt, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "AccountProjectTaskId", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
@@ -6689,11 +6689,11 @@ Namespace TimeLiveDataSetTableAdapters
                 "ountEmployeeId], [TaskCompletedPercentage], [TaskCompleted], [AccountRoleId], [A"& _ 
                 "ccountBillingRateId], [AccountProjectEmployeeTemplateId]) VALUES (@AccountId, @A"& _ 
                 "ccountProjectId, @AccountEmployeeId, @TaskCompletedPercentage, @TaskCompleted, @"& _ 
-                "AccountRoleId, @AccountBillingRateId, @AccountProjectEmployeeTemplateId);"&Global.Microsoft.VisualBasic.ChrW(10)&"SELECT"& _ 
-                " AccountProjectEmployeeId, AccountId, AccountProjectId, AccountEmployeeId, TaskC"& _ 
-                "ompletedPercentage, TaskCompleted, AccountRoleId, AccountBillingRateId, AccountP"& _ 
-                "rojectEmployeeTemplateId FROM AccountProjectEmployee WHERE (AccountProjectEmploy"& _ 
-                "eeId = SCOPE_IDENTITY())"
+                "AccountRoleId, @AccountBillingRateId, @AccountProjectEmployeeTemplateId);"&Global.Microsoft.VisualBasic.ChrW(13)&Global.Microsoft.VisualBasic.ChrW(10)&"SELEC"& _ 
+                "T AccountProjectEmployeeId, AccountId, AccountProjectId, AccountEmployeeId, Task"& _ 
+                "CompletedPercentage, TaskCompleted, AccountRoleId, AccountBillingRateId, Account"& _ 
+                "ProjectEmployeeTemplateId FROM AccountProjectEmployee WHERE (AccountProjectEmplo"& _ 
+                "yeeId = SCOPE_IDENTITY())"
             Me._adapter.InsertCommand.CommandType = Global.System.Data.CommandType.Text
             Me._adapter.InsertCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@AccountId", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "AccountId", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
             Me._adapter.InsertCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@AccountProjectId", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "AccountProjectId", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
@@ -6721,11 +6721,11 @@ Namespace TimeLiveDataSetTableAdapters
                 "IsNull_AccountBillingRateId = 1 AND [AccountBillingRateId] IS NULL) OR ([Account"& _ 
                 "BillingRateId] = @Original_AccountBillingRateId)) AND ((@IsNull_AccountProjectEm"& _ 
                 "ployeeTemplateId = 1 AND [AccountProjectEmployeeTemplateId] IS NULL) OR ([Accoun"& _ 
-                "tProjectEmployeeTemplateId] = @Original_AccountProjectEmployeeTemplateId)));"&Global.Microsoft.VisualBasic.ChrW(10)&"SEL"& _ 
-                "ECT AccountProjectEmployeeId, AccountId, AccountProjectId, AccountEmployeeId, Ta"& _ 
-                "skCompletedPercentage, TaskCompleted, AccountRoleId, AccountBillingRateId, Accou"& _ 
-                "ntProjectEmployeeTemplateId FROM AccountProjectEmployee WHERE (AccountProjectEmp"& _ 
-                "loyeeId = @AccountProjectEmployeeId)"
+                "tProjectEmployeeTemplateId] = @Original_AccountProjectEmployeeTemplateId)));"&Global.Microsoft.VisualBasic.ChrW(13)&Global.Microsoft.VisualBasic.ChrW(10)&"SE"& _ 
+                "LECT AccountProjectEmployeeId, AccountId, AccountProjectId, AccountEmployeeId, T"& _ 
+                "askCompletedPercentage, TaskCompleted, AccountRoleId, AccountBillingRateId, Acco"& _ 
+                "untProjectEmployeeTemplateId FROM AccountProjectEmployee WHERE (AccountProjectEm"& _ 
+                "ployeeId = @AccountProjectEmployeeId)"
             Me._adapter.UpdateCommand.CommandType = Global.System.Data.CommandType.Text
             Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@AccountId", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "AccountId", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
             Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@AccountProjectId", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "AccountProjectId", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
@@ -7431,7 +7431,7 @@ Namespace TimeLiveDataSetTableAdapters
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
         Private Sub InitConnection()
             Me._connection = New Global.System.Data.SqlClient.SqlConnection()
-            Me._connection.ConnectionString = Global.TimeLive.Quickbooks.Integrator.My.MySettings.Default.TimeLiveConnectionString1
+            Me._connection.ConnectionString = Global.TimeLive.Quickbooks.Integrator.My.MySettings.Default.TimeLiveDevConnectionString
         End Sub
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
@@ -8023,7 +8023,7 @@ Namespace TimeLiveDataSetTableAdapters
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0"),  _
          Global.System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")>  _
-        Public Overloads Overridable Function GetTimeApproval(ByVal EmployeeId As Integer, ByVal _Date As Date) As Global.System.Nullable(Of Boolean)
+        Public Overloads Overridable Function GetTimeApproval(ByVal EmployeeId As Integer, ByVal _Date As Date) As Object
             Dim command As Global.System.Data.SqlClient.SqlCommand = Me.CommandCollection(1)
             command.Parameters(0).Value = CType(EmployeeId,Integer)
             command.Parameters(1).Value = CType(_Date,Date)
@@ -8042,9 +8042,9 @@ Namespace TimeLiveDataSetTableAdapters
             End Try
             If ((returnValue Is Nothing)  _
                         OrElse (returnValue.GetType Is GetType(Global.System.DBNull))) Then
-                Return New Global.System.Nullable(Of Boolean)()
+                Return Nothing
             Else
-                Return New Global.System.Nullable(Of Boolean)(CType(returnValue,Boolean))
+                Return CType(returnValue,Object)
             End If
         End Function
     End Class

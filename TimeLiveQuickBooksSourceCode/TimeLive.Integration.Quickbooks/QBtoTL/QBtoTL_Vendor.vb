@@ -88,7 +88,8 @@ Public Class QBtoTL_Vendor
                 For i As Integer = 0 To If(vendorRetList Is Nothing, -1, vendorRetList.Count - 1)
                     vendorRet = vendorRetList.GetAt(i)
                     With vendorRet
-                        If (Not My.Settings.SyncElbVendor = "") And My.Settings.SyncElbVendor Or .IsVendorEligibleFor1099.GetValue Then
+                        Dim syncElbVendor As Boolean = If(My.Settings.SyncElbVendor = "", False, My.Settings.SyncElbVendor)
+                        If syncElbVendor Or .IsVendorEligibleFor1099.GetValue Then
                             EmailAddress = If(.Email Is Nothing, "", .Email.GetValue)
                             FirstName = If(.FirstName Is Nothing, "", .FirstName.GetValue)
                             LastName = If(.LastName Is Nothing, "", .LastName.GetValue)
@@ -168,7 +169,6 @@ Public Class QBtoTL_Vendor
                 Dim EmailAddress As String
                 Dim FirstName As String
                 Dim LastName As String
-                Dim EmployeeCode As String
                 Dim EmployeeName As String
                 Dim HiredDate As String
                 Dim DT_has_QBID = ISQBID_In_DataTable(element.QB_Name, element.QB_ID)
@@ -214,16 +214,27 @@ Public Class QBtoTL_Vendor
                             ' TODO: Update TL, based on commented out code below
                             Continue For
                         End If
-                        ' Not in local Database
                     Else
-                        ' TimeLive has a data entry with the same name, treat as the same and add into DB
+                        ' QB ID is not in local Database
                         Dim first_name = QBtoTL_Employee.GetValue(element.QB_Name, "FirstName")
                         Dim last_name = QBtoTL_Employee.GetValue(element.QB_Name, "LastName")
                         Dim full_name As String = first_name + " " + last_name
                         If Array.Exists(objEmployeeServices.GetEmployees, Function(e As Services.TimeLive.Employees.Employee) e.EmployeeName = full_name) Then
-                            My.Forms.MAIN.History("Vendor " + full_name + " in both TimeLive and Quickbooks added to local database", "i")
+                            ' TimeLive has a data entry with the same name, treat as the same and add into DB
                             Dim VendorAdapter As New QB_TL_IDsTableAdapters.VendorsTableAdapter()
-                            VendorAdapter.Insert(element.QB_ID, objEmployeeServices.GetEmployeeId(element.QB_Name), element.QB_Name, full_name)
+                            Dim QB_ID_fromDB As QB_TL_IDs.VendorsDataTable = VendorAdapter.GetCorrespondingQB_IDbyQB_Name(element.QB_Name)
+                            If QB_ID_fromDB.Count = 0 Then
+                                ' No record of the data entry in our data table, then add it
+                                VendorAdapter.Insert(element.QB_ID, objEmployeeServices.GetEmployeeId(element.QB_Name), element.QB_Name, full_name)
+                                My.Forms.MAIN.History("Vendor '" + full_name + "' found in both TimeLive and Quickbooks added to local database", "i")
+                            Else
+                                ' Record exists just with an incorrect QB ID, so update it
+                                Dim correctTL_ID As String = QB_ID_fromDB(0)(1)
+                                If correctTL_ID IsNot Nothing Then
+                                    VendorAdapter.UpdateQBID(element.QB_ID, Trim(correctTL_ID))
+                                    My.Forms.MAIN.History("Updated QuickBooks ID of vendor '" + element.QB_Name + "' in local database", "i")
+                                End If
+                            End If
                             Continue For ' Already in TL, so just continue to next element in QB
                         End If
                     End If

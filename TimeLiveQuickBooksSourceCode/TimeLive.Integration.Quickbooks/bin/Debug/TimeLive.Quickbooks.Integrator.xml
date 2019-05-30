@@ -6,22 +6,6 @@ TimeLive.Quickbooks.Integrator
 </name>
 </assembly>
 <members>
-<member name="T:TimeLive.Quickbooks.Integrator.My.Resources.Resources">
-<summary>
-  A strongly-typed resource class, for looking up localized strings, etc.
-</summary>
-</member>
-<member name="P:TimeLive.Quickbooks.Integrator.My.Resources.Resources.ResourceManager">
-<summary>
-  Returns the cached ResourceManager instance used by this class.
-</summary>
-</member>
-<member name="P:TimeLive.Quickbooks.Integrator.My.Resources.Resources.Culture">
-<summary>
-  Overrides the current thread's CurrentUICulture property for all
-  resource lookups using this strongly typed resource class.
-</summary>
-</member>
 <member name="M:TimeLive.Quickbooks.Integrator.ChargingRelationship.QBData(System.Int32)">
  <summary>
  Helper Function to get the desired data for the attribute
@@ -326,12 +310,23 @@ Used to sort self-referenced table's rows
      2+ -> Did not exist in QB, and 1 or more of its parents did not exist in QB either, all added to QB
  </returns>
 </member>
-<member name="M:TimeLive.Quickbooks.Integrator.Sync_TLtoQB_JoborItem.ISQBID_In_JobSubJobDataTable(System.String,System.String)">
+<member name="M:TimeLive.Quickbooks.Integrator.Sync_TLtoQB_JoborItem.IsQBID_In_JobSubJobDataTable(System.String,System.String)">
  <summary>
  Check if QB ID is in job/subjob data table
  </summary>
  <param name="myqbName"></param>
  <param name="myqbID"></param>
+ <returns>
+ 0 -> not in data table
+ 1 -> one record in data table
+ 2 -> more than one record in data table
+ </returns>
+</member>
+<member name="M:TimeLive.Quickbooks.Integrator.Sync_TLtoQB_JoborItem.IsTLID_In_JobsSubJobsDataTable(System.String)">
+ <summary>
+ Check if TL ID is in employee data table
+ </summary>
+ <param name="mytlID"></param>
  <returns>
  0 -> not in data table
  1 -> one record in data table
@@ -366,12 +361,23 @@ Used to sort self-referenced table's rows
  True: does exist in QB, and we add it to the Data Table if not present
  </returns>
 </member>
-<member name="M:TimeLive.Quickbooks.Integrator.Sync_TLtoQB_Vendor.ISQBID_In_VendorDataTable(System.String,System.String)">
+<member name="M:TimeLive.Quickbooks.Integrator.Sync_TLtoQB_Vendor.IsQBID_In_VendorDataTable(System.String,System.String)">
  <summary>
  Check if QB ID is in vendor data table
  </summary>
  <param name="myqbName"></param>
  <param name="myqbID"></param>
+ <returns>
+ 0 -> not in data table
+ 1 -> one record in data table
+ 2 -> more than one record in data table
+ </returns>
+</member>
+<member name="M:TimeLive.Quickbooks.Integrator.Sync_TLtoQB_Vendor.IsTLID_In_VendorDataTable(System.String)">
+ <summary>
+ Check if TL ID is in employee data table
+ </summary>
+ <param name="mytlID"></param>
  <returns>
  0 -> not in data table
  1 -> one record in data table
@@ -394,12 +400,23 @@ Used to sort self-referenced table's rows
  True: does exist in QB, and we add it to the Data Table if not present
  </returns>
 </member>
-<member name="M:TimeLive.Quickbooks.Integrator.Sync_TLtoQB_Employee.ISQBID_In_EmployeeDataTable(System.String,System.String)">
+<member name="M:TimeLive.Quickbooks.Integrator.Sync_TLtoQB_Employee.IsQBID_In_EmployeeDataTable(System.String,System.String)">
  <summary>
  Check if QB ID is in employee data table
  </summary>
  <param name="myqbName"></param>
  <param name="myqbID"></param>
+ <returns>
+ 0 -> not in data table
+ 1 -> one record in data table
+ 2 -> more than one record in data table
+ </returns>
+</member>
+<member name="M:TimeLive.Quickbooks.Integrator.Sync_TLtoQB_Employee.IsTLID_In_EmployeeDataTable(System.String)">
+ <summary>
+ Check if TL ID is in employee data table
+ </summary>
+ <param name="mytlID"></param>
  <returns>
  0 -> not in data table
  1 -> one record in data table
@@ -422,12 +439,23 @@ Used to sort self-referenced table's rows
  True: does exist in QB, and we add it to the Data Table if not present
  </returns>
 </member>
-<member name="M:TimeLive.Quickbooks.Integrator.Sync_TLtoQB_Customer.ISQBID_In_CustomerDataTable(System.String,System.String)">
+<member name="M:TimeLive.Quickbooks.Integrator.Sync_TLtoQB_Customer.IsQBID_In_CustomerDataTable(System.String,System.String)">
  <summary>
  Check if QB ID is in customer data table
  </summary>
  <param name="myqbName">qb name to be printed</param>
  <param name="myqbID">qb id to be verified</param>
+ <returns>
+ 0 -> not in data table
+ 1 -> one record in data table
+ 2 -> more than one record in data table
+ </returns>
+</member>
+<member name="M:TimeLive.Quickbooks.Integrator.Sync_TLtoQB_Customer.IsTLID_In_CustomerDataTable(System.String)">
+ <summary>
+ Check if TL ID is in customer data table
+ </summary>
+ <param name="mytlID"></param>
  <returns>
  0 -> not in data table
  1 -> one record in data table
@@ -557,6 +585,60 @@ Update Order Option
 <member name="T:TimeLive.Quickbooks.Integrator.TimeLiveDataSetTableAdapters.TableAdapterManager.SelfReferenceComparer">
 <summary>
 Used to sort self-referenced table's rows
+</summary>
+</member>
+<member name="M:TimeLive.Quickbooks.Integrator.MAIN.Payroll_IDName_Dict">
+ <summary>
+ Connects to QuickBooks to get a dictionary with key value pairs being {Payroll_Id: Payroll_Name}
+ </summary>
+ <returns>A Dictionary with keys being Payroll IDs and values being the corresponding Payroll Name</returns>
+</member>
+<member name="M:TimeLive.Quickbooks.Integrator.MAIN.ItemSubItem_IDName_Dict">
+ <summary>
+ Connects to QuickBooks to get a dictionary with key value pairs being {Item_Id: Item_Name}
+ </summary>
+ <returns>A Dictionary with keys being Item/SubItem IDs and values being the corresponding Item/SubItem Name</returns>
+</member>
+<member name="M:TimeLive.Quickbooks.Integrator.MAIN.btnUpdateTimeTransfer_Click(System.Object,System.EventArgs)">
+ <summary>
+ Displays the Time Entries for the selected employees within the specified time range
+ - White rows correspond to approved time entries
+ - Gray rows correspond to non-approved time entries
+ </summary>
+ <param name="sender"></param>
+ <param name="e"></param>
+</member>
+<member name="M:TimeLive.Quickbooks.Integrator.MAIN.btnTransfer_Click(System.Object,System.EventArgs)">
+ <summary>
+ Transfers the selected customers, employees, vendors, jobs/subjobs or item/subitems, from TL to QB, or QB to TL depending on which is selected
+ </summary>
+ <param name="sender"></param>
+ <param name="e"></param>
+</member>
+<member name="M:TimeLive.Quickbooks.Integrator.MAIN.GetTotalHours(System.String,TimeLive.Quickbooks.Integrator.Services.TimeLive.TimeEntries.TimeEntries,System.DateTime,System.DateTime)">
+ <summary>
+ Gets the total number of hours worked for the employee with the given ID from startDate to endDate
+ </summary>
+ <param name="emplID"></param>
+ <param name="TLTimeTracker"></param>
+ <param name="startDate"></param>
+ <param name="endDate"></param>
+ <returns></returns>
+</member>
+<member name="T:TimeLive.Quickbooks.Integrator.My.Resources.Resources">
+<summary>
+  A strongly-typed resource class, for looking up localized strings, etc.
+</summary>
+</member>
+<member name="P:TimeLive.Quickbooks.Integrator.My.Resources.Resources.ResourceManager">
+<summary>
+  Returns the cached ResourceManager instance used by this class.
+</summary>
+</member>
+<member name="P:TimeLive.Quickbooks.Integrator.My.Resources.Resources.Culture">
+<summary>
+  Overrides the current thread's CurrentUICulture property for all
+  resource lookups using this strongly typed resource class.
 </summary>
 </member>
 <member name="M:TimeLive.Quickbooks.Integrator.TLtoQB_TimeEntry.ISTLID_In_DataTable(System.String)">

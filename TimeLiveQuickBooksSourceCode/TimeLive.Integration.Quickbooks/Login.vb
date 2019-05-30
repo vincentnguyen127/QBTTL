@@ -21,7 +21,6 @@ Public Class Login
         Try
             ValidateRequiredFields()
             ValidateURL(objServices)
-            'ValidateQBSession() 'Redundant?
             objSoapHeader.Username = txtUsername.Text
             objSoapHeader.Password = txtPassword.Text
             objServices.SecuredWebServiceHeaderValue = objSoapHeader
@@ -59,20 +58,6 @@ Public Class Login
 
     Private Sub btnCancel_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnCancel.Click
         Me.Close()
-    End Sub
-
-    'Not used - Should probably delete
-    Public Sub ValidateQBSession()
-        Dim sessManager As QBSessionManager
-        Try
-            sessManager = New QBSessionManagerClass()
-            sessManager.OpenConnection("App", "TimeLive Quickbooks")
-            sessManager.BeginSession("", ENOpenMode.omDontCare)
-        Catch ex As Exception
-            Throw New Exception("QuickBooks is not open. Please open it and then try again.")
-        End Try
-        ' If sole purpose is validation, then might want to close sessManager at the end. 
-        ' Otherwise, maybe return SessManager to be used within Main.vb?
     End Sub
 
     Private Sub Login_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load

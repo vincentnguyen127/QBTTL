@@ -445,8 +445,8 @@ Public Class TLtoQB_TimeEntry
                                 ByVal ProjectName As String, ByVal ServiceItemName As String, ByVal TotalTime As DateTime,
                                 ByVal TimeEntryDate As Date, ByVal TimeEntryClass As String, ByVal PayrollItem_TypeName As Boolean,
                                 ByVal PayrollItem As String, ByVal ServiceItem_TypeName As Boolean, ByVal ItemID As String) As String
-
-        Dim rbtJobitems_AppSettings As Integer = My.Settings.JobHierarchy
+        ' Default is JobSubJob when no JobHierarchy has yet to be selected
+        Dim rbtJobitems_AppSettings As Integer = If(My.Settings.JobHierarchy = "", 1, My.Settings.JobHierarchy)
         Dim RecordTxnID As String = Nothing
 
         If rbtJobitems_AppSettings = 0 Then
@@ -597,12 +597,13 @@ Public Class TLtoQB_TimeEntry
                 timeAdd.ClassRef.FullName.SetValue(TimeEntryClass)
             End If
 
-            If PayrollItem_TypeName Then
-                timeAdd.PayrollItemWageRef.FullName.SetValue(PayrollItem)
-            Else
-                timeAdd.PayrollItemWageRef.ListID.SetValue(PayrollItem.ToString.Trim)
+            If Not PayrollItem = "<None>" Then
+                If PayrollItem_TypeName Then
+                    timeAdd.PayrollItemWageRef.FullName.SetValue(PayrollItem)
+                Else
+                    timeAdd.PayrollItemWageRef.ListID.SetValue(PayrollItem.ToString.Trim)
+                End If
             End If
-
             'step2: send the request
             msgSetRs = MAIN.SESSMANAGER.DoRequests(msgSetRq)
 

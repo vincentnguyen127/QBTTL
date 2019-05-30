@@ -190,7 +190,6 @@ Public Class QBtoTL_Employee
                         Array.ForEach(objEmployeeServices.GetEmployees,
                                       Sub(e As Services.TimeLive.Employees.Employee)
                                           If objEmployeeServices.GetEmployeeId(e.EmployeeName) = Trim(TL_ID) Then
-                                              My.Forms.MAIN.History(CStr(objEmployeeServices.GetEmployeeId(e.EmployeeName)) + "_", "i")
                                               employeeInTL = True
                                               ' QB and TL have different names, change in DB and alert the user
                                               ' Note: If we change this, then might need to change jobs/subjobs DB
@@ -210,13 +209,24 @@ Public Class QBtoTL_Employee
                             ' TODO: Update TL, based on commented out code below
                             Continue For
                         End If
-                        ' Not in local Database
                     Else
-                        ' TimeLive has a data entry with the same name, treat as the same and add into DB
+                        ' QB ID is not in local Database
                         If Array.Exists(objEmployeeServices.GetEmployees, Function(e As Services.TimeLive.Employees.Employee) e.EmployeeName = element.QB_Name) Then
-                            My.Forms.MAIN.History("Employee " + element.QB_Name + " in both TimeLive and Quickbooks added to local database", "i")
+                            ' TimeLive has a data entry with the same name, treat as the same and add into DB
                             Dim EmployeeAdapter As New QB_TL_IDsTableAdapters.EmployeesTableAdapter()
-                            EmployeeAdapter.Insert(element.QB_ID, objEmployeeServices.GetEmployeeId(element.QB_Name), element.QB_Name, element.QB_Name)
+                            Dim QB_ID_fromDB As QB_TL_IDs.EmployeesDataTable = EmployeeAdapter.GetCorrespondingQB_IDbyQB_Name(element.QB_Name)
+                            If QB_ID_fromDB.Count = 0 Then
+                                ' No record of the data entry in our data table, then add it
+                                EmployeeAdapter.Insert(element.QB_ID, objEmployeeServices.GetEmployeeId(element.QB_Name), element.QB_Name, element.QB_Name)
+                                My.Forms.MAIN.History("Employee '" + element.QB_Name + "' found in both TimeLive and Quickbooks added to local database", "i")
+                            Else
+                                ' Record exists just with an incorrect QB ID, so update it
+                                Dim correctTL_ID As String = QB_ID_fromDB(0)(1)
+                                If correctTL_ID IsNot Nothing Then
+                                    EmployeeAdapter.UpdateQBID(element.QB_ID, Trim(correctTL_ID))
+                                    My.Forms.MAIN.History("Updated QuickBooks ID of employee '" + element.QB_Name + "' in local database", "i")
+                                End If
+                            End If
                             Continue For ' Already in TL, so just continue to next element in QB
                         End If
                     End If

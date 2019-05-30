@@ -169,10 +169,10 @@ Public Class QBtoTL_Customer
             If element.Enabled And element.RecSelect Then
                 'Check number of QB records that match ID
                 My.Forms.MAIN.History("Processing:  " + element.QB_Name, "n")
+                ' 0: QuickBooks ID is not in Data Table
+                ' 1: QuickBooks ID is in DataTable
                 Dim DT_has_QBID = ISQBID_In_DataTable(element.QB_Name, element.QB_ID)
 
-                'if none create
-                'If TL_ID_Return = 0 Then
                 Dim create As Boolean = True
                 ' Do not show Message Box when UI = false, instead just create the new customer
                 If UI And Not CBool(DT_has_QBID) Then
@@ -205,16 +205,26 @@ Public Class QBtoTL_Customer
                                 incrementbar += 1
                                 My.Forms.MAIN.ProgressBar1.Value = incrementbar
                             End If
-                            ' TODO: Update TL
                             Continue For
                         End If
-                        ' Not in local Database
                     Else
-                        ' TimeLive has a data entry with the same name, treat as the same and add into DB
+                        ' Not in local Database
                         If Array.Exists(objClientServices.GetClients, Function(e As Services.TimeLive.Clients.Client) e.ClientName = element.QB_Name) Then
-                            My.Forms.MAIN.History("Customer " + element.QB_Name + " in both TimeLive and Quickbooks added to local database", "i")
+                            ' TimeLive has a data entry with the same name, treat as the same and add into DB
                             Dim CustomerAdapter As New QB_TL_IDsTableAdapters.CustomersTableAdapter()
-                            CustomerAdapter.Insert(element.QB_ID, objClientServices.GetClientIdByName(element.QB_Name), element.QB_Name, element.QB_Name)
+                            Dim QB_ID_fromDB As QB_TL_IDs.CustomersDataTable = CustomerAdapter.GetCorrespondingQB_IDbyQB_Name(element.QB_Name)
+                            If QB_ID_fromDB.Count = 0 Then
+                                ' No record of the data entry in our data table, then add it
+                                CustomerAdapter.Insert(element.QB_ID, objClientServices.GetClientIdByName(element.QB_Name), element.QB_Name, element.QB_Name)
+                                My.Forms.MAIN.History("Customer '" + element.QB_Name + "' found in both TimeLive and Quickbooks added to local database", "i")
+                            Else
+                                ' Record exists just with an incorrect QB ID, so update it
+                                Dim correctTL_ID As String = QB_ID_fromDB(0)(1)
+                                If correctTL_ID IsNot Nothing Then
+                                    CustomerAdapter.UpdateQBID(element.QB_ID, Trim(correctTL_ID))
+                                    My.Forms.MAIN.History("Updated QuickBooks ID of Customer '" + element.QB_Name + "' in local database", "i")
+                                End If
+                            End If
                             Continue For ' Already in TL, so just continue to next element in QB
                         End If
                     End If

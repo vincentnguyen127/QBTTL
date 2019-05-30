@@ -246,7 +246,7 @@ Public Class ChargingRelationship
     ''' 5 -> Item/SubItem
     ''' </param>
     ''' <returns></returns>
-    Private Function QBData(ByVal attribute As Integer) As DataTable
+    Protected Function QBData(ByVal attribute As Integer) As DataTable
         Dim attrQBData As New DataTable
         ' Create four typed columns in the DataTable.
         attrQBData.Columns.Add("QB_Name", GetType(String))
@@ -315,28 +315,28 @@ Public Class ChargingRelationship
         Return attrQBData
     End Function
 
-    Private Function QBEmployees() As DataTable
+    Protected Function QBEmployees() As DataTable
         Dim EmployeesQBData As DataTable = QBData(1)
         Return EmployeesQBData
     End Function
 
-    Private Function QB1099Vendors() As DataTable
+    Protected Function QB1099Vendors() As DataTable
         Dim VendorsQBData As DataTable = QBData(2)
         Return VendorsQBData
     End Function
 
-    Private Function QBPayrollItems() As DataTable
+    Public Function QBPayrollItems() As DataTable
         Dim PayrollItemsQBData As DataTable = QBData(3)
         Return PayrollItemsQBData
     End Function
 
-    Private Function QBJobsSubJobs() As DataTable
+    Protected Function QBJobsSubJobs() As DataTable
         Dim JobsSubJobsQBData As DataTable = QBData(4)
         Return JobsSubJobsQBData
     End Function
 
     ' Changed to public since used in TLtoQB_TimeEntry
-    Private Function QBItemsSubItems() As DataTable
+    Public Function QBItemsSubItems() As DataTable
         Dim ItemsSubItemsQBData As DataTable = QBData(5)
         Return ItemsSubItemsQBData
     End Function

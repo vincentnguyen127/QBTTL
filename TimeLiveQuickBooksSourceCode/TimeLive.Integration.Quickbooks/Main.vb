@@ -60,11 +60,9 @@ Public Class MAIN
                     p_AccountId = newForm.ReturnValue2
                     LoggedIn = True
                     History("You are logged into TimeLive", "n")
-                    History("", "n")
                 Else
                     LoggedIn = False
                     History("You will need to log into TimeLive before using this utility.", "n")
-                    History("", "n")
                 End If
             End Using
 
@@ -108,7 +106,7 @@ Public Class MAIN
 
         Catch EX As Exception
             MsgBox(EX.Message)
-            Me.Close()
+            Exitbtn_Click() ' Close
         End Try
     End Sub
 
@@ -149,6 +147,7 @@ Public Class MAIN
 
         'for type Customers, Employees, Vendors, Jobs/Subjobs, and Items/Subitems
         If Type >= 10 And Type < 15 Then
+            My.Forms.MAIN.History("Refreshing", "n")
             ReadItems = display_UI()
         End If
 
@@ -550,10 +549,6 @@ Public Class MAIN
         CurrentSystemSync.GetTime()
     End Sub
 
-    Friend Sub History(v As Object)
-        Throw New NotImplementedException()
-    End Sub
-
     Private Function display_TimeEntry_UI() Handles RefreshTimeTransfer.Click
         If Not LoggedIn Then
             Return 0
@@ -650,9 +645,7 @@ Public Class MAIN
         Return items_read
     End Function
 
-    Private Function display_UI() Handles QBtoTLCustomerRadioButton.CheckedChanged, QBtoTLEmployeeRadioButton.CheckedChanged,
-                                           QBtoTLVendorRadioButton.CheckedChanged, QBtoTLJobItemRadioButton.CheckedChanged,
-                                           RefreshCustomers.Click, RefreshEmployees.Click, RefreshVendors.Click, RefreshJobsOrItems.Click
+    Private Function display_UI(Optional sender As Object = Nothing, Optional e As EventArgs = Nothing)
         If Not LoggedIn Then
             Return 0
         End If
@@ -990,6 +983,18 @@ Public Class MAIN
         Return readItems
     End Function
 
+    Private Function refresh_display_UI(sender As Object, e As EventArgs) Handles RefreshCustomers.Click, RefreshEmployees.Click, RefreshVendors.Click, RefreshJobsOrItems.Click,
+                                                                                  QBtoTLCustomerRadioButton.CheckedChanged, QBtoTLEmployeeRadioButton.CheckedChanged,
+                                                                                  QBtoTLVendorRadioButton.CheckedChanged, QBtoTLJobItemRadioButton.CheckedChanged
+        Try
+            My.Forms.MAIN.History("Refreshing", "n")
+        Catch ex As Exception
+            ' Need this to catch exception on start-up: harmless and does nothing
+        End Try
+
+        Return display_UI()
+    End Function
+
     Private Sub Time_Entry_Times()
         DataGridView2.AutoSize = False
         DataGridView2.AutoSizeRowsMode = False
@@ -1074,6 +1079,47 @@ Public Class MAIN
         'End If
     End Sub
 
+    ''' <summary>
+    ''' Connects to QuickBooks to get a dictionary with key value pairs being {Payroll_Id: Payroll_Name}
+    ''' </summary>
+    ''' <returns>A Dictionary with keys being Payroll IDs and values being the corresponding Payroll Name</returns>
+    Private Function Payroll_IDName_Dict() As Dictionary(Of String, String)
+        Dim Payroll_Dict As Dictionary(Of String, String) = New Dictionary(Of String, String)
+
+        Dim chargRel As New ChargingRelationship
+        Dim Payroll_DataTable As DataTable = chargRel.QBPayrollItems()
+
+        For Each row As DataRow In Payroll_DataTable.Rows
+            Payroll_Dict.Add(row(1), row(0))
+        Next
+
+        Return Payroll_Dict
+    End Function
+
+    ''' <summary>
+    ''' Connects to QuickBooks to get a dictionary with key value pairs being {Item_Id: Item_Name}
+    ''' </summary>
+    ''' <returns>A Dictionary with keys being Item/SubItem IDs and values being the corresponding Item/SubItem Name</returns>
+    Private Function ItemSubItem_IDName_Dict() As Dictionary(Of String, String)
+        Dim Item_Dict As Dictionary(Of String, String) = New Dictionary(Of String, String)
+
+        Dim chargRel As New ChargingRelationship
+        Dim Item_DataTable As DataTable = chargRel.QBItemsSubItems()
+
+        For Each row As DataRow In Item_DataTable.Rows
+            Item_Dict.Add(row(1), row(0))
+        Next
+
+        Return Item_Dict
+    End Function
+
+    ''' <summary>
+    ''' Displays the Time Entries for the selected employees within the specified time range
+    ''' - White rows correspond to approved time entries
+    ''' - Gray rows correspond to non-approved time entries
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
     Private Sub btnUpdateTimeTransfer_Click(sender As Object, e As EventArgs) Handles UpdateTimeTransfer.Click
         If Not LoggedIn Then
             Exit Sub
@@ -1084,19 +1130,20 @@ Public Class MAIN
         TimeEntrySelectAll.Checked = True
         Reset_Checked_SelectedEmployee_Value(selectedEmployeeData)
         Set_Selected_SelectedEmployee()
-        'Dim IntUI_2ndSelect As New IntUI_2ndSelect
         Time_Entry_Times()
-        'IntUI_2ndSelect.init_vars(p_token, p_AccountId, selectedEmployeeData, CDate(dpStartDate.Value).Date, CDate(dpEndDate.Value).Date.ToString)
+        TimeEntryData.clear()
         Dim StartDate As DateTime = CDate(dpStartDate.Value).Date
         Dim endDate As DateTime = CDate(dpEndDate.Value).Date
-        TimeEntryData.clear()
+
+        Dim payroll_id_names As Dictionary(Of String, String) = Payroll_IDName_Dict()
+        Dim items_id_names As Dictionary(Of String, String) = ItemSubItem_IDName_Dict()
 
         ProgressBar1.Maximum = selectedEmployeeData.NoItems
         For Each element As TLtoQB_TimeEntry.Employee In selectedEmployeeData.DataArray
             With element
                 If element.RecSelect = True Then
                     History("Processing: " + element.FullName.ToString(), "n")
-                    LoadSelectedTimeEntryItems(element.AccountEmployeeId, element.FullName, DataGridView2, StartDate, endDate, True)
+                    LoadSelectedTimeEntryItems(element.AccountEmployeeId, element.FullName, DataGridView2, StartDate, endDate, True, payroll_id_names, items_id_names)
                     'deselect as not to load again
                     element.RecSelect = False
                     'Exit For
@@ -1117,6 +1164,11 @@ Public Class MAIN
         My.Settings.Save()
     End Sub
 
+    ''' <summary>
+    ''' Transfers the selected customers, employees, vendors, jobs/subjobs or item/subitems, from TL to QB, or QB to TL depending on which is selected
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
     Private Sub btnTransfer_Click(sender As Object, e As EventArgs) Handles btnTransfer.Click
         If Not LoggedIn Then
             Exit Sub
@@ -1219,6 +1271,7 @@ Public Class MAIN
 
         Else
             ' Refresh after processing
+            My.Forms.MAIN.History("Refreshing after processing", "n")
             display_UI()
         End If
 
@@ -1229,6 +1282,14 @@ Public Class MAIN
         ProgressBar1.Value = 0
     End Sub
 
+    ''' <summary>
+    ''' Gets the total number of hours worked for the employee with the given ID from startDate to endDate
+    ''' </summary>
+    ''' <param name="emplID"></param>
+    ''' <param name="TLTimeTracker"></param>
+    ''' <param name="startDate"></param>
+    ''' <param name="endDate"></param>
+    ''' <returns></returns>
     Private Function GetTotalHours(emplID As String, TLTimeTracker As Services.TimeLive.TimeEntries.TimeEntries,
                                   startDate As DateTime, endDate As DateTime) As Integer
         Dim times() As Object = TLTimeTracker.GetTimeEntriesByEmployeeIdAndDateRange(emplID, startDate, endDate)
@@ -1298,21 +1359,18 @@ Public Class MAIN
         ProgressBar1.Maximum = DataGridView.Rows.Count
         For Each row As DataGridViewRow In DataGridView.Rows
             If row.Cells("Date").Value IsNot Nothing And row.Cells("ckBox").Value And TimeEntryData.NoItems Then
-                Dim i = 0
                 Dim full_name As String = row.Cells("Task").Value.ToString()
-
                 TimeEntryData.DataArray.ForEach(
                     Sub(timeentry)
                         If (timeentry.EmployeeName = row.Cells("Employee").Value.ToString And
-                           timeentry.CustomerName + MAIN.colonReplacer + timeentry.ProjectName + MAIN.colonReplacer + timeentry.TaskWithParent = full_name And
+                           timeentry.CustomerName + MAIN.colonReplacer + timeentry.ProjectName + MAIN.colonReplacer + timeentry.TaskWithParent.Replace(":", MAIN.colonReplacer) = full_name And
                            timeentry.TimeEntryDate.ToString("MM/dd/yyyy") = row.Cells("Date").Value.ToString) Then
-                            i += 1
+                            History("Selected for processing: " + row.Cells("Employee").Value.ToString + " with task " + row.Cells("Task").Value.ToString + " on " + row.Cells("Date").Value.ToString, "n")
                             timeentry.RecSelect = True
                         End If
                     End Sub
                 )
                 'TimeEntryData.DataArray(row.Index).RecSelect = True
-                History("Selected for processing: " + row.Cells("Employee").Value.ToString + " with task " + row.Cells("Task").Value.ToString + " on " + row.Cells("Date").Value.ToString, "n")
                 ProgressBar1.Value += 1
             End If
         Next
@@ -1439,7 +1497,9 @@ Public Class MAIN
         End If
     End Sub
 
-    Public Sub LoadSelectedTimeEntryItems(AccountEmployeeId As String, EmployeeName As String, ByRef DataGridView As DataGridView, ByVal StartDate As DateTime, ByVal EndDate As DateTime, Optional combine As Boolean = False)
+    Public Sub LoadSelectedTimeEntryItems(AccountEmployeeId As String, EmployeeName As String, ByRef DataGridView As DataGridView,
+                                          ByVal StartDate As DateTime, ByVal EndDate As DateTime, Optional combine As Boolean = False,
+                                          Optional payroll_dict As Dictionary(Of String, String) = Nothing, Optional item_dict As Dictionary(Of String, String) = Nothing)
         Dim temp As New TLtoQB_TimeEntry.TimeEntryDataStructureQB
 
         Dim emplTLData As TLtoQB_TimeEntry.TimeEntryDataStructureQB = timeentry_tltoqb.GetTimeEntryTLData(AccountEmployeeId, StartDate, EndDate, Me, p_token, False)
@@ -1458,8 +1518,10 @@ Public Class MAIN
 
                     Dim TotalHours As Double = TotalTimeToHours(.TotalTime)
 
-                    Dim payrollDisp As String = .PayrollItem 'If(.PayrollName Is Nothing, .PayrollItem, .PayrollName)
-                    Dim ServiceDisp As String = If(.ServiceName Is Nothing, .ServiceItem, .ServiceName)
+                    Dim payrollDisp As String = If(payroll_dict Is Nothing, .PayrollItem, If(payroll_dict.ContainsKey(.PayrollItem), payroll_dict(.PayrollItem), .PayrollItem))
+
+                    Dim ServiceDisp As String = If(item_dict Is Nothing, If(.ServiceName Is Nothing, .ServiceItem, .ServiceName),
+                                                                         If(item_dict.ContainsKey(.ServiceItem), item_dict(.ServiceItem), .ServiceItem))
 
                     ' Check if a time entry has yet to be approved
                     Dim TimeEntryApproved As Boolean = TL_TimeEntries.GetTimeApproval(AccountEmployeeId, .TimeEntryDate)
@@ -1720,7 +1782,7 @@ Public Class MAIN
         StatusWindow.Clear()
     End Sub
 
-    Private Sub Exitbtn_Click(sender As Object, e As EventArgs) Handles Exitbtn.Click
+    Private Sub Exitbtn_Click(Optional sender As Object = Nothing, Optional e As EventArgs = Nothing) Handles Exitbtn.Click
         My.Forms.MAIN.QUITQBSESSION() ' Close QB session before exiting
         My.Forms.MAIN.TIMERTHREADSESSION() ' Close TimerThread session before exiting
         Me.Close()
@@ -1742,7 +1804,7 @@ Public Class MAIN
 
     End Sub
 
-    Private Sub display_UI(sender As Object, e As EventArgs) Handles RefreshVendors.Click, RefreshJobsOrItems.Click, RefreshEmployees.Click, RefreshCustomers.Click, QBtoTLVendorRadioButton.CheckedChanged, QBtoTLJobItemRadioButton.CheckedChanged, QBtoTLEmployeeRadioButton.CheckedChanged, QBtoTLCustomerRadioButton.CheckedChanged
+    Private Sub CustomerSyncDirection_Enter(sender As Object, e As EventArgs) Handles CustomerSyncDirection.Enter
 
     End Sub
 End Class
