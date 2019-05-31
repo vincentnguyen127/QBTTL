@@ -220,6 +220,9 @@ Public Class TLtoQB_TimeEntry
                                    ByVal token As String, MainForm As MAIN, UI As Boolean) As Integer
         'sets status bar. If no, UI skip
         If UI Then
+            If MsgBox("Do you want to transfer times?", MsgBoxStyle.YesNo, "Warning!") = MsgBoxResult.No Then
+                Return 0
+            End If
             My.Forms.MAIN.ProgressBar1.Maximum = objData.DataArray.Count
             My.Forms.MAIN.ProgressBar1.Value = 0
         End If
@@ -657,7 +660,7 @@ Public Class TLtoQB_TimeEntry
 
     Public Function GetClass(ByVal objTimeEntry As Services.TimeLive.TimeEntries.TimeEntry) As String
         Dim TimeEntryClass As String = "<None>"
-        My.Forms.MAIN.History("Class: " + My.Settings.QBClass, "N")
+        My.Forms.MAIN.History("Class: " + My.Settings.QBClass, "n")
 
         With objTimeEntry
             Dim QBSelectedClass_AppSettings As Integer = My.Settings.QBClass

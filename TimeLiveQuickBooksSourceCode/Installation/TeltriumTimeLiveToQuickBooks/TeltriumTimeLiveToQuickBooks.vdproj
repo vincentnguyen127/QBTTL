@@ -15,14 +15,14 @@
     {
         "Entry"
         {
-        "MsmKey" = "8:_34F4A7CC5DAE2C278C84531C2F62E135"
+        "MsmKey" = "8:_25C076EA91D40F6308B64169C206C8AD"
         "OwnerKey" = "8:_FF7293944CDF4E30915AC2511D214A99"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_570E587BFB26575755DBF6C2F52762CE"
-        "OwnerKey" = "8:_34F4A7CC5DAE2C278C84531C2F62E135"
+        "OwnerKey" = "8:_25C076EA91D40F6308B64169C206C8AD"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -52,7 +52,7 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_34F4A7CC5DAE2C278C84531C2F62E135"
+        "OwnerKey" = "8:_25C076EA91D40F6308B64169C206C8AD"
         "MsmSig" = "8:_UNDEFINED"
         }
     }
@@ -150,14 +150,14 @@
         }
         "File"
         {
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_34F4A7CC5DAE2C278C84531C2F62E135"
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_25C076EA91D40F6308B64169C206C8AD"
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
             "AssemblyAsmDisplayName" = "8:Interop.QBFC13Lib, Version=1.0.0.0, Culture=neutral, processorArchitecture=x86"
                 "ScatterAssemblies"
                 {
-                    "_34F4A7CC5DAE2C278C84531C2F62E135"
+                    "_25C076EA91D40F6308B64169C206C8AD"
                     {
                     "Name" = "8:Interop.QBFC13Lib.dll"
                     "Attributes" = "3:512"
@@ -310,7 +310,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:TeltriumTimeLiveToQuickBooks"
         "ProductCode" = "8:{55D4FC3A-C6BA-4437-8AAD-27BF32055D83}"
-        "PackageCode" = "8:{221170B4-4F9C-4F54-B223-F813008C7FF6}"
+        "PackageCode" = "8:{620DC9A1-B917-48B5-8496-C9F601731980}"
         "UpgradeCode" = "8:{E8B6CFCA-D71F-4602-A017-1E150F8773A6}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
