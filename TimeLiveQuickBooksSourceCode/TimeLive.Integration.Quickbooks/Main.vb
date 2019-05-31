@@ -208,7 +208,7 @@ Public Class MAIN
     Public Sub VALIDATEQBSESSION()
         'Dim SESSMANAGER As QBSessionManager ' Made global
         Try
-            SESSMANAGER = New QBSessionManagerClass()
+            SESSMANAGER = New QBSessionManager()
             'SESSMANAGER.OpenConnection("APP", "TIMELIVE QUICKBOOKS") 
             SESSMANAGER.OpenConnection("App", "Timelive Quickbooks")
             SESSMANAGER.BeginSession("", ENOpenMode.omDontCare)
@@ -618,6 +618,7 @@ Public Class MAIN
 
         Dim employees As New DataTable
         employees = objEmployeeServices.GetEmployeesData
+        Dim TL_TimeEntries As New TimeLiveDataSetTableAdapters.AccountEmployeeTimeEntryPeriodTableAdapter
 
         For Each row As DataRow In employees.Rows
             selectedEmployeeData.NoItems += 1
@@ -625,7 +626,14 @@ Public Class MAIN
             Dim emplName = row("FullName")
             Dim hoursWorked As Double = GetTotalHours(emplID, objTimeTrackingServices, dpStartDate.Value, dpEndDate.Value)
             selectedEmployeeData.DataArray.Add(New TLtoQB_TimeEntry.Employee(True, row("FullName"), emplID, hoursWorked))
-            DataGridView1.Rows.Add(True, emplName, hoursWorked)
+
+            Dim datagrid_row As DataGridViewRow = New DataGridViewRow()
+            datagrid_row.CreateCells(DataGridView1)
+            datagrid_row.SetValues(True, emplName, hoursWorked)
+            If TL_TimeEntries.GetTotalNumUnapprovedEntries(emplID, dpStartDate.Value, dpEndDate.Value) Then
+                datagrid_row.DefaultCellStyle.BackColor = Color.DarkGray
+            End If
+            DataGridView1.Rows.Add(datagrid_row) '.Add(True, emplName, hoursWorked)
         Next
         'End If
 
@@ -1543,7 +1551,6 @@ Public Class MAIN
         'Make all non-approved rows have a check box that cannot be selected
         For Each row As DataGridViewRow In DataGridView.Rows
             If row.Cells("ckBox").Value = False And Not row.Index = DataGridView.Rows.Count - 1 Then
-                'row.Cells("ckBox").Style.BackColor = Color.Black
                 row.Cells("ckBox").ReadOnly = True
                 row.DefaultCellStyle.BackColor = Color.DarkGray
             End If
