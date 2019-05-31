@@ -220,9 +220,6 @@ Public Class TLtoQB_TimeEntry
                                    ByVal token As String, MainForm As MAIN, UI As Boolean) As Integer
         'sets status bar. If no, UI skip
         If UI Then
-            If MsgBox("Do you want to transfer times?", MsgBoxStyle.YesNo, "Warning!") = MsgBoxResult.No Then
-                Return 0
-            End If
             My.Forms.MAIN.ProgressBar1.Maximum = objData.DataArray.Count
             My.Forms.MAIN.ProgressBar1.Value = 0
         End If

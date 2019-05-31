@@ -30,26 +30,31 @@ Public Class Sync_TLtoQB_Relationships
 
             For Each row As DataRow In TLTaskRelationships.Select
                 ' Note: NumSubTasks assumes TL_Name in Tasks DB formatted - Customer:Job:SubJob:SubSubJob:...
-
                 ' Note: Checks number subtasks based on first entry that has the corresponding TimeLive ID
                 '       If multiple jobs have same TL_ID stored, will get the wrong name and thus search for the wrong sub task
-                Dim job_id As String = row(2).ToString.Trim
-                Dim employee_id As String = row(3).ToString.Trim
-                Dim numSubTasks As Integer = TLJobAdapter.NumSubTasks(job_id)
-                If numSubTasks = 0 Then
-                    Dim job As String = TLJobAdapter.GetNamefromTLID(job_id)
-                    Dim employee As String = TLEmployeeAdapter.GetNamefromTLID(employee_id)
+                Dim job_id As String = row(2).ToString
+                If job_id IsNot Nothing Then
+                    job_id = job_id.Trim
+                End If
+                Dim employee_id As String = row(3).ToString
+                If employee_id IsNot Nothing Then
+                    employee_id = employee_id.Trim
+                End If
 
-                    Dim create As Boolean = employee IsNot Nothing And job IsNot Nothing
-                    If UI And create Then
-                        employee = employee.Trim
-                        job = job.Trim
-                        create = MsgBox("Add new relationship between" + vbCrLf + "employee: " + employee + vbCrLf + "task: " +
-                                        job + vbCrLf + " from TimeLive?", MsgBoxStyle.YesNo, "Warning!") = MsgBoxResult.Yes
+                Dim numSubTasks As Integer
+                Try
+                    numSubTasks = TLJobAdapter.NumSubTasks(job_id)
+                Catch ex As Exception
+                    numSubTasks = 1 ' If exception getting num sub tasks, treat as 1 so that we do not add relationship
+                End Try
+
+                ' Only add relationships to non-parent projects/tasks
+                If numSubTasks = 0 Then
+                    ' Returns -1 when user selected Cancel, thus concluding the addition of any other relationships
+                    If Add_Relationship(chargingRelationshipAdapter, job_id, employee_id) = -1 Then
+                        Exit For
                     End If
-                    If create Then
-                        Add_Relationship(chargingRelationshipAdapter, row)
-                    End If
+                    'End If
                 End If
             Next
         Catch ex As Exception
@@ -65,10 +70,17 @@ Public Class Sync_TLtoQB_Relationships
     ''' Adds the relationship between an employee and job within the given row into the chargining relationships table
     ''' </summary>
     ''' <param name="chargingRelationshipAdapter"></param>
-    ''' <param name="row">Row with an employee and job/subjob</param>
-    Sub Add_Relationship(ByRef chargingRelationshipAdapter As QB_TL_IDsTableAdapters.ChargingRelationshipsTableAdapter, ByVal row As DataRow)
-        Dim TLProjectID As String = row(2).ToString ' AccountProjectID
-        Dim TLEmployeeID As String = row(3).ToString ' AccountEmployeeID
+    ''' <param name="TLProjectID">ID of the project/task in TimeLive</param>
+    ''' <param name="TLEmployeeID">ID of the employee in TimeLive</param>
+    ''' <returns>
+    ''' -1 if cancel, 0 if relationship not added but should have, 
+    ''' 1 if relationship was added or already existed
+    ''' </returns>
+    Function Add_Relationship(ByRef chargingRelationshipAdapter As QB_TL_IDsTableAdapters.ChargingRelationshipsTableAdapter,
+                         ByVal TLProjectID As String, ByVal TLEmployeeID As String, Optional UI As Boolean = True) As Integer
+        If TLEmployeeID Is Nothing Or TLProjectID Is Nothing Then
+            Return 0
+        End If
 
         Dim EmployeeAdapter As New QB_TL_IDsTableAdapters.EmployeesTableAdapter
         Dim VendorAdapter As New QB_TL_IDsTableAdapters.VendorsTableAdapter
@@ -83,15 +95,13 @@ Public Class Sync_TLtoQB_Relationships
         Dim Job_SubjobAdapter As New QB_TL_IDsTableAdapters.Jobs_SubJobsTableAdapter
         Dim QBJobSubJobID As String = Job_SubjobAdapter.GetCorrespondingQB_IDfromTL_ID(TLProjectID)
 
-        Dim numRel As Integer = chargingRelationshipAdapter.NumEmployeeJobRelationships(QBEmployeeID, QBJobSubJobID)
-
         ' If the relationship in TL is not in the ChargingRelationship table, add it
-        If Not (QBEmployeeID Is Nothing Or QBJobSubJobID Is Nothing) Then
+        If QBEmployeeID IsNot Nothing And QBJobSubJobID IsNot Nothing Then
 
             QBEmployeeID = QBEmployeeID.Trim
             QBJobSubJobID = QBJobSubJobID.Trim
 
-            Dim JobSubJobName As String = Job_SubjobAdapter.GetNamefromID(QBJobSubJobID).Trim
+            Dim JobSubJobName As String = Job_SubjobAdapter.GetNamefromTLID(TLEmployeeID).Trim
             Dim EmployeeName As String = EmployeeAdapter.GetNamefromID(QBEmployeeID)
             If EmployeeName Is Nothing Then
                 EmployeeName = VendorAdapter.GetNamefromID(QBEmployeeID).Trim
@@ -99,12 +109,37 @@ Public Class Sync_TLtoQB_Relationships
                 EmployeeName = EmployeeName.Trim
             End If
 
+            Dim numRel As Integer = chargingRelationshipAdapter.NumEmployeeJobRelationships(QBEmployeeID, QBJobSubJobID)
+
+            ' If there is no current relationship, ask them before adding when UI is present
             If numRel = 0 Then
-                My.Forms.MAIN.History("Adding Time Relationship between " + EmployeeName + " and " + JobSubJobName + " to local database", "N")
-                chargingRelationshipAdapter.AddEmployeeJobRelationship(QBEmployeeID, QBJobSubJobID)
+                Dim msg_resp As MsgBoxResult
+                If UI Then
+                    msg_resp = MsgBox("Add new relationship between" + vbCrLf + "employee: " + EmployeeName + vbCrLf + "task: " +
+                                        JobSubJobName + vbCrLf + " from TimeLive?", MsgBoxStyle.YesNoCancel, "Warning!")
+                    If msg_resp = MsgBoxResult.Cancel Then
+                        Return -1
+                    End If
+                End If
+
+                If Not UI Or msg_resp = MsgBoxResult.Yes Then
+                    My.Forms.MAIN.History("Adding Time Relationship between " + EmployeeName + " and " + JobSubJobName + " to local database", "N")
+                    Try
+                        chargingRelationshipAdapter.AddEmployeeJobRelationship(QBEmployeeID, QBJobSubJobID)
+                    Catch ex As Exception
+                        My.Forms.MAIN.History("Exception when adding Relationship: " + ex.ToString, "N")
+                        Return 0
+                    End Try
+                    Return 1
+                Else
+                    Return 0
+                End If
             Else
                 My.Forms.MAIN.History(If(numRel > 1, "More than one ", "One ") + " relationship" + " between " + EmployeeName + " and " + JobSubJobName + " already exists", "i")
+                Return 1
             End If
+        Else
+            My.Forms.MAIN.History("QuickBooks Job ID or QuickBooks Employee ID was invalid", "n")
         End If
-    End Sub
+    End Function
 End Class

@@ -338,12 +338,17 @@ Used to sort self-referenced table's rows
  Sync the employee data from QB. Print out employees that are in TL but not QB
  </summary>
 </member>
-<member name="M:TimeLive.Quickbooks.Integrator.Sync_TLtoQB_Relationships.Add_Relationship(TimeLive.Quickbooks.Integrator.QB_TL_IDsTableAdapters.ChargingRelationshipsTableAdapter@,System.Data.DataRow)">
+<member name="M:TimeLive.Quickbooks.Integrator.Sync_TLtoQB_Relationships.Add_Relationship(TimeLive.Quickbooks.Integrator.QB_TL_IDsTableAdapters.ChargingRelationshipsTableAdapter@,System.String,System.String,System.Boolean)">
  <summary>
  Adds the relationship between an employee and job within the given row into the chargining relationships table
  </summary>
  <param name="chargingRelationshipAdapter"></param>
- <param name="row">Row with an employee and job/subjob</param>
+ <param name="TLProjectID">ID of the project/task in TimeLive</param>
+ <param name="TLEmployeeID">ID of the employee in TimeLive</param>
+ <returns>
+ -1 if cancel, 0 if relationship not added but should have, 
+ 1 if relationship was added or already existed
+ </returns>
 </member>
 <member name="M:TimeLive.Quickbooks.Integrator.Sync_TLtoQB_Vendor.SyncVendorData(System.String,TimeLive.Quickbooks.Integrator.MAIN,System.Boolean,System.Collections.Generic.List{System.String})">
  <summary>

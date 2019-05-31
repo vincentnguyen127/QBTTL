@@ -625,12 +625,14 @@ Public Class MAIN
             Dim emplID = row("AccountEmployeeId")
             Dim emplName = row("FullName")
             Dim hoursWorked As Double = GetTotalHours(emplID, objTimeTrackingServices, dpStartDate.Value, dpEndDate.Value)
+            Dim unapproved_entries As Integer = TL_TimeEntries.GetTotalNumUnapprovedEntries(emplID, dpStartDate.Value, dpEndDate.Value)
             selectedEmployeeData.DataArray.Add(New TLtoQB_TimeEntry.Employee(True, row("FullName"), emplID, hoursWorked))
 
             Dim datagrid_row As DataGridViewRow = New DataGridViewRow()
             datagrid_row.CreateCells(DataGridView1)
             datagrid_row.SetValues(True, emplName, hoursWorked)
-            If TL_TimeEntries.GetTotalNumUnapprovedEntries(emplID, dpStartDate.Value, dpEndDate.Value) Then
+
+            If unapproved_entries Then
                 datagrid_row.DefaultCellStyle.BackColor = Color.DarkGray
             End If
             DataGridView1.Rows.Add(datagrid_row) '.Add(True, emplName, hoursWorked)
@@ -1269,14 +1271,15 @@ Public Class MAIN
 
         'When processing Time Transfer
         If Type = 20 Then
-            Reset_Checked_TimeEntry_Value(TimeEntryData)
-            Set_Selected_TimeEntry(DataGridView2)
+            If MsgBox("Do you want to transfer times?", MsgBoxStyle.YesNo, "Warning!") = MsgBoxResult.Yes Then
+                Reset_Checked_TimeEntry_Value(TimeEntryData)
+                Set_Selected_TimeEntry(DataGridView2)
 
-            ' Transfer Time Entry data from TL to QB
-            ItemsProcessed = timeentry_tltoqb.TLTransferTimeToQB(TimeEntryData, p_token, Me, True)
-            'IntUI_2ndSelect.time_transfer(DataGridView2, Me)
-            History(ItemsProcessed.ToString() + If(ItemsProcessed = 1, " Time Entry was", " Time Entries were") + " created or updated", "i")
-
+                ' Transfer Time Entry data from TL to QB
+                ItemsProcessed = timeentry_tltoqb.TLTransferTimeToQB(TimeEntryData, p_token, Me, True)
+                'IntUI_2ndSelect.time_transfer(DataGridView2, Me)
+                History(ItemsProcessed.ToString() + If(ItemsProcessed = 1, " Time Entry was", " Time Entries were") + " created or updated", "i")
+            End If
         Else
             ' Refresh after processing
             My.Forms.MAIN.History("Refreshing after processing", "n")
@@ -1364,21 +1367,33 @@ Public Class MAIN
     End Sub
 
     Private Sub Set_Selected_TimeEntry(ByRef DataGridView As DataGridView)
+        Dim chargingRelAdapter As New QB_TL_IDsTableAdapters.ChargingRelationshipsTableAdapter
+        Dim emplAdapter As New QB_TL_IDsTableAdapters.EmployeesTableAdapter
+        Dim jobAdapter As New QB_TL_IDsTableAdapters.Jobs_SubJobsTableAdapter
         ProgressBar1.Maximum = DataGridView.Rows.Count
         For Each row As DataGridViewRow In DataGridView.Rows
             If row.Cells("Date").Value IsNot Nothing And row.Cells("ckBox").Value And TimeEntryData.NoItems Then
-                Dim full_name As String = row.Cells("Task").Value.ToString()
+                Dim fullTaskName As String = row.Cells("Task").Value.ToString()
+                ' Checks for a time entry in our data array which has the correct employee, job/subjob, and date
                 TimeEntryData.DataArray.ForEach(
                     Sub(timeentry)
-                        If (timeentry.EmployeeName = row.Cells("Employee").Value.ToString And
-                           timeentry.CustomerName + MAIN.colonReplacer + timeentry.ProjectName + MAIN.colonReplacer + timeentry.TaskWithParent.Replace(":", MAIN.colonReplacer) = full_name And
-                           timeentry.TimeEntryDate.ToString("MM/dd/yyyy") = row.Cells("Date").Value.ToString) Then
+                        Dim jobName As String = timeentry.CustomerName + MAIN.colonReplacer + timeentry.ProjectName +
+                                                MAIN.colonReplacer + timeentry.TaskWithParent.Replace(":", MAIN.colonReplacer)
+
+                        If (timeentry.EmployeeName = row.Cells("Employee").Value.ToString And jobName = fullTaskName And
+                          timeentry.TimeEntryDate.ToString("MM/dd/yyyy") = row.Cells("Date").Value.ToString) Then
                             History("Selected for processing: " + row.Cells("Employee").Value.ToString + " with task " + row.Cells("Task").Value.ToString + " on " + row.Cells("Date").Value.ToString, "n")
-                            timeentry.RecSelect = True
+                            Dim empID As String = emplAdapter.GetCorrespondingTL_IDbyTL_Name(timeentry.EmployeeName)
+                            Dim jobID As String = jobAdapter.GetCorrespondingTL_IDbyTL_Name(jobName.Replace(MAIN.colonReplacer, ":"))
+                            ' Add the relationship between employee and job for time entry if not present
+                            Dim syncRel As Sync_TLtoQB_Relationships = New Sync_TLtoQB_Relationships()
+                            ' Only select time entry when there is a charging relationship associated with it
+                            If syncRel.Add_Relationship(chargingRelAdapter, jobID, empID) > 0 Then
+                                timeentry.RecSelect = True
+                            End If
                         End If
                     End Sub
                 )
-                'TimeEntryData.DataArray(row.Index).RecSelect = True
                 ProgressBar1.Value += 1
             End If
         Next
@@ -1794,7 +1809,7 @@ Public Class MAIN
     End Sub
 
     Private Sub btn_systemsync_Click(sender As Object, e As EventArgs) Handles btn_systemsync.Click
-        If MsgBox("Are you to perform a sync?", MsgBoxStyle.YesNo, "Warning!") = MsgBoxResult.Yes Then ' If you select yes in the MsgBox then it will close the window
+        If MsgBox("Would you like to perform a sync from TimeLive?", MsgBoxStyle.YesNo, "Warning!") = MsgBoxResult.Yes Then ' If you select yes in the MsgBox then it will close the window
             Dim CurrentSystemSync As New CurrentSystemSync
             CurrentSystemSync.PassToken(p_token, p_AccountId)
         End If
