@@ -1555,8 +1555,6 @@ Public Class MAIN
                 row.DefaultCellStyle.BackColor = Color.DarkGray
             End If
         Next
-
-        'MsgBox(" at the end " + TimeEntryData.NoItems.ToString)
     End Sub
 
     Private Function TotalTimeToHours(TotalTime As Date) As Double
