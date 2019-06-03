@@ -132,8 +132,9 @@
         EmailPasswordTextBox.Text = My.Settings.EmailPassword
         HostTextBox.Text = My.Settings.EmailHost
         PortTextBox.Text = My.Settings.EmailPort
-        HostTextBox.Text = My.Settings.EmailHost
         SSLCheckBox.Checked = If(My.Settings.SSLEncryption = "", True, My.Settings.SSLEncryption)
+        EmployeeMessageTextBox.Text = My.Settings.MessageToEmployee
+        SupervisorMessageTextBox.Text = My.Settings.MessageToSupervisor
         ShowEmailPasswordCheckBox.Checked = False
     End Sub
 
@@ -195,6 +196,8 @@
         My.Settings.SSLEncryption = SSLCheckBox.Checked
         My.Settings.EmailHost = HostTextBox.Text
         My.Settings.EmailPort = PortTextBox.Text
+        My.Settings.MessageToEmployee = EmployeeMessageTextBox.Text
+        My.Settings.MessageToSupervisor = SupervisorMessageTextBox.Text
 
         My.Settings.Save()
         Me.DialogResult = DialogResult.OK

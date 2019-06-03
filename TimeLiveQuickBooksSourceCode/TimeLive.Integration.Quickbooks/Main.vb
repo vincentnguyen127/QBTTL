@@ -1045,7 +1045,7 @@ Public Class MAIN
         DataGridView2.Columns.Clear()
 
         UpdateTimeTransfer.Visible = True
-        'SendEmailsButton.Visible = True
+        SendEmailsButton.Visible = True
 
         ' load grid 2
         Dim col1 As New DataGridViewCheckBoxColumn
@@ -1224,6 +1224,9 @@ Public Class MAIN
             Exit Sub
         End If
 
+        Reset_Checked_SelectedEmployee_Value(selectedEmployeeData)
+        Set_Selected_SelectedEmployee()
+
         Dim EmployeeUnsubmittedDict As New Dictionary(Of String, List(Of Date))
         Dim SupervisorUnapprovedDict As New Dictionary(Of String, List(Of Dictionary(Of String, Date)))
 
@@ -1243,6 +1246,9 @@ Public Class MAIN
 
                         If Not TimeEntrySubmitted Then
                             My.Forms.MAIN.History("Time entry not submitted for " + .EmployeeName + " on the week of " + .TimeEntryDate, "N")
+                            If Not EmployeeUnsubmittedDict.ContainsKey(employee.AccountEmployeeId) Then
+                                EmployeeUnsubmittedDict(employee.AccountEmployeeId) = New List(Of Date)
+                            End If
                             EmployeeUnsubmittedDict(employee.AccountEmployeeId).Add(.TimeEntryDate)
                         ElseIf Not TimeEntryApproved Then
                             My.Forms.MAIN.History("Time entry not approved for " + .EmployeeName + " on the week of " + .TimeEntryDate, "N")
@@ -1253,11 +1259,13 @@ Public Class MAIN
                 ' Send email to employee about time entries if there are un-submitted entries
                 If EmployeeUnsubmittedDict.ContainsKey(employee.AccountEmployeeId) Then
                     Dim numUnsubmitted As Integer = EmployeeUnsubmittedDict(employee.AccountEmployeeId).Count
-                    Dim resp As MsgBoxResult = MsgBox("Email " + employee.FullName + " about the " + numUnsubmitted + " unsubmitted time cards?", MsgBoxStyle.YesNoCancel, "Email Employee?")
+                    Dim resp As MsgBoxResult = MsgBox("Email " + employee.FullName + " about their " + Convert.ToString(numUnsubmitted) + " unsubmitted time entries?", MsgBoxStyle.YesNoCancel, "Email Employee?")
                     If resp = MsgBoxResult.Cancel Then
+                        ProgressBar1.Value = 0
+                        My.Forms.MAIN.History("Done sending emails", "n")
                         Exit Sub
                     ElseIf resp = MsgBoxResult.Yes Then
-                        Dim message As String = "Hi " + employee.FullName + "," + vbNewLine + My.Settings.MessageToEmployee + 2 * vbNewLine + "Unsubmitted Time card dates:"
+                        Dim message As String = "Hi " + employee.FullName + "," + vbNewLine + My.Settings.MessageToEmployee + vbNewLine + vbNewLine + "Unsubmitted Time entry dates:"
 
                         For Each d As Date In EmployeeUnsubmittedDict(employee.AccountEmployeeId)
                             message += vbNewLine + d.ToString
@@ -1276,7 +1284,7 @@ Public Class MAIN
         'wait for one second so user can see progress bar
         System.Threading.Thread.Sleep(150)
         System.Windows.Forms.Application.DoEvents()
-
+        My.Forms.MAIN.History("Done sending emails", "n")
         ProgressBar1.Value = 0
     End Sub
 
