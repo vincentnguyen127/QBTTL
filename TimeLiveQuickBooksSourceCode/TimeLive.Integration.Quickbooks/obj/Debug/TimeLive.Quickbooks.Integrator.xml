@@ -633,6 +633,13 @@ Used to sort self-referenced table's rows
  <param name="sender"></param>
  <param name="e"></param>
 </member>
+<member name="M:TimeLive.Quickbooks.Integrator.MAIN.SendEmailsButton_Click(System.Object,System.EventArgs)">
+ <summary>
+ Sends emails to employees that have not submitted time cards, and supervisors that have yet to approve time cards
+ </summary>
+ <param name="sender"></param>
+ <param name="e"></param>
+</member>
 <member name="M:TimeLive.Quickbooks.Integrator.MAIN.btnTransfer_Click(System.Object,System.EventArgs)">
  <summary>
  Transfers the selected customers, employees, vendors, jobs/subjobs or item/subitems, from TL to QB, or QB to TL depending on which is selected

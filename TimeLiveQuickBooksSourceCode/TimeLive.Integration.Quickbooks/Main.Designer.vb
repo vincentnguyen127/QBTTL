@@ -82,12 +82,15 @@ Partial Class MAIN
         Me.btn_currentweek = New System.Windows.Forms.Button()
         Me.UpdateTimeTransfer = New System.Windows.Forms.Button()
         Me.btnTransfer = New System.Windows.Forms.Button()
+        Me.SendEmailsButton = New System.Windows.Forms.Button()
         Me.JobItemSyncDirection.SuspendLayout()
+        CType(Me.SplitContainer1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SplitContainer1.Panel1.SuspendLayout()
         Me.SplitContainer1.Panel2.SuspendLayout()
         Me.SplitContainer1.SuspendLayout()
         CType(Me.DataGridView1, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.DataGridView2, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.SplitContainer2, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SplitContainer2.Panel1.SuspendLayout()
         Me.SplitContainer2.Panel2.SuspendLayout()
         Me.SplitContainer2.SuspendLayout()
@@ -734,12 +737,24 @@ Partial Class MAIN
         Me.btnTransfer.Text = "Process"
         Me.btnTransfer.UseVisualStyleBackColor = True
         '
+        'SendEmailsButton
+        '
+        Me.SendEmailsButton.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.SendEmailsButton.Location = New System.Drawing.Point(443, 583)
+        Me.SendEmailsButton.Name = "SendEmailsButton"
+        Me.SendEmailsButton.Size = New System.Drawing.Size(75, 23)
+        Me.SendEmailsButton.TabIndex = 52
+        Me.SendEmailsButton.Text = "Send Emails"
+        Me.SendEmailsButton.UseVisualStyleBackColor = True
+        Me.SendEmailsButton.Visible = False
+        '
         'MAIN
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.AutoSize = True
         Me.ClientSize = New System.Drawing.Size(720, 637)
+        Me.Controls.Add(Me.SendEmailsButton)
         Me.Controls.Add(Me.UpdateTimeTransfer)
         Me.Controls.Add(Me.SplitContainer2)
         Me.Controls.Add(Me.StatusStrip)
@@ -759,12 +774,14 @@ Partial Class MAIN
         Me.SplitContainer1.Panel1.PerformLayout()
         Me.SplitContainer1.Panel2.ResumeLayout(False)
         Me.SplitContainer1.Panel2.PerformLayout()
+        CType(Me.SplitContainer1, System.ComponentModel.ISupportInitialize).EndInit()
         Me.SplitContainer1.ResumeLayout(False)
         CType(Me.DataGridView1, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.DataGridView2, System.ComponentModel.ISupportInitialize).EndInit()
         Me.SplitContainer2.Panel1.ResumeLayout(False)
         Me.SplitContainer2.Panel2.ResumeLayout(False)
         Me.SplitContainer2.Panel2.PerformLayout()
+        CType(Me.SplitContainer2, System.ComponentModel.ISupportInitialize).EndInit()
         Me.SplitContainer2.ResumeLayout(False)
         Me.StatusStrip.ResumeLayout(False)
         Me.StatusStrip.PerformLayout()
@@ -844,4 +861,5 @@ Partial Class MAIN
     Friend WithEvents btn_currentweek As Button
     Friend WithEvents btnTransfer As Button
     Friend WithEvents RefreshTimeTransfer As Button
+    Friend WithEvents SendEmailsButton As Button
 End Class

@@ -489,90 +489,114 @@ Namespace My
                 Me("QBWageType") = value
             End Set
         End Property
-
-        <Global.System.Configuration.UserScopedSettingAttribute(),
-         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),
-         Global.System.Configuration.DefaultSettingValueAttribute("")>
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("")>  _
         Public Property FromEmailAddress() As String
             Get
-                Return CType(Me("FromEmailAddress"), String)
+                Return CType(Me("FromEmailAddress"),String)
             End Get
             Set
-                Me("FromEmailAddress") = Value
+                Me("FromEmailAddress") = value
             End Set
         End Property
-
-        <Global.System.Configuration.UserScopedSettingAttribute(),
-         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),
-         Global.System.Configuration.DefaultSettingValueAttribute("")>
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("")>  _
         Public Property ToEmailAddress() As String
             Get
-                Return CType(Me("ToEmailAddress"), String)
+                Return CType(Me("ToEmailAddress"),String)
             End Get
             Set
-                Me("ToEmailAddress") = Value
+                Me("ToEmailAddress") = value
             End Set
         End Property
-
-        <Global.System.Configuration.UserScopedSettingAttribute(),
-         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),
-         Global.System.Configuration.DefaultSettingValueAttribute("")>
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("")>  _
         Public Property EmailPassword() As String
             Get
-                Return CType(Me("EmailPassword"), String)
+                Return CType(Me("EmailPassword"),String)
             End Get
             Set
-                Me("EmailPassword") = Value
+                Me("EmailPassword") = value
             End Set
         End Property
-
-        <Global.System.Configuration.UserScopedSettingAttribute(),
-         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),
-         Global.System.Configuration.DefaultSettingValueAttribute("")>
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("")>  _
         Public Property SSLEncryption() As String
             Get
-                Return CType(Me("SSLEncryption"), String)
+                Return CType(Me("SSLEncryption"),String)
             End Get
             Set
-                Me("SSLEncryption") = Value
+                Me("SSLEncryption") = value
             End Set
         End Property
-
-        <Global.System.Configuration.UserScopedSettingAttribute(),
-         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),
-         Global.System.Configuration.DefaultSettingValueAttribute("")>
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("")>  _
         Public Property EmailHost() As String
             Get
-                Return CType(Me("EmailHost"), String)
+                Return CType(Me("EmailHost"),String)
             End Get
             Set
-                Me("EmailHost") = Value
+                Me("EmailHost") = value
             End Set
         End Property
-
-        <Global.System.Configuration.UserScopedSettingAttribute(),
-         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),
-         Global.System.Configuration.DefaultSettingValueAttribute("")>
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("")>  _
         Public Property EmailPort() As String
             Get
-                Return CType(Me("EmailPort"), String)
+                Return CType(Me("EmailPort"),String)
             End Get
             Set
-                Me("EmailPort") = Value
+                Me("EmailPort") = value
             End Set
         End Property
-
-        <Global.System.Configuration.ApplicationScopedSettingAttribute(),
-         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),
-         Global.System.Configuration.SpecialSettingAttribute(Global.System.Configuration.SpecialSetting.ConnectionString),
-         Global.System.Configuration.DefaultSettingValueAttribute("Data Source=SQL01;Initial Catalog=TL_QB_Relationship_Dev;User ID=sa;Password=$bas" &
-            "eline00")>
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("")>  _
+        Public Property MessageToEmployee() As String
+            Get
+                Return CType(Me("MessageToEmployee"),String)
+            End Get
+            Set
+                Me("MessageToEmployee") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("")>  _
+        Public Property MessageToSupervisor() As String
+            Get
+                Return CType(Me("MessageToSupervisor"),String)
+            End Get
+            Set
+                Me("MessageToSupervisor") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.ApplicationScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.SpecialSettingAttribute(Global.System.Configuration.SpecialSetting.ConnectionString),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("Data Source=SQL01;Initial Catalog=TL_QB_Relationship_Dev;User ID=sa;Password=$bas"& _ 
+            "eline00")>  _
         Public ReadOnly Property TL_QB_RelationshipConnectionString() As String
             Get
-                Return CType(Me("TL_QB_RelationshipConnectionString"), String)
+                Return CType(Me("TL_QB_RelationshipConnectionString"),String)
             End Get
         End Property
-
+        
         <Global.System.Configuration.ApplicationScopedSettingAttribute(),  _
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.Configuration.SpecialSettingAttribute(Global.System.Configuration.SpecialSetting.ConnectionString),  _

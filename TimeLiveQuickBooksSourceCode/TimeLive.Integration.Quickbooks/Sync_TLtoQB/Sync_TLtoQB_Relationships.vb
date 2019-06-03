@@ -107,35 +107,36 @@ Public Class Sync_TLtoQB_Relationships
 
             Dim numRel As Integer = chargingRelationshipAdapter.NumEmployeeJobRelationships(QBEmployeeID, QBJobSubJobID)
 
-                ' If there is no current relationship, ask them before adding when UI is present
-                If numRel = 0 Then
-                    Dim msg_resp As MsgBoxResult
-                    If UI Then
-                        msg_resp = MsgBox("Add new relationship from TimeLive between" + vbCrLf + "Employee: " + EmployeeName + vbCrLf + "Task: " +
+            ' If there is no current relationship, ask them before adding when UI is present
+            If numRel = 0 Then
+                Dim msg_resp As MsgBoxResult
+                If UI Then
+                    msg_resp = MsgBox("Add new relationship from TimeLive between" + vbCrLf + "Employee: " + EmployeeName + vbCrLf + "Task: " +
                                         JobSubJobName + "?", MsgBoxStyle.YesNoCancel, "Warning!")
-                        If msg_resp = MsgBoxResult.Cancel Then
-                            Return -1
-                        End If
+                    If msg_resp = MsgBoxResult.Cancel Then
+                        Return -1
                     End If
+                End If
 
-                    If Not UI Or msg_resp = MsgBoxResult.Yes Then
-                        My.Forms.MAIN.History("Adding Time Relationship between " + EmployeeName + " and " + JobSubJobName + " to local database", "N")
-                        Try
-                            chargingRelationshipAdapter.AddEmployeeJobRelationship(QBEmployeeID, QBJobSubJobID)
-                        Catch ex As Exception
-                            My.Forms.MAIN.History("Exception when adding Relationship: " + ex.ToString, "N")
-                            Return 0
-                        End Try
-                        Return 1
-                    Else
+                If Not UI Or msg_resp = MsgBoxResult.Yes Then
+                    My.Forms.MAIN.History("Adding Time Relationship between " + EmployeeName + " and " + JobSubJobName + " to local database", "N")
+                    Try
+                        chargingRelationshipAdapter.AddEmployeeJobRelationship(QBEmployeeID, QBJobSubJobID)
+                    Catch ex As Exception
+                        My.Forms.MAIN.History("Exception when adding Relationship: " + ex.ToString, "N")
                         Return 0
-                    End If
-                Else
-                    My.Forms.MAIN.History(If(numRel > 1, "More than one ", "One ") + " relationship" + " between " + EmployeeName + " and " + JobSubJobName + " already exists", "i")
+                    End Try
                     Return 1
+                Else
+                    Return 0
                 End If
             Else
-                My.Forms.MAIN.History("QuickBooks Job ID or QuickBooks Employee ID was invalid", "n")
+                My.Forms.MAIN.History(If(numRel > 1, "More than one ", "One ") + " relationship" + " between " + EmployeeName + " And " + JobSubJobName + " already exists", "i")
+                Return 1
+            End If
+        Else
+            My.Forms.MAIN.History("QuickBooks Job ID Or QuickBooks Employee ID was invalid", "n")
+            Return 0
         End If
     End Function
 End Class

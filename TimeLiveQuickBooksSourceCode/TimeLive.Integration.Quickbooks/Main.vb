@@ -342,7 +342,7 @@ Public Class MAIN
 
             smtp.Send(message)
             If UI Then
-                MsgBox("Sent!")
+                MsgBox("Sent email to: " + ReceiversAddress + "!")
             End If
         Catch ex As Exception
             MsgBox(ex.Message)
@@ -692,6 +692,7 @@ Public Class MAIN
         End If
 
         UpdateTimeTransfer.Visible = False
+        SendEmailsButton.Visible = False
 
         Dim ItemLastSync As DateTime
         Dim lastSync As String
@@ -1044,6 +1045,7 @@ Public Class MAIN
         DataGridView2.Columns.Clear()
 
         UpdateTimeTransfer.Visible = True
+        'SendEmailsButton.Visible = True
 
         ' load grid 2
         Dim col1 As New DataGridViewCheckBoxColumn
@@ -1210,6 +1212,72 @@ Public Class MAIN
         ProgressBar1.Value = 0
         My.Settings.TimeTrackingLastSync = DateTime.Now.ToString()
         My.Settings.Save()
+    End Sub
+
+    ''' <summary>
+    ''' Sends emails to employees that have not submitted time cards, and supervisors that have yet to approve time cards
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    Private Sub SendEmailsButton_Click(sender As Object, e As EventArgs) Handles SendEmailsButton.Click
+        If Not LoggedIn Then
+            Exit Sub
+        End If
+
+        Dim EmployeeUnsubmittedDict As New Dictionary(Of String, List(Of Date))
+        Dim SupervisorUnapprovedDict As New Dictionary(Of String, List(Of Dictionary(Of String, Date)))
+
+        ProgressBar1.Maximum = selectedEmployeeData.NoItems
+        For Each employee As TLtoQB_TimeEntry.Employee In selectedEmployeeData.DataArray
+            If employee.RecSelect = True And TimeEntryData IsNot Nothing Then
+                Dim emplTLData As TLtoQB_TimeEntry.TimeEntryDataStructureQB = timeentry_tltoqb.GetTimeEntryTLData(employee.AccountEmployeeId, dpStartDate.Value, dpEndDate.Value, Me, p_token, False)
+                Dim TL_TimeEntries As New TimeLiveDataSetTableAdapters.AccountEmployeeTimeEntryPeriodTableAdapter
+
+                For Each entry As TLtoQB_TimeEntry.TimeEntry In emplTLData.DataArray
+                    With entry
+                        ' Check if a time entry has yet to be approved
+                        Dim TimeEntryApproved As Boolean = TL_TimeEntries.GetTimeApproval(employee.AccountEmployeeId, .TimeEntryDate)
+                        Dim TimeEntrySubmitted As Boolean = TL_TimeEntries.GetTimeSubmission(employee.AccountEmployeeId, .TimeEntryDate)
+
+                        Dim full_name As String = .CustomerName.ToString() + MAIN.colonReplacer + .ProjectName.ToString() + MAIN.colonReplacer + .TaskWithParent.ToString().Replace(":", MAIN.colonReplacer)
+
+                        If Not TimeEntrySubmitted Then
+                            My.Forms.MAIN.History("Time entry not submitted for " + .EmployeeName + " on the week of " + .TimeEntryDate, "N")
+                            EmployeeUnsubmittedDict(employee.AccountEmployeeId).Add(.TimeEntryDate)
+                        ElseIf Not TimeEntryApproved Then
+                            My.Forms.MAIN.History("Time entry not approved for " + .EmployeeName + " on the week of " + .TimeEntryDate, "N")
+                            Dim supervisor As String = ""
+                        End If
+                    End With
+                Next
+                ' Send email to employee about time entries if there are un-submitted entries
+                If EmployeeUnsubmittedDict.ContainsKey(employee.AccountEmployeeId) Then
+                    Dim numUnsubmitted As Integer = EmployeeUnsubmittedDict(employee.AccountEmployeeId).Count
+                    Dim resp As MsgBoxResult = MsgBox("Email " + employee.FullName + " about the " + numUnsubmitted + " unsubmitted time cards?", MsgBoxStyle.YesNoCancel, "Email Employee?")
+                    If resp = MsgBoxResult.Cancel Then
+                        Exit Sub
+                    ElseIf resp = MsgBoxResult.Yes Then
+                        Dim message As String = "Hi " + employee.FullName + "," + vbNewLine + My.Settings.MessageToEmployee + 2 * vbNewLine + "Unsubmitted Time card dates:"
+
+                        For Each d As Date In EmployeeUnsubmittedDict(employee.AccountEmployeeId)
+                            message += vbNewLine + d.ToString
+                        Next
+
+                        SendEmployeeGMail("Unsubmitted Time Card", message, True, employee.AccountEmployeeId)
+                    End If
+                End If
+            End If
+            ProgressBar1.Value += 1
+        Next
+        'IntUI_2ndSelect.Owner = Me
+        'IntUI_2ndSelect.Show(p_token, p_AccountId, selectedEmployeeData,
+        'CDate(dpStartDate.Value).Date,
+        'CDate(dpEndDate.Value).Date.ToString, 201)
+        'wait for one second so user can see progress bar
+        System.Threading.Thread.Sleep(150)
+        System.Windows.Forms.Application.DoEvents()
+
+        ProgressBar1.Value = 0
     End Sub
 
     ''' <summary>
@@ -1428,6 +1496,9 @@ Public Class MAIN
                             ' Only select time entry when there is a charging relationship associated with it
                             If syncRel.Add_Relationship(chargingRelAdapter, jobID, empID) > 0 Then
                                 timeentry.RecSelect = True
+                            Else
+                                My.Forms.MAIN.History("No Relationship exists between " + timeentry.EmployeeName + " and " + jobName, "n")
+                                timeentry.RecSelect = True ' Remove if we do not want these time transfers to transfer
                             End If
                         End If
                     End Sub

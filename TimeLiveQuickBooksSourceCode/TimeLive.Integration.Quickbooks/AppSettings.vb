@@ -135,7 +135,6 @@
         HostTextBox.Text = My.Settings.EmailHost
         SSLCheckBox.Checked = If(My.Settings.SSLEncryption = "", True, My.Settings.SSLEncryption)
         ShowEmailPasswordCheckBox.Checked = False
-
     End Sub
 
     Private Sub btnSave_Click(sender As Object, e As EventArgs) Handles btnSave.Click, chk_customers.BackColorChanged
