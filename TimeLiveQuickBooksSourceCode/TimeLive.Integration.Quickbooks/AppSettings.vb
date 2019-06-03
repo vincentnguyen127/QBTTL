@@ -125,6 +125,17 @@
         Else
             chkPayrollTimesheet.Checked = My.Settings.TransferToPayroll
         End If
+
+        '-------- Email Information
+        FromEmailTextBox.Text = My.Settings.FromEmailAddress
+        ToEmailTextBox.Text = My.Settings.ToEmailAddress
+        EmailPasswordTextBox.Text = My.Settings.EmailPassword
+        HostTextBox.Text = My.Settings.EmailHost
+        PortTextBox.Text = My.Settings.EmailPort
+        HostTextBox.Text = My.Settings.EmailHost
+        SSLCheckBox.Checked = If(My.Settings.SSLEncryption = "", True, My.Settings.SSLEncryption)
+        ShowEmailPasswordCheckBox.Checked = False
+
     End Sub
 
     Private Sub btnSave_Click(sender As Object, e As EventArgs) Handles btnSave.Click, chk_customers.BackColorChanged
@@ -179,6 +190,13 @@
         My.Settings.SyncElbVendor = chk_syncElgibleVendor.Checked
         My.Settings.SyncJobOrItem = chk_jobsitems.Checked
 
+        My.Settings.FromEmailAddress = FromEmailTextBox.Text
+        My.Settings.ToEmailAddress = ToEmailTextBox.Text
+        My.Settings.EmailPassword = EmailPasswordTextBox.Text
+        My.Settings.SSLEncryption = SSLCheckBox.Checked
+        My.Settings.EmailHost = HostTextBox.Text
+        My.Settings.EmailPort = PortTextBox.Text
+
         My.Settings.Save()
         Me.DialogResult = DialogResult.OK
         Me.Close()
@@ -211,11 +229,42 @@
         Me.Close()
     End Sub
 
-    Private Sub Label4_Click(sender As Object, e As EventArgs) Handles Label4.Click
+    Private Sub Label4_Click(sender As Object, e As EventArgs) Handles PasswordLabel.Click
 
     End Sub
 
     Private Sub chk_debugMode_CheckedChanged(sender As Object, e As EventArgs) Handles chk_debugMode.CheckedChanged
+
+    End Sub
+
+    Private Sub Label6_Click(sender As Object, e As EventArgs) Handles HostLabel.Click
+
+    End Sub
+
+    Private Sub PortTextBox_KeyPress(sender As Object, e As System.Windows.Forms.KeyPressEventArgs) Handles PortTextBox.KeyPress
+        ' Ensure that the input is only characters for the port number
+        If Not Char.IsDigit(e.KeyChar) And Not Char.IsControl(e.KeyChar) Then
+            e.Handled = True
+        End If
+    End Sub
+
+    Private Sub SSLLabel_Click(sender As Object, e As EventArgs) Handles SSLLabel.Click
+
+    End Sub
+
+    Private Sub CheckBox1_CheckedChanged(sender As Object, e As EventArgs) Handles SSLCheckBox.CheckedChanged
+
+    End Sub
+
+    Private Sub CheckBox1_CheckedChanged_1(sender As Object, e As EventArgs) Handles ShowEmailPasswordCheckBox.CheckedChanged
+        EmailPasswordTextBox.UseSystemPasswordChar = Not ShowEmailPasswordCheckBox.Checked
+    End Sub
+
+    Private Sub PortTextBox_TextChanged(sender As Object, e As EventArgs) Handles PortTextBox.TextChanged, PortTextBox.KeyPress
+
+    End Sub
+
+    Private Sub FromLabel_Click(sender As Object, e As EventArgs) Handles FromLabel.Click
 
     End Sub
 End Class

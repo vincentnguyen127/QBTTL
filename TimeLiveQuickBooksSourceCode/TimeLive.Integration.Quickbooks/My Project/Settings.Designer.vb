@@ -489,18 +489,90 @@ Namespace My
                 Me("QBWageType") = value
             End Set
         End Property
-        
-        <Global.System.Configuration.ApplicationScopedSettingAttribute(),  _
-         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.SpecialSettingAttribute(Global.System.Configuration.SpecialSetting.ConnectionString),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("Data Source=SQL01;Initial Catalog=TL_QB_Relationship_Dev;User ID=sa;Password=$bas"& _ 
-            "eline00")>  _
+
+        <Global.System.Configuration.UserScopedSettingAttribute(),
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),
+         Global.System.Configuration.DefaultSettingValueAttribute("")>
+        Public Property FromEmailAddress() As String
+            Get
+                Return CType(Me("FromEmailAddress"), String)
+            End Get
+            Set
+                Me("FromEmailAddress") = Value
+            End Set
+        End Property
+
+        <Global.System.Configuration.UserScopedSettingAttribute(),
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),
+         Global.System.Configuration.DefaultSettingValueAttribute("")>
+        Public Property ToEmailAddress() As String
+            Get
+                Return CType(Me("ToEmailAddress"), String)
+            End Get
+            Set
+                Me("ToEmailAddress") = Value
+            End Set
+        End Property
+
+        <Global.System.Configuration.UserScopedSettingAttribute(),
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),
+         Global.System.Configuration.DefaultSettingValueAttribute("")>
+        Public Property EmailPassword() As String
+            Get
+                Return CType(Me("EmailPassword"), String)
+            End Get
+            Set
+                Me("EmailPassword") = Value
+            End Set
+        End Property
+
+        <Global.System.Configuration.UserScopedSettingAttribute(),
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),
+         Global.System.Configuration.DefaultSettingValueAttribute("")>
+        Public Property SSLEncryption() As String
+            Get
+                Return CType(Me("SSLEncryption"), String)
+            End Get
+            Set
+                Me("SSLEncryption") = Value
+            End Set
+        End Property
+
+        <Global.System.Configuration.UserScopedSettingAttribute(),
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),
+         Global.System.Configuration.DefaultSettingValueAttribute("")>
+        Public Property EmailHost() As String
+            Get
+                Return CType(Me("EmailHost"), String)
+            End Get
+            Set
+                Me("EmailHost") = Value
+            End Set
+        End Property
+
+        <Global.System.Configuration.UserScopedSettingAttribute(),
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),
+         Global.System.Configuration.DefaultSettingValueAttribute("")>
+        Public Property EmailPort() As String
+            Get
+                Return CType(Me("EmailPort"), String)
+            End Get
+            Set
+                Me("EmailPort") = Value
+            End Set
+        End Property
+
+        <Global.System.Configuration.ApplicationScopedSettingAttribute(),
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),
+         Global.System.Configuration.SpecialSettingAttribute(Global.System.Configuration.SpecialSetting.ConnectionString),
+         Global.System.Configuration.DefaultSettingValueAttribute("Data Source=SQL01;Initial Catalog=TL_QB_Relationship_Dev;User ID=sa;Password=$bas" &
+            "eline00")>
         Public ReadOnly Property TL_QB_RelationshipConnectionString() As String
             Get
-                Return CType(Me("TL_QB_RelationshipConnectionString"),String)
+                Return CType(Me("TL_QB_RelationshipConnectionString"), String)
             End Get
         End Property
-        
+
         <Global.System.Configuration.ApplicationScopedSettingAttribute(),  _
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.Configuration.SpecialSettingAttribute(Global.System.Configuration.SpecialSetting.ConnectionString),  _

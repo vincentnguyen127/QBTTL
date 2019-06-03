@@ -54,6 +54,7 @@ Public Class MAIN
             End If
 
             History("Welcome to QB2TL Sync by Telrium", "n")
+
             Using newForm = New Login()
                 If DialogResult.OK = newForm.ShowDialog() Then
                     p_token = newForm.ReturnValue1
@@ -295,29 +296,40 @@ Public Class MAIN
     '    IntegratedUI.Show(p_token, p_AccountId, 20)
     'End Sub
 
+    Public Shared Sub SendEmployeeGMail(Subject As String, BodyText As String, UI As Boolean, EmployeeID As String)
+        Dim TL_Employees As New TimeLiveDataSetTableAdapters.AccountEmployeeTableAdapter
+        Dim EmployeeEmail As String = TL_Employees.GetEmailFromTLID(EmployeeID)
 
-    Public Shared Sub SendGMail(Subject__1 As String, BodyText As String, UI As Boolean)
-        'Specify senders gmail address
-        Dim SendersAddress As String = "teltrium@gmail.com"
-        'Specify The Address You want to send Email To(can be any valid email address)
-        Dim ReceiversAddress As String = "operations@teltrium.com"
+        If EmployeeEmail IsNot Nothing Then
+            SendGMail(Subject, BodyText, UI, EmployeeEmail)
+        End If
+    End Sub
+
+    Public Shared Sub SendGMail(Subject As String, BodyText As String, UI As Boolean, Optional Receiver As String = Nothing)
+        Dim SendersAddress As String = My.Settings.FromEmailAddress ' senders gmail address "teltrium@gmail.com"
+        Dim SendersPassword As String = My.Settings.EmailPassword ' "1October2014"
+        Dim ReceiversAddress As String = If(Receiver Is Nothing, My.Settings.ToEmailAddress, Receiver) ' "operations@teltrium.com"
 
         'Specify The password of gmail account u are using to sent mail(pw of sender@gmail.com)
         If UI Then
             MsgBox("--> Sending email to: " + ReceiversAddress + " From: " + SendersAddress)
         End If
-        Dim SendersPassword As String = "1October2014"
 
         'Write the contents of your mail
-        Dim body As String = BodyText
         Try
             Dim smtp As New SmtpClient()
             With smtp
                 'used to be Key.Host
 
-                .Host = "smtp.gmail.com"
-                .Port = 587
-                .EnableSsl = True
+                .Host = My.Settings.EmailHost ' "smtp.gmail.com"
+                .Port = My.Settings.EmailPort ' 587
+                Try
+                    .EnableSsl = My.Settings.SSLEncryption
+                Catch ex As Exception
+                    ' In case My.Settings.SSLEncryption is wrongly formatted
+                    .EnableSsl = True
+                End Try
+
                 .DeliveryMethod = SmtpDeliveryMethod.Network
 
                 .Credentials = New Net.NetworkCredential(SendersAddress, SendersPassword)
@@ -325,7 +337,7 @@ Public Class MAIN
             End With
             'MailMessage represents a mail message
             'it is 4 parameters(From,TO,subject,body)
-            Dim message As New MailMessage(SendersAddress, ReceiversAddress, Subject__1, body)
+            Dim message As New MailMessage(SendersAddress, ReceiversAddress, Subject, BodyText)
             'WE use smtp sever we specified above to send the message(MailMessage message)
 
             smtp.Send(message)
@@ -344,22 +356,37 @@ Public Class MAIN
         History(relationship, "c")
     End Sub
 
-    Public Sub History(ByVal input As String, Type As String) ' Change to Type to "Char" after testing
+    Public Sub History(ByVal input As String, Type As Char) ' Change to Type to "Char" after testing
         Dim can_display As Boolean = If(My.Settings.DebugMode Is Nothing Or My.Settings.DebugMode = "", True, CBool(My.Settings.DebugMode))
         If can_display Then
-            If String.Compare("n", Type, False) = 0 Then
-                StatusWindow.Text += vbNewLine + ">> " + input
-            ElseIf String.Compare("N", Type, False) = 0 Then
-                Dim s As String = vbNewLine + "***********************" + vbNewLine + ">> " + input + vbNewLine + "***********************"
-                StatusWindow.Text += s
-            ElseIf String.Compare("c", Type, True) = 0 Then
-                StatusWindow.Text += ", " + input
-            ElseIf String.Compare("i", Type, False) = 0 Then
-                StatusWindow.Text += vbNewLine + vbTab + "- " + input
-            ElseIf String.Compare("I", Type, False) = 0 Then
-                Dim s As String = vbNewLine + vbTab + "***********************" + vbNewLine + vbTab + "- " + input + vbNewLine + vbTab + "***********************"
-                StatusWindow.Text += s
-            End If
+            Select Case True
+                Case Type.Equals("n"c)
+                    StatusWindow.Text += vbNewLine + ">> " + input
+                Case Type.Equals("N"c)
+                    Dim s As String = vbNewLine + "***********************" + vbNewLine + ">> " + input + vbNewLine + "***********************"
+                    StatusWindow.Text += s
+                Case Type.Equals("c"c) Or Type.Equals("C"c)
+                    StatusWindow.Text += ", " + input
+                Case Type.Equals("i"c)
+                    StatusWindow.Text += vbNewLine + vbTab + "- " + input
+                Case Type.Equals("I"c)
+                    Dim s As String = vbNewLine + vbTab + "***********************" + vbNewLine + vbTab + "- " + input + vbNewLine + vbTab + "***********************"
+                    StatusWindow.Text += s
+            End Select
+
+            'If Type.Equals("n") Then
+            '    StatusWindow.Text += vbNewLine + ">> " + input
+            'ElseIf String.Compare("N", Type, False) = 0 Then
+            '    Dim s As String = vbNewLine + "***********************" + vbNewLine + ">> " + input + vbNewLine + "***********************"
+            '    StatusWindow.Text += s
+            'ElseIf String.Compare("c", Type, True) = 0 Then
+            '    StatusWindow.Text += ", " + input
+            'ElseIf String.Compare("i", Type, False) = 0 Then
+            '    StatusWindow.Text += vbNewLine + vbTab + "- " + input
+            'ElseIf String.Compare("I", Type, False) = 0 Then
+            '    Dim s As String = vbNewLine + vbTab + "***********************" + vbNewLine + vbTab + "- " + input + vbNewLine + vbTab + "***********************"
+            '    StatusWindow.Text += s
+            'End If
 
             StatusWindow.SelectionStart = StatusWindow.TextLength
             StatusWindow.ScrollToCaret()
@@ -626,15 +653,19 @@ Public Class MAIN
             Dim emplName = row("FullName")
             Dim hoursWorked As Double = GetTotalHours(emplID, objTimeTrackingServices, dpStartDate.Value, dpEndDate.Value)
             Dim unapproved_entries As Integer = TL_TimeEntries.GetTotalNumUnapprovedEntries(emplID, dpStartDate.Value, dpEndDate.Value)
+            Dim unsubmitted_entries As Integer = TL_TimeEntries.GetTotalNumUnsubmittedEntries(emplID, dpStartDate.Value, dpEndDate.Value)
             selectedEmployeeData.DataArray.Add(New TLtoQB_TimeEntry.Employee(True, row("FullName"), emplID, hoursWorked))
 
             Dim datagrid_row As DataGridViewRow = New DataGridViewRow()
             datagrid_row.CreateCells(DataGridView1)
             datagrid_row.SetValues(True, emplName, hoursWorked)
 
-            If unapproved_entries Then
+            If unsubmitted_entries Then
                 datagrid_row.DefaultCellStyle.BackColor = Color.DarkGray
+            ElseIf unapproved_entries Then
+                datagrid_row.DefaultCellStyle.BackColor = Color.LightGray
             End If
+
             DataGridView1.Rows.Add(datagrid_row) '.Add(True, emplName, hoursWorked)
         Next
         'End If
@@ -1135,6 +1166,13 @@ Public Class MAIN
             Exit Sub
         End If
 
+        If My.Settings.DebugMode Then
+            AppSettings.chk_debugMode.Checked = MsgBox("Printing to the debug window will slow down this operation. Turn Debug Mode off?", MsgBoxStyle.YesNo, "Debug Mode") = MsgBoxResult.No
+            My.Settings.DebugMode = Convert.ToString(AppSettings.chk_debugMode.Checked)
+            ' Only show StatusWindow when in Debug Mode
+            SplitContainer2.Panel2Collapsed = Not Convert.ToBoolean(My.Settings.DebugMode)
+        End If
+
         'TransferTimeButton.Visible = True
         TimeEntrySelectAll.Visible = True
         TimeEntrySelectAll.Checked = True
@@ -1142,8 +1180,8 @@ Public Class MAIN
         Set_Selected_SelectedEmployee()
         Time_Entry_Times()
         TimeEntryData.clear()
-        Dim StartDate As DateTime = CDate(dpStartDate.Value).Date
-        Dim endDate As DateTime = CDate(dpEndDate.Value).Date
+        Dim StartDate As DateTime = dpStartDate.Value.Date
+        Dim endDate As DateTime = dpEndDate.Value.Date
 
         Dim payroll_id_names As Dictionary(Of String, String) = Payroll_IDName_Dict()
         Dim items_id_names As Dictionary(Of String, String) = ItemSubItem_IDName_Dict()
@@ -1546,30 +1584,33 @@ Public Class MAIN
                     Dim ServiceDisp As String = If(item_dict Is Nothing, If(.ServiceName Is Nothing, .ServiceItem, .ServiceName),
                                                                          If(item_dict.ContainsKey(.ServiceItem), item_dict(.ServiceItem), .ServiceItem))
 
+
                     ' Check if a time entry has yet to be approved
                     Dim TimeEntryApproved As Boolean = TL_TimeEntries.GetTimeApproval(AccountEmployeeId, .TimeEntryDate)
+                    Dim TimeEntrySubmitted As Boolean = TL_TimeEntries.GetTimeSubmission(AccountEmployeeId, .TimeEntryDate)
 
                     Dim full_name As String = .CustomerName.ToString() + MAIN.colonReplacer + .ProjectName.ToString() + MAIN.colonReplacer + .TaskWithParent.ToString().Replace(":", MAIN.colonReplacer)
-                    If TimeEntryApproved Then
-                        DataGridView.Rows.Add(True, .EmployeeName, .TimeEntryDate.ToString("MM/dd/yyyy"), full_name,
-                                              TotalHours.ToString, .TimeEntryClass, payrollDisp, ServiceDisp) ' .RecSelect replaced with true
-                    Else
+                    element.RecSelect = TimeEntryApproved And TimeEntrySubmitted
+
+                    Dim datagrid_row As DataGridViewRow = New DataGridViewRow()
+                    datagrid_row.CreateCells(DataGridView)
+                    datagrid_row.SetValues(.RecSelect, .EmployeeName, .TimeEntryDate.ToString("MM/dd/yyyy"), full_name,
+                                           TotalHours.ToString, .TimeEntryClass, payrollDisp, ServiceDisp)
+
+                    If Not TimeEntrySubmitted Then
+                        My.Forms.MAIN.History("Time entry not submitted for " + .EmployeeName + " on the week of " + .TimeEntryDate, "N")
+                        ' Checkbox is cell 0
+                        datagrid_row.Cells(0).ReadOnly = True
+                        datagrid_row.DefaultCellStyle.BackColor = Color.DarkGray
+                    ElseIf Not TimeEntryApproved Then
                         My.Forms.MAIN.History("Time entry not approved for " + .EmployeeName + " on the week of " + .TimeEntryDate, "N")
-                        DataGridView.Rows.Add(False, .EmployeeName, .TimeEntryDate.ToString("MM/dd/yyyy"), full_name,
-                                              TotalHours.ToString, .TimeEntryClass, payrollDisp, ServiceDisp)
+                        datagrid_row.Cells(0).ReadOnly = True
+                        datagrid_row.DefaultCellStyle.BackColor = Color.LightGray
                     End If
-                    element.RecSelect = True
+                    DataGridView.Rows.Add(datagrid_row)
                 End With
             Next
         End If
-
-        'Make all non-approved rows have a check box that cannot be selected
-        For Each row As DataGridViewRow In DataGridView.Rows
-            If row.Cells("ckBox").Value = False And Not row.Index = DataGridView.Rows.Count - 1 Then
-                row.Cells("ckBox").ReadOnly = True
-                row.DefaultCellStyle.BackColor = Color.DarkGray
-            End If
-        Next
     End Sub
 
     Private Function TotalTimeToHours(TotalTime As Date) As Double

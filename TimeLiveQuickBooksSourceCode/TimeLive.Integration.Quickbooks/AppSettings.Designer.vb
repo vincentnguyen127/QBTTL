@@ -34,10 +34,10 @@ Partial Class AppSettings
         Me.rbItem = New System.Windows.Forms.RadioButton()
         Me.rbtJobitems = New System.Windows.Forms.RadioButton()
         Me.rbJob = New System.Windows.Forms.RadioButton()
-        Me.TabPage2 = New System.Windows.Forms.TabPage()
+        Me.Tab_SyncOptions = New System.Windows.Forms.TabPage()
         Me.chk_debugMode = New System.Windows.Forms.CheckBox()
         Me.chk_syncElgibleVendor = New System.Windows.Forms.CheckBox()
-        Me.Tab_Sync = New System.Windows.Forms.TabPage()
+        Me.Tab_AutoSync = New System.Windows.Forms.TabPage()
         Me.GroupBox2 = New System.Windows.Forms.GroupBox()
         Me.chk_expenseentries = New System.Windows.Forms.CheckBox()
         Me.chk_timeentries = New System.Windows.Forms.CheckBox()
@@ -53,28 +53,37 @@ Partial Class AppSettings
         Me.Label1 = New System.Windows.Forms.Label()
         Me.dtp_autoruntime = New System.Windows.Forms.DateTimePicker()
         Me.TabControl1 = New System.Windows.Forms.TabControl()
-        Me.Tab_ItemsJobs = New System.Windows.Forms.TabPage()
+        Me.Tab_Email = New System.Windows.Forms.TabPage()
+        Me.PortTextBox = New System.Windows.Forms.TextBox()
+        Me.PortLabel = New System.Windows.Forms.Label()
+        Me.HostTextBox = New System.Windows.Forms.TextBox()
+        Me.HostLabel = New System.Windows.Forms.Label()
+        Me.ToLabel = New System.Windows.Forms.Label()
+        Me.PasswordLabel = New System.Windows.Forms.Label()
+        Me.FromLabel = New System.Windows.Forms.Label()
+        Me.ToEmailTextBox = New System.Windows.Forms.TextBox()
+        Me.EmailPasswordTextBox = New System.Windows.Forms.TextBox()
+        Me.FromEmailTextBox = New System.Windows.Forms.TextBox()
+        Me.SSLLabel = New System.Windows.Forms.Label()
+        Me.SSLCheckBox = New System.Windows.Forms.CheckBox()
         Me.Job_or_Item_Selection = New System.Windows.Forms.GroupBox()
         Me.item_subItems_btn = New System.Windows.Forms.RadioButton()
         Me.job_subJobs_btn = New System.Windows.Forms.RadioButton()
-        Me.tab_email = New System.Windows.Forms.TabPage()
-        Me.Label5 = New System.Windows.Forms.Label()
-        Me.Label4 = New System.Windows.Forms.Label()
+        Me.ShowEmailPasswordCheckBox = New System.Windows.Forms.CheckBox()
         Me.Label3 = New System.Windows.Forms.Label()
-        Me.TextBox3 = New System.Windows.Forms.TextBox()
-        Me.TextBox2 = New System.Windows.Forms.TextBox()
-        Me.TextBox1 = New System.Windows.Forms.TextBox()
+        Me.EmployeeMessageTextBox = New System.Windows.Forms.TextBox()
+        Me.Label4 = New System.Windows.Forms.Label()
+        Me.SupervisorMessageTextBox = New System.Windows.Forms.TextBox()
         Me.Tab_HoursOptions.SuspendLayout()
         Me.GroupBox3.SuspendLayout()
-        Me.TabPage2.SuspendLayout()
-        Me.Tab_Sync.SuspendLayout()
+        Me.Tab_SyncOptions.SuspendLayout()
+        Me.Tab_AutoSync.SuspendLayout()
         Me.GroupBox2.SuspendLayout()
         Me.GroupBox1.SuspendLayout()
         CType(Me.autoruninterval_btn, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.TabControl1.SuspendLayout()
-        Me.Tab_ItemsJobs.SuspendLayout()
+        Me.Tab_Email.SuspendLayout()
         Me.Job_or_Item_Selection.SuspendLayout()
-        Me.tab_email.SuspendLayout()
         Me.SuspendLayout()
         '
         'Button1
@@ -99,6 +108,7 @@ Partial Class AppSettings
         '
         'Tab_HoursOptions
         '
+        Me.Tab_HoursOptions.BackColor = System.Drawing.Color.WhiteSmoke
         Me.Tab_HoursOptions.Controls.Add(Me.chkPayrollTimesheet)
         Me.Tab_HoursOptions.Controls.Add(Me.cbClass)
         Me.Tab_HoursOptions.Controls.Add(Me.lblPayrollItem)
@@ -111,7 +121,6 @@ Partial Class AppSettings
         Me.Tab_HoursOptions.Size = New System.Drawing.Size(453, 198)
         Me.Tab_HoursOptions.TabIndex = 2
         Me.Tab_HoursOptions.Text = "Hours"
-        Me.Tab_HoursOptions.UseVisualStyleBackColor = True
         '
         'chkPayrollTimesheet
         '
@@ -205,24 +214,25 @@ Partial Class AppSettings
         Me.rbJob.Text = "Jobs/Sub Jobs"
         Me.rbJob.UseVisualStyleBackColor = True
         '
-        'TabPage2
+        'Tab_SyncOptions
         '
-        Me.TabPage2.Controls.Add(Me.chk_debugMode)
-        Me.TabPage2.Controls.Add(Me.chk_syncElgibleVendor)
-        Me.TabPage2.Location = New System.Drawing.Point(4, 22)
-        Me.TabPage2.Name = "TabPage2"
-        Me.TabPage2.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage2.Size = New System.Drawing.Size(453, 198)
-        Me.TabPage2.TabIndex = 1
-        Me.TabPage2.Text = "Sync Options"
-        Me.TabPage2.UseVisualStyleBackColor = True
+        Me.Tab_SyncOptions.BackColor = System.Drawing.Color.WhiteSmoke
+        Me.Tab_SyncOptions.Controls.Add(Me.Job_or_Item_Selection)
+        Me.Tab_SyncOptions.Controls.Add(Me.chk_debugMode)
+        Me.Tab_SyncOptions.Controls.Add(Me.chk_syncElgibleVendor)
+        Me.Tab_SyncOptions.Location = New System.Drawing.Point(4, 22)
+        Me.Tab_SyncOptions.Name = "Tab_SyncOptions"
+        Me.Tab_SyncOptions.Padding = New System.Windows.Forms.Padding(3)
+        Me.Tab_SyncOptions.Size = New System.Drawing.Size(453, 198)
+        Me.Tab_SyncOptions.TabIndex = 1
+        Me.Tab_SyncOptions.Text = "Sync Options"
         '
         'chk_debugMode
         '
         Me.chk_debugMode.AutoSize = True
         Me.chk_debugMode.Checked = True
         Me.chk_debugMode.CheckState = System.Windows.Forms.CheckState.Checked
-        Me.chk_debugMode.Location = New System.Drawing.Point(24, 25)
+        Me.chk_debugMode.Location = New System.Drawing.Point(24, 27)
         Me.chk_debugMode.Name = "chk_debugMode"
         Me.chk_debugMode.Size = New System.Drawing.Size(88, 17)
         Me.chk_debugMode.TabIndex = 1
@@ -232,27 +242,27 @@ Partial Class AppSettings
         'chk_syncElgibleVendor
         '
         Me.chk_syncElgibleVendor.AutoSize = True
-        Me.chk_syncElgibleVendor.Location = New System.Drawing.Point(24, 63)
+        Me.chk_syncElgibleVendor.Location = New System.Drawing.Point(24, 69)
         Me.chk_syncElgibleVendor.Name = "chk_syncElgibleVendor"
         Me.chk_syncElgibleVendor.Size = New System.Drawing.Size(226, 17)
         Me.chk_syncElgibleVendor.TabIndex = 0
         Me.chk_syncElgibleVendor.Text = "Synchronize vendors eligible for 1099 Only"
         Me.chk_syncElgibleVendor.UseVisualStyleBackColor = True
         '
-        'Tab_Sync
+        'Tab_AutoSync
         '
-        Me.Tab_Sync.Controls.Add(Me.GroupBox2)
-        Me.Tab_Sync.Controls.Add(Me.GroupBox1)
-        Me.Tab_Sync.Controls.Add(Me.Label2)
-        Me.Tab_Sync.Controls.Add(Me.autoruninterval_btn)
-        Me.Tab_Sync.Controls.Add(Me.Label1)
-        Me.Tab_Sync.Controls.Add(Me.dtp_autoruntime)
-        Me.Tab_Sync.Location = New System.Drawing.Point(4, 22)
-        Me.Tab_Sync.Name = "Tab_Sync"
-        Me.Tab_Sync.Padding = New System.Windows.Forms.Padding(3)
-        Me.Tab_Sync.Size = New System.Drawing.Size(453, 198)
-        Me.Tab_Sync.TabIndex = 0
-        Me.Tab_Sync.Text = "Auto Sync"
+        Me.Tab_AutoSync.Controls.Add(Me.GroupBox2)
+        Me.Tab_AutoSync.Controls.Add(Me.GroupBox1)
+        Me.Tab_AutoSync.Controls.Add(Me.Label2)
+        Me.Tab_AutoSync.Controls.Add(Me.autoruninterval_btn)
+        Me.Tab_AutoSync.Controls.Add(Me.Label1)
+        Me.Tab_AutoSync.Controls.Add(Me.dtp_autoruntime)
+        Me.Tab_AutoSync.Location = New System.Drawing.Point(4, 22)
+        Me.Tab_AutoSync.Name = "Tab_AutoSync"
+        Me.Tab_AutoSync.Padding = New System.Windows.Forms.Padding(3)
+        Me.Tab_AutoSync.Size = New System.Drawing.Size(453, 198)
+        Me.Tab_AutoSync.TabIndex = 0
+        Me.Tab_AutoSync.Text = "Auto Sync"
         '
         'GroupBox2
         '
@@ -398,36 +408,150 @@ Partial Class AppSettings
         '
         'TabControl1
         '
-        Me.TabControl1.Controls.Add(Me.Tab_Sync)
-        Me.TabControl1.Controls.Add(Me.TabPage2)
+        Me.TabControl1.Controls.Add(Me.Tab_AutoSync)
+        Me.TabControl1.Controls.Add(Me.Tab_SyncOptions)
         Me.TabControl1.Controls.Add(Me.Tab_HoursOptions)
-        Me.TabControl1.Controls.Add(Me.Tab_ItemsJobs)
-        Me.TabControl1.Controls.Add(Me.tab_email)
+        Me.TabControl1.Controls.Add(Me.Tab_Email)
         Me.TabControl1.Location = New System.Drawing.Point(12, 12)
         Me.TabControl1.Name = "TabControl1"
         Me.TabControl1.SelectedIndex = 0
         Me.TabControl1.Size = New System.Drawing.Size(461, 224)
         Me.TabControl1.TabIndex = 35
         '
-        'Tab_ItemsJobs
+        'Tab_Email
         '
-        Me.Tab_ItemsJobs.Controls.Add(Me.Job_or_Item_Selection)
-        Me.Tab_ItemsJobs.Location = New System.Drawing.Point(4, 22)
-        Me.Tab_ItemsJobs.Name = "Tab_ItemsJobs"
-        Me.Tab_ItemsJobs.Padding = New System.Windows.Forms.Padding(3)
-        Me.Tab_ItemsJobs.Size = New System.Drawing.Size(453, 198)
-        Me.Tab_ItemsJobs.TabIndex = 3
-        Me.Tab_ItemsJobs.Text = "Items/Jobs"
-        Me.Tab_ItemsJobs.UseVisualStyleBackColor = True
+        Me.Tab_Email.BackColor = System.Drawing.Color.WhiteSmoke
+        Me.Tab_Email.Controls.Add(Me.SupervisorMessageTextBox)
+        Me.Tab_Email.Controls.Add(Me.Label4)
+        Me.Tab_Email.Controls.Add(Me.EmployeeMessageTextBox)
+        Me.Tab_Email.Controls.Add(Me.Label3)
+        Me.Tab_Email.Controls.Add(Me.ShowEmailPasswordCheckBox)
+        Me.Tab_Email.Controls.Add(Me.SSLCheckBox)
+        Me.Tab_Email.Controls.Add(Me.SSLLabel)
+        Me.Tab_Email.Controls.Add(Me.PortTextBox)
+        Me.Tab_Email.Controls.Add(Me.PortLabel)
+        Me.Tab_Email.Controls.Add(Me.HostTextBox)
+        Me.Tab_Email.Controls.Add(Me.HostLabel)
+        Me.Tab_Email.Controls.Add(Me.ToLabel)
+        Me.Tab_Email.Controls.Add(Me.PasswordLabel)
+        Me.Tab_Email.Controls.Add(Me.FromLabel)
+        Me.Tab_Email.Controls.Add(Me.ToEmailTextBox)
+        Me.Tab_Email.Controls.Add(Me.EmailPasswordTextBox)
+        Me.Tab_Email.Controls.Add(Me.FromEmailTextBox)
+        Me.Tab_Email.Location = New System.Drawing.Point(4, 22)
+        Me.Tab_Email.Name = "Tab_Email"
+        Me.Tab_Email.Padding = New System.Windows.Forms.Padding(3)
+        Me.Tab_Email.Size = New System.Drawing.Size(453, 198)
+        Me.Tab_Email.TabIndex = 4
+        Me.Tab_Email.Text = "eMail"
+        '
+        'PortTextBox
+        '
+        Me.PortTextBox.Location = New System.Drawing.Point(278, 55)
+        Me.PortTextBox.Name = "PortTextBox"
+        Me.PortTextBox.Size = New System.Drawing.Size(140, 20)
+        Me.PortTextBox.TabIndex = 9
+        '
+        'PortLabel
+        '
+        Me.PortLabel.AutoSize = True
+        Me.PortLabel.Location = New System.Drawing.Point(216, 57)
+        Me.PortLabel.Name = "PortLabel"
+        Me.PortLabel.Size = New System.Drawing.Size(29, 13)
+        Me.PortLabel.TabIndex = 8
+        Me.PortLabel.Text = "Port:"
+        '
+        'HostTextBox
+        '
+        Me.HostTextBox.Location = New System.Drawing.Point(68, 90)
+        Me.HostTextBox.Name = "HostTextBox"
+        Me.HostTextBox.Size = New System.Drawing.Size(140, 20)
+        Me.HostTextBox.TabIndex = 7
+        '
+        'HostLabel
+        '
+        Me.HostLabel.AutoSize = True
+        Me.HostLabel.Location = New System.Drawing.Point(6, 92)
+        Me.HostLabel.Name = "HostLabel"
+        Me.HostLabel.Size = New System.Drawing.Size(32, 13)
+        Me.HostLabel.TabIndex = 6
+        Me.HostLabel.Text = "Host:"
+        '
+        'ToLabel
+        '
+        Me.ToLabel.AutoSize = True
+        Me.ToLabel.Location = New System.Drawing.Point(4, 57)
+        Me.ToLabel.Name = "ToLabel"
+        Me.ToLabel.Size = New System.Drawing.Size(47, 13)
+        Me.ToLabel.TabIndex = 5
+        Me.ToLabel.Text = "Send to:"
+        '
+        'PasswordLabel
+        '
+        Me.PasswordLabel.AutoSize = True
+        Me.PasswordLabel.Location = New System.Drawing.Point(216, 22)
+        Me.PasswordLabel.Name = "PasswordLabel"
+        Me.PasswordLabel.Size = New System.Drawing.Size(56, 13)
+        Me.PasswordLabel.TabIndex = 4
+        Me.PasswordLabel.Text = "Password:"
+        '
+        'FromLabel
+        '
+        Me.FromLabel.AutoSize = True
+        Me.FromLabel.Location = New System.Drawing.Point(4, 22)
+        Me.FromLabel.Name = "FromLabel"
+        Me.FromLabel.Size = New System.Drawing.Size(62, 13)
+        Me.FromLabel.TabIndex = 3
+        Me.FromLabel.Text = "From Gmail:"
+        '
+        'ToEmailTextBox
+        '
+        Me.ToEmailTextBox.Location = New System.Drawing.Point(68, 55)
+        Me.ToEmailTextBox.Name = "ToEmailTextBox"
+        Me.ToEmailTextBox.Size = New System.Drawing.Size(140, 20)
+        Me.ToEmailTextBox.TabIndex = 2
+        '
+        'EmailPasswordTextBox
+        '
+        Me.EmailPasswordTextBox.Location = New System.Drawing.Point(278, 20)
+        Me.EmailPasswordTextBox.Name = "EmailPasswordTextBox"
+        Me.EmailPasswordTextBox.Size = New System.Drawing.Size(140, 20)
+        Me.EmailPasswordTextBox.TabIndex = 1
+        Me.EmailPasswordTextBox.UseSystemPasswordChar = True
+        '
+        'FromEmailTextBox
+        '
+        Me.FromEmailTextBox.Location = New System.Drawing.Point(68, 20)
+        Me.FromEmailTextBox.Name = "FromEmailTextBox"
+        Me.FromEmailTextBox.Size = New System.Drawing.Size(140, 20)
+        Me.FromEmailTextBox.TabIndex = 0
+        '
+        'SSLLabel
+        '
+        Me.SSLLabel.AutoSize = True
+        Me.SSLLabel.Location = New System.Drawing.Point(216, 92)
+        Me.SSLLabel.Name = "SSLLabel"
+        Me.SSLLabel.Size = New System.Drawing.Size(83, 13)
+        Me.SSLLabel.TabIndex = 10
+        Me.SSLLabel.Text = "SSL Encryption:"
+        '
+        'SSLCheckBox
+        '
+        Me.SSLCheckBox.AutoSize = True
+        Me.SSLCheckBox.Location = New System.Drawing.Point(305, 92)
+        Me.SSLCheckBox.Name = "SSLCheckBox"
+        Me.SSLCheckBox.Size = New System.Drawing.Size(15, 14)
+        Me.SSLCheckBox.TabIndex = 11
+        Me.SSLCheckBox.UseVisualStyleBackColor = True
         '
         'Job_or_Item_Selection
         '
         Me.Job_or_Item_Selection.Controls.Add(Me.item_subItems_btn)
         Me.Job_or_Item_Selection.Controls.Add(Me.job_subJobs_btn)
-        Me.Job_or_Item_Selection.Location = New System.Drawing.Point(6, 23)
+        Me.Job_or_Item_Selection.Location = New System.Drawing.Point(22, 104)
         Me.Job_or_Item_Selection.Name = "Job_or_Item_Selection"
         Me.Job_or_Item_Selection.Size = New System.Drawing.Size(409, 46)
-        Me.Job_or_Item_Selection.TabIndex = 47
+        Me.Job_or_Item_Selection.TabIndex = 48
         Me.Job_or_Item_Selection.TabStop = False
         '
         'item_subItems_btn
@@ -452,69 +576,46 @@ Partial Class AppSettings
         Me.job_subJobs_btn.Text = "Jobs/Sub Jobs"
         Me.job_subJobs_btn.UseVisualStyleBackColor = True
         '
-        'tab_email
+        'ShowEmailPasswordCheckBox
         '
-        Me.tab_email.Controls.Add(Me.Label5)
-        Me.tab_email.Controls.Add(Me.Label4)
-        Me.tab_email.Controls.Add(Me.Label3)
-        Me.tab_email.Controls.Add(Me.TextBox3)
-        Me.tab_email.Controls.Add(Me.TextBox2)
-        Me.tab_email.Controls.Add(Me.TextBox1)
-        Me.tab_email.Location = New System.Drawing.Point(4, 22)
-        Me.tab_email.Name = "tab_email"
-        Me.tab_email.Padding = New System.Windows.Forms.Padding(3)
-        Me.tab_email.Size = New System.Drawing.Size(453, 198)
-        Me.tab_email.TabIndex = 4
-        Me.tab_email.Text = "eMail"
-        Me.tab_email.UseVisualStyleBackColor = True
-        '
-        'Label5
-        '
-        Me.Label5.AutoSize = True
-        Me.Label5.Location = New System.Drawing.Point(7, 116)
-        Me.Label5.Name = "Label5"
-        Me.Label5.Size = New System.Drawing.Size(47, 13)
-        Me.Label5.TabIndex = 5
-        Me.Label5.Text = "Send to:"
-        '
-        'Label4
-        '
-        Me.Label4.AutoSize = True
-        Me.Label4.Location = New System.Drawing.Point(6, 71)
-        Me.Label4.Name = "Label4"
-        Me.Label4.Size = New System.Drawing.Size(56, 13)
-        Me.Label4.TabIndex = 4
-        Me.Label4.Text = "Password:"
+        Me.ShowEmailPasswordCheckBox.AutoSize = True
+        Me.ShowEmailPasswordCheckBox.Location = New System.Drawing.Point(424, 22)
+        Me.ShowEmailPasswordCheckBox.Name = "ShowEmailPasswordCheckBox"
+        Me.ShowEmailPasswordCheckBox.Size = New System.Drawing.Size(15, 14)
+        Me.ShowEmailPasswordCheckBox.TabIndex = 12
+        Me.ShowEmailPasswordCheckBox.UseVisualStyleBackColor = True
         '
         'Label3
         '
-        Me.Label3.AutoSize = True
-        Me.Label3.Location = New System.Drawing.Point(7, 27)
+        Me.Label3.Location = New System.Drawing.Point(6, 128)
         Me.Label3.Name = "Label3"
-        Me.Label3.Size = New System.Drawing.Size(79, 13)
-        Me.Label3.TabIndex = 3
-        Me.Label3.Text = "Gmail Account:"
+        Me.Label3.Size = New System.Drawing.Size(62, 50)
+        Me.Label3.TabIndex = 13
+        Me.Label3.Text = "Message to Employee:"
         '
-        'TextBox3
+        'EmployeeMessageTextBox
         '
-        Me.TextBox3.Location = New System.Drawing.Point(95, 113)
-        Me.TextBox3.Name = "TextBox3"
-        Me.TextBox3.Size = New System.Drawing.Size(304, 20)
-        Me.TextBox3.TabIndex = 2
+        Me.EmployeeMessageTextBox.Location = New System.Drawing.Point(68, 125)
+        Me.EmployeeMessageTextBox.Multiline = True
+        Me.EmployeeMessageTextBox.Name = "EmployeeMessageTextBox"
+        Me.EmployeeMessageTextBox.Size = New System.Drawing.Size(140, 67)
+        Me.EmployeeMessageTextBox.TabIndex = 14
         '
-        'TextBox2
+        'Label4
         '
-        Me.TextBox2.Location = New System.Drawing.Point(95, 68)
-        Me.TextBox2.Name = "TextBox2"
-        Me.TextBox2.Size = New System.Drawing.Size(304, 20)
-        Me.TextBox2.TabIndex = 1
+        Me.Label4.Location = New System.Drawing.Point(216, 128)
+        Me.Label4.Name = "Label4"
+        Me.Label4.Size = New System.Drawing.Size(62, 50)
+        Me.Label4.TabIndex = 15
+        Me.Label4.Text = "Message to Supervisor:"
         '
-        'TextBox1
+        'SupervisorMessageTextBox
         '
-        Me.TextBox1.Location = New System.Drawing.Point(95, 27)
-        Me.TextBox1.Name = "TextBox1"
-        Me.TextBox1.Size = New System.Drawing.Size(304, 20)
-        Me.TextBox1.TabIndex = 0
+        Me.SupervisorMessageTextBox.Location = New System.Drawing.Point(278, 125)
+        Me.SupervisorMessageTextBox.Multiline = True
+        Me.SupervisorMessageTextBox.Name = "SupervisorMessageTextBox"
+        Me.SupervisorMessageTextBox.Size = New System.Drawing.Size(140, 67)
+        Me.SupervisorMessageTextBox.TabIndex = 16
         '
         'AppSettings
         '
@@ -530,21 +631,20 @@ Partial Class AppSettings
         Me.Tab_HoursOptions.PerformLayout()
         Me.GroupBox3.ResumeLayout(False)
         Me.GroupBox3.PerformLayout()
-        Me.TabPage2.ResumeLayout(False)
-        Me.TabPage2.PerformLayout()
-        Me.Tab_Sync.ResumeLayout(False)
-        Me.Tab_Sync.PerformLayout()
+        Me.Tab_SyncOptions.ResumeLayout(False)
+        Me.Tab_SyncOptions.PerformLayout()
+        Me.Tab_AutoSync.ResumeLayout(False)
+        Me.Tab_AutoSync.PerformLayout()
         Me.GroupBox2.ResumeLayout(False)
         Me.GroupBox2.PerformLayout()
         Me.GroupBox1.ResumeLayout(False)
         Me.GroupBox1.PerformLayout()
         CType(Me.autoruninterval_btn, System.ComponentModel.ISupportInitialize).EndInit()
         Me.TabControl1.ResumeLayout(False)
-        Me.Tab_ItemsJobs.ResumeLayout(False)
+        Me.Tab_Email.ResumeLayout(False)
+        Me.Tab_Email.PerformLayout()
         Me.Job_or_Item_Selection.ResumeLayout(False)
         Me.Job_or_Item_Selection.PerformLayout()
-        Me.tab_email.ResumeLayout(False)
-        Me.tab_email.PerformLayout()
         Me.ResumeLayout(False)
 
     End Sub
@@ -561,10 +661,10 @@ Partial Class AppSettings
     Friend WithEvents GroupBox3 As GroupBox
     Friend WithEvents rbItem As RadioButton
     Friend WithEvents rbJob As RadioButton
-    Friend WithEvents TabPage2 As TabPage
+    Friend WithEvents Tab_SyncOptions As TabPage
     Friend WithEvents chk_debugMode As CheckBox
     Friend WithEvents chk_syncElgibleVendor As CheckBox
-    Friend WithEvents Tab_Sync As TabPage
+    Friend WithEvents Tab_AutoSync As TabPage
     Friend WithEvents GroupBox2 As GroupBox
     Friend WithEvents chk_expenseentries As CheckBox
     Friend WithEvents chk_timeentries As CheckBox
@@ -580,15 +680,25 @@ Partial Class AppSettings
     Friend WithEvents Label1 As Label
     Friend WithEvents dtp_autoruntime As DateTimePicker
     Friend WithEvents TabControl1 As TabControl
-    Friend WithEvents Tab_ItemsJobs As TabPage
+    Friend WithEvents Tab_Email As TabPage
+    Friend WithEvents ToEmailTextBox As TextBox
+    Friend WithEvents EmailPasswordTextBox As TextBox
+    Friend WithEvents FromEmailTextBox As TextBox
+    Friend WithEvents PasswordLabel As Label
+    Friend WithEvents FromLabel As Label
+    Friend WithEvents ToLabel As Label
+    Friend WithEvents HostLabel As Label
+    Friend WithEvents HostTextBox As TextBox
+    Friend WithEvents PortTextBox As TextBox
+    Friend WithEvents PortLabel As Label
+    Friend WithEvents SSLLabel As Label
+    Friend WithEvents SSLCheckBox As CheckBox
     Friend WithEvents Job_or_Item_Selection As GroupBox
     Friend WithEvents item_subItems_btn As RadioButton
     Friend WithEvents job_subJobs_btn As RadioButton
-    Friend WithEvents tab_email As TabPage
-    Friend WithEvents TextBox3 As TextBox
-    Friend WithEvents TextBox2 As TextBox
-    Friend WithEvents TextBox1 As TextBox
-    Friend WithEvents Label4 As Label
+    Friend WithEvents ShowEmailPasswordCheckBox As CheckBox
+    Friend WithEvents EmployeeMessageTextBox As TextBox
     Friend WithEvents Label3 As Label
-    Friend WithEvents Label5 As Label
+    Friend WithEvents SupervisorMessageTextBox As TextBox
+    Friend WithEvents Label4 As Label
 End Class
