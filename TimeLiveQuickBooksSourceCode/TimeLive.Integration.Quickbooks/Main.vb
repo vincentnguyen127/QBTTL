@@ -296,9 +296,34 @@ Public Class MAIN
     '    IntegratedUI.Show(p_token, p_AccountId, 20)
     'End Sub
 
-    Public Shared Sub SendEmployeeGMail(Subject As String, BodyText As String, UI As Boolean, EmployeeID As String)
-        Dim TL_Employees As New TimeLiveDataSetTableAdapters.AccountEmployeeTableAdapter
-        Dim EmployeeEmail As String = TL_Employees.GetEmailFromTLID(EmployeeID)
+    ''' <summary>
+    ''' Get the email of an employee based on their id, using TimeLive Web Services
+    ''' </summary>
+    ''' <param name="EmployeeId">ID in TimeLive of the desired Employee</param>
+    ''' <returns></returns>
+    Protected Shared Function GetEmailFromTLID(EmployeeId As String) As String
+        ' Connect to TimeLive employees
+        Dim objEmployeeServices As New Services.TimeLive.Employees.Employees
+        Dim authentication As New Services.TimeLive.Employees.SecuredWebServiceHeader
+        authentication.AuthenticatedToken = MAIN.p_token
+        objEmployeeServices.SecuredWebServiceHeaderValue = authentication
+
+        Dim employees = objEmployeeServices.GetEmployees()
+
+        For Each employee As Services.TimeLive.Employees.Employee In employees
+            If employee.EmployeeId = EmployeeId Then
+                Return employee.EmailAddress
+            End If
+        Next
+
+        My.Forms.MAIN.History("Could not find the email for the given employee", "N")
+        Return ""
+    End Function
+
+    Public Shared Sub SendEmployeeGMail(Subject As String, BodyText As String, UI As Boolean, EmployeeId As String)
+        'Dim TL_Employees As New TimeLiveDataSetTableAdapters.AccountEmployeeTableAdapter
+        'Dim EmployeeEmail As String =  TL_Employees.GetEmailFromTLID(EmployeeId)
+        Dim EmployeeEmail As String = GetEmailFromTLID(EmployeeId)
 
         If EmployeeEmail IsNot Nothing Then
             SendGMail(Subject, BodyText, UI, EmployeeEmail)

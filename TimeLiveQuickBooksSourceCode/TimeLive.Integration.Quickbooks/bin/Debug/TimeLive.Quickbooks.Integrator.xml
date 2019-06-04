@@ -612,6 +612,13 @@ Update Order Option
 Used to sort self-referenced table's rows
 </summary>
 </member>
+<member name="M:TimeLive.Quickbooks.Integrator.MAIN.GetEmailFromTLID(System.String)">
+ <summary>
+ Get the email of an employee based on their id, using TimeLive Web Services
+ </summary>
+ <param name="EmployeeId">ID in TimeLive of the desired Employee</param>
+ <returns></returns>
+</member>
 <member name="M:TimeLive.Quickbooks.Integrator.MAIN.Payroll_IDName_Dict">
  <summary>
  Connects to QuickBooks to get a dictionary with key value pairs being {Payroll_Id: Payroll_Name}
