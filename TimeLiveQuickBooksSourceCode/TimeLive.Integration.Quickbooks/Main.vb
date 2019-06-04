@@ -316,13 +316,44 @@ Public Class MAIN
             End If
         Next
 
-        My.Forms.MAIN.History("Could not find the email for the given employee", "N")
+        Dim emplAdapter As New QB_TL_IDsTableAdapters.EmployeesTableAdapter
+        Dim employeeName As String = emplAdapter.GetNamefromTLID(EmployeeId)
+        My.Forms.MAIN.History("Could not find the Email email address of " + employeeName, "N")
+        Return Nothing
+    End Function
+
+    ''' <summary>
+    ''' Get the ID of the manager of an employee based on their id, using TimeLive Web Services
+    ''' </summary>
+    ''' <param name="EmployeeId">ID in TimeLive of the desired Employee</param>
+    ''' <returns></returns>
+    Public Shared Function GetManagerTLID(EmployeeId As String) As String
+        ' Connect to TimeLive employees
+        Dim objEmployeeServices As New Services.TimeLive.Employees.Employees
+        Dim authentication As New Services.TimeLive.Employees.SecuredWebServiceHeader
+        authentication.AuthenticatedToken = MAIN.p_token
+        objEmployeeServices.SecuredWebServiceHeaderValue = authentication
+
+        Dim employees As DataTable = objEmployeeServices.GetEmployeesData
+        Dim search = "AccountEmployeeId = " + EmployeeId
+        Dim view As DataView = New DataView(employees, search, "", DataViewRowState.CurrentRows)
+
+        If view.Count > 0 Then
+            Dim row As DataRow = view.Item(0).Row
+            Dim managerLocation As Integer = 42
+            Dim managerID As String = ""
+            Try
+                managerID = row.Item(managerLocation)
+            Catch ex As Exception
+                Return ""
+            End Try
+            Return managerID
+        End If
+
         Return ""
     End Function
 
     Public Shared Sub SendEmployeeGMail(Subject As String, BodyText As String, UI As Boolean, EmployeeId As String)
-        'Dim TL_Employees As New TimeLiveDataSetTableAdapters.AccountEmployeeTableAdapter
-        'Dim EmployeeEmail As String =  TL_Employees.GetEmailFromTLID(EmployeeId)
         Dim EmployeeEmail As String = GetEmailFromTLID(EmployeeId)
 
         If EmployeeEmail IsNot Nothing Then
@@ -1268,7 +1299,6 @@ Public Class MAIN
         Reset_Checked_SelectedEmployee_Value(selectedEmployeeData)
         Set_Selected_SelectedEmployee()
 
-        Dim TL_Employees As New TimeLiveDataSetTableAdapters.AccountEmployeeTableAdapter
         Dim EmployeeUnsubmittedDict As New Dictionary(Of String, List(Of Date))
         Dim SupervisorUnapprovedDict As New Dictionary(Of String, List(Of Tuple(Of String, Date)))
 
@@ -1294,8 +1324,8 @@ Public Class MAIN
                             EmployeeUnsubmittedDict(employee.AccountEmployeeId).Add(.TimeEntryDate)
                         ElseIf Not TimeEntryApproved Then
                             My.Forms.MAIN.History("Time entry not approved for " + .EmployeeName + " on the week of " + .TimeEntryDate, "N")
-                            Dim supervisor As String = TL_Employees.GetManagerId(employee.AccountEmployeeId)
-                            If supervisor IsNot Nothing Then
+                            Dim supervisor As String = GetManagerTLID(employee.AccountEmployeeId)
+                            If supervisor.Length Then ' If not the empty string
                                 If Not SupervisorUnapprovedDict.ContainsKey(supervisor) Then
                                     SupervisorUnapprovedDict(supervisor) = New List(Of Tuple(Of String, Date))
                                 End If

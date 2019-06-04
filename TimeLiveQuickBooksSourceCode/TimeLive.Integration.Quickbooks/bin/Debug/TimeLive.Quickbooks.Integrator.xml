@@ -492,11 +492,6 @@ Represents the strongly named DataTable class.
 Represents the strongly named DataTable class.
 </summary>
 </member>
-<member name="T:TimeLive.Quickbooks.Integrator.TimeLiveDataSet.AccountEmployeeDataTable">
-<summary>
-Represents the strongly named DataTable class.
-</summary>
-</member>
 <member name="T:TimeLive.Quickbooks.Integrator.TimeLiveDataSet.AccountPartyRow">
 <summary>
 Represents strongly named DataRow class.
@@ -513,11 +508,6 @@ Represents strongly named DataRow class.
 </summary>
 </member>
 <member name="T:TimeLive.Quickbooks.Integrator.TimeLiveDataSet.AccountEmployeeTimeEntryPeriodRow">
-<summary>
-Represents strongly named DataRow class.
-</summary>
-</member>
-<member name="T:TimeLive.Quickbooks.Integrator.TimeLiveDataSet.AccountEmployeeRow">
 <summary>
 Represents strongly named DataRow class.
 </summary>
@@ -542,11 +532,6 @@ Row event argument class
 Row event argument class
 </summary>
 </member>
-<member name="T:TimeLive.Quickbooks.Integrator.TimeLiveDataSet.AccountEmployeeRowChangeEvent">
-<summary>
-Row event argument class
-</summary>
-</member>
 <member name="T:TimeLive.Quickbooks.Integrator.TimeLiveDataSetTableAdapters.AccountPartyTableAdapter">
 <summary>
 Represents the connection and commands used to retrieve and save data.
@@ -563,11 +548,6 @@ Represents the connection and commands used to retrieve and save data.
 </summary>
 </member>
 <member name="T:TimeLive.Quickbooks.Integrator.TimeLiveDataSetTableAdapters.AccountEmployeeTimeEntryPeriodTableAdapter">
-<summary>
-Represents the connection and commands used to retrieve and save data.
-</summary>
-</member>
-<member name="T:TimeLive.Quickbooks.Integrator.TimeLiveDataSetTableAdapters.AccountEmployeeTableAdapter">
 <summary>
 Represents the connection and commands used to retrieve and save data.
 </summary>
@@ -615,6 +595,13 @@ Used to sort self-referenced table's rows
 <member name="M:TimeLive.Quickbooks.Integrator.MAIN.GetEmailFromTLID(System.String)">
  <summary>
  Get the email of an employee based on their id, using TimeLive Web Services
+ </summary>
+ <param name="EmployeeId">ID in TimeLive of the desired Employee</param>
+ <returns></returns>
+</member>
+<member name="M:TimeLive.Quickbooks.Integrator.MAIN.GetManagerTLID(System.String)">
+ <summary>
+ Get the ID of the manager of an employee based on their id, using TimeLive Web Services
  </summary>
  <param name="EmployeeId">ID in TimeLive of the desired Employee</param>
  <returns></returns>

@@ -169,11 +169,6 @@ Public Class Sync_TLtoQB_Employee
 
         Catch ex As Exception
             Throw ex
-            'Finally
-            '    If Not sessManager Is Nothing Then
-            '       sessManager.EndSession()
-            '       sessManager.CloseConnection()
-            '    End If
         End Try
     End Function
 

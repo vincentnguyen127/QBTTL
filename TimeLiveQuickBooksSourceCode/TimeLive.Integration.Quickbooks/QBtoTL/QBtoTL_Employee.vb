@@ -104,7 +104,6 @@ Public Class QBtoTL_Employee
                         ' will check which type data should be added 
                         EmployeeData.NoItems += 1
                         EmployeeData.DataArray.Add(New Employee(NewlyAdd, .Name.GetValue, EmailAddress, .ListID.GetValue, FirstName, LastName, ModTime, CreateTime, HiredDate))
-
                     End With
                     If UI Then
                         My.Forms.MAIN.ProgressBar1.Value = i + 1
@@ -117,8 +116,6 @@ Public Class QBtoTL_Employee
             End If
         Catch ex As Exception
             My.Forms.MAIN.History(ex.ToString, "C")
-            ' Close the session manager before throwing exception
-            'MAIN.QUITQBSESSION()
             Throw ex
         End Try
 
