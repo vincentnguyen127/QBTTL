@@ -636,7 +636,6 @@ Public Class MAIN
         Dim authentication As New Services.TimeLive.Employees.SecuredWebServiceHeader
         authentication.AuthenticatedToken = p_token
         objEmployeeServices.SecuredWebServiceHeaderValue = authentication
-
         ' Connect to TimeLive Time Entries to get total hours per employee
         Dim objTimeTrackingServices As New Services.TimeLive.TimeEntries.TimeEntries
         Dim authentication2 As New Services.TimeLive.TimeEntries.SecuredWebServiceHeader
@@ -647,26 +646,37 @@ Public Class MAIN
         employees = objEmployeeServices.GetEmployeesData
         Dim TL_TimeEntries As New TimeLiveDataSetTableAdapters.AccountEmployeeTimeEntryPeriodTableAdapter
 
+        ' Populate the table based on the TimeLive elements
+        ProgressBar1.Maximum = employees.Rows.Count
+
         For Each row As DataRow In employees.Rows
             selectedEmployeeData.NoItems += 1
             Dim emplID = row("AccountEmployeeId")
             Dim emplName = row("FullName")
+
             Dim hoursWorked As Double = GetTotalHours(emplID, objTimeTrackingServices, dpStartDate.Value, dpEndDate.Value)
-            Dim unapproved_entries As Integer = TL_TimeEntries.GetTotalNumUnapprovedEntries(emplID, dpStartDate.Value, dpEndDate.Value)
-            Dim unsubmitted_entries As Integer = TL_TimeEntries.GetTotalNumUnsubmittedEntries(emplID, dpStartDate.Value, dpEndDate.Value)
             selectedEmployeeData.DataArray.Add(New TLtoQB_TimeEntry.Employee(True, row("FullName"), emplID, hoursWorked))
 
             Dim datagrid_row As DataGridViewRow = New DataGridViewRow()
             datagrid_row.CreateCells(DataGridView1)
             datagrid_row.SetValues(True, emplName, hoursWorked)
 
-            If unsubmitted_entries Then
+            If TL_TimeEntries.GetTotalNumRejectedEntries(emplID, dpStartDate.Value, dpEndDate.Value) Then
+                ' Rejected
+                datagrid_row.DefaultCellStyle.BackColor = Color.Red
+            ElseIf TL_TimeEntries.GetTotalNumUnsubmittedEntries(emplID, dpStartDate.Value, dpEndDate.Value) Then
+                ' Unsubmitted
                 datagrid_row.DefaultCellStyle.BackColor = Color.DarkGray
-            ElseIf unapproved_entries Then
+            ElseIf TL_TimeEntries.GetTotalNumUnapprovedEntries(emplID, dpStartDate.Value, dpEndDate.Value) Then
+                ' Unapproved
                 datagrid_row.DefaultCellStyle.BackColor = Color.LightGray
+            ElseIf TL_TimeEntries.GetTotalNumEntries(emplID, dpStartDate.Value, dpEndDate.Value) Then
+                ' All submitted and approved
+                datagrid_row.DefaultCellStyle.BackColor = Color.LightSteelBlue
             End If
 
             DataGridView1.Rows.Add(datagrid_row) '.Add(True, emplName, hoursWorked)
+            ProgressBar1.Value += 1
         Next
         'End If
 
@@ -919,7 +929,7 @@ Public Class MAIN
 
         End Select
 
-        ' Populate the table based on the TineLive elements
+        ' Populate the table based on the TimeLive elements
         If ProgressBar1.Maximum = Nothing Then
             ProgressBar1.Maximum = 0
         End If
@@ -1224,11 +1234,18 @@ Public Class MAIN
             Exit Sub
         End If
 
+        ' Connect to TimeLive employees
+        Dim objEmployeeServices As New Services.TimeLive.Employees.Employees
+        Dim authentication As New Services.TimeLive.Employees.SecuredWebServiceHeader
+        authentication.AuthenticatedToken = p_token
+        objEmployeeServices.SecuredWebServiceHeaderValue = authentication
+
         Reset_Checked_SelectedEmployee_Value(selectedEmployeeData)
         Set_Selected_SelectedEmployee()
 
+        Dim TL_Employees As New TimeLiveDataSetTableAdapters.AccountEmployeeTableAdapter
         Dim EmployeeUnsubmittedDict As New Dictionary(Of String, List(Of Date))
-        Dim SupervisorUnapprovedDict As New Dictionary(Of String, List(Of Dictionary(Of String, Date)))
+        Dim SupervisorUnapprovedDict As New Dictionary(Of String, List(Of Tuple(Of String, Date)))
 
         ProgressBar1.Maximum = selectedEmployeeData.NoItems
         For Each employee As TLtoQB_TimeEntry.Employee In selectedEmployeeData.DataArray
@@ -1252,7 +1269,13 @@ Public Class MAIN
                             EmployeeUnsubmittedDict(employee.AccountEmployeeId).Add(.TimeEntryDate)
                         ElseIf Not TimeEntryApproved Then
                             My.Forms.MAIN.History("Time entry not approved for " + .EmployeeName + " on the week of " + .TimeEntryDate, "N")
-                            Dim supervisor As String = ""
+                            Dim supervisor As String = TL_Employees.GetManagerId(employee.AccountEmployeeId)
+                            If supervisor IsNot Nothing Then
+                                If Not SupervisorUnapprovedDict.ContainsKey(supervisor) Then
+                                    SupervisorUnapprovedDict(supervisor) = New List(Of Tuple(Of String, Date))
+                                End If
+                                SupervisorUnapprovedDict(supervisor).Add(Tuple.Create(employee.FullName, .TimeEntryDate))
+                            End If
                         End If
                     End With
                 Next
@@ -1268,7 +1291,7 @@ Public Class MAIN
                         Dim message As String = "Hi " + employee.FullName + "," + vbNewLine + My.Settings.MessageToEmployee + vbNewLine + vbNewLine + "Unsubmitted Time entry dates:"
 
                         For Each d As Date In EmployeeUnsubmittedDict(employee.AccountEmployeeId)
-                            message += vbNewLine + d.ToString
+                            message += vbNewLine + d.DayOfWeek.ToString + " " + MonthName(d.Month) + " " + d.Day.ToString
                         Next
 
                         SendEmployeeGMail("Unsubmitted Time Card", message, True, employee.AccountEmployeeId)
@@ -1276,6 +1299,32 @@ Public Class MAIN
                 End If
             End If
             ProgressBar1.Value += 1
+        Next
+
+
+        For Each id As String In SupervisorUnapprovedDict.Keys
+            Dim employeeAdapter As New QB_TL_IDsTableAdapters.EmployeesTableAdapter
+            Dim supervisorName As String = employeeAdapter.GetNamefromTLID(id)
+            If supervisorName IsNot Nothing Then
+                supervisorName = supervisorName.Trim
+            End If
+            Dim numUnapproved As Integer = SupervisorUnapprovedDict(id).Count
+            Dim resp As MsgBoxResult = MsgBox("Email " + supervisorName + " about the " + Convert.ToString(numUnapproved) + " time entries waiting for their approval?", MsgBoxStyle.YesNoCancel, "Email Employee?")
+            If resp = MsgBoxResult.Cancel Then
+                ProgressBar1.Value = 0
+                My.Forms.MAIN.History("Done sending emails", "n")
+                Exit Sub
+            ElseIf resp = MsgBoxResult.Yes Then
+                Dim message As String = "Hi " + supervisorName + "," + vbNewLine + My.Settings.MessageToSupervisor + vbNewLine + vbNewLine + "Unsubmitted Time entries:"
+
+                For Each t As Tuple(Of String, Date) In SupervisorUnapprovedDict(id)
+                    Dim emplName As String = t.Item1
+                    Dim d As Date = t.Item2
+                    message += vbNewLine + "Employee: " + emplName + "    Date: " + d.DayOfWeek.ToString + " " + MonthName(d.Month) + " " + d.Day.ToString
+                Next
+
+                SendEmployeeGMail("Unapproved Time Card", message, True, id)
+            End If
         Next
         'IntUI_2ndSelect.Owner = Me
         'IntUI_2ndSelect.Show(p_token, p_AccountId, selectedEmployeeData,
@@ -1416,7 +1465,7 @@ Public Class MAIN
     ''' <param name="endDate"></param>
     ''' <returns></returns>
     Private Function GetTotalHours(emplID As String, TLTimeTracker As Services.TimeLive.TimeEntries.TimeEntries,
-                                  startDate As DateTime, endDate As DateTime) As Integer
+                                  startDate As DateTime, endDate As DateTime) As Double
         Dim times() As Object = TLTimeTracker.GetTimeEntriesByEmployeeIdAndDateRange(emplID, startDate, endDate)
         Dim totalHours As Double = 0
         Dim time
