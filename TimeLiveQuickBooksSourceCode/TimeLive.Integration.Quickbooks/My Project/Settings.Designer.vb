@@ -565,24 +565,36 @@ Namespace My
         <Global.System.Configuration.UserScopedSettingAttribute(),  _
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.Configuration.DefaultSettingValueAttribute("")>  _
-        Public Property MessageToEmployee() As String
+        Public Property UnsubmittedMessage() As String
             Get
-                Return CType(Me("MessageToEmployee"),String)
+                Return CType(Me("UnsubmittedMessage"),String)
             End Get
             Set
-                Me("MessageToEmployee") = value
+                Me("UnsubmittedMessage") = value
             End Set
         End Property
         
         <Global.System.Configuration.UserScopedSettingAttribute(),  _
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.Configuration.DefaultSettingValueAttribute("")>  _
-        Public Property MessageToSupervisor() As String
+        Public Property UncompletedMessage() As String
             Get
-                Return CType(Me("MessageToSupervisor"),String)
+                Return CType(Me("UncompletedMessage"),String)
             End Get
             Set
-                Me("MessageToSupervisor") = value
+                Me("UncompletedMessage") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("")>  _
+        Public Property UnapprovedMessage() As String
+            Get
+                Return CType(Me("UnapprovedMessage"),String)
+            End Get
+            Set
+                Me("UnapprovedMessage") = value
             End Set
         End Property
         

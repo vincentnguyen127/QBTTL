@@ -367,9 +367,9 @@ Public Class MAIN
         Dim ReceiversAddress As String = If(Receiver Is Nothing, My.Settings.ToEmailAddress, Receiver) ' "operations@teltrium.com"
 
         'Specify The password of gmail account u are using to sent mail(pw of sender@gmail.com)
-        If UI Then
-            MsgBox("--> Sending email to: " + ReceiversAddress + " From: " + SendersAddress)
-        End If
+        'If UI Then
+        'MsgBox("--> Sending email to: " + ReceiversAddress + " From: " + SendersAddress)
+        'End If
 
         'Write the contents of your mail
         Try
@@ -624,6 +624,8 @@ Public Class MAIN
     'End Sub
 
     Private Sub MAIN_FormClosed(sender As Object, e As FormClosedEventArgs) Handles MyBase.FormClosed
+        My.Forms.MAIN.QUITQBSESSION() ' Close QB session before exiting
+        My.Forms.MAIN.TIMERTHREADSESSION() ' Close TimerThread session before exiting
         Me.Dispose()
     End Sub
 
@@ -1021,7 +1023,7 @@ Public Class MAIN
                     name = element.EmployeeName
                     ID = objServices.GetEmployeeId(name)
                     ' Do not show vendors
-                    If (VendorAdapter.numVendorsWithTL_ID(ID)) Then
+                    If (VendorAdapter.numVendorsWithTL_ID(ID) Or element.isVendor) Then
                         Continue For
                     End If
                     isNew = If(EmployeeAdapter.numEmployeesWithTL_ID(ID), "", "N")
@@ -1031,7 +1033,7 @@ Public Class MAIN
                     name = element.EmployeeName
                     ID = objServices.GetEmployeeId(name)
                     ' Do not show employees
-                    If (EmployeeAdapter.numEmployeesWithTL_ID(ID)) Then
+                    If (EmployeeAdapter.numEmployeesWithTL_ID(ID) Or Not element.isVendor) Then
                         Continue For
                     End If
                     isNew = If(VendorAdapter.numVendorsWithTL_ID(ID), "", "N")
@@ -1304,6 +1306,8 @@ Public Class MAIN
 
         ProgressBar1.Maximum = selectedEmployeeData.NoItems
         For Each employee As TLtoQB_TimeEntry.Employee In selectedEmployeeData.DataArray
+
+
             If employee.RecSelect = True And TimeEntryData IsNot Nothing Then
                 Dim emplTLData As TLtoQB_TimeEntry.TimeEntryDataStructureQB = timeentry_tltoqb.GetTimeEntryTLData(employee.AccountEmployeeId, dpStartDate.Value, dpEndDate.Value, Me, p_token, False)
                 Dim TL_TimeEntries As New TimeLiveDataSetTableAdapters.AccountEmployeeTimeEntryPeriodTableAdapter
@@ -1311,10 +1315,12 @@ Public Class MAIN
                 For Each entry As TLtoQB_TimeEntry.TimeEntry In emplTLData.DataArray
                     With entry
                         ' Check if a time entry has yet to be approved
+                        Dim TimeEntryEnterred As Integer = TL_TimeEntries.GetTotalNumUnsubmittedEntries(employee.AccountEmployeeId, dpStartDate.Value, dpEndDate.Value)
                         Dim TimeEntryApproved As Boolean = TL_TimeEntries.GetTimeApproval(employee.AccountEmployeeId, .TimeEntryDate)
                         Dim TimeEntrySubmitted As Boolean = TL_TimeEntries.GetTimeSubmission(employee.AccountEmployeeId, .TimeEntryDate)
 
                         Dim full_name As String = .CustomerName.ToString() + MAIN.colonReplacer + .ProjectName.ToString() + MAIN.colonReplacer + .TaskWithParent.ToString().Replace(":", MAIN.colonReplacer)
+
 
                         If Not TimeEntrySubmitted Then
                             My.Forms.MAIN.History("Time entry not submitted for " + .EmployeeName + " on the week of " + .TimeEntryDate, "N")
@@ -1334,25 +1340,36 @@ Public Class MAIN
                         End If
                     End With
                 Next
-                ' Send email to employee about time entries if there are un-submitted entries
-                If EmployeeUnsubmittedDict.ContainsKey(employee.AccountEmployeeId) Then
-                    Dim numUnsubmitted As Integer = EmployeeUnsubmittedDict(employee.AccountEmployeeId).Count
-                    Dim resp As MsgBoxResult = MsgBox("Email " + employee.FullName + " about their " + Convert.ToString(numUnsubmitted) + " unsubmitted time entries?", MsgBoxStyle.YesNoCancel, "Email Employee?")
-                    If resp = MsgBoxResult.Cancel Then
-                        ProgressBar1.Value = 0
-                        My.Forms.MAIN.History("Done sending emails", "n")
-                        Exit Sub
-                    ElseIf resp = MsgBoxResult.Yes Then
-                        Dim message As String = "Hi " + employee.FullName + "," + vbNewLine + My.Settings.MessageToEmployee + vbNewLine + vbNewLine + "Unsubmitted Time entry dates:"
 
-                        For Each d As Date In EmployeeUnsubmittedDict(employee.AccountEmployeeId)
-                            message += vbNewLine + d.DayOfWeek.ToString + " " + MonthName(d.Month) + " " + d.Day.ToString
-                        Next
-
-                        SendEmployeeGMail("Unsubmitted Time Card", message, True, employee.AccountEmployeeId)
+                ' Send email to employee about time entries if there are uncompleted entries
+                If emplTLData.DataArray.Count = 0 Then
+                    Dim message As String = InputBox("Email to: " + employee.FullName, "Uncompleted Time Card", My.Settings.UncompletedMessage)
+                    If message <> "" Then
+                        SendEmployeeGMail("Uncompleted Time Card Message", message, True, employee.AccountEmployeeId)
                     End If
                 End If
-            End If
+
+                ' Send email to employee about time entries if there are un-submitted entries
+                If EmployeeUnsubmittedDict.ContainsKey(employee.AccountEmployeeId) Then
+                        Dim numUnsubmitted As Integer = EmployeeUnsubmittedDict(employee.AccountEmployeeId).Count
+                        Dim resp As MsgBoxResult = MsgBox("Email " + employee.FullName + " about their " + Convert.ToString(numUnsubmitted) + " unsubmitted time entries?", MsgBoxStyle.YesNo, "Email Employee?")
+                        'If resp = MsgBoxResult.Cancel Then
+                        'ProgressBar1.Value = 0
+                        'My.Forms.MAIN.History("Done sending emails", "n")
+                        'Exit Sub
+                        If resp = MsgBoxResult.Yes Then
+                            Dim message As String = "Hi " + employee.FullName + "," + vbNewLine + My.Settings.UnsubmittedMessage + vbNewLine + vbNewLine + "Unsubmitted Time entry dates:"
+
+                            For Each d As Date In EmployeeUnsubmittedDict(employee.AccountEmployeeId)
+                                message += vbNewLine + d.DayOfWeek.ToString + " " + MonthName(d.Month) + " " + d.Day.ToString
+                            Next
+
+                            SendEmployeeGMail("Unsubmitted Time Card", message, True, employee.AccountEmployeeId)
+                        End If
+                    End If
+                End If
+
+
             ProgressBar1.Value += 1
         Next
 
@@ -1364,13 +1381,13 @@ Public Class MAIN
                 supervisorName = supervisorName.Trim
             End If
             Dim numUnapproved As Integer = SupervisorUnapprovedDict(id).Count
-            Dim resp As MsgBoxResult = MsgBox("Email " + supervisorName + " about the " + Convert.ToString(numUnapproved) + " time entries waiting for their approval?", MsgBoxStyle.YesNoCancel, "Email Employee?")
-            If resp = MsgBoxResult.Cancel Then
-                ProgressBar1.Value = 0
-                My.Forms.MAIN.History("Done sending emails", "n")
-                Exit Sub
-            ElseIf resp = MsgBoxResult.Yes Then
-                Dim message As String = "Hi " + supervisorName + "," + vbNewLine + My.Settings.MessageToSupervisor + vbNewLine + vbNewLine + "Unsubmitted Time entries:"
+            Dim resp As MsgBoxResult = MsgBox("Email " + supervisorName + " about the " + Convert.ToString(numUnapproved) + " time card(s) waiting for their approval?", MsgBoxStyle.YesNo, "Email Employee?")
+            'If resp = MsgBoxResult.Cancel Then
+            'ProgressBar1.Value = 0
+            'My.Forms.MAIN.History("Done sending emails", "n")
+            'Exit Sub
+            If resp = MsgBoxResult.Yes Then
+                Dim message As String = "Hi " + supervisorName + "," + vbNewLine + My.Settings.UnapprovedMessage + vbNewLine + vbNewLine + "Unsubmitted Time entries:"
 
                 For Each t As Tuple(Of String, Date) In SupervisorUnapprovedDict(id)
                     Dim emplName As String = t.Item1
@@ -1381,6 +1398,9 @@ Public Class MAIN
                 SendEmployeeGMail("Unapproved Time Card", message, True, id)
             End If
         Next
+
+
+
         'IntUI_2ndSelect.Owner = Me
         'IntUI_2ndSelect.Show(p_token, p_AccountId, selectedEmployeeData,
         'CDate(dpStartDate.Value).Date,
@@ -2008,7 +2028,6 @@ Public Class MAIN
                     'for type Time Items
                     ' Might add this to display_UI() or as its own private function
                     If Type = 20 Then
-                        'ReadItems = display_TimeEntry_UI()
                         readItems = display_TimeEntry_UI()
                     End If
 
@@ -2044,11 +2063,6 @@ Public Class MAIN
         ChargingRelationship.Show()
     End Sub
 
-    Private Sub SplitContainer2_SplitterMoved(sender As Object, e As SplitterEventArgs) Handles SplitContainer2.SplitterMoved
 
-    End Sub
 
-    Private Sub CustomerSyncDirection_Enter(sender As Object, e As EventArgs) Handles CustomerSyncDirection.Enter
-
-    End Sub
 End Class

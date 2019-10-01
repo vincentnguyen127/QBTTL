@@ -277,6 +277,14 @@ Update Order Option
 Used to sort self-referenced table's rows
 </summary>
 </member>
+<member name="M:TimeLive.Quickbooks.Integrator.Sync_TLtoQB_JoborItem.storedAsTaskItem(TimeLive.Quickbooks.Integrator.Services.TimeLive.Tasks.Task)">
+ <summary>
+ Checks if the encoding in TimeLive has the Project assigned as the Task name, and task as an item
+ i.e. if in TimeLive: Project = project:task(:subtask:subsubtask...), task = item
+ </summary>
+ <param name="objTask"></param>
+ <returns></returns>
+</member>
 <member name="M:TimeLive.Quickbooks.Integrator.Sync_TLtoQB_JoborItem.SyncJobsSubJobData2(System.String)">
  <summary>
  Sync the Jobs data from QB. Print out Projects and Tasks that are in TL but not QB
@@ -291,7 +299,7 @@ Used to sort self-referenced table's rows
 </member>
 <member name="M:TimeLive.Quickbooks.Integrator.Sync_TLtoQB_JoborItem.GetTasks(System.String,System.String)">
  <summary>
- Get Tasks, adding them as jobs to QB
+ Get Tasks
  </summary>
  <param name="ParentName"></param>
  <returns></returns>
@@ -304,6 +312,7 @@ Used to sort self-referenced table's rows
  <param name="TL_ID"></param>
  <returns>
  Integer: the number of items added into QB
+     -2 -> Did not add to QB because cancel was sellected
      -1 -> Did not exist in QB, not added to QB
      0 -> Already exists in QB
      1 -> Did not exist in QB, added to QB

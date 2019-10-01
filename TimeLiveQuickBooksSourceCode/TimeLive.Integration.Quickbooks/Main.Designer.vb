@@ -115,21 +115,20 @@ Partial Class MAIN
         'Exitbtn
         '
         Me.Exitbtn.AutoSize = False
-        Me.Exitbtn.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
         Me.Exitbtn.Image = CType(resources.GetObject("Exitbtn.Image"), System.Drawing.Image)
         Me.Exitbtn.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.Exitbtn.Name = "Exitbtn"
-        Me.Exitbtn.Size = New System.Drawing.Size(50, 50)
+        Me.Exitbtn.Size = New System.Drawing.Size(75, 50)
         Me.Exitbtn.Text = "Exit"
         Me.Exitbtn.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText
         '
         'RefreshJobsOrItems
         '
-        Me.RefreshJobsOrItems.Location = New System.Drawing.Point(429, 26)
+        Me.RefreshJobsOrItems.Image = CType(resources.GetObject("RefreshJobsOrItems.Image"), System.Drawing.Image)
+        Me.RefreshJobsOrItems.Location = New System.Drawing.Point(368, 17)
         Me.RefreshJobsOrItems.Name = "RefreshJobsOrItems"
-        Me.RefreshJobsOrItems.Size = New System.Drawing.Size(97, 30)
+        Me.RefreshJobsOrItems.Size = New System.Drawing.Size(60, 58)
         Me.RefreshJobsOrItems.TabIndex = 4
-        Me.RefreshJobsOrItems.Text = "Refresh"
         Me.RefreshJobsOrItems.UseVisualStyleBackColor = True
         '
         'JobItemSyncDirection
@@ -351,55 +350,50 @@ Partial Class MAIN
         'settingbtn
         '
         Me.settingbtn.AutoSize = False
-        Me.settingbtn.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
         Me.settingbtn.Image = CType(resources.GetObject("settingbtn.Image"), System.Drawing.Image)
         Me.settingbtn.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.settingbtn.Name = "settingbtn"
-        Me.settingbtn.Size = New System.Drawing.Size(50, 50)
+        Me.settingbtn.Size = New System.Drawing.Size(75, 50)
         Me.settingbtn.Text = "Settings"
         Me.settingbtn.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText
         '
         'loginbtn
         '
         Me.loginbtn.AutoSize = False
-        Me.loginbtn.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
         Me.loginbtn.Image = CType(resources.GetObject("loginbtn.Image"), System.Drawing.Image)
         Me.loginbtn.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.loginbtn.Name = "loginbtn"
-        Me.loginbtn.Size = New System.Drawing.Size(50, 50)
-        Me.loginbtn.Text = "Login"
+        Me.loginbtn.Size = New System.Drawing.Size(75, 50)
+        Me.loginbtn.Text = "TL Login"
         Me.loginbtn.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText
         '
         'btn_systemsync
         '
         Me.btn_systemsync.AutoSize = False
-        Me.btn_systemsync.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
         Me.btn_systemsync.Image = CType(resources.GetObject("btn_systemsync.Image"), System.Drawing.Image)
         Me.btn_systemsync.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.btn_systemsync.Name = "btn_systemsync"
-        Me.btn_systemsync.Size = New System.Drawing.Size(50, 50)
-        Me.btn_systemsync.Text = "TL to QB Sync"
+        Me.btn_systemsync.Size = New System.Drawing.Size(75, 50)
+        Me.btn_systemsync.Text = "Sync"
         Me.btn_systemsync.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText
         '
         'btn_relationships
         '
         Me.btn_relationships.AutoSize = False
-        Me.btn_relationships.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
         Me.btn_relationships.Image = CType(resources.GetObject("btn_relationships.Image"), System.Drawing.Image)
         Me.btn_relationships.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.btn_relationships.Name = "btn_relationships"
-        Me.btn_relationships.Size = New System.Drawing.Size(50, 50)
+        Me.btn_relationships.Size = New System.Drawing.Size(75, 50)
         Me.btn_relationships.Text = "Relationships"
         Me.btn_relationships.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText
         '
         'clearlogbtn
         '
         Me.clearlogbtn.AutoSize = False
-        Me.clearlogbtn.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
         Me.clearlogbtn.Image = CType(resources.GetObject("clearlogbtn.Image"), System.Drawing.Image)
         Me.clearlogbtn.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.clearlogbtn.Name = "clearlogbtn"
-        Me.clearlogbtn.Size = New System.Drawing.Size(50, 50)
+        Me.clearlogbtn.Size = New System.Drawing.Size(75, 50)
         Me.clearlogbtn.Text = "Clear Log"
         Me.clearlogbtn.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText
         '
@@ -464,11 +458,12 @@ Partial Class MAIN
         '
         'RefreshCustomers
         '
-        Me.RefreshCustomers.Location = New System.Drawing.Point(429, 26)
+        Me.RefreshCustomers.Image = CType(resources.GetObject("RefreshCustomers.Image"), System.Drawing.Image)
+        Me.RefreshCustomers.Location = New System.Drawing.Point(368, 17)
         Me.RefreshCustomers.Name = "RefreshCustomers"
-        Me.RefreshCustomers.Size = New System.Drawing.Size(97, 30)
+        Me.RefreshCustomers.Size = New System.Drawing.Size(60, 58)
         Me.RefreshCustomers.TabIndex = 1
-        Me.RefreshCustomers.Text = "Refresh"
+        Me.RefreshCustomers.TextAlign = System.Drawing.ContentAlignment.BottomCenter
         Me.RefreshCustomers.UseVisualStyleBackColor = True
         '
         'CustomerSyncDirection
@@ -519,11 +514,11 @@ Partial Class MAIN
         '
         'RefreshEmployees
         '
-        Me.RefreshEmployees.Location = New System.Drawing.Point(429, 26)
+        Me.RefreshEmployees.Image = CType(resources.GetObject("RefreshEmployees.Image"), System.Drawing.Image)
+        Me.RefreshEmployees.Location = New System.Drawing.Point(368, 17)
         Me.RefreshEmployees.Name = "RefreshEmployees"
-        Me.RefreshEmployees.Size = New System.Drawing.Size(97, 30)
+        Me.RefreshEmployees.Size = New System.Drawing.Size(60, 58)
         Me.RefreshEmployees.TabIndex = 2
-        Me.RefreshEmployees.Text = "Refresh"
         Me.RefreshEmployees.UseVisualStyleBackColor = True
         '
         'EmployeeSyncDirection
@@ -574,11 +569,11 @@ Partial Class MAIN
         '
         'RefreshVendors
         '
-        Me.RefreshVendors.Location = New System.Drawing.Point(429, 26)
+        Me.RefreshVendors.Image = CType(resources.GetObject("RefreshVendors.Image"), System.Drawing.Image)
+        Me.RefreshVendors.Location = New System.Drawing.Point(368, 17)
         Me.RefreshVendors.Name = "RefreshVendors"
-        Me.RefreshVendors.Size = New System.Drawing.Size(97, 30)
+        Me.RefreshVendors.Size = New System.Drawing.Size(60, 58)
         Me.RefreshVendors.TabIndex = 3
-        Me.RefreshVendors.Text = "Refresh"
         Me.RefreshVendors.UseVisualStyleBackColor = True
         '
         'VendorSyncDirection
@@ -626,11 +621,11 @@ Partial Class MAIN
         '
         'RefreshTimeTransfer
         '
-        Me.RefreshTimeTransfer.Location = New System.Drawing.Point(667, 26)
+        Me.RefreshTimeTransfer.Image = CType(resources.GetObject("RefreshTimeTransfer.Image"), System.Drawing.Image)
+        Me.RefreshTimeTransfer.Location = New System.Drawing.Point(603, 14)
         Me.RefreshTimeTransfer.Name = "RefreshTimeTransfer"
-        Me.RefreshTimeTransfer.Size = New System.Drawing.Size(97, 30)
+        Me.RefreshTimeTransfer.Size = New System.Drawing.Size(60, 58)
         Me.RefreshTimeTransfer.TabIndex = 45
-        Me.RefreshTimeTransfer.Text = "Refresh"
         Me.RefreshTimeTransfer.UseVisualStyleBackColor = True
         '
         'cbWageType
@@ -638,7 +633,7 @@ Partial Class MAIN
         Me.cbWageType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cbWageType.FormattingEnabled = True
         Me.cbWageType.Items.AddRange(New Object() {"Bonus", "Comission", "Hourly-Overtime", "Hourly-Regular", "Hourly-Sick", "Hourly-Vacation", "Salary-Regular", "Salary-Sick", "Salary-Vacation"})
-        Me.cbWageType.Location = New System.Drawing.Point(402, 18)
+        Me.cbWageType.Location = New System.Drawing.Point(351, 16)
         Me.cbWageType.Name = "cbWageType"
         Me.cbWageType.Size = New System.Drawing.Size(219, 21)
         Me.cbWageType.TabIndex = 43
@@ -646,7 +641,7 @@ Partial Class MAIN
         'lblWageType
         '
         Me.lblWageType.AutoSize = True
-        Me.lblWageType.Location = New System.Drawing.Point(330, 22)
+        Me.lblWageType.Location = New System.Drawing.Point(279, 20)
         Me.lblWageType.Name = "lblWageType"
         Me.lblWageType.Size = New System.Drawing.Size(66, 13)
         Me.lblWageType.TabIndex = 44
@@ -739,8 +734,8 @@ Partial Class MAIN
         '
         'SendEmailsButton
         '
-        Me.SendEmailsButton.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.SendEmailsButton.Location = New System.Drawing.Point(443, 583)
+        Me.SendEmailsButton.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+        Me.SendEmailsButton.Location = New System.Drawing.Point(4, 579)
         Me.SendEmailsButton.Name = "SendEmailsButton"
         Me.SendEmailsButton.Size = New System.Drawing.Size(75, 23)
         Me.SendEmailsButton.TabIndex = 52

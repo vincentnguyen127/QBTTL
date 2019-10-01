@@ -133,8 +133,9 @@
         HostTextBox.Text = My.Settings.EmailHost
         PortTextBox.Text = My.Settings.EmailPort
         SSLCheckBox.Checked = If(My.Settings.SSLEncryption = "", True, My.Settings.SSLEncryption)
-        EmployeeMessageTextBox.Text = My.Settings.MessageToEmployee
-        SupervisorMessageTextBox.Text = My.Settings.MessageToSupervisor
+        UncompletedMessageTextBox.Text = My.Settings.UncompletedMessage
+        UnsubmittedMessageTextBox.Text = My.Settings.UnsubmittedMessage
+        UnapprovedMessageTextBox.Text = My.Settings.UnapprovedMessage
         ShowEmailPasswordCheckBox.Checked = False
     End Sub
 
@@ -196,8 +197,9 @@
         My.Settings.SSLEncryption = SSLCheckBox.Checked
         My.Settings.EmailHost = HostTextBox.Text
         My.Settings.EmailPort = PortTextBox.Text
-        My.Settings.MessageToEmployee = EmployeeMessageTextBox.Text
-        My.Settings.MessageToSupervisor = SupervisorMessageTextBox.Text
+        My.Settings.UncompletedMessage = UncompletedMessageTextBox.Text
+        My.Settings.UnsubmittedMessage = UnsubmittedMessageTextBox.Text
+        My.Settings.UnapprovedMessage = UnapprovedMessageTextBox.Text
 
         My.Settings.Save()
         Me.DialogResult = DialogResult.OK
@@ -262,11 +264,4 @@
         EmailPasswordTextBox.UseSystemPasswordChar = Not ShowEmailPasswordCheckBox.Checked
     End Sub
 
-    Private Sub PortTextBox_TextChanged(sender As Object, e As EventArgs) Handles PortTextBox.TextChanged, PortTextBox.KeyPress
-
-    End Sub
-
-    Private Sub FromLabel_Click(sender As Object, e As EventArgs) Handles FromLabel.Click
-
-    End Sub
 End Class

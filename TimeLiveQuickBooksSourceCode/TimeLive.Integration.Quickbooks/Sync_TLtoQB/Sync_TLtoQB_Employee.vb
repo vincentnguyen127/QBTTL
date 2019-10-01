@@ -31,9 +31,13 @@ Public Class Sync_TLtoQB_Employee
                 objEmployee = objEmployeeArray(n)
                 With objEmployee
                     Dim create As Boolean = If(nameList Is Nothing, True, nameList.Contains(objEmployee.EmployeeName))
-                    If (Not .IsVendor) And create Then
+                    If create Then
                         ' Check if in QB, adds to QB and sync data table if not
-                        numSynced += If(checkQBEmployeeExist(.EmployeeName.ToString, .EmployeeId, objEmployee, UI), 0, 1)
+                        If .IsVendor Then
+                            My.Forms.MAIN.History("Not adding vendor " + objEmployee.EmployeeName + " to employees in Quickbooks. Add as a vendor instead.", "i")
+                        Else
+                            numSynced += If(checkQBEmployeeExist(.EmployeeName.ToString, .EmployeeId, objEmployee, UI), 0, 1)
+                        End If
                     End If
                 End With
                 If Not MainForm Is Nothing Then MainForm.ProgressBar1.Value += 1
@@ -92,7 +96,7 @@ Public Class Sync_TLtoQB_Employee
                     employAdd.FirstName.SetValue(If(objEmployee.FirstName = Nothing, "", objEmployee.FirstName))
                     employAdd.LastName.SetValue(If(objEmployee.LastName = Nothing, "", objEmployee.LastName))
                     employAdd.MiddleName.SetValue(If(objEmployee.MiddleName = Nothing, "", objEmployee.MiddleName))
-                    employAdd.HiredDate.SetValue(If(objEmployee.HiredDate = Nothing, Date.Now, objEmployee.HiredDate))
+                    employAdd.HiredDate.SetValue(If(objEmployee.HiredDate = Nothing, Today, objEmployee.HiredDate))
                     employAdd.Phone.SetValue(If(objEmployee.Phone = Nothing, "", objEmployee.Phone))
                     'employAdd.Mobile.SetValue(If(objEmployee.Mobile = Nothing, "", objEmployee.Mobile)) ' Errors for some reason
                     ' Employee Address
@@ -100,9 +104,9 @@ Public Class Sync_TLtoQB_Employee
                     employAdd.EmployeeAddress.Addr2.SetValue(If(objEmployee.Address2 = Nothing, "", objEmployee.Address2))
                     employAdd.EmployeeAddress.City.SetValue(If(objEmployee.City = Nothing, "", objEmployee.City))
                     employAdd.EmployeeAddress.PostalCode.SetValue(If(objEmployee.PostalCode = Nothing, "", objEmployee.PostalCode))
-                    employAdd.EmployeeAddress.State.SetValue(If(objEmployee.State = Nothing, "", objEmployee.State))
+                    Dim state As String = If(objEmployee.State = Nothing, "", If(objEmployee.State.Length = 2, objEmployee.State.ToUpper(), If(objEmployee.State.ToLower() = "maryland", "MD", "")))
+                    employAdd.EmployeeAddress.State.SetValue(If(objEmployee.State = Nothing, "", state))
                     employAdd.EmployeeAddress.Country.SetValue(If(objEmployee.Country = Nothing, "", objEmployee.Country))
-
 
                     'step2: send the request
                     msgSetRs = MAIN.SESSMANAGER.DoRequests(newMsgSetRq)
@@ -129,8 +133,6 @@ Public Class Sync_TLtoQB_Employee
                 Else
                     Return False ' Do not add to QB or sync data table
                 End If
-                'Return False
-                'Else
             End If
             'Assume only one return
             If Not empRetList Is Nothing Then

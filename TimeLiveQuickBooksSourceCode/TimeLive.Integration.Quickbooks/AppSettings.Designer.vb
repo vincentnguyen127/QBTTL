@@ -35,6 +35,9 @@ Partial Class AppSettings
         Me.rbtJobitems = New System.Windows.Forms.RadioButton()
         Me.rbJob = New System.Windows.Forms.RadioButton()
         Me.Tab_SyncOptions = New System.Windows.Forms.TabPage()
+        Me.Job_or_Item_Selection = New System.Windows.Forms.GroupBox()
+        Me.item_subItems_btn = New System.Windows.Forms.RadioButton()
+        Me.job_subJobs_btn = New System.Windows.Forms.RadioButton()
         Me.chk_debugMode = New System.Windows.Forms.CheckBox()
         Me.chk_syncElgibleVendor = New System.Windows.Forms.CheckBox()
         Me.Tab_AutoSync = New System.Windows.Forms.TabPage()
@@ -54,6 +57,9 @@ Partial Class AppSettings
         Me.dtp_autoruntime = New System.Windows.Forms.DateTimePicker()
         Me.TabControl1 = New System.Windows.Forms.TabControl()
         Me.Tab_Email = New System.Windows.Forms.TabPage()
+        Me.ShowEmailPasswordCheckBox = New System.Windows.Forms.CheckBox()
+        Me.SSLCheckBox = New System.Windows.Forms.CheckBox()
+        Me.SSLLabel = New System.Windows.Forms.Label()
         Me.PortTextBox = New System.Windows.Forms.TextBox()
         Me.PortLabel = New System.Windows.Forms.Label()
         Me.HostTextBox = New System.Windows.Forms.TextBox()
@@ -64,26 +70,24 @@ Partial Class AppSettings
         Me.ToEmailTextBox = New System.Windows.Forms.TextBox()
         Me.EmailPasswordTextBox = New System.Windows.Forms.TextBox()
         Me.FromEmailTextBox = New System.Windows.Forms.TextBox()
-        Me.SSLLabel = New System.Windows.Forms.Label()
-        Me.SSLCheckBox = New System.Windows.Forms.CheckBox()
-        Me.Job_or_Item_Selection = New System.Windows.Forms.GroupBox()
-        Me.item_subItems_btn = New System.Windows.Forms.RadioButton()
-        Me.job_subJobs_btn = New System.Windows.Forms.RadioButton()
-        Me.ShowEmailPasswordCheckBox = New System.Windows.Forms.CheckBox()
-        Me.Label3 = New System.Windows.Forms.Label()
-        Me.EmployeeMessageTextBox = New System.Windows.Forms.TextBox()
+        Me.Tab_Email_text = New System.Windows.Forms.TabPage()
+        Me.UncompletedMessageTextBox = New System.Windows.Forms.TextBox()
+        Me.Label5 = New System.Windows.Forms.Label()
+        Me.UnapprovedMessageTextBox = New System.Windows.Forms.TextBox()
         Me.Label4 = New System.Windows.Forms.Label()
-        Me.SupervisorMessageTextBox = New System.Windows.Forms.TextBox()
+        Me.UnsubmittedMessageTextBox = New System.Windows.Forms.TextBox()
+        Me.Label3 = New System.Windows.Forms.Label()
         Me.Tab_HoursOptions.SuspendLayout()
         Me.GroupBox3.SuspendLayout()
         Me.Tab_SyncOptions.SuspendLayout()
+        Me.Job_or_Item_Selection.SuspendLayout()
         Me.Tab_AutoSync.SuspendLayout()
         Me.GroupBox2.SuspendLayout()
         Me.GroupBox1.SuspendLayout()
         CType(Me.autoruninterval_btn, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.TabControl1.SuspendLayout()
         Me.Tab_Email.SuspendLayout()
-        Me.Job_or_Item_Selection.SuspendLayout()
+        Me.Tab_Email_text.SuspendLayout()
         Me.SuspendLayout()
         '
         'Button1
@@ -226,6 +230,38 @@ Partial Class AppSettings
         Me.Tab_SyncOptions.Size = New System.Drawing.Size(453, 198)
         Me.Tab_SyncOptions.TabIndex = 1
         Me.Tab_SyncOptions.Text = "Sync Options"
+        '
+        'Job_or_Item_Selection
+        '
+        Me.Job_or_Item_Selection.Controls.Add(Me.item_subItems_btn)
+        Me.Job_or_Item_Selection.Controls.Add(Me.job_subJobs_btn)
+        Me.Job_or_Item_Selection.Location = New System.Drawing.Point(22, 104)
+        Me.Job_or_Item_Selection.Name = "Job_or_Item_Selection"
+        Me.Job_or_Item_Selection.Size = New System.Drawing.Size(409, 46)
+        Me.Job_or_Item_Selection.TabIndex = 48
+        Me.Job_or_Item_Selection.TabStop = False
+        '
+        'item_subItems_btn
+        '
+        Me.item_subItems_btn.AutoSize = True
+        Me.item_subItems_btn.Location = New System.Drawing.Point(167, 18)
+        Me.item_subItems_btn.Name = "item_subItems_btn"
+        Me.item_subItems_btn.Size = New System.Drawing.Size(102, 17)
+        Me.item_subItems_btn.TabIndex = 44
+        Me.item_subItems_btn.Text = "Items/Sub Items"
+        Me.item_subItems_btn.UseVisualStyleBackColor = True
+        '
+        'job_subJobs_btn
+        '
+        Me.job_subJobs_btn.AutoSize = True
+        Me.job_subJobs_btn.Checked = True
+        Me.job_subJobs_btn.Location = New System.Drawing.Point(27, 18)
+        Me.job_subJobs_btn.Name = "job_subJobs_btn"
+        Me.job_subJobs_btn.Size = New System.Drawing.Size(96, 17)
+        Me.job_subJobs_btn.TabIndex = 43
+        Me.job_subJobs_btn.TabStop = True
+        Me.job_subJobs_btn.Text = "Jobs/Sub Jobs"
+        Me.job_subJobs_btn.UseVisualStyleBackColor = True
         '
         'chk_debugMode
         '
@@ -412,6 +448,7 @@ Partial Class AppSettings
         Me.TabControl1.Controls.Add(Me.Tab_SyncOptions)
         Me.TabControl1.Controls.Add(Me.Tab_HoursOptions)
         Me.TabControl1.Controls.Add(Me.Tab_Email)
+        Me.TabControl1.Controls.Add(Me.Tab_Email_text)
         Me.TabControl1.Location = New System.Drawing.Point(12, 12)
         Me.TabControl1.Name = "TabControl1"
         Me.TabControl1.SelectedIndex = 0
@@ -421,10 +458,6 @@ Partial Class AppSettings
         'Tab_Email
         '
         Me.Tab_Email.BackColor = System.Drawing.Color.WhiteSmoke
-        Me.Tab_Email.Controls.Add(Me.SupervisorMessageTextBox)
-        Me.Tab_Email.Controls.Add(Me.Label4)
-        Me.Tab_Email.Controls.Add(Me.EmployeeMessageTextBox)
-        Me.Tab_Email.Controls.Add(Me.Label3)
         Me.Tab_Email.Controls.Add(Me.ShowEmailPasswordCheckBox)
         Me.Tab_Email.Controls.Add(Me.SSLCheckBox)
         Me.Tab_Email.Controls.Add(Me.SSLLabel)
@@ -443,7 +476,34 @@ Partial Class AppSettings
         Me.Tab_Email.Padding = New System.Windows.Forms.Padding(3)
         Me.Tab_Email.Size = New System.Drawing.Size(453, 198)
         Me.Tab_Email.TabIndex = 4
-        Me.Tab_Email.Text = "eMail"
+        Me.Tab_Email.Text = "eMail Server"
+        '
+        'ShowEmailPasswordCheckBox
+        '
+        Me.ShowEmailPasswordCheckBox.AutoSize = True
+        Me.ShowEmailPasswordCheckBox.Location = New System.Drawing.Point(424, 22)
+        Me.ShowEmailPasswordCheckBox.Name = "ShowEmailPasswordCheckBox"
+        Me.ShowEmailPasswordCheckBox.Size = New System.Drawing.Size(15, 14)
+        Me.ShowEmailPasswordCheckBox.TabIndex = 12
+        Me.ShowEmailPasswordCheckBox.UseVisualStyleBackColor = True
+        '
+        'SSLCheckBox
+        '
+        Me.SSLCheckBox.AutoSize = True
+        Me.SSLCheckBox.Location = New System.Drawing.Point(305, 92)
+        Me.SSLCheckBox.Name = "SSLCheckBox"
+        Me.SSLCheckBox.Size = New System.Drawing.Size(15, 14)
+        Me.SSLCheckBox.TabIndex = 11
+        Me.SSLCheckBox.UseVisualStyleBackColor = True
+        '
+        'SSLLabel
+        '
+        Me.SSLLabel.AutoSize = True
+        Me.SSLLabel.Location = New System.Drawing.Point(216, 92)
+        Me.SSLLabel.Name = "SSLLabel"
+        Me.SSLLabel.Size = New System.Drawing.Size(83, 13)
+        Me.SSLLabel.TabIndex = 10
+        Me.SSLLabel.Text = "SSL Encryption:"
         '
         'PortTextBox
         '
@@ -526,96 +586,72 @@ Partial Class AppSettings
         Me.FromEmailTextBox.Size = New System.Drawing.Size(140, 20)
         Me.FromEmailTextBox.TabIndex = 0
         '
-        'SSLLabel
+        'Tab_Email_text
         '
-        Me.SSLLabel.AutoSize = True
-        Me.SSLLabel.Location = New System.Drawing.Point(216, 92)
-        Me.SSLLabel.Name = "SSLLabel"
-        Me.SSLLabel.Size = New System.Drawing.Size(83, 13)
-        Me.SSLLabel.TabIndex = 10
-        Me.SSLLabel.Text = "SSL Encryption:"
+        Me.Tab_Email_text.BackColor = System.Drawing.Color.WhiteSmoke
+        Me.Tab_Email_text.Controls.Add(Me.UncompletedMessageTextBox)
+        Me.Tab_Email_text.Controls.Add(Me.Label5)
+        Me.Tab_Email_text.Controls.Add(Me.UnapprovedMessageTextBox)
+        Me.Tab_Email_text.Controls.Add(Me.Label4)
+        Me.Tab_Email_text.Controls.Add(Me.UnsubmittedMessageTextBox)
+        Me.Tab_Email_text.Controls.Add(Me.Label3)
+        Me.Tab_Email_text.Location = New System.Drawing.Point(4, 22)
+        Me.Tab_Email_text.Name = "Tab_Email_text"
+        Me.Tab_Email_text.Padding = New System.Windows.Forms.Padding(3)
+        Me.Tab_Email_text.Size = New System.Drawing.Size(453, 198)
+        Me.Tab_Email_text.TabIndex = 5
+        Me.Tab_Email_text.Text = "eMail Text"
         '
-        'SSLCheckBox
+        'UncompletedMessageTextBox
         '
-        Me.SSLCheckBox.AutoSize = True
-        Me.SSLCheckBox.Location = New System.Drawing.Point(305, 92)
-        Me.SSLCheckBox.Name = "SSLCheckBox"
-        Me.SSLCheckBox.Size = New System.Drawing.Size(15, 14)
-        Me.SSLCheckBox.TabIndex = 11
-        Me.SSLCheckBox.UseVisualStyleBackColor = True
+        Me.UncompletedMessageTextBox.Location = New System.Drawing.Point(77, 23)
+        Me.UncompletedMessageTextBox.Multiline = True
+        Me.UncompletedMessageTextBox.Name = "UncompletedMessageTextBox"
+        Me.UncompletedMessageTextBox.ScrollBars = System.Windows.Forms.ScrollBars.Vertical
+        Me.UncompletedMessageTextBox.Size = New System.Drawing.Size(140, 67)
+        Me.UncompletedMessageTextBox.TabIndex = 22
         '
-        'Job_or_Item_Selection
+        'Label5
         '
-        Me.Job_or_Item_Selection.Controls.Add(Me.item_subItems_btn)
-        Me.Job_or_Item_Selection.Controls.Add(Me.job_subJobs_btn)
-        Me.Job_or_Item_Selection.Location = New System.Drawing.Point(22, 104)
-        Me.Job_or_Item_Selection.Name = "Job_or_Item_Selection"
-        Me.Job_or_Item_Selection.Size = New System.Drawing.Size(409, 46)
-        Me.Job_or_Item_Selection.TabIndex = 48
-        Me.Job_or_Item_Selection.TabStop = False
+        Me.Label5.Location = New System.Drawing.Point(3, 23)
+        Me.Label5.Name = "Label5"
+        Me.Label5.Size = New System.Drawing.Size(78, 64)
+        Me.Label5.TabIndex = 21
+        Me.Label5.Text = "Uncompleted Time Card Message:"
         '
-        'item_subItems_btn
+        'UnapprovedMessageTextBox
         '
-        Me.item_subItems_btn.AutoSize = True
-        Me.item_subItems_btn.Location = New System.Drawing.Point(167, 18)
-        Me.item_subItems_btn.Name = "item_subItems_btn"
-        Me.item_subItems_btn.Size = New System.Drawing.Size(102, 17)
-        Me.item_subItems_btn.TabIndex = 44
-        Me.item_subItems_btn.Text = "Items/Sub Items"
-        Me.item_subItems_btn.UseVisualStyleBackColor = True
-        '
-        'job_subJobs_btn
-        '
-        Me.job_subJobs_btn.AutoSize = True
-        Me.job_subJobs_btn.Checked = True
-        Me.job_subJobs_btn.Location = New System.Drawing.Point(27, 18)
-        Me.job_subJobs_btn.Name = "job_subJobs_btn"
-        Me.job_subJobs_btn.Size = New System.Drawing.Size(96, 17)
-        Me.job_subJobs_btn.TabIndex = 43
-        Me.job_subJobs_btn.TabStop = True
-        Me.job_subJobs_btn.Text = "Jobs/Sub Jobs"
-        Me.job_subJobs_btn.UseVisualStyleBackColor = True
-        '
-        'ShowEmailPasswordCheckBox
-        '
-        Me.ShowEmailPasswordCheckBox.AutoSize = True
-        Me.ShowEmailPasswordCheckBox.Location = New System.Drawing.Point(424, 22)
-        Me.ShowEmailPasswordCheckBox.Name = "ShowEmailPasswordCheckBox"
-        Me.ShowEmailPasswordCheckBox.Size = New System.Drawing.Size(15, 14)
-        Me.ShowEmailPasswordCheckBox.TabIndex = 12
-        Me.ShowEmailPasswordCheckBox.UseVisualStyleBackColor = True
-        '
-        'Label3
-        '
-        Me.Label3.Location = New System.Drawing.Point(6, 128)
-        Me.Label3.Name = "Label3"
-        Me.Label3.Size = New System.Drawing.Size(62, 50)
-        Me.Label3.TabIndex = 13
-        Me.Label3.Text = "Message to Employee:"
-        '
-        'EmployeeMessageTextBox
-        '
-        Me.EmployeeMessageTextBox.Location = New System.Drawing.Point(68, 125)
-        Me.EmployeeMessageTextBox.Multiline = True
-        Me.EmployeeMessageTextBox.Name = "EmployeeMessageTextBox"
-        Me.EmployeeMessageTextBox.Size = New System.Drawing.Size(140, 67)
-        Me.EmployeeMessageTextBox.TabIndex = 14
+        Me.UnapprovedMessageTextBox.Location = New System.Drawing.Point(307, 102)
+        Me.UnapprovedMessageTextBox.Multiline = True
+        Me.UnapprovedMessageTextBox.Name = "UnapprovedMessageTextBox"
+        Me.UnapprovedMessageTextBox.ScrollBars = System.Windows.Forms.ScrollBars.Vertical
+        Me.UnapprovedMessageTextBox.Size = New System.Drawing.Size(140, 67)
+        Me.UnapprovedMessageTextBox.TabIndex = 20
         '
         'Label4
         '
-        Me.Label4.Location = New System.Drawing.Point(216, 128)
+        Me.Label4.Location = New System.Drawing.Point(237, 105)
         Me.Label4.Name = "Label4"
-        Me.Label4.Size = New System.Drawing.Size(62, 50)
-        Me.Label4.TabIndex = 15
-        Me.Label4.Text = "Message to Supervisor:"
+        Me.Label4.Size = New System.Drawing.Size(70, 50)
+        Me.Label4.TabIndex = 19
+        Me.Label4.Text = "Unapproved Time Card Message::"
         '
-        'SupervisorMessageTextBox
+        'UnsubmittedMessageTextBox
         '
-        Me.SupervisorMessageTextBox.Location = New System.Drawing.Point(278, 125)
-        Me.SupervisorMessageTextBox.Multiline = True
-        Me.SupervisorMessageTextBox.Name = "SupervisorMessageTextBox"
-        Me.SupervisorMessageTextBox.Size = New System.Drawing.Size(140, 67)
-        Me.SupervisorMessageTextBox.TabIndex = 16
+        Me.UnsubmittedMessageTextBox.Location = New System.Drawing.Point(77, 105)
+        Me.UnsubmittedMessageTextBox.Multiline = True
+        Me.UnsubmittedMessageTextBox.Name = "UnsubmittedMessageTextBox"
+        Me.UnsubmittedMessageTextBox.ScrollBars = System.Windows.Forms.ScrollBars.Vertical
+        Me.UnsubmittedMessageTextBox.Size = New System.Drawing.Size(140, 67)
+        Me.UnsubmittedMessageTextBox.TabIndex = 18
+        '
+        'Label3
+        '
+        Me.Label3.Location = New System.Drawing.Point(3, 105)
+        Me.Label3.Name = "Label3"
+        Me.Label3.Size = New System.Drawing.Size(68, 64)
+        Me.Label3.TabIndex = 17
+        Me.Label3.Text = "Unsubmitted Time Card Message:"
         '
         'AppSettings
         '
@@ -633,6 +669,8 @@ Partial Class AppSettings
         Me.GroupBox3.PerformLayout()
         Me.Tab_SyncOptions.ResumeLayout(False)
         Me.Tab_SyncOptions.PerformLayout()
+        Me.Job_or_Item_Selection.ResumeLayout(False)
+        Me.Job_or_Item_Selection.PerformLayout()
         Me.Tab_AutoSync.ResumeLayout(False)
         Me.Tab_AutoSync.PerformLayout()
         Me.GroupBox2.ResumeLayout(False)
@@ -643,8 +681,8 @@ Partial Class AppSettings
         Me.TabControl1.ResumeLayout(False)
         Me.Tab_Email.ResumeLayout(False)
         Me.Tab_Email.PerformLayout()
-        Me.Job_or_Item_Selection.ResumeLayout(False)
-        Me.Job_or_Item_Selection.PerformLayout()
+        Me.Tab_Email_text.ResumeLayout(False)
+        Me.Tab_Email_text.PerformLayout()
         Me.ResumeLayout(False)
 
     End Sub
@@ -697,8 +735,11 @@ Partial Class AppSettings
     Friend WithEvents item_subItems_btn As RadioButton
     Friend WithEvents job_subJobs_btn As RadioButton
     Friend WithEvents ShowEmailPasswordCheckBox As CheckBox
-    Friend WithEvents EmployeeMessageTextBox As TextBox
-    Friend WithEvents Label3 As Label
-    Friend WithEvents SupervisorMessageTextBox As TextBox
+    Friend WithEvents Tab_Email_text As TabPage
+    Friend WithEvents UnapprovedMessageTextBox As TextBox
     Friend WithEvents Label4 As Label
+    Friend WithEvents UnsubmittedMessageTextBox As TextBox
+    Friend WithEvents Label3 As Label
+    Friend WithEvents UncompletedMessageTextBox As TextBox
+    Friend WithEvents Label5 As Label
 End Class

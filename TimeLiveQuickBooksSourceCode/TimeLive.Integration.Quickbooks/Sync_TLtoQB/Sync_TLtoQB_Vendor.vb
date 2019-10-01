@@ -59,15 +59,12 @@ Public Class Sync_TLtoQB_Vendor
         'Dim sessManager As QBSessionManager
 
         Try
-            'sessManager = New QBSessionManagerClass()
             Dim msgSetRq As IMsgSetRequest = MAIN.SESSMANAGER.CreateMsgSetRequest("US", 2, 0)
 
             msgSetRq.Attributes.OnError = ENRqOnError.roeContinue
             Dim VendorQueryRq As IVendorQuery = msgSetRq.AppendVendorQueryRq
 
             VendorQueryRq.ORVendorListQuery.FullNameList.Add(TLEmployeeName)
-            'sessManager.OpenConnection("App", "TimeLive Quickbooks")
-            'sessManager.BeginSession("", ENOpenMode.omDontCare)
             Dim msgSetRs As IMsgSetResponse = MAIN.SESSMANAGER.DoRequests(msgSetRq)
 
             Dim response As IResponse = msgSetRs.ResponseList.GetAt(0)

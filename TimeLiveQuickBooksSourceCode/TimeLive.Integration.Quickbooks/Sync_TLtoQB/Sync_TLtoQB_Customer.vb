@@ -55,20 +55,15 @@ Public Class Sync_TLtoQB_Customer
     ''' True: does exist in QB, and we add it to the Data Table if not present
     ''' </returns>
     Public Function checkQBCustomerExist(ByRef TLClientName As String, ByVal TL_ID As Integer, ByVal objClient As Services.TimeLive.Clients.Client, ByVal UI As Boolean) As Boolean
-
-        'Dim sessManager As QBSessionManager
         Dim custRet As ICustomerRet
 
         Try
-            'sessManager = New QBSessionManagerClass()
             Dim msgSetRq As IMsgSetRequest = MAIN.SESSMANAGER.CreateMsgSetRequest("US", 2, 0)
 
             msgSetRq.Attributes.OnError = ENRqOnError.roeContinue
             Dim CustomerQueryRq As ICustomerQuery = msgSetRq.AppendCustomerQueryRq
 
             CustomerQueryRq.ORCustomerListQuery.FullNameList.Add(TLClientName)
-            'sessManager.OpenConnection("App", "TimeLive Quickbooks")
-            'sessManager.BeginSession("", ENOpenMode.omDontCare)
             Dim msgSetRs As IMsgSetResponse = MAIN.SESSMANAGER.DoRequests(msgSetRq)
 
             Dim response As IResponse = msgSetRs.ResponseList.GetAt(0)
@@ -128,9 +123,6 @@ Public Class Sync_TLtoQB_Customer
                 msgSetRs = MAIN.SESSMANAGER.DoRequests(msgSetRq)
                 response = msgSetRs.ResponseList.GetAt(0)
                 custRetList = response.Detail
-
-                'Return False
-                'Else
             End If
 
             If Not custRetList Is Nothing Then
@@ -163,14 +155,8 @@ Public Class Sync_TLtoQB_Customer
             End If
 
             Return inQB
-            'End If
         Catch ex As Exception
             Throw ex
-            '     'Finally
-            '    If Not sessManager Is Nothing Then
-            '       sessManager.EndSession()
-            '       sessManager.CloseConnection()
-            '    End If
         End Try
     End Function
 

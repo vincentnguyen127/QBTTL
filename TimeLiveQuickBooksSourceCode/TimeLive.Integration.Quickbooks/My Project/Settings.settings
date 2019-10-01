@@ -125,10 +125,13 @@
     <Setting Name="EmailPort" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
-    <Setting Name="MessageToEmployee" Type="System.String" Scope="User">
+    <Setting Name="UnsubmittedMessage" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
-    <Setting Name="MessageToSupervisor" Type="System.String" Scope="User">
+    <Setting Name="UncompletedMessage" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="UnapprovedMessage" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
     <Setting Name="TL_QB_RelationshipConnectionString" Type="(Connection string)" Scope="Application">

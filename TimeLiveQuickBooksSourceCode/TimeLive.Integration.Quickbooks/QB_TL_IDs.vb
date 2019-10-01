@@ -29,6 +29,9 @@
 End Class
 
 Namespace QB_TL_IDsTableAdapters
+    Partial Public Class EmployeesTableAdapter
+    End Class
+
     Partial Public Class Jobs_SubJobsTableAdapter
     End Class
 

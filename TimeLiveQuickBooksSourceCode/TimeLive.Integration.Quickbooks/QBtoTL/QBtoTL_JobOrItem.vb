@@ -379,16 +379,16 @@ Public Class QBtoTL_JobOrItem
 
                         Else ' Subjob of a subjob
 
-                            Dim nParentTaskId As Integer = objTaskServices.GetParentTaskId(PTArray(PTArray.Length - 2))
                             Dim hasParentTask As Boolean = Array.Exists(objTaskServices.GetTasks,
                                                                 Function(proj As Services.TimeLive.Tasks.Task) proj.TaskName = PTArray(PTArray.Length - 2))
 
-                            objTaskServices.UpdateIsParentInTask(nParentTaskId, True)
-
                             If Not hasParentTask Then
-                                My.Forms.MAIN.History("Subtask " + element.QB_Name + "tried To be added before task " + PTArray(PTArray.Length - 2), "i")
+                                My.Forms.MAIN.History("Subtask " + element.QB_Name + "tried to be added before task " + PTArray(PTArray.Length - 2), "N")
                                 Continue For
                             End If
+
+                            Dim nParentTaskId As Integer = objTaskServices.GetParentTaskId(PTArray(PTArray.Length - 2))
+                            objTaskServices.UpdateIsParentInTask(nParentTaskId, True)
 
                             Dim nProjectId As Integer = objProjectServices.GetProjectId(PTArray(1))
                             Dim nTaskTypeId As Integer = objTaskServices.GetTaskTypeId()

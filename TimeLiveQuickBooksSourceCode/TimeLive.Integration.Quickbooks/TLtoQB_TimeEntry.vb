@@ -330,12 +330,12 @@ Public Class TLtoQB_TimeEntry
         My.Forms.MAIN.History("Finding employeeID using Employee Name: " + employeeName, "n")
 
         Dim EmployeeAdapter As New QB_TL_IDsTableAdapters.EmployeesTableAdapter()
-        Dim EmployeeQBID As QB_TL_IDs.EmployeesDataTable = EmployeeAdapter.GetCorrespondingQB_IDbyQB_Name(employeeName)
+        Dim EmployeeQBID As QB_TL_IDs.EmployeesDataTable = EmployeeAdapter.GetEmployeeByTL_Name(employeeName)
 
         Dim VendorAdapter As New QB_TL_IDsTableAdapters.VendorsTableAdapter()
         ' No employee found, check if it was actually a vendor
         If EmployeeQBID.Count = 0 Then
-            Dim VendorQBID As QB_TL_IDs.VendorsDataTable = VendorAdapter.GetCorrespondingQB_IDbyQB_Name(employeeName)
+            Dim VendorQBID As QB_TL_IDs.VendorsDataTable = VendorAdapter.GetVendorByTL_Name(employeeName)
             My.Forms.MAIN.History("Found " + VendorQBID.Count.ToString + " matching employee/vendor ID" +
                                   If(VendorQBID.Count = 1, "", "s") + " for: " + employeeName, "I")
             result = If(VendorQBID.Count, VendorQBID(0)(0).ToString, "")
