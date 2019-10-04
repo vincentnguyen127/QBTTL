@@ -69,7 +69,7 @@ Public Class Sync_TLtoQB_Relationships
     ''' 1 if relationship was added or already existed
     ''' </returns>
     Function Add_Relationship(ByRef chargingRelationshipAdapter As QB_TL_IDsTableAdapters.ChargingRelationshipsTableAdapter,
-                         ByVal TLProjectID As String, ByVal TLEmployeeID As String, Optional UI As Boolean = True) As Integer
+                         ByVal TLProjectID As String, ByVal TLEmployeeID As String, Optional itemName As String = Nothing, Optional UI As Boolean = True) As Integer
         If TLEmployeeID Is Nothing Or TLProjectID Is Nothing Then
             Return 0
         End If
@@ -98,8 +98,26 @@ Public Class Sync_TLtoQB_Relationships
             Dim EmployeeName As String = EmployeeAdapter.GetNamefromID(QBEmployeeID)
             If EmployeeName Is Nothing Then
                 EmployeeName = VendorAdapter.GetNamefromID(QBEmployeeID)
-            Else
-                EmployeeName = EmployeeName
+            End If
+
+            Dim QBItemID As String = Nothing
+            ' Get Item QB ID from QB, if it exists
+            If itemName IsNot Nothing Then
+                Dim msgSetRq As IMsgSetRequest = MAIN.SESSMANAGER.CreateMsgSetRequest("US", 2, 0)
+                msgSetRq.Attributes.OnError = ENRqOnError.roeContinue
+                Dim itemQueryRq As IItemQuery = msgSetRq.AppendItemQueryRq
+                itemQueryRq.ORListQuery.FullNameList.Add(itemName)
+
+                Dim msgSetRs As IMsgSetResponse = MAIN.SESSMANAGER.DoRequests(msgSetRq)
+                Dim response As IResponse = msgSetRs.ResponseList.GetAt(0)
+                Dim itemRetList As IORItemRetList
+                itemRetList = response.Detail
+
+                If itemRetList IsNot Nothing Then
+                    Dim ret As IORItemRet = itemRetList.GetAt(0)
+                    QBItemID = ret.ItemServiceRet.ListID.GetValue()
+                End If
+
             End If
 
             If JobSubJobName IsNot Nothing Then JobSubJobName = JobSubJobName.Trim
@@ -121,7 +139,11 @@ Public Class Sync_TLtoQB_Relationships
                 If Not UI Or msg_resp = MsgBoxResult.Yes Then
                     My.Forms.MAIN.History("Adding Time Relationship between " + EmployeeName + " and " + JobSubJobName + " to local database", "N")
                     Try
-                        chargingRelationshipAdapter.AddEmployeeJobRelationship(QBEmployeeID, QBJobSubJobID)
+                        If QBItemID Is Nothing Then
+                            chargingRelationshipAdapter.AddEmployeeJobRelationship(QBEmployeeID, QBJobSubJobID)
+                        Else
+                            chargingRelationshipAdapter.AddEmployeeJobItemRelationship(QBEmployeeID, QBJobSubJobID, QBItemID)
+                        End If
                     Catch ex As Exception
                         My.Forms.MAIN.History("Exception when adding Relationship: " + ex.ToString, "N")
                         Return 0
@@ -131,6 +153,10 @@ Public Class Sync_TLtoQB_Relationships
                     Return 0
                 End If
             Else
+                If QBItemID IsNot Nothing Then
+                    chargingRelationshipAdapter.UpdateItem(QBEmployeeID, QBJobSubJobID, QBItemID)
+                End If
+
                 My.Forms.MAIN.History(If(numRel > 1, "More than one ", "One ") + " relationship" + " between " + EmployeeName + " And " + JobSubJobName + " already exists", "i")
                 Return 1
             End If

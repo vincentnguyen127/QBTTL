@@ -304,7 +304,22 @@ Used to sort self-referenced table's rows
  <param name="ParentName"></param>
  <returns></returns>
 </member>
-<member name="M:TimeLive.Quickbooks.Integrator.Sync_TLtoQB_JoborItem.checkQBJobSubJobExist(System.String@,System.String@,System.Int32,System.Boolean,System.String,System.Boolean)">
+<member name="M:TimeLive.Quickbooks.Integrator.Sync_TLtoQB_JoborItem.checkQBItemExists(System.String,System.String,System.Boolean,System.String,System.Boolean)">
+ <summary>
+ Verifies a Job exists in QB, adding it to the Data Table if necessary
+ </summary>
+ <param name="TL_Name"></param>
+ <param name="TL_ID"></param>
+ <returns>
+ Integer: the number of items added into QB
+     -2 -> Did not add to QB because cancel was selected
+     -1 -> Did not exist in QB, not added to QB
+     0 -> Already exists in QB
+     1 -> Did not exist in QB, added to QB
+     2+ -> Did not exist in QB, and 1 or more of its parents did not exist in QB either, all added to QB
+ </returns>
+</member>
+<member name="M:TimeLive.Quickbooks.Integrator.Sync_TLtoQB_JoborItem.checkQBJobSubJobExist(System.String@,System.String@,System.Int32,System.Boolean,System.String,System.Boolean,System.Boolean)">
  <summary>
  Verifies a Job exists in QB, adding it to the Data Table if necessary
  </summary>
@@ -320,6 +335,18 @@ Used to sort self-referenced table's rows
  </returns>
 </member>
 <member name="M:TimeLive.Quickbooks.Integrator.Sync_TLtoQB_JoborItem.IsQBID_In_JobSubJobDataTable(System.String,System.String)">
+ <summary>
+ Check if QB ID is in job/subjob data table
+ </summary>
+ <param name="myqbName"></param>
+ <param name="myqbID"></param>
+ <returns>
+ 0 -> not in data table
+ 1 -> one record in data table
+ 2 -> more than one record in data table
+ </returns>
+</member>
+<member name="M:TimeLive.Quickbooks.Integrator.Sync_TLtoQB_JoborItem.IsQBID_In_ItemSubItemDataTable(System.String,System.String)">
  <summary>
  Check if QB ID is in job/subjob data table
  </summary>
@@ -347,7 +374,7 @@ Used to sort self-referenced table's rows
  Sync the employee data from QB. Print out employees that are in TL but not QB
  </summary>
 </member>
-<member name="M:TimeLive.Quickbooks.Integrator.Sync_TLtoQB_Relationships.Add_Relationship(TimeLive.Quickbooks.Integrator.QB_TL_IDsTableAdapters.ChargingRelationshipsTableAdapter@,System.String,System.String,System.Boolean)">
+<member name="M:TimeLive.Quickbooks.Integrator.Sync_TLtoQB_Relationships.Add_Relationship(TimeLive.Quickbooks.Integrator.QB_TL_IDsTableAdapters.ChargingRelationshipsTableAdapter@,System.String,System.String,System.String,System.Boolean)">
  <summary>
  Adds the relationship between an employee and job within the given row into the chargining relationships table
  </summary>

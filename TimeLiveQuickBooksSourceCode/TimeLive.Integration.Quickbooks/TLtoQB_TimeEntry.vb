@@ -244,8 +244,8 @@ Public Class TLtoQB_TimeEntry
                             Dim RecordTxnID As String = Nothing
                             With element
                                 RecordTxnID = AddTimeEntryInQB(.CustomerName, .EmployeeName, .IsBillable, .ProjectName,
-                                             .TaskWithParent, .TotalTime, .TimeEntryDate, .TimeEntryClass,
-                                             .PayrollItem_TypeName, .PayrollItem, .ServiceItem_TypeName, .ServiceItem)
+                                                               .TaskWithParent, .TotalTime, .TimeEntryDate, .TimeEntryClass,
+                                                               .PayrollItem_TypeName, .PayrollItem, .ServiceItem_TypeName, .ServiceItem, UI)
 
                                 My.Forms.MAIN.History("Inserted time entry for " + .EmployeeName + " on " + .TimeEntryDate + " for task " + .TaskWithParent, "i")
 
@@ -439,12 +439,11 @@ Public Class TLtoQB_TimeEntry
         Return result
     End Function
 
-
     'Adds entries to QB based on Job Item Selection
     Public Function AddTimeEntryInQB(ByVal CustomerName As String, ByVal EmployeeName As String, ByVal IsBillable As Boolean,
                                 ByVal ProjectName As String, ByVal ServiceItemName As String, ByVal TotalTime As DateTime,
                                 ByVal TimeEntryDate As Date, ByVal TimeEntryClass As String, ByVal PayrollItem_TypeName As Boolean,
-                                ByVal PayrollItem As String, ByVal ServiceItem_TypeName As Boolean, ByVal ItemID As String) As String
+                                ByVal PayrollItem As String, ByVal ServiceItem_TypeName As Boolean, ByVal ItemID As String, Optional UI As Boolean = False) As String
         ' Default is JobSubJob when no JobHierarchy has yet to be selected
         Dim rbtJobitems_AppSettings As Integer = If(My.Settings.JobHierarchy = "", 1, My.Settings.JobHierarchy)
         Dim RecordTxnID As String = Nothing
@@ -454,7 +453,7 @@ Public Class TLtoQB_TimeEntry
                                     TimeEntryDate, TimeEntryClass, PayrollItem)
         ElseIf rbtJobitems_AppSettings = 1 Then
             RecordTxnID = AddTimeEntryInQBJobSubJob(CustomerName, EmployeeName, IsBillable, ProjectName, ServiceItemName, TotalTime,
-                                      TimeEntryDate, TimeEntryClass, PayrollItem_TypeName, PayrollItem, ServiceItem_TypeName, ItemID)
+                                      TimeEntryDate, TimeEntryClass, PayrollItem_TypeName, PayrollItem, ServiceItem_TypeName, ItemID, UI)
         ElseIf rbtJobitems_AppSettings = 2 Then
             RecordTxnID = AddTimeEntryInQBItemSubItem(CustomerName, EmployeeName, IsBillable, ProjectName, ServiceItemName, TotalTime,
                                         TimeEntryDate, TimeEntryClass, PayrollItem_TypeName, PayrollItem, ServiceItem_TypeName, ItemID)
@@ -570,7 +569,7 @@ Public Class TLtoQB_TimeEntry
     Public Function AddTimeEntryInQBJobSubJob(ByVal CustomerName As String, ByVal EmployeeName As String, ByVal IsBillable As Boolean,
                                          ByVal ProjectName As String, ByVal ServiceItemName As String, ByVal TotalTime As DateTime,
                                          ByVal TimeEntryDate As Date, ByVal TimeEntryClass As String, ByVal PayrollItem_TypeName As Boolean,
-                                         ByVal PayrollItem As String, ByVal ServiceItem_TypeName As Boolean, ByVal ItemID As String) As String
+                                         ByVal PayrollItem As String, ByVal ServiceItem_TypeName As Boolean, ByVal ItemID As String, Optional UI As Boolean = False) As String
         'step1: prepare the request
         Dim msgSetRs As IMsgSetResponse
         Try
@@ -578,20 +577,26 @@ Public Class TLtoQB_TimeEntry
             Dim msgSetRq As IMsgSetRequest = MAIN.SESSMANAGER.CreateMsgSetRequest("US", 2, 0)
             msgSetRq.Attributes.OnError = ENRqOnError.roeContinue
             Dim timeAdd As ITimeTrackingAdd = msgSetRq.AppendTimeTrackingAddRq
-            timeAdd.CustomerRef.FullName.SetValue(CustomerName & ":" & ProjectName & ":" & ServiceItemName) ' CustomerName & ":" & ...
+
+            AddNoneItemInQB("<None>", "<None>")
+
+            ' If Project name contains a semicolon, then it also has the task within it, and ServiceItemName is actually a Service Item
+            If ProjectName.Contains(":") Then
+                timeAdd.CustomerRef.FullName.SetValue(CustomerName & ":" & ProjectName) ' ProjectName contains the task name as well
+                timeAdd.ItemServiceRef.FullName.SetValue(CustomerName & ":" & ServiceItemName) ' ServiceItemName is the Item
+            Else
+                timeAdd.CustomerRef.FullName.SetValue(CustomerName & ":" & ProjectName & ":" & ServiceItemName)
+                If ServiceItem_TypeName Then
+                    timeAdd.ItemServiceRef.FullName.SetValue(ItemID)
+                Else
+                    timeAdd.ItemServiceRef.ListID.SetValue(ItemID.ToString.Trim)
+                End If
+            End If
+
             timeAdd.Duration.SetValue(TotalTime.Hour, TotalTime.Minute, 0, False)
             timeAdd.EntityRef.FullName.SetValue(EmployeeName)
             timeAdd.IsBillable.SetValue(IsBillable)
             timeAdd.TxnDate.SetValue(TimeEntryDate)
-            AddNoneItemInQB("<None>", "<None>")
-            '------------------------------------------------
-            'Change name to ListID and get from relationships table
-            ' instead of None use the parameter subItemId. 
-            If ServiceItem_TypeName Then
-                timeAdd.ItemServiceRef.FullName.SetValue(ItemID)
-            Else
-                timeAdd.ItemServiceRef.ListID.SetValue(ItemID.ToString.Trim)
-            End If
 
             If Not TimeEntryClass = "<None>" Then
                 timeAdd.ClassRef.FullName.SetValue(TimeEntryClass)
@@ -604,6 +609,7 @@ Public Class TLtoQB_TimeEntry
                     timeAdd.PayrollItemWageRef.ListID.SetValue(PayrollItem.ToString.Trim)
                 End If
             End If
+
             'step2: send the request
             msgSetRs = MAIN.SESSMANAGER.DoRequests(msgSetRq)
 
@@ -612,7 +618,11 @@ Public Class TLtoQB_TimeEntry
             response = msgSetRs.ResponseList.GetAt(0)
 
             If response.StatusSeverity = "Error" Then
-                Throw New Exception(response.StatusMessage)
+                If UI Then
+                    MsgBox(response.StatusMessage, MsgBoxStyle.OkOnly, "Error Processing Time Transfer")
+                Else
+                    Throw New Exception(response.StatusMessage)
+                End If
             End If
 
             ' The response detail for Add and Mod requests is a 'Ret' object
@@ -685,15 +695,30 @@ Public Class TLtoQB_TimeEntry
                 Dim QBPayrollItem_AppSettings As Integer = My.Settings.QBPayrollItem
 
                 If QBPayrollItem_AppSettings = 1 Then
-                    Return .CostCenter
+                    PayrollItem = .CostCenter
                 ElseIf QBPayrollItem_AppSettings = 2 Then
-                    Return .EmployeeDepartment
+                    PayrollItem = .EmployeeDepartment
                 ElseIf QBPayrollItem_AppSettings = 3 Then
-                    Return .EmployeeType
+                    PayrollItem = .EmployeeType
                 ElseIf QBPayrollItem_AppSettings = 4 Then
-                    Return .Milestone
+                    PayrollItem = .Milestone
                 ElseIf QBPayrollItem_AppSettings = 5 Then
-                    Return .WorkType
+                    PayrollItem = .WorkType
+                End If
+
+                'Query QuickBooks to see if it has this payroll item
+                If PayrollItem <> "<None>" Then
+                    Dim msgSetRq As IMsgSetRequest = MAIN.SESSMANAGER.CreateMsgSetRequest("US", 2, 0)
+                    msgSetRq.Attributes.OnError = ENRqOnError.roeContinue
+                    Dim PayrollQueryRq As IPayrollItemWageQuery = msgSetRq.AppendPayrollItemWageQueryRq
+                    PayrollQueryRq.ORListQuery.FullNameList.Add(PayrollItem)
+                    Dim msgSetRs As IMsgSetResponse = MAIN.SESSMANAGER.DoRequests(msgSetRq)
+                    Dim response As IResponse = msgSetRs.ResponseList.GetAt(0)
+                    Dim empRetList As IPayrollItemWageRet = response.Detail
+
+                    If empRetList Is Nothing Then ' When QB does not have that payroll item
+                        PayrollItem = "<None>"
+                    End If
                 End If
             End With
         End If

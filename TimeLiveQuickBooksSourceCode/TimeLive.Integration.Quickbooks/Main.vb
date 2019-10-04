@@ -911,11 +911,11 @@ Public Class MAIN
 
                 ' Jobs/Subjobs and Items/Subitems show full name too
                 If Type = 13 Or Type = 14 Then
-                    Dim full_name As String = element.FullName.ToString().Replace(":", MAIN.colonReplacer)
+                    Dim fullName As String = element.FullName.ToString().Replace(":", colonReplacer)
                     If QBtoTLRadioButton.Checked Then
-                        QBDataGridView.Rows.Add(element.RecSelect, full_name, element.QB_Name.ToString(), element.QBModTime.ToString(), element.NewlyAdded)
+                        QBDataGridView.Rows.Add(element.RecSelect, fullName, element.QB_Name.ToString(), element.QBModTime.ToString(), element.NewlyAdded)
                     Else
-                        QBDataGridView.Rows.Add(full_name, element.QB_Name.ToString(), element.QBModTime.ToString(), element.NewlyAdded)
+                        QBDataGridView.Rows.Add(fullName, element.QB_Name.ToString(), element.QBModTime.ToString(), element.NewlyAdded)
                     End If
                 Else
                     If QBtoTLRadioButton.Checked Then
@@ -1008,6 +1008,8 @@ Public Class MAIN
             Dim ID As Integer = 0
             Dim name As String = ""
             Dim isNew As String = ""
+            Dim datagrid_row As DataGridViewRow = New DataGridViewRow()
+            datagrid_row.CreateCells(TLDataGridView)
 
             Select Case Type
                 ' .ClientID always returns 0, so always do: GetClientIdByName(.ClientName)
@@ -1044,14 +1046,27 @@ Public Class MAIN
                         name = element.ClientName + MAIN.colonReplacer + element.projectName
                         ID = objServices.GetProjectId(element.projectName)
                     Else
-                        name = element.JobParent.replace(":", MAIN.colonReplacer) + MAIN.colonReplacer + element.TaskName
+                        Dim firstColon As Integer = element.JobParent.indexOf(":")
+                        Dim projectName As String = element.JobParent.substring(0, firstColon) + colonReplacer + element.JobParent.substring(firstColon + 1)
+                        name = projectName + MAIN.colonReplacer + element.TaskName
+
+                        ' Checks if it is formatted with Task in Project name, and Item in Task name
+                        If Not Sync_TLtoQB_JoborItem.storedAsTaskItem(element) Then
+                            name = name.Replace(":", colonReplacer)
+                        End If
+
                         Try
                             ID = objServices2.GetTaskId(element.TaskName)
                         Catch ex As System.Web.Services.Protocols.SoapException
                             History("Could not get TL ID of TL task '" + name +
-                                                  "' Make sure that it has a 'code' attribute in TimeLive", "i")
+                                                      "' Make sure that it has a 'code' attribute in TimeLive", "i")
                             ID = -1
                         End Try
+                    End If
+
+                    ' name will only contain ':' if it has ':' in project name
+                    If name.Contains(":") Then
+                        datagrid_row.DefaultCellStyle.BackColor = Color.LightYellow
                     End If
 
                     ' Do not show Items
@@ -1062,9 +1077,8 @@ Public Class MAIN
 
                 ' Items/SubItems
                 Case 14
-                    ' TODO: will need to change name to full path
                     If element.GetType Is (New Services.TimeLive.Projects.Project).GetType Then
-                        name = element.projectName
+                        name = element.ClientName + MAIN.colonReplacer + element.projectName
                         ID = objServices.GetProjectId(element.projectName)
                     Else
                         name = element.TaskName
@@ -1079,11 +1093,13 @@ Public Class MAIN
 
             ' Checks if TLDataGridView is DataGridView1 or DataGridView2
             If QBtoTLRadioButton.Checked Then
-                TLDataGridView.Rows.Add(name, isNew)
+                datagrid_row.SetValues(name, isNew)
+                '  TLDataGridView.Rows.Add(name, isNew)
             Else
-                TLDataGridView.Rows.Add(False, name, isNew)
+                datagrid_row.SetValues(False, name, isNew)
+                ' TLDataGridView.Rows.Add(False, name, isNew)
             End If
-
+            TLDataGridView.Rows.Add(datagrid_row)
             ProgressBar1.Value += 1
         Next
 
@@ -1613,10 +1629,18 @@ Public Class MAIN
             If row.Cells("Date").Value IsNot Nothing And row.Cells("ckBox").Value And TimeEntryData.NoItems Then
                 Dim fullTaskName As String = row.Cells("Task").Value.ToString()
                 ' Checks for a time entry in our data array which has the correct employee, job/subjob, and date
+                Dim itemName As String = Nothing
                 TimeEntryData.DataArray.ForEach(
                     Sub(timeentry)
-                        Dim jobName As String = timeentry.CustomerName + MAIN.colonReplacer + timeentry.ProjectName +
-                                                MAIN.colonReplacer + timeentry.TaskWithParent.Replace(":", MAIN.colonReplacer)
+                        Dim jobName As String
+                        If (timeentry.ProjectName.Contains(":")) Then
+                            ' Project Name is the task name as well
+                            jobName = timeentry.CustomerName + MAIN.colonReplacer + timeentry.ProjectName.Replace(":", MAIN.colonReplacer)
+                            itemName = timeentry.CustomerName + ":" + timeentry.TaskWithParent
+                        Else
+                            jobName = timeentry.CustomerName + MAIN.colonReplacer + timeentry.ProjectName +
+                                      MAIN.colonReplacer + timeentry.TaskWithParent.Replace(":", MAIN.colonReplacer)
+                        End If
 
                         If (timeentry.EmployeeName = row.Cells("Employee").Value.ToString And jobName = fullTaskName And
                           timeentry.TimeEntryDate.ToString("MM/dd/yyyy") = row.Cells("Date").Value.ToString) Then
@@ -1626,7 +1650,7 @@ Public Class MAIN
                             ' Add the relationship between employee and job for time entry if not present
                             Dim syncRel As Sync_TLtoQB_Relationships = New Sync_TLtoQB_Relationships()
                             ' Only select time entry when there is a charging relationship associated with it
-                            If syncRel.Add_Relationship(chargingRelAdapter, jobID, empID) > 0 Then
+                            If syncRel.Add_Relationship(chargingRelAdapter, jobID, empID, itemName) > 0 Then
                                 timeentry.RecSelect = True
                             Else
                                 My.Forms.MAIN.History("No Relationship exists between " + timeentry.EmployeeName + " and " + jobName, "n")
@@ -1784,20 +1808,29 @@ Public Class MAIN
 
                     Dim payrollDisp As String = If(payroll_dict Is Nothing, .PayrollItem, If(payroll_dict.ContainsKey(.PayrollItem), payroll_dict(.PayrollItem), .PayrollItem))
 
-                    Dim ServiceDisp As String = If(item_dict Is Nothing, If(.ServiceName Is Nothing, .ServiceItem, .ServiceName),
+                    Dim ServiceDisp As String
+                    Dim fullName As String
+
+                    If .ProjectName.Contains(":") Then
+                        ' Project name has task in it, and task has the item
+                        ServiceDisp = .TaskWithParent.ToString()
+                        fullName = .CustomerName.ToString() + MAIN.colonReplacer + .ProjectName.ToString().Replace(":", MAIN.colonReplacer)
+                    Else
+                        ServiceDisp = If(item_dict Is Nothing, If(.ServiceName Is Nothing, .ServiceItem, .ServiceName),
                                                                          If(item_dict.ContainsKey(.ServiceItem), item_dict(.ServiceItem), .ServiceItem))
+                        fullName = .CustomerName.ToString() + MAIN.colonReplacer + .ProjectName.ToString() + MAIN.colonReplacer + .TaskWithParent.ToString().Replace(":", MAIN.colonReplacer)
+                    End If
 
 
-                    ' Check if a time entry has yet to be approved
-                    Dim TimeEntryApproved As Boolean = TL_TimeEntries.GetTimeApproval(AccountEmployeeId, .TimeEntryDate)
-                    Dim TimeEntrySubmitted As Boolean = TL_TimeEntries.GetTimeSubmission(AccountEmployeeId, .TimeEntryDate)
+                    ' Check if a time entry has yet to be submitted or approved
+                    Dim TimeEntryApproved = TL_TimeEntries.GetTimeApproval(AccountEmployeeId, .TimeEntryDate)
+                    Dim TimeEntrySubmitted = TL_TimeEntries.GetTimeSubmission(AccountEmployeeId, .TimeEntryDate)
 
-                    Dim full_name As String = .CustomerName.ToString() + MAIN.colonReplacer + .ProjectName.ToString() + MAIN.colonReplacer + .TaskWithParent.ToString().Replace(":", MAIN.colonReplacer)
                     element.RecSelect = TimeEntryApproved And TimeEntrySubmitted
 
                     Dim datagrid_row As DataGridViewRow = New DataGridViewRow()
                     datagrid_row.CreateCells(DataGridView)
-                    datagrid_row.SetValues(.RecSelect, .EmployeeName, .TimeEntryDate.ToString("MM/dd/yyyy"), full_name,
+                    datagrid_row.SetValues(.RecSelect, .EmployeeName, .TimeEntryDate.ToString("MM/dd/yyyy"), fullName,
                                            TotalHours.ToString, .TimeEntryClass, payrollDisp, ServiceDisp)
 
                     If Not TimeEntrySubmitted Then

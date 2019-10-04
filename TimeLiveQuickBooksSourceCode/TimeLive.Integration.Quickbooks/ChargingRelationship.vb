@@ -288,7 +288,9 @@ Public Class ChargingRelationship
                     ' Do not add Vendor to VendorList if it is not a 1099 Contractor
                     If attribute = 2 Then
                         Dim check1099 As IVendorRet = retList.getAt(i)
-                        If Not check1099.IsVendorEligibleFor1099.GetValue Then
+                        Dim syncElbVendors = If(My.Settings.SyncElbVendor = "", False, My.Settings.SyncElbVendor)
+                        ' Skip them if vendor is not 1099 and we're only syncing 1099 contractors
+                        If Not (syncElbVendors Or check1099.IsVendorEligibleFor1099.GetValue) Then
                             Continue For
                         End If
                     End If
