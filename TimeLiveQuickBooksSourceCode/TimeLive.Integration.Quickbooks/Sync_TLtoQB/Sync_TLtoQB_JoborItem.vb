@@ -1,6 +1,8 @@
 ﻿Imports QBFC13Lib
 
 Public Class Sync_TLtoQB_JoborItem
+    Const MAX_CUSTOMER_LEN As Integer = 41
+    Const MAX_ITEM_LEN As Integer = 31
 
     ''' <summary>
     ''' Checks if the encoding in TimeLive has the Project assigned as the Task name, and task as an item
@@ -169,6 +171,75 @@ Public Class Sync_TLtoQB_JoborItem
         Return SubJobsOrSubData
     End Function
 
+
+    Function askUserToCreateInQB(ByVal UI As Boolean, ByVal cancel_opt As Boolean, ByVal fullItem As String)
+        Dim MsgBox_result As MsgBoxResult = MsgBoxResult.Yes
+        If UI Then
+            If cancel_opt Then
+                MsgBox_result = MsgBox("New item found in TimeLive: " & vbCrLf & fullItem & vbCrLf & "Create in QuickBooks?", MsgBoxStyle.YesNoCancel, "Warning!")
+            Else
+                MsgBox_result = MsgBox("New item found in TimeLive: " & vbCrLf & fullItem & vbCrLf & "Create in QuickBooks?", MsgBoxStyle.YesNo, "Warning!")
+            End If
+        End If
+        Return MsgBox_result
+    End Function
+
+    ' Returns:
+    '   -1 -> exception thrown
+    '    1 -> Item was created
+    '    2 -> Item was created, and the customer was added into Quickbooks
+    Function createQBItem(ByVal customer As String, ByVal item As String, ByVal cappedLenCustomer As String, ByVal cappedLenItem As String,
+                          ByVal fullItem As String, ByVal UI As Boolean, ByVal p_token As String, ByVal customerIsItemInQB As Boolean,
+                          ByRef msgSetRs As IMsgSetResponse)
+        Dim newMsgSetRq As IMsgSetRequest = MAIN.SESSMANAGER.CreateMsgSetRequest("US", 2, 0)
+        newMsgSetRq.Attributes.OnError = ENRqOnError.roeContinue
+
+        Dim numAdded As Integer = 0
+        Dim objClientServices As New Services.TimeLive.Clients.Clients
+        Dim authentication As New Services.TimeLive.Clients.SecuredWebServiceHeader
+        authentication.AuthenticatedToken = p_token
+        objClientServices.SecuredWebServiceHeaderValue = authentication
+
+        Dim client_TL_ID As Integer
+        Try
+            client_TL_ID = objClientServices.GetClientIdByName(customer)
+        Catch ex As Exception
+            My.Forms.MAIN.History("The parent client : '" + customer + "' of Item: '" + item + "' does not exist in TimeLive", "i")
+            Return -1
+        End Try
+        Dim syncCust As Sync_TLtoQB_Customer = New Sync_TLtoQB_Customer()
+        ' Note: Will note transfer over email address since we are just passing in new client instead of the actual client - can change this
+        numAdded += If(syncCust.checkQBCustomerExist(customer, client_TL_ID, New Services.TimeLive.Clients.Client, UI), 0, 1)
+
+        ' Need to add customer as an item, which the actual item will be below
+        If Not customerIsItemInQB Then
+            Dim customerAdd As IItemServiceAdd = newMsgSetRq.AppendItemServiceAddRq
+            customerAdd.Name.SetValue(cappedLenCustomer)
+            customerAdd.ORSalesPurchase.SalesOrPurchase.AccountRef.FullName.SetValue("<None>")
+        End If
+
+        Dim itemAdd As IItemServiceAdd = newMsgSetRq.AppendItemServiceAddRq
+        itemAdd.Name.SetValue(cappedLenItem)
+        itemAdd.ParentRef.FullName.SetValue(cappedLenCustomer)
+        itemAdd.ORSalesPurchase.SalesOrPurchase.AccountRef.FullName.SetValue("<None>")
+
+        'step2: send the request
+        msgSetRs = MAIN.SESSMANAGER.DoRequests(newMsgSetRq)
+
+        ' Interpret the responses
+        For n As Integer = 0 To msgSetRs.ResponseList.Count - 1
+            Dim res As IResponse = msgSetRs.ResponseList.GetAt(n)
+            If res.StatusSeverity = "Error" Then
+                Throw New Exception(res.StatusMessage)
+            End If
+        Next
+
+        numAdded += 1
+        My.Forms.MAIN.History("Item in Timelive with name: " + fullItem + " added to QuickBooks", "N")
+
+        Return numAdded
+    End Function
+
     ''' <summary>
     ''' Verifies a Job exists in QB, adding it to the Data Table if necessary
     ''' </summary>
@@ -194,8 +265,8 @@ Public Class Sync_TLtoQB_JoborItem
             customer = If(qb_customer Is Nothing, customer, qb_customer.Trim)
 
             ' Items in QuickBooks must be no more than 31 characters in size
-            Dim cappedLenCustomer As String = If(customer.Length > 31, customer.Substring(0, 31).Trim, customer.Trim)
-            Dim cappedLenItem As String = If(item.Length > 31, item.Substring(0, 31).Trim, item.Trim)
+            Dim cappedLenCustomer As String = If(customer.Length > MAX_ITEM_LEN, customer.Substring(0, MAX_ITEM_LEN).Trim, customer.Trim)
+            Dim cappedLenItem As String = If(item.Length > MAX_ITEM_LEN, item.Substring(0, MAX_ITEM_LEN).Trim, item.Trim)
             Dim numAdded As Integer = 0
             Dim fullItem As String = cappedLenCustomer + ":" + cappedLenItem
             Dim msgSetRq As IMsgSetRequest = MAIN.SESSMANAGER.CreateMsgSetRequest("US", 2, 0)
@@ -220,70 +291,22 @@ Public Class Sync_TLtoQB_JoborItem
                 inQB = True
             End If
 
-            Dim newMsgSetRq As IMsgSetRequest = MAIN.SESSMANAGER.CreateMsgSetRequest("US", 2, 0)
-            newMsgSetRq.Attributes.OnError = ENRqOnError.roeContinue
-
             If Not inQB Then
-                Dim create As Boolean = True
-                If UI Then
-                    Dim MsgBox_result
-                    If cancel_opt Then
-                        MsgBox_result = MsgBox("New item found in TimeLive: " & vbCrLf & fullItem & vbCrLf & "Create in QuickBooks?", MsgBoxStyle.YesNoCancel, "Warning!")
-                        If MsgBox_result = MsgBoxResult.Cancel Then
-                            Return -2
-                        End If
-                    Else
-                        MsgBox_result = MsgBox("New item found in TimeLive: " & vbCrLf & fullItem & vbCrLf & "Create in QuickBooks?", MsgBoxStyle.YesNo, "Warning!")
-                    End If
-
-                    create = MsgBox_result = MsgBoxResult.Yes
+                Dim msgBoxResponse = askUserToCreateInQB(UI, cancel_opt, fullItem)
+                If msgBoxResponse = MsgBoxResult.Cancel Then
+                    Return -2
                 End If
+                Dim create As Boolean = msgBoxResponse = MsgBoxResult.Yes
 
                 If create Then
-                    Dim objClientServices As New Services.TimeLive.Clients.Clients
-                    Dim authentication As New Services.TimeLive.Clients.SecuredWebServiceHeader
-                    authentication.AuthenticatedToken = p_token
-                    objClientServices.SecuredWebServiceHeaderValue = authentication
+                    Dim created As Integer = createQBItem(customer, item, cappedLenCustomer, cappedLenItem, fullItem, UI,
+                                                          p_token, customerIsItemInQB, msgSetRs)
 
-                    Dim client_TL_ID As Integer
-                    Try
-                        client_TL_ID = objClientServices.GetClientIdByName(customer)
-                    Catch ex As Exception
-                        My.Forms.MAIN.History("The parent client : '" + customer + "' of Item: '" + item + "' does not exist in TimeLive", "i")
-
+                    If created = -1 Then
                         Return -1
-                    End Try
-                    Dim syncCust As Sync_TLtoQB_Customer = New Sync_TLtoQB_Customer()
-                    ' Note: Will note transfer over email address since we are just passing in new client instead of the actual client - can change this
-                    numAdded += If(syncCust.checkQBCustomerExist(customer, client_TL_ID, New Services.TimeLive.Clients.Client, UI), 0, 1)
-
-                    ' Need to add customer as an item, which the actual item will be below
-                    If Not customerIsItemInQB Then
-                        Dim customerAdd As IItemServiceAdd = newMsgSetRq.AppendItemServiceAddRq
-                        customerAdd.Name.SetValue(cappedLenCustomer)
-                        customerAdd.ORSalesPurchase.SalesOrPurchase.AccountRef.FullName.SetValue("<None>")
+                    Else
+                        numAdded += created
                     End If
-
-                    Dim itemAdd As IItemServiceAdd = newMsgSetRq.AppendItemServiceAddRq
-                    itemAdd.Name.SetValue(cappedLenItem)
-                    itemAdd.ParentRef.FullName.SetValue(cappedLenCustomer)
-                    itemAdd.ORSalesPurchase.SalesOrPurchase.AccountRef.FullName.SetValue("<None>")
-
-                    'step2: send the request
-                    msgSetRs = MAIN.SESSMANAGER.DoRequests(newMsgSetRq)
-
-                    ' Interpret the responses
-                    For n As Integer = 0 To msgSetRs.ResponseList.Count - 1
-                        Dim res As IResponse = msgSetRs.ResponseList.GetAt(n)
-                        If res.StatusSeverity = "Error" Then
-                            Throw New Exception(res.StatusMessage)
-                        End If
-                    Next
-
-                    numAdded += 1
-
-                    My.Forms.MAIN.History("Item in Timelive with name: " + fullItem + " added to QuickBooks", "N")
-
                 ElseIf inQB Then
                     Return 0
                 Else ' Use -1 for when something was not created, but is still not in QB
@@ -300,29 +323,6 @@ Public Class Sync_TLtoQB_JoborItem
                     If inQB Then
                         My.Forms.MAIN.History("Found item in QB with name: " + fullItem, "i")
                     End If
-
-                    ' check if its in our database if not then add to it.
-                    Dim ItemSubItemAdapter As New QB_TL_IDsTableAdapters.Items_SubItemsTableAdapter()
-                    'MsgBox("Hit:" + .ListID.GetValue + "-- " + TL_ID.ToString)
-
-                    ' Add to table adapter
-                    'If IsQBID_In_ItemSubItemDataTable(.Name.GetValue.ToString, .ListID.GetValue) = 0 Then
-                    '    If IsTLID_In_JobsSubJobsDataTable(TL_ID) = 0 Then
-                    '        ' Not in local database
-                    '        My.Forms.MAIN.History("Adding Job to local database: '" + TLJobSubJobName, "i")
-                    '        ItemSubItemAdapter.Insert(.ListID.GetValue, TL_ID, .Name.GetValue, TLJobSubJobName) 'QBJobSubJobName
-                    '    Else
-                    '        ' In local database with a different QuickBooks ID
-                    '        My.Forms.MAIN.History("Updating job/subjob QuickBooks ID in local database: " + TLJobSubJobName, "i")
-                    '        ItemSubItemAdapter.UpdateQBID(.ListID.GetValue, TL_ID)
-                    '    End If
-                    'Else
-                    '    If IsTLID_In_JobsSubJobsDataTable(TL_ID) = 0 Then
-                    '        ' In local database with a different TimeLive ID
-                    '        My.Forms.MAIN.History("Updating job/subjob TimeLive ID in local database: " + TLJobSubJobName, "i")
-                    '        ItemSubItemAdapter.UpdateTLID(TL_ID, .ListID.GetValue)
-                    '    End If
-                    'End If
                 End With
             End If
 
@@ -334,12 +334,17 @@ Public Class Sync_TLtoQB_JoborItem
     End Function
 
 
-    Private Sub removeSpacesBetweenColons(ByRef name As String)
+    Private Sub removeSpacesBetweenColonsAndSetLengthOfFields(ByRef name As String, ByVal maxLen As Integer)
         Dim splitArr As String() = name.Split(":")
         Dim nameWithoutSpaces = ""
         For i As Integer = 0 To splitArr.Length - 1
-            Dim part As String = splitArr(i).Trim + If(i = splitArr.Length - 1, "", ":")
-            nameWithoutSpaces = nameWithoutSpaces + part
+            Dim field As String = splitArr(i).Trim
+            field = If(field.Length > maxLen, field.Substring(0, maxLen), field)
+            If i <> splitArr.Length - 1 Then
+                field = field + ":"
+            End If
+
+            nameWithoutSpaces = nameWithoutSpaces + field
         Next
 
         name = nameWithoutSpaces
@@ -363,8 +368,10 @@ Public Class Sync_TLtoQB_JoborItem
 
         Try
             Dim numAdded As Integer = 0
-            removeSpacesBetweenColons(Parent)
-            removeSpacesBetweenColons(TL_Name)
+
+            removeSpacesBetweenColonsAndSetLengthOfFields(Parent, MAX_CUSTOMER_LEN)
+            removeSpacesBetweenColonsAndSetLengthOfFields(TL_Name, MAX_CUSTOMER_LEN)
+
             Dim TLJobSubJobName As String = Parent + ":" + TL_Name
             Dim jobOrTask As String = If(TLJobSubJobName.Split(":").Length = 2, "Job", "Task")
 
@@ -427,7 +434,7 @@ Public Class Sync_TLtoQB_JoborItem
                                 Return -1
                             End Try
                             Dim syncCust As Sync_TLtoQB_Customer = New Sync_TLtoQB_Customer()
-                            ' Note: Will note transfer over email address since we are just passing in new client instead of the actual client - can change this
+                            ' Note: Will not transfer over email address since we are just passing in new client instead of the actual client - can change this
                             numAdded += If(syncCust.checkQBCustomerExist(Parent, client_TL_ID, New Services.TimeLive.Clients.Client, UI), 0, 1)
 
                         End If
