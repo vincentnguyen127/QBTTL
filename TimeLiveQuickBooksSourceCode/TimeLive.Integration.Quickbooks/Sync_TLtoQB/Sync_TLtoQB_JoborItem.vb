@@ -1,4 +1,5 @@
 ﻿Imports QBFC13Lib
+Imports System.Text.RegularExpressions
 
 Public Class Sync_TLtoQB_JoborItem
     Const MAX_CUSTOMER_LEN As Integer = 41
@@ -73,9 +74,9 @@ Public Class Sync_TLtoQB_JoborItem
                     Else
                         numSynced += Math.Max(0, ret)
                     End If
-                End If
 
-                If Not MainForm Is Nothing And create Then MainForm.ProgressBar1.Value += 1
+                    If Not MainForm Is Nothing Then MainForm.ProgressBar1.Value += 1
+                End If
             Next
 
             ' Iterate through all tasks
@@ -96,32 +97,39 @@ Public Class Sync_TLtoQB_JoborItem
                     Dim taskAsItem As Boolean = storedAsTaskItem(objTask)
 
                     If taskAsItem Then
-                        Dim lastColon = objTask.JobParent.LastIndexOf(":")
+                        Dim lastColon As Integer = objTask.JobParent.LastIndexOf(":")
                         parentName = objTask.JobParent.Substring(0, lastColon)
                         taskName = objTask.JobParent.Substring(lastColon + 1)
-                        checkQBItemExists(objTask.JobParent.Substring(0, objTask.JobParent.IndexOf(":")), objTask.TaskName, UI, p_token)
+
+                        Dim job As String = objTask.JobParent.Split(":")(1)
+                        Dim itemAdded As Integer = checkQBItemExists(job, objTask.TaskName, UI, p_token)
+
+                        If itemAdded = -2 Then ' Cancel was selected
+                            Return numSynced
+                        Else
+                            numSynced += Math.Max(0, itemAdded)
+                        End If
                     Else
                         parentName = objTask.JobParent
                         taskName = objTask.TaskName
                     End If
 
-                    Dim ret = checkQBJobSubJobExist(parentName, taskName, taskID.ToString, UI, p_token, cancel_opt, taskAsItem)
+                    Dim jobAdded = checkQBJobSubJobExist(parentName, taskName, taskID.ToString, UI, p_token, cancel_opt, taskAsItem)
 
-                    If ret = -2 Then ' Cancel was selected
+                    If jobAdded = -2 Then ' Cancel was selected
                         Return numSynced
                     Else
-                        numSynced += Math.Max(0, ret)
+                        numSynced += Math.Max(0, jobAdded)
                     End If
-                End If
 
-                If Not MainForm Is Nothing And create Then My.Forms.MAIN.ProgressBar1.Value += 1
+                    If Not MainForm Is Nothing Then My.Forms.MAIN.ProgressBar1.Value += 1
+                End If
             Next
         Catch ex As System.Web.Services.Protocols.SoapException
             If UI Then
-                My.Forms.MAIN.History("Make sure all Tasks and Jobs have a Code in TimeLive: " + ex.Message, "i")
+                MsgBox("Make sure all Tasks and Jobs have a Code in TimeLive: " + ex.Message, "i")
             Else
-                ' No UI, then do nothing?
-                'Throw New Exception("Make sure all Tasks and Jobs have a Code in Timelive: " + ex.Message)
+                Throw New Exception("Make sure all Tasks and Jobs have a Code in Timelive: " + ex.Message)
             End If
         Catch ex As Exception
             If UI Then
@@ -172,72 +180,67 @@ Public Class Sync_TLtoQB_JoborItem
     End Function
 
 
-    Function askUserToCreateInQB(ByVal UI As Boolean, ByVal cancel_opt As Boolean, ByVal fullItem As String)
+    Function askUserToCreateInQB(ByVal UI As Boolean, ByVal cancel_opt As Boolean, ByVal value As String, Optional type As String = "value")
         Dim MsgBox_result As MsgBoxResult = MsgBoxResult.Yes
         If UI Then
             If cancel_opt Then
-                MsgBox_result = MsgBox("New item found in TimeLive: " & vbCrLf & fullItem & vbCrLf & "Create in QuickBooks?", MsgBoxStyle.YesNoCancel, "Warning!")
+                MsgBox_result = MsgBox("New " + type + " found in TimeLive: " & vbCrLf & value & vbCrLf & "Create in QuickBooks?", MsgBoxStyle.YesNoCancel, "Warning!")
             Else
-                MsgBox_result = MsgBox("New item found in TimeLive: " & vbCrLf & fullItem & vbCrLf & "Create in QuickBooks?", MsgBoxStyle.YesNo, "Warning!")
+                MsgBox_result = MsgBox("New " + type + " found in TimeLive: " & vbCrLf & value & vbCrLf & "Create in QuickBooks?", MsgBoxStyle.YesNo, "Warning!")
             End If
         End If
         Return MsgBox_result
     End Function
 
-    ' Returns:
-    '   -1 -> exception thrown
-    '    1 -> Item was created
-    '    2 -> Item was created, and the customer was added into Quickbooks
-    Function createQBItem(ByVal customer As String, ByVal item As String, ByVal cappedLenCustomer As String, ByVal cappedLenItem As String,
-                          ByVal fullItem As String, ByVal UI As Boolean, ByVal p_token As String, ByVal customerIsItemInQB As Boolean,
-                          ByRef msgSetRs As IMsgSetResponse)
+    ' Returns number of Items created
+    Function createQBItem(ByVal cappedLenJob As String, ByVal cappedLenItem As String, ByVal fullItem As String, ByVal jobIsItemInQB As Boolean) As Boolean
         Dim newMsgSetRq As IMsgSetRequest = MAIN.SESSMANAGER.CreateMsgSetRequest("US", 2, 0)
         newMsgSetRq.Attributes.OnError = ENRqOnError.roeContinue
 
-        Dim numAdded As Integer = 0
-        Dim objClientServices As New Services.TimeLive.Clients.Clients
-        Dim authentication As New Services.TimeLive.Clients.SecuredWebServiceHeader
-        authentication.AuthenticatedToken = p_token
-        objClientServices.SecuredWebServiceHeaderValue = authentication
-
-        Dim client_TL_ID As Integer
-        Try
-            client_TL_ID = objClientServices.GetClientIdByName(customer)
-        Catch ex As Exception
-            My.Forms.MAIN.History("The parent client : '" + customer + "' of Item: '" + item + "' does not exist in TimeLive", "i")
-            Return -1
-        End Try
-        Dim syncCust As Sync_TLtoQB_Customer = New Sync_TLtoQB_Customer()
-        ' Note: Will note transfer over email address since we are just passing in new client instead of the actual client - can change this
-        numAdded += If(syncCust.checkQBCustomerExist(customer, client_TL_ID, New Services.TimeLive.Clients.Client, UI), 0, 1)
-
         ' Need to add customer as an item, which the actual item will be below
-        If Not customerIsItemInQB Then
-            Dim customerAdd As IItemServiceAdd = newMsgSetRq.AppendItemServiceAddRq
-            customerAdd.Name.SetValue(cappedLenCustomer)
-            customerAdd.ORSalesPurchase.SalesOrPurchase.AccountRef.FullName.SetValue("<None>")
+        If Not jobIsItemInQB Then
+            Dim jobAdd As IItemServiceAdd = newMsgSetRq.AppendItemServiceAddRq
+            jobAdd.Name.SetValue(cappedLenJob)
+            jobAdd.ORSalesPurchase.SalesOrPurchase.AccountRef.FullName.SetValue("<None>")
         End If
 
         Dim itemAdd As IItemServiceAdd = newMsgSetRq.AppendItemServiceAddRq
         itemAdd.Name.SetValue(cappedLenItem)
-        itemAdd.ParentRef.FullName.SetValue(cappedLenCustomer)
+        itemAdd.ParentRef.FullName.SetValue(cappedLenJob)
         itemAdd.ORSalesPurchase.SalesOrPurchase.AccountRef.FullName.SetValue("<None>")
 
         'step2: send the request
-        msgSetRs = MAIN.SESSMANAGER.DoRequests(newMsgSetRq)
+        Dim msgSetRs As IMsgSetResponse = MAIN.SESSMANAGER.DoRequests(newMsgSetRq)
 
         ' Interpret the responses
         For n As Integer = 0 To msgSetRs.ResponseList.Count - 1
             Dim res As IResponse = msgSetRs.ResponseList.GetAt(n)
             If res.StatusSeverity = "Error" Then
                 Throw New Exception(res.StatusMessage)
+                Return -1
             End If
         Next
 
-        numAdded += 1
         My.Forms.MAIN.History("Item in Timelive with name: " + fullItem + " added to QuickBooks", "N")
+        Return If(jobIsItemInQB, 1, 2)
+    End Function
 
-        Return numAdded
+    Function shortenProjectNameToFitInQB(ByVal jobName As String, ByVal maxLen As Integer)
+        If jobName.Length <= maxLen Then
+            Return jobName
+        End If
+
+        Dim expr As String = "_CY[\d]+$"
+        Dim calendarYear As Match = Regex.Match(jobName, expr)
+
+        If calendarYear.Success Then
+            Dim numStartingElements = maxLen - calendarYear.Length
+
+            Return jobName.Substring(0, numStartingElements) + calendarYear.Value
+        Else
+            Return jobName.Substring(0, maxLen)
+        End If
+
     End Function
 
     ''' <summary>
@@ -251,82 +254,54 @@ Public Class Sync_TLtoQB_JoborItem
     '''     1 -> Did not exist in QB, added to QB
     '''     2+ -> Did not exist in QB, and 1 or more of its parents did not exist in QB either, all added to QB
     ''' </returns>
-    Public Function checkQBItemExists(ByVal customer As String, ByVal item As String, ByVal UI As Boolean, ByVal p_token As String, Optional ByVal cancel_opt As Boolean = False) As Integer
+    Public Function checkQBItemExists(ByVal job As String, ByVal item As String, ByVal UI As Boolean, ByVal p_token As String, Optional ByVal cancel_opt As Boolean = False) As Integer
         Try
-            If customer Is Nothing Or item Is Nothing Then
+            If job Is Nothing Or item Is Nothing Then
                 Return 0
             End If
-            If customer = "" Or item = "" Then
+            If job = "" Or item = "" Then
                 Return 0
             End If
-
-            Dim CustomerAdapter As New QB_TL_IDsTableAdapters.CustomersTableAdapter()
-            Dim qb_customer As String = CustomerAdapter.GetQB_NameFromTL_Name(customer)
-            customer = If(qb_customer Is Nothing, customer, qb_customer.Trim)
 
             ' Items in QuickBooks must be no more than 31 characters in size
-            Dim cappedLenCustomer As String = If(customer.Length > MAX_ITEM_LEN, customer.Substring(0, MAX_ITEM_LEN).Trim, customer.Trim)
+            Dim cappedLenJob As String = shortenProjectNameToFitInQB(job.Trim, MAX_ITEM_LEN)
             Dim cappedLenItem As String = If(item.Length > MAX_ITEM_LEN, item.Substring(0, MAX_ITEM_LEN).Trim, item.Trim)
-            Dim numAdded As Integer = 0
-            Dim fullItem As String = cappedLenCustomer + ":" + cappedLenItem
+            Dim fullItem As String = cappedLenJob + ":" + cappedLenItem
+
             Dim msgSetRq As IMsgSetRequest = MAIN.SESSMANAGER.CreateMsgSetRequest("US", 2, 0)
             msgSetRq.Attributes.OnError = ENRqOnError.roeContinue
             Dim itemQueryRq As IItemQuery = msgSetRq.AppendItemQueryRq
-            itemQueryRq.ORListQuery.FullNameList.Add(cappedLenCustomer)
+            itemQueryRq.ORListQuery.FullNameList.Add(cappedLenJob)
             itemQueryRq.ORListQuery.FullNameList.Add(fullItem)
 
             Dim msgSetRs As IMsgSetResponse = MAIN.SESSMANAGER.DoRequests(msgSetRq)
-            Dim response As IResponse = msgSetRs.ResponseList.GetAt(0)
-            Dim itemRetList As IORItemRetList
-            itemRetList = response.Detail
+            Dim itemRetList As IORItemRetList = msgSetRs.ResponseList.GetAt(0).Detail
 
             Dim inQB As Boolean = False
-            Dim customerIsItemInQB As Boolean = True
+            Dim jobIsItemInQB As Boolean = True
 
             If itemRetList Is Nothing Then
                 ' Neither the customer nor item are in the item list
-                customerIsItemInQB = False
+                jobIsItemInQB = False
             ElseIf itemRetList.Count = 2 Then
                 ' Both are in QuickBooks
                 inQB = True
             End If
 
             If Not inQB Then
-                Dim msgBoxResponse = askUserToCreateInQB(UI, cancel_opt, fullItem)
+                Dim msgBoxResponse = askUserToCreateInQB(UI, cancel_opt, fullItem, "item")
                 If msgBoxResponse = MsgBoxResult.Cancel Then
                     Return -2
-                End If
-                Dim create As Boolean = msgBoxResponse = MsgBoxResult.Yes
-
-                If create Then
-                    Dim created As Integer = createQBItem(customer, item, cappedLenCustomer, cappedLenItem, fullItem, UI,
-                                                          p_token, customerIsItemInQB, msgSetRs)
-
-                    If created = -1 Then
-                        Return -1
-                    Else
-                        numAdded += created
-                    End If
-                ElseIf inQB Then
-                    Return 0
-                Else ' Use -1 for when something was not created, but is still not in QB
+                ElseIf msgBoxResponse = MsgBoxResult.No Then
                     Return -1
+                Else
+                    Return createQBItem(cappedLenJob, cappedLenItem, fullItem, jobIsItemInQB)
                 End If
-            End If
-            'Assume only one return
-            Dim itemRet As IORItemRet
-
-            If itemRetList IsNot Nothing Then
-                itemRet = itemRetList.GetAt(0)
-
-                With itemRet
-                    If inQB Then
-                        My.Forms.MAIN.History("Found item in QB with name: " + fullItem, "i")
-                    End If
-                End With
+            Else
+                My.Forms.MAIN.History("Found item in QB with name: " + fullItem, "i")
             End If
 
-            Return numAdded
+            Return 0
 
         Catch ex As Exception
             Throw ex
@@ -334,20 +309,108 @@ Public Class Sync_TLtoQB_JoborItem
     End Function
 
 
-    Private Sub removeSpacesBetweenColonsAndSetLengthOfFields(ByRef name As String, ByVal maxLen As Integer)
+    ' For the spot in our split array with projectIndex, check that it is formatted the way that projects should be
+    Private Sub removeSpacesBetweenColonsAndSetLengthOfFields(ByRef name As String, ByVal maxLen As Integer, Optional projectIndex As Integer = -1)
         Dim splitArr As String() = name.Split(":")
         Dim nameWithoutSpaces = ""
         For i As Integer = 0 To splitArr.Length - 1
             Dim field As String = splitArr(i).Trim
-            field = If(field.Length > maxLen, field.Substring(0, maxLen), field)
-            If i <> splitArr.Length - 1 Then
-                field = field + ":"
+            If i = projectIndex Then
+                field = shortenProjectNameToFitInQB(field, maxLen)
+            Else
+                field = If(field.Length > maxLen, field.Substring(0, maxLen), field)
             End If
 
+            If i <> splitArr.Length - 1 Then field = field + ":"
             nameWithoutSpaces = nameWithoutSpaces + field
         Next
 
         name = nameWithoutSpaces
+    End Sub
+
+    Function checkProjectsCustomerIsInQB(ByVal Parent As String, ByVal TLJobSubJobName As String, ByVal p_token As String, ByVal UI As Boolean) As Integer
+        Dim objClientServices As New Services.TimeLive.Clients.Clients
+        Dim authentication As New Services.TimeLive.Clients.SecuredWebServiceHeader
+        authentication.AuthenticatedToken = p_token
+        objClientServices.SecuredWebServiceHeaderValue = authentication
+        Dim client_TL_ID As Integer
+        Try
+            client_TL_ID = objClientServices.GetClientIdByName(Parent)
+        Catch ex As Exception
+            My.Forms.MAIN.History("The parent client : '" + Parent + "' of Project: '" + TLJobSubJobName + "' does not exist in TimeLive", "i")
+
+            Return -1
+        End Try
+        Dim syncCust As Sync_TLtoQB_Customer = New Sync_TLtoQB_Customer()
+        ' Note: Will not transfer over email address since we are just passing in new client instead of the actual client - can change this
+        Return If(syncCust.checkQBCustomerExist(Parent, client_TL_ID, New Services.TimeLive.Clients.Client, UI), 0, 1)
+    End Function
+
+
+    Function checkTasksProjectIsInQB(ByVal Parent As String, ByVal TLJobSubJobName As String, ByVal p_token As String, ByVal UI As Boolean,
+                               ByVal ParentArray As String(), ByVal taskAsItem As Boolean, ByVal cancel_opt As Boolean) As Integer
+        Dim parent_name As String = ParentArray(ParentArray.Length - 1)
+        Dim parents_parent As String = Parent.Substring(0, Math.Max(Parent.LastIndexOf(":"), 0))
+        Dim parent_TL_ID As Integer = -1
+        Dim parentIsAProject As Boolean = ParentArray.Length = 2
+
+        Try
+            If parentIsAProject Then
+                Dim objServices As New Services.TimeLive.Projects.Projects
+                Dim authentication As New Services.TimeLive.Projects.SecuredWebServiceHeader
+                authentication.AuthenticatedToken = p_token
+                objServices.SecuredWebServiceHeaderValue = authentication
+                parent_TL_ID = objServices.GetProjectId(parent_name)
+            Else ' Parent is a task
+                Dim objServices As New Services.TimeLive.Tasks.Tasks
+                Dim authentication As New Services.TimeLive.Tasks.SecuredWebServiceHeader
+                authentication.AuthenticatedToken = p_token
+                objServices.SecuredWebServiceHeaderValue = authentication
+                parent_TL_ID = objServices.GetTaskId(parent_name)
+            End If
+        Catch ex As System.Web.Services.Protocols.SoapException
+            If Not taskAsItem Then
+                My.Forms.MAIN.History("Verify that '" + parent_name + "' in TimeLive has a code set: " + ex.ToString, "I")
+            End If
+        End Try
+
+        ' Only okay to check for parent if it is either in TimeLive too, or we stored our task within the project field too and it therefore should not be in TimeLive
+        If parent_TL_ID = -1 And Not taskAsItem Then
+            My.Forms.MAIN.History("Parent: '" + Parent + "'of Task: " + TLJobSubJobName + " is not in TimeLive.", "I")
+            Return -1 ' Exit Function
+        Else
+            Return checkQBJobSubJobExist(parents_parent, parent_name, parent_TL_ID, UI, p_token, cancel_opt, taskAsItem)
+        End If
+    End Function
+
+    Sub addToTableAdapter(ByVal qb_name As String, ByVal qb_id As String, ByVal tl_name As String, ByVal tl_id As Integer)
+        Dim JobSubJobAdapter As New QB_TL_IDsTableAdapters.Jobs_SubJobsTableAdapter()
+
+        If IsQBID_In_JobSubJobDataTable(qb_name, qb_id) = 0 Then
+            ' TL_ID will be -1 when we transfer over projects that are not technically in TimeLive
+            ' Example: Project = Project:Task, Task = Item, then Customer:Project is technically not in TimeLive, and will have TL_ID = -1 in DB
+            Dim inTL = IsTLID_In_JobsSubJobsDataTable(tl_id)
+
+            If inTL = 0 Then
+                ' Not in local database
+                My.Forms.MAIN.History("Adding Job to local database: '" + tl_name, "i")
+                JobSubJobAdapter.Insert(qb_id, tl_id, qb_name, tl_name)
+            ElseIf tl_id = -1 Or inTL > 1 Then
+                Dim countByIDAndName = JobSubJobAdapter.GetCountFromTLIDAndTLName(tl_id, tl_name)
+                If countByIDAndName = 0 Then
+                    JobSubJobAdapter.Insert(qb_id, tl_id, qb_name, tl_name)
+                End If
+            Else ' In DB once, then just update
+                My.Forms.MAIN.History("Updating job/subjob QuickBooks ID in local database: " + tl_name, "i")
+                JobSubJobAdapter.UpdateQBID(qb_id, tl_id)
+            End If
+        Else
+            If IsTLID_In_JobsSubJobsDataTable(tl_id) = 0 Then
+                ' In local database with a different TimeLive ID
+                My.Forms.MAIN.History("Updating job/subjob TimeLive ID in local database: " + tl_name, "i")
+                JobSubJobAdapter.UpdateTLID(tl_id, qb_id)
+            End If
+        End If
     End Sub
 
     ''' <summary>
@@ -365,214 +428,105 @@ Public Class Sync_TLtoQB_JoborItem
     ''' </returns>
     Public Function checkQBJobSubJobExist(ByRef Parent As String, ByRef TL_Name As String, ByVal TL_ID As Integer, ByVal UI As Boolean,
                                           ByVal p_token As String, Optional ByVal cancel_opt As Boolean = False, Optional taskAsItem As Boolean = False) As Integer
-
         Try
+            Dim parentContainsProjectField As Boolean = Parent.Contains(":")
+            If parentContainsProjectField Then
+                removeSpacesBetweenColonsAndSetLengthOfFields(Parent, MAX_CUSTOMER_LEN, 1)
+                removeSpacesBetweenColonsAndSetLengthOfFields(TL_Name, MAX_CUSTOMER_LEN)
+            Else
+                removeSpacesBetweenColonsAndSetLengthOfFields(TL_Name, MAX_CUSTOMER_LEN, 0)
+            End If
+
             Dim numAdded As Integer = 0
-
-            removeSpacesBetweenColonsAndSetLengthOfFields(Parent, MAX_CUSTOMER_LEN)
-            removeSpacesBetweenColonsAndSetLengthOfFields(TL_Name, MAX_CUSTOMER_LEN)
-
             Dim TLJobSubJobName As String = Parent + ":" + TL_Name
             Dim jobOrTask As String = If(TLJobSubJobName.Split(":").Length = 2, "Job", "Task")
 
             Dim msgSetRq As IMsgSetRequest = MAIN.SESSMANAGER.CreateMsgSetRequest("US", 2, 0)
-
             msgSetRq.Attributes.OnError = ENRqOnError.roeContinue
             Dim TaskSubTaskQueryRq As ICustomerQuery = msgSetRq.AppendCustomerQueryRq
-
             TaskSubTaskQueryRq.ORCustomerListQuery.FullNameList.Add(TLJobSubJobName)
-
             Dim msgSetRs As IMsgSetResponse = MAIN.SESSMANAGER.DoRequests(msgSetRq)
-            Dim response As IResponse = msgSetRs.ResponseList.GetAt(0)
-            Dim jobsubjobsRetList As ICustomerRetList
-            jobsubjobsRetList = response.Detail
-
+            Dim jobsubjobsRetList As ICustomerRetList = msgSetRs.ResponseList.GetAt(0).Detail
             Dim inQB As Boolean = Not jobsubjobsRetList Is Nothing
-
             Dim newMsgSetRq As IMsgSetRequest = MAIN.SESSMANAGER.CreateMsgSetRequest("US", 2, 0)
             newMsgSetRq.Attributes.OnError = ENRqOnError.roeContinue
 
-            If TLJobSubJobName.IndexOf(":") > 0 Then ' Check first that customer name is not an empty string
-                Dim create As Boolean = True
-                If Not inQB Then
-                    If UI Then
-                        Dim MsgBox_result
-                        If cancel_opt Then
-                            MsgBox_result = MsgBox("New " + jobOrTask + " found in TimeLive: " & vbCrLf & TLJobSubJobName & vbCrLf & "Create in QuickBooks?", MsgBoxStyle.YesNoCancel, "Warning!")
-                            If MsgBox_result = MsgBoxResult.Cancel Then
-                                Return -2
-                            End If
-                        Else
-                            MsgBox_result = MsgBox("New " + jobOrTask + " found in TimeLive: " & vbCrLf & TLJobSubJobName & vbCrLf & "Create in QuickBooks?", MsgBoxStyle.YesNo, "Warning!")
-                        End If
+            If TLJobSubJobName.IndexOf(":") > 0 And Not inQB Then
+                Dim MsgBox_result = askUserToCreateInQB(UI, cancel_opt, TLJobSubJobName, jobOrTask)
 
-                        create = MsgBox_result = MsgBoxResult.Yes
+                If MsgBox_result = MsgBoxResult.Cancel Then
+                    Return -2
+                ElseIf MsgBox_result = MsgBoxResult.No Then
+                    Return -1
+                Else
+                    ' Case where Project and Task + SubTasks are all stored within Project, semicolon seperated, in TimeLive
+                    ' In this case, add project and parent tasks to the parent array.
+                    If TL_Name.Contains(":") Then
+                        Parent = Parent + ":" + TL_Name.Substring(0, TL_Name.LastIndexOf(":"))
+                        TL_Name = TL_Name.Substring(TL_Name.LastIndexOf(":") + 1)
+                        taskAsItem = True
                     End If
 
-                    If create Then
-                        ' Case where Project and Task + SubTasks are all stored within Project, semicolon seperated, in TimeLive
-                        ' In this case, add project and parent tasks to the parent array.
-                        If TL_Name.Contains(":") Then
-                            Parent = Parent + ":" + TL_Name.Substring(0, TL_Name.LastIndexOf(":"))
-                            TL_Name = TL_Name.Substring(TL_Name.LastIndexOf(":") + 1)
-                            taskAsItem = True
-                        End If
+                    Dim ParentArray() As String = Parent.Split(":")
 
-                        Dim ParentArray() As String = Parent.Split(":")
+                    Dim numAddedThisRound As Integer = 0
 
-                        If ParentArray.Length = 1 Then ' Check if customer of the project is in QB
-                            Dim objClientServices As New Services.TimeLive.Clients.Clients
-                            Dim authentication As New Services.TimeLive.Clients.SecuredWebServiceHeader
-                            authentication.AuthenticatedToken = p_token
-                            objClientServices.SecuredWebServiceHeaderValue = authentication
-                            Dim client_TL_ID As Integer
-                            Try
-                                client_TL_ID = objClientServices.GetClientIdByName(Parent)
-                            Catch ex As Exception
-                                My.Forms.MAIN.History("The parent client : '" + Parent + "' of Project: '" + TLJobSubJobName + "' does not exist in TimeLive", "i")
+                    ' Recursively checks that prior fields exist, and adds them if they were not
+                    If ParentArray.Length = 1 Then
+                        numAddedThisRound = checkProjectsCustomerIsInQB(Parent, TLJobSubJobName, p_token, UI)
+                    Else
+                        numAddedThisRound = checkTasksProjectIsInQB(Parent, TLJobSubJobName, p_token, UI, ParentArray, taskAsItem, cancel_opt)
+                    End If
 
-                                Return -1
-                            End Try
-                            Dim syncCust As Sync_TLtoQB_Customer = New Sync_TLtoQB_Customer()
-                            ' Note: Will not transfer over email address since we are just passing in new client instead of the actual client - can change this
-                            numAdded += If(syncCust.checkQBCustomerExist(Parent, client_TL_ID, New Services.TimeLive.Clients.Client, UI), 0, 1)
-
-                        End If
-
-                        If ParentArray.Length > 1 Then ' Check if parent of the task is in QB
-                            Dim parent_name As String = ParentArray(ParentArray.Length - 1)
-                            Dim parents_parent As String = Parent.Substring(0, Math.Max(Parent.LastIndexOf(":"), 0))
-                            Dim parent_TL_ID As Integer = -1
-                            If ParentArray.Length = 2 Then ' Parent is a project
-                                Dim objProjectServices As New Services.TimeLive.Projects.Projects
-                                Dim authentication As New Services.TimeLive.Projects.SecuredWebServiceHeader
-                                authentication.AuthenticatedToken = p_token
-                                objProjectServices.SecuredWebServiceHeaderValue = authentication
-
-                                Try
-                                    parent_TL_ID = objProjectServices.GetProjectId(parent_name)
-                                Catch ex As System.Web.Services.Protocols.SoapException
-                                    If Not taskAsItem Then
-                                        My.Forms.MAIN.History("Verify that '" + parent_name + "' in TimeLive has a code set: " + ex.ToString, "I")
-                                    End If
-                                End Try
-
-                            Else ' Parent is a task
-                                Dim objTaskServices As New Services.TimeLive.Tasks.Tasks
-                                Dim authentication As New Services.TimeLive.Tasks.SecuredWebServiceHeader
-                                authentication.AuthenticatedToken = p_token
-                                objTaskServices.SecuredWebServiceHeaderValue = authentication
-
-                                Try
-                                    parent_TL_ID = objTaskServices.GetTaskId(parent_name)
-                                Catch ex As System.Web.Services.Protocols.SoapException
-                                    If Not taskAsItem Then
-                                        My.Forms.MAIN.History("Verify that '" + parent_name + "' in TimeLive has a code set: " + ex.ToString, "I")
-                                    End If
-                                End Try
-                            End If
-
-                            ' Only okay to check for parent if it is either in TimeLive too, or we stored our task within the project field too and it therefore should not be in TimeLive
-                            If parent_TL_ID = -1 And Not taskAsItem Then
-                                My.Forms.MAIN.History("Parent: '" + Parent + "'of Task: " + TLJobSubJobName + " is not in TimeLive.", "I")
-                                Return -1 ' Exit Function
-                            Else
-                                numAdded += checkQBJobSubJobExist(parents_parent, parent_name, parent_TL_ID, UI, p_token, cancel_opt, taskAsItem)
-                                If numAdded = -1 Then
-                                    Return -1
-                                End If
-                            End If
-                        End If
-                        Dim jobAdd As ICustomerAdd = newMsgSetRq.AppendCustomerAddRq
-
-                        ' TODO: Change client name to corresponding quickbooks ?
-                        Dim CustomerAdapter As New QB_TL_IDsTableAdapters.CustomersTableAdapter()
-                        Dim QB_Customer As String = CustomerAdapter.GetQB_NameFromTL_Name(ParentArray(0))
-                        QB_Customer = If(QB_Customer Is Nothing, ParentArray(0), QB_Customer.Trim)
-
-                        Dim QB_Parent As String = If(Parent.Contains(":"), QB_Customer + Parent.Substring(Parent.IndexOf(":")), QB_Customer)
-
-                        jobAdd.ParentRef.FullName.SetValue(QB_Parent)
-                        jobAdd.Name.SetValue(TL_Name)
-
-                        'step2: send the request
-                        msgSetRs = MAIN.SESSMANAGER.DoRequests(newMsgSetRq)
-
-                        ' Interpret the response
-                        Dim res As IResponse
-                        res = msgSetRs.ResponseList.GetAt(0)
-
-                        If res.StatusSeverity = "Error" Then
-                            Throw New Exception(res.StatusMessage)
-                        End If
-
-                        msgSetRq = MAIN.SESSMANAGER.CreateMsgSetRequest("US", 2, 0)
-                        msgSetRq.Attributes.OnError = ENRqOnError.roeContinue
-
-                        TaskSubTaskQueryRq = msgSetRq.AppendCustomerQueryRq
-                        TaskSubTaskQueryRq.ORCustomerListQuery.FullNameList.Add(TLJobSubJobName)
-
-                        msgSetRs = MAIN.SESSMANAGER.DoRequests(msgSetRq)
-                        response = msgSetRs.ResponseList.GetAt(0)
-                        jobsubjobsRetList = response.Detail
-                        numAdded += 1
-
-                        My.Forms.MAIN.History(jobOrTask + " in Timelive with name: " + TLJobSubJobName + " added to QuickBooks", "N")
-
-                    ElseIf inQB Then
-                        Return 0
-                    Else ' Use -1 for when something was not created, but is still not in QB
+                    If numAddedThisRound = -1 Then
                         Return -1
+                    Else
+                        numAdded += numAddedThisRound
                     End If
 
+                    Dim CustomerAdapter As New QB_TL_IDsTableAdapters.CustomersTableAdapter()
+                    Dim QB_Customer As String = CustomerAdapter.GetQB_NameFromTL_Name(ParentArray(0))
+                    QB_Customer = If(QB_Customer Is Nothing, ParentArray(0), QB_Customer.Trim)
+                    Dim QB_Parent As String = If(Parent.Contains(":"), QB_Customer + Parent.Substring(Parent.IndexOf(":")), QB_Customer)
+
+                    Dim jobAdd As ICustomerAdd = newMsgSetRq.AppendCustomerAddRq
+                    jobAdd.ParentRef.FullName.SetValue(QB_Parent)
+                    jobAdd.Name.SetValue(TL_Name)
+
+                    msgSetRs = MAIN.SESSMANAGER.DoRequests(newMsgSetRq)
+                    Dim res As IResponse
+                    res = msgSetRs.ResponseList.GetAt(0)
+
+                    If res.StatusSeverity = "Error" Then
+                        Throw New Exception(res.StatusMessage)
+                    End If
+
+                    msgSetRq = MAIN.SESSMANAGER.CreateMsgSetRequest("US", 2, 0)
+                    msgSetRq.Attributes.OnError = ENRqOnError.roeContinue
+
+                    TaskSubTaskQueryRq = msgSetRq.AppendCustomerQueryRq
+                    TaskSubTaskQueryRq.ORCustomerListQuery.FullNameList.Add(TLJobSubJobName)
+
+                    msgSetRs = MAIN.SESSMANAGER.DoRequests(msgSetRq)
+                    jobsubjobsRetList = msgSetRs.ResponseList.GetAt(0).Detail
+                    numAdded += 1
+
+                    My.Forms.MAIN.History(jobOrTask + " in Timelive with name: " + TLJobSubJobName + " added to QuickBooks", "N")
                 End If
             End If
-            'Assume only one return
-            Dim JobSubJobsRet As ICustomerRet
 
             If jobsubjobsRetList IsNot Nothing Then
-                JobSubJobsRet = jobsubjobsRetList.GetAt(0)
+                Dim JobSubJobsRet As ICustomerRet = jobsubjobsRetList.GetAt(0)
+                Dim qb_name As String = JobSubJobsRet.Name.GetValue.ToString
+                Dim qb_id As String = JobSubJobsRet.ListID.GetValue.ToString
 
-                With JobSubJobsRet
-                    If inQB Then
-                        My.Forms.MAIN.History("Found " + jobOrTask + " in QB with name: " + .Name.GetValue.ToString + " --> ID: " + .ListID.GetValue.ToString, "i")
-                    End If
-                    ' check if its in our database if not then add to it.
-                    Dim JobSubJobAdapter As New QB_TL_IDsTableAdapters.Jobs_SubJobsTableAdapter()
-                    'MsgBox("Hit:" + .ListID.GetValue + "-- " + TL_ID.ToString)
-
-                    ' Add to table adapter
-                    If IsQBID_In_JobSubJobDataTable(.Name.GetValue.ToString, .ListID.GetValue) = 0 Then
-                        ' TL_ID will be -1 when we transfer over projects that are not technically in TimeLive
-                        ' Example: Project = Project:Task, Task = Item, then Customer:Project is technically not in TimeLive, and will have TL_ID = -1 in DB
-                        Dim inTL = IsTLID_In_JobsSubJobsDataTable(TL_ID)
-
-                        If inTL = 0 Then
-                            ' Not in local database
-                            My.Forms.MAIN.History("Adding Job to local database: '" + TLJobSubJobName, "i")
-                            JobSubJobAdapter.Insert(.ListID.GetValue, TL_ID, .Name.GetValue, TLJobSubJobName)
-                        ElseIf TL_ID = -1 Or inTL > 1 Then
-                            Dim countByIDAndName = JobSubJobAdapter.GetCountFromTLIDAndTLName(TL_ID, TLJobSubJobName)
-                            If countByIDAndName = 0 Then
-                                JobSubJobAdapter.Insert(.ListID.GetValue, TL_ID, .Name.GetValue, TLJobSubJobName)
-                            End If
-                        Else ' In DB once, then just update
-                            ' In local database with a different QuickBooks ID
-                            My.Forms.MAIN.History("Updating job/subjob QuickBooks ID in local database: " + TLJobSubJobName, "i")
-                            JobSubJobAdapter.UpdateQBID(.ListID.GetValue, TL_ID)
-                        End If
-                    Else
-                        If IsTLID_In_JobsSubJobsDataTable(TL_ID) = 0 Then
-                            ' In local database with a different TimeLive ID
-                            My.Forms.MAIN.History("Updating job/subjob TimeLive ID in local database: " + TLJobSubJobName, "i")
-                            JobSubJobAdapter.UpdateTLID(TL_ID, .ListID.GetValue)
-                        End If
-                    End If
-                End With
+                If inQB Then
+                    My.Forms.MAIN.History("Found " + jobOrTask + " in QB with name: " + qb_name + " --> ID: " + qb_id, "i")
+                End If
+                addToTableAdapter(qb_name, qb_id, TLJobSubJobName, TL_ID)
             End If
 
             Return numAdded
-
         Catch ex As Exception
             Throw ex
         End Try
