@@ -285,12 +285,6 @@ Used to sort self-referenced table's rows
  <param name="objTask"></param>
  <returns></returns>
 </member>
-<member name="M:TimeLive.Quickbooks.Integrator.Sync_TLtoQB_JoborItem.SyncJobsSubJobData2(System.String)">
- <summary>
- Sync the Jobs data from QB. Print out Projects and Tasks that are in TL but not QB
- Note: Currently not used, using SyncJobsSubJobData
- </summary>
-</member>
 <member name="M:TimeLive.Quickbooks.Integrator.Sync_TLtoQB_JoborItem.SyncJobsSubJobData(System.String,TimeLive.Quickbooks.Integrator.MAIN,System.Boolean,System.Collections.Generic.List{System.String},System.Boolean)">
  <summary>
  Sync the Jobs from QB. Print out Projects and Tasks in TL but not QB
@@ -308,8 +302,6 @@ Used to sort self-referenced table's rows
  <summary>
  Verifies a Job exists in QB, adding it to the Data Table if necessary
  </summary>
- <param name="TL_Name"></param>
- <param name="TL_ID"></param>
  <returns>
  Integer: the number of items added into QB
      -2 -> Did not add to QB because cancel was selected

@@ -13,61 +13,6 @@ Public Class Sync_TLtoQB_JoborItem
     End Function
 
 
-    '---------------------Sync Job SubJobs TL Data to QB---------------------------------------
-    ''' <summary>
-    ''' Sync the Jobs data from QB. Print out Projects and Tasks that are in TL but not QB
-    ''' Note: Currently not used, using SyncJobsSubJobData
-    ''' </summary>
-    Sub SyncJobsSubJobData2(ByVal p_token As String)
-        Dim result As Boolean = False
-        Dim SubJobsOrSubData As New QBtoTL_JobOrItem.SubJobsOrSubitems
-
-        My.Forms.MAIN.History("Syncing JobSubJob Data", "n")
-        Try
-            ' connect to Time live
-            Dim objProjectServices As New Services.TimeLive.Projects.Projects
-            Dim authentication As New Services.TimeLive.Projects.SecuredWebServiceHeader
-            authentication.AuthenticatedToken = p_token
-            objProjectServices.SecuredWebServiceHeaderValue = authentication
-
-            Dim objProjectArray As Object = objProjectServices.GetProjects
-            Dim objProject As New Services.TimeLive.Projects.Project
-            Dim ExpectedQBProjectName As String = Nothing
-            Dim ExpectedQBTaskName As String = Nothing
-
-            For n As Integer = 0 To objProjectArray.Length - 1
-                objProject = objProjectArray(n)
-
-                My.Forms.MAIN.History("Processing TL Project: " + objProject.ProjectName.ToString, "i")
-                ExpectedQBProjectName = objProject.ClientName + ":" + objProject.ProjectName.ToString
-                'result = checkQBJobSubJobExist(ExpectedQBProjectName, objProject.ProjectID, ExpectedQBProjectName)
-                result = checkQBJobSubJobExist(objProject.ClientName, objProject.ProjectName, ExpectedQBProjectName, True, p_token) = -1
-                If result = False Then
-                    'Does not exist in QB
-                    My.Forms.MAIN.History("Please update or enter project in QB --> Name: " + objProject.ProjectName.ToString + vbTab + "ID: " + objProject.ProjectID.ToString(), "I")
-                Else
-                    ExpectedQBTaskName = ExpectedQBProjectName
-                    My.Forms.MAIN.History("Getting tasks related to project: " & objProject.ProjectName.ToString, "i")
-                    SubJobsOrSubData = GetTasks(objProject.ProjectName.ToString, p_token)
-
-                    For Each element As QBtoTL_JobOrItem.Job_Item In SubJobsOrSubData.DataArray
-                        result = checkQBJobSubJobExist(ExpectedQBTaskName, element.TL_Name, element.TL_ID, True, p_token) = -1
-                        If result = False Then
-                            'Does not exist in QB
-                            My.Forms.MAIN.History("Please update or enter task in QB: " + ExpectedQBTaskName + ":" + element.TL_Name.ToString + " manually", "I")
-                        End If
-                    Next
-
-                End If
-                Exit Sub
-            Next
-
-        Catch ex As Exception
-            MsgBox("Here 1: " + ex.Message)
-        End Try
-
-    End Sub
-
     ''' <summary>
     ''' Sync the Jobs from QB. Print out Projects and Tasks in TL but not QB
     ''' </summary>
@@ -105,7 +50,7 @@ Public Class Sync_TLtoQB_JoborItem
             For n As Integer = 0 To objProjectArray.Length - 1
                 objProject = objProjectArray(n)
 
-                ' Done this way since field .ProjectID just returned 0
+                ' Done this way since there is a bug in the TimeLive API: the field .ProjectID always returns 0
                 Dim projectID As Integer
                 Try
                     projectID = objProjectServices.GetProjectId(objProject.ProjectName)
@@ -118,7 +63,7 @@ Public Class Sync_TLtoQB_JoborItem
                 Dim create As Boolean = If(nameList Is Nothing, True, nameList.Contains(fullName))
 
                 If create Then
-                    ' Check if projectName contains ':', seperate and then add project then task
+                    ' Checks if projectName contains ':', seperate and then add project then task
                     Dim ret = checkQBJobSubJobExist(objProject.ClientName, objProject.ProjectName, projectID.ToString, UI, p_token, cancel_opt)
 
                     If ret = -2 Then ' Cancel was selected
@@ -134,7 +79,7 @@ Public Class Sync_TLtoQB_JoborItem
             ' Iterate through all tasks
             For n As Integer = 0 To objTaskArray.Length - 1
                 objTask = objTaskArray(n)
-                ' Done this way since field .taskID just returned 0
+                ' Done this way since there is a bug in the TimeLive API: the field .taskID always returns 0
                 Dim taskID As Integer
                 Try
                     taskID = objTaskServices.GetTaskId(objTask.TaskName)
@@ -146,17 +91,12 @@ Public Class Sync_TLtoQB_JoborItem
                 Dim create As Boolean = If(nameList Is Nothing, True, nameList.Contains(full_name))
                 If create Then
                     Dim parentName, taskName As String
-
-                    ' Checks if the encoding in TimeLive has the Project assigned as the Task name, and task as an item
-                    ' i.e. if in TimeLive: Project = project:task(:subtask:subsubtask...), task = item
                     Dim taskAsItem As Boolean = storedAsTaskItem(objTask)
 
                     If taskAsItem Then
                         Dim lastColon = objTask.JobParent.LastIndexOf(":")
                         parentName = objTask.JobParent.Substring(0, lastColon)
                         taskName = objTask.JobParent.Substring(lastColon + 1)
-
-                        ' TODO: insert the item into QuickBooks if not present
                         checkQBItemExists(objTask.JobParent.Substring(0, objTask.JobParent.IndexOf(":")), objTask.TaskName, UI, p_token)
                     Else
                         parentName = objTask.JobParent
@@ -232,8 +172,6 @@ Public Class Sync_TLtoQB_JoborItem
     ''' <summary>
     ''' Verifies a Job exists in QB, adding it to the Data Table if necessary
     ''' </summary>
-    ''' <param name="TL_Name"></param>
-    ''' <param name="TL_ID"></param>
     ''' <returns>
     ''' Integer: the number of items added into QB
     '''     -2 -> Did not add to QB because cancel was selected
@@ -244,25 +182,27 @@ Public Class Sync_TLtoQB_JoborItem
     ''' </returns>
     Public Function checkQBItemExists(ByVal customer As String, ByVal item As String, ByVal UI As Boolean, ByVal p_token As String, Optional ByVal cancel_opt As Boolean = False) As Integer
         Try
-            If (customer Is Nothing Or item Is Nothing) Then
+            If customer Is Nothing Or item Is Nothing Then
                 Return 0
             End If
-            If (customer = "" Or item = "") Then
+            If customer = "" Or item = "" Then
                 Return 0
             End If
-
 
             Dim CustomerAdapter As New QB_TL_IDsTableAdapters.CustomersTableAdapter()
             Dim qb_customer As String = CustomerAdapter.GetQB_NameFromTL_Name(customer)
             customer = If(qb_customer Is Nothing, customer, qb_customer.Trim)
 
+            ' Items in QuickBooks must be no more than 31 characters in size
+            Dim cappedLenCustomer As String = If(customer.Length > 31, customer.Substring(0, 31).Trim, customer.Trim)
+            Dim cappedLenItem As String = If(item.Length > 31, item.Substring(0, 31).Trim, item.Trim)
             Dim numAdded As Integer = 0
-            Dim fullItem As String = customer + ":" + item
+            Dim fullItem As String = cappedLenCustomer + ":" + cappedLenItem
             Dim msgSetRq As IMsgSetRequest = MAIN.SESSMANAGER.CreateMsgSetRequest("US", 2, 0)
             msgSetRq.Attributes.OnError = ENRqOnError.roeContinue
             Dim itemQueryRq As IItemQuery = msgSetRq.AppendItemQueryRq
+            itemQueryRq.ORListQuery.FullNameList.Add(cappedLenCustomer)
             itemQueryRq.ORListQuery.FullNameList.Add(fullItem)
-            itemQueryRq.ORListQuery.FullNameList.Add(customer)
 
             Dim msgSetRs As IMsgSetResponse = MAIN.SESSMANAGER.DoRequests(msgSetRq)
             Dim response As IResponse = msgSetRs.ResponseList.GetAt(0)
@@ -320,15 +260,14 @@ Public Class Sync_TLtoQB_JoborItem
                     ' Need to add customer as an item, which the actual item will be below
                     If Not customerIsItemInQB Then
                         Dim customerAdd As IItemServiceAdd = newMsgSetRq.AppendItemServiceAddRq
-                        customerAdd.Name.SetValue(customer)
+                        customerAdd.Name.SetValue(cappedLenCustomer)
                         customerAdd.ORSalesPurchase.SalesOrPurchase.AccountRef.FullName.SetValue("<None>")
                     End If
 
                     Dim itemAdd As IItemServiceAdd = newMsgSetRq.AppendItemServiceAddRq
-                    itemAdd.Name.SetValue(item)
-                    itemAdd.ParentRef.FullName.SetValue(customer)
+                    itemAdd.Name.SetValue(cappedLenItem)
+                    itemAdd.ParentRef.FullName.SetValue(cappedLenCustomer)
                     itemAdd.ORSalesPurchase.SalesOrPurchase.AccountRef.FullName.SetValue("<None>")
-                    'itemAdd.ORSalesPurchase.SalesOrPurchase.ORPrice.Price.SetValue(1)
 
                     'step2: send the request
                     msgSetRs = MAIN.SESSMANAGER.DoRequests(newMsgSetRq)
@@ -395,6 +334,17 @@ Public Class Sync_TLtoQB_JoborItem
     End Function
 
 
+    Private Sub removeSpacesBetweenColons(ByRef name As String)
+        Dim splitArr As String() = name.Split(":")
+        Dim nameWithoutSpaces = ""
+        For i As Integer = 0 To splitArr.Length - 1
+            Dim part As String = splitArr(i).Trim + If(i = splitArr.Length - 1, "", ":")
+            nameWithoutSpaces = nameWithoutSpaces + part
+        Next
+
+        name = nameWithoutSpaces
+    End Sub
+
     ''' <summary>
     ''' Verifies a Job exists in QB, adding it to the Data Table if necessary
     ''' </summary>
@@ -413,8 +363,10 @@ Public Class Sync_TLtoQB_JoborItem
 
         Try
             Dim numAdded As Integer = 0
+            removeSpacesBetweenColons(Parent)
+            removeSpacesBetweenColons(TL_Name)
             Dim TLJobSubJobName As String = Parent + ":" + TL_Name
-            Dim jobOrTask As String = If(Parent.Split(":").Length = 1, "Job", "Task")
+            Dim jobOrTask As String = If(TLJobSubJobName.Split(":").Length = 2, "Job", "Task")
 
             Dim msgSetRq As IMsgSetRequest = MAIN.SESSMANAGER.CreateMsgSetRequest("US", 2, 0)
 
