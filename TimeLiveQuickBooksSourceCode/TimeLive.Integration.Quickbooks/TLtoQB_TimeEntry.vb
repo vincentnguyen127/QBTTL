@@ -708,17 +708,22 @@ Public Class TLtoQB_TimeEntry
 
                 'Query QuickBooks to see if it has this payroll item
                 If PayrollItem <> "<None>" Then
-                    Dim msgSetRq As IMsgSetRequest = MAIN.SESSMANAGER.CreateMsgSetRequest("US", 2, 0)
-                    msgSetRq.Attributes.OnError = ENRqOnError.roeContinue
-                    Dim PayrollQueryRq As IPayrollItemWageQuery = msgSetRq.AppendPayrollItemWageQueryRq
-                    PayrollQueryRq.ORListQuery.FullNameList.Add(PayrollItem)
-                    Dim msgSetRs As IMsgSetResponse = MAIN.SESSMANAGER.DoRequests(msgSetRq)
-                    Dim response As IResponse = msgSetRs.ResponseList.GetAt(0)
-                    Dim empRetList As IPayrollItemWageRet = response.Detail
+                    Try
+                        Dim msgSetRq As IMsgSetRequest = MAIN.SESSMANAGER.CreateMsgSetRequest("US", 2, 0)
+                        msgSetRq.Attributes.OnError = ENRqOnError.roeContinue
+                        Dim PayrollQueryRq As IPayrollItemWageQuery = msgSetRq.AppendPayrollItemWageQueryRq
+                        PayrollQueryRq.ORListQuery.FullNameList.Add(PayrollItem)
+                        Dim msgSetRs As IMsgSetResponse = MAIN.SESSMANAGER.DoRequests(msgSetRq)
+                        Dim response As IResponse = msgSetRs.ResponseList.GetAt(0)
+                        Dim empRetList As IPayrollItemWageRet = response.Detail
 
-                    If empRetList Is Nothing Then ' When QB does not have that payroll item
+                        If empRetList Is Nothing Then ' When QB does not have that payroll item
+                            PayrollItem = "<None>"
+                        End If
+                    Catch
                         PayrollItem = "<None>"
-                    End If
+                    End Try
+
                 End If
             End With
         End If

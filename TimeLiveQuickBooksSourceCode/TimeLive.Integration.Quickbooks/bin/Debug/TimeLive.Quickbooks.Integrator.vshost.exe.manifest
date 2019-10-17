@@ -43,14 +43,14 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="TimeLive.Quickbooks.Integrator.exe" size="1764864">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="TimeLive.Quickbooks.Integrator.exe" size="1765376">
       <assemblyIdentity name="TimeLive.Quickbooks.Integrator" version="1.0.0.0" language="neutral" processorArchitecture="x86" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>1Tu+MW0yKa2EIjodMEHuTMHUkdApzJftFC+9Dhvq7p4=</dsig:DigestValue>
+        <dsig:DigestValue>OgsO7ql5gaZ2rnvWhIB84IgMJMP7X7QnpqXtft/fuM4=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>

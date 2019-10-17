@@ -101,8 +101,10 @@ Public Class Sync_TLtoQB_JoborItem
                         parentName = objTask.JobParent.Substring(0, lastColon)
                         taskName = objTask.JobParent.Substring(lastColon + 1)
 
-                        Dim job As String = objTask.JobParent.Split(":")(1)
-                        Dim itemAdded As Integer = checkQBItemExists(job, objTask.TaskName, UI, p_token)
+                        Dim jobParentColonSeperated As String() = objTask.JobParent.Split(":")
+                        Dim customer As String = jobParentColonSeperated(0)
+                        Dim job As String = jobParentColonSeperated(1)
+                        Dim itemAdded As Integer = checkQBItemExists(customer, job, objTask.TaskName, UI, p_token)
 
                         If itemAdded = -2 Then ' Cancel was selected
                             Return numSynced
@@ -193,27 +195,38 @@ Public Class Sync_TLtoQB_JoborItem
     End Function
 
     ' Returns number of Items created
-    Function createQBItem(ByVal cappedLenJob As String, ByVal cappedLenItem As String, ByVal fullItem As String, ByVal jobIsItemInQB As Boolean) As Boolean
+    Function createQBItem(ByVal cappedLenCustomer As String, ByVal cappedLenJob As String, ByVal cappedLenItem As String, ByVal jobIsItemInQB As Boolean, ByVal customerIsItemInQB As Boolean) As Boolean
         Dim newMsgSetRq As IMsgSetRequest = MAIN.SESSMANAGER.CreateMsgSetRequest("US", 2, 0)
         newMsgSetRq.Attributes.OnError = ENRqOnError.roeContinue
 
-        ' Need to add customer as an item, which the actual item will be below
+        Dim fullProject As String = cappedLenCustomer + ":" + cappedLenJob
+        Dim fullItem = fullProject + ":" + cappedLenItem
+
+        ' Add customer as an item, which the actual item will be below
+        If Not customerIsItemInQB Then
+            Dim customerAdd As IItemServiceAdd = newMsgSetRq.AppendItemServiceAddRq
+            customerAdd.Name.SetValue(cappedLenCustomer)
+            customerAdd.ORSalesPurchase.SalesOrPurchase.AccountRef.FullName.SetValue("<None>")
+        End If
+
+        ' Add job as an item, the child of the customer item and the parent of the actual item
         If Not jobIsItemInQB Then
             Dim jobAdd As IItemServiceAdd = newMsgSetRq.AppendItemServiceAddRq
             jobAdd.Name.SetValue(cappedLenJob)
+            jobAdd.ParentRef.FullName.SetValue(cappedLenCustomer)
             jobAdd.ORSalesPurchase.SalesOrPurchase.AccountRef.FullName.SetValue("<None>")
         End If
 
         Dim itemAdd As IItemServiceAdd = newMsgSetRq.AppendItemServiceAddRq
         itemAdd.Name.SetValue(cappedLenItem)
-        itemAdd.ParentRef.FullName.SetValue(cappedLenJob)
+        itemAdd.ParentRef.FullName.SetValue(fullProject)
         itemAdd.ORSalesPurchase.SalesOrPurchase.AccountRef.FullName.SetValue("<None>")
 
         'step2: send the request
         Dim msgSetRs As IMsgSetResponse = MAIN.SESSMANAGER.DoRequests(newMsgSetRq)
-
+        Dim numItemsAdded As Integer = msgSetRs.ResponseList.Count
         ' Interpret the responses
-        For n As Integer = 0 To msgSetRs.ResponseList.Count - 1
+        For n As Integer = 0 To numItemsAdded - 1
             Dim res As IResponse = msgSetRs.ResponseList.GetAt(n)
             If res.StatusSeverity = "Error" Then
                 Throw New Exception(res.StatusMessage)
@@ -221,8 +234,8 @@ Public Class Sync_TLtoQB_JoborItem
             End If
         Next
 
-        My.Forms.MAIN.History("Item in Timelive with name: " + fullItem + " added to QuickBooks", "N")
-        Return If(jobIsItemInQB, 1, 2)
+        My.Forms.MAIN.History("Item in Timelive with name: '" + fullItem + "' added to QuickBooks", "N")
+        Return numItemsAdded
     End Function
 
     Function shortenProjectNameToFitInQB(ByVal jobName As String, ByVal maxLen As Integer)
@@ -254,48 +267,45 @@ Public Class Sync_TLtoQB_JoborItem
     '''     1 -> Did not exist in QB, added to QB
     '''     2+ -> Did not exist in QB, and 1 or more of its parents did not exist in QB either, all added to QB
     ''' </returns>
-    Public Function checkQBItemExists(ByVal job As String, ByVal item As String, ByVal UI As Boolean, ByVal p_token As String, Optional ByVal cancel_opt As Boolean = False) As Integer
+    Public Function checkQBItemExists(ByVal customer As String, ByVal job As String, ByVal item As String, ByVal UI As Boolean, ByVal p_token As String, Optional ByVal cancel_opt As Boolean = False) As Integer
         Try
-            If job Is Nothing Or item Is Nothing Then
+            If customer Is Nothing Or job Is Nothing Or item Is Nothing Then
                 Return 0
             End If
-            If job = "" Or item = "" Then
+            If customer = "" Or job = "" Or item = "" Then
                 Return 0
             End If
 
             ' Items in QuickBooks must be no more than 31 characters in size
+            Dim cappedLenCustomer As String = If(customer.Trim.Length > MAX_ITEM_LEN, customer.Substring(0, MAX_ITEM_LEN).Trim, customer.Trim)
             Dim cappedLenJob As String = shortenProjectNameToFitInQB(job.Trim, MAX_ITEM_LEN)
-            Dim cappedLenItem As String = If(item.Length > MAX_ITEM_LEN, item.Substring(0, MAX_ITEM_LEN).Trim, item.Trim)
-            Dim fullItem As String = cappedLenJob + ":" + cappedLenItem
+            Dim cappedLenItem As String = If(item.Trim.Length > MAX_ITEM_LEN, item.Substring(0, MAX_ITEM_LEN).Trim, item.Trim)
+            Dim fullProject As String = cappedLenCustomer + ":" + cappedLenJob
+            Dim fullItem As String = fullProject + ":" + cappedLenItem
 
             Dim msgSetRq As IMsgSetRequest = MAIN.SESSMANAGER.CreateMsgSetRequest("US", 2, 0)
             msgSetRq.Attributes.OnError = ENRqOnError.roeContinue
             Dim itemQueryRq As IItemQuery = msgSetRq.AppendItemQueryRq
-            itemQueryRq.ORListQuery.FullNameList.Add(cappedLenJob)
+            itemQueryRq.ORListQuery.FullNameList.Add(cappedLenCustomer)
+            itemQueryRq.ORListQuery.FullNameList.Add(fullProject)
             itemQueryRq.ORListQuery.FullNameList.Add(fullItem)
 
             Dim msgSetRs As IMsgSetResponse = MAIN.SESSMANAGER.DoRequests(msgSetRq)
             Dim itemRetList As IORItemRetList = msgSetRs.ResponseList.GetAt(0).Detail
 
-            Dim inQB As Boolean = False
-            Dim jobIsItemInQB As Boolean = True
+            Dim retNum As Integer = If(itemRetList Is Nothing, 0, itemRetList.Count)
+            Dim customerIsItemInQB As Boolean = retNum >= 1
+            Dim jobIsItemInQB As Boolean = retNum >= 2
+            Dim itemInQB As Boolean = retNum = 3
 
-            If itemRetList Is Nothing Then
-                ' Neither the customer nor item are in the item list
-                jobIsItemInQB = False
-            ElseIf itemRetList.Count = 2 Then
-                ' Both are in QuickBooks
-                inQB = True
-            End If
-
-            If Not inQB Then
+            If Not itemInQB Then
                 Dim msgBoxResponse = askUserToCreateInQB(UI, cancel_opt, fullItem, "item")
                 If msgBoxResponse = MsgBoxResult.Cancel Then
                     Return -2
                 ElseIf msgBoxResponse = MsgBoxResult.No Then
                     Return -1
                 Else
-                    Return createQBItem(cappedLenJob, cappedLenItem, fullItem, jobIsItemInQB)
+                    Return createQBItem(cappedLenCustomer, cappedLenJob, cappedLenItem, jobIsItemInQB, customerIsItemInQB)
                 End If
             Else
                 My.Forms.MAIN.History("Found item in QB with name: " + fullItem, "i")
