@@ -9,7 +9,7 @@
     <OutputType>WinExe</OutputType>
     <StartupObject>TimeLive.Quickbooks.Integrator.My.MyApplication</StartupObject>
     <RootNamespace>TimeLive.Quickbooks.Integrator</RootNamespace>
-    <AssemblyName>TimeLive.Quickbooks.Integrator</AssemblyName>
+    <AssemblyName>ense</AssemblyName>
     <MyType>WindowsForms</MyType>
     <SccProjectName>SAK</SccProjectName>
     <SccLocalPath>SAK</SccLocalPath>
@@ -44,7 +44,7 @@
     <DefineDebug>true</DefineDebug>
     <DefineTrace>true</DefineTrace>
     <OutputPath>bin\Debug\</OutputPath>
-    <DocumentationFile>TimeLive.Quickbooks.Integrator.xml</DocumentationFile>
+    <DocumentationFile>ense.xml</DocumentationFile>
     <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022,42353,42354,42355</NoWarn>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
     <PlatformTarget>x86</PlatformTarget>
@@ -56,7 +56,7 @@
     <DefineTrace>true</DefineTrace>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
-    <DocumentationFile>TimeLive.Quickbooks.Integrator.xml</DocumentationFile>
+    <DocumentationFile>ense.xml</DocumentationFile>
     <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022,42353,42354,42355</NoWarn>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
     <Prefer32Bit>false</Prefer32Bit>
@@ -105,21 +105,21 @@
     <Import Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ChargingRelationship.Designer.vb">
+    <Compile Include="VB_Interfaces\ChargingRelationship.Designer.vb">
       <DependentUpon>ChargingRelationship.vb</DependentUpon>
     </Compile>
-    <Compile Include="ChargingRelationship.vb">
+    <Compile Include="VB_Interfaces\ChargingRelationship.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="CurrentSystemSync.vb" />
-    <Compile Include="QBtoTL\QBtoTL_JobOrItem.vb" />
-    <Compile Include="QBtoTL\QBtoTL_Vendor.vb" />
-    <Compile Include="QBtoTL\QBtoTL_Employee.vb" />
-    <Compile Include="QBtoTL\QBtoTL_Customer.vb" />
-    <Compile Include="AppSettings.Designer.vb">
+    <Compile Include="VB_Code\CurrentSystemSync.vb" />
+    <Compile Include="VB_Code\QBtoTL\QBtoTL_JobOrItem.vb" />
+    <Compile Include="VB_Code\QBtoTL\QBtoTL_Vendor.vb" />
+    <Compile Include="VB_Code\QBtoTL\QBtoTL_Employee.vb" />
+    <Compile Include="VB_Code\QBtoTL\QBtoTL_Customer.vb" />
+    <Compile Include="VB_Interfaces\AppSettings.Designer.vb">
       <DependentUpon>AppSettings.vb</DependentUpon>
     </Compile>
-    <Compile Include="AppSettings.vb">
+    <Compile Include="VB_Interfaces\AppSettings.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="QB_TL_IDs.Designer.vb">
@@ -130,26 +130,26 @@
     <Compile Include="QB_TL_IDs.vb">
       <DependentUpon>QB_TL_IDs.xsd</DependentUpon>
     </Compile>
-    <Compile Include="Sync_TLtoQB\Sync_TLtoQB_JoborItem.vb" />
-    <Compile Include="Sync_TLtoQB\Sync_TLtoQB_Relationships.vb" />
-    <Compile Include="Sync_TLtoQB\Sync_TLtoQB_Vendor.vb" />
-    <Compile Include="Sync_TLtoQB\Sync_TLtoQB_Employee.vb" />
-    <Compile Include="Sync_TLtoQB\Sync_TLtoQB_Customer.vb" />
+    <Compile Include="VB_Code\Sync_TLtoQB\Sync_TLtoQB_JoborItem.vb" />
+    <Compile Include="VB_Code\Sync_TLtoQB\Sync_TLtoQB_Relationships.vb" />
+    <Compile Include="VB_Code\Sync_TLtoQB\Sync_TLtoQB_Vendor.vb" />
+    <Compile Include="VB_Code\Sync_TLtoQB\Sync_TLtoQB_Employee.vb" />
+    <Compile Include="VB_Code\Sync_TLtoQB\Sync_TLtoQB_Customer.vb" />
     <Compile Include="TimeLiveDataSet.Designer.vb">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>TimeLiveDataSet.xsd</DependentUpon>
     </Compile>
-    <Compile Include="Main.Designer.vb">
+    <Compile Include="VB_Interfaces\Main.Designer.vb">
       <DependentUpon>Main.vb</DependentUpon>
     </Compile>
-    <Compile Include="Main.vb">
+    <Compile Include="VB_Interfaces\Main.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Login.Designer.vb">
+    <Compile Include="VB_Interfaces\Login.Designer.vb">
       <DependentUpon>Login.vb</DependentUpon>
     </Compile>
-    <Compile Include="Login.vb">
+    <Compile Include="VB_Interfaces\Login.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="My Project\AssemblyInfo.vb" />
@@ -170,7 +170,8 @@
     <Compile Include="TimeLiveDataSet.vb">
       <DependentUpon>TimeLiveDataSet.xsd</DependentUpon>
     </Compile>
-    <Compile Include="TLtoQB_TimeEntry.vb" />
+    <Compile Include="VB_Code\TLtoQB_ExpenseReports.vb" />
+    <Compile Include="VB_Code\TLtoQB_TimeEntry.vb" />
     <Compile Include="Web References\Services.TimeLive.Clients\Reference.vb">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -206,21 +207,21 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.map</DependentUpon>
     </Compile>
-    <Compile Include="WebServiceUtilities.vb" />
+    <Compile Include="VB_Code\WebServiceUtilities.vb" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="AppSettings.resx">
+    <EmbeddedResource Include="VB_Interfaces\AppSettings.resx">
       <DependentUpon>AppSettings.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="ChargingRelationship.resx">
+    <EmbeddedResource Include="VB_Interfaces\ChargingRelationship.resx">
       <DependentUpon>ChargingRelationship.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Main.resx">
+    <EmbeddedResource Include="VB_Interfaces\Main.resx">
       <DependentUpon>Main.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Login.resx">
+    <EmbeddedResource Include="VB_Interfaces\Login.resx">
       <SubType>Designer</SubType>
       <DependentUpon>Login.vb</DependentUpon>
     </EmbeddedResource>
@@ -452,9 +453,6 @@
       <Isolated>False</Isolated>
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </COMReference>
-  </ItemGroup>
-  <ItemGroup>
-    <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.VisualBasic.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

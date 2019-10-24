@@ -125,15 +125,12 @@ Public Class QBtoTL_Employee
     ' Note: Will need to add things similar to QBTransferCustomerToTL if we add Enabled as variable
     Public Function QBTransferEmployeeToTL(ByRef objData As QBtoTL_Employee.EmployeeDataStructureQB,
                                    ByVal token As String, MainForm As MAIN, UI As Boolean) As Integer
-        Dim objEmployeeServices As New Services.TimeLive.Employees.Employees
-        Dim authentication As New Services.TimeLive.Employees.SecuredWebServiceHeader
-        authentication.AuthenticatedToken = token
-        objEmployeeServices.SecuredWebServiceHeaderValue = authentication
+        Dim objEmployeeServices As Services.TimeLive.Employees.Employees = MAIN.connect_TL_employees(token)
 
         Dim objServices As New Services.TimeLiveServices
-        Dim authentication2 As New Services.SecuredWebServiceHeader
-        authentication2.AuthenticatedToken = token
-        objServices.SecuredWebServiceHeaderValue = authentication2
+        Dim authentication As New Services.SecuredWebServiceHeader
+        authentication.AuthenticatedToken = token
+        objServices.SecuredWebServiceHeaderValue = authentication
 
         Dim nDepartmentId As Integer = objServices.GetDepartmentId()
         Dim nRoleId As Integer = objEmployeeServices.GetUserRoleId()
@@ -268,20 +265,6 @@ Public Class QBtoTL_Employee
                                     My.Forms.MAIN.History("Error creating record in TimeLive", "N")
                                 End If
                             End If
-                            '--------------------Save just in case is needed later
-                            'Dim employees As New Services.TimeLive.Employees.Employees
-                            'employee.EmployeeName = "Test Employee"
-                            'employee.FirstName = "Employee"
-                            'employee.LastName = "Test"
-                            'Dim EmployeeID As String = objEmployeeServices.AddEmployee(employee)
-                            '--------------------Save just in case is needed later
-                            'Dim employees As New Object
-                            'employees = objEmployeeServices.GetEmployees()
-
-                            'For Each e_element As Services.TimeLive.Employees.Employee In employees
-                            '    My.Forms.Main.History("Name:" + e_element.EmployeeName, "i")
-                            '    My.Forms.Main.History("ID:" + e_element.EmployeeId.ToString(), "i")
-                            'Next
 
                         Catch ex As System.Web.Services.Protocols.SoapException
                             My.Forms.MAIN.History("Employee Already has that email address, try a different one", "N")
@@ -579,10 +562,7 @@ Public Class QBtoTL_Employee
         ' Return default if email address is empty of nothing
 
         ' Connect to TimeLive
-        Dim objEmployeeServices As New Services.TimeLive.Employees.Employees
-        Dim authentication As New Services.TimeLive.Employees.SecuredWebServiceHeader
-        authentication.AuthenticatedToken = p_token
-        objEmployeeServices.SecuredWebServiceHeaderValue = authentication
+        Dim objEmployeeServices As Services.TimeLive.Employees.Employees = MAIN.connect_TL_employees(p_token)
 
         ' For when more than one employee has the same last name and first letter of first name
         Dim counter As Integer = 0

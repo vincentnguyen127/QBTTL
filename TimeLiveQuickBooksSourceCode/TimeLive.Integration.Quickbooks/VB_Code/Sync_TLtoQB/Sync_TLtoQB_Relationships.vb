@@ -7,11 +7,7 @@ Public Class Sync_TLtoQB_Relationships
     Sub SyncRelationshipData(ByVal p_token As String, Optional ByVal UI As Boolean = True)
         My.Forms.MAIN.History("Syncing Relationships Data", "n")
         Try
-            ' Connect to Time Live
-            Dim objTaskServices As New Services.TimeLive.Tasks.Tasks
-            Dim authentication As New Services.TimeLive.Tasks.SecuredWebServiceHeader
-            authentication.AuthenticatedToken = p_token
-            objTaskServices.SecuredWebServiceHeaderValue = authentication
+            Dim objTaskServices As Services.TimeLive.Tasks.Tasks = MAIN.connect_TL_tasks(p_token)
 
             Dim chargingRelationshipAdapter As New QB_TL_IDsTableAdapters.ChargingRelationshipsTableAdapter
             Dim TLTaskRelationshipAdapter As New TimeLiveDataSetTableAdapters.AccountProjectTaskEmployeeTableAdapter

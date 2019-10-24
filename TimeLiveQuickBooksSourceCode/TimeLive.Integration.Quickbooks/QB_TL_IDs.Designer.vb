@@ -6188,19 +6188,20 @@ Namespace QB_TL_IDsTableAdapters
             Me._commandCollection(5).Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@ID", Global.System.Data.SqlDbType.Int, 4, Global.System.Data.ParameterDirection.Input, 0, 0, "ID", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
             Me._commandCollection(6) = New Global.System.Data.SqlClient.SqlCommand()
             Me._commandCollection(6).Connection = Me.Connection
-            Me._commandCollection(6).CommandText = "SELECT        ID, EmployeeQB_ID, JobSubJobQB_ID, PayrollItemQB_ID, ItemSubItemQB_"& _ 
-                "ID"&Global.Microsoft.VisualBasic.ChrW(13)&Global.Microsoft.VisualBasic.ChrW(10)&"FROM            ChargingRelationships"&Global.Microsoft.VisualBasic.ChrW(13)&Global.Microsoft.VisualBasic.ChrW(10)&"WHERE        (EmployeeQB_ID = @Employ"& _ 
-                "eeQB_ID) AND (JobSubJobQB_ID = @JobSubJobQB_ID)"
+            Me._commandCollection(6).CommandText = "SELECT ID, EmployeeQB_ID, JobSubJobQB_ID, PayrollItemQB_ID, ItemSubItemQB_ID"&Global.Microsoft.VisualBasic.ChrW(13)&Global.Microsoft.VisualBasic.ChrW(10)&"FRO"& _ 
+                "M   ChargingRelationships"&Global.Microsoft.VisualBasic.ChrW(13)&Global.Microsoft.VisualBasic.ChrW(10)&"WHERE (RTRIM(EmployeeQB_ID) = RTRIM(@EmployeeQB_ID)) "& _ 
+                "AND (RTRIM(JobSubJobQB_ID) = RTRIM(@JobSubJobQB_ID))"
             Me._commandCollection(6).CommandType = Global.System.Data.CommandType.Text
-            Me._commandCollection(6).Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@EmployeeQB_ID", Global.System.Data.SqlDbType.NChar, 41, Global.System.Data.ParameterDirection.Input, 0, 0, "EmployeeQB_ID", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
-            Me._commandCollection(6).Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@JobSubJobQB_ID", Global.System.Data.SqlDbType.NChar, 41, Global.System.Data.ParameterDirection.Input, 0, 0, "JobSubJobQB_ID", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
+            Me._commandCollection(6).Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@EmployeeQB_ID", Global.System.Data.SqlDbType.VarChar, 1024, Global.System.Data.ParameterDirection.Input, 0, 0, "", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
+            Me._commandCollection(6).Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@JobSubJobQB_ID", Global.System.Data.SqlDbType.VarChar, 1024, Global.System.Data.ParameterDirection.Input, 0, 0, "", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
             Me._commandCollection(7) = New Global.System.Data.SqlClient.SqlCommand()
             Me._commandCollection(7).Connection = Me.Connection
-            Me._commandCollection(7).CommandText = "SELECT        *"&Global.Microsoft.VisualBasic.ChrW(13)&Global.Microsoft.VisualBasic.ChrW(10)&"FROM            ChargingRelationships"&Global.Microsoft.VisualBasic.ChrW(13)&Global.Microsoft.VisualBasic.ChrW(10)&"WHERE        (EmployeeQB_"& _ 
-                "ID = @EmployeeQB_ID) AND (JobSubJobQB_ID = @JobSubJobQB_ID)"
+            Me._commandCollection(7).CommandText = "SELECT ID, EmployeeQB_ID, JobSubJobQB_ID, PayrollItemQB_ID, ItemSubItemQB_ID"&Global.Microsoft.VisualBasic.ChrW(13)&Global.Microsoft.VisualBasic.ChrW(10)&"FRO"& _ 
+                "M   ChargingRelationships"&Global.Microsoft.VisualBasic.ChrW(13)&Global.Microsoft.VisualBasic.ChrW(10)&"WHERE (RTRIM(EmployeeQB_ID) = RTRIM(@EmployeeQB_ID)) "& _ 
+                "AND (RTRIM(JobSubJobQB_ID) = RTRIM(@JobSubJobQB_ID))"
             Me._commandCollection(7).CommandType = Global.System.Data.CommandType.Text
-            Me._commandCollection(7).Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@EmployeeQB_ID", Global.System.Data.SqlDbType.NChar, 41, Global.System.Data.ParameterDirection.Input, 0, 0, "EmployeeQB_ID", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
-            Me._commandCollection(7).Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@JobSubJobQB_ID", Global.System.Data.SqlDbType.NChar, 41, Global.System.Data.ParameterDirection.Input, 0, 0, "JobSubJobQB_ID", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
+            Me._commandCollection(7).Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@EmployeeQB_ID", Global.System.Data.SqlDbType.VarChar, 1024, Global.System.Data.ParameterDirection.Input, 0, 0, "", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
+            Me._commandCollection(7).Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@JobSubJobQB_ID", Global.System.Data.SqlDbType.VarChar, 1024, Global.System.Data.ParameterDirection.Input, 0, 0, "", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
             Me._commandCollection(8) = New Global.System.Data.SqlClient.SqlCommand()
             Me._commandCollection(8).Connection = Me.Connection
             Me._commandCollection(8).CommandText = "SELECT        COUNT(*) AS Expr1"&Global.Microsoft.VisualBasic.ChrW(13)&Global.Microsoft.VisualBasic.ChrW(10)&"FROM            ChargingRelationships"&Global.Microsoft.VisualBasic.ChrW(13)&Global.Microsoft.VisualBasic.ChrW(10)&"WHERE    "& _ 
@@ -6276,12 +6277,12 @@ Namespace QB_TL_IDsTableAdapters
         Public Overloads Overridable Function GetIItemIDByEmployeeIDAndJob_SubJobID(ByVal EmployeeQB_ID As String, ByVal JobSubJobQB_ID As String) As QB_TL_IDs.ChargingRelationshipsDataTable
             Me.Adapter.SelectCommand = Me.CommandCollection(6)
             If (EmployeeQB_ID Is Nothing) Then
-                Me.Adapter.SelectCommand.Parameters(0).Value = Global.System.DBNull.Value
+                Throw New Global.System.ArgumentNullException("EmployeeQB_ID")
             Else
                 Me.Adapter.SelectCommand.Parameters(0).Value = CType(EmployeeQB_ID,String)
             End If
             If (JobSubJobQB_ID Is Nothing) Then
-                Me.Adapter.SelectCommand.Parameters(1).Value = Global.System.DBNull.Value
+                Throw New Global.System.ArgumentNullException("JobSubJobQB_ID")
             Else
                 Me.Adapter.SelectCommand.Parameters(1).Value = CType(JobSubJobQB_ID,String)
             End If
@@ -6297,12 +6298,12 @@ Namespace QB_TL_IDsTableAdapters
         Public Overloads Overridable Function GetPayrollItemIDByEmployeeIDAndJob_SubJobID(ByVal EmployeeQB_ID As String, ByVal JobSubJobQB_ID As String) As QB_TL_IDs.ChargingRelationshipsDataTable
             Me.Adapter.SelectCommand = Me.CommandCollection(7)
             If (EmployeeQB_ID Is Nothing) Then
-                Me.Adapter.SelectCommand.Parameters(0).Value = Global.System.DBNull.Value
+                Throw New Global.System.ArgumentNullException("EmployeeQB_ID")
             Else
                 Me.Adapter.SelectCommand.Parameters(0).Value = CType(EmployeeQB_ID,String)
             End If
             If (JobSubJobQB_ID Is Nothing) Then
-                Me.Adapter.SelectCommand.Parameters(1).Value = Global.System.DBNull.Value
+                Throw New Global.System.ArgumentNullException("JobSubJobQB_ID")
             Else
                 Me.Adapter.SelectCommand.Parameters(1).Value = CType(JobSubJobQB_ID,String)
             End If

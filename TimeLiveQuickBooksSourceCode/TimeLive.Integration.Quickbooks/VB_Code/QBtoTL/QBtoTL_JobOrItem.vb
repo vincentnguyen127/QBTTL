@@ -210,25 +210,14 @@ Public Class QBtoTL_JobOrItem
     Public Function QBTransferJobstoTL(ByRef objData As QBtoTL_JobOrItem.JobDataStructureQB,
                                    ByVal p_token As String, MainForm As MAIN, UI As Boolean) As Integer
 
-        Dim objProjectServices As New Services.TimeLive.Projects.Projects
-        Dim authentication As New Services.TimeLive.Projects.SecuredWebServiceHeader
-        authentication.AuthenticatedToken = p_token
-        objProjectServices.SecuredWebServiceHeaderValue = authentication
-
-        Dim objTaskServices As New Services.TimeLive.Tasks.Tasks
-        Dim authentication2 As New Services.TimeLive.Tasks.SecuredWebServiceHeader
-        authentication2.AuthenticatedToken = p_token
-        objTaskServices.SecuredWebServiceHeaderValue = authentication2
-
-        Dim objClientServices As New Services.TimeLive.Clients.Clients
-        Dim authentication3 As New Services.TimeLive.Clients.SecuredWebServiceHeader
-        authentication3.AuthenticatedToken = p_token
-        objClientServices.SecuredWebServiceHeaderValue = authentication3
+        Dim objProjectServices As Services.TimeLive.Projects.Projects = MAIN.connect_TL_projects(p_token)
+        Dim objTaskServices As Services.TimeLive.Tasks.Tasks = MAIN.connect_TL_tasks(p_token)
+        Dim objClientServices As Services.TimeLive.Clients.Clients = MAIN.connect_TL_clients(p_token)
 
         Dim objServices As New Services.TimeLiveServices
-        Dim authentication4 As New Services.SecuredWebServiceHeader
-        authentication4.AuthenticatedToken = p_token
-        objServices.SecuredWebServiceHeaderValue = authentication4
+        Dim authentication As New Services.SecuredWebServiceHeader
+        authentication.AuthenticatedToken = p_token
+        objServices.SecuredWebServiceHeaderValue = authentication
 
         'sets status bar. If no, UI skip
         If UI Then
@@ -478,25 +467,14 @@ Public Class QBtoTL_JobOrItem
     '---------------------------------------Transfer Item Data -----------------------------------------------------------------'
     Public Function QBTransferItemsToTL(ByRef objData As QBtoTL_JobOrItem.JobDataStructureQB,
                                    ByVal p_token As String, MainForm As MAIN, UI As Boolean) As Integer
-        Dim objProjectServices As New Services.TimeLive.Projects.Projects
-        Dim authentication As New Services.TimeLive.Projects.SecuredWebServiceHeader
-        authentication.AuthenticatedToken = p_token
-        objProjectServices.SecuredWebServiceHeaderValue = authentication
-
-        Dim objTaskServices As New Services.TimeLive.Tasks.Tasks
-        Dim authentication2 As New Services.TimeLive.Tasks.SecuredWebServiceHeader
-        authentication2.AuthenticatedToken = p_token
-        objTaskServices.SecuredWebServiceHeaderValue = authentication2
-
-        Dim objClientServices As New Services.TimeLive.Clients.Clients
-        Dim authentication3 As New Services.TimeLive.Clients.SecuredWebServiceHeader
-        authentication3.AuthenticatedToken = p_token
-        objClientServices.SecuredWebServiceHeaderValue = authentication3
+        Dim objProjectServices As Services.TimeLive.Projects.Projects = MAIN.connect_TL_projects(p_token)
+        Dim objTaskServices As Services.TimeLive.Tasks.Tasks = MAIN.connect_TL_tasks(p_token)
+        Dim objClientServices As Services.TimeLive.Clients.Clients = MAIN.connect_TL_clients(p_token)
 
         Dim objServices As New Services.TimeLiveServices
-        Dim authentication4 As New Services.SecuredWebServiceHeader
-        authentication4.AuthenticatedToken = p_token
-        objServices.SecuredWebServiceHeaderValue = authentication4
+        Dim authentication As New Services.SecuredWebServiceHeader
+        authentication.AuthenticatedToken = p_token
+        objServices.SecuredWebServiceHeaderValue = authentication
 
         'sets status bar. If no, UI skip
         If UI Then

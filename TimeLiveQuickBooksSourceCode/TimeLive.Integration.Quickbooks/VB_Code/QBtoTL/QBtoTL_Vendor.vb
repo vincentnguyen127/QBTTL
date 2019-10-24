@@ -129,10 +129,7 @@ Public Class QBtoTL_Vendor
     Public Function QBTransferVendorToTL(ByRef objData As QBtoTL_Vendor.VendorDataStructureQB,
                                    ByVal token As String, MainForm As MAIN, UI As Boolean) As Integer
 
-        Dim objEmployeeServices As New Services.TimeLive.Employees.Employees
-        Dim authentication As New Services.TimeLive.Employees.SecuredWebServiceHeader
-        authentication.AuthenticatedToken = token
-        objEmployeeServices.SecuredWebServiceHeaderValue = authentication
+        Dim objEmployeeServices As Services.TimeLive.Employees.Employees = MAIN.connect_TL_employees(token)
 
         Dim objServices As New Services.TimeLiveServices
         Dim authentication2 As New Services.SecuredWebServiceHeader
@@ -597,15 +594,9 @@ Public Class QBtoTL_Vendor
     End Function
 
     Public Function GetEmailAddress(EmailAddress As String, p_token As String, default_addr As String) As String
-        ' Return default if email address is empty of nothing
         If EmailAddress Is Nothing Or EmailAddress = "" Then Return default_addr
 
-        ' Connect to TimeLive
-        Dim objEmployeeServices As New Services.TimeLive.Employees.Employees
-        Dim authentication As New Services.TimeLive.Employees.SecuredWebServiceHeader
-        authentication.AuthenticatedToken = p_token
-        objEmployeeServices.SecuredWebServiceHeaderValue = authentication
-
+        Dim objEmployeeServices As Services.TimeLive.Employees.Employees = MAIN.connect_TL_employees(p_token)
         Return If(objEmployeeServices.IsEmployeeExistsByEmailAddress(EmailAddress), EmailAddress, default_addr)
     End Function
 End Class

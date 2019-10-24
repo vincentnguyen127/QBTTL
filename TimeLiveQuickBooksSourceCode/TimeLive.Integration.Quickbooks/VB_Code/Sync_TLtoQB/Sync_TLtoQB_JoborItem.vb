@@ -27,18 +27,12 @@ Public Class Sync_TLtoQB_JoborItem
 
         Try
             ' Connect to TimeLive Projects
-            Dim objProjectServices As New Services.TimeLive.Projects.Projects
-            Dim authenticationProjects As New Services.TimeLive.Projects.SecuredWebServiceHeader
-            authenticationProjects.AuthenticatedToken = p_token
-            objProjectServices.SecuredWebServiceHeaderValue = authenticationProjects
+            Dim objProjectServices As Services.TimeLive.Projects.Projects = MAIN.connect_TL_projects(p_token)
             Dim objProjectArray() As Object = objProjectServices.GetProjects
             Dim objProject As New Services.TimeLive.Projects.Project
 
             ' Connect to Timelive Tasks
-            Dim objTaskServices As New Services.TimeLive.Tasks.Tasks
-            Dim authenticationTasks As New Services.TimeLive.Tasks.SecuredWebServiceHeader
-            authenticationTasks.AuthenticatedToken = p_token
-            objTaskServices.SecuredWebServiceHeaderValue = authenticationTasks
+            Dim objTaskServices As Services.TimeLive.Tasks.Tasks = MAIN.connect_TL_tasks(p_token)
             ' Note: Will error if 'Code' is null
             Dim objTaskArray() As Object = objTaskServices.GetTasks
             Dim objTask As New Services.TimeLive.Tasks.Task
@@ -152,12 +146,7 @@ Public Class Sync_TLtoQB_JoborItem
     Public Function GetTasks(ParentName As String, ByVal p_token As String) As QBtoTL_JobOrItem.SubJobsOrSubitems
         Dim SubJobsOrSubData As New QBtoTL_JobOrItem.SubJobsOrSubitems
         Try
-            ' connect to Timelive
-            Dim objTaskServices As New Services.TimeLive.Tasks.Tasks
-            Dim authentication As New Services.TimeLive.Tasks.SecuredWebServiceHeader
-            authentication.AuthenticatedToken = p_token
-            objTaskServices.SecuredWebServiceHeaderValue = authentication
-
+            Dim objTaskServices As Services.TimeLive.Tasks.Tasks = MAIN.connect_TL_tasks(p_token)
             Dim objTaskArray As Object = objTaskServices.GetTasks
             Dim objTask As New Services.TimeLive.Tasks.Task
 
@@ -182,7 +171,7 @@ Public Class Sync_TLtoQB_JoborItem
     End Function
 
 
-    Function askUserToCreateInQB(ByVal UI As Boolean, ByVal cancel_opt As Boolean, ByVal value As String, Optional type As String = "value")
+    Shared Function askUserToCreateInQB(ByVal UI As Boolean, ByVal cancel_opt As Boolean, ByVal value As String, Optional type As String = "value")
         Dim MsgBox_result As MsgBoxResult = MsgBoxResult.Yes
         If UI Then
             If cancel_opt Then
@@ -195,7 +184,7 @@ Public Class Sync_TLtoQB_JoborItem
     End Function
 
     ' Returns number of Items created
-    Function createQBItem(ByVal cappedLenCustomer As String, ByVal cappedLenJob As String, ByVal cappedLenItem As String, ByVal jobIsItemInQB As Boolean, ByVal customerIsItemInQB As Boolean) As Boolean
+    Shared Function createQBItem(ByVal cappedLenCustomer As String, ByVal cappedLenJob As String, ByVal cappedLenItem As String, ByVal jobIsItemInQB As Boolean, ByVal customerIsItemInQB As Boolean) As Boolean
         Dim newMsgSetRq As IMsgSetRequest = MAIN.SESSMANAGER.CreateMsgSetRequest("US", 2, 0)
         newMsgSetRq.Attributes.OnError = ENRqOnError.roeContinue
 
@@ -238,7 +227,7 @@ Public Class Sync_TLtoQB_JoborItem
         Return numItemsAdded
     End Function
 
-    Function shortenProjectNameToFitInQB(ByVal jobName As String, ByVal maxLen As Integer)
+    Shared Function shortenNameToFitInQB(ByVal jobName As String, ByVal maxLen As Integer)
         If jobName.Length <= maxLen Then
             Return jobName
         End If
@@ -248,10 +237,9 @@ Public Class Sync_TLtoQB_JoborItem
 
         If calendarYear.Success Then
             Dim numStartingElements = maxLen - calendarYear.Length
-
             Return jobName.Substring(0, numStartingElements) + calendarYear.Value
         Else
-            Return jobName.Substring(0, maxLen)
+            Return jobName.Substring(0, maxLen).Trim
         End If
 
     End Function
@@ -267,7 +255,7 @@ Public Class Sync_TLtoQB_JoborItem
     '''     1 -> Did not exist in QB, added to QB
     '''     2+ -> Did not exist in QB, and 1 or more of its parents did not exist in QB either, all added to QB
     ''' </returns>
-    Public Function checkQBItemExists(ByVal customer As String, ByVal job As String, ByVal item As String, ByVal UI As Boolean, ByVal p_token As String, Optional ByVal cancel_opt As Boolean = False) As Integer
+    Public Shared Function checkQBItemExists(ByVal customer As String, ByVal job As String, ByVal item As String, ByVal UI As Boolean, ByVal p_token As String, Optional ByVal cancel_opt As Boolean = False) As Integer
         Try
             If customer Is Nothing Or job Is Nothing Or item Is Nothing Then
                 Return 0
@@ -277,9 +265,9 @@ Public Class Sync_TLtoQB_JoborItem
             End If
 
             ' Items in QuickBooks must be no more than 31 characters in size
-            Dim cappedLenCustomer As String = If(customer.Trim.Length > MAX_ITEM_LEN, customer.Substring(0, MAX_ITEM_LEN).Trim, customer.Trim)
-            Dim cappedLenJob As String = shortenProjectNameToFitInQB(job.Trim, MAX_ITEM_LEN)
-            Dim cappedLenItem As String = If(item.Trim.Length > MAX_ITEM_LEN, item.Substring(0, MAX_ITEM_LEN).Trim, item.Trim)
+            Dim cappedLenCustomer As String = shortenNameToFitInQB(customer.Trim, MAX_ITEM_LEN)
+            Dim cappedLenJob As String = shortenNameToFitInQB(job.Trim, MAX_ITEM_LEN)
+            Dim cappedLenItem As String = shortenNameToFitInQB(item.Trim, MAX_ITEM_LEN)
             Dim fullProject As String = cappedLenCustomer + ":" + cappedLenJob
             Dim fullItem As String = fullProject + ":" + cappedLenItem
 
@@ -320,17 +308,11 @@ Public Class Sync_TLtoQB_JoborItem
 
 
     ' For the spot in our split array with projectIndex, check that it is formatted the way that projects should be
-    Private Sub removeSpacesBetweenColonsAndSetLengthOfFields(ByRef name As String, ByVal maxLen As Integer, Optional projectIndex As Integer = -1)
+    Public Shared Sub removeSpacesBetweenColonsAndSetLengthOfFields(ByRef name As String, Optional maxLen As Integer = MAX_CUSTOMER_LEN)
         Dim splitArr As String() = name.Split(":")
         Dim nameWithoutSpaces = ""
         For i As Integer = 0 To splitArr.Length - 1
-            Dim field As String = splitArr(i).Trim
-            If i = projectIndex Then
-                field = shortenProjectNameToFitInQB(field, maxLen)
-            Else
-                field = If(field.Length > maxLen, field.Substring(0, maxLen), field)
-            End If
-
+            Dim field As String = shortenNameToFitInQB(splitArr(i).Trim, maxLen)
             If i <> splitArr.Length - 1 Then field = field + ":"
             nameWithoutSpaces = nameWithoutSpaces + field
         Next
@@ -339,10 +321,7 @@ Public Class Sync_TLtoQB_JoborItem
     End Sub
 
     Function checkProjectsCustomerIsInQB(ByVal Parent As String, ByVal TLJobSubJobName As String, ByVal p_token As String, ByVal UI As Boolean) As Integer
-        Dim objClientServices As New Services.TimeLive.Clients.Clients
-        Dim authentication As New Services.TimeLive.Clients.SecuredWebServiceHeader
-        authentication.AuthenticatedToken = p_token
-        objClientServices.SecuredWebServiceHeaderValue = authentication
+        Dim objClientServices As Services.TimeLive.Clients.Clients = MAIN.connect_TL_clients(p_token)
         Dim client_TL_ID As Integer
         Try
             client_TL_ID = objClientServices.GetClientIdByName(Parent)
@@ -366,16 +345,10 @@ Public Class Sync_TLtoQB_JoborItem
 
         Try
             If parentIsAProject Then
-                Dim objServices As New Services.TimeLive.Projects.Projects
-                Dim authentication As New Services.TimeLive.Projects.SecuredWebServiceHeader
-                authentication.AuthenticatedToken = p_token
-                objServices.SecuredWebServiceHeaderValue = authentication
+                Dim objServices As Services.TimeLive.Projects.Projects = MAIN.connect_TL_projects(p_token)
                 parent_TL_ID = objServices.GetProjectId(parent_name)
             Else ' Parent is a task
-                Dim objServices As New Services.TimeLive.Tasks.Tasks
-                Dim authentication As New Services.TimeLive.Tasks.SecuredWebServiceHeader
-                authentication.AuthenticatedToken = p_token
-                objServices.SecuredWebServiceHeaderValue = authentication
+                Dim objServices As Services.TimeLive.Tasks.Tasks = MAIN.connect_TL_tasks(p_token)
                 parent_TL_ID = objServices.GetTaskId(parent_name)
             End If
         Catch ex As System.Web.Services.Protocols.SoapException
@@ -405,14 +378,11 @@ Public Class Sync_TLtoQB_JoborItem
                 ' Not in local database
                 My.Forms.MAIN.History("Adding Job to local database: '" + tl_name, "i")
                 JobSubJobAdapter.Insert(qb_id, tl_id, qb_name, tl_name)
-            ElseIf tl_id = -1 Or inTL > 1 Then
+            Else
                 Dim countByIDAndName = JobSubJobAdapter.GetCountFromTLIDAndTLName(tl_id, tl_name)
                 If countByIDAndName = 0 Then
                     JobSubJobAdapter.Insert(qb_id, tl_id, qb_name, tl_name)
                 End If
-            Else ' In DB once, then just update
-                My.Forms.MAIN.History("Updating job/subjob QuickBooks ID in local database: " + tl_name, "i")
-                JobSubJobAdapter.UpdateQBID(qb_id, tl_id)
             End If
         Else
             If IsTLID_In_JobsSubJobsDataTable(tl_id) = 0 Then
@@ -439,13 +409,8 @@ Public Class Sync_TLtoQB_JoborItem
     Public Function checkQBJobSubJobExist(ByRef Parent As String, ByRef TL_Name As String, ByVal TL_ID As Integer, ByVal UI As Boolean,
                                           ByVal p_token As String, Optional ByVal cancel_opt As Boolean = False, Optional taskAsItem As Boolean = False) As Integer
         Try
-            Dim parentContainsProjectField As Boolean = Parent.Contains(":")
-            If parentContainsProjectField Then
-                removeSpacesBetweenColonsAndSetLengthOfFields(Parent, MAX_CUSTOMER_LEN, 1)
-                removeSpacesBetweenColonsAndSetLengthOfFields(TL_Name, MAX_CUSTOMER_LEN)
-            Else
-                removeSpacesBetweenColonsAndSetLengthOfFields(TL_Name, MAX_CUSTOMER_LEN, 0)
-            End If
+            removeSpacesBetweenColonsAndSetLengthOfFields(Parent, MAX_CUSTOMER_LEN)
+            removeSpacesBetweenColonsAndSetLengthOfFields(TL_Name, MAX_CUSTOMER_LEN)
 
             Dim numAdded As Integer = 0
             Dim TLJobSubJobName As String = Parent + ":" + TL_Name

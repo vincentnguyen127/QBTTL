@@ -121,20 +121,6 @@ Public Class QBtoTL_Customer
                 Throw New Exception(msgSetRs.ResponseList.GetAt(0).StatusMessage)
             End If
 
-            'Dim objClient As New Services.TimeLive.Clients.Client
-
-            'CustomerData.DataArray.Contains
-            'Dim CustomerAdapter As New QB_TL_IDsTableAdapters.CustomersTableAdapter()
-            'Dim customers As DataTable = CustomerAdapter.GetCustomers
-            'Dim isActive As Boolean
-            'For Each customerRow As DataRow In customers.Rows
-            'isActive = CustomerData.DataArray.Exists(Function(x As Customer) x.QB_ID = customerRow(1))
-            'If Not isActive.GetValue Then
-            'History(customerRow.Item(2), "i")
-            'End If
-            'Next
-            ' for each element in Customers
-            ' If it is not in CustomerData, then make it disabled in TimeLive
         Catch ex As Exception
             My.Forms.MAIN.History(ex.ToString, "C")
             'MAIN.QUITQBSESSION()
@@ -147,11 +133,7 @@ Public Class QBtoTL_Customer
     Public Function QBTransferCustomerToTL(ByRef objData As QBtoTL_Customer.CustomerDataStructureQB,
                                    ByVal token As String, MainForm As MAIN, UI As Boolean) As Integer
 
-        Dim objClientServices As New Services.TimeLive.Clients.Clients
-        Dim objClient As New Services.TimeLive.Clients.Client ' Unused
-        Dim authentication As New Services.TimeLive.Clients.SecuredWebServiceHeader
-        authentication.AuthenticatedToken = token
-        objClientServices.SecuredWebServiceHeaderValue = authentication
+        Dim objClientServices As Services.TimeLive.Clients.Clients = MAIN.connect_TL_clients(token)
 
         'sets status bar. If no, UI skip
         Dim incrementbar As Integer = 0

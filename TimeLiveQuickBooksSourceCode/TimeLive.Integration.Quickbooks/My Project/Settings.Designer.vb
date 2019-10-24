@@ -619,6 +619,29 @@ Namespace My
                 Return CType(Me("TimeLiveDevConnectionString"),String)
             End Get
         End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("")>  _
+        Public Property UncompleteddMessage() As String
+            Get
+                Return CType(Me("UncompleteddMessage"),String)
+            End Get
+            Set
+                Me("UncompleteddMessage") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.ApplicationScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.SpecialSettingAttribute(Global.System.Configuration.SpecialSetting.ConnectionString),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("Data Source=SQL01.teltrium.local;Initial Catalog=TimeLiveDev;Persist Security Inf"& _ 
+            "o=True;User ID=sa;Password=$baseline00")>  _
+        Public ReadOnly Property TimeLiveDevConnectionString1() As String
+            Get
+                Return CType(Me("TimeLiveDevConnectionString1"),String)
+            End Get
+        End Property
     End Class
 End Namespace
 

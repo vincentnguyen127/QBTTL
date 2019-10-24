@@ -12,11 +12,7 @@ Public Class Sync_TLtoQB_Vendor
         My.Forms.MAIN.History("Syncing Vendor Data", "n")
         Try
             ' connect to Time live
-            'Dim play As New Services.TimeLive.Employees.Employees
-            Dim objEmployeeServices As New Services.TimeLive.Employees.Employees
-            Dim authentication As New Services.TimeLive.Employees.SecuredWebServiceHeader
-            authentication.AuthenticatedToken = p_token
-            objEmployeeServices.SecuredWebServiceHeaderValue = authentication
+            Dim objEmployeeServices As Services.TimeLive.Employees.Employees = MAIN.connect_TL_employees(p_token)
             Dim objEmployeeArray() As Object
             objEmployeeArray = objEmployeeServices.GetEmployees
             Dim objEmployee As New Services.TimeLive.Employees.Employee
