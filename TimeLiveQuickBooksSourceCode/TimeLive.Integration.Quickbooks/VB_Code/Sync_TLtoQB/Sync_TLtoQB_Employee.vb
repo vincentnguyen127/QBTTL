@@ -21,7 +21,6 @@ Public Class Sync_TLtoQB_Employee
                 MainForm.ProgressBar1.Value = 0
             End If
 
-
             ' Print employees within TimeLive that are not in QB
             For n As Integer = 0 To objEmployeeArray.Length - 1
                 objEmployee = objEmployeeArray(n)

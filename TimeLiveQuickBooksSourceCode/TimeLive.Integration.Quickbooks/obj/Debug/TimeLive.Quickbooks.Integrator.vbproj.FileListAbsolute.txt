@@ -236,3 +236,4 @@ C:\Users\Dev1Teltrium\Repos\TimeLive.Quickbooks.Integrator\TimeLiveQuickBooksSou
 C:\Users\Dev1Teltrium\Repos\TimeLive.Quickbooks.Integrator\TimeLiveQuickBooksSourceCode\TimeLive.Integration.Quickbooks\obj\Debug\ense.exe
 C:\Users\Dev1Teltrium\Repos\TimeLive.Quickbooks.Integrator\TimeLiveQuickBooksSourceCode\TimeLive.Integration.Quickbooks\obj\Debug\ense.xml
 C:\Users\Dev1Teltrium\Repos\TimeLive.Quickbooks.Integrator\TimeLiveQuickBooksSourceCode\TimeLive.Integration.Quickbooks\obj\Debug\ense.pdb
+C:\Users\Dev1Teltrium\Repos\TimeLive.Quickbooks.Integrator\TimeLiveQuickBooksSourceCode\TimeLive.Integration.Quickbooks\obj\Debug\TimeLive.Quickbooks.Integrator.vbprojResolveAssemblyReference.cache

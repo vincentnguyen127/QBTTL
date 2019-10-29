@@ -240,7 +240,6 @@ Public Class QBtoTL_Employee
                             EmployeeName = FirstName + " " + LastName ' Changed "," to " "
                             EmailAddress = GetEmailAddress(.Email, token, FirstName(0) + LastName)
 
-                            ' Add user with username and password = emailAddress
                             objEmployeeServices.InsertEmployee(EmailAddress, CreatePassword(HiredDate), FirstName, LastName, EmailAddress, .QB_Name,
                                                                nDepartmentId, nRoleId, nLocationId, 233, nBillingTypeId, Now.Date,
                                                                -1, 0, 6, 0, 0, nEmployeeTypeId, nEmployeeStatusId, "", HiredDate,

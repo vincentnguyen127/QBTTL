@@ -137,7 +137,7 @@ Public Class TLtoQB_TimeEntry
                     End If
 
                     Sync_TLtoQB_JoborItem.removeSpacesBetweenColonsAndSetLengthOfFields(fullName)
-                    Dim jobID As String = Get_QB_ID_ForTL_JobName(fullName)
+                    Dim jobID As String = Get_QB_ID_ForTL_JobName(fullName, UI)
                     Dim Item_SubItemID As String = Get_QB_ID_ForTL_ItemName(empId, jobID).ToString.Trim
 
                     Dim Payroll_Item_SubItemID As String = Get_QB_PayrollItemID(empId, jobID).ToString.Trim
@@ -210,60 +210,24 @@ Public Class TLtoQB_TimeEntry
             For Each element As TLtoQB_TimeEntry.TimeEntry In objData.DataArray
                 ' check if the check value is true
                 If element.RecSelect Then
-                    'Check number of QB records that match ID
-                    'My.Forms.MainHistory("Processing: " + element.EmployeeName, "n")
-                    'My.Forms.MainHistory("get QB_ID:   " + na.ToString + " Name is : " + element.EmployeeName, "i")
-                    Dim TL_ID_Return = 0 'ISQBID_In_DataTable(element.QB_ID)
-                    'if none create
-                    If TL_ID_Return = 0 Then
-                        Try
-                            'Insert record into quickbooks
-                            Dim RecordTxnID As String = Nothing
-                            With element
-                                RecordTxnID = AddTimeEntryInQB(.CustomerName, .EmployeeName, .IsBillable, .ProjectName,
-                                                               .TaskWithParent, .TotalTime, .TimeEntryDate, .TimeEntryClass,
-                                                               .PayrollItem_TypeName, .PayrollItem, .ServiceItem_TypeName, .ServiceItem, UI)
+                    Try
+                        Dim RecordTxnID As String = Nothing
+                        With element
+                            RecordTxnID = AddTimeEntryInQB(.CustomerName, .EmployeeName, .IsBillable, .ProjectName,
+                                                           .TaskWithParent, .TotalTime, .TimeEntryDate, .TimeEntryClass,
+                                                           .PayrollItem_TypeName, .PayrollItem, .ServiceItem_TypeName, .ServiceItem, UI)
 
-                                My.Forms.MAIN.History("Inserted time entry for " + .EmployeeName + " on " + .TimeEntryDate + " for task " + .TaskWithParent, "i")
-
-                                ' if it does not exist create a new record on both the sync database and on TL
-                                'My.Forms.MainHistory("Inserting QB & TL keys into sync database and inserting to TimeLife:  " + element.EmployeeName, "i")
-
-                                'Insert record into sync database 
-                                'Not sure how to get TL record ID
-                                'If RecordTxnID IsNot Nothing Then
-                                'Dim TimeEntryAdapter As New QB_TL_IDsTableAdapters.TimeEntriesTableAdapter()
-                                'TimeEntryAdapter.Insert(RecordTxnID, "")
-                                'Else
-                                'My.Forms.MainHistory("Error creating record in TimeLive", "N")
-                                'End If
-                                NoRecordsCreatedorUpdated += 1
-                            End With
-                        Catch ex As Exception
-                            My.Forms.MAIN.History("Error inserting time into quickbooks:  " + ex.Message, "n")
-                        End Try
-                    End If
-
-                    'if it exist check that the TL_ID is not empty ---> 1
-                    'if not empty, just update
-                    'if empty, informed the user of a potential error as a record has been created in the sync database without a corresponding TL pointer
-
-                    'If TL_ID_Return = 1 Then
-
-                    'Dim TL_ID As String = ISTLID_In_DataTable(TimeEntryLiveIDGoesHere)
-                    'If TL_ID Is Nothing Then
-                    'My.Forms.MainHistory("Detected empty sync record (No TL ID). Needs to be manually sync or deleted." + element.QB_Name, "i")
-
-                    'Else
-                    'NoRecordsCreatedorUpdated = NoRecordsCreatedorUpdated + 1
-                    'My.Forms.MainHistory("Updating QB record for: " + element.QB_Name, "i")
-
-                    '-----------------------------------------------------------------------------------------------------------------------------------------------------------------
-                    ' ----------------------------------------------this part is the update--------------------------------------------------------------------------------------------. 
-                    '-----------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-                    'End If
-                    'End If
+                            My.Forms.MAIN.History("Inserted time entry for " + .EmployeeName + " on " + .TimeEntryDate + " for task " + .TaskWithParent, "i")
+                            NoRecordsCreatedorUpdated += 1
+                        End With
+                    Catch ex As Exception
+                        Dim error_msg As String = "Error inserting time for " + element.EmployeeName + " for the task" + element.TaskWithParent + " on " + element.TimeEntryDate +
+                                                  " into quickbooks." + vbCrLf + "Error Message: " + ex.Message
+                        If UI Then
+                            MsgBox(error_msg, MsgBoxStyle.OkOnly, "Error inserting Time Entry into QuickBooks")
+                        End If
+                        My.Forms.MAIN.History(error_msg, "n")
+                    End Try
                 End If
                 'if no UI, then skip
                 If UI Then
@@ -343,8 +307,8 @@ Public Class TLtoQB_TimeEntry
         Dim ItemQBID As QB_TL_IDs.ChargingRelationshipsDataTable = ItemAdapter.GetIItemIDByEmployeeIDAndJob_SubJobID(EmployeeQBID, jobQBID)
 
         If ItemQBID.Count > 1 Then
-            My.Forms.MAIN.History("Found more than one matching items ID: " + ItemQBID.Count.ToString, "I")
-            Return ""
+            My.Forms.MAIN.History("Found more than one matching items ID: " + ItemQBID.Count.ToString + ". Returning the first one found in the database", "I")
+            Return ItemQBID.Rows(0)(4).ToString
         ElseIf ItemQBID.Count = 0 Then
             My.Forms.MAIN.History("Did not find any matching items ID: " + ItemQBID.Count.ToString, "I")
             Return ""
@@ -355,15 +319,23 @@ Public Class TLtoQB_TimeEntry
         Return result
     End Function
 
-    Public Function Get_QB_ID_ForTL_JobName(ByVal JobName As String) As String
+    Public Function Get_QB_ID_ForTL_JobName(ByVal JobName As String, Optional UI As Boolean = False) As String
         Dim result As String
 
         My.Forms.MAIN.History("Finding Job ID using JobName: " + JobName, "n")
         Dim JobAdapter As New QB_TL_IDsTableAdapters.Jobs_SubJobsTableAdapter()
         Dim JobQBID As QB_TL_IDs.Jobs_SubJobsDataTable = JobAdapter.GetCorrespondingQB_ID(JobName)
         If JobQBID.Count > 1 Then
-            My.Forms.MAIN.History("Found more than one matching JobID: " + JobQBID.Count.ToString, "I")
-            Return ""
+            My.Forms.MAIN.History("Found " + JobQBID.Count.ToString + " matching JobIDs for the job " + JobName, "I")
+            Dim QB_ID As String = JobQBID(0)(0).ToString
+
+            For n As Integer = 1 To JobQBID.Count
+                If JobQBID(n)(0).ToString <> QB_ID And UI Then
+                    MsgBox("Database has more than one entry for the job " + JobName + " with different QB IDs. Please clean the job database.", MsgBoxStyle.OkOnly, "Conflict in the Job database")
+                End If
+            Next
+
+            Return QB_ID
         End If
         If JobQBID.Count = 0 Then
             My.Forms.MAIN.History("Did not find any matching JobID: " + JobQBID.Count.ToString, "I")
@@ -382,8 +354,8 @@ Public Class TLtoQB_TimeEntry
         Dim payrollItemId As New QB_TL_IDsTableAdapters.ChargingRelationshipsTableAdapter
         Dim PayrollQBID As QB_TL_IDs.ChargingRelationshipsDataTable = payrollItemId.GetPayrollItemIDByEmployeeIDAndJob_SubJobID(EmployeeQBID, jobQBID)
         If PayrollQBID.Count > 1 Then
-            My.Forms.MAIN.History("Found more than one matching PayrollItem IDs: " + PayrollQBID.Count.ToString, "I")
-            Return ""
+            My.Forms.MAIN.History("Found more than one matching PayrollItem IDs: " + PayrollQBID.Count.ToString + ". Using the first one found in the database", "I")
+            Return PayrollQBID.Rows(0)(3).ToString
         ElseIf PayrollQBID.Count = 0 Then
             My.Forms.MAIN.History("Did not find any matching PayrollItems: " + PayrollQBID.Count.ToString, "I")
             Return ""
@@ -579,7 +551,8 @@ Public Class TLtoQB_TimeEntry
                 timeAdd.ClassRef.FullName.SetValue(TimeEntryClass)
             End If
 
-            If Not PayrollItem = "<None>" Then
+            My.Forms.MAIN.History("Payroll Item for time entry: " + PayrollItem, "n") ' TODO: Can delete this when bug is resolved
+            If PayrollItem <> "<None>" Then
                 If PayrollItem_TypeName Then
                     timeAdd.PayrollItemWageRef.FullName.SetValue(PayrollItem)
                 Else
@@ -589,7 +562,6 @@ Public Class TLtoQB_TimeEntry
 
             'step2: send the request
             msgSetRs = MAIN.SESSMANAGER.DoRequests(msgSetRq)
-
             ' Interpret the response
             Dim response As IResponse
             response = msgSetRs.ResponseList.GetAt(0)

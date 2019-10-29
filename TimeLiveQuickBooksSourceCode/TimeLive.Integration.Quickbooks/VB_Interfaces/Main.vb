@@ -42,6 +42,7 @@ Public Class MAIN
     Dim expenseReportData As New TLtoQB_ExpenseReports.ExpenseReportDataStructureQB
 
     Dim selectedEmployeeData As New TLtoQB_TimeEntry.EmployeeDataStructure
+    Dim selectedExpenseSheetData As New TLtoQB_ExpenseReports.ExpenseSheetDataStructure
 
     'Dim UIRelatedFunctions As IntegratedUIFuntions = New IntegratedUIFuntions
     Private Sub PARENT_LOAD(SENDER As System.Object, E As System.EventArgs) Handles MyBase.Load
@@ -267,8 +268,63 @@ Public Class MAIN
         Dim authentication As New Services.TimeLive.ExpenseEntries.SecuredWebServiceHeader
         authentication.AuthenticatedToken = p_token
         objExpenseEntriesServices.SecuredWebServiceHeaderValue = authentication
-
         Return objExpenseEntriesServices
+    End Function
+
+    Public Shared Function equalNames(ByVal name1 As String, ByVal name2 As String)
+        If name1 Is Nothing Or name2 Is Nothing Then
+            Return False
+        End If
+
+        If name1.Trim = name2.Trim Then
+            Return True
+        End If
+
+        If name1.Contains(",") Xor name2.Contains(",") Then
+            Dim splitCommaName As String() = If(name1.Contains(","), name1.Split(","), name2.Split(","))
+            Dim nonCommaName As String = If(name1.Contains(","), name2, name1)
+            Return splitCommaName(1).Trim + " " + splitCommaName(0).Trim = nonCommaName.Trim
+        End If
+
+        Return False
+    End Function
+
+    Public Shared Function getTimeLiveEmployeeIDFromName(ByVal Name As String)
+        Dim commaSeperatedName As String
+        If Name.Contains(",") Then
+            commaSeperatedName = Name
+            Name = Name.Split(",")(1) + " " + Name.Split(" ")(0)
+        Else
+            Dim splitName As String() = Name.Split(" ")
+            If splitName.Length = 2 Then
+                commaSeperatedName = splitName(1).Trim + ", " + splitName(0).Trim
+            Else
+                Dim firstMiddle As String = splitName(0).Trim + " " + splitName(1).Trim()
+                Dim last As String = splitName(2).Trim
+                For i As Integer = 3 To splitName.Length
+                    last += " " + splitName(i).Trim
+                Next
+
+                commaSeperatedName = last + ", " + firstMiddle
+            End If
+        End If
+
+        Dim emplAdapter As New QB_TL_IDsTableAdapters.EmployeesTableAdapter
+        Dim empID As String = emplAdapter.GetCorrespondingTL_IDbyTL_Name(commaSeperatedName)
+        If empID Is Nothing Then
+            empID = emplAdapter.GetCorrespondingTL_IDbyTL_Name(Name)
+        End If
+
+        ' Check if the employee is actually a vendor
+        If empID Is Nothing Then
+            Dim vendAdapter As New QB_TL_IDsTableAdapters.VendorsTableAdapter
+            empID = vendAdapter.GetCorrespondingTL_IDbyTL_Name(commaSeperatedName)
+            If empID Is Nothing Then
+                empID = vendAdapter.GetCorrespondingTL_IDbyTL_Name(Name)
+            End If
+        End If
+
+        Return empID
     End Function
 
     ''' <summary>
@@ -631,9 +687,8 @@ Public Class MAIN
         Return datagrid_row
     End Function
 
-    Private Function GetNumExpenseReports(emplID As String, TLExpenseTracker As Services.TimeLive.ExpenseEntries.ExpenseEntries,
-                                          startDate As DateTime, endDate As DateTime) As Double
-        Dim reports() As Object = TLExpenseTracker.GetExpenseEntriesByEmployeeIdAndDateRange(emplID, startDate, endDate)
+    Private Function GetNumExpenseReports(expenseSheetId As Guid, TLExpenseTracker As Services.TimeLive.ExpenseEntries.ExpenseEntries) As Double
+        Dim reports() As Object = TLExpenseTracker.GetExpenseEntriesByExpenseSheetIdForMobile(expenseSheetId)
         Return reports.Length
     End Function
 
@@ -646,38 +701,34 @@ Public Class MAIN
 
         ShowEntitiesBtn.Visible = True
         ShowEntitiesBtn.Text = "Show Expenses"
-
         ' load grid 2
         Dim col1 As New DataGridViewCheckBoxColumn
         col1.Name = "ckBox"
         col1.HeaderText = "Check Box"
         DataGridView2.Columns.Add(col1)
-        Dim col2 As New DataGridViewTextBoxColumn
-        col2.Name = "Employee"
-        DataGridView2.Columns.Add(col2)
-        Dim col3 As New DataGridViewTextBoxColumn
-        col3.Name = "Expense"
-        DataGridView2.Columns.Add(col3)
-        Dim col4 As New DataGridViewTextBoxColumn
-        col4.Name = "Date"
-        DataGridView2.Columns.Add(col4)
-        Dim col5 As New DataGridViewTextBoxColumn
-        col5.Name = "Project"
-        DataGridView2.Columns.Add(col5)
-        Dim col6 As New DataGridViewTextBoxColumn
-        col6.Name = "Amount"
-        DataGridView2.Columns.Add(col6)
+
+        Dim colNames As String() = {"Employee", "Expense", "Date", "Project", "Amount"}
+        For Each colName As String In colNames
+            Dim col As New DataGridViewTextBoxColumn
+            col.Name = "Employee"
+            DataGridView2.Columns.Add(col)
+        Next
     End Sub
 
-    Private Function expense_report_row(ByVal objExpenseReportsServices As Services.TimeLive.ExpenseEntries.ExpenseEntries, ByVal Row As DataRow)
-        Dim emplID = Row("AccountEmployeeId")
-        Dim emplName = Row("FullName")
-
-        Dim numExpenseReports = GetNumExpenseReports(emplID, objExpenseReportsServices, expenseReportStartDate.Value, expenseReportEndDate.Value)
-        selectedEmployeeData.DataArray.Add(New TLtoQB_TimeEntry.Employee(True, Row("FullName"), emplID, numExpenseReports))
+    Private Function expense_report_row(ByVal Row As DataRow, ByVal TL_ExpenseEntries As TimeLiveDataSetTableAdapters.AccountExpenseEntryTableAdapter,
+                                        ByVal employeesDB As QB_TL_IDsTableAdapters.EmployeesTableAdapter)
+        Dim numEntries As Integer = TL_ExpenseEntries.getEntriesOfExpenseSheet(Row("AccountEmployeeExpenseSheetId")).Count
+        Dim employeeName As String = employeesDB.GetNamefromTLID(Row("AccountEmployeeId"))
+        If employeeName IsNot Nothing Then
+            employeeName = employeeName.Trim
+        End If
+        Dim expenseSheetId As Guid = Row("AccountEmployeeExpenseSheetId")
+        Dim sheetDate As Date = Row("ExpenseSheetDate")
+        Dim Description As String = Row("Description")
+        selectedExpenseSheetData.add(New TLtoQB_ExpenseReports.ExpenseSheet(expenseSheetId, employeeName, sheetDate, Description, numEntries))
         Dim datagrid_row As DataGridViewRow = New DataGridViewRow()
         datagrid_row.CreateCells(DataGridView1)
-        datagrid_row.SetValues(True, emplName, numExpenseReports)
+        datagrid_row.SetValues(True, employeeName, Description, sheetDate, numEntries)
 
         Return datagrid_row
     End Function
@@ -709,43 +760,78 @@ Public Class MAIN
         Return name.Replace(":", MAIN.colonReplacer)
     End Function
 
-    Private Function display_Entry_UI() Handles RefreshTimeTransfer.Click, refreshExpenseReport.Click
+    Private Function display_ExpenseEntries_UI() Handles refreshExpenseReport.Click
         If Not LoggedIn Then
             Return 0
         End If
 
-        Dim lastSync As DateTime
         clear_grids()
+        TabPageExpenseReport.Visible = True
+        AttributeTabControl.SelectedIndex = 5
+        SyncFromLabel.Text = "Expense Sheets"
+        SyncToLabel.Text = "Expense Entries"
 
-        If Type = 20 Then
-            TabPageTimeTransfer.Visible = True
-            AttributeTabControl.SelectedIndex = 4
-        Else
-            TabPageExpenseReport.Visible = True
-            AttributeTabControl.SelectedIndex = 5
-        End If
-
-        SyncFromLabel.Text = "Employees"
-        SyncToLabel.Text = If(Type = 20, "Time", "Expense")
-
-        'load grid 1
-        Dim col2 As New DataGridViewTextBoxColumn
-        col2.Name = "Name"
-        DataGridView1.Columns.Add(col2)
-        Dim col3 As New DataGridViewTextBoxColumn
-        col3.Name = If(Type = 20, "Hours", "Number Reports")
-        DataGridView1.Columns.Add(col3)
+        Dim colNames As String() = {"Employee", "Description", "Date", "Entries"}
+        For Each colName As String In colNames
+            Dim col As New DataGridViewTextBoxColumn
+            col.Name = colName
+            DataGridView1.Columns.Add(col)
+        Next
 
         SelectAllCheckBox.Checked = True
 
         ' TODO: Have Expense Report Last Sync
-        If String.IsNullOrEmpty(My.Settings.TimeTrackingLastSync.ToString()) Then
-            lastSync = #1/1/2000#
-        Else
-            lastSync = Convert.ToDateTime(My.Settings.TimeTrackingLastSync)
+        Dim lastSync As DateTime = If(String.IsNullOrEmpty(My.Settings.TimeTrackingLastSync.ToString()), #1/1/2000#, Convert.ToDateTime(My.Settings.TimeTrackingLastSync))
+        History("Synchonizing expense reports since:   " + lastSync.ToString(), "n")
+        selectedExpenseSheetData.clear()
+
+        Dim objEmployeeServices As Services.TimeLive.Employees.Employees = connect_TL_employees(p_token)
+        Dim employeesDB As New QB_TL_IDsTableAdapters.EmployeesTableAdapter()
+        Dim TL_ExpenseEntries As New TimeLiveDataSetTableAdapters.AccountExpenseEntryTableAdapter
+        Dim TL_ExpenseSheets As New TimeLiveDataSetTableAdapters.AccountEmployeeExpenseSheetTableAdapter
+        Dim expenseSheets As DataTable = TL_ExpenseSheets.getExpenseSheetsWithinDateRange(expenseReportStartDate.Value, expenseReportEndDate.Value)
+
+        ProgressBar1.Maximum = expenseSheets.Rows.Count
+        ProgressBar1.Value = 0
+
+        For Each row As DataRow In expenseSheets.Rows
+            Dim datagrid_row As DataGridViewRow = expense_report_row(row, TL_ExpenseEntries, employeesDB)
+            DataGridView1.Rows.Add(datagrid_row)
+            ProgressBar1.Value += 1
+        Next
+
+        Dim items_read As Integer = selectedEmployeeData.NoItems
+        Expense_Reports()
+
+        System.Threading.Thread.Sleep(150)
+        System.Windows.Forms.Application.DoEvents()
+        ProgressBar1.Value = 0
+
+        Return items_read
+    End Function
+
+    Private Function display_TimeEntry_UI() Handles RefreshTimeTransfer.Click
+        If Not LoggedIn Then
+            Return 0
         End If
 
-        History("Synchonizing " + If(Type = 20, "time entries", "expense reports") + " items since:   " + lastSync.ToString(), "n")
+        clear_grids()
+        TabPageTimeTransfer.Visible = True
+        AttributeTabControl.SelectedIndex = 4
+        SyncFromLabel.Text = "Employees"
+        SyncToLabel.Text = "Time"
+
+        'load grid 1
+        Dim colNames As String() = {"Name", "Hours"}
+        For Each colName As String In colNames
+            Dim col As New DataGridViewTextBoxColumn
+            col.Name = colName
+            DataGridView1.Columns.Add(col)
+        Next
+
+        SelectAllCheckBox.Checked = True
+        Dim lastSync As DateTime = If(String.IsNullOrEmpty(My.Settings.TimeTrackingLastSync.ToString()), #1/1/2000#, Convert.ToDateTime(My.Settings.TimeTrackingLastSync))
+        History("Synchonizing time entries since: " + lastSync.ToString(), "n")
 
         ' Add all employees with their total hours worked to selectedEmployeeData only if it is empty
         selectedEmployeeData.NoItems = 0
@@ -753,10 +839,8 @@ Public Class MAIN
 
         Dim objEmployeeServices As Services.TimeLive.Employees.Employees = connect_TL_employees(p_token)
         Dim objTimeTrackingServices As Services.TimeLive.TimeEntries.TimeEntries = connect_TL_time_entries(p_token)
-        Dim objExpenseReportServices As Services.TimeLive.ExpenseEntries.ExpenseEntries = connect_TL_expense_reports(p_token)
 
-        Dim employees As New DataTable
-        employees = objEmployeeServices.GetEmployeesData
+        Dim employees As DataTable = objEmployeeServices.GetEmployeesData
         Dim TL_TimeEntries As New TimeLiveDataSetTableAdapters.AccountEmployeeTimeEntryPeriodTableAdapter
 
         ' Populate the table based on the TimeLive elements
@@ -766,21 +850,13 @@ Public Class MAIN
         For Each row As DataRow In employees.Rows
             selectedEmployeeData.NoItems += 1
             Dim datagrid_row As DataGridViewRow
-            If Type = 20 Then
-                datagrid_row = time_entry_row(TL_TimeEntries, objTimeTrackingServices, row)
-            Else
-                datagrid_row = expense_report_row(objExpenseReportServices, row)
-            End If
+            datagrid_row = time_entry_row(TL_TimeEntries, objTimeTrackingServices, row)
             DataGridView1.Rows.Add(datagrid_row)
             ProgressBar1.Value += 1
         Next
 
         Dim items_read As Integer = selectedEmployeeData.NoItems
-        If Type = 20 Then
-            Time_Entry_Times()
-        Else
-            Expense_Reports()
-        End If
+        Time_Entry_Times()
 
         System.Threading.Thread.Sleep(150)
         System.Windows.Forms.Application.DoEvents()
@@ -810,8 +886,10 @@ Public Class MAIN
 
         Select Case Type
             ' Time Entries OR Expense Entires
-            Case 20, 21
-                Return display_Entry_UI()
+            Case 20
+                Return display_TimeEntry_UI()
+            Case 21
+                Return display_ExpenseEntries_UI()
             ' Customers
             Case 10
                 TabPageCustomers.Visible = True
@@ -1203,12 +1281,13 @@ Public Class MAIN
             SplitContainer2.Panel2Collapsed = Not Convert.ToBoolean(My.Settings.DebugMode)
         End If
 
-        Reset_Checked_SelectedEmployee_Value(selectedEmployeeData)
-        Set_Selected_SelectedEmployee()
-
         If Type = 20 Then
+            Reset_Checked_SelectedEmployee_Value(selectedEmployeeData)
+            Set_Selected_SelectedEmployee()
             btnUpdateTimeTransfer_Click(sender, e)
         ElseIf Type = 21 Then
+            Reset_Checked_SelectedExpenseSheets_Value(selectedExpenseSheetData)
+            Set_Selected_SelectedExpenseSheet()
             btnUpdateExpenseReport_Click(sender, e)
         End If
 
@@ -1256,11 +1335,11 @@ Public Class MAIN
         Dim endDate As DateTime = expenseReportEndDate.Value.Date
 
         ProgressBar1.Maximum = selectedEmployeeData.NoItems
-        For Each element As TLtoQB_TimeEntry.Employee In selectedEmployeeData.DataArray
+        For Each element As TLtoQB_ExpenseReports.ExpenseSheet In selectedExpenseSheetData.DataArray
             With element
                 If element.RecSelect = True Then
-                    History("Processing: " + element.FullName.ToString(), "n")
-                    LoadSelectedExpenseReportItems(element.AccountEmployeeId, DataGridView2, startDate, endDate)
+                    History("Processing Time Sheet for " + element.EmployeeName.ToString(), "n")
+                    LoadSelectedExpenseReportItems(element.SheetId, DataGridView2, startDate, endDate)
                     element.RecSelect = False
                 End If
             End With
@@ -1446,7 +1525,7 @@ Public Class MAIN
                 History(ItemsProcessed.ToString() + " QuickBooks job/item" + If(ItemsProcessed = 1, " was", "s were") + " created or updated", "i")
             End If
         ElseIf Type = 20 Then 'When processing Time Transfer
-            If MsgBox("Do you want to transfer times?", MsgBoxStyle.YesNo, "Warning!") = MsgBoxResult.Yes Then
+            If MsgBox("Do you want to transfer times?", MsgBoxStyle.YesNo) = MsgBoxResult.Yes Then
                 Reset_Checked_TimeEntry_Value(TimeEntryData)
                 Set_Selected_TimeEntry(DataGridView2)
 
@@ -1456,11 +1535,11 @@ Public Class MAIN
                 My.Settings.TimeTrackingLastSync = DateTime.Now.ToString()
             End If
         ElseIf Type = 21 Then 'When processing Expense Reports
-            If MsgBox("Do you want to transfer times?", MsgBoxStyle.YesNo, "Warning!") = MsgBoxResult.Yes Then
+            If MsgBox("Do you want to transfer expenses?", MsgBoxStyle.YesNo) = MsgBoxResult.Yes Then
                 Reset_Checked_ExpenseReport_Value(expenseReportData)
                 Set_Selected_ExpenseReports(DataGridView2)
 
-                ItemsProcessed = 0 'expensereport_tltoqb.TLTransferExpenseToQB(expenseReportData, p_token, Me, True)
+                ItemsProcessed = expensereport_tltoqb.TLTransferExpensesToQB(expenseReportData, p_token, Me, True)
                 History(ItemsProcessed.ToString() + If(ItemsProcessed = 1, " Expense Report was", " Expense Reports were") + " created or updated", "i")
             End If
         End If
@@ -1519,6 +1598,15 @@ Public Class MAIN
         End If
     End Sub
 
+    Private Sub Reset_Checked_SelectedExpenseSheets_Value(ByRef SelectExpensesObj As TLtoQB_ExpenseReports.ExpenseSheetDataStructure)
+        ' reset the check value to zero
+        If SelectExpensesObj IsNot Nothing Then
+            For Each element As TLtoQB_ExpenseReports.ExpenseSheet In SelectExpensesObj.DataArray
+                element.RecSelect = False
+            Next
+        End If
+    End Sub
+
     Private Sub Reset_Checked_TimeEntry_Value(ByRef TimeEntryObj As TLtoQB_TimeEntry.TimeEntryDataStructureQB)
         ' reset the check value to zero
         If TimeEntryObj IsNot Nothing Then
@@ -1531,7 +1619,7 @@ Public Class MAIN
     Private Sub Reset_Checked_ExpenseReport_Value(ByRef ExpenseReportObj As TLtoQB_ExpenseReports.ExpenseReportDataStructureQB)
         ' reset the check value to zero
         If ExpenseReportObj IsNot Nothing Then
-            For Each element As TLtoQB_ExpenseReports.ExpenseReport In ExpenseReportObj.DataArray
+            For Each element As TLtoQB_ExpenseReports.ExpenseReport In ExpenseReportObj.getDataArray()
                 element.RecSelect = False
             Next
         End If
@@ -1561,17 +1649,18 @@ Public Class MAIN
                                       MAIN.colonReplacer + replaceColonsAndRemoveUnwantedSpaces(timeentry.TaskWithParent)
                         End If
 
-                        If (timeentry.EmployeeName = row.Cells("Employee").Value.ToString And jobName = fullTaskName And
+                        If (equalNames(timeentry.EmployeeName, row.Cells("Employee").Value.ToString) And jobName = fullTaskName And
                           timeentry.TimeEntryDate.ToString("MM/dd/yyyy") = row.Cells("Date").Value.ToString) Then
                             History("Selected for processing: " + row.Cells("Employee").Value.ToString + " with task " + row.Cells("Task").Value.ToString + " on " + row.Cells("Date").Value.ToString, "n")
-                            Dim empID As String = emplAdapter.GetCorrespondingTL_IDbyTL_Name(timeentry.EmployeeName)
+                            Dim empID As String = getTimeLiveEmployeeIDFromName(timeentry.EmployeeName)
                             Dim jobID As String = jobAdapter.GetCorrespondingTL_IDbyTL_Name(jobName.Replace(MAIN.colonReplacer, ":"))
                             ' Add the relationship between employee and job for time entry if not present
                             Dim syncRel As Sync_TLtoQB_Relationships = New Sync_TLtoQB_Relationships()
-                            ' Only select time entry when there is a charging relationship associated with it
                             If syncRel.Add_Relationship(chargingRelAdapter, jobID, empID, itemName) > 0 Then
                                 timeentry.RecSelect = True
                             Else
+                                If jobID Is Nothing Then My.Forms.MAIN.History("Could not find the QB ID for job " + jobName, "n")
+                                If empID Is Nothing Then My.Forms.MAIN.History("Could not find the QB ID for employee " + timeentry.EmployeeName, "n")
                                 My.Forms.MAIN.History("No Relationship exists between " + timeentry.EmployeeName + " and " + jobName, "n")
                                 timeentry.RecSelect = True ' Remove if we do not want these time transfers to transfer
                             End If
@@ -1646,7 +1735,23 @@ Public Class MAIN
                 )
                 History("Selected employee for time transfer: " + row.Cells("Name").Value, "n")
             End If
-    Next
+        Next
+    End Sub
+
+    ' For Expense Reports
+    Private Sub Set_Selected_SelectedExpenseSheet()
+        For Each row As DataGridViewRow In DataGridView1.Rows
+            If row.Cells.Item(1).Value IsNot Nothing And row.Cells("ckBox").Value = True Then
+                selectedExpenseSheetData.DataArray.ForEach(
+                    Sub(selectedExpenseSheet)
+                        If selectedExpenseSheet.SheetId = row.Cells("Name").Value Then
+                            selectedExpenseSheet.RecSelect = True
+                        End If
+                    End Sub
+                )
+                History("Selected employee for time transfer: " + row.Cells("Name").Value, "n")
+            End If
+        Next
     End Sub
 
     Private Sub Set_Selected_Vendor()
@@ -1687,15 +1792,15 @@ Public Class MAIN
     Private Sub Set_Selected_ExpenseReports(ByRef DataGridView As DataGridView)
         If DataGridView IsNot Nothing Then
             For Each row As DataGridViewRow In DataGridView.Rows
-                If row.Cells("Name").Value IsNot Nothing And row.Cells("ckBox").Value = True Then
+                If row.Cells("Employee").Value IsNot Nothing And row.Cells("ckBox").Value = True Then
                     expenseReportData.DataArray.ForEach(
                         Sub(expenseReport)
-                            If expenseReport.EmployeeName = row.Cells("Name").Value.ToString Then
+                            If expenseReport.EmployeeName = row.Cells("Employee").Value.ToString Then
                                 expenseReport.RecSelect = True
                             End If
                         End Sub
                     )
-                    History("Expense report selected for processing: " + row.Cells("Name").Value.ToString, "n")
+                    History("Expense report selected for processing: " + row.Cells("Employee").Value.ToString, "n")
                 End If
             Next
         End If
@@ -1704,7 +1809,7 @@ Public Class MAIN
     Private Sub selectall_checkbox(sender As Object, e As EventArgs) Handles SelectAllCheckBox.CheckedChanged
         If DataGridView1 IsNot Nothing Then
             For Each row As DataGridViewRow In DataGridView1.Rows
-                If row.Cells("Name").Value IsNot Nothing Then
+                If row.Cells.Item(1).Value IsNot Nothing Then
                     row.Cells("ckBox").Value = SelectAllCheckBox.Checked
                 End If
             Next
@@ -1721,15 +1826,15 @@ Public Class MAIN
         End If
     End Sub
 
-    Public Sub LoadSelectedExpenseReportItems(AccountEmployeeId As String, ByRef DataGridView As DataGridView, ByVal StartDate As DateTime, ByVal EndDate As DateTime)
+    Public Sub LoadSelectedExpenseReportItems(ExpenseSheetId As Guid, ByRef DataGridView As DataGridView, ByVal StartDate As DateTime, ByVal EndDate As DateTime)
         Dim temp As New TLtoQB_TimeEntry.TimeEntryDataStructureQB
-        Dim emplTLData As TLtoQB_ExpenseReports.ExpenseReportDataStructureQB = expensereport_tltoqb.GetExpenseReportTLData(AccountEmployeeId, StartDate, EndDate, Me, p_token, False)
+        Dim emplTLData As TLtoQB_ExpenseReports.ExpenseReportDataStructureQB = expensereport_tltoqb.GetExpenseReportTLData(ExpenseSheetId, Me, p_token, False)
         expenseReportData.combine(emplTLData)
 
-        Dim TL_TimeEntries As New TimeLiveDataSetTableAdapters.AccountExpenseEntryTableAdapter
+        Dim TL_ExpenseReports As New TimeLiveDataSetTableAdapters.AccountExpenseEntryTableAdapter
 
         If expenseReportData IsNot Nothing Then
-            For Each element As TLtoQB_ExpenseReports.ExpenseReport In emplTLData.DataArray
+            For Each element As TLtoQB_ExpenseReports.ExpenseReport In emplTLData.getDataArray()
                 With element
                     ' TODO: Change this to Expense Report Approval and Submission
                     Dim ExpenseReportApproved = True 'TL_TimeEntries.GetTimeApproval(AccountEmployeeId, .ExpenseReportDate)
