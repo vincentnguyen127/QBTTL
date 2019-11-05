@@ -301,7 +301,7 @@ Public Class MAIN
             Else
                 Dim firstMiddle As String = splitName(0).Trim + " " + splitName(1).Trim()
                 Dim last As String = splitName(2).Trim
-                For i As Integer = 3 To splitName.Length
+                For i As Integer = 3 To splitName.Length - 1
                     last += " " + splitName(i).Trim
                 Next
 
@@ -635,27 +635,13 @@ Public Class MAIN
         col1.Name = "ckBox"
         col1.HeaderText = "Check Box"
         DataGridView2.Columns.Add(col1)
-        Dim col2 As New DataGridViewTextBoxColumn
-        col2.Name = "Employee"
-        DataGridView2.Columns.Add(col2)
-        Dim col3 As New DataGridViewTextBoxColumn
-        col3.Name = "Date"
-        DataGridView2.Columns.Add(col3)
-        Dim col4 As New DataGridViewTextBoxColumn
-        col4.Name = "Task"
-        DataGridView2.Columns.Add(col4)
-        Dim col5 As New DataGridViewTextBoxColumn
-        col5.Name = "Time"
-        DataGridView2.Columns.Add(col5)
-        Dim col6 As New DataGridViewTextBoxColumn
-        col6.Name = "Class"
-        DataGridView2.Columns.Add(col6)
-        Dim col7 As New DataGridViewTextBoxColumn
-        col7.Name = "Payroll Item"
-        DataGridView2.Columns.Add(col7)
-        Dim col8 As New DataGridViewTextBoxColumn
-        col8.Name = "Item SubItem"
-        DataGridView2.Columns.Add(col8)
+
+        Dim colNames As String() = {"Employee", "Date", "Task", "Time", "Class", "Payroll Item", "Item SubItem"}
+        For Each colName As String In colNames
+            Dim col As New DataGridViewTextBoxColumn
+            col.Name = colName
+            DataGridView2.Columns.Add(col)
+        Next
     End Sub
 
     Private Function time_entry_row(ByVal TL_TimeEntries As TimeLiveDataSetTableAdapters.AccountEmployeeTimeEntryPeriodTableAdapter,
@@ -670,24 +656,21 @@ Public Class MAIN
         datagrid_row.CreateCells(DataGridView1)
         datagrid_row.SetValues(True, emplName, hoursWorked)
 
+        ' Change color of the row based on submission status
         If TL_TimeEntries.GetTotalNumRejectedEntries(emplID, dpStartDate.Value, dpEndDate.Value) Then
-            ' Rejected
             datagrid_row.DefaultCellStyle.BackColor = Color.Red
         ElseIf TL_TimeEntries.GetTotalNumUnsubmittedEntries(emplID, dpStartDate.Value, dpEndDate.Value) Then
-            ' Unsubmitted
             datagrid_row.DefaultCellStyle.BackColor = Color.DarkGray
         ElseIf TL_TimeEntries.GetTotalNumUnapprovedEntries(emplID, dpStartDate.Value, dpEndDate.Value) Then
-            ' Unapproved
             datagrid_row.DefaultCellStyle.BackColor = Color.LightGray
         ElseIf TL_TimeEntries.GetTotalNumEntries(emplID, dpStartDate.Value, dpEndDate.Value) Then
-            ' All submitted and approved
             datagrid_row.DefaultCellStyle.BackColor = Color.LightSteelBlue
         End If
 
         Return datagrid_row
     End Function
 
-    Private Function GetNumExpenseReports(expenseSheetId As Guid, TLExpenseTracker As Services.TimeLive.ExpenseEntries.ExpenseEntries) As Double
+    Private Function GetNumExpenseReports(expenseSheetId As Guid, TLExpenseTracker As Services.TimeLive.ExpenseEntries.ExpenseEntries) As Integer
         Dim reports() As Object = TLExpenseTracker.GetExpenseEntriesByExpenseSheetIdForMobile(expenseSheetId)
         Return reports.Length
     End Function
@@ -707,29 +690,40 @@ Public Class MAIN
         col1.HeaderText = "Check Box"
         DataGridView2.Columns.Add(col1)
 
-        Dim colNames As String() = {"Employee", "Expense", "Date", "Project", "Amount"}
+        Dim colNames As String() = {"Entry ID", "Employee", "Expense", "Date", "Project", "Amount", "Expense Sheet ID"}
         For Each colName As String In colNames
             Dim col As New DataGridViewTextBoxColumn
-            col.Name = "Employee"
+            col.Name = colName
+            If colName = "Entry ID" Then col.Visible = False
             DataGridView2.Columns.Add(col)
         Next
     End Sub
 
     Private Function expense_report_row(ByVal Row As DataRow, ByVal TL_ExpenseEntries As TimeLiveDataSetTableAdapters.AccountExpenseEntryTableAdapter,
-                                        ByVal employeesDB As QB_TL_IDsTableAdapters.EmployeesTableAdapter)
-        Dim numEntries As Integer = TL_ExpenseEntries.getEntriesOfExpenseSheet(Row("AccountEmployeeExpenseSheetId")).Count
-        Dim employeeName As String = employeesDB.GetNamefromTLID(Row("AccountEmployeeId"))
-        If employeeName IsNot Nothing Then
-            employeeName = employeeName.Trim
-        End If
+                                        ByVal TL_ExpenseSheets As TimeLiveDataSetTableAdapters.AccountEmployeeExpenseSheetTableAdapter,
+                                        ByVal employeesDB As QB_TL_IDsTableAdapters.EmployeesTableAdapter, ByVal vendorsDB As QB_TL_IDsTableAdapters.VendorsTableAdapter)
         Dim expenseSheetId As Guid = Row("AccountEmployeeExpenseSheetId")
+        Dim employeeName As String = employeesDB.GetNamefromTLID(Row("AccountEmployeeId"))
+        If employeeName Is Nothing Then employeeName = vendorsDB.getNamefromTLID(Row("AccountEmployeeId"))
+        If employeeName IsNot Nothing Then employeeName = employeeName.Trim
         Dim sheetDate As Date = Row("ExpenseSheetDate")
         Dim Description As String = Row("Description")
+        Dim numEntries As Integer = TL_ExpenseEntries.getEntriesOfExpenseSheet(Row("AccountEmployeeExpenseSheetId")).Count
         selectedExpenseSheetData.add(New TLtoQB_ExpenseReports.ExpenseSheet(expenseSheetId, employeeName, sheetDate, Description, numEntries))
         Dim datagrid_row As DataGridViewRow = New DataGridViewRow()
         datagrid_row.CreateCells(DataGridView1)
-        datagrid_row.SetValues(True, employeeName, Description, sheetDate, numEntries)
+        datagrid_row.SetValues(True, expenseSheetId, employeeName, Description, sheetDate, numEntries)
+        Dim isApproved As Boolean = TL_ExpenseSheets.isApproved(expenseSheetId)
+        Dim isSubmitted As Boolean = TL_ExpenseSheets.isSubmitted(expenseSheetId)
+        Dim isRejected As Boolean = TL_ExpenseSheets.isRejected(expenseSheetId)
 
+        If isRejected Then
+            datagrid_row.DefaultCellStyle.BackColor = Color.Red
+        ElseIf Not isSubmitted Then
+            datagrid_row.DefaultCellStyle.BackColor = Color.DarkGray
+        ElseIf Not isApproved Then
+            datagrid_row.DefaultCellStyle.BackColor = Color.LightGray
+        End If
         Return datagrid_row
     End Function
 
@@ -771,22 +765,25 @@ Public Class MAIN
         SyncFromLabel.Text = "Expense Sheets"
         SyncToLabel.Text = "Expense Entries"
 
-        Dim colNames As String() = {"Employee", "Description", "Date", "Entries"}
+        Dim colNames As String() = {"Sheet ID", "Employee", "Description", "Date", "Entries"}
         For Each colName As String In colNames
             Dim col As New DataGridViewTextBoxColumn
             col.Name = colName
             DataGridView1.Columns.Add(col)
+            If colName = "Sheet ID" Then col.Visible = False
         Next
 
         SelectAllCheckBox.Checked = True
 
         ' TODO: Have Expense Report Last Sync
-        Dim lastSync As DateTime = If(String.IsNullOrEmpty(My.Settings.TimeTrackingLastSync.ToString()), #1/1/2000#, Convert.ToDateTime(My.Settings.TimeTrackingLastSync))
-        History("Synchonizing expense reports since:   " + lastSync.ToString(), "n")
+        ' Dim lastSync As DateTime = If(String.IsNullOrEmpty(My.Settings.TimeTrackingLastSync.ToString()), #1/1/2000#, Convert.ToDateTime(My.Settings.TimeTrackingLastSync))
+        ' History("Synchonizing expense reports since: " + lastSync.ToString(), "n")
         selectedExpenseSheetData.clear()
 
         Dim objEmployeeServices As Services.TimeLive.Employees.Employees = connect_TL_employees(p_token)
         Dim employeesDB As New QB_TL_IDsTableAdapters.EmployeesTableAdapter()
+        Dim vendorsDB As New QB_TL_IDsTableAdapters.VendorsTableAdapter()
+
         Dim TL_ExpenseEntries As New TimeLiveDataSetTableAdapters.AccountExpenseEntryTableAdapter
         Dim TL_ExpenseSheets As New TimeLiveDataSetTableAdapters.AccountEmployeeExpenseSheetTableAdapter
         Dim expenseSheets As DataTable = TL_ExpenseSheets.getExpenseSheetsWithinDateRange(expenseReportStartDate.Value, expenseReportEndDate.Value)
@@ -795,13 +792,18 @@ Public Class MAIN
         ProgressBar1.Value = 0
 
         For Each row As DataRow In expenseSheets.Rows
-            Dim datagrid_row As DataGridViewRow = expense_report_row(row, TL_ExpenseEntries, employeesDB)
+            Dim datagrid_row As DataGridViewRow = expense_report_row(row, TL_ExpenseEntries, TL_ExpenseSheets, employeesDB, vendorsDB)
             DataGridView1.Rows.Add(datagrid_row)
             ProgressBar1.Value += 1
         Next
 
-        Dim items_read As Integer = selectedEmployeeData.NoItems
+        Dim items_read As Integer = selectedExpenseSheetData.NumExpenseReports()
         Expense_Reports()
+
+        If ProgressBar1.Maximum = 0 Then
+            ProgressBar1.Maximum = 1
+            ProgressBar1.Value = 1
+        End If
 
         System.Threading.Thread.Sleep(150)
         System.Windows.Forms.Application.DoEvents()
@@ -1316,7 +1318,7 @@ Public Class MAIN
 
         Dim payroll_id_names As Dictionary(Of String, String) = Payroll_IDName_Dict()
         Dim items_id_names As Dictionary(Of String, String) = ItemSubItem_IDName_Dict()
-
+        ProgressBar1.Value = 0
         ProgressBar1.Maximum = selectedEmployeeData.NoItems
         For Each element As TLtoQB_TimeEntry.Employee In selectedEmployeeData.DataArray
             If element.RecSelect = True Then
@@ -1331,15 +1333,13 @@ Public Class MAIN
     Private Sub btnUpdateExpenseReport_Click(sender As Object, e As EventArgs)
         Expense_Reports()
         expenseReportData.clear()
-        Dim startDate As DateTime = expenseReportStartDate.Value.Date
-        Dim endDate As DateTime = expenseReportEndDate.Value.Date
-
-        ProgressBar1.Maximum = selectedEmployeeData.NoItems
+        ProgressBar1.Value = 0
+        ProgressBar1.Maximum = selectedExpenseSheetData.NumExpenseReports()
         For Each element As TLtoQB_ExpenseReports.ExpenseSheet In selectedExpenseSheetData.DataArray
             With element
                 If element.RecSelect = True Then
-                    History("Processing Time Sheet for " + element.EmployeeName.ToString(), "n")
-                    LoadSelectedExpenseReportItems(element.SheetId, DataGridView2, startDate, endDate)
+                    History("Processing Time Sheet for " + element.EmployeeName, "n")
+                    LoadSelectedExpenseReportItems(element.SheetId, element.EmployeeName, element.SheetDate, DataGridView2)
                     element.RecSelect = False
                 End If
             End With
@@ -1539,8 +1539,8 @@ Public Class MAIN
                 Reset_Checked_ExpenseReport_Value(expenseReportData)
                 Set_Selected_ExpenseReports(DataGridView2)
 
-                ItemsProcessed = expensereport_tltoqb.TLTransferExpensesToQB(expenseReportData, p_token, Me, True)
-                History(ItemsProcessed.ToString() + If(ItemsProcessed = 1, " Expense Report was", " Expense Reports were") + " created or updated", "i")
+                ItemsProcessed = expensereport_tltoqb.TLTransferExpensesToQB(expenseReportData, selectedExpenseSheetData, Me, True)
+                History(ItemsProcessed.ToString() + " Expense Report" + If(ItemsProcessed = 1, " was", "s were") + " created or updated", "i")
             End If
         End If
 
@@ -1741,15 +1741,15 @@ Public Class MAIN
     ' For Expense Reports
     Private Sub Set_Selected_SelectedExpenseSheet()
         For Each row As DataGridViewRow In DataGridView1.Rows
-            If row.Cells.Item(1).Value IsNot Nothing And row.Cells("ckBox").Value = True Then
+            If row.Cells("Sheet ID").Value IsNot Nothing And row.Cells("ckBox").Value = True Then
                 selectedExpenseSheetData.DataArray.ForEach(
                     Sub(selectedExpenseSheet)
-                        If selectedExpenseSheet.SheetId = row.Cells("Name").Value Then
+                        If selectedExpenseSheet.SheetId = row.Cells("Sheet ID").Value Then
                             selectedExpenseSheet.RecSelect = True
+                            History("Selected expense sheet for time transfer: " + selectedExpenseSheet.SheetId.ToString, "n")
                         End If
                     End Sub
                 )
-                History("Selected employee for time transfer: " + row.Cells("Name").Value, "n")
             End If
         Next
     End Sub
@@ -1792,15 +1792,15 @@ Public Class MAIN
     Private Sub Set_Selected_ExpenseReports(ByRef DataGridView As DataGridView)
         If DataGridView IsNot Nothing Then
             For Each row As DataGridViewRow In DataGridView.Rows
-                If row.Cells("Employee").Value IsNot Nothing And row.Cells("ckBox").Value = True Then
+                If row.Cells("Entry ID").Value IsNot Nothing And row.Cells("ckBox").Value = True Then
                     expenseReportData.DataArray.ForEach(
                         Sub(expenseReport)
-                            If expenseReport.EmployeeName = row.Cells("Employee").Value.ToString Then
+                            If expenseReport.EntryID = row.Cells("Entry ID").Value.ToString Then
                                 expenseReport.RecSelect = True
+                                History("Expense report of " + expenseReport.ExpenseName + " for " + expenseReport.EmployeeName, "n")
                             End If
                         End Sub
                     )
-                    History("Expense report selected for processing: " + row.Cells("Employee").Value.ToString, "n")
                 End If
             Next
         End If
@@ -1819,40 +1819,40 @@ Public Class MAIN
     Private Sub timeEntry_selectall_checkbox(sender As Object, e As EventArgs) Handles EntitiesSelectAll.CheckedChanged
         If DataGridView2 IsNot Nothing Then
             For Each row As DataGridViewRow In DataGridView2.Rows
-                If row.Cells("Employee").Value IsNot Nothing Then
-                    row.Cells("ckBox").Value = EntitiesSelectAll.Checked
-                End If
+                row.Cells("ckBox").Value = EntitiesSelectAll.Checked
             Next
         End If
     End Sub
 
-    Public Sub LoadSelectedExpenseReportItems(ExpenseSheetId As Guid, ByRef DataGridView As DataGridView, ByVal StartDate As DateTime, ByVal EndDate As DateTime)
+    Public Sub LoadSelectedExpenseReportItems(ByVal ExpenseSheetId As Guid, ByVal EmployeeName As String, ByVal SheetDate As Date, ByRef DataGridView As DataGridView)
         Dim temp As New TLtoQB_TimeEntry.TimeEntryDataStructureQB
-        Dim emplTLData As TLtoQB_ExpenseReports.ExpenseReportDataStructureQB = expensereport_tltoqb.GetExpenseReportTLData(ExpenseSheetId, Me, p_token, False)
+        Dim emplTLData As TLtoQB_ExpenseReports.ExpenseReportDataStructureQB = expensereport_tltoqb.GetExpenseReportTLData(ExpenseSheetId, EmployeeName, SheetDate, Me, p_token, False)
         expenseReportData.combine(emplTLData)
 
-        Dim TL_ExpenseReports As New TimeLiveDataSetTableAdapters.AccountExpenseEntryTableAdapter
+        Dim TL_ExpenseSheets As New TimeLiveDataSetTableAdapters.AccountEmployeeExpenseSheetTableAdapter
 
+        Dim isApproved As Boolean = TL_ExpenseSheets.isApproved(ExpenseSheetId)
+        Dim isSubmitted As Boolean = TL_ExpenseSheets.isSubmitted(ExpenseSheetId)
+        Dim isRejected As Boolean = TL_ExpenseSheets.isRejected(ExpenseSheetId)
         If expenseReportData IsNot Nothing Then
             For Each element As TLtoQB_ExpenseReports.ExpenseReport In emplTLData.getDataArray()
                 With element
-                    ' TODO: Change this to Expense Report Approval and Submission
-                    Dim ExpenseReportApproved = True 'TL_TimeEntries.GetTimeApproval(AccountEmployeeId, .ExpenseReportDate)
-                    Dim ExpenseReportSubmitted = True 'TL_TimeEntries.GetTimeSubmission(AccountEmployeeId, .ExpenseReportDate)
-
-                    element.RecSelect = ExpenseReportApproved And ExpenseReportSubmitted
-
+                    element.RecSelect = isApproved And isSubmitted And Not isRejected
                     Dim datagrid_row As DataGridViewRow = New DataGridViewRow()
                     datagrid_row.CreateCells(DataGridView)
-                    datagrid_row.SetValues(.RecSelect, .EmployeeName, .ExpenseName, .ExpenseReportDate.ToString("MM/dd/yyyy"), .ProjectName, .Amount)
+                    datagrid_row.SetValues(.RecSelect, .EntryID, .EmployeeName, .ExpenseName, .ExpenseReportDate.ToString("MM/dd/yyyy"), .ProjectName, "$" + .Amount.ToString("N2"), ExpenseSheetId)
+                    Dim errorMsgDescription As String = " for " + .EmployeeName + " for the expense of " + .ExpenseName + "on the week of " + .ExpenseReportDate
 
-                    If Not ExpenseReportSubmitted Then
-                        My.Forms.MAIN.History("Expense report not submitted for " + .EmployeeName + " on the week of " + .ExpenseReportDate, "N")
-                        ' Checkbox is cell 0
+                    If isRejected Then
+                        My.Forms.MAIN.History("Expense report rejected" + errorMsgDescription, "N")
                         datagrid_row.Cells(0).ReadOnly = True
                         datagrid_row.DefaultCellStyle.BackColor = Color.DarkGray
-                    ElseIf Not ExpenseReportApproved Then
-                        My.Forms.MAIN.History("Expense report not approved for " + .EmployeeName + " on the week of " + .ExpenseReportDate, "N")
+                    ElseIf Not isSubmitted Then
+                        My.Forms.MAIN.History("Expense report not submitted" + errorMsgDescription, "N")
+                        datagrid_row.Cells(0).ReadOnly = True
+                        datagrid_row.DefaultCellStyle.BackColor = Color.DarkGray
+                    ElseIf Not isApproved Then
+                        My.Forms.MAIN.History("Expense report not approved" + errorMsgDescription, "N")
                         datagrid_row.Cells(0).ReadOnly = True
                         datagrid_row.DefaultCellStyle.BackColor = Color.LightGray
                     End If

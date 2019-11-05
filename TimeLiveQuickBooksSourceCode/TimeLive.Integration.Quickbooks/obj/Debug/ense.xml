@@ -520,7 +520,7 @@ Represents the strongly named DataTable class.
 Represents the strongly named DataTable class.
 </summary>
 </member>
-<member name="T:TimeLive.Quickbooks.Integrator.TimeLiveDataSet.AccountExpenseEntryDataTable">
+<member name="T:TimeLive.Quickbooks.Integrator.TimeLiveDataSet.AccountExpenseDataTable">
 <summary>
 Represents the strongly named DataTable class.
 </summary>
@@ -530,7 +530,7 @@ Represents the strongly named DataTable class.
 Represents the strongly named DataTable class.
 </summary>
 </member>
-<member name="T:TimeLive.Quickbooks.Integrator.TimeLiveDataSet.AccountExpenseDataTable">
+<member name="T:TimeLive.Quickbooks.Integrator.TimeLiveDataSet.AccountExpenseEntryDataTable">
 <summary>
 Represents the strongly named DataTable class.
 </summary>
@@ -555,7 +555,7 @@ Represents strongly named DataRow class.
 Represents strongly named DataRow class.
 </summary>
 </member>
-<member name="T:TimeLive.Quickbooks.Integrator.TimeLiveDataSet.AccountExpenseEntryRow">
+<member name="T:TimeLive.Quickbooks.Integrator.TimeLiveDataSet.AccountExpenseRow">
 <summary>
 Represents strongly named DataRow class.
 </summary>
@@ -565,7 +565,7 @@ Represents strongly named DataRow class.
 Represents strongly named DataRow class.
 </summary>
 </member>
-<member name="T:TimeLive.Quickbooks.Integrator.TimeLiveDataSet.AccountExpenseRow">
+<member name="T:TimeLive.Quickbooks.Integrator.TimeLiveDataSet.AccountExpenseEntryRow">
 <summary>
 Represents strongly named DataRow class.
 </summary>
@@ -590,7 +590,7 @@ Row event argument class
 Row event argument class
 </summary>
 </member>
-<member name="T:TimeLive.Quickbooks.Integrator.TimeLiveDataSet.AccountExpenseEntryRowChangeEvent">
+<member name="T:TimeLive.Quickbooks.Integrator.TimeLiveDataSet.AccountExpenseRowChangeEvent">
 <summary>
 Row event argument class
 </summary>
@@ -600,7 +600,7 @@ Row event argument class
 Row event argument class
 </summary>
 </member>
-<member name="T:TimeLive.Quickbooks.Integrator.TimeLiveDataSet.AccountExpenseRowChangeEvent">
+<member name="T:TimeLive.Quickbooks.Integrator.TimeLiveDataSet.AccountExpenseEntryRowChangeEvent">
 <summary>
 Row event argument class
 </summary>
@@ -625,7 +625,7 @@ Represents the connection and commands used to retrieve and save data.
 Represents the connection and commands used to retrieve and save data.
 </summary>
 </member>
-<member name="T:TimeLive.Quickbooks.Integrator.TimeLiveDataSetTableAdapters.AccountExpenseEntryTableAdapter">
+<member name="T:TimeLive.Quickbooks.Integrator.TimeLiveDataSetTableAdapters.AccountExpenseTableAdapter">
 <summary>
 Represents the connection and commands used to retrieve and save data.
 </summary>
@@ -635,7 +635,7 @@ Represents the connection and commands used to retrieve and save data.
 Represents the connection and commands used to retrieve and save data.
 </summary>
 </member>
-<member name="T:TimeLive.Quickbooks.Integrator.TimeLiveDataSetTableAdapters.AccountExpenseTableAdapter">
+<member name="T:TimeLive.Quickbooks.Integrator.TimeLiveDataSetTableAdapters.AccountExpenseEntryTableAdapter">
 <summary>
 Represents the connection and commands used to retrieve and save data.
 </summary>

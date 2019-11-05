@@ -33,15 +33,13 @@ Partial Public Class TimeLiveDataSet
     
     Private tableAccountEmployeeTimeEntryPeriod As AccountEmployeeTimeEntryPeriodDataTable
     
-    Private tableAccountExpenseEntry As AccountExpenseEntryDataTable
+    Private tableAccountExpense As AccountExpenseDataTable
     
     Private tableAccountEmployeeExpenseSheet As AccountEmployeeExpenseSheetDataTable
     
-    Private tableAccountExpense As AccountExpenseDataTable
+    Private tableAccountExpenseEntry As AccountExpenseEntryDataTable
     
     Private relationFK_AccountExpenseEntry_AccountEmployeeExpenseSheet As Global.System.Data.DataRelation
-    
-    Private relationFK_AccountExpenseEntry_AccountExpense As Global.System.Data.DataRelation
     
     Private _schemaSerializationMode As Global.System.Data.SchemaSerializationMode = Global.System.Data.SchemaSerializationMode.IncludeSchema
     
@@ -84,14 +82,14 @@ Partial Public Class TimeLiveDataSet
             If (Not (ds.Tables("AccountEmployeeTimeEntryPeriod")) Is Nothing) Then
                 MyBase.Tables.Add(New AccountEmployeeTimeEntryPeriodDataTable(ds.Tables("AccountEmployeeTimeEntryPeriod")))
             End If
-            If (Not (ds.Tables("AccountExpenseEntry")) Is Nothing) Then
-                MyBase.Tables.Add(New AccountExpenseEntryDataTable(ds.Tables("AccountExpenseEntry")))
+            If (Not (ds.Tables("AccountExpense")) Is Nothing) Then
+                MyBase.Tables.Add(New AccountExpenseDataTable(ds.Tables("AccountExpense")))
             End If
             If (Not (ds.Tables("AccountEmployeeExpenseSheet")) Is Nothing) Then
                 MyBase.Tables.Add(New AccountEmployeeExpenseSheetDataTable(ds.Tables("AccountEmployeeExpenseSheet")))
             End If
-            If (Not (ds.Tables("AccountExpense")) Is Nothing) Then
-                MyBase.Tables.Add(New AccountExpenseDataTable(ds.Tables("AccountExpense")))
+            If (Not (ds.Tables("AccountExpenseEntry")) Is Nothing) Then
+                MyBase.Tables.Add(New AccountExpenseEntryDataTable(ds.Tables("AccountExpenseEntry")))
             End If
             Me.DataSetName = ds.DataSetName
             Me.Prefix = ds.Prefix
@@ -154,9 +152,9 @@ Partial Public Class TimeLiveDataSet
      Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0"),  _
      Global.System.ComponentModel.Browsable(false),  _
      Global.System.ComponentModel.DesignerSerializationVisibility(Global.System.ComponentModel.DesignerSerializationVisibility.Content)>  _
-    Public ReadOnly Property AccountExpenseEntry() As AccountExpenseEntryDataTable
+    Public ReadOnly Property AccountExpense() As AccountExpenseDataTable
         Get
-            Return Me.tableAccountExpenseEntry
+            Return Me.tableAccountExpense
         End Get
     End Property
     
@@ -174,9 +172,9 @@ Partial Public Class TimeLiveDataSet
      Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0"),  _
      Global.System.ComponentModel.Browsable(false),  _
      Global.System.ComponentModel.DesignerSerializationVisibility(Global.System.ComponentModel.DesignerSerializationVisibility.Content)>  _
-    Public ReadOnly Property AccountExpense() As AccountExpenseDataTable
+    Public ReadOnly Property AccountExpenseEntry() As AccountExpenseEntryDataTable
         Get
-            Return Me.tableAccountExpense
+            Return Me.tableAccountExpenseEntry
         End Get
     End Property
     
@@ -259,14 +257,14 @@ Partial Public Class TimeLiveDataSet
             If (Not (ds.Tables("AccountEmployeeTimeEntryPeriod")) Is Nothing) Then
                 MyBase.Tables.Add(New AccountEmployeeTimeEntryPeriodDataTable(ds.Tables("AccountEmployeeTimeEntryPeriod")))
             End If
-            If (Not (ds.Tables("AccountExpenseEntry")) Is Nothing) Then
-                MyBase.Tables.Add(New AccountExpenseEntryDataTable(ds.Tables("AccountExpenseEntry")))
+            If (Not (ds.Tables("AccountExpense")) Is Nothing) Then
+                MyBase.Tables.Add(New AccountExpenseDataTable(ds.Tables("AccountExpense")))
             End If
             If (Not (ds.Tables("AccountEmployeeExpenseSheet")) Is Nothing) Then
                 MyBase.Tables.Add(New AccountEmployeeExpenseSheetDataTable(ds.Tables("AccountEmployeeExpenseSheet")))
             End If
-            If (Not (ds.Tables("AccountExpense")) Is Nothing) Then
-                MyBase.Tables.Add(New AccountExpenseDataTable(ds.Tables("AccountExpense")))
+            If (Not (ds.Tables("AccountExpenseEntry")) Is Nothing) Then
+                MyBase.Tables.Add(New AccountExpenseEntryDataTable(ds.Tables("AccountExpenseEntry")))
             End If
             Me.DataSetName = ds.DataSetName
             Me.Prefix = ds.Prefix
@@ -324,10 +322,10 @@ Partial Public Class TimeLiveDataSet
                 Me.tableAccountEmployeeTimeEntryPeriod.InitVars
             End If
         End If
-        Me.tableAccountExpenseEntry = CType(MyBase.Tables("AccountExpenseEntry"),AccountExpenseEntryDataTable)
+        Me.tableAccountExpense = CType(MyBase.Tables("AccountExpense"),AccountExpenseDataTable)
         If (initTable = true) Then
-            If (Not (Me.tableAccountExpenseEntry) Is Nothing) Then
-                Me.tableAccountExpenseEntry.InitVars
+            If (Not (Me.tableAccountExpense) Is Nothing) Then
+                Me.tableAccountExpense.InitVars
             End If
         End If
         Me.tableAccountEmployeeExpenseSheet = CType(MyBase.Tables("AccountEmployeeExpenseSheet"),AccountEmployeeExpenseSheetDataTable)
@@ -336,14 +334,13 @@ Partial Public Class TimeLiveDataSet
                 Me.tableAccountEmployeeExpenseSheet.InitVars
             End If
         End If
-        Me.tableAccountExpense = CType(MyBase.Tables("AccountExpense"),AccountExpenseDataTable)
+        Me.tableAccountExpenseEntry = CType(MyBase.Tables("AccountExpenseEntry"),AccountExpenseEntryDataTable)
         If (initTable = true) Then
-            If (Not (Me.tableAccountExpense) Is Nothing) Then
-                Me.tableAccountExpense.InitVars
+            If (Not (Me.tableAccountExpenseEntry) Is Nothing) Then
+                Me.tableAccountExpenseEntry.InitVars
             End If
         End If
         Me.relationFK_AccountExpenseEntry_AccountEmployeeExpenseSheet = Me.Relations("FK_AccountExpenseEntry_AccountEmployeeExpenseSheet")
-        Me.relationFK_AccountExpenseEntry_AccountExpense = Me.Relations("FK_AccountExpenseEntry_AccountExpense")
     End Sub
     
     <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
@@ -362,16 +359,14 @@ Partial Public Class TimeLiveDataSet
         MyBase.Tables.Add(Me.tableAccountProjectEmployee)
         Me.tableAccountEmployeeTimeEntryPeriod = New AccountEmployeeTimeEntryPeriodDataTable()
         MyBase.Tables.Add(Me.tableAccountEmployeeTimeEntryPeriod)
-        Me.tableAccountExpenseEntry = New AccountExpenseEntryDataTable()
-        MyBase.Tables.Add(Me.tableAccountExpenseEntry)
-        Me.tableAccountEmployeeExpenseSheet = New AccountEmployeeExpenseSheetDataTable()
-        MyBase.Tables.Add(Me.tableAccountEmployeeExpenseSheet)
         Me.tableAccountExpense = New AccountExpenseDataTable()
         MyBase.Tables.Add(Me.tableAccountExpense)
+        Me.tableAccountEmployeeExpenseSheet = New AccountEmployeeExpenseSheetDataTable()
+        MyBase.Tables.Add(Me.tableAccountEmployeeExpenseSheet)
+        Me.tableAccountExpenseEntry = New AccountExpenseEntryDataTable()
+        MyBase.Tables.Add(Me.tableAccountExpenseEntry)
         Me.relationFK_AccountExpenseEntry_AccountEmployeeExpenseSheet = New Global.System.Data.DataRelation("FK_AccountExpenseEntry_AccountEmployeeExpenseSheet", New Global.System.Data.DataColumn() {Me.tableAccountEmployeeExpenseSheet.AccountEmployeeExpenseSheetIdColumn}, New Global.System.Data.DataColumn() {Me.tableAccountExpenseEntry.AccountEmployeeExpenseSheetIdColumn}, false)
         Me.Relations.Add(Me.relationFK_AccountExpenseEntry_AccountEmployeeExpenseSheet)
-        Me.relationFK_AccountExpenseEntry_AccountExpense = New Global.System.Data.DataRelation("FK_AccountExpenseEntry_AccountExpense", New Global.System.Data.DataColumn() {Me.tableAccountExpense.AccountExpenseIdColumn}, New Global.System.Data.DataColumn() {Me.tableAccountExpenseEntry.AccountExpenseIdColumn}, false)
-        Me.Relations.Add(Me.relationFK_AccountExpenseEntry_AccountExpense)
     End Sub
     
     <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
@@ -400,7 +395,7 @@ Partial Public Class TimeLiveDataSet
     
     <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
      Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-    Private Function ShouldSerializeAccountExpenseEntry() As Boolean
+    Private Function ShouldSerializeAccountExpense() As Boolean
         Return false
     End Function
     
@@ -412,7 +407,7 @@ Partial Public Class TimeLiveDataSet
     
     <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
      Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-    Private Function ShouldSerializeAccountExpense() As Boolean
+    Private Function ShouldSerializeAccountExpenseEntry() As Boolean
         Return false
     End Function
     
@@ -487,13 +482,13 @@ Partial Public Class TimeLiveDataSet
     Public Delegate Sub AccountEmployeeTimeEntryPeriodRowChangeEventHandler(ByVal sender As Object, ByVal e As AccountEmployeeTimeEntryPeriodRowChangeEvent)
     
     <Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-    Public Delegate Sub AccountExpenseEntryRowChangeEventHandler(ByVal sender As Object, ByVal e As AccountExpenseEntryRowChangeEvent)
+    Public Delegate Sub AccountExpenseRowChangeEventHandler(ByVal sender As Object, ByVal e As AccountExpenseRowChangeEvent)
     
     <Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
     Public Delegate Sub AccountEmployeeExpenseSheetRowChangeEventHandler(ByVal sender As Object, ByVal e As AccountEmployeeExpenseSheetRowChangeEvent)
     
     <Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-    Public Delegate Sub AccountExpenseRowChangeEventHandler(ByVal sender As Object, ByVal e As AccountExpenseRowChangeEvent)
+    Public Delegate Sub AccountExpenseEntryRowChangeEventHandler(ByVal sender As Object, ByVal e As AccountExpenseEntryRowChangeEvent)
     
     '''<summary>
     '''Represents the strongly named DataTable class.
@@ -2621,6 +2616,1185 @@ Partial Public Class TimeLiveDataSet
     '''</summary>
     <Global.System.Serializable(),  _
      Global.System.Xml.Serialization.XmlSchemaProviderAttribute("GetTypedTableSchema")>  _
+    Partial Public Class AccountExpenseDataTable
+        Inherits Global.System.Data.TypedTableBase(Of AccountExpenseRow)
+        
+        Private columnAccountExpenseId As Global.System.Data.DataColumn
+        
+        Private columnAccountExpenseName As Global.System.Data.DataColumn
+        
+        Private columnAccountExpenseTypeId As Global.System.Data.DataColumn
+        
+        Private columnIsBillable As Global.System.Data.DataColumn
+        
+        Private columnAccountId As Global.System.Data.DataColumn
+        
+        Private columnCreatedOn As Global.System.Data.DataColumn
+        
+        Private columnCreatedByEmployeeId As Global.System.Data.DataColumn
+        
+        Private columnModifiedOn As Global.System.Data.DataColumn
+        
+        Private columnModifiedByEmployeeId As Global.System.Data.DataColumn
+        
+        Private columnIsDisabled As Global.System.Data.DataColumn
+        
+        Private columnDefaultExpenseRate As Global.System.Data.DataColumn
+        
+        Private columnDisabledEditingOfRate As Global.System.Data.DataColumn
+        
+        Private columnMasterAccountExpenseId As Global.System.Data.DataColumn
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public Sub New()
+            MyBase.New
+            Me.TableName = "AccountExpense"
+            Me.BeginInit
+            Me.InitClass
+            Me.EndInit
+        End Sub
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Friend Sub New(ByVal table As Global.System.Data.DataTable)
+            MyBase.New
+            Me.TableName = table.TableName
+            If (table.CaseSensitive <> table.DataSet.CaseSensitive) Then
+                Me.CaseSensitive = table.CaseSensitive
+            End If
+            If (table.Locale.ToString <> table.DataSet.Locale.ToString) Then
+                Me.Locale = table.Locale
+            End If
+            If (table.Namespace <> table.DataSet.Namespace) Then
+                Me.Namespace = table.Namespace
+            End If
+            Me.Prefix = table.Prefix
+            Me.MinimumCapacity = table.MinimumCapacity
+        End Sub
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Protected Sub New(ByVal info As Global.System.Runtime.Serialization.SerializationInfo, ByVal context As Global.System.Runtime.Serialization.StreamingContext)
+            MyBase.New(info, context)
+            Me.InitVars
+        End Sub
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public ReadOnly Property AccountExpenseIdColumn() As Global.System.Data.DataColumn
+            Get
+                Return Me.columnAccountExpenseId
+            End Get
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public ReadOnly Property AccountExpenseNameColumn() As Global.System.Data.DataColumn
+            Get
+                Return Me.columnAccountExpenseName
+            End Get
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public ReadOnly Property AccountExpenseTypeIdColumn() As Global.System.Data.DataColumn
+            Get
+                Return Me.columnAccountExpenseTypeId
+            End Get
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public ReadOnly Property IsBillableColumn() As Global.System.Data.DataColumn
+            Get
+                Return Me.columnIsBillable
+            End Get
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public ReadOnly Property AccountIdColumn() As Global.System.Data.DataColumn
+            Get
+                Return Me.columnAccountId
+            End Get
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public ReadOnly Property CreatedOnColumn() As Global.System.Data.DataColumn
+            Get
+                Return Me.columnCreatedOn
+            End Get
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public ReadOnly Property CreatedByEmployeeIdColumn() As Global.System.Data.DataColumn
+            Get
+                Return Me.columnCreatedByEmployeeId
+            End Get
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public ReadOnly Property ModifiedOnColumn() As Global.System.Data.DataColumn
+            Get
+                Return Me.columnModifiedOn
+            End Get
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public ReadOnly Property ModifiedByEmployeeIdColumn() As Global.System.Data.DataColumn
+            Get
+                Return Me.columnModifiedByEmployeeId
+            End Get
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public ReadOnly Property IsDisabledColumn() As Global.System.Data.DataColumn
+            Get
+                Return Me.columnIsDisabled
+            End Get
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public ReadOnly Property DefaultExpenseRateColumn() As Global.System.Data.DataColumn
+            Get
+                Return Me.columnDefaultExpenseRate
+            End Get
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public ReadOnly Property DisabledEditingOfRateColumn() As Global.System.Data.DataColumn
+            Get
+                Return Me.columnDisabledEditingOfRate
+            End Get
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public ReadOnly Property MasterAccountExpenseIdColumn() As Global.System.Data.DataColumn
+            Get
+                Return Me.columnMasterAccountExpenseId
+            End Get
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0"),  _
+         Global.System.ComponentModel.Browsable(false)>  _
+        Public ReadOnly Property Count() As Integer
+            Get
+                Return Me.Rows.Count
+            End Get
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public Default ReadOnly Property Item(ByVal index As Integer) As AccountExpenseRow
+            Get
+                Return CType(Me.Rows(index),AccountExpenseRow)
+            End Get
+        End Property
+        
+        <Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public Event AccountExpenseRowChanging As AccountExpenseRowChangeEventHandler
+        
+        <Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public Event AccountExpenseRowChanged As AccountExpenseRowChangeEventHandler
+        
+        <Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public Event AccountExpenseRowDeleting As AccountExpenseRowChangeEventHandler
+        
+        <Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public Event AccountExpenseRowDeleted As AccountExpenseRowChangeEventHandler
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public Overloads Sub AddAccountExpenseRow(ByVal row As AccountExpenseRow)
+            Me.Rows.Add(row)
+        End Sub
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public Overloads Function AddAccountExpenseRow(ByVal AccountExpenseName As String, ByVal AccountExpenseTypeId As Integer, ByVal IsBillable As Boolean, ByVal AccountId As Integer, ByVal CreatedOn As Date, ByVal CreatedByEmployeeId As Integer, ByVal ModifiedOn As Date, ByVal ModifiedByEmployeeId As Integer, ByVal IsDisabled As Boolean, ByVal DefaultExpenseRate As Double, ByVal DisabledEditingOfRate As Boolean, ByVal MasterAccountExpenseId As Short) As AccountExpenseRow
+            Dim rowAccountExpenseRow As AccountExpenseRow = CType(Me.NewRow,AccountExpenseRow)
+            Dim columnValuesArray() As Object = New Object() {Nothing, AccountExpenseName, AccountExpenseTypeId, IsBillable, AccountId, CreatedOn, CreatedByEmployeeId, ModifiedOn, ModifiedByEmployeeId, IsDisabled, DefaultExpenseRate, DisabledEditingOfRate, MasterAccountExpenseId}
+            rowAccountExpenseRow.ItemArray = columnValuesArray
+            Me.Rows.Add(rowAccountExpenseRow)
+            Return rowAccountExpenseRow
+        End Function
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public Function FindByAccountExpenseId(ByVal AccountExpenseId As Integer) As AccountExpenseRow
+            Return CType(Me.Rows.Find(New Object() {AccountExpenseId}),AccountExpenseRow)
+        End Function
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public Overrides Function Clone() As Global.System.Data.DataTable
+            Dim cln As AccountExpenseDataTable = CType(MyBase.Clone,AccountExpenseDataTable)
+            cln.InitVars
+            Return cln
+        End Function
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Protected Overrides Function CreateInstance() As Global.System.Data.DataTable
+            Return New AccountExpenseDataTable()
+        End Function
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Friend Sub InitVars()
+            Me.columnAccountExpenseId = MyBase.Columns("AccountExpenseId")
+            Me.columnAccountExpenseName = MyBase.Columns("AccountExpenseName")
+            Me.columnAccountExpenseTypeId = MyBase.Columns("AccountExpenseTypeId")
+            Me.columnIsBillable = MyBase.Columns("IsBillable")
+            Me.columnAccountId = MyBase.Columns("AccountId")
+            Me.columnCreatedOn = MyBase.Columns("CreatedOn")
+            Me.columnCreatedByEmployeeId = MyBase.Columns("CreatedByEmployeeId")
+            Me.columnModifiedOn = MyBase.Columns("ModifiedOn")
+            Me.columnModifiedByEmployeeId = MyBase.Columns("ModifiedByEmployeeId")
+            Me.columnIsDisabled = MyBase.Columns("IsDisabled")
+            Me.columnDefaultExpenseRate = MyBase.Columns("DefaultExpenseRate")
+            Me.columnDisabledEditingOfRate = MyBase.Columns("DisabledEditingOfRate")
+            Me.columnMasterAccountExpenseId = MyBase.Columns("MasterAccountExpenseId")
+        End Sub
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Private Sub InitClass()
+            Me.columnAccountExpenseId = New Global.System.Data.DataColumn("AccountExpenseId", GetType(Integer), Nothing, Global.System.Data.MappingType.Element)
+            MyBase.Columns.Add(Me.columnAccountExpenseId)
+            Me.columnAccountExpenseName = New Global.System.Data.DataColumn("AccountExpenseName", GetType(String), Nothing, Global.System.Data.MappingType.Element)
+            MyBase.Columns.Add(Me.columnAccountExpenseName)
+            Me.columnAccountExpenseTypeId = New Global.System.Data.DataColumn("AccountExpenseTypeId", GetType(Integer), Nothing, Global.System.Data.MappingType.Element)
+            MyBase.Columns.Add(Me.columnAccountExpenseTypeId)
+            Me.columnIsBillable = New Global.System.Data.DataColumn("IsBillable", GetType(Boolean), Nothing, Global.System.Data.MappingType.Element)
+            MyBase.Columns.Add(Me.columnIsBillable)
+            Me.columnAccountId = New Global.System.Data.DataColumn("AccountId", GetType(Integer), Nothing, Global.System.Data.MappingType.Element)
+            MyBase.Columns.Add(Me.columnAccountId)
+            Me.columnCreatedOn = New Global.System.Data.DataColumn("CreatedOn", GetType(Date), Nothing, Global.System.Data.MappingType.Element)
+            MyBase.Columns.Add(Me.columnCreatedOn)
+            Me.columnCreatedByEmployeeId = New Global.System.Data.DataColumn("CreatedByEmployeeId", GetType(Integer), Nothing, Global.System.Data.MappingType.Element)
+            MyBase.Columns.Add(Me.columnCreatedByEmployeeId)
+            Me.columnModifiedOn = New Global.System.Data.DataColumn("ModifiedOn", GetType(Date), Nothing, Global.System.Data.MappingType.Element)
+            MyBase.Columns.Add(Me.columnModifiedOn)
+            Me.columnModifiedByEmployeeId = New Global.System.Data.DataColumn("ModifiedByEmployeeId", GetType(Integer), Nothing, Global.System.Data.MappingType.Element)
+            MyBase.Columns.Add(Me.columnModifiedByEmployeeId)
+            Me.columnIsDisabled = New Global.System.Data.DataColumn("IsDisabled", GetType(Boolean), Nothing, Global.System.Data.MappingType.Element)
+            MyBase.Columns.Add(Me.columnIsDisabled)
+            Me.columnDefaultExpenseRate = New Global.System.Data.DataColumn("DefaultExpenseRate", GetType(Double), Nothing, Global.System.Data.MappingType.Element)
+            MyBase.Columns.Add(Me.columnDefaultExpenseRate)
+            Me.columnDisabledEditingOfRate = New Global.System.Data.DataColumn("DisabledEditingOfRate", GetType(Boolean), Nothing, Global.System.Data.MappingType.Element)
+            MyBase.Columns.Add(Me.columnDisabledEditingOfRate)
+            Me.columnMasterAccountExpenseId = New Global.System.Data.DataColumn("MasterAccountExpenseId", GetType(Short), Nothing, Global.System.Data.MappingType.Element)
+            MyBase.Columns.Add(Me.columnMasterAccountExpenseId)
+            Me.Constraints.Add(New Global.System.Data.UniqueConstraint("Constraint1", New Global.System.Data.DataColumn() {Me.columnAccountExpenseId}, true))
+            Me.columnAccountExpenseId.AutoIncrement = true
+            Me.columnAccountExpenseId.AutoIncrementSeed = -1
+            Me.columnAccountExpenseId.AutoIncrementStep = -1
+            Me.columnAccountExpenseId.AllowDBNull = false
+            Me.columnAccountExpenseId.ReadOnly = true
+            Me.columnAccountExpenseId.Unique = true
+            Me.columnAccountExpenseName.AllowDBNull = false
+            Me.columnAccountExpenseName.MaxLength = 200
+            Me.columnAccountExpenseTypeId.AllowDBNull = false
+            Me.columnAccountId.AllowDBNull = false
+            Me.columnCreatedOn.AllowDBNull = false
+            Me.columnCreatedByEmployeeId.AllowDBNull = false
+            Me.columnModifiedOn.AllowDBNull = false
+            Me.columnModifiedByEmployeeId.AllowDBNull = false
+            Me.columnIsDisabled.AllowDBNull = false
+            Me.columnDisabledEditingOfRate.AllowDBNull = false
+        End Sub
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public Function NewAccountExpenseRow() As AccountExpenseRow
+            Return CType(Me.NewRow,AccountExpenseRow)
+        End Function
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Protected Overrides Function NewRowFromBuilder(ByVal builder As Global.System.Data.DataRowBuilder) As Global.System.Data.DataRow
+            Return New AccountExpenseRow(builder)
+        End Function
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Protected Overrides Function GetRowType() As Global.System.Type
+            Return GetType(AccountExpenseRow)
+        End Function
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Protected Overrides Sub OnRowChanged(ByVal e As Global.System.Data.DataRowChangeEventArgs)
+            MyBase.OnRowChanged(e)
+            If (Not (Me.AccountExpenseRowChangedEvent) Is Nothing) Then
+                RaiseEvent AccountExpenseRowChanged(Me, New AccountExpenseRowChangeEvent(CType(e.Row,AccountExpenseRow), e.Action))
+            End If
+        End Sub
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Protected Overrides Sub OnRowChanging(ByVal e As Global.System.Data.DataRowChangeEventArgs)
+            MyBase.OnRowChanging(e)
+            If (Not (Me.AccountExpenseRowChangingEvent) Is Nothing) Then
+                RaiseEvent AccountExpenseRowChanging(Me, New AccountExpenseRowChangeEvent(CType(e.Row,AccountExpenseRow), e.Action))
+            End If
+        End Sub
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Protected Overrides Sub OnRowDeleted(ByVal e As Global.System.Data.DataRowChangeEventArgs)
+            MyBase.OnRowDeleted(e)
+            If (Not (Me.AccountExpenseRowDeletedEvent) Is Nothing) Then
+                RaiseEvent AccountExpenseRowDeleted(Me, New AccountExpenseRowChangeEvent(CType(e.Row,AccountExpenseRow), e.Action))
+            End If
+        End Sub
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Protected Overrides Sub OnRowDeleting(ByVal e As Global.System.Data.DataRowChangeEventArgs)
+            MyBase.OnRowDeleting(e)
+            If (Not (Me.AccountExpenseRowDeletingEvent) Is Nothing) Then
+                RaiseEvent AccountExpenseRowDeleting(Me, New AccountExpenseRowChangeEvent(CType(e.Row,AccountExpenseRow), e.Action))
+            End If
+        End Sub
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public Sub RemoveAccountExpenseRow(ByVal row As AccountExpenseRow)
+            Me.Rows.Remove(row)
+        End Sub
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public Shared Function GetTypedTableSchema(ByVal xs As Global.System.Xml.Schema.XmlSchemaSet) As Global.System.Xml.Schema.XmlSchemaComplexType
+            Dim type As Global.System.Xml.Schema.XmlSchemaComplexType = New Global.System.Xml.Schema.XmlSchemaComplexType()
+            Dim sequence As Global.System.Xml.Schema.XmlSchemaSequence = New Global.System.Xml.Schema.XmlSchemaSequence()
+            Dim ds As TimeLiveDataSet = New TimeLiveDataSet()
+            Dim any1 As Global.System.Xml.Schema.XmlSchemaAny = New Global.System.Xml.Schema.XmlSchemaAny()
+            any1.Namespace = "http://www.w3.org/2001/XMLSchema"
+            any1.MinOccurs = New Decimal(0)
+            any1.MaxOccurs = Decimal.MaxValue
+            any1.ProcessContents = Global.System.Xml.Schema.XmlSchemaContentProcessing.Lax
+            sequence.Items.Add(any1)
+            Dim any2 As Global.System.Xml.Schema.XmlSchemaAny = New Global.System.Xml.Schema.XmlSchemaAny()
+            any2.Namespace = "urn:schemas-microsoft-com:xml-diffgram-v1"
+            any2.MinOccurs = New Decimal(1)
+            any2.ProcessContents = Global.System.Xml.Schema.XmlSchemaContentProcessing.Lax
+            sequence.Items.Add(any2)
+            Dim attribute1 As Global.System.Xml.Schema.XmlSchemaAttribute = New Global.System.Xml.Schema.XmlSchemaAttribute()
+            attribute1.Name = "namespace"
+            attribute1.FixedValue = ds.Namespace
+            type.Attributes.Add(attribute1)
+            Dim attribute2 As Global.System.Xml.Schema.XmlSchemaAttribute = New Global.System.Xml.Schema.XmlSchemaAttribute()
+            attribute2.Name = "tableTypeName"
+            attribute2.FixedValue = "AccountExpenseDataTable"
+            type.Attributes.Add(attribute2)
+            type.Particle = sequence
+            Dim dsSchema As Global.System.Xml.Schema.XmlSchema = ds.GetSchemaSerializable
+            If xs.Contains(dsSchema.TargetNamespace) Then
+                Dim s1 As Global.System.IO.MemoryStream = New Global.System.IO.MemoryStream()
+                Dim s2 As Global.System.IO.MemoryStream = New Global.System.IO.MemoryStream()
+                Try 
+                    Dim schema As Global.System.Xml.Schema.XmlSchema = Nothing
+                    dsSchema.Write(s1)
+                    Dim schemas As Global.System.Collections.IEnumerator = xs.Schemas(dsSchema.TargetNamespace).GetEnumerator
+                    Do While schemas.MoveNext
+                        schema = CType(schemas.Current,Global.System.Xml.Schema.XmlSchema)
+                        s2.SetLength(0)
+                        schema.Write(s2)
+                        If (s1.Length = s2.Length) Then
+                            s1.Position = 0
+                            s2.Position = 0
+                            
+                            Do While ((s1.Position <> s1.Length)  _
+                                        AndAlso (s1.ReadByte = s2.ReadByte))
+                                
+                                
+                            Loop
+                            If (s1.Position = s1.Length) Then
+                                Return type
+                            End If
+                        End If
+                        
+                    Loop
+                Finally
+                    If (Not (s1) Is Nothing) Then
+                        s1.Close
+                    End If
+                    If (Not (s2) Is Nothing) Then
+                        s2.Close
+                    End If
+                End Try
+            End If
+            xs.Add(dsSchema)
+            Return type
+        End Function
+    End Class
+    
+    '''<summary>
+    '''Represents the strongly named DataTable class.
+    '''</summary>
+    <Global.System.Serializable(),  _
+     Global.System.Xml.Serialization.XmlSchemaProviderAttribute("GetTypedTableSchema")>  _
+    Partial Public Class AccountEmployeeExpenseSheetDataTable
+        Inherits Global.System.Data.TypedTableBase(Of AccountEmployeeExpenseSheetRow)
+        
+        Private columnAccountEmployeeExpenseSheetId As Global.System.Data.DataColumn
+        
+        Private columnAccountId As Global.System.Data.DataColumn
+        
+        Private columnAccountEmployeeId As Global.System.Data.DataColumn
+        
+        Private columnDescription As Global.System.Data.DataColumn
+        
+        Private columnExpenseSheetDate As Global.System.Data.DataColumn
+        
+        Private columnApproved As Global.System.Data.DataColumn
+        
+        Private columnRejected As Global.System.Data.DataColumn
+        
+        Private columnSubmitted As Global.System.Data.DataColumn
+        
+        Private columnInApproval As Global.System.Data.DataColumn
+        
+        Private columnCreatedByEmployeeId As Global.System.Data.DataColumn
+        
+        Private columnCreatedOn As Global.System.Data.DataColumn
+        
+        Private columnModifiedByEmployeeId As Global.System.Data.DataColumn
+        
+        Private columnModifiedOn As Global.System.Data.DataColumn
+        
+        Private columnSubmittedDate As Global.System.Data.DataColumn
+        
+        Private columnApprovedOn As Global.System.Data.DataColumn
+        
+        Private columnApprovedByEmployeeId As Global.System.Data.DataColumn
+        
+        Private columnRejectedOn As Global.System.Data.DataColumn
+        
+        Private columnRejectedByEmployeeId As Global.System.Data.DataColumn
+        
+        Private columnCustomField1 As Global.System.Data.DataColumn
+        
+        Private columnCustomField2 As Global.System.Data.DataColumn
+        
+        Private columnCustomField3 As Global.System.Data.DataColumn
+        
+        Private columnCustomField4 As Global.System.Data.DataColumn
+        
+        Private columnCustomField5 As Global.System.Data.DataColumn
+        
+        Private columnCustomField6 As Global.System.Data.DataColumn
+        
+        Private columnCustomField7 As Global.System.Data.DataColumn
+        
+        Private columnCustomField8 As Global.System.Data.DataColumn
+        
+        Private columnCustomField9 As Global.System.Data.DataColumn
+        
+        Private columnCustomField10 As Global.System.Data.DataColumn
+        
+        Private columnCustomField11 As Global.System.Data.DataColumn
+        
+        Private columnCustomField12 As Global.System.Data.DataColumn
+        
+        Private columnCustomField13 As Global.System.Data.DataColumn
+        
+        Private columnCustomField14 As Global.System.Data.DataColumn
+        
+        Private columnCustomField15 As Global.System.Data.DataColumn
+        
+        Private columnReimbursementCurrencyId As Global.System.Data.DataColumn
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public Sub New()
+            MyBase.New
+            Me.TableName = "AccountEmployeeExpenseSheet"
+            Me.BeginInit
+            Me.InitClass
+            Me.EndInit
+        End Sub
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Friend Sub New(ByVal table As Global.System.Data.DataTable)
+            MyBase.New
+            Me.TableName = table.TableName
+            If (table.CaseSensitive <> table.DataSet.CaseSensitive) Then
+                Me.CaseSensitive = table.CaseSensitive
+            End If
+            If (table.Locale.ToString <> table.DataSet.Locale.ToString) Then
+                Me.Locale = table.Locale
+            End If
+            If (table.Namespace <> table.DataSet.Namespace) Then
+                Me.Namespace = table.Namespace
+            End If
+            Me.Prefix = table.Prefix
+            Me.MinimumCapacity = table.MinimumCapacity
+        End Sub
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Protected Sub New(ByVal info As Global.System.Runtime.Serialization.SerializationInfo, ByVal context As Global.System.Runtime.Serialization.StreamingContext)
+            MyBase.New(info, context)
+            Me.InitVars
+        End Sub
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public ReadOnly Property AccountEmployeeExpenseSheetIdColumn() As Global.System.Data.DataColumn
+            Get
+                Return Me.columnAccountEmployeeExpenseSheetId
+            End Get
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public ReadOnly Property AccountIdColumn() As Global.System.Data.DataColumn
+            Get
+                Return Me.columnAccountId
+            End Get
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public ReadOnly Property AccountEmployeeIdColumn() As Global.System.Data.DataColumn
+            Get
+                Return Me.columnAccountEmployeeId
+            End Get
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public ReadOnly Property DescriptionColumn() As Global.System.Data.DataColumn
+            Get
+                Return Me.columnDescription
+            End Get
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public ReadOnly Property ExpenseSheetDateColumn() As Global.System.Data.DataColumn
+            Get
+                Return Me.columnExpenseSheetDate
+            End Get
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public ReadOnly Property ApprovedColumn() As Global.System.Data.DataColumn
+            Get
+                Return Me.columnApproved
+            End Get
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public ReadOnly Property RejectedColumn() As Global.System.Data.DataColumn
+            Get
+                Return Me.columnRejected
+            End Get
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public ReadOnly Property SubmittedColumn() As Global.System.Data.DataColumn
+            Get
+                Return Me.columnSubmitted
+            End Get
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public ReadOnly Property InApprovalColumn() As Global.System.Data.DataColumn
+            Get
+                Return Me.columnInApproval
+            End Get
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public ReadOnly Property CreatedByEmployeeIdColumn() As Global.System.Data.DataColumn
+            Get
+                Return Me.columnCreatedByEmployeeId
+            End Get
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public ReadOnly Property CreatedOnColumn() As Global.System.Data.DataColumn
+            Get
+                Return Me.columnCreatedOn
+            End Get
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public ReadOnly Property ModifiedByEmployeeIdColumn() As Global.System.Data.DataColumn
+            Get
+                Return Me.columnModifiedByEmployeeId
+            End Get
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public ReadOnly Property ModifiedOnColumn() As Global.System.Data.DataColumn
+            Get
+                Return Me.columnModifiedOn
+            End Get
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public ReadOnly Property SubmittedDateColumn() As Global.System.Data.DataColumn
+            Get
+                Return Me.columnSubmittedDate
+            End Get
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public ReadOnly Property ApprovedOnColumn() As Global.System.Data.DataColumn
+            Get
+                Return Me.columnApprovedOn
+            End Get
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public ReadOnly Property ApprovedByEmployeeIdColumn() As Global.System.Data.DataColumn
+            Get
+                Return Me.columnApprovedByEmployeeId
+            End Get
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public ReadOnly Property RejectedOnColumn() As Global.System.Data.DataColumn
+            Get
+                Return Me.columnRejectedOn
+            End Get
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public ReadOnly Property RejectedByEmployeeIdColumn() As Global.System.Data.DataColumn
+            Get
+                Return Me.columnRejectedByEmployeeId
+            End Get
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public ReadOnly Property CustomField1Column() As Global.System.Data.DataColumn
+            Get
+                Return Me.columnCustomField1
+            End Get
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public ReadOnly Property CustomField2Column() As Global.System.Data.DataColumn
+            Get
+                Return Me.columnCustomField2
+            End Get
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public ReadOnly Property CustomField3Column() As Global.System.Data.DataColumn
+            Get
+                Return Me.columnCustomField3
+            End Get
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public ReadOnly Property CustomField4Column() As Global.System.Data.DataColumn
+            Get
+                Return Me.columnCustomField4
+            End Get
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public ReadOnly Property CustomField5Column() As Global.System.Data.DataColumn
+            Get
+                Return Me.columnCustomField5
+            End Get
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public ReadOnly Property CustomField6Column() As Global.System.Data.DataColumn
+            Get
+                Return Me.columnCustomField6
+            End Get
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public ReadOnly Property CustomField7Column() As Global.System.Data.DataColumn
+            Get
+                Return Me.columnCustomField7
+            End Get
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public ReadOnly Property CustomField8Column() As Global.System.Data.DataColumn
+            Get
+                Return Me.columnCustomField8
+            End Get
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public ReadOnly Property CustomField9Column() As Global.System.Data.DataColumn
+            Get
+                Return Me.columnCustomField9
+            End Get
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public ReadOnly Property CustomField10Column() As Global.System.Data.DataColumn
+            Get
+                Return Me.columnCustomField10
+            End Get
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public ReadOnly Property CustomField11Column() As Global.System.Data.DataColumn
+            Get
+                Return Me.columnCustomField11
+            End Get
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public ReadOnly Property CustomField12Column() As Global.System.Data.DataColumn
+            Get
+                Return Me.columnCustomField12
+            End Get
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public ReadOnly Property CustomField13Column() As Global.System.Data.DataColumn
+            Get
+                Return Me.columnCustomField13
+            End Get
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public ReadOnly Property CustomField14Column() As Global.System.Data.DataColumn
+            Get
+                Return Me.columnCustomField14
+            End Get
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public ReadOnly Property CustomField15Column() As Global.System.Data.DataColumn
+            Get
+                Return Me.columnCustomField15
+            End Get
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public ReadOnly Property ReimbursementCurrencyIdColumn() As Global.System.Data.DataColumn
+            Get
+                Return Me.columnReimbursementCurrencyId
+            End Get
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0"),  _
+         Global.System.ComponentModel.Browsable(false)>  _
+        Public ReadOnly Property Count() As Integer
+            Get
+                Return Me.Rows.Count
+            End Get
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public Default ReadOnly Property Item(ByVal index As Integer) As AccountEmployeeExpenseSheetRow
+            Get
+                Return CType(Me.Rows(index),AccountEmployeeExpenseSheetRow)
+            End Get
+        End Property
+        
+        <Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public Event AccountEmployeeExpenseSheetRowChanging As AccountEmployeeExpenseSheetRowChangeEventHandler
+        
+        <Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public Event AccountEmployeeExpenseSheetRowChanged As AccountEmployeeExpenseSheetRowChangeEventHandler
+        
+        <Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public Event AccountEmployeeExpenseSheetRowDeleting As AccountEmployeeExpenseSheetRowChangeEventHandler
+        
+        <Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public Event AccountEmployeeExpenseSheetRowDeleted As AccountEmployeeExpenseSheetRowChangeEventHandler
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public Overloads Sub AddAccountEmployeeExpenseSheetRow(ByVal row As AccountEmployeeExpenseSheetRow)
+            Me.Rows.Add(row)
+        End Sub
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public Overloads Function AddAccountEmployeeExpenseSheetRow( _
+                    ByVal AccountEmployeeExpenseSheetId As System.Guid,  _
+                    ByVal AccountId As Integer,  _
+                    ByVal AccountEmployeeId As Integer,  _
+                    ByVal Description As String,  _
+                    ByVal ExpenseSheetDate As Date,  _
+                    ByVal Approved As Boolean,  _
+                    ByVal Rejected As Boolean,  _
+                    ByVal Submitted As Boolean,  _
+                    ByVal InApproval As Boolean,  _
+                    ByVal CreatedByEmployeeId As Integer,  _
+                    ByVal CreatedOn As Date,  _
+                    ByVal ModifiedByEmployeeId As Integer,  _
+                    ByVal ModifiedOn As Date,  _
+                    ByVal SubmittedDate As Date,  _
+                    ByVal ApprovedOn As Date,  _
+                    ByVal ApprovedByEmployeeId As Integer,  _
+                    ByVal RejectedOn As Date,  _
+                    ByVal RejectedByEmployeeId As Integer,  _
+                    ByVal CustomField1 As String,  _
+                    ByVal CustomField2 As String,  _
+                    ByVal CustomField3 As String,  _
+                    ByVal CustomField4 As String,  _
+                    ByVal CustomField5 As String,  _
+                    ByVal CustomField6 As String,  _
+                    ByVal CustomField7 As String,  _
+                    ByVal CustomField8 As String,  _
+                    ByVal CustomField9 As String,  _
+                    ByVal CustomField10 As String,  _
+                    ByVal CustomField11 As String,  _
+                    ByVal CustomField12 As String,  _
+                    ByVal CustomField13 As String,  _
+                    ByVal CustomField14 As String,  _
+                    ByVal CustomField15 As String,  _
+                    ByVal ReimbursementCurrencyId As Integer) As AccountEmployeeExpenseSheetRow
+            Dim rowAccountEmployeeExpenseSheetRow As AccountEmployeeExpenseSheetRow = CType(Me.NewRow,AccountEmployeeExpenseSheetRow)
+            Dim columnValuesArray() As Object = New Object() {AccountEmployeeExpenseSheetId, AccountId, AccountEmployeeId, Description, ExpenseSheetDate, Approved, Rejected, Submitted, InApproval, CreatedByEmployeeId, CreatedOn, ModifiedByEmployeeId, ModifiedOn, SubmittedDate, ApprovedOn, ApprovedByEmployeeId, RejectedOn, RejectedByEmployeeId, CustomField1, CustomField2, CustomField3, CustomField4, CustomField5, CustomField6, CustomField7, CustomField8, CustomField9, CustomField10, CustomField11, CustomField12, CustomField13, CustomField14, CustomField15, ReimbursementCurrencyId}
+            rowAccountEmployeeExpenseSheetRow.ItemArray = columnValuesArray
+            Me.Rows.Add(rowAccountEmployeeExpenseSheetRow)
+            Return rowAccountEmployeeExpenseSheetRow
+        End Function
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public Function FindByAccountEmployeeExpenseSheetId(ByVal AccountEmployeeExpenseSheetId As System.Guid) As AccountEmployeeExpenseSheetRow
+            Return CType(Me.Rows.Find(New Object() {AccountEmployeeExpenseSheetId}),AccountEmployeeExpenseSheetRow)
+        End Function
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public Overrides Function Clone() As Global.System.Data.DataTable
+            Dim cln As AccountEmployeeExpenseSheetDataTable = CType(MyBase.Clone,AccountEmployeeExpenseSheetDataTable)
+            cln.InitVars
+            Return cln
+        End Function
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Protected Overrides Function CreateInstance() As Global.System.Data.DataTable
+            Return New AccountEmployeeExpenseSheetDataTable()
+        End Function
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Friend Sub InitVars()
+            Me.columnAccountEmployeeExpenseSheetId = MyBase.Columns("AccountEmployeeExpenseSheetId")
+            Me.columnAccountId = MyBase.Columns("AccountId")
+            Me.columnAccountEmployeeId = MyBase.Columns("AccountEmployeeId")
+            Me.columnDescription = MyBase.Columns("Description")
+            Me.columnExpenseSheetDate = MyBase.Columns("ExpenseSheetDate")
+            Me.columnApproved = MyBase.Columns("Approved")
+            Me.columnRejected = MyBase.Columns("Rejected")
+            Me.columnSubmitted = MyBase.Columns("Submitted")
+            Me.columnInApproval = MyBase.Columns("InApproval")
+            Me.columnCreatedByEmployeeId = MyBase.Columns("CreatedByEmployeeId")
+            Me.columnCreatedOn = MyBase.Columns("CreatedOn")
+            Me.columnModifiedByEmployeeId = MyBase.Columns("ModifiedByEmployeeId")
+            Me.columnModifiedOn = MyBase.Columns("ModifiedOn")
+            Me.columnSubmittedDate = MyBase.Columns("SubmittedDate")
+            Me.columnApprovedOn = MyBase.Columns("ApprovedOn")
+            Me.columnApprovedByEmployeeId = MyBase.Columns("ApprovedByEmployeeId")
+            Me.columnRejectedOn = MyBase.Columns("RejectedOn")
+            Me.columnRejectedByEmployeeId = MyBase.Columns("RejectedByEmployeeId")
+            Me.columnCustomField1 = MyBase.Columns("CustomField1")
+            Me.columnCustomField2 = MyBase.Columns("CustomField2")
+            Me.columnCustomField3 = MyBase.Columns("CustomField3")
+            Me.columnCustomField4 = MyBase.Columns("CustomField4")
+            Me.columnCustomField5 = MyBase.Columns("CustomField5")
+            Me.columnCustomField6 = MyBase.Columns("CustomField6")
+            Me.columnCustomField7 = MyBase.Columns("CustomField7")
+            Me.columnCustomField8 = MyBase.Columns("CustomField8")
+            Me.columnCustomField9 = MyBase.Columns("CustomField9")
+            Me.columnCustomField10 = MyBase.Columns("CustomField10")
+            Me.columnCustomField11 = MyBase.Columns("CustomField11")
+            Me.columnCustomField12 = MyBase.Columns("CustomField12")
+            Me.columnCustomField13 = MyBase.Columns("CustomField13")
+            Me.columnCustomField14 = MyBase.Columns("CustomField14")
+            Me.columnCustomField15 = MyBase.Columns("CustomField15")
+            Me.columnReimbursementCurrencyId = MyBase.Columns("ReimbursementCurrencyId")
+        End Sub
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Private Sub InitClass()
+            Me.columnAccountEmployeeExpenseSheetId = New Global.System.Data.DataColumn("AccountEmployeeExpenseSheetId", GetType(Global.System.Guid), Nothing, Global.System.Data.MappingType.Element)
+            MyBase.Columns.Add(Me.columnAccountEmployeeExpenseSheetId)
+            Me.columnAccountId = New Global.System.Data.DataColumn("AccountId", GetType(Integer), Nothing, Global.System.Data.MappingType.Element)
+            MyBase.Columns.Add(Me.columnAccountId)
+            Me.columnAccountEmployeeId = New Global.System.Data.DataColumn("AccountEmployeeId", GetType(Integer), Nothing, Global.System.Data.MappingType.Element)
+            MyBase.Columns.Add(Me.columnAccountEmployeeId)
+            Me.columnDescription = New Global.System.Data.DataColumn("Description", GetType(String), Nothing, Global.System.Data.MappingType.Element)
+            MyBase.Columns.Add(Me.columnDescription)
+            Me.columnExpenseSheetDate = New Global.System.Data.DataColumn("ExpenseSheetDate", GetType(Date), Nothing, Global.System.Data.MappingType.Element)
+            MyBase.Columns.Add(Me.columnExpenseSheetDate)
+            Me.columnApproved = New Global.System.Data.DataColumn("Approved", GetType(Boolean), Nothing, Global.System.Data.MappingType.Element)
+            MyBase.Columns.Add(Me.columnApproved)
+            Me.columnRejected = New Global.System.Data.DataColumn("Rejected", GetType(Boolean), Nothing, Global.System.Data.MappingType.Element)
+            MyBase.Columns.Add(Me.columnRejected)
+            Me.columnSubmitted = New Global.System.Data.DataColumn("Submitted", GetType(Boolean), Nothing, Global.System.Data.MappingType.Element)
+            MyBase.Columns.Add(Me.columnSubmitted)
+            Me.columnInApproval = New Global.System.Data.DataColumn("InApproval", GetType(Boolean), Nothing, Global.System.Data.MappingType.Element)
+            MyBase.Columns.Add(Me.columnInApproval)
+            Me.columnCreatedByEmployeeId = New Global.System.Data.DataColumn("CreatedByEmployeeId", GetType(Integer), Nothing, Global.System.Data.MappingType.Element)
+            MyBase.Columns.Add(Me.columnCreatedByEmployeeId)
+            Me.columnCreatedOn = New Global.System.Data.DataColumn("CreatedOn", GetType(Date), Nothing, Global.System.Data.MappingType.Element)
+            MyBase.Columns.Add(Me.columnCreatedOn)
+            Me.columnModifiedByEmployeeId = New Global.System.Data.DataColumn("ModifiedByEmployeeId", GetType(Integer), Nothing, Global.System.Data.MappingType.Element)
+            MyBase.Columns.Add(Me.columnModifiedByEmployeeId)
+            Me.columnModifiedOn = New Global.System.Data.DataColumn("ModifiedOn", GetType(Date), Nothing, Global.System.Data.MappingType.Element)
+            MyBase.Columns.Add(Me.columnModifiedOn)
+            Me.columnSubmittedDate = New Global.System.Data.DataColumn("SubmittedDate", GetType(Date), Nothing, Global.System.Data.MappingType.Element)
+            MyBase.Columns.Add(Me.columnSubmittedDate)
+            Me.columnApprovedOn = New Global.System.Data.DataColumn("ApprovedOn", GetType(Date), Nothing, Global.System.Data.MappingType.Element)
+            MyBase.Columns.Add(Me.columnApprovedOn)
+            Me.columnApprovedByEmployeeId = New Global.System.Data.DataColumn("ApprovedByEmployeeId", GetType(Integer), Nothing, Global.System.Data.MappingType.Element)
+            MyBase.Columns.Add(Me.columnApprovedByEmployeeId)
+            Me.columnRejectedOn = New Global.System.Data.DataColumn("RejectedOn", GetType(Date), Nothing, Global.System.Data.MappingType.Element)
+            MyBase.Columns.Add(Me.columnRejectedOn)
+            Me.columnRejectedByEmployeeId = New Global.System.Data.DataColumn("RejectedByEmployeeId", GetType(Integer), Nothing, Global.System.Data.MappingType.Element)
+            MyBase.Columns.Add(Me.columnRejectedByEmployeeId)
+            Me.columnCustomField1 = New Global.System.Data.DataColumn("CustomField1", GetType(String), Nothing, Global.System.Data.MappingType.Element)
+            MyBase.Columns.Add(Me.columnCustomField1)
+            Me.columnCustomField2 = New Global.System.Data.DataColumn("CustomField2", GetType(String), Nothing, Global.System.Data.MappingType.Element)
+            MyBase.Columns.Add(Me.columnCustomField2)
+            Me.columnCustomField3 = New Global.System.Data.DataColumn("CustomField3", GetType(String), Nothing, Global.System.Data.MappingType.Element)
+            MyBase.Columns.Add(Me.columnCustomField3)
+            Me.columnCustomField4 = New Global.System.Data.DataColumn("CustomField4", GetType(String), Nothing, Global.System.Data.MappingType.Element)
+            MyBase.Columns.Add(Me.columnCustomField4)
+            Me.columnCustomField5 = New Global.System.Data.DataColumn("CustomField5", GetType(String), Nothing, Global.System.Data.MappingType.Element)
+            MyBase.Columns.Add(Me.columnCustomField5)
+            Me.columnCustomField6 = New Global.System.Data.DataColumn("CustomField6", GetType(String), Nothing, Global.System.Data.MappingType.Element)
+            MyBase.Columns.Add(Me.columnCustomField6)
+            Me.columnCustomField7 = New Global.System.Data.DataColumn("CustomField7", GetType(String), Nothing, Global.System.Data.MappingType.Element)
+            MyBase.Columns.Add(Me.columnCustomField7)
+            Me.columnCustomField8 = New Global.System.Data.DataColumn("CustomField8", GetType(String), Nothing, Global.System.Data.MappingType.Element)
+            MyBase.Columns.Add(Me.columnCustomField8)
+            Me.columnCustomField9 = New Global.System.Data.DataColumn("CustomField9", GetType(String), Nothing, Global.System.Data.MappingType.Element)
+            MyBase.Columns.Add(Me.columnCustomField9)
+            Me.columnCustomField10 = New Global.System.Data.DataColumn("CustomField10", GetType(String), Nothing, Global.System.Data.MappingType.Element)
+            MyBase.Columns.Add(Me.columnCustomField10)
+            Me.columnCustomField11 = New Global.System.Data.DataColumn("CustomField11", GetType(String), Nothing, Global.System.Data.MappingType.Element)
+            MyBase.Columns.Add(Me.columnCustomField11)
+            Me.columnCustomField12 = New Global.System.Data.DataColumn("CustomField12", GetType(String), Nothing, Global.System.Data.MappingType.Element)
+            MyBase.Columns.Add(Me.columnCustomField12)
+            Me.columnCustomField13 = New Global.System.Data.DataColumn("CustomField13", GetType(String), Nothing, Global.System.Data.MappingType.Element)
+            MyBase.Columns.Add(Me.columnCustomField13)
+            Me.columnCustomField14 = New Global.System.Data.DataColumn("CustomField14", GetType(String), Nothing, Global.System.Data.MappingType.Element)
+            MyBase.Columns.Add(Me.columnCustomField14)
+            Me.columnCustomField15 = New Global.System.Data.DataColumn("CustomField15", GetType(String), Nothing, Global.System.Data.MappingType.Element)
+            MyBase.Columns.Add(Me.columnCustomField15)
+            Me.columnReimbursementCurrencyId = New Global.System.Data.DataColumn("ReimbursementCurrencyId", GetType(Integer), Nothing, Global.System.Data.MappingType.Element)
+            MyBase.Columns.Add(Me.columnReimbursementCurrencyId)
+            Me.Constraints.Add(New Global.System.Data.UniqueConstraint("Constraint1", New Global.System.Data.DataColumn() {Me.columnAccountEmployeeExpenseSheetId}, true))
+            Me.columnAccountEmployeeExpenseSheetId.AllowDBNull = false
+            Me.columnAccountEmployeeExpenseSheetId.Unique = true
+            Me.columnAccountId.AllowDBNull = false
+            Me.columnAccountEmployeeId.AllowDBNull = false
+            Me.columnDescription.AllowDBNull = false
+            Me.columnDescription.MaxLength = 500
+            Me.columnExpenseSheetDate.AllowDBNull = false
+            Me.columnApproved.AllowDBNull = false
+            Me.columnRejected.AllowDBNull = false
+            Me.columnSubmitted.AllowDBNull = false
+            Me.columnInApproval.AllowDBNull = false
+            Me.columnCustomField1.MaxLength = 2000
+            Me.columnCustomField2.MaxLength = 2000
+            Me.columnCustomField3.MaxLength = 2000
+            Me.columnCustomField4.MaxLength = 2000
+            Me.columnCustomField5.MaxLength = 2000
+            Me.columnCustomField6.MaxLength = 2000
+            Me.columnCustomField7.MaxLength = 2000
+            Me.columnCustomField8.MaxLength = 2000
+            Me.columnCustomField9.MaxLength = 2000
+            Me.columnCustomField10.MaxLength = 2000
+            Me.columnCustomField11.MaxLength = 2000
+            Me.columnCustomField12.MaxLength = 2000
+            Me.columnCustomField13.MaxLength = 2000
+            Me.columnCustomField14.MaxLength = 2000
+            Me.columnCustomField15.MaxLength = 2000
+        End Sub
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public Function NewAccountEmployeeExpenseSheetRow() As AccountEmployeeExpenseSheetRow
+            Return CType(Me.NewRow,AccountEmployeeExpenseSheetRow)
+        End Function
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Protected Overrides Function NewRowFromBuilder(ByVal builder As Global.System.Data.DataRowBuilder) As Global.System.Data.DataRow
+            Return New AccountEmployeeExpenseSheetRow(builder)
+        End Function
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Protected Overrides Function GetRowType() As Global.System.Type
+            Return GetType(AccountEmployeeExpenseSheetRow)
+        End Function
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Protected Overrides Sub OnRowChanged(ByVal e As Global.System.Data.DataRowChangeEventArgs)
+            MyBase.OnRowChanged(e)
+            If (Not (Me.AccountEmployeeExpenseSheetRowChangedEvent) Is Nothing) Then
+                RaiseEvent AccountEmployeeExpenseSheetRowChanged(Me, New AccountEmployeeExpenseSheetRowChangeEvent(CType(e.Row,AccountEmployeeExpenseSheetRow), e.Action))
+            End If
+        End Sub
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Protected Overrides Sub OnRowChanging(ByVal e As Global.System.Data.DataRowChangeEventArgs)
+            MyBase.OnRowChanging(e)
+            If (Not (Me.AccountEmployeeExpenseSheetRowChangingEvent) Is Nothing) Then
+                RaiseEvent AccountEmployeeExpenseSheetRowChanging(Me, New AccountEmployeeExpenseSheetRowChangeEvent(CType(e.Row,AccountEmployeeExpenseSheetRow), e.Action))
+            End If
+        End Sub
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Protected Overrides Sub OnRowDeleted(ByVal e As Global.System.Data.DataRowChangeEventArgs)
+            MyBase.OnRowDeleted(e)
+            If (Not (Me.AccountEmployeeExpenseSheetRowDeletedEvent) Is Nothing) Then
+                RaiseEvent AccountEmployeeExpenseSheetRowDeleted(Me, New AccountEmployeeExpenseSheetRowChangeEvent(CType(e.Row,AccountEmployeeExpenseSheetRow), e.Action))
+            End If
+        End Sub
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Protected Overrides Sub OnRowDeleting(ByVal e As Global.System.Data.DataRowChangeEventArgs)
+            MyBase.OnRowDeleting(e)
+            If (Not (Me.AccountEmployeeExpenseSheetRowDeletingEvent) Is Nothing) Then
+                RaiseEvent AccountEmployeeExpenseSheetRowDeleting(Me, New AccountEmployeeExpenseSheetRowChangeEvent(CType(e.Row,AccountEmployeeExpenseSheetRow), e.Action))
+            End If
+        End Sub
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public Sub RemoveAccountEmployeeExpenseSheetRow(ByVal row As AccountEmployeeExpenseSheetRow)
+            Me.Rows.Remove(row)
+        End Sub
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public Shared Function GetTypedTableSchema(ByVal xs As Global.System.Xml.Schema.XmlSchemaSet) As Global.System.Xml.Schema.XmlSchemaComplexType
+            Dim type As Global.System.Xml.Schema.XmlSchemaComplexType = New Global.System.Xml.Schema.XmlSchemaComplexType()
+            Dim sequence As Global.System.Xml.Schema.XmlSchemaSequence = New Global.System.Xml.Schema.XmlSchemaSequence()
+            Dim ds As TimeLiveDataSet = New TimeLiveDataSet()
+            Dim any1 As Global.System.Xml.Schema.XmlSchemaAny = New Global.System.Xml.Schema.XmlSchemaAny()
+            any1.Namespace = "http://www.w3.org/2001/XMLSchema"
+            any1.MinOccurs = New Decimal(0)
+            any1.MaxOccurs = Decimal.MaxValue
+            any1.ProcessContents = Global.System.Xml.Schema.XmlSchemaContentProcessing.Lax
+            sequence.Items.Add(any1)
+            Dim any2 As Global.System.Xml.Schema.XmlSchemaAny = New Global.System.Xml.Schema.XmlSchemaAny()
+            any2.Namespace = "urn:schemas-microsoft-com:xml-diffgram-v1"
+            any2.MinOccurs = New Decimal(1)
+            any2.ProcessContents = Global.System.Xml.Schema.XmlSchemaContentProcessing.Lax
+            sequence.Items.Add(any2)
+            Dim attribute1 As Global.System.Xml.Schema.XmlSchemaAttribute = New Global.System.Xml.Schema.XmlSchemaAttribute()
+            attribute1.Name = "namespace"
+            attribute1.FixedValue = ds.Namespace
+            type.Attributes.Add(attribute1)
+            Dim attribute2 As Global.System.Xml.Schema.XmlSchemaAttribute = New Global.System.Xml.Schema.XmlSchemaAttribute()
+            attribute2.Name = "tableTypeName"
+            attribute2.FixedValue = "AccountEmployeeExpenseSheetDataTable"
+            type.Attributes.Add(attribute2)
+            type.Particle = sequence
+            Dim dsSchema As Global.System.Xml.Schema.XmlSchema = ds.GetSchemaSerializable
+            If xs.Contains(dsSchema.TargetNamespace) Then
+                Dim s1 As Global.System.IO.MemoryStream = New Global.System.IO.MemoryStream()
+                Dim s2 As Global.System.IO.MemoryStream = New Global.System.IO.MemoryStream()
+                Try 
+                    Dim schema As Global.System.Xml.Schema.XmlSchema = Nothing
+                    dsSchema.Write(s1)
+                    Dim schemas As Global.System.Collections.IEnumerator = xs.Schemas(dsSchema.TargetNamespace).GetEnumerator
+                    Do While schemas.MoveNext
+                        schema = CType(schemas.Current,Global.System.Xml.Schema.XmlSchema)
+                        s2.SetLength(0)
+                        schema.Write(s2)
+                        If (s1.Length = s2.Length) Then
+                            s1.Position = 0
+                            s2.Position = 0
+                            
+                            Do While ((s1.Position <> s1.Length)  _
+                                        AndAlso (s1.ReadByte = s2.ReadByte))
+                                
+                                
+                            Loop
+                            If (s1.Position = s1.Length) Then
+                                Return type
+                            End If
+                        End If
+                        
+                    Loop
+                Finally
+                    If (Not (s1) Is Nothing) Then
+                        s1.Close
+                    End If
+                    If (Not (s2) Is Nothing) Then
+                        s2.Close
+                    End If
+                End Try
+            End If
+            xs.Add(dsSchema)
+            Return type
+        End Function
+    End Class
+    
+    '''<summary>
+    '''Represents the strongly named DataTable class.
+    '''</summary>
+    <Global.System.Serializable(),  _
+     Global.System.Xml.Serialization.XmlSchemaProviderAttribute("GetTypedTableSchema")>  _
     Partial Public Class AccountExpenseEntryDataTable
         Inherits Global.System.Data.TypedTableBase(Of AccountExpenseEntryRow)
         
@@ -3221,7 +4395,7 @@ Partial Public Class TimeLiveDataSet
                     ByVal AccountId As Integer,  _
                     ByVal AccountEmployeeId As Integer,  _
                     ByVal AccountProjectId As Integer,  _
-                    ByVal parentAccountExpenseRowByFK_AccountExpenseEntry_AccountExpense As AccountExpenseRow,  _
+                    ByVal AccountExpenseId As Integer,  _
                     ByVal Description As String,  _
                     ByVal Amount As Double,  _
                     ByVal TeamLeadApproved As Boolean,  _
@@ -3269,10 +4443,7 @@ Partial Public Class TimeLiveDataSet
                     ByVal CustomField15 As String,  _
                     ByVal AccountClientId As Integer) As AccountExpenseEntryRow
             Dim rowAccountExpenseEntryRow As AccountExpenseEntryRow = CType(Me.NewRow,AccountExpenseEntryRow)
-            Dim columnValuesArray() As Object = New Object() {Nothing, AccountExpenseEntryDate, AccountId, AccountEmployeeId, AccountProjectId, Nothing, Description, Amount, TeamLeadApproved, ProjectManagerApproved, AdministratorApproved, Approved, TimeSheetApprovalPathId, CreatedOn, CreatedByEmployeeId, ModifiedOn, ModifiedByEmployeeId, IsBillable, Rejected, Quantity, Rate, AmountBeforeTax, TaxAmount, Reimburse, AccountCurrencyId, AccountPaymentMethodId, AccountBaseCurrencyId, ExchangeRate, Submitted, AccountTaxZoneId, AccountTimeExpenseBillingExpenseId, Billed, Nothing, OldAccountExpenseEntryId, AccountProjectTaskId, IsEmailSend, CustomField1, CustomField2, CustomField3, CustomField4, CustomField5, CustomField6, CustomField7, CustomField8, CustomField9, CustomField10, CustomField11, CustomField12, CustomField13, CustomField14, CustomField15, AccountClientId}
-            If (Not (parentAccountExpenseRowByFK_AccountExpenseEntry_AccountExpense) Is Nothing) Then
-                columnValuesArray(5) = parentAccountExpenseRowByFK_AccountExpenseEntry_AccountExpense(0)
-            End If
+            Dim columnValuesArray() As Object = New Object() {Nothing, AccountExpenseEntryDate, AccountId, AccountEmployeeId, AccountProjectId, AccountExpenseId, Description, Amount, TeamLeadApproved, ProjectManagerApproved, AdministratorApproved, Approved, TimeSheetApprovalPathId, CreatedOn, CreatedByEmployeeId, ModifiedOn, ModifiedByEmployeeId, IsBillable, Rejected, Quantity, Rate, AmountBeforeTax, TaxAmount, Reimburse, AccountCurrencyId, AccountPaymentMethodId, AccountBaseCurrencyId, ExchangeRate, Submitted, AccountTaxZoneId, AccountTimeExpenseBillingExpenseId, Billed, Nothing, OldAccountExpenseEntryId, AccountProjectTaskId, IsEmailSend, CustomField1, CustomField2, CustomField3, CustomField4, CustomField5, CustomField6, CustomField7, CustomField8, CustomField9, CustomField10, CustomField11, CustomField12, CustomField13, CustomField14, CustomField15, AccountClientId}
             If (Not (parentAccountEmployeeExpenseSheetRowByFK_AccountExpenseEntry_AccountEmployeeExpenseSheet) Is Nothing) Then
                 columnValuesArray(32) = parentAccountEmployeeExpenseSheetRowByFK_AccountExpenseEntry_AccountEmployeeExpenseSheet(0)
             End If
@@ -3585,1171 +4756,6 @@ Partial Public Class TimeLiveDataSet
             Dim attribute2 As Global.System.Xml.Schema.XmlSchemaAttribute = New Global.System.Xml.Schema.XmlSchemaAttribute()
             attribute2.Name = "tableTypeName"
             attribute2.FixedValue = "AccountExpenseEntryDataTable"
-            type.Attributes.Add(attribute2)
-            type.Particle = sequence
-            Dim dsSchema As Global.System.Xml.Schema.XmlSchema = ds.GetSchemaSerializable
-            If xs.Contains(dsSchema.TargetNamespace) Then
-                Dim s1 As Global.System.IO.MemoryStream = New Global.System.IO.MemoryStream()
-                Dim s2 As Global.System.IO.MemoryStream = New Global.System.IO.MemoryStream()
-                Try 
-                    Dim schema As Global.System.Xml.Schema.XmlSchema = Nothing
-                    dsSchema.Write(s1)
-                    Dim schemas As Global.System.Collections.IEnumerator = xs.Schemas(dsSchema.TargetNamespace).GetEnumerator
-                    Do While schemas.MoveNext
-                        schema = CType(schemas.Current,Global.System.Xml.Schema.XmlSchema)
-                        s2.SetLength(0)
-                        schema.Write(s2)
-                        If (s1.Length = s2.Length) Then
-                            s1.Position = 0
-                            s2.Position = 0
-                            
-                            Do While ((s1.Position <> s1.Length)  _
-                                        AndAlso (s1.ReadByte = s2.ReadByte))
-                                
-                                
-                            Loop
-                            If (s1.Position = s1.Length) Then
-                                Return type
-                            End If
-                        End If
-                        
-                    Loop
-                Finally
-                    If (Not (s1) Is Nothing) Then
-                        s1.Close
-                    End If
-                    If (Not (s2) Is Nothing) Then
-                        s2.Close
-                    End If
-                End Try
-            End If
-            xs.Add(dsSchema)
-            Return type
-        End Function
-    End Class
-    
-    '''<summary>
-    '''Represents the strongly named DataTable class.
-    '''</summary>
-    <Global.System.Serializable(),  _
-     Global.System.Xml.Serialization.XmlSchemaProviderAttribute("GetTypedTableSchema")>  _
-    Partial Public Class AccountEmployeeExpenseSheetDataTable
-        Inherits Global.System.Data.TypedTableBase(Of AccountEmployeeExpenseSheetRow)
-        
-        Private columnAccountEmployeeExpenseSheetId As Global.System.Data.DataColumn
-        
-        Private columnAccountId As Global.System.Data.DataColumn
-        
-        Private columnAccountEmployeeId As Global.System.Data.DataColumn
-        
-        Private columnDescription As Global.System.Data.DataColumn
-        
-        Private columnExpenseSheetDate As Global.System.Data.DataColumn
-        
-        Private columnApproved As Global.System.Data.DataColumn
-        
-        Private columnRejected As Global.System.Data.DataColumn
-        
-        Private columnSubmitted As Global.System.Data.DataColumn
-        
-        Private columnInApproval As Global.System.Data.DataColumn
-        
-        Private columnCreatedByEmployeeId As Global.System.Data.DataColumn
-        
-        Private columnCreatedOn As Global.System.Data.DataColumn
-        
-        Private columnModifiedByEmployeeId As Global.System.Data.DataColumn
-        
-        Private columnModifiedOn As Global.System.Data.DataColumn
-        
-        Private columnSubmittedDate As Global.System.Data.DataColumn
-        
-        Private columnApprovedOn As Global.System.Data.DataColumn
-        
-        Private columnApprovedByEmployeeId As Global.System.Data.DataColumn
-        
-        Private columnRejectedOn As Global.System.Data.DataColumn
-        
-        Private columnRejectedByEmployeeId As Global.System.Data.DataColumn
-        
-        Private columnCustomField1 As Global.System.Data.DataColumn
-        
-        Private columnCustomField2 As Global.System.Data.DataColumn
-        
-        Private columnCustomField3 As Global.System.Data.DataColumn
-        
-        Private columnCustomField4 As Global.System.Data.DataColumn
-        
-        Private columnCustomField5 As Global.System.Data.DataColumn
-        
-        Private columnCustomField6 As Global.System.Data.DataColumn
-        
-        Private columnCustomField7 As Global.System.Data.DataColumn
-        
-        Private columnCustomField8 As Global.System.Data.DataColumn
-        
-        Private columnCustomField9 As Global.System.Data.DataColumn
-        
-        Private columnCustomField10 As Global.System.Data.DataColumn
-        
-        Private columnCustomField11 As Global.System.Data.DataColumn
-        
-        Private columnCustomField12 As Global.System.Data.DataColumn
-        
-        Private columnCustomField13 As Global.System.Data.DataColumn
-        
-        Private columnCustomField14 As Global.System.Data.DataColumn
-        
-        Private columnCustomField15 As Global.System.Data.DataColumn
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Public Sub New()
-            MyBase.New
-            Me.TableName = "AccountEmployeeExpenseSheet"
-            Me.BeginInit
-            Me.InitClass
-            Me.EndInit
-        End Sub
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Friend Sub New(ByVal table As Global.System.Data.DataTable)
-            MyBase.New
-            Me.TableName = table.TableName
-            If (table.CaseSensitive <> table.DataSet.CaseSensitive) Then
-                Me.CaseSensitive = table.CaseSensitive
-            End If
-            If (table.Locale.ToString <> table.DataSet.Locale.ToString) Then
-                Me.Locale = table.Locale
-            End If
-            If (table.Namespace <> table.DataSet.Namespace) Then
-                Me.Namespace = table.Namespace
-            End If
-            Me.Prefix = table.Prefix
-            Me.MinimumCapacity = table.MinimumCapacity
-        End Sub
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Protected Sub New(ByVal info As Global.System.Runtime.Serialization.SerializationInfo, ByVal context As Global.System.Runtime.Serialization.StreamingContext)
-            MyBase.New(info, context)
-            Me.InitVars
-        End Sub
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Public ReadOnly Property AccountEmployeeExpenseSheetIdColumn() As Global.System.Data.DataColumn
-            Get
-                Return Me.columnAccountEmployeeExpenseSheetId
-            End Get
-        End Property
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Public ReadOnly Property AccountIdColumn() As Global.System.Data.DataColumn
-            Get
-                Return Me.columnAccountId
-            End Get
-        End Property
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Public ReadOnly Property AccountEmployeeIdColumn() As Global.System.Data.DataColumn
-            Get
-                Return Me.columnAccountEmployeeId
-            End Get
-        End Property
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Public ReadOnly Property DescriptionColumn() As Global.System.Data.DataColumn
-            Get
-                Return Me.columnDescription
-            End Get
-        End Property
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Public ReadOnly Property ExpenseSheetDateColumn() As Global.System.Data.DataColumn
-            Get
-                Return Me.columnExpenseSheetDate
-            End Get
-        End Property
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Public ReadOnly Property ApprovedColumn() As Global.System.Data.DataColumn
-            Get
-                Return Me.columnApproved
-            End Get
-        End Property
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Public ReadOnly Property RejectedColumn() As Global.System.Data.DataColumn
-            Get
-                Return Me.columnRejected
-            End Get
-        End Property
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Public ReadOnly Property SubmittedColumn() As Global.System.Data.DataColumn
-            Get
-                Return Me.columnSubmitted
-            End Get
-        End Property
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Public ReadOnly Property InApprovalColumn() As Global.System.Data.DataColumn
-            Get
-                Return Me.columnInApproval
-            End Get
-        End Property
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Public ReadOnly Property CreatedByEmployeeIdColumn() As Global.System.Data.DataColumn
-            Get
-                Return Me.columnCreatedByEmployeeId
-            End Get
-        End Property
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Public ReadOnly Property CreatedOnColumn() As Global.System.Data.DataColumn
-            Get
-                Return Me.columnCreatedOn
-            End Get
-        End Property
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Public ReadOnly Property ModifiedByEmployeeIdColumn() As Global.System.Data.DataColumn
-            Get
-                Return Me.columnModifiedByEmployeeId
-            End Get
-        End Property
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Public ReadOnly Property ModifiedOnColumn() As Global.System.Data.DataColumn
-            Get
-                Return Me.columnModifiedOn
-            End Get
-        End Property
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Public ReadOnly Property SubmittedDateColumn() As Global.System.Data.DataColumn
-            Get
-                Return Me.columnSubmittedDate
-            End Get
-        End Property
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Public ReadOnly Property ApprovedOnColumn() As Global.System.Data.DataColumn
-            Get
-                Return Me.columnApprovedOn
-            End Get
-        End Property
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Public ReadOnly Property ApprovedByEmployeeIdColumn() As Global.System.Data.DataColumn
-            Get
-                Return Me.columnApprovedByEmployeeId
-            End Get
-        End Property
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Public ReadOnly Property RejectedOnColumn() As Global.System.Data.DataColumn
-            Get
-                Return Me.columnRejectedOn
-            End Get
-        End Property
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Public ReadOnly Property RejectedByEmployeeIdColumn() As Global.System.Data.DataColumn
-            Get
-                Return Me.columnRejectedByEmployeeId
-            End Get
-        End Property
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Public ReadOnly Property CustomField1Column() As Global.System.Data.DataColumn
-            Get
-                Return Me.columnCustomField1
-            End Get
-        End Property
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Public ReadOnly Property CustomField2Column() As Global.System.Data.DataColumn
-            Get
-                Return Me.columnCustomField2
-            End Get
-        End Property
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Public ReadOnly Property CustomField3Column() As Global.System.Data.DataColumn
-            Get
-                Return Me.columnCustomField3
-            End Get
-        End Property
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Public ReadOnly Property CustomField4Column() As Global.System.Data.DataColumn
-            Get
-                Return Me.columnCustomField4
-            End Get
-        End Property
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Public ReadOnly Property CustomField5Column() As Global.System.Data.DataColumn
-            Get
-                Return Me.columnCustomField5
-            End Get
-        End Property
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Public ReadOnly Property CustomField6Column() As Global.System.Data.DataColumn
-            Get
-                Return Me.columnCustomField6
-            End Get
-        End Property
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Public ReadOnly Property CustomField7Column() As Global.System.Data.DataColumn
-            Get
-                Return Me.columnCustomField7
-            End Get
-        End Property
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Public ReadOnly Property CustomField8Column() As Global.System.Data.DataColumn
-            Get
-                Return Me.columnCustomField8
-            End Get
-        End Property
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Public ReadOnly Property CustomField9Column() As Global.System.Data.DataColumn
-            Get
-                Return Me.columnCustomField9
-            End Get
-        End Property
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Public ReadOnly Property CustomField10Column() As Global.System.Data.DataColumn
-            Get
-                Return Me.columnCustomField10
-            End Get
-        End Property
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Public ReadOnly Property CustomField11Column() As Global.System.Data.DataColumn
-            Get
-                Return Me.columnCustomField11
-            End Get
-        End Property
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Public ReadOnly Property CustomField12Column() As Global.System.Data.DataColumn
-            Get
-                Return Me.columnCustomField12
-            End Get
-        End Property
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Public ReadOnly Property CustomField13Column() As Global.System.Data.DataColumn
-            Get
-                Return Me.columnCustomField13
-            End Get
-        End Property
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Public ReadOnly Property CustomField14Column() As Global.System.Data.DataColumn
-            Get
-                Return Me.columnCustomField14
-            End Get
-        End Property
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Public ReadOnly Property CustomField15Column() As Global.System.Data.DataColumn
-            Get
-                Return Me.columnCustomField15
-            End Get
-        End Property
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0"),  _
-         Global.System.ComponentModel.Browsable(false)>  _
-        Public ReadOnly Property Count() As Integer
-            Get
-                Return Me.Rows.Count
-            End Get
-        End Property
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Public Default ReadOnly Property Item(ByVal index As Integer) As AccountEmployeeExpenseSheetRow
-            Get
-                Return CType(Me.Rows(index),AccountEmployeeExpenseSheetRow)
-            End Get
-        End Property
-        
-        <Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Public Event AccountEmployeeExpenseSheetRowChanging As AccountEmployeeExpenseSheetRowChangeEventHandler
-        
-        <Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Public Event AccountEmployeeExpenseSheetRowChanged As AccountEmployeeExpenseSheetRowChangeEventHandler
-        
-        <Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Public Event AccountEmployeeExpenseSheetRowDeleting As AccountEmployeeExpenseSheetRowChangeEventHandler
-        
-        <Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Public Event AccountEmployeeExpenseSheetRowDeleted As AccountEmployeeExpenseSheetRowChangeEventHandler
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Public Overloads Sub AddAccountEmployeeExpenseSheetRow(ByVal row As AccountEmployeeExpenseSheetRow)
-            Me.Rows.Add(row)
-        End Sub
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Public Overloads Function AddAccountEmployeeExpenseSheetRow( _
-                    ByVal AccountEmployeeExpenseSheetId As System.Guid,  _
-                    ByVal AccountId As Integer,  _
-                    ByVal AccountEmployeeId As Integer,  _
-                    ByVal Description As String,  _
-                    ByVal ExpenseSheetDate As Date,  _
-                    ByVal Approved As Boolean,  _
-                    ByVal Rejected As Boolean,  _
-                    ByVal Submitted As Boolean,  _
-                    ByVal InApproval As Boolean,  _
-                    ByVal CreatedByEmployeeId As Integer,  _
-                    ByVal CreatedOn As Date,  _
-                    ByVal ModifiedByEmployeeId As Integer,  _
-                    ByVal ModifiedOn As Date,  _
-                    ByVal SubmittedDate As Date,  _
-                    ByVal ApprovedOn As Date,  _
-                    ByVal ApprovedByEmployeeId As Integer,  _
-                    ByVal RejectedOn As Date,  _
-                    ByVal RejectedByEmployeeId As Integer,  _
-                    ByVal CustomField1 As String,  _
-                    ByVal CustomField2 As String,  _
-                    ByVal CustomField3 As String,  _
-                    ByVal CustomField4 As String,  _
-                    ByVal CustomField5 As String,  _
-                    ByVal CustomField6 As String,  _
-                    ByVal CustomField7 As String,  _
-                    ByVal CustomField8 As String,  _
-                    ByVal CustomField9 As String,  _
-                    ByVal CustomField10 As String,  _
-                    ByVal CustomField11 As String,  _
-                    ByVal CustomField12 As String,  _
-                    ByVal CustomField13 As String,  _
-                    ByVal CustomField14 As String,  _
-                    ByVal CustomField15 As String) As AccountEmployeeExpenseSheetRow
-            Dim rowAccountEmployeeExpenseSheetRow As AccountEmployeeExpenseSheetRow = CType(Me.NewRow,AccountEmployeeExpenseSheetRow)
-            Dim columnValuesArray() As Object = New Object() {AccountEmployeeExpenseSheetId, AccountId, AccountEmployeeId, Description, ExpenseSheetDate, Approved, Rejected, Submitted, InApproval, CreatedByEmployeeId, CreatedOn, ModifiedByEmployeeId, ModifiedOn, SubmittedDate, ApprovedOn, ApprovedByEmployeeId, RejectedOn, RejectedByEmployeeId, CustomField1, CustomField2, CustomField3, CustomField4, CustomField5, CustomField6, CustomField7, CustomField8, CustomField9, CustomField10, CustomField11, CustomField12, CustomField13, CustomField14, CustomField15}
-            rowAccountEmployeeExpenseSheetRow.ItemArray = columnValuesArray
-            Me.Rows.Add(rowAccountEmployeeExpenseSheetRow)
-            Return rowAccountEmployeeExpenseSheetRow
-        End Function
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Public Function FindByAccountEmployeeExpenseSheetId(ByVal AccountEmployeeExpenseSheetId As System.Guid) As AccountEmployeeExpenseSheetRow
-            Return CType(Me.Rows.Find(New Object() {AccountEmployeeExpenseSheetId}),AccountEmployeeExpenseSheetRow)
-        End Function
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Public Overrides Function Clone() As Global.System.Data.DataTable
-            Dim cln As AccountEmployeeExpenseSheetDataTable = CType(MyBase.Clone,AccountEmployeeExpenseSheetDataTable)
-            cln.InitVars
-            Return cln
-        End Function
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Protected Overrides Function CreateInstance() As Global.System.Data.DataTable
-            Return New AccountEmployeeExpenseSheetDataTable()
-        End Function
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Friend Sub InitVars()
-            Me.columnAccountEmployeeExpenseSheetId = MyBase.Columns("AccountEmployeeExpenseSheetId")
-            Me.columnAccountId = MyBase.Columns("AccountId")
-            Me.columnAccountEmployeeId = MyBase.Columns("AccountEmployeeId")
-            Me.columnDescription = MyBase.Columns("Description")
-            Me.columnExpenseSheetDate = MyBase.Columns("ExpenseSheetDate")
-            Me.columnApproved = MyBase.Columns("Approved")
-            Me.columnRejected = MyBase.Columns("Rejected")
-            Me.columnSubmitted = MyBase.Columns("Submitted")
-            Me.columnInApproval = MyBase.Columns("InApproval")
-            Me.columnCreatedByEmployeeId = MyBase.Columns("CreatedByEmployeeId")
-            Me.columnCreatedOn = MyBase.Columns("CreatedOn")
-            Me.columnModifiedByEmployeeId = MyBase.Columns("ModifiedByEmployeeId")
-            Me.columnModifiedOn = MyBase.Columns("ModifiedOn")
-            Me.columnSubmittedDate = MyBase.Columns("SubmittedDate")
-            Me.columnApprovedOn = MyBase.Columns("ApprovedOn")
-            Me.columnApprovedByEmployeeId = MyBase.Columns("ApprovedByEmployeeId")
-            Me.columnRejectedOn = MyBase.Columns("RejectedOn")
-            Me.columnRejectedByEmployeeId = MyBase.Columns("RejectedByEmployeeId")
-            Me.columnCustomField1 = MyBase.Columns("CustomField1")
-            Me.columnCustomField2 = MyBase.Columns("CustomField2")
-            Me.columnCustomField3 = MyBase.Columns("CustomField3")
-            Me.columnCustomField4 = MyBase.Columns("CustomField4")
-            Me.columnCustomField5 = MyBase.Columns("CustomField5")
-            Me.columnCustomField6 = MyBase.Columns("CustomField6")
-            Me.columnCustomField7 = MyBase.Columns("CustomField7")
-            Me.columnCustomField8 = MyBase.Columns("CustomField8")
-            Me.columnCustomField9 = MyBase.Columns("CustomField9")
-            Me.columnCustomField10 = MyBase.Columns("CustomField10")
-            Me.columnCustomField11 = MyBase.Columns("CustomField11")
-            Me.columnCustomField12 = MyBase.Columns("CustomField12")
-            Me.columnCustomField13 = MyBase.Columns("CustomField13")
-            Me.columnCustomField14 = MyBase.Columns("CustomField14")
-            Me.columnCustomField15 = MyBase.Columns("CustomField15")
-        End Sub
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Private Sub InitClass()
-            Me.columnAccountEmployeeExpenseSheetId = New Global.System.Data.DataColumn("AccountEmployeeExpenseSheetId", GetType(Global.System.Guid), Nothing, Global.System.Data.MappingType.Element)
-            MyBase.Columns.Add(Me.columnAccountEmployeeExpenseSheetId)
-            Me.columnAccountId = New Global.System.Data.DataColumn("AccountId", GetType(Integer), Nothing, Global.System.Data.MappingType.Element)
-            MyBase.Columns.Add(Me.columnAccountId)
-            Me.columnAccountEmployeeId = New Global.System.Data.DataColumn("AccountEmployeeId", GetType(Integer), Nothing, Global.System.Data.MappingType.Element)
-            MyBase.Columns.Add(Me.columnAccountEmployeeId)
-            Me.columnDescription = New Global.System.Data.DataColumn("Description", GetType(String), Nothing, Global.System.Data.MappingType.Element)
-            MyBase.Columns.Add(Me.columnDescription)
-            Me.columnExpenseSheetDate = New Global.System.Data.DataColumn("ExpenseSheetDate", GetType(Date), Nothing, Global.System.Data.MappingType.Element)
-            MyBase.Columns.Add(Me.columnExpenseSheetDate)
-            Me.columnApproved = New Global.System.Data.DataColumn("Approved", GetType(Boolean), Nothing, Global.System.Data.MappingType.Element)
-            MyBase.Columns.Add(Me.columnApproved)
-            Me.columnRejected = New Global.System.Data.DataColumn("Rejected", GetType(Boolean), Nothing, Global.System.Data.MappingType.Element)
-            MyBase.Columns.Add(Me.columnRejected)
-            Me.columnSubmitted = New Global.System.Data.DataColumn("Submitted", GetType(Boolean), Nothing, Global.System.Data.MappingType.Element)
-            MyBase.Columns.Add(Me.columnSubmitted)
-            Me.columnInApproval = New Global.System.Data.DataColumn("InApproval", GetType(Boolean), Nothing, Global.System.Data.MappingType.Element)
-            MyBase.Columns.Add(Me.columnInApproval)
-            Me.columnCreatedByEmployeeId = New Global.System.Data.DataColumn("CreatedByEmployeeId", GetType(Integer), Nothing, Global.System.Data.MappingType.Element)
-            MyBase.Columns.Add(Me.columnCreatedByEmployeeId)
-            Me.columnCreatedOn = New Global.System.Data.DataColumn("CreatedOn", GetType(Date), Nothing, Global.System.Data.MappingType.Element)
-            MyBase.Columns.Add(Me.columnCreatedOn)
-            Me.columnModifiedByEmployeeId = New Global.System.Data.DataColumn("ModifiedByEmployeeId", GetType(Integer), Nothing, Global.System.Data.MappingType.Element)
-            MyBase.Columns.Add(Me.columnModifiedByEmployeeId)
-            Me.columnModifiedOn = New Global.System.Data.DataColumn("ModifiedOn", GetType(Date), Nothing, Global.System.Data.MappingType.Element)
-            MyBase.Columns.Add(Me.columnModifiedOn)
-            Me.columnSubmittedDate = New Global.System.Data.DataColumn("SubmittedDate", GetType(Date), Nothing, Global.System.Data.MappingType.Element)
-            MyBase.Columns.Add(Me.columnSubmittedDate)
-            Me.columnApprovedOn = New Global.System.Data.DataColumn("ApprovedOn", GetType(Date), Nothing, Global.System.Data.MappingType.Element)
-            MyBase.Columns.Add(Me.columnApprovedOn)
-            Me.columnApprovedByEmployeeId = New Global.System.Data.DataColumn("ApprovedByEmployeeId", GetType(Integer), Nothing, Global.System.Data.MappingType.Element)
-            MyBase.Columns.Add(Me.columnApprovedByEmployeeId)
-            Me.columnRejectedOn = New Global.System.Data.DataColumn("RejectedOn", GetType(Date), Nothing, Global.System.Data.MappingType.Element)
-            MyBase.Columns.Add(Me.columnRejectedOn)
-            Me.columnRejectedByEmployeeId = New Global.System.Data.DataColumn("RejectedByEmployeeId", GetType(Integer), Nothing, Global.System.Data.MappingType.Element)
-            MyBase.Columns.Add(Me.columnRejectedByEmployeeId)
-            Me.columnCustomField1 = New Global.System.Data.DataColumn("CustomField1", GetType(String), Nothing, Global.System.Data.MappingType.Element)
-            MyBase.Columns.Add(Me.columnCustomField1)
-            Me.columnCustomField2 = New Global.System.Data.DataColumn("CustomField2", GetType(String), Nothing, Global.System.Data.MappingType.Element)
-            MyBase.Columns.Add(Me.columnCustomField2)
-            Me.columnCustomField3 = New Global.System.Data.DataColumn("CustomField3", GetType(String), Nothing, Global.System.Data.MappingType.Element)
-            MyBase.Columns.Add(Me.columnCustomField3)
-            Me.columnCustomField4 = New Global.System.Data.DataColumn("CustomField4", GetType(String), Nothing, Global.System.Data.MappingType.Element)
-            MyBase.Columns.Add(Me.columnCustomField4)
-            Me.columnCustomField5 = New Global.System.Data.DataColumn("CustomField5", GetType(String), Nothing, Global.System.Data.MappingType.Element)
-            MyBase.Columns.Add(Me.columnCustomField5)
-            Me.columnCustomField6 = New Global.System.Data.DataColumn("CustomField6", GetType(String), Nothing, Global.System.Data.MappingType.Element)
-            MyBase.Columns.Add(Me.columnCustomField6)
-            Me.columnCustomField7 = New Global.System.Data.DataColumn("CustomField7", GetType(String), Nothing, Global.System.Data.MappingType.Element)
-            MyBase.Columns.Add(Me.columnCustomField7)
-            Me.columnCustomField8 = New Global.System.Data.DataColumn("CustomField8", GetType(String), Nothing, Global.System.Data.MappingType.Element)
-            MyBase.Columns.Add(Me.columnCustomField8)
-            Me.columnCustomField9 = New Global.System.Data.DataColumn("CustomField9", GetType(String), Nothing, Global.System.Data.MappingType.Element)
-            MyBase.Columns.Add(Me.columnCustomField9)
-            Me.columnCustomField10 = New Global.System.Data.DataColumn("CustomField10", GetType(String), Nothing, Global.System.Data.MappingType.Element)
-            MyBase.Columns.Add(Me.columnCustomField10)
-            Me.columnCustomField11 = New Global.System.Data.DataColumn("CustomField11", GetType(String), Nothing, Global.System.Data.MappingType.Element)
-            MyBase.Columns.Add(Me.columnCustomField11)
-            Me.columnCustomField12 = New Global.System.Data.DataColumn("CustomField12", GetType(String), Nothing, Global.System.Data.MappingType.Element)
-            MyBase.Columns.Add(Me.columnCustomField12)
-            Me.columnCustomField13 = New Global.System.Data.DataColumn("CustomField13", GetType(String), Nothing, Global.System.Data.MappingType.Element)
-            MyBase.Columns.Add(Me.columnCustomField13)
-            Me.columnCustomField14 = New Global.System.Data.DataColumn("CustomField14", GetType(String), Nothing, Global.System.Data.MappingType.Element)
-            MyBase.Columns.Add(Me.columnCustomField14)
-            Me.columnCustomField15 = New Global.System.Data.DataColumn("CustomField15", GetType(String), Nothing, Global.System.Data.MappingType.Element)
-            MyBase.Columns.Add(Me.columnCustomField15)
-            Me.Constraints.Add(New Global.System.Data.UniqueConstraint("Constraint1", New Global.System.Data.DataColumn() {Me.columnAccountEmployeeExpenseSheetId}, true))
-            Me.columnAccountEmployeeExpenseSheetId.AllowDBNull = false
-            Me.columnAccountEmployeeExpenseSheetId.Unique = true
-            Me.columnAccountId.AllowDBNull = false
-            Me.columnAccountEmployeeId.AllowDBNull = false
-            Me.columnDescription.AllowDBNull = false
-            Me.columnDescription.MaxLength = 500
-            Me.columnExpenseSheetDate.AllowDBNull = false
-            Me.columnApproved.AllowDBNull = false
-            Me.columnRejected.AllowDBNull = false
-            Me.columnSubmitted.AllowDBNull = false
-            Me.columnInApproval.AllowDBNull = false
-            Me.columnCustomField1.MaxLength = 2000
-            Me.columnCustomField2.MaxLength = 2000
-            Me.columnCustomField3.MaxLength = 2000
-            Me.columnCustomField4.MaxLength = 2000
-            Me.columnCustomField5.MaxLength = 2000
-            Me.columnCustomField6.MaxLength = 2000
-            Me.columnCustomField7.MaxLength = 2000
-            Me.columnCustomField8.MaxLength = 2000
-            Me.columnCustomField9.MaxLength = 2000
-            Me.columnCustomField10.MaxLength = 2000
-            Me.columnCustomField11.MaxLength = 2000
-            Me.columnCustomField12.MaxLength = 2000
-            Me.columnCustomField13.MaxLength = 2000
-            Me.columnCustomField14.MaxLength = 2000
-            Me.columnCustomField15.MaxLength = 2000
-        End Sub
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Public Function NewAccountEmployeeExpenseSheetRow() As AccountEmployeeExpenseSheetRow
-            Return CType(Me.NewRow,AccountEmployeeExpenseSheetRow)
-        End Function
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Protected Overrides Function NewRowFromBuilder(ByVal builder As Global.System.Data.DataRowBuilder) As Global.System.Data.DataRow
-            Return New AccountEmployeeExpenseSheetRow(builder)
-        End Function
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Protected Overrides Function GetRowType() As Global.System.Type
-            Return GetType(AccountEmployeeExpenseSheetRow)
-        End Function
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Protected Overrides Sub OnRowChanged(ByVal e As Global.System.Data.DataRowChangeEventArgs)
-            MyBase.OnRowChanged(e)
-            If (Not (Me.AccountEmployeeExpenseSheetRowChangedEvent) Is Nothing) Then
-                RaiseEvent AccountEmployeeExpenseSheetRowChanged(Me, New AccountEmployeeExpenseSheetRowChangeEvent(CType(e.Row,AccountEmployeeExpenseSheetRow), e.Action))
-            End If
-        End Sub
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Protected Overrides Sub OnRowChanging(ByVal e As Global.System.Data.DataRowChangeEventArgs)
-            MyBase.OnRowChanging(e)
-            If (Not (Me.AccountEmployeeExpenseSheetRowChangingEvent) Is Nothing) Then
-                RaiseEvent AccountEmployeeExpenseSheetRowChanging(Me, New AccountEmployeeExpenseSheetRowChangeEvent(CType(e.Row,AccountEmployeeExpenseSheetRow), e.Action))
-            End If
-        End Sub
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Protected Overrides Sub OnRowDeleted(ByVal e As Global.System.Data.DataRowChangeEventArgs)
-            MyBase.OnRowDeleted(e)
-            If (Not (Me.AccountEmployeeExpenseSheetRowDeletedEvent) Is Nothing) Then
-                RaiseEvent AccountEmployeeExpenseSheetRowDeleted(Me, New AccountEmployeeExpenseSheetRowChangeEvent(CType(e.Row,AccountEmployeeExpenseSheetRow), e.Action))
-            End If
-        End Sub
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Protected Overrides Sub OnRowDeleting(ByVal e As Global.System.Data.DataRowChangeEventArgs)
-            MyBase.OnRowDeleting(e)
-            If (Not (Me.AccountEmployeeExpenseSheetRowDeletingEvent) Is Nothing) Then
-                RaiseEvent AccountEmployeeExpenseSheetRowDeleting(Me, New AccountEmployeeExpenseSheetRowChangeEvent(CType(e.Row,AccountEmployeeExpenseSheetRow), e.Action))
-            End If
-        End Sub
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Public Sub RemoveAccountEmployeeExpenseSheetRow(ByVal row As AccountEmployeeExpenseSheetRow)
-            Me.Rows.Remove(row)
-        End Sub
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Public Shared Function GetTypedTableSchema(ByVal xs As Global.System.Xml.Schema.XmlSchemaSet) As Global.System.Xml.Schema.XmlSchemaComplexType
-            Dim type As Global.System.Xml.Schema.XmlSchemaComplexType = New Global.System.Xml.Schema.XmlSchemaComplexType()
-            Dim sequence As Global.System.Xml.Schema.XmlSchemaSequence = New Global.System.Xml.Schema.XmlSchemaSequence()
-            Dim ds As TimeLiveDataSet = New TimeLiveDataSet()
-            Dim any1 As Global.System.Xml.Schema.XmlSchemaAny = New Global.System.Xml.Schema.XmlSchemaAny()
-            any1.Namespace = "http://www.w3.org/2001/XMLSchema"
-            any1.MinOccurs = New Decimal(0)
-            any1.MaxOccurs = Decimal.MaxValue
-            any1.ProcessContents = Global.System.Xml.Schema.XmlSchemaContentProcessing.Lax
-            sequence.Items.Add(any1)
-            Dim any2 As Global.System.Xml.Schema.XmlSchemaAny = New Global.System.Xml.Schema.XmlSchemaAny()
-            any2.Namespace = "urn:schemas-microsoft-com:xml-diffgram-v1"
-            any2.MinOccurs = New Decimal(1)
-            any2.ProcessContents = Global.System.Xml.Schema.XmlSchemaContentProcessing.Lax
-            sequence.Items.Add(any2)
-            Dim attribute1 As Global.System.Xml.Schema.XmlSchemaAttribute = New Global.System.Xml.Schema.XmlSchemaAttribute()
-            attribute1.Name = "namespace"
-            attribute1.FixedValue = ds.Namespace
-            type.Attributes.Add(attribute1)
-            Dim attribute2 As Global.System.Xml.Schema.XmlSchemaAttribute = New Global.System.Xml.Schema.XmlSchemaAttribute()
-            attribute2.Name = "tableTypeName"
-            attribute2.FixedValue = "AccountEmployeeExpenseSheetDataTable"
-            type.Attributes.Add(attribute2)
-            type.Particle = sequence
-            Dim dsSchema As Global.System.Xml.Schema.XmlSchema = ds.GetSchemaSerializable
-            If xs.Contains(dsSchema.TargetNamespace) Then
-                Dim s1 As Global.System.IO.MemoryStream = New Global.System.IO.MemoryStream()
-                Dim s2 As Global.System.IO.MemoryStream = New Global.System.IO.MemoryStream()
-                Try 
-                    Dim schema As Global.System.Xml.Schema.XmlSchema = Nothing
-                    dsSchema.Write(s1)
-                    Dim schemas As Global.System.Collections.IEnumerator = xs.Schemas(dsSchema.TargetNamespace).GetEnumerator
-                    Do While schemas.MoveNext
-                        schema = CType(schemas.Current,Global.System.Xml.Schema.XmlSchema)
-                        s2.SetLength(0)
-                        schema.Write(s2)
-                        If (s1.Length = s2.Length) Then
-                            s1.Position = 0
-                            s2.Position = 0
-                            
-                            Do While ((s1.Position <> s1.Length)  _
-                                        AndAlso (s1.ReadByte = s2.ReadByte))
-                                
-                                
-                            Loop
-                            If (s1.Position = s1.Length) Then
-                                Return type
-                            End If
-                        End If
-                        
-                    Loop
-                Finally
-                    If (Not (s1) Is Nothing) Then
-                        s1.Close
-                    End If
-                    If (Not (s2) Is Nothing) Then
-                        s2.Close
-                    End If
-                End Try
-            End If
-            xs.Add(dsSchema)
-            Return type
-        End Function
-    End Class
-    
-    '''<summary>
-    '''Represents the strongly named DataTable class.
-    '''</summary>
-    <Global.System.Serializable(),  _
-     Global.System.Xml.Serialization.XmlSchemaProviderAttribute("GetTypedTableSchema")>  _
-    Partial Public Class AccountExpenseDataTable
-        Inherits Global.System.Data.TypedTableBase(Of AccountExpenseRow)
-        
-        Private columnAccountExpenseId As Global.System.Data.DataColumn
-        
-        Private columnAccountExpenseName As Global.System.Data.DataColumn
-        
-        Private columnAccountExpenseTypeId As Global.System.Data.DataColumn
-        
-        Private columnIsBillable As Global.System.Data.DataColumn
-        
-        Private columnAccountId As Global.System.Data.DataColumn
-        
-        Private columnCreatedOn As Global.System.Data.DataColumn
-        
-        Private columnCreatedByEmployeeId As Global.System.Data.DataColumn
-        
-        Private columnModifiedOn As Global.System.Data.DataColumn
-        
-        Private columnModifiedByEmployeeId As Global.System.Data.DataColumn
-        
-        Private columnIsDisabled As Global.System.Data.DataColumn
-        
-        Private columnDefaultExpenseRate As Global.System.Data.DataColumn
-        
-        Private columnDisabledEditingOfRate As Global.System.Data.DataColumn
-        
-        Private columnMasterAccountExpenseId As Global.System.Data.DataColumn
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Public Sub New()
-            MyBase.New
-            Me.TableName = "AccountExpense"
-            Me.BeginInit
-            Me.InitClass
-            Me.EndInit
-        End Sub
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Friend Sub New(ByVal table As Global.System.Data.DataTable)
-            MyBase.New
-            Me.TableName = table.TableName
-            If (table.CaseSensitive <> table.DataSet.CaseSensitive) Then
-                Me.CaseSensitive = table.CaseSensitive
-            End If
-            If (table.Locale.ToString <> table.DataSet.Locale.ToString) Then
-                Me.Locale = table.Locale
-            End If
-            If (table.Namespace <> table.DataSet.Namespace) Then
-                Me.Namespace = table.Namespace
-            End If
-            Me.Prefix = table.Prefix
-            Me.MinimumCapacity = table.MinimumCapacity
-        End Sub
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Protected Sub New(ByVal info As Global.System.Runtime.Serialization.SerializationInfo, ByVal context As Global.System.Runtime.Serialization.StreamingContext)
-            MyBase.New(info, context)
-            Me.InitVars
-        End Sub
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Public ReadOnly Property AccountExpenseIdColumn() As Global.System.Data.DataColumn
-            Get
-                Return Me.columnAccountExpenseId
-            End Get
-        End Property
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Public ReadOnly Property AccountExpenseNameColumn() As Global.System.Data.DataColumn
-            Get
-                Return Me.columnAccountExpenseName
-            End Get
-        End Property
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Public ReadOnly Property AccountExpenseTypeIdColumn() As Global.System.Data.DataColumn
-            Get
-                Return Me.columnAccountExpenseTypeId
-            End Get
-        End Property
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Public ReadOnly Property IsBillableColumn() As Global.System.Data.DataColumn
-            Get
-                Return Me.columnIsBillable
-            End Get
-        End Property
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Public ReadOnly Property AccountIdColumn() As Global.System.Data.DataColumn
-            Get
-                Return Me.columnAccountId
-            End Get
-        End Property
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Public ReadOnly Property CreatedOnColumn() As Global.System.Data.DataColumn
-            Get
-                Return Me.columnCreatedOn
-            End Get
-        End Property
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Public ReadOnly Property CreatedByEmployeeIdColumn() As Global.System.Data.DataColumn
-            Get
-                Return Me.columnCreatedByEmployeeId
-            End Get
-        End Property
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Public ReadOnly Property ModifiedOnColumn() As Global.System.Data.DataColumn
-            Get
-                Return Me.columnModifiedOn
-            End Get
-        End Property
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Public ReadOnly Property ModifiedByEmployeeIdColumn() As Global.System.Data.DataColumn
-            Get
-                Return Me.columnModifiedByEmployeeId
-            End Get
-        End Property
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Public ReadOnly Property IsDisabledColumn() As Global.System.Data.DataColumn
-            Get
-                Return Me.columnIsDisabled
-            End Get
-        End Property
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Public ReadOnly Property DefaultExpenseRateColumn() As Global.System.Data.DataColumn
-            Get
-                Return Me.columnDefaultExpenseRate
-            End Get
-        End Property
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Public ReadOnly Property DisabledEditingOfRateColumn() As Global.System.Data.DataColumn
-            Get
-                Return Me.columnDisabledEditingOfRate
-            End Get
-        End Property
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Public ReadOnly Property MasterAccountExpenseIdColumn() As Global.System.Data.DataColumn
-            Get
-                Return Me.columnMasterAccountExpenseId
-            End Get
-        End Property
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0"),  _
-         Global.System.ComponentModel.Browsable(false)>  _
-        Public ReadOnly Property Count() As Integer
-            Get
-                Return Me.Rows.Count
-            End Get
-        End Property
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Public Default ReadOnly Property Item(ByVal index As Integer) As AccountExpenseRow
-            Get
-                Return CType(Me.Rows(index),AccountExpenseRow)
-            End Get
-        End Property
-        
-        <Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Public Event AccountExpenseRowChanging As AccountExpenseRowChangeEventHandler
-        
-        <Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Public Event AccountExpenseRowChanged As AccountExpenseRowChangeEventHandler
-        
-        <Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Public Event AccountExpenseRowDeleting As AccountExpenseRowChangeEventHandler
-        
-        <Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Public Event AccountExpenseRowDeleted As AccountExpenseRowChangeEventHandler
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Public Overloads Sub AddAccountExpenseRow(ByVal row As AccountExpenseRow)
-            Me.Rows.Add(row)
-        End Sub
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Public Overloads Function AddAccountExpenseRow(ByVal AccountExpenseName As String, ByVal AccountExpenseTypeId As Integer, ByVal IsBillable As Boolean, ByVal AccountId As Integer, ByVal CreatedOn As Date, ByVal CreatedByEmployeeId As Integer, ByVal ModifiedOn As Date, ByVal ModifiedByEmployeeId As Integer, ByVal IsDisabled As Boolean, ByVal DefaultExpenseRate As Double, ByVal DisabledEditingOfRate As Boolean, ByVal MasterAccountExpenseId As Short) As AccountExpenseRow
-            Dim rowAccountExpenseRow As AccountExpenseRow = CType(Me.NewRow,AccountExpenseRow)
-            Dim columnValuesArray() As Object = New Object() {Nothing, AccountExpenseName, AccountExpenseTypeId, IsBillable, AccountId, CreatedOn, CreatedByEmployeeId, ModifiedOn, ModifiedByEmployeeId, IsDisabled, DefaultExpenseRate, DisabledEditingOfRate, MasterAccountExpenseId}
-            rowAccountExpenseRow.ItemArray = columnValuesArray
-            Me.Rows.Add(rowAccountExpenseRow)
-            Return rowAccountExpenseRow
-        End Function
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Public Function FindByAccountExpenseId(ByVal AccountExpenseId As Integer) As AccountExpenseRow
-            Return CType(Me.Rows.Find(New Object() {AccountExpenseId}),AccountExpenseRow)
-        End Function
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Public Overrides Function Clone() As Global.System.Data.DataTable
-            Dim cln As AccountExpenseDataTable = CType(MyBase.Clone,AccountExpenseDataTable)
-            cln.InitVars
-            Return cln
-        End Function
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Protected Overrides Function CreateInstance() As Global.System.Data.DataTable
-            Return New AccountExpenseDataTable()
-        End Function
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Friend Sub InitVars()
-            Me.columnAccountExpenseId = MyBase.Columns("AccountExpenseId")
-            Me.columnAccountExpenseName = MyBase.Columns("AccountExpenseName")
-            Me.columnAccountExpenseTypeId = MyBase.Columns("AccountExpenseTypeId")
-            Me.columnIsBillable = MyBase.Columns("IsBillable")
-            Me.columnAccountId = MyBase.Columns("AccountId")
-            Me.columnCreatedOn = MyBase.Columns("CreatedOn")
-            Me.columnCreatedByEmployeeId = MyBase.Columns("CreatedByEmployeeId")
-            Me.columnModifiedOn = MyBase.Columns("ModifiedOn")
-            Me.columnModifiedByEmployeeId = MyBase.Columns("ModifiedByEmployeeId")
-            Me.columnIsDisabled = MyBase.Columns("IsDisabled")
-            Me.columnDefaultExpenseRate = MyBase.Columns("DefaultExpenseRate")
-            Me.columnDisabledEditingOfRate = MyBase.Columns("DisabledEditingOfRate")
-            Me.columnMasterAccountExpenseId = MyBase.Columns("MasterAccountExpenseId")
-        End Sub
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Private Sub InitClass()
-            Me.columnAccountExpenseId = New Global.System.Data.DataColumn("AccountExpenseId", GetType(Integer), Nothing, Global.System.Data.MappingType.Element)
-            MyBase.Columns.Add(Me.columnAccountExpenseId)
-            Me.columnAccountExpenseName = New Global.System.Data.DataColumn("AccountExpenseName", GetType(String), Nothing, Global.System.Data.MappingType.Element)
-            MyBase.Columns.Add(Me.columnAccountExpenseName)
-            Me.columnAccountExpenseTypeId = New Global.System.Data.DataColumn("AccountExpenseTypeId", GetType(Integer), Nothing, Global.System.Data.MappingType.Element)
-            MyBase.Columns.Add(Me.columnAccountExpenseTypeId)
-            Me.columnIsBillable = New Global.System.Data.DataColumn("IsBillable", GetType(Boolean), Nothing, Global.System.Data.MappingType.Element)
-            MyBase.Columns.Add(Me.columnIsBillable)
-            Me.columnAccountId = New Global.System.Data.DataColumn("AccountId", GetType(Integer), Nothing, Global.System.Data.MappingType.Element)
-            MyBase.Columns.Add(Me.columnAccountId)
-            Me.columnCreatedOn = New Global.System.Data.DataColumn("CreatedOn", GetType(Date), Nothing, Global.System.Data.MappingType.Element)
-            MyBase.Columns.Add(Me.columnCreatedOn)
-            Me.columnCreatedByEmployeeId = New Global.System.Data.DataColumn("CreatedByEmployeeId", GetType(Integer), Nothing, Global.System.Data.MappingType.Element)
-            MyBase.Columns.Add(Me.columnCreatedByEmployeeId)
-            Me.columnModifiedOn = New Global.System.Data.DataColumn("ModifiedOn", GetType(Date), Nothing, Global.System.Data.MappingType.Element)
-            MyBase.Columns.Add(Me.columnModifiedOn)
-            Me.columnModifiedByEmployeeId = New Global.System.Data.DataColumn("ModifiedByEmployeeId", GetType(Integer), Nothing, Global.System.Data.MappingType.Element)
-            MyBase.Columns.Add(Me.columnModifiedByEmployeeId)
-            Me.columnIsDisabled = New Global.System.Data.DataColumn("IsDisabled", GetType(Boolean), Nothing, Global.System.Data.MappingType.Element)
-            MyBase.Columns.Add(Me.columnIsDisabled)
-            Me.columnDefaultExpenseRate = New Global.System.Data.DataColumn("DefaultExpenseRate", GetType(Double), Nothing, Global.System.Data.MappingType.Element)
-            MyBase.Columns.Add(Me.columnDefaultExpenseRate)
-            Me.columnDisabledEditingOfRate = New Global.System.Data.DataColumn("DisabledEditingOfRate", GetType(Boolean), Nothing, Global.System.Data.MappingType.Element)
-            MyBase.Columns.Add(Me.columnDisabledEditingOfRate)
-            Me.columnMasterAccountExpenseId = New Global.System.Data.DataColumn("MasterAccountExpenseId", GetType(Short), Nothing, Global.System.Data.MappingType.Element)
-            MyBase.Columns.Add(Me.columnMasterAccountExpenseId)
-            Me.Constraints.Add(New Global.System.Data.UniqueConstraint("Constraint1", New Global.System.Data.DataColumn() {Me.columnAccountExpenseId}, true))
-            Me.columnAccountExpenseId.AutoIncrement = true
-            Me.columnAccountExpenseId.AutoIncrementSeed = -1
-            Me.columnAccountExpenseId.AutoIncrementStep = -1
-            Me.columnAccountExpenseId.AllowDBNull = false
-            Me.columnAccountExpenseId.ReadOnly = true
-            Me.columnAccountExpenseId.Unique = true
-            Me.columnAccountExpenseName.AllowDBNull = false
-            Me.columnAccountExpenseName.MaxLength = 200
-            Me.columnAccountExpenseTypeId.AllowDBNull = false
-            Me.columnAccountId.AllowDBNull = false
-            Me.columnCreatedOn.AllowDBNull = false
-            Me.columnCreatedByEmployeeId.AllowDBNull = false
-            Me.columnModifiedOn.AllowDBNull = false
-            Me.columnModifiedByEmployeeId.AllowDBNull = false
-            Me.columnIsDisabled.AllowDBNull = false
-            Me.columnDisabledEditingOfRate.AllowDBNull = false
-        End Sub
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Public Function NewAccountExpenseRow() As AccountExpenseRow
-            Return CType(Me.NewRow,AccountExpenseRow)
-        End Function
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Protected Overrides Function NewRowFromBuilder(ByVal builder As Global.System.Data.DataRowBuilder) As Global.System.Data.DataRow
-            Return New AccountExpenseRow(builder)
-        End Function
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Protected Overrides Function GetRowType() As Global.System.Type
-            Return GetType(AccountExpenseRow)
-        End Function
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Protected Overrides Sub OnRowChanged(ByVal e As Global.System.Data.DataRowChangeEventArgs)
-            MyBase.OnRowChanged(e)
-            If (Not (Me.AccountExpenseRowChangedEvent) Is Nothing) Then
-                RaiseEvent AccountExpenseRowChanged(Me, New AccountExpenseRowChangeEvent(CType(e.Row,AccountExpenseRow), e.Action))
-            End If
-        End Sub
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Protected Overrides Sub OnRowChanging(ByVal e As Global.System.Data.DataRowChangeEventArgs)
-            MyBase.OnRowChanging(e)
-            If (Not (Me.AccountExpenseRowChangingEvent) Is Nothing) Then
-                RaiseEvent AccountExpenseRowChanging(Me, New AccountExpenseRowChangeEvent(CType(e.Row,AccountExpenseRow), e.Action))
-            End If
-        End Sub
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Protected Overrides Sub OnRowDeleted(ByVal e As Global.System.Data.DataRowChangeEventArgs)
-            MyBase.OnRowDeleted(e)
-            If (Not (Me.AccountExpenseRowDeletedEvent) Is Nothing) Then
-                RaiseEvent AccountExpenseRowDeleted(Me, New AccountExpenseRowChangeEvent(CType(e.Row,AccountExpenseRow), e.Action))
-            End If
-        End Sub
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Protected Overrides Sub OnRowDeleting(ByVal e As Global.System.Data.DataRowChangeEventArgs)
-            MyBase.OnRowDeleting(e)
-            If (Not (Me.AccountExpenseRowDeletingEvent) Is Nothing) Then
-                RaiseEvent AccountExpenseRowDeleting(Me, New AccountExpenseRowChangeEvent(CType(e.Row,AccountExpenseRow), e.Action))
-            End If
-        End Sub
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Public Sub RemoveAccountExpenseRow(ByVal row As AccountExpenseRow)
-            Me.Rows.Remove(row)
-        End Sub
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Public Shared Function GetTypedTableSchema(ByVal xs As Global.System.Xml.Schema.XmlSchemaSet) As Global.System.Xml.Schema.XmlSchemaComplexType
-            Dim type As Global.System.Xml.Schema.XmlSchemaComplexType = New Global.System.Xml.Schema.XmlSchemaComplexType()
-            Dim sequence As Global.System.Xml.Schema.XmlSchemaSequence = New Global.System.Xml.Schema.XmlSchemaSequence()
-            Dim ds As TimeLiveDataSet = New TimeLiveDataSet()
-            Dim any1 As Global.System.Xml.Schema.XmlSchemaAny = New Global.System.Xml.Schema.XmlSchemaAny()
-            any1.Namespace = "http://www.w3.org/2001/XMLSchema"
-            any1.MinOccurs = New Decimal(0)
-            any1.MaxOccurs = Decimal.MaxValue
-            any1.ProcessContents = Global.System.Xml.Schema.XmlSchemaContentProcessing.Lax
-            sequence.Items.Add(any1)
-            Dim any2 As Global.System.Xml.Schema.XmlSchemaAny = New Global.System.Xml.Schema.XmlSchemaAny()
-            any2.Namespace = "urn:schemas-microsoft-com:xml-diffgram-v1"
-            any2.MinOccurs = New Decimal(1)
-            any2.ProcessContents = Global.System.Xml.Schema.XmlSchemaContentProcessing.Lax
-            sequence.Items.Add(any2)
-            Dim attribute1 As Global.System.Xml.Schema.XmlSchemaAttribute = New Global.System.Xml.Schema.XmlSchemaAttribute()
-            attribute1.Name = "namespace"
-            attribute1.FixedValue = ds.Namespace
-            type.Attributes.Add(attribute1)
-            Dim attribute2 As Global.System.Xml.Schema.XmlSchemaAttribute = New Global.System.Xml.Schema.XmlSchemaAttribute()
-            attribute2.Name = "tableTypeName"
-            attribute2.FixedValue = "AccountExpenseDataTable"
             type.Attributes.Add(attribute2)
             type.Particle = sequence
             Dim dsSchema As Global.System.Xml.Schema.XmlSchema = ds.GetSchemaSerializable
@@ -6508,6 +6514,1039 @@ Partial Public Class TimeLiveDataSet
     '''<summary>
     '''Represents strongly named DataRow class.
     '''</summary>
+    Partial Public Class AccountExpenseRow
+        Inherits Global.System.Data.DataRow
+        
+        Private tableAccountExpense As AccountExpenseDataTable
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Friend Sub New(ByVal rb As Global.System.Data.DataRowBuilder)
+            MyBase.New(rb)
+            Me.tableAccountExpense = CType(Me.Table,AccountExpenseDataTable)
+        End Sub
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public Property AccountExpenseId() As Integer
+            Get
+                Return CType(Me(Me.tableAccountExpense.AccountExpenseIdColumn),Integer)
+            End Get
+            Set
+                Me(Me.tableAccountExpense.AccountExpenseIdColumn) = value
+            End Set
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public Property AccountExpenseName() As String
+            Get
+                Return CType(Me(Me.tableAccountExpense.AccountExpenseNameColumn),String)
+            End Get
+            Set
+                Me(Me.tableAccountExpense.AccountExpenseNameColumn) = value
+            End Set
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public Property AccountExpenseTypeId() As Integer
+            Get
+                Return CType(Me(Me.tableAccountExpense.AccountExpenseTypeIdColumn),Integer)
+            End Get
+            Set
+                Me(Me.tableAccountExpense.AccountExpenseTypeIdColumn) = value
+            End Set
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public Property IsBillable() As Boolean
+            Get
+                Try 
+                    Return CType(Me(Me.tableAccountExpense.IsBillableColumn),Boolean)
+                Catch e As Global.System.InvalidCastException
+                    Throw New Global.System.Data.StrongTypingException("The value for column 'IsBillable' in table 'AccountExpense' is DBNull.", e)
+                End Try
+            End Get
+            Set
+                Me(Me.tableAccountExpense.IsBillableColumn) = value
+            End Set
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public Property AccountId() As Integer
+            Get
+                Return CType(Me(Me.tableAccountExpense.AccountIdColumn),Integer)
+            End Get
+            Set
+                Me(Me.tableAccountExpense.AccountIdColumn) = value
+            End Set
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public Property CreatedOn() As Date
+            Get
+                Return CType(Me(Me.tableAccountExpense.CreatedOnColumn),Date)
+            End Get
+            Set
+                Me(Me.tableAccountExpense.CreatedOnColumn) = value
+            End Set
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public Property CreatedByEmployeeId() As Integer
+            Get
+                Return CType(Me(Me.tableAccountExpense.CreatedByEmployeeIdColumn),Integer)
+            End Get
+            Set
+                Me(Me.tableAccountExpense.CreatedByEmployeeIdColumn) = value
+            End Set
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public Property ModifiedOn() As Date
+            Get
+                Return CType(Me(Me.tableAccountExpense.ModifiedOnColumn),Date)
+            End Get
+            Set
+                Me(Me.tableAccountExpense.ModifiedOnColumn) = value
+            End Set
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public Property ModifiedByEmployeeId() As Integer
+            Get
+                Return CType(Me(Me.tableAccountExpense.ModifiedByEmployeeIdColumn),Integer)
+            End Get
+            Set
+                Me(Me.tableAccountExpense.ModifiedByEmployeeIdColumn) = value
+            End Set
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public Property IsDisabled() As Boolean
+            Get
+                Return CType(Me(Me.tableAccountExpense.IsDisabledColumn),Boolean)
+            End Get
+            Set
+                Me(Me.tableAccountExpense.IsDisabledColumn) = value
+            End Set
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public Property DefaultExpenseRate() As Double
+            Get
+                Try 
+                    Return CType(Me(Me.tableAccountExpense.DefaultExpenseRateColumn),Double)
+                Catch e As Global.System.InvalidCastException
+                    Throw New Global.System.Data.StrongTypingException("The value for column 'DefaultExpenseRate' in table 'AccountExpense' is DBNull.", e)
+                End Try
+            End Get
+            Set
+                Me(Me.tableAccountExpense.DefaultExpenseRateColumn) = value
+            End Set
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public Property DisabledEditingOfRate() As Boolean
+            Get
+                Return CType(Me(Me.tableAccountExpense.DisabledEditingOfRateColumn),Boolean)
+            End Get
+            Set
+                Me(Me.tableAccountExpense.DisabledEditingOfRateColumn) = value
+            End Set
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public Property MasterAccountExpenseId() As Short
+            Get
+                Try 
+                    Return CType(Me(Me.tableAccountExpense.MasterAccountExpenseIdColumn),Short)
+                Catch e As Global.System.InvalidCastException
+                    Throw New Global.System.Data.StrongTypingException("The value for column 'MasterAccountExpenseId' in table 'AccountExpense' is DBNull"& _ 
+                            ".", e)
+                End Try
+            End Get
+            Set
+                Me(Me.tableAccountExpense.MasterAccountExpenseIdColumn) = value
+            End Set
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public Function IsIsBillableNull() As Boolean
+            Return Me.IsNull(Me.tableAccountExpense.IsBillableColumn)
+        End Function
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public Sub SetIsBillableNull()
+            Me(Me.tableAccountExpense.IsBillableColumn) = Global.System.Convert.DBNull
+        End Sub
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public Function IsDefaultExpenseRateNull() As Boolean
+            Return Me.IsNull(Me.tableAccountExpense.DefaultExpenseRateColumn)
+        End Function
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public Sub SetDefaultExpenseRateNull()
+            Me(Me.tableAccountExpense.DefaultExpenseRateColumn) = Global.System.Convert.DBNull
+        End Sub
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public Function IsMasterAccountExpenseIdNull() As Boolean
+            Return Me.IsNull(Me.tableAccountExpense.MasterAccountExpenseIdColumn)
+        End Function
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public Sub SetMasterAccountExpenseIdNull()
+            Me(Me.tableAccountExpense.MasterAccountExpenseIdColumn) = Global.System.Convert.DBNull
+        End Sub
+    End Class
+    
+    '''<summary>
+    '''Represents strongly named DataRow class.
+    '''</summary>
+    Partial Public Class AccountEmployeeExpenseSheetRow
+        Inherits Global.System.Data.DataRow
+        
+        Private tableAccountEmployeeExpenseSheet As AccountEmployeeExpenseSheetDataTable
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Friend Sub New(ByVal rb As Global.System.Data.DataRowBuilder)
+            MyBase.New(rb)
+            Me.tableAccountEmployeeExpenseSheet = CType(Me.Table,AccountEmployeeExpenseSheetDataTable)
+        End Sub
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public Property AccountEmployeeExpenseSheetId() As System.Guid
+            Get
+                Return CType(Me(Me.tableAccountEmployeeExpenseSheet.AccountEmployeeExpenseSheetIdColumn),Global.System.Guid)
+            End Get
+            Set
+                Me(Me.tableAccountEmployeeExpenseSheet.AccountEmployeeExpenseSheetIdColumn) = value
+            End Set
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public Property AccountId() As Integer
+            Get
+                Return CType(Me(Me.tableAccountEmployeeExpenseSheet.AccountIdColumn),Integer)
+            End Get
+            Set
+                Me(Me.tableAccountEmployeeExpenseSheet.AccountIdColumn) = value
+            End Set
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public Property AccountEmployeeId() As Integer
+            Get
+                Return CType(Me(Me.tableAccountEmployeeExpenseSheet.AccountEmployeeIdColumn),Integer)
+            End Get
+            Set
+                Me(Me.tableAccountEmployeeExpenseSheet.AccountEmployeeIdColumn) = value
+            End Set
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public Property Description() As String
+            Get
+                Return CType(Me(Me.tableAccountEmployeeExpenseSheet.DescriptionColumn),String)
+            End Get
+            Set
+                Me(Me.tableAccountEmployeeExpenseSheet.DescriptionColumn) = value
+            End Set
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public Property ExpenseSheetDate() As Date
+            Get
+                Return CType(Me(Me.tableAccountEmployeeExpenseSheet.ExpenseSheetDateColumn),Date)
+            End Get
+            Set
+                Me(Me.tableAccountEmployeeExpenseSheet.ExpenseSheetDateColumn) = value
+            End Set
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public Property Approved() As Boolean
+            Get
+                Return CType(Me(Me.tableAccountEmployeeExpenseSheet.ApprovedColumn),Boolean)
+            End Get
+            Set
+                Me(Me.tableAccountEmployeeExpenseSheet.ApprovedColumn) = value
+            End Set
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public Property Rejected() As Boolean
+            Get
+                Return CType(Me(Me.tableAccountEmployeeExpenseSheet.RejectedColumn),Boolean)
+            End Get
+            Set
+                Me(Me.tableAccountEmployeeExpenseSheet.RejectedColumn) = value
+            End Set
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public Property Submitted() As Boolean
+            Get
+                Return CType(Me(Me.tableAccountEmployeeExpenseSheet.SubmittedColumn),Boolean)
+            End Get
+            Set
+                Me(Me.tableAccountEmployeeExpenseSheet.SubmittedColumn) = value
+            End Set
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public Property InApproval() As Boolean
+            Get
+                Return CType(Me(Me.tableAccountEmployeeExpenseSheet.InApprovalColumn),Boolean)
+            End Get
+            Set
+                Me(Me.tableAccountEmployeeExpenseSheet.InApprovalColumn) = value
+            End Set
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public Property CreatedByEmployeeId() As Integer
+            Get
+                Try 
+                    Return CType(Me(Me.tableAccountEmployeeExpenseSheet.CreatedByEmployeeIdColumn),Integer)
+                Catch e As Global.System.InvalidCastException
+                    Throw New Global.System.Data.StrongTypingException("The value for column 'CreatedByEmployeeId' in table 'AccountEmployeeExpenseSheet'"& _ 
+                            " is DBNull.", e)
+                End Try
+            End Get
+            Set
+                Me(Me.tableAccountEmployeeExpenseSheet.CreatedByEmployeeIdColumn) = value
+            End Set
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public Property CreatedOn() As Date
+            Get
+                Try 
+                    Return CType(Me(Me.tableAccountEmployeeExpenseSheet.CreatedOnColumn),Date)
+                Catch e As Global.System.InvalidCastException
+                    Throw New Global.System.Data.StrongTypingException("The value for column 'CreatedOn' in table 'AccountEmployeeExpenseSheet' is DBNull"& _ 
+                            ".", e)
+                End Try
+            End Get
+            Set
+                Me(Me.tableAccountEmployeeExpenseSheet.CreatedOnColumn) = value
+            End Set
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public Property ModifiedByEmployeeId() As Integer
+            Get
+                Try 
+                    Return CType(Me(Me.tableAccountEmployeeExpenseSheet.ModifiedByEmployeeIdColumn),Integer)
+                Catch e As Global.System.InvalidCastException
+                    Throw New Global.System.Data.StrongTypingException("The value for column 'ModifiedByEmployeeId' in table 'AccountEmployeeExpenseSheet"& _ 
+                            "' is DBNull.", e)
+                End Try
+            End Get
+            Set
+                Me(Me.tableAccountEmployeeExpenseSheet.ModifiedByEmployeeIdColumn) = value
+            End Set
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public Property ModifiedOn() As Date
+            Get
+                Try 
+                    Return CType(Me(Me.tableAccountEmployeeExpenseSheet.ModifiedOnColumn),Date)
+                Catch e As Global.System.InvalidCastException
+                    Throw New Global.System.Data.StrongTypingException("The value for column 'ModifiedOn' in table 'AccountEmployeeExpenseSheet' is DBNul"& _ 
+                            "l.", e)
+                End Try
+            End Get
+            Set
+                Me(Me.tableAccountEmployeeExpenseSheet.ModifiedOnColumn) = value
+            End Set
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public Property SubmittedDate() As Date
+            Get
+                Try 
+                    Return CType(Me(Me.tableAccountEmployeeExpenseSheet.SubmittedDateColumn),Date)
+                Catch e As Global.System.InvalidCastException
+                    Throw New Global.System.Data.StrongTypingException("The value for column 'SubmittedDate' in table 'AccountEmployeeExpenseSheet' is DB"& _ 
+                            "Null.", e)
+                End Try
+            End Get
+            Set
+                Me(Me.tableAccountEmployeeExpenseSheet.SubmittedDateColumn) = value
+            End Set
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public Property ApprovedOn() As Date
+            Get
+                Try 
+                    Return CType(Me(Me.tableAccountEmployeeExpenseSheet.ApprovedOnColumn),Date)
+                Catch e As Global.System.InvalidCastException
+                    Throw New Global.System.Data.StrongTypingException("The value for column 'ApprovedOn' in table 'AccountEmployeeExpenseSheet' is DBNul"& _ 
+                            "l.", e)
+                End Try
+            End Get
+            Set
+                Me(Me.tableAccountEmployeeExpenseSheet.ApprovedOnColumn) = value
+            End Set
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public Property ApprovedByEmployeeId() As Integer
+            Get
+                Try 
+                    Return CType(Me(Me.tableAccountEmployeeExpenseSheet.ApprovedByEmployeeIdColumn),Integer)
+                Catch e As Global.System.InvalidCastException
+                    Throw New Global.System.Data.StrongTypingException("The value for column 'ApprovedByEmployeeId' in table 'AccountEmployeeExpenseSheet"& _ 
+                            "' is DBNull.", e)
+                End Try
+            End Get
+            Set
+                Me(Me.tableAccountEmployeeExpenseSheet.ApprovedByEmployeeIdColumn) = value
+            End Set
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public Property RejectedOn() As Date
+            Get
+                Try 
+                    Return CType(Me(Me.tableAccountEmployeeExpenseSheet.RejectedOnColumn),Date)
+                Catch e As Global.System.InvalidCastException
+                    Throw New Global.System.Data.StrongTypingException("The value for column 'RejectedOn' in table 'AccountEmployeeExpenseSheet' is DBNul"& _ 
+                            "l.", e)
+                End Try
+            End Get
+            Set
+                Me(Me.tableAccountEmployeeExpenseSheet.RejectedOnColumn) = value
+            End Set
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public Property RejectedByEmployeeId() As Integer
+            Get
+                Try 
+                    Return CType(Me(Me.tableAccountEmployeeExpenseSheet.RejectedByEmployeeIdColumn),Integer)
+                Catch e As Global.System.InvalidCastException
+                    Throw New Global.System.Data.StrongTypingException("The value for column 'RejectedByEmployeeId' in table 'AccountEmployeeExpenseSheet"& _ 
+                            "' is DBNull.", e)
+                End Try
+            End Get
+            Set
+                Me(Me.tableAccountEmployeeExpenseSheet.RejectedByEmployeeIdColumn) = value
+            End Set
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public Property CustomField1() As String
+            Get
+                Try 
+                    Return CType(Me(Me.tableAccountEmployeeExpenseSheet.CustomField1Column),String)
+                Catch e As Global.System.InvalidCastException
+                    Throw New Global.System.Data.StrongTypingException("The value for column 'CustomField1' in table 'AccountEmployeeExpenseSheet' is DBN"& _ 
+                            "ull.", e)
+                End Try
+            End Get
+            Set
+                Me(Me.tableAccountEmployeeExpenseSheet.CustomField1Column) = value
+            End Set
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public Property CustomField2() As String
+            Get
+                Try 
+                    Return CType(Me(Me.tableAccountEmployeeExpenseSheet.CustomField2Column),String)
+                Catch e As Global.System.InvalidCastException
+                    Throw New Global.System.Data.StrongTypingException("The value for column 'CustomField2' in table 'AccountEmployeeExpenseSheet' is DBN"& _ 
+                            "ull.", e)
+                End Try
+            End Get
+            Set
+                Me(Me.tableAccountEmployeeExpenseSheet.CustomField2Column) = value
+            End Set
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public Property CustomField3() As String
+            Get
+                Try 
+                    Return CType(Me(Me.tableAccountEmployeeExpenseSheet.CustomField3Column),String)
+                Catch e As Global.System.InvalidCastException
+                    Throw New Global.System.Data.StrongTypingException("The value for column 'CustomField3' in table 'AccountEmployeeExpenseSheet' is DBN"& _ 
+                            "ull.", e)
+                End Try
+            End Get
+            Set
+                Me(Me.tableAccountEmployeeExpenseSheet.CustomField3Column) = value
+            End Set
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public Property CustomField4() As String
+            Get
+                Try 
+                    Return CType(Me(Me.tableAccountEmployeeExpenseSheet.CustomField4Column),String)
+                Catch e As Global.System.InvalidCastException
+                    Throw New Global.System.Data.StrongTypingException("The value for column 'CustomField4' in table 'AccountEmployeeExpenseSheet' is DBN"& _ 
+                            "ull.", e)
+                End Try
+            End Get
+            Set
+                Me(Me.tableAccountEmployeeExpenseSheet.CustomField4Column) = value
+            End Set
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public Property CustomField5() As String
+            Get
+                Try 
+                    Return CType(Me(Me.tableAccountEmployeeExpenseSheet.CustomField5Column),String)
+                Catch e As Global.System.InvalidCastException
+                    Throw New Global.System.Data.StrongTypingException("The value for column 'CustomField5' in table 'AccountEmployeeExpenseSheet' is DBN"& _ 
+                            "ull.", e)
+                End Try
+            End Get
+            Set
+                Me(Me.tableAccountEmployeeExpenseSheet.CustomField5Column) = value
+            End Set
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public Property CustomField6() As String
+            Get
+                Try 
+                    Return CType(Me(Me.tableAccountEmployeeExpenseSheet.CustomField6Column),String)
+                Catch e As Global.System.InvalidCastException
+                    Throw New Global.System.Data.StrongTypingException("The value for column 'CustomField6' in table 'AccountEmployeeExpenseSheet' is DBN"& _ 
+                            "ull.", e)
+                End Try
+            End Get
+            Set
+                Me(Me.tableAccountEmployeeExpenseSheet.CustomField6Column) = value
+            End Set
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public Property CustomField7() As String
+            Get
+                Try 
+                    Return CType(Me(Me.tableAccountEmployeeExpenseSheet.CustomField7Column),String)
+                Catch e As Global.System.InvalidCastException
+                    Throw New Global.System.Data.StrongTypingException("The value for column 'CustomField7' in table 'AccountEmployeeExpenseSheet' is DBN"& _ 
+                            "ull.", e)
+                End Try
+            End Get
+            Set
+                Me(Me.tableAccountEmployeeExpenseSheet.CustomField7Column) = value
+            End Set
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public Property CustomField8() As String
+            Get
+                Try 
+                    Return CType(Me(Me.tableAccountEmployeeExpenseSheet.CustomField8Column),String)
+                Catch e As Global.System.InvalidCastException
+                    Throw New Global.System.Data.StrongTypingException("The value for column 'CustomField8' in table 'AccountEmployeeExpenseSheet' is DBN"& _ 
+                            "ull.", e)
+                End Try
+            End Get
+            Set
+                Me(Me.tableAccountEmployeeExpenseSheet.CustomField8Column) = value
+            End Set
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public Property CustomField9() As String
+            Get
+                Try 
+                    Return CType(Me(Me.tableAccountEmployeeExpenseSheet.CustomField9Column),String)
+                Catch e As Global.System.InvalidCastException
+                    Throw New Global.System.Data.StrongTypingException("The value for column 'CustomField9' in table 'AccountEmployeeExpenseSheet' is DBN"& _ 
+                            "ull.", e)
+                End Try
+            End Get
+            Set
+                Me(Me.tableAccountEmployeeExpenseSheet.CustomField9Column) = value
+            End Set
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public Property CustomField10() As String
+            Get
+                Try 
+                    Return CType(Me(Me.tableAccountEmployeeExpenseSheet.CustomField10Column),String)
+                Catch e As Global.System.InvalidCastException
+                    Throw New Global.System.Data.StrongTypingException("The value for column 'CustomField10' in table 'AccountEmployeeExpenseSheet' is DB"& _ 
+                            "Null.", e)
+                End Try
+            End Get
+            Set
+                Me(Me.tableAccountEmployeeExpenseSheet.CustomField10Column) = value
+            End Set
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public Property CustomField11() As String
+            Get
+                Try 
+                    Return CType(Me(Me.tableAccountEmployeeExpenseSheet.CustomField11Column),String)
+                Catch e As Global.System.InvalidCastException
+                    Throw New Global.System.Data.StrongTypingException("The value for column 'CustomField11' in table 'AccountEmployeeExpenseSheet' is DB"& _ 
+                            "Null.", e)
+                End Try
+            End Get
+            Set
+                Me(Me.tableAccountEmployeeExpenseSheet.CustomField11Column) = value
+            End Set
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public Property CustomField12() As String
+            Get
+                Try 
+                    Return CType(Me(Me.tableAccountEmployeeExpenseSheet.CustomField12Column),String)
+                Catch e As Global.System.InvalidCastException
+                    Throw New Global.System.Data.StrongTypingException("The value for column 'CustomField12' in table 'AccountEmployeeExpenseSheet' is DB"& _ 
+                            "Null.", e)
+                End Try
+            End Get
+            Set
+                Me(Me.tableAccountEmployeeExpenseSheet.CustomField12Column) = value
+            End Set
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public Property CustomField13() As String
+            Get
+                Try 
+                    Return CType(Me(Me.tableAccountEmployeeExpenseSheet.CustomField13Column),String)
+                Catch e As Global.System.InvalidCastException
+                    Throw New Global.System.Data.StrongTypingException("The value for column 'CustomField13' in table 'AccountEmployeeExpenseSheet' is DB"& _ 
+                            "Null.", e)
+                End Try
+            End Get
+            Set
+                Me(Me.tableAccountEmployeeExpenseSheet.CustomField13Column) = value
+            End Set
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public Property CustomField14() As String
+            Get
+                Try 
+                    Return CType(Me(Me.tableAccountEmployeeExpenseSheet.CustomField14Column),String)
+                Catch e As Global.System.InvalidCastException
+                    Throw New Global.System.Data.StrongTypingException("The value for column 'CustomField14' in table 'AccountEmployeeExpenseSheet' is DB"& _ 
+                            "Null.", e)
+                End Try
+            End Get
+            Set
+                Me(Me.tableAccountEmployeeExpenseSheet.CustomField14Column) = value
+            End Set
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public Property CustomField15() As String
+            Get
+                Try 
+                    Return CType(Me(Me.tableAccountEmployeeExpenseSheet.CustomField15Column),String)
+                Catch e As Global.System.InvalidCastException
+                    Throw New Global.System.Data.StrongTypingException("The value for column 'CustomField15' in table 'AccountEmployeeExpenseSheet' is DB"& _ 
+                            "Null.", e)
+                End Try
+            End Get
+            Set
+                Me(Me.tableAccountEmployeeExpenseSheet.CustomField15Column) = value
+            End Set
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public Property ReimbursementCurrencyId() As Integer
+            Get
+                Try 
+                    Return CType(Me(Me.tableAccountEmployeeExpenseSheet.ReimbursementCurrencyIdColumn),Integer)
+                Catch e As Global.System.InvalidCastException
+                    Throw New Global.System.Data.StrongTypingException("The value for column 'ReimbursementCurrencyId' in table 'AccountEmployeeExpenseSh"& _ 
+                            "eet' is DBNull.", e)
+                End Try
+            End Get
+            Set
+                Me(Me.tableAccountEmployeeExpenseSheet.ReimbursementCurrencyIdColumn) = value
+            End Set
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public Function IsCreatedByEmployeeIdNull() As Boolean
+            Return Me.IsNull(Me.tableAccountEmployeeExpenseSheet.CreatedByEmployeeIdColumn)
+        End Function
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public Sub SetCreatedByEmployeeIdNull()
+            Me(Me.tableAccountEmployeeExpenseSheet.CreatedByEmployeeIdColumn) = Global.System.Convert.DBNull
+        End Sub
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public Function IsCreatedOnNull() As Boolean
+            Return Me.IsNull(Me.tableAccountEmployeeExpenseSheet.CreatedOnColumn)
+        End Function
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public Sub SetCreatedOnNull()
+            Me(Me.tableAccountEmployeeExpenseSheet.CreatedOnColumn) = Global.System.Convert.DBNull
+        End Sub
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public Function IsModifiedByEmployeeIdNull() As Boolean
+            Return Me.IsNull(Me.tableAccountEmployeeExpenseSheet.ModifiedByEmployeeIdColumn)
+        End Function
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public Sub SetModifiedByEmployeeIdNull()
+            Me(Me.tableAccountEmployeeExpenseSheet.ModifiedByEmployeeIdColumn) = Global.System.Convert.DBNull
+        End Sub
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public Function IsModifiedOnNull() As Boolean
+            Return Me.IsNull(Me.tableAccountEmployeeExpenseSheet.ModifiedOnColumn)
+        End Function
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public Sub SetModifiedOnNull()
+            Me(Me.tableAccountEmployeeExpenseSheet.ModifiedOnColumn) = Global.System.Convert.DBNull
+        End Sub
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public Function IsSubmittedDateNull() As Boolean
+            Return Me.IsNull(Me.tableAccountEmployeeExpenseSheet.SubmittedDateColumn)
+        End Function
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public Sub SetSubmittedDateNull()
+            Me(Me.tableAccountEmployeeExpenseSheet.SubmittedDateColumn) = Global.System.Convert.DBNull
+        End Sub
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public Function IsApprovedOnNull() As Boolean
+            Return Me.IsNull(Me.tableAccountEmployeeExpenseSheet.ApprovedOnColumn)
+        End Function
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public Sub SetApprovedOnNull()
+            Me(Me.tableAccountEmployeeExpenseSheet.ApprovedOnColumn) = Global.System.Convert.DBNull
+        End Sub
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public Function IsApprovedByEmployeeIdNull() As Boolean
+            Return Me.IsNull(Me.tableAccountEmployeeExpenseSheet.ApprovedByEmployeeIdColumn)
+        End Function
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public Sub SetApprovedByEmployeeIdNull()
+            Me(Me.tableAccountEmployeeExpenseSheet.ApprovedByEmployeeIdColumn) = Global.System.Convert.DBNull
+        End Sub
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public Function IsRejectedOnNull() As Boolean
+            Return Me.IsNull(Me.tableAccountEmployeeExpenseSheet.RejectedOnColumn)
+        End Function
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public Sub SetRejectedOnNull()
+            Me(Me.tableAccountEmployeeExpenseSheet.RejectedOnColumn) = Global.System.Convert.DBNull
+        End Sub
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public Function IsRejectedByEmployeeIdNull() As Boolean
+            Return Me.IsNull(Me.tableAccountEmployeeExpenseSheet.RejectedByEmployeeIdColumn)
+        End Function
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public Sub SetRejectedByEmployeeIdNull()
+            Me(Me.tableAccountEmployeeExpenseSheet.RejectedByEmployeeIdColumn) = Global.System.Convert.DBNull
+        End Sub
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public Function IsCustomField1Null() As Boolean
+            Return Me.IsNull(Me.tableAccountEmployeeExpenseSheet.CustomField1Column)
+        End Function
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public Sub SetCustomField1Null()
+            Me(Me.tableAccountEmployeeExpenseSheet.CustomField1Column) = Global.System.Convert.DBNull
+        End Sub
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public Function IsCustomField2Null() As Boolean
+            Return Me.IsNull(Me.tableAccountEmployeeExpenseSheet.CustomField2Column)
+        End Function
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public Sub SetCustomField2Null()
+            Me(Me.tableAccountEmployeeExpenseSheet.CustomField2Column) = Global.System.Convert.DBNull
+        End Sub
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public Function IsCustomField3Null() As Boolean
+            Return Me.IsNull(Me.tableAccountEmployeeExpenseSheet.CustomField3Column)
+        End Function
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public Sub SetCustomField3Null()
+            Me(Me.tableAccountEmployeeExpenseSheet.CustomField3Column) = Global.System.Convert.DBNull
+        End Sub
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public Function IsCustomField4Null() As Boolean
+            Return Me.IsNull(Me.tableAccountEmployeeExpenseSheet.CustomField4Column)
+        End Function
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public Sub SetCustomField4Null()
+            Me(Me.tableAccountEmployeeExpenseSheet.CustomField4Column) = Global.System.Convert.DBNull
+        End Sub
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public Function IsCustomField5Null() As Boolean
+            Return Me.IsNull(Me.tableAccountEmployeeExpenseSheet.CustomField5Column)
+        End Function
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public Sub SetCustomField5Null()
+            Me(Me.tableAccountEmployeeExpenseSheet.CustomField5Column) = Global.System.Convert.DBNull
+        End Sub
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public Function IsCustomField6Null() As Boolean
+            Return Me.IsNull(Me.tableAccountEmployeeExpenseSheet.CustomField6Column)
+        End Function
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public Sub SetCustomField6Null()
+            Me(Me.tableAccountEmployeeExpenseSheet.CustomField6Column) = Global.System.Convert.DBNull
+        End Sub
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public Function IsCustomField7Null() As Boolean
+            Return Me.IsNull(Me.tableAccountEmployeeExpenseSheet.CustomField7Column)
+        End Function
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public Sub SetCustomField7Null()
+            Me(Me.tableAccountEmployeeExpenseSheet.CustomField7Column) = Global.System.Convert.DBNull
+        End Sub
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public Function IsCustomField8Null() As Boolean
+            Return Me.IsNull(Me.tableAccountEmployeeExpenseSheet.CustomField8Column)
+        End Function
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public Sub SetCustomField8Null()
+            Me(Me.tableAccountEmployeeExpenseSheet.CustomField8Column) = Global.System.Convert.DBNull
+        End Sub
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public Function IsCustomField9Null() As Boolean
+            Return Me.IsNull(Me.tableAccountEmployeeExpenseSheet.CustomField9Column)
+        End Function
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public Sub SetCustomField9Null()
+            Me(Me.tableAccountEmployeeExpenseSheet.CustomField9Column) = Global.System.Convert.DBNull
+        End Sub
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public Function IsCustomField10Null() As Boolean
+            Return Me.IsNull(Me.tableAccountEmployeeExpenseSheet.CustomField10Column)
+        End Function
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public Sub SetCustomField10Null()
+            Me(Me.tableAccountEmployeeExpenseSheet.CustomField10Column) = Global.System.Convert.DBNull
+        End Sub
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public Function IsCustomField11Null() As Boolean
+            Return Me.IsNull(Me.tableAccountEmployeeExpenseSheet.CustomField11Column)
+        End Function
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public Sub SetCustomField11Null()
+            Me(Me.tableAccountEmployeeExpenseSheet.CustomField11Column) = Global.System.Convert.DBNull
+        End Sub
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public Function IsCustomField12Null() As Boolean
+            Return Me.IsNull(Me.tableAccountEmployeeExpenseSheet.CustomField12Column)
+        End Function
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public Sub SetCustomField12Null()
+            Me(Me.tableAccountEmployeeExpenseSheet.CustomField12Column) = Global.System.Convert.DBNull
+        End Sub
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public Function IsCustomField13Null() As Boolean
+            Return Me.IsNull(Me.tableAccountEmployeeExpenseSheet.CustomField13Column)
+        End Function
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public Sub SetCustomField13Null()
+            Me(Me.tableAccountEmployeeExpenseSheet.CustomField13Column) = Global.System.Convert.DBNull
+        End Sub
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public Function IsCustomField14Null() As Boolean
+            Return Me.IsNull(Me.tableAccountEmployeeExpenseSheet.CustomField14Column)
+        End Function
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public Sub SetCustomField14Null()
+            Me(Me.tableAccountEmployeeExpenseSheet.CustomField14Column) = Global.System.Convert.DBNull
+        End Sub
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public Function IsCustomField15Null() As Boolean
+            Return Me.IsNull(Me.tableAccountEmployeeExpenseSheet.CustomField15Column)
+        End Function
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public Sub SetCustomField15Null()
+            Me(Me.tableAccountEmployeeExpenseSheet.CustomField15Column) = Global.System.Convert.DBNull
+        End Sub
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public Function IsReimbursementCurrencyIdNull() As Boolean
+            Return Me.IsNull(Me.tableAccountEmployeeExpenseSheet.ReimbursementCurrencyIdColumn)
+        End Function
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public Sub SetReimbursementCurrencyIdNull()
+            Me(Me.tableAccountEmployeeExpenseSheet.ReimbursementCurrencyIdColumn) = Global.System.Convert.DBNull
+        End Sub
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public Function GetAccountExpenseEntryRows() As AccountExpenseEntryRow()
+            If (Me.Table.ChildRelations("FK_AccountExpenseEntry_AccountEmployeeExpenseSheet") Is Nothing) Then
+                Return New AccountExpenseEntryRow(-1) {}
+            Else
+                Return CType(MyBase.GetChildRows(Me.Table.ChildRelations("FK_AccountExpenseEntry_AccountEmployeeExpenseSheet")),AccountExpenseEntryRow())
+            End If
+        End Function
+    End Class
+    
+    '''<summary>
+    '''Represents strongly named DataRow class.
+    '''</summary>
     Partial Public Class AccountExpenseEntryRow
         Inherits Global.System.Data.DataRow
         
@@ -7277,17 +8316,6 @@ Partial Public Class TimeLiveDataSet
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Public Property AccountExpenseRow() As AccountExpenseRow
-            Get
-                Return CType(Me.GetParentRow(Me.Table.ParentRelations("FK_AccountExpenseEntry_AccountExpense")),AccountExpenseRow)
-            End Get
-            Set
-                Me.SetParentRow(value, Me.Table.ParentRelations("FK_AccountExpenseEntry_AccountExpense"))
-            End Set
-        End Property
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
         Public Function IsDescriptionNull() As Boolean
             Return Me.IsNull(Me.tableAccountExpenseEntry.DescriptionColumn)
         End Function
@@ -7768,1021 +8796,6 @@ Partial Public Class TimeLiveDataSet
     End Class
     
     '''<summary>
-    '''Represents strongly named DataRow class.
-    '''</summary>
-    Partial Public Class AccountEmployeeExpenseSheetRow
-        Inherits Global.System.Data.DataRow
-        
-        Private tableAccountEmployeeExpenseSheet As AccountEmployeeExpenseSheetDataTable
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Friend Sub New(ByVal rb As Global.System.Data.DataRowBuilder)
-            MyBase.New(rb)
-            Me.tableAccountEmployeeExpenseSheet = CType(Me.Table,AccountEmployeeExpenseSheetDataTable)
-        End Sub
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Public Property AccountEmployeeExpenseSheetId() As System.Guid
-            Get
-                Return CType(Me(Me.tableAccountEmployeeExpenseSheet.AccountEmployeeExpenseSheetIdColumn),Global.System.Guid)
-            End Get
-            Set
-                Me(Me.tableAccountEmployeeExpenseSheet.AccountEmployeeExpenseSheetIdColumn) = value
-            End Set
-        End Property
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Public Property AccountId() As Integer
-            Get
-                Return CType(Me(Me.tableAccountEmployeeExpenseSheet.AccountIdColumn),Integer)
-            End Get
-            Set
-                Me(Me.tableAccountEmployeeExpenseSheet.AccountIdColumn) = value
-            End Set
-        End Property
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Public Property AccountEmployeeId() As Integer
-            Get
-                Return CType(Me(Me.tableAccountEmployeeExpenseSheet.AccountEmployeeIdColumn),Integer)
-            End Get
-            Set
-                Me(Me.tableAccountEmployeeExpenseSheet.AccountEmployeeIdColumn) = value
-            End Set
-        End Property
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Public Property Description() As String
-            Get
-                Return CType(Me(Me.tableAccountEmployeeExpenseSheet.DescriptionColumn),String)
-            End Get
-            Set
-                Me(Me.tableAccountEmployeeExpenseSheet.DescriptionColumn) = value
-            End Set
-        End Property
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Public Property ExpenseSheetDate() As Date
-            Get
-                Return CType(Me(Me.tableAccountEmployeeExpenseSheet.ExpenseSheetDateColumn),Date)
-            End Get
-            Set
-                Me(Me.tableAccountEmployeeExpenseSheet.ExpenseSheetDateColumn) = value
-            End Set
-        End Property
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Public Property Approved() As Boolean
-            Get
-                Return CType(Me(Me.tableAccountEmployeeExpenseSheet.ApprovedColumn),Boolean)
-            End Get
-            Set
-                Me(Me.tableAccountEmployeeExpenseSheet.ApprovedColumn) = value
-            End Set
-        End Property
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Public Property Rejected() As Boolean
-            Get
-                Return CType(Me(Me.tableAccountEmployeeExpenseSheet.RejectedColumn),Boolean)
-            End Get
-            Set
-                Me(Me.tableAccountEmployeeExpenseSheet.RejectedColumn) = value
-            End Set
-        End Property
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Public Property Submitted() As Boolean
-            Get
-                Return CType(Me(Me.tableAccountEmployeeExpenseSheet.SubmittedColumn),Boolean)
-            End Get
-            Set
-                Me(Me.tableAccountEmployeeExpenseSheet.SubmittedColumn) = value
-            End Set
-        End Property
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Public Property InApproval() As Boolean
-            Get
-                Return CType(Me(Me.tableAccountEmployeeExpenseSheet.InApprovalColumn),Boolean)
-            End Get
-            Set
-                Me(Me.tableAccountEmployeeExpenseSheet.InApprovalColumn) = value
-            End Set
-        End Property
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Public Property CreatedByEmployeeId() As Integer
-            Get
-                Try 
-                    Return CType(Me(Me.tableAccountEmployeeExpenseSheet.CreatedByEmployeeIdColumn),Integer)
-                Catch e As Global.System.InvalidCastException
-                    Throw New Global.System.Data.StrongTypingException("The value for column 'CreatedByEmployeeId' in table 'AccountEmployeeExpenseSheet'"& _ 
-                            " is DBNull.", e)
-                End Try
-            End Get
-            Set
-                Me(Me.tableAccountEmployeeExpenseSheet.CreatedByEmployeeIdColumn) = value
-            End Set
-        End Property
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Public Property CreatedOn() As Date
-            Get
-                Try 
-                    Return CType(Me(Me.tableAccountEmployeeExpenseSheet.CreatedOnColumn),Date)
-                Catch e As Global.System.InvalidCastException
-                    Throw New Global.System.Data.StrongTypingException("The value for column 'CreatedOn' in table 'AccountEmployeeExpenseSheet' is DBNull"& _ 
-                            ".", e)
-                End Try
-            End Get
-            Set
-                Me(Me.tableAccountEmployeeExpenseSheet.CreatedOnColumn) = value
-            End Set
-        End Property
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Public Property ModifiedByEmployeeId() As Integer
-            Get
-                Try 
-                    Return CType(Me(Me.tableAccountEmployeeExpenseSheet.ModifiedByEmployeeIdColumn),Integer)
-                Catch e As Global.System.InvalidCastException
-                    Throw New Global.System.Data.StrongTypingException("The value for column 'ModifiedByEmployeeId' in table 'AccountEmployeeExpenseSheet"& _ 
-                            "' is DBNull.", e)
-                End Try
-            End Get
-            Set
-                Me(Me.tableAccountEmployeeExpenseSheet.ModifiedByEmployeeIdColumn) = value
-            End Set
-        End Property
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Public Property ModifiedOn() As Date
-            Get
-                Try 
-                    Return CType(Me(Me.tableAccountEmployeeExpenseSheet.ModifiedOnColumn),Date)
-                Catch e As Global.System.InvalidCastException
-                    Throw New Global.System.Data.StrongTypingException("The value for column 'ModifiedOn' in table 'AccountEmployeeExpenseSheet' is DBNul"& _ 
-                            "l.", e)
-                End Try
-            End Get
-            Set
-                Me(Me.tableAccountEmployeeExpenseSheet.ModifiedOnColumn) = value
-            End Set
-        End Property
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Public Property SubmittedDate() As Date
-            Get
-                Try 
-                    Return CType(Me(Me.tableAccountEmployeeExpenseSheet.SubmittedDateColumn),Date)
-                Catch e As Global.System.InvalidCastException
-                    Throw New Global.System.Data.StrongTypingException("The value for column 'SubmittedDate' in table 'AccountEmployeeExpenseSheet' is DB"& _ 
-                            "Null.", e)
-                End Try
-            End Get
-            Set
-                Me(Me.tableAccountEmployeeExpenseSheet.SubmittedDateColumn) = value
-            End Set
-        End Property
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Public Property ApprovedOn() As Date
-            Get
-                Try 
-                    Return CType(Me(Me.tableAccountEmployeeExpenseSheet.ApprovedOnColumn),Date)
-                Catch e As Global.System.InvalidCastException
-                    Throw New Global.System.Data.StrongTypingException("The value for column 'ApprovedOn' in table 'AccountEmployeeExpenseSheet' is DBNul"& _ 
-                            "l.", e)
-                End Try
-            End Get
-            Set
-                Me(Me.tableAccountEmployeeExpenseSheet.ApprovedOnColumn) = value
-            End Set
-        End Property
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Public Property ApprovedByEmployeeId() As Integer
-            Get
-                Try 
-                    Return CType(Me(Me.tableAccountEmployeeExpenseSheet.ApprovedByEmployeeIdColumn),Integer)
-                Catch e As Global.System.InvalidCastException
-                    Throw New Global.System.Data.StrongTypingException("The value for column 'ApprovedByEmployeeId' in table 'AccountEmployeeExpenseSheet"& _ 
-                            "' is DBNull.", e)
-                End Try
-            End Get
-            Set
-                Me(Me.tableAccountEmployeeExpenseSheet.ApprovedByEmployeeIdColumn) = value
-            End Set
-        End Property
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Public Property RejectedOn() As Date
-            Get
-                Try 
-                    Return CType(Me(Me.tableAccountEmployeeExpenseSheet.RejectedOnColumn),Date)
-                Catch e As Global.System.InvalidCastException
-                    Throw New Global.System.Data.StrongTypingException("The value for column 'RejectedOn' in table 'AccountEmployeeExpenseSheet' is DBNul"& _ 
-                            "l.", e)
-                End Try
-            End Get
-            Set
-                Me(Me.tableAccountEmployeeExpenseSheet.RejectedOnColumn) = value
-            End Set
-        End Property
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Public Property RejectedByEmployeeId() As Integer
-            Get
-                Try 
-                    Return CType(Me(Me.tableAccountEmployeeExpenseSheet.RejectedByEmployeeIdColumn),Integer)
-                Catch e As Global.System.InvalidCastException
-                    Throw New Global.System.Data.StrongTypingException("The value for column 'RejectedByEmployeeId' in table 'AccountEmployeeExpenseSheet"& _ 
-                            "' is DBNull.", e)
-                End Try
-            End Get
-            Set
-                Me(Me.tableAccountEmployeeExpenseSheet.RejectedByEmployeeIdColumn) = value
-            End Set
-        End Property
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Public Property CustomField1() As String
-            Get
-                Try 
-                    Return CType(Me(Me.tableAccountEmployeeExpenseSheet.CustomField1Column),String)
-                Catch e As Global.System.InvalidCastException
-                    Throw New Global.System.Data.StrongTypingException("The value for column 'CustomField1' in table 'AccountEmployeeExpenseSheet' is DBN"& _ 
-                            "ull.", e)
-                End Try
-            End Get
-            Set
-                Me(Me.tableAccountEmployeeExpenseSheet.CustomField1Column) = value
-            End Set
-        End Property
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Public Property CustomField2() As String
-            Get
-                Try 
-                    Return CType(Me(Me.tableAccountEmployeeExpenseSheet.CustomField2Column),String)
-                Catch e As Global.System.InvalidCastException
-                    Throw New Global.System.Data.StrongTypingException("The value for column 'CustomField2' in table 'AccountEmployeeExpenseSheet' is DBN"& _ 
-                            "ull.", e)
-                End Try
-            End Get
-            Set
-                Me(Me.tableAccountEmployeeExpenseSheet.CustomField2Column) = value
-            End Set
-        End Property
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Public Property CustomField3() As String
-            Get
-                Try 
-                    Return CType(Me(Me.tableAccountEmployeeExpenseSheet.CustomField3Column),String)
-                Catch e As Global.System.InvalidCastException
-                    Throw New Global.System.Data.StrongTypingException("The value for column 'CustomField3' in table 'AccountEmployeeExpenseSheet' is DBN"& _ 
-                            "ull.", e)
-                End Try
-            End Get
-            Set
-                Me(Me.tableAccountEmployeeExpenseSheet.CustomField3Column) = value
-            End Set
-        End Property
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Public Property CustomField4() As String
-            Get
-                Try 
-                    Return CType(Me(Me.tableAccountEmployeeExpenseSheet.CustomField4Column),String)
-                Catch e As Global.System.InvalidCastException
-                    Throw New Global.System.Data.StrongTypingException("The value for column 'CustomField4' in table 'AccountEmployeeExpenseSheet' is DBN"& _ 
-                            "ull.", e)
-                End Try
-            End Get
-            Set
-                Me(Me.tableAccountEmployeeExpenseSheet.CustomField4Column) = value
-            End Set
-        End Property
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Public Property CustomField5() As String
-            Get
-                Try 
-                    Return CType(Me(Me.tableAccountEmployeeExpenseSheet.CustomField5Column),String)
-                Catch e As Global.System.InvalidCastException
-                    Throw New Global.System.Data.StrongTypingException("The value for column 'CustomField5' in table 'AccountEmployeeExpenseSheet' is DBN"& _ 
-                            "ull.", e)
-                End Try
-            End Get
-            Set
-                Me(Me.tableAccountEmployeeExpenseSheet.CustomField5Column) = value
-            End Set
-        End Property
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Public Property CustomField6() As String
-            Get
-                Try 
-                    Return CType(Me(Me.tableAccountEmployeeExpenseSheet.CustomField6Column),String)
-                Catch e As Global.System.InvalidCastException
-                    Throw New Global.System.Data.StrongTypingException("The value for column 'CustomField6' in table 'AccountEmployeeExpenseSheet' is DBN"& _ 
-                            "ull.", e)
-                End Try
-            End Get
-            Set
-                Me(Me.tableAccountEmployeeExpenseSheet.CustomField6Column) = value
-            End Set
-        End Property
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Public Property CustomField7() As String
-            Get
-                Try 
-                    Return CType(Me(Me.tableAccountEmployeeExpenseSheet.CustomField7Column),String)
-                Catch e As Global.System.InvalidCastException
-                    Throw New Global.System.Data.StrongTypingException("The value for column 'CustomField7' in table 'AccountEmployeeExpenseSheet' is DBN"& _ 
-                            "ull.", e)
-                End Try
-            End Get
-            Set
-                Me(Me.tableAccountEmployeeExpenseSheet.CustomField7Column) = value
-            End Set
-        End Property
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Public Property CustomField8() As String
-            Get
-                Try 
-                    Return CType(Me(Me.tableAccountEmployeeExpenseSheet.CustomField8Column),String)
-                Catch e As Global.System.InvalidCastException
-                    Throw New Global.System.Data.StrongTypingException("The value for column 'CustomField8' in table 'AccountEmployeeExpenseSheet' is DBN"& _ 
-                            "ull.", e)
-                End Try
-            End Get
-            Set
-                Me(Me.tableAccountEmployeeExpenseSheet.CustomField8Column) = value
-            End Set
-        End Property
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Public Property CustomField9() As String
-            Get
-                Try 
-                    Return CType(Me(Me.tableAccountEmployeeExpenseSheet.CustomField9Column),String)
-                Catch e As Global.System.InvalidCastException
-                    Throw New Global.System.Data.StrongTypingException("The value for column 'CustomField9' in table 'AccountEmployeeExpenseSheet' is DBN"& _ 
-                            "ull.", e)
-                End Try
-            End Get
-            Set
-                Me(Me.tableAccountEmployeeExpenseSheet.CustomField9Column) = value
-            End Set
-        End Property
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Public Property CustomField10() As String
-            Get
-                Try 
-                    Return CType(Me(Me.tableAccountEmployeeExpenseSheet.CustomField10Column),String)
-                Catch e As Global.System.InvalidCastException
-                    Throw New Global.System.Data.StrongTypingException("The value for column 'CustomField10' in table 'AccountEmployeeExpenseSheet' is DB"& _ 
-                            "Null.", e)
-                End Try
-            End Get
-            Set
-                Me(Me.tableAccountEmployeeExpenseSheet.CustomField10Column) = value
-            End Set
-        End Property
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Public Property CustomField11() As String
-            Get
-                Try 
-                    Return CType(Me(Me.tableAccountEmployeeExpenseSheet.CustomField11Column),String)
-                Catch e As Global.System.InvalidCastException
-                    Throw New Global.System.Data.StrongTypingException("The value for column 'CustomField11' in table 'AccountEmployeeExpenseSheet' is DB"& _ 
-                            "Null.", e)
-                End Try
-            End Get
-            Set
-                Me(Me.tableAccountEmployeeExpenseSheet.CustomField11Column) = value
-            End Set
-        End Property
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Public Property CustomField12() As String
-            Get
-                Try 
-                    Return CType(Me(Me.tableAccountEmployeeExpenseSheet.CustomField12Column),String)
-                Catch e As Global.System.InvalidCastException
-                    Throw New Global.System.Data.StrongTypingException("The value for column 'CustomField12' in table 'AccountEmployeeExpenseSheet' is DB"& _ 
-                            "Null.", e)
-                End Try
-            End Get
-            Set
-                Me(Me.tableAccountEmployeeExpenseSheet.CustomField12Column) = value
-            End Set
-        End Property
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Public Property CustomField13() As String
-            Get
-                Try 
-                    Return CType(Me(Me.tableAccountEmployeeExpenseSheet.CustomField13Column),String)
-                Catch e As Global.System.InvalidCastException
-                    Throw New Global.System.Data.StrongTypingException("The value for column 'CustomField13' in table 'AccountEmployeeExpenseSheet' is DB"& _ 
-                            "Null.", e)
-                End Try
-            End Get
-            Set
-                Me(Me.tableAccountEmployeeExpenseSheet.CustomField13Column) = value
-            End Set
-        End Property
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Public Property CustomField14() As String
-            Get
-                Try 
-                    Return CType(Me(Me.tableAccountEmployeeExpenseSheet.CustomField14Column),String)
-                Catch e As Global.System.InvalidCastException
-                    Throw New Global.System.Data.StrongTypingException("The value for column 'CustomField14' in table 'AccountEmployeeExpenseSheet' is DB"& _ 
-                            "Null.", e)
-                End Try
-            End Get
-            Set
-                Me(Me.tableAccountEmployeeExpenseSheet.CustomField14Column) = value
-            End Set
-        End Property
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Public Property CustomField15() As String
-            Get
-                Try 
-                    Return CType(Me(Me.tableAccountEmployeeExpenseSheet.CustomField15Column),String)
-                Catch e As Global.System.InvalidCastException
-                    Throw New Global.System.Data.StrongTypingException("The value for column 'CustomField15' in table 'AccountEmployeeExpenseSheet' is DB"& _ 
-                            "Null.", e)
-                End Try
-            End Get
-            Set
-                Me(Me.tableAccountEmployeeExpenseSheet.CustomField15Column) = value
-            End Set
-        End Property
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Public Function IsCreatedByEmployeeIdNull() As Boolean
-            Return Me.IsNull(Me.tableAccountEmployeeExpenseSheet.CreatedByEmployeeIdColumn)
-        End Function
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Public Sub SetCreatedByEmployeeIdNull()
-            Me(Me.tableAccountEmployeeExpenseSheet.CreatedByEmployeeIdColumn) = Global.System.Convert.DBNull
-        End Sub
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Public Function IsCreatedOnNull() As Boolean
-            Return Me.IsNull(Me.tableAccountEmployeeExpenseSheet.CreatedOnColumn)
-        End Function
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Public Sub SetCreatedOnNull()
-            Me(Me.tableAccountEmployeeExpenseSheet.CreatedOnColumn) = Global.System.Convert.DBNull
-        End Sub
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Public Function IsModifiedByEmployeeIdNull() As Boolean
-            Return Me.IsNull(Me.tableAccountEmployeeExpenseSheet.ModifiedByEmployeeIdColumn)
-        End Function
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Public Sub SetModifiedByEmployeeIdNull()
-            Me(Me.tableAccountEmployeeExpenseSheet.ModifiedByEmployeeIdColumn) = Global.System.Convert.DBNull
-        End Sub
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Public Function IsModifiedOnNull() As Boolean
-            Return Me.IsNull(Me.tableAccountEmployeeExpenseSheet.ModifiedOnColumn)
-        End Function
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Public Sub SetModifiedOnNull()
-            Me(Me.tableAccountEmployeeExpenseSheet.ModifiedOnColumn) = Global.System.Convert.DBNull
-        End Sub
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Public Function IsSubmittedDateNull() As Boolean
-            Return Me.IsNull(Me.tableAccountEmployeeExpenseSheet.SubmittedDateColumn)
-        End Function
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Public Sub SetSubmittedDateNull()
-            Me(Me.tableAccountEmployeeExpenseSheet.SubmittedDateColumn) = Global.System.Convert.DBNull
-        End Sub
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Public Function IsApprovedOnNull() As Boolean
-            Return Me.IsNull(Me.tableAccountEmployeeExpenseSheet.ApprovedOnColumn)
-        End Function
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Public Sub SetApprovedOnNull()
-            Me(Me.tableAccountEmployeeExpenseSheet.ApprovedOnColumn) = Global.System.Convert.DBNull
-        End Sub
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Public Function IsApprovedByEmployeeIdNull() As Boolean
-            Return Me.IsNull(Me.tableAccountEmployeeExpenseSheet.ApprovedByEmployeeIdColumn)
-        End Function
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Public Sub SetApprovedByEmployeeIdNull()
-            Me(Me.tableAccountEmployeeExpenseSheet.ApprovedByEmployeeIdColumn) = Global.System.Convert.DBNull
-        End Sub
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Public Function IsRejectedOnNull() As Boolean
-            Return Me.IsNull(Me.tableAccountEmployeeExpenseSheet.RejectedOnColumn)
-        End Function
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Public Sub SetRejectedOnNull()
-            Me(Me.tableAccountEmployeeExpenseSheet.RejectedOnColumn) = Global.System.Convert.DBNull
-        End Sub
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Public Function IsRejectedByEmployeeIdNull() As Boolean
-            Return Me.IsNull(Me.tableAccountEmployeeExpenseSheet.RejectedByEmployeeIdColumn)
-        End Function
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Public Sub SetRejectedByEmployeeIdNull()
-            Me(Me.tableAccountEmployeeExpenseSheet.RejectedByEmployeeIdColumn) = Global.System.Convert.DBNull
-        End Sub
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Public Function IsCustomField1Null() As Boolean
-            Return Me.IsNull(Me.tableAccountEmployeeExpenseSheet.CustomField1Column)
-        End Function
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Public Sub SetCustomField1Null()
-            Me(Me.tableAccountEmployeeExpenseSheet.CustomField1Column) = Global.System.Convert.DBNull
-        End Sub
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Public Function IsCustomField2Null() As Boolean
-            Return Me.IsNull(Me.tableAccountEmployeeExpenseSheet.CustomField2Column)
-        End Function
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Public Sub SetCustomField2Null()
-            Me(Me.tableAccountEmployeeExpenseSheet.CustomField2Column) = Global.System.Convert.DBNull
-        End Sub
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Public Function IsCustomField3Null() As Boolean
-            Return Me.IsNull(Me.tableAccountEmployeeExpenseSheet.CustomField3Column)
-        End Function
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Public Sub SetCustomField3Null()
-            Me(Me.tableAccountEmployeeExpenseSheet.CustomField3Column) = Global.System.Convert.DBNull
-        End Sub
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Public Function IsCustomField4Null() As Boolean
-            Return Me.IsNull(Me.tableAccountEmployeeExpenseSheet.CustomField4Column)
-        End Function
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Public Sub SetCustomField4Null()
-            Me(Me.tableAccountEmployeeExpenseSheet.CustomField4Column) = Global.System.Convert.DBNull
-        End Sub
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Public Function IsCustomField5Null() As Boolean
-            Return Me.IsNull(Me.tableAccountEmployeeExpenseSheet.CustomField5Column)
-        End Function
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Public Sub SetCustomField5Null()
-            Me(Me.tableAccountEmployeeExpenseSheet.CustomField5Column) = Global.System.Convert.DBNull
-        End Sub
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Public Function IsCustomField6Null() As Boolean
-            Return Me.IsNull(Me.tableAccountEmployeeExpenseSheet.CustomField6Column)
-        End Function
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Public Sub SetCustomField6Null()
-            Me(Me.tableAccountEmployeeExpenseSheet.CustomField6Column) = Global.System.Convert.DBNull
-        End Sub
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Public Function IsCustomField7Null() As Boolean
-            Return Me.IsNull(Me.tableAccountEmployeeExpenseSheet.CustomField7Column)
-        End Function
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Public Sub SetCustomField7Null()
-            Me(Me.tableAccountEmployeeExpenseSheet.CustomField7Column) = Global.System.Convert.DBNull
-        End Sub
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Public Function IsCustomField8Null() As Boolean
-            Return Me.IsNull(Me.tableAccountEmployeeExpenseSheet.CustomField8Column)
-        End Function
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Public Sub SetCustomField8Null()
-            Me(Me.tableAccountEmployeeExpenseSheet.CustomField8Column) = Global.System.Convert.DBNull
-        End Sub
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Public Function IsCustomField9Null() As Boolean
-            Return Me.IsNull(Me.tableAccountEmployeeExpenseSheet.CustomField9Column)
-        End Function
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Public Sub SetCustomField9Null()
-            Me(Me.tableAccountEmployeeExpenseSheet.CustomField9Column) = Global.System.Convert.DBNull
-        End Sub
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Public Function IsCustomField10Null() As Boolean
-            Return Me.IsNull(Me.tableAccountEmployeeExpenseSheet.CustomField10Column)
-        End Function
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Public Sub SetCustomField10Null()
-            Me(Me.tableAccountEmployeeExpenseSheet.CustomField10Column) = Global.System.Convert.DBNull
-        End Sub
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Public Function IsCustomField11Null() As Boolean
-            Return Me.IsNull(Me.tableAccountEmployeeExpenseSheet.CustomField11Column)
-        End Function
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Public Sub SetCustomField11Null()
-            Me(Me.tableAccountEmployeeExpenseSheet.CustomField11Column) = Global.System.Convert.DBNull
-        End Sub
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Public Function IsCustomField12Null() As Boolean
-            Return Me.IsNull(Me.tableAccountEmployeeExpenseSheet.CustomField12Column)
-        End Function
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Public Sub SetCustomField12Null()
-            Me(Me.tableAccountEmployeeExpenseSheet.CustomField12Column) = Global.System.Convert.DBNull
-        End Sub
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Public Function IsCustomField13Null() As Boolean
-            Return Me.IsNull(Me.tableAccountEmployeeExpenseSheet.CustomField13Column)
-        End Function
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Public Sub SetCustomField13Null()
-            Me(Me.tableAccountEmployeeExpenseSheet.CustomField13Column) = Global.System.Convert.DBNull
-        End Sub
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Public Function IsCustomField14Null() As Boolean
-            Return Me.IsNull(Me.tableAccountEmployeeExpenseSheet.CustomField14Column)
-        End Function
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Public Sub SetCustomField14Null()
-            Me(Me.tableAccountEmployeeExpenseSheet.CustomField14Column) = Global.System.Convert.DBNull
-        End Sub
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Public Function IsCustomField15Null() As Boolean
-            Return Me.IsNull(Me.tableAccountEmployeeExpenseSheet.CustomField15Column)
-        End Function
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Public Sub SetCustomField15Null()
-            Me(Me.tableAccountEmployeeExpenseSheet.CustomField15Column) = Global.System.Convert.DBNull
-        End Sub
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Public Function GetAccountExpenseEntryRows() As AccountExpenseEntryRow()
-            If (Me.Table.ChildRelations("FK_AccountExpenseEntry_AccountEmployeeExpenseSheet") Is Nothing) Then
-                Return New AccountExpenseEntryRow(-1) {}
-            Else
-                Return CType(MyBase.GetChildRows(Me.Table.ChildRelations("FK_AccountExpenseEntry_AccountEmployeeExpenseSheet")),AccountExpenseEntryRow())
-            End If
-        End Function
-    End Class
-    
-    '''<summary>
-    '''Represents strongly named DataRow class.
-    '''</summary>
-    Partial Public Class AccountExpenseRow
-        Inherits Global.System.Data.DataRow
-        
-        Private tableAccountExpense As AccountExpenseDataTable
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Friend Sub New(ByVal rb As Global.System.Data.DataRowBuilder)
-            MyBase.New(rb)
-            Me.tableAccountExpense = CType(Me.Table,AccountExpenseDataTable)
-        End Sub
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Public Property AccountExpenseId() As Integer
-            Get
-                Return CType(Me(Me.tableAccountExpense.AccountExpenseIdColumn),Integer)
-            End Get
-            Set
-                Me(Me.tableAccountExpense.AccountExpenseIdColumn) = value
-            End Set
-        End Property
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Public Property AccountExpenseName() As String
-            Get
-                Return CType(Me(Me.tableAccountExpense.AccountExpenseNameColumn),String)
-            End Get
-            Set
-                Me(Me.tableAccountExpense.AccountExpenseNameColumn) = value
-            End Set
-        End Property
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Public Property AccountExpenseTypeId() As Integer
-            Get
-                Return CType(Me(Me.tableAccountExpense.AccountExpenseTypeIdColumn),Integer)
-            End Get
-            Set
-                Me(Me.tableAccountExpense.AccountExpenseTypeIdColumn) = value
-            End Set
-        End Property
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Public Property IsBillable() As Boolean
-            Get
-                Try 
-                    Return CType(Me(Me.tableAccountExpense.IsBillableColumn),Boolean)
-                Catch e As Global.System.InvalidCastException
-                    Throw New Global.System.Data.StrongTypingException("The value for column 'IsBillable' in table 'AccountExpense' is DBNull.", e)
-                End Try
-            End Get
-            Set
-                Me(Me.tableAccountExpense.IsBillableColumn) = value
-            End Set
-        End Property
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Public Property AccountId() As Integer
-            Get
-                Return CType(Me(Me.tableAccountExpense.AccountIdColumn),Integer)
-            End Get
-            Set
-                Me(Me.tableAccountExpense.AccountIdColumn) = value
-            End Set
-        End Property
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Public Property CreatedOn() As Date
-            Get
-                Return CType(Me(Me.tableAccountExpense.CreatedOnColumn),Date)
-            End Get
-            Set
-                Me(Me.tableAccountExpense.CreatedOnColumn) = value
-            End Set
-        End Property
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Public Property CreatedByEmployeeId() As Integer
-            Get
-                Return CType(Me(Me.tableAccountExpense.CreatedByEmployeeIdColumn),Integer)
-            End Get
-            Set
-                Me(Me.tableAccountExpense.CreatedByEmployeeIdColumn) = value
-            End Set
-        End Property
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Public Property ModifiedOn() As Date
-            Get
-                Return CType(Me(Me.tableAccountExpense.ModifiedOnColumn),Date)
-            End Get
-            Set
-                Me(Me.tableAccountExpense.ModifiedOnColumn) = value
-            End Set
-        End Property
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Public Property ModifiedByEmployeeId() As Integer
-            Get
-                Return CType(Me(Me.tableAccountExpense.ModifiedByEmployeeIdColumn),Integer)
-            End Get
-            Set
-                Me(Me.tableAccountExpense.ModifiedByEmployeeIdColumn) = value
-            End Set
-        End Property
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Public Property IsDisabled() As Boolean
-            Get
-                Return CType(Me(Me.tableAccountExpense.IsDisabledColumn),Boolean)
-            End Get
-            Set
-                Me(Me.tableAccountExpense.IsDisabledColumn) = value
-            End Set
-        End Property
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Public Property DefaultExpenseRate() As Double
-            Get
-                Try 
-                    Return CType(Me(Me.tableAccountExpense.DefaultExpenseRateColumn),Double)
-                Catch e As Global.System.InvalidCastException
-                    Throw New Global.System.Data.StrongTypingException("The value for column 'DefaultExpenseRate' in table 'AccountExpense' is DBNull.", e)
-                End Try
-            End Get
-            Set
-                Me(Me.tableAccountExpense.DefaultExpenseRateColumn) = value
-            End Set
-        End Property
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Public Property DisabledEditingOfRate() As Boolean
-            Get
-                Return CType(Me(Me.tableAccountExpense.DisabledEditingOfRateColumn),Boolean)
-            End Get
-            Set
-                Me(Me.tableAccountExpense.DisabledEditingOfRateColumn) = value
-            End Set
-        End Property
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Public Property MasterAccountExpenseId() As Short
-            Get
-                Try 
-                    Return CType(Me(Me.tableAccountExpense.MasterAccountExpenseIdColumn),Short)
-                Catch e As Global.System.InvalidCastException
-                    Throw New Global.System.Data.StrongTypingException("The value for column 'MasterAccountExpenseId' in table 'AccountExpense' is DBNull"& _ 
-                            ".", e)
-                End Try
-            End Get
-            Set
-                Me(Me.tableAccountExpense.MasterAccountExpenseIdColumn) = value
-            End Set
-        End Property
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Public Function IsIsBillableNull() As Boolean
-            Return Me.IsNull(Me.tableAccountExpense.IsBillableColumn)
-        End Function
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Public Sub SetIsBillableNull()
-            Me(Me.tableAccountExpense.IsBillableColumn) = Global.System.Convert.DBNull
-        End Sub
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Public Function IsDefaultExpenseRateNull() As Boolean
-            Return Me.IsNull(Me.tableAccountExpense.DefaultExpenseRateColumn)
-        End Function
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Public Sub SetDefaultExpenseRateNull()
-            Me(Me.tableAccountExpense.DefaultExpenseRateColumn) = Global.System.Convert.DBNull
-        End Sub
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Public Function IsMasterAccountExpenseIdNull() As Boolean
-            Return Me.IsNull(Me.tableAccountExpense.MasterAccountExpenseIdColumn)
-        End Function
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Public Sub SetMasterAccountExpenseIdNull()
-            Me(Me.tableAccountExpense.MasterAccountExpenseIdColumn) = Global.System.Convert.DBNull
-        End Sub
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Public Function GetAccountExpenseEntryRows() As AccountExpenseEntryRow()
-            If (Me.Table.ChildRelations("FK_AccountExpenseEntry_AccountExpense") Is Nothing) Then
-                Return New AccountExpenseEntryRow(-1) {}
-            Else
-                Return CType(MyBase.GetChildRows(Me.Table.ChildRelations("FK_AccountExpenseEntry_AccountExpense")),AccountExpenseEntryRow())
-            End If
-        End Function
-    End Class
-    
-    '''<summary>
     '''Row event argument class
     '''</summary>
     <Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
@@ -8930,16 +8943,16 @@ Partial Public Class TimeLiveDataSet
     '''Row event argument class
     '''</summary>
     <Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-    Public Class AccountExpenseEntryRowChangeEvent
+    Public Class AccountExpenseRowChangeEvent
         Inherits Global.System.EventArgs
         
-        Private eventRow As AccountExpenseEntryRow
+        Private eventRow As AccountExpenseRow
         
         Private eventAction As Global.System.Data.DataRowAction
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Public Sub New(ByVal row As AccountExpenseEntryRow, ByVal action As Global.System.Data.DataRowAction)
+        Public Sub New(ByVal row As AccountExpenseRow, ByVal action As Global.System.Data.DataRowAction)
             MyBase.New
             Me.eventRow = row
             Me.eventAction = action
@@ -8947,7 +8960,7 @@ Partial Public Class TimeLiveDataSet
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Public ReadOnly Property Row() As AccountExpenseEntryRow
+        Public ReadOnly Property Row() As AccountExpenseRow
             Get
                 Return Me.eventRow
             End Get
@@ -9002,16 +9015,16 @@ Partial Public Class TimeLiveDataSet
     '''Row event argument class
     '''</summary>
     <Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-    Public Class AccountExpenseRowChangeEvent
+    Public Class AccountExpenseEntryRowChangeEvent
         Inherits Global.System.EventArgs
         
-        Private eventRow As AccountExpenseRow
+        Private eventRow As AccountExpenseEntryRow
         
         Private eventAction As Global.System.Data.DataRowAction
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Public Sub New(ByVal row As AccountExpenseRow, ByVal action As Global.System.Data.DataRowAction)
+        Public Sub New(ByVal row As AccountExpenseEntryRow, ByVal action As Global.System.Data.DataRowAction)
             MyBase.New
             Me.eventRow = row
             Me.eventAction = action
@@ -9019,7 +9032,7 @@ Partial Public Class TimeLiveDataSet
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Public ReadOnly Property Row() As AccountExpenseRow
+        Public ReadOnly Property Row() As AccountExpenseEntryRow
             Get
                 Return Me.eventRow
             End Get
@@ -12894,6 +12907,2222 @@ Namespace TimeLiveDataSetTableAdapters
      Global.System.ComponentModel.DesignerAttribute("Microsoft.VSDesigner.DataSource.Design.TableAdapterDesigner, Microsoft.VSDesigner"& _ 
         ", Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a"),  _
      Global.System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")>  _
+    Partial Public Class AccountExpenseTableAdapter
+        Inherits Global.System.ComponentModel.Component
+        
+        Private WithEvents _adapter As Global.System.Data.SqlClient.SqlDataAdapter
+        
+        Private _connection As Global.System.Data.SqlClient.SqlConnection
+        
+        Private _transaction As Global.System.Data.SqlClient.SqlTransaction
+        
+        Private _commandCollection() As Global.System.Data.SqlClient.SqlCommand
+        
+        Private _clearBeforeFill As Boolean
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public Sub New()
+            MyBase.New
+            Me.ClearBeforeFill = true
+        End Sub
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Protected Friend ReadOnly Property Adapter() As Global.System.Data.SqlClient.SqlDataAdapter
+            Get
+                If (Me._adapter Is Nothing) Then
+                    Me.InitAdapter
+                End If
+                Return Me._adapter
+            End Get
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Friend Property Connection() As Global.System.Data.SqlClient.SqlConnection
+            Get
+                If (Me._connection Is Nothing) Then
+                    Me.InitConnection
+                End If
+                Return Me._connection
+            End Get
+            Set
+                Me._connection = value
+                If (Not (Me.Adapter.InsertCommand) Is Nothing) Then
+                    Me.Adapter.InsertCommand.Connection = value
+                End If
+                If (Not (Me.Adapter.DeleteCommand) Is Nothing) Then
+                    Me.Adapter.DeleteCommand.Connection = value
+                End If
+                If (Not (Me.Adapter.UpdateCommand) Is Nothing) Then
+                    Me.Adapter.UpdateCommand.Connection = value
+                End If
+                Dim i As Integer = 0
+                Do While (i < Me.CommandCollection.Length)
+                    If (Not (Me.CommandCollection(i)) Is Nothing) Then
+                        CType(Me.CommandCollection(i),Global.System.Data.SqlClient.SqlCommand).Connection = value
+                    End If
+                    i = (i + 1)
+                Loop
+            End Set
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Friend Property Transaction() As Global.System.Data.SqlClient.SqlTransaction
+            Get
+                Return Me._transaction
+            End Get
+            Set
+                Me._transaction = value
+                Dim i As Integer = 0
+                Do While (i < Me.CommandCollection.Length)
+                    Me.CommandCollection(i).Transaction = Me._transaction
+                    i = (i + 1)
+                Loop
+                If ((Not (Me.Adapter) Is Nothing)  _
+                            AndAlso (Not (Me.Adapter.DeleteCommand) Is Nothing)) Then
+                    Me.Adapter.DeleteCommand.Transaction = Me._transaction
+                End If
+                If ((Not (Me.Adapter) Is Nothing)  _
+                            AndAlso (Not (Me.Adapter.InsertCommand) Is Nothing)) Then
+                    Me.Adapter.InsertCommand.Transaction = Me._transaction
+                End If
+                If ((Not (Me.Adapter) Is Nothing)  _
+                            AndAlso (Not (Me.Adapter.UpdateCommand) Is Nothing)) Then
+                    Me.Adapter.UpdateCommand.Transaction = Me._transaction
+                End If
+            End Set
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Protected ReadOnly Property CommandCollection() As Global.System.Data.SqlClient.SqlCommand()
+            Get
+                If (Me._commandCollection Is Nothing) Then
+                    Me.InitCommandCollection
+                End If
+                Return Me._commandCollection
+            End Get
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public Property ClearBeforeFill() As Boolean
+            Get
+                Return Me._clearBeforeFill
+            End Get
+            Set
+                Me._clearBeforeFill = value
+            End Set
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Private Sub InitAdapter()
+            Me._adapter = New Global.System.Data.SqlClient.SqlDataAdapter()
+            Dim tableMapping As Global.System.Data.Common.DataTableMapping = New Global.System.Data.Common.DataTableMapping()
+            tableMapping.SourceTable = "Table"
+            tableMapping.DataSetTable = "AccountExpense"
+            tableMapping.ColumnMappings.Add("AccountExpenseId", "AccountExpenseId")
+            tableMapping.ColumnMappings.Add("AccountExpenseName", "AccountExpenseName")
+            tableMapping.ColumnMappings.Add("AccountExpenseTypeId", "AccountExpenseTypeId")
+            tableMapping.ColumnMappings.Add("IsBillable", "IsBillable")
+            tableMapping.ColumnMappings.Add("AccountId", "AccountId")
+            tableMapping.ColumnMappings.Add("CreatedOn", "CreatedOn")
+            tableMapping.ColumnMappings.Add("CreatedByEmployeeId", "CreatedByEmployeeId")
+            tableMapping.ColumnMappings.Add("ModifiedOn", "ModifiedOn")
+            tableMapping.ColumnMappings.Add("ModifiedByEmployeeId", "ModifiedByEmployeeId")
+            tableMapping.ColumnMappings.Add("IsDisabled", "IsDisabled")
+            tableMapping.ColumnMappings.Add("DefaultExpenseRate", "DefaultExpenseRate")
+            tableMapping.ColumnMappings.Add("DisabledEditingOfRate", "DisabledEditingOfRate")
+            tableMapping.ColumnMappings.Add("MasterAccountExpenseId", "MasterAccountExpenseId")
+            Me._adapter.TableMappings.Add(tableMapping)
+            Me._adapter.DeleteCommand = New Global.System.Data.SqlClient.SqlCommand()
+            Me._adapter.DeleteCommand.Connection = Me.Connection
+            Me._adapter.DeleteCommand.CommandText = "DELETE FROM [dbo].[AccountExpense] WHERE (([AccountExpenseId] = @Original_Account"& _ 
+                "ExpenseId) AND ([AccountExpenseName] = @Original_AccountExpenseName) AND ([Accou"& _ 
+                "ntExpenseTypeId] = @Original_AccountExpenseTypeId) AND ((@IsNull_IsBillable = 1 "& _ 
+                "AND [IsBillable] IS NULL) OR ([IsBillable] = @Original_IsBillable)) AND ([Accoun"& _ 
+                "tId] = @Original_AccountId) AND ([CreatedOn] = @Original_CreatedOn) AND ([Create"& _ 
+                "dByEmployeeId] = @Original_CreatedByEmployeeId) AND ([ModifiedOn] = @Original_Mo"& _ 
+                "difiedOn) AND ([ModifiedByEmployeeId] = @Original_ModifiedByEmployeeId) AND ([Is"& _ 
+                "Disabled] = @Original_IsDisabled) AND ((@IsNull_DefaultExpenseRate = 1 AND [Defa"& _ 
+                "ultExpenseRate] IS NULL) OR ([DefaultExpenseRate] = @Original_DefaultExpenseRate"& _ 
+                ")) AND ([DisabledEditingOfRate] = @Original_DisabledEditingOfRate) AND ((@IsNull"& _ 
+                "_MasterAccountExpenseId = 1 AND [MasterAccountExpenseId] IS NULL) OR ([MasterAcc"& _ 
+                "ountExpenseId] = @Original_MasterAccountExpenseId)))"
+            Me._adapter.DeleteCommand.CommandType = Global.System.Data.CommandType.Text
+            Me._adapter.DeleteCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_AccountExpenseId", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "AccountExpenseId", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
+            Me._adapter.DeleteCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_AccountExpenseName", Global.System.Data.SqlDbType.NVarChar, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "AccountExpenseName", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
+            Me._adapter.DeleteCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_AccountExpenseTypeId", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "AccountExpenseTypeId", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
+            Me._adapter.DeleteCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@IsNull_IsBillable", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "IsBillable", Global.System.Data.DataRowVersion.Original, true, Nothing, "", "", ""))
+            Me._adapter.DeleteCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_IsBillable", Global.System.Data.SqlDbType.Bit, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "IsBillable", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
+            Me._adapter.DeleteCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_AccountId", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "AccountId", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
+            Me._adapter.DeleteCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_CreatedOn", Global.System.Data.SqlDbType.DateTime, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "CreatedOn", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
+            Me._adapter.DeleteCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_CreatedByEmployeeId", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "CreatedByEmployeeId", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
+            Me._adapter.DeleteCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_ModifiedOn", Global.System.Data.SqlDbType.DateTime, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "ModifiedOn", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
+            Me._adapter.DeleteCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_ModifiedByEmployeeId", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "ModifiedByEmployeeId", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
+            Me._adapter.DeleteCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_IsDisabled", Global.System.Data.SqlDbType.Bit, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "IsDisabled", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
+            Me._adapter.DeleteCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@IsNull_DefaultExpenseRate", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "DefaultExpenseRate", Global.System.Data.DataRowVersion.Original, true, Nothing, "", "", ""))
+            Me._adapter.DeleteCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_DefaultExpenseRate", Global.System.Data.SqlDbType.Float, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "DefaultExpenseRate", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
+            Me._adapter.DeleteCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_DisabledEditingOfRate", Global.System.Data.SqlDbType.Bit, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "DisabledEditingOfRate", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
+            Me._adapter.DeleteCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@IsNull_MasterAccountExpenseId", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "MasterAccountExpenseId", Global.System.Data.DataRowVersion.Original, true, Nothing, "", "", ""))
+            Me._adapter.DeleteCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_MasterAccountExpenseId", Global.System.Data.SqlDbType.SmallInt, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "MasterAccountExpenseId", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
+            Me._adapter.InsertCommand = New Global.System.Data.SqlClient.SqlCommand()
+            Me._adapter.InsertCommand.Connection = Me.Connection
+            Me._adapter.InsertCommand.CommandText = "INSERT INTO [dbo].[AccountExpense] ([AccountExpenseName], [AccountExpenseTypeId],"& _ 
+                " [IsBillable], [AccountId], [CreatedOn], [CreatedByEmployeeId], [ModifiedOn], [M"& _ 
+                "odifiedByEmployeeId], [IsDisabled], [DefaultExpenseRate], [DisabledEditingOfRate"& _ 
+                "], [MasterAccountExpenseId]) VALUES (@AccountExpenseName, @AccountExpenseTypeId,"& _ 
+                " @IsBillable, @AccountId, @CreatedOn, @CreatedByEmployeeId, @ModifiedOn, @Modifi"& _ 
+                "edByEmployeeId, @IsDisabled, @DefaultExpenseRate, @DisabledEditingOfRate, @Maste"& _ 
+                "rAccountExpenseId);"&Global.Microsoft.VisualBasic.ChrW(13)&Global.Microsoft.VisualBasic.ChrW(10)&"SELECT AccountExpenseId, AccountExpenseName, AccountExpense"& _ 
+                "TypeId, IsBillable, AccountId, CreatedOn, CreatedByEmployeeId, ModifiedOn, Modif"& _ 
+                "iedByEmployeeId, IsDisabled, DefaultExpenseRate, DisabledEditingOfRate, MasterAc"& _ 
+                "countExpenseId FROM AccountExpense WHERE (AccountExpenseId = SCOPE_IDENTITY())"
+            Me._adapter.InsertCommand.CommandType = Global.System.Data.CommandType.Text
+            Me._adapter.InsertCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@AccountExpenseName", Global.System.Data.SqlDbType.NVarChar, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "AccountExpenseName", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
+            Me._adapter.InsertCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@AccountExpenseTypeId", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "AccountExpenseTypeId", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
+            Me._adapter.InsertCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@IsBillable", Global.System.Data.SqlDbType.Bit, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "IsBillable", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
+            Me._adapter.InsertCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@AccountId", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "AccountId", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
+            Me._adapter.InsertCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@CreatedOn", Global.System.Data.SqlDbType.DateTime, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "CreatedOn", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
+            Me._adapter.InsertCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@CreatedByEmployeeId", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "CreatedByEmployeeId", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
+            Me._adapter.InsertCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@ModifiedOn", Global.System.Data.SqlDbType.DateTime, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "ModifiedOn", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
+            Me._adapter.InsertCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@ModifiedByEmployeeId", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "ModifiedByEmployeeId", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
+            Me._adapter.InsertCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@IsDisabled", Global.System.Data.SqlDbType.Bit, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "IsDisabled", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
+            Me._adapter.InsertCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@DefaultExpenseRate", Global.System.Data.SqlDbType.Float, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "DefaultExpenseRate", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
+            Me._adapter.InsertCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@DisabledEditingOfRate", Global.System.Data.SqlDbType.Bit, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "DisabledEditingOfRate", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
+            Me._adapter.InsertCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@MasterAccountExpenseId", Global.System.Data.SqlDbType.SmallInt, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "MasterAccountExpenseId", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
+            Me._adapter.UpdateCommand = New Global.System.Data.SqlClient.SqlCommand()
+            Me._adapter.UpdateCommand.Connection = Me.Connection
+            Me._adapter.UpdateCommand.CommandText = "UPDATE [dbo].[AccountExpense] SET [AccountExpenseName] = @AccountExpenseName, [Ac"& _ 
+                "countExpenseTypeId] = @AccountExpenseTypeId, [IsBillable] = @IsBillable, [Accoun"& _ 
+                "tId] = @AccountId, [CreatedOn] = @CreatedOn, [CreatedByEmployeeId] = @CreatedByE"& _ 
+                "mployeeId, [ModifiedOn] = @ModifiedOn, [ModifiedByEmployeeId] = @ModifiedByEmplo"& _ 
+                "yeeId, [IsDisabled] = @IsDisabled, [DefaultExpenseRate] = @DefaultExpenseRate, ["& _ 
+                "DisabledEditingOfRate] = @DisabledEditingOfRate, [MasterAccountExpenseId] = @Mas"& _ 
+                "terAccountExpenseId WHERE (([AccountExpenseId] = @Original_AccountExpenseId) AND"& _ 
+                " ([AccountExpenseName] = @Original_AccountExpenseName) AND ([AccountExpenseTypeI"& _ 
+                "d] = @Original_AccountExpenseTypeId) AND ((@IsNull_IsBillable = 1 AND [IsBillabl"& _ 
+                "e] IS NULL) OR ([IsBillable] = @Original_IsBillable)) AND ([AccountId] = @Origin"& _ 
+                "al_AccountId) AND ([CreatedOn] = @Original_CreatedOn) AND ([CreatedByEmployeeId]"& _ 
+                " = @Original_CreatedByEmployeeId) AND ([ModifiedOn] = @Original_ModifiedOn) AND "& _ 
+                "([ModifiedByEmployeeId] = @Original_ModifiedByEmployeeId) AND ([IsDisabled] = @O"& _ 
+                "riginal_IsDisabled) AND ((@IsNull_DefaultExpenseRate = 1 AND [DefaultExpenseRate"& _ 
+                "] IS NULL) OR ([DefaultExpenseRate] = @Original_DefaultExpenseRate)) AND ([Disab"& _ 
+                "ledEditingOfRate] = @Original_DisabledEditingOfRate) AND ((@IsNull_MasterAccount"& _ 
+                "ExpenseId = 1 AND [MasterAccountExpenseId] IS NULL) OR ([MasterAccountExpenseId]"& _ 
+                " = @Original_MasterAccountExpenseId)));"&Global.Microsoft.VisualBasic.ChrW(13)&Global.Microsoft.VisualBasic.ChrW(10)&"SELECT AccountExpenseId, AccountExpense"& _ 
+                "Name, AccountExpenseTypeId, IsBillable, AccountId, CreatedOn, CreatedByEmployeeI"& _ 
+                "d, ModifiedOn, ModifiedByEmployeeId, IsDisabled, DefaultExpenseRate, DisabledEdi"& _ 
+                "tingOfRate, MasterAccountExpenseId FROM AccountExpense WHERE (AccountExpenseId ="& _ 
+                " @AccountExpenseId)"
+            Me._adapter.UpdateCommand.CommandType = Global.System.Data.CommandType.Text
+            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@AccountExpenseName", Global.System.Data.SqlDbType.NVarChar, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "AccountExpenseName", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
+            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@AccountExpenseTypeId", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "AccountExpenseTypeId", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
+            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@IsBillable", Global.System.Data.SqlDbType.Bit, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "IsBillable", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
+            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@AccountId", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "AccountId", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
+            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@CreatedOn", Global.System.Data.SqlDbType.DateTime, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "CreatedOn", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
+            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@CreatedByEmployeeId", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "CreatedByEmployeeId", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
+            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@ModifiedOn", Global.System.Data.SqlDbType.DateTime, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "ModifiedOn", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
+            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@ModifiedByEmployeeId", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "ModifiedByEmployeeId", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
+            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@IsDisabled", Global.System.Data.SqlDbType.Bit, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "IsDisabled", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
+            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@DefaultExpenseRate", Global.System.Data.SqlDbType.Float, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "DefaultExpenseRate", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
+            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@DisabledEditingOfRate", Global.System.Data.SqlDbType.Bit, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "DisabledEditingOfRate", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
+            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@MasterAccountExpenseId", Global.System.Data.SqlDbType.SmallInt, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "MasterAccountExpenseId", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
+            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_AccountExpenseId", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "AccountExpenseId", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
+            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_AccountExpenseName", Global.System.Data.SqlDbType.NVarChar, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "AccountExpenseName", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
+            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_AccountExpenseTypeId", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "AccountExpenseTypeId", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
+            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@IsNull_IsBillable", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "IsBillable", Global.System.Data.DataRowVersion.Original, true, Nothing, "", "", ""))
+            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_IsBillable", Global.System.Data.SqlDbType.Bit, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "IsBillable", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
+            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_AccountId", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "AccountId", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
+            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_CreatedOn", Global.System.Data.SqlDbType.DateTime, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "CreatedOn", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
+            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_CreatedByEmployeeId", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "CreatedByEmployeeId", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
+            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_ModifiedOn", Global.System.Data.SqlDbType.DateTime, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "ModifiedOn", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
+            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_ModifiedByEmployeeId", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "ModifiedByEmployeeId", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
+            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_IsDisabled", Global.System.Data.SqlDbType.Bit, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "IsDisabled", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
+            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@IsNull_DefaultExpenseRate", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "DefaultExpenseRate", Global.System.Data.DataRowVersion.Original, true, Nothing, "", "", ""))
+            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_DefaultExpenseRate", Global.System.Data.SqlDbType.Float, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "DefaultExpenseRate", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
+            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_DisabledEditingOfRate", Global.System.Data.SqlDbType.Bit, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "DisabledEditingOfRate", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
+            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@IsNull_MasterAccountExpenseId", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "MasterAccountExpenseId", Global.System.Data.DataRowVersion.Original, true, Nothing, "", "", ""))
+            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_MasterAccountExpenseId", Global.System.Data.SqlDbType.SmallInt, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "MasterAccountExpenseId", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
+            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@AccountExpenseId", Global.System.Data.SqlDbType.Int, 4, Global.System.Data.ParameterDirection.Input, 0, 0, "AccountExpenseId", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
+        End Sub
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Private Sub InitConnection()
+            Me._connection = New Global.System.Data.SqlClient.SqlConnection()
+            Me._connection.ConnectionString = Global.TimeLive.Quickbooks.Integrator.My.MySettings.Default.TimeLiveDevConnectionString1
+        End Sub
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Private Sub InitCommandCollection()
+            Me._commandCollection = New Global.System.Data.SqlClient.SqlCommand(1) {}
+            Me._commandCollection(0) = New Global.System.Data.SqlClient.SqlCommand()
+            Me._commandCollection(0).Connection = Me.Connection
+            Me._commandCollection(0).CommandText = "SELECT AccountExpenseId, AccountExpenseName, AccountExpenseTypeId, IsBillable, Ac"& _ 
+                "countId, CreatedOn, CreatedByEmployeeId, ModifiedOn, ModifiedByEmployeeId, IsDis"& _ 
+                "abled, DefaultExpenseRate, DisabledEditingOfRate, MasterAccountExpenseId FROM db"& _ 
+                "o.AccountExpense"
+            Me._commandCollection(0).CommandType = Global.System.Data.CommandType.Text
+            Me._commandCollection(1) = New Global.System.Data.SqlClient.SqlCommand()
+            Me._commandCollection(1).Connection = Me.Connection
+            Me._commandCollection(1).CommandText = "SELECT AccountExpenseId"&Global.Microsoft.VisualBasic.ChrW(13)&Global.Microsoft.VisualBasic.ChrW(10)&"FROM AccountExpense"&Global.Microsoft.VisualBasic.ChrW(13)&Global.Microsoft.VisualBasic.ChrW(10)&"WHERE (AccountExpenseName = @Expens"& _ 
+                "eName)"
+            Me._commandCollection(1).CommandType = Global.System.Data.CommandType.Text
+            Me._commandCollection(1).Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@ExpenseName", Global.System.Data.SqlDbType.NVarChar, 200, Global.System.Data.ParameterDirection.Input, 0, 0, "AccountExpenseName", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
+        End Sub
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0"),  _
+         Global.System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter"),  _
+         Global.System.ComponentModel.DataObjectMethodAttribute(Global.System.ComponentModel.DataObjectMethodType.Fill, true)>  _
+        Public Overloads Overridable Function Fill(ByVal dataTable As TimeLiveDataSet.AccountExpenseDataTable) As Integer
+            Me.Adapter.SelectCommand = Me.CommandCollection(0)
+            If (Me.ClearBeforeFill = true) Then
+                dataTable.Clear
+            End If
+            Dim returnValue As Integer = Me.Adapter.Fill(dataTable)
+            Return returnValue
+        End Function
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0"),  _
+         Global.System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter"),  _
+         Global.System.ComponentModel.DataObjectMethodAttribute(Global.System.ComponentModel.DataObjectMethodType.[Select], true)>  _
+        Public Overloads Overridable Function GetData() As TimeLiveDataSet.AccountExpenseDataTable
+            Me.Adapter.SelectCommand = Me.CommandCollection(0)
+            Dim dataTable As TimeLiveDataSet.AccountExpenseDataTable = New TimeLiveDataSet.AccountExpenseDataTable()
+            Me.Adapter.Fill(dataTable)
+            Return dataTable
+        End Function
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0"),  _
+         Global.System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")>  _
+        Public Overloads Overridable Function Update(ByVal dataTable As TimeLiveDataSet.AccountExpenseDataTable) As Integer
+            Return Me.Adapter.Update(dataTable)
+        End Function
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0"),  _
+         Global.System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")>  _
+        Public Overloads Overridable Function Update(ByVal dataSet As TimeLiveDataSet) As Integer
+            Return Me.Adapter.Update(dataSet, "AccountExpense")
+        End Function
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0"),  _
+         Global.System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")>  _
+        Public Overloads Overridable Function Update(ByVal dataRow As Global.System.Data.DataRow) As Integer
+            Return Me.Adapter.Update(New Global.System.Data.DataRow() {dataRow})
+        End Function
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0"),  _
+         Global.System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")>  _
+        Public Overloads Overridable Function Update(ByVal dataRows() As Global.System.Data.DataRow) As Integer
+            Return Me.Adapter.Update(dataRows)
+        End Function
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0"),  _
+         Global.System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter"),  _
+         Global.System.ComponentModel.DataObjectMethodAttribute(Global.System.ComponentModel.DataObjectMethodType.Delete, true)>  _
+        Public Overloads Overridable Function Delete(ByVal Original_AccountExpenseId As Integer, ByVal Original_AccountExpenseName As String, ByVal Original_AccountExpenseTypeId As Integer, ByVal Original_IsBillable As Global.System.Nullable(Of Boolean), ByVal Original_AccountId As Integer, ByVal Original_CreatedOn As Date, ByVal Original_CreatedByEmployeeId As Integer, ByVal Original_ModifiedOn As Date, ByVal Original_ModifiedByEmployeeId As Integer, ByVal Original_IsDisabled As Boolean, ByVal Original_DefaultExpenseRate As Global.System.Nullable(Of Double), ByVal Original_DisabledEditingOfRate As Boolean, ByVal Original_MasterAccountExpenseId As Global.System.Nullable(Of Short)) As Integer
+            Me.Adapter.DeleteCommand.Parameters(0).Value = CType(Original_AccountExpenseId,Integer)
+            If (Original_AccountExpenseName Is Nothing) Then
+                Throw New Global.System.ArgumentNullException("Original_AccountExpenseName")
+            Else
+                Me.Adapter.DeleteCommand.Parameters(1).Value = CType(Original_AccountExpenseName,String)
+            End If
+            Me.Adapter.DeleteCommand.Parameters(2).Value = CType(Original_AccountExpenseTypeId,Integer)
+            If (Original_IsBillable.HasValue = true) Then
+                Me.Adapter.DeleteCommand.Parameters(3).Value = CType(0,Object)
+                Me.Adapter.DeleteCommand.Parameters(4).Value = CType(Original_IsBillable.Value,Boolean)
+            Else
+                Me.Adapter.DeleteCommand.Parameters(3).Value = CType(1,Object)
+                Me.Adapter.DeleteCommand.Parameters(4).Value = Global.System.DBNull.Value
+            End If
+            Me.Adapter.DeleteCommand.Parameters(5).Value = CType(Original_AccountId,Integer)
+            Me.Adapter.DeleteCommand.Parameters(6).Value = CType(Original_CreatedOn,Date)
+            Me.Adapter.DeleteCommand.Parameters(7).Value = CType(Original_CreatedByEmployeeId,Integer)
+            Me.Adapter.DeleteCommand.Parameters(8).Value = CType(Original_ModifiedOn,Date)
+            Me.Adapter.DeleteCommand.Parameters(9).Value = CType(Original_ModifiedByEmployeeId,Integer)
+            Me.Adapter.DeleteCommand.Parameters(10).Value = CType(Original_IsDisabled,Boolean)
+            If (Original_DefaultExpenseRate.HasValue = true) Then
+                Me.Adapter.DeleteCommand.Parameters(11).Value = CType(0,Object)
+                Me.Adapter.DeleteCommand.Parameters(12).Value = CType(Original_DefaultExpenseRate.Value,Double)
+            Else
+                Me.Adapter.DeleteCommand.Parameters(11).Value = CType(1,Object)
+                Me.Adapter.DeleteCommand.Parameters(12).Value = Global.System.DBNull.Value
+            End If
+            Me.Adapter.DeleteCommand.Parameters(13).Value = CType(Original_DisabledEditingOfRate,Boolean)
+            If (Original_MasterAccountExpenseId.HasValue = true) Then
+                Me.Adapter.DeleteCommand.Parameters(14).Value = CType(0,Object)
+                Me.Adapter.DeleteCommand.Parameters(15).Value = CType(Original_MasterAccountExpenseId.Value,Short)
+            Else
+                Me.Adapter.DeleteCommand.Parameters(14).Value = CType(1,Object)
+                Me.Adapter.DeleteCommand.Parameters(15).Value = Global.System.DBNull.Value
+            End If
+            Dim previousConnectionState As Global.System.Data.ConnectionState = Me.Adapter.DeleteCommand.Connection.State
+            If ((Me.Adapter.DeleteCommand.Connection.State And Global.System.Data.ConnectionState.Open)  _
+                        <> Global.System.Data.ConnectionState.Open) Then
+                Me.Adapter.DeleteCommand.Connection.Open
+            End If
+            Try 
+                Dim returnValue As Integer = Me.Adapter.DeleteCommand.ExecuteNonQuery
+                Return returnValue
+            Finally
+                If (previousConnectionState = Global.System.Data.ConnectionState.Closed) Then
+                    Me.Adapter.DeleteCommand.Connection.Close
+                End If
+            End Try
+        End Function
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0"),  _
+         Global.System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter"),  _
+         Global.System.ComponentModel.DataObjectMethodAttribute(Global.System.ComponentModel.DataObjectMethodType.Insert, true)>  _
+        Public Overloads Overridable Function Insert(ByVal AccountExpenseName As String, ByVal AccountExpenseTypeId As Integer, ByVal IsBillable As Global.System.Nullable(Of Boolean), ByVal AccountId As Integer, ByVal CreatedOn As Date, ByVal CreatedByEmployeeId As Integer, ByVal ModifiedOn As Date, ByVal ModifiedByEmployeeId As Integer, ByVal IsDisabled As Boolean, ByVal DefaultExpenseRate As Global.System.Nullable(Of Double), ByVal DisabledEditingOfRate As Boolean, ByVal MasterAccountExpenseId As Global.System.Nullable(Of Short)) As Integer
+            If (AccountExpenseName Is Nothing) Then
+                Throw New Global.System.ArgumentNullException("AccountExpenseName")
+            Else
+                Me.Adapter.InsertCommand.Parameters(0).Value = CType(AccountExpenseName,String)
+            End If
+            Me.Adapter.InsertCommand.Parameters(1).Value = CType(AccountExpenseTypeId,Integer)
+            If (IsBillable.HasValue = true) Then
+                Me.Adapter.InsertCommand.Parameters(2).Value = CType(IsBillable.Value,Boolean)
+            Else
+                Me.Adapter.InsertCommand.Parameters(2).Value = Global.System.DBNull.Value
+            End If
+            Me.Adapter.InsertCommand.Parameters(3).Value = CType(AccountId,Integer)
+            Me.Adapter.InsertCommand.Parameters(4).Value = CType(CreatedOn,Date)
+            Me.Adapter.InsertCommand.Parameters(5).Value = CType(CreatedByEmployeeId,Integer)
+            Me.Adapter.InsertCommand.Parameters(6).Value = CType(ModifiedOn,Date)
+            Me.Adapter.InsertCommand.Parameters(7).Value = CType(ModifiedByEmployeeId,Integer)
+            Me.Adapter.InsertCommand.Parameters(8).Value = CType(IsDisabled,Boolean)
+            If (DefaultExpenseRate.HasValue = true) Then
+                Me.Adapter.InsertCommand.Parameters(9).Value = CType(DefaultExpenseRate.Value,Double)
+            Else
+                Me.Adapter.InsertCommand.Parameters(9).Value = Global.System.DBNull.Value
+            End If
+            Me.Adapter.InsertCommand.Parameters(10).Value = CType(DisabledEditingOfRate,Boolean)
+            If (MasterAccountExpenseId.HasValue = true) Then
+                Me.Adapter.InsertCommand.Parameters(11).Value = CType(MasterAccountExpenseId.Value,Short)
+            Else
+                Me.Adapter.InsertCommand.Parameters(11).Value = Global.System.DBNull.Value
+            End If
+            Dim previousConnectionState As Global.System.Data.ConnectionState = Me.Adapter.InsertCommand.Connection.State
+            If ((Me.Adapter.InsertCommand.Connection.State And Global.System.Data.ConnectionState.Open)  _
+                        <> Global.System.Data.ConnectionState.Open) Then
+                Me.Adapter.InsertCommand.Connection.Open
+            End If
+            Try 
+                Dim returnValue As Integer = Me.Adapter.InsertCommand.ExecuteNonQuery
+                Return returnValue
+            Finally
+                If (previousConnectionState = Global.System.Data.ConnectionState.Closed) Then
+                    Me.Adapter.InsertCommand.Connection.Close
+                End If
+            End Try
+        End Function
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0"),  _
+         Global.System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter"),  _
+         Global.System.ComponentModel.DataObjectMethodAttribute(Global.System.ComponentModel.DataObjectMethodType.Update, true)>  _
+        Public Overloads Overridable Function Update( _
+                    ByVal AccountExpenseName As String,  _
+                    ByVal AccountExpenseTypeId As Integer,  _
+                    ByVal IsBillable As Global.System.Nullable(Of Boolean),  _
+                    ByVal AccountId As Integer,  _
+                    ByVal CreatedOn As Date,  _
+                    ByVal CreatedByEmployeeId As Integer,  _
+                    ByVal ModifiedOn As Date,  _
+                    ByVal ModifiedByEmployeeId As Integer,  _
+                    ByVal IsDisabled As Boolean,  _
+                    ByVal DefaultExpenseRate As Global.System.Nullable(Of Double),  _
+                    ByVal DisabledEditingOfRate As Boolean,  _
+                    ByVal MasterAccountExpenseId As Global.System.Nullable(Of Short),  _
+                    ByVal Original_AccountExpenseId As Integer,  _
+                    ByVal Original_AccountExpenseName As String,  _
+                    ByVal Original_AccountExpenseTypeId As Integer,  _
+                    ByVal Original_IsBillable As Global.System.Nullable(Of Boolean),  _
+                    ByVal Original_AccountId As Integer,  _
+                    ByVal Original_CreatedOn As Date,  _
+                    ByVal Original_CreatedByEmployeeId As Integer,  _
+                    ByVal Original_ModifiedOn As Date,  _
+                    ByVal Original_ModifiedByEmployeeId As Integer,  _
+                    ByVal Original_IsDisabled As Boolean,  _
+                    ByVal Original_DefaultExpenseRate As Global.System.Nullable(Of Double),  _
+                    ByVal Original_DisabledEditingOfRate As Boolean,  _
+                    ByVal Original_MasterAccountExpenseId As Global.System.Nullable(Of Short),  _
+                    ByVal AccountExpenseId As Integer) As Integer
+            If (AccountExpenseName Is Nothing) Then
+                Throw New Global.System.ArgumentNullException("AccountExpenseName")
+            Else
+                Me.Adapter.UpdateCommand.Parameters(0).Value = CType(AccountExpenseName,String)
+            End If
+            Me.Adapter.UpdateCommand.Parameters(1).Value = CType(AccountExpenseTypeId,Integer)
+            If (IsBillable.HasValue = true) Then
+                Me.Adapter.UpdateCommand.Parameters(2).Value = CType(IsBillable.Value,Boolean)
+            Else
+                Me.Adapter.UpdateCommand.Parameters(2).Value = Global.System.DBNull.Value
+            End If
+            Me.Adapter.UpdateCommand.Parameters(3).Value = CType(AccountId,Integer)
+            Me.Adapter.UpdateCommand.Parameters(4).Value = CType(CreatedOn,Date)
+            Me.Adapter.UpdateCommand.Parameters(5).Value = CType(CreatedByEmployeeId,Integer)
+            Me.Adapter.UpdateCommand.Parameters(6).Value = CType(ModifiedOn,Date)
+            Me.Adapter.UpdateCommand.Parameters(7).Value = CType(ModifiedByEmployeeId,Integer)
+            Me.Adapter.UpdateCommand.Parameters(8).Value = CType(IsDisabled,Boolean)
+            If (DefaultExpenseRate.HasValue = true) Then
+                Me.Adapter.UpdateCommand.Parameters(9).Value = CType(DefaultExpenseRate.Value,Double)
+            Else
+                Me.Adapter.UpdateCommand.Parameters(9).Value = Global.System.DBNull.Value
+            End If
+            Me.Adapter.UpdateCommand.Parameters(10).Value = CType(DisabledEditingOfRate,Boolean)
+            If (MasterAccountExpenseId.HasValue = true) Then
+                Me.Adapter.UpdateCommand.Parameters(11).Value = CType(MasterAccountExpenseId.Value,Short)
+            Else
+                Me.Adapter.UpdateCommand.Parameters(11).Value = Global.System.DBNull.Value
+            End If
+            Me.Adapter.UpdateCommand.Parameters(12).Value = CType(Original_AccountExpenseId,Integer)
+            If (Original_AccountExpenseName Is Nothing) Then
+                Throw New Global.System.ArgumentNullException("Original_AccountExpenseName")
+            Else
+                Me.Adapter.UpdateCommand.Parameters(13).Value = CType(Original_AccountExpenseName,String)
+            End If
+            Me.Adapter.UpdateCommand.Parameters(14).Value = CType(Original_AccountExpenseTypeId,Integer)
+            If (Original_IsBillable.HasValue = true) Then
+                Me.Adapter.UpdateCommand.Parameters(15).Value = CType(0,Object)
+                Me.Adapter.UpdateCommand.Parameters(16).Value = CType(Original_IsBillable.Value,Boolean)
+            Else
+                Me.Adapter.UpdateCommand.Parameters(15).Value = CType(1,Object)
+                Me.Adapter.UpdateCommand.Parameters(16).Value = Global.System.DBNull.Value
+            End If
+            Me.Adapter.UpdateCommand.Parameters(17).Value = CType(Original_AccountId,Integer)
+            Me.Adapter.UpdateCommand.Parameters(18).Value = CType(Original_CreatedOn,Date)
+            Me.Adapter.UpdateCommand.Parameters(19).Value = CType(Original_CreatedByEmployeeId,Integer)
+            Me.Adapter.UpdateCommand.Parameters(20).Value = CType(Original_ModifiedOn,Date)
+            Me.Adapter.UpdateCommand.Parameters(21).Value = CType(Original_ModifiedByEmployeeId,Integer)
+            Me.Adapter.UpdateCommand.Parameters(22).Value = CType(Original_IsDisabled,Boolean)
+            If (Original_DefaultExpenseRate.HasValue = true) Then
+                Me.Adapter.UpdateCommand.Parameters(23).Value = CType(0,Object)
+                Me.Adapter.UpdateCommand.Parameters(24).Value = CType(Original_DefaultExpenseRate.Value,Double)
+            Else
+                Me.Adapter.UpdateCommand.Parameters(23).Value = CType(1,Object)
+                Me.Adapter.UpdateCommand.Parameters(24).Value = Global.System.DBNull.Value
+            End If
+            Me.Adapter.UpdateCommand.Parameters(25).Value = CType(Original_DisabledEditingOfRate,Boolean)
+            If (Original_MasterAccountExpenseId.HasValue = true) Then
+                Me.Adapter.UpdateCommand.Parameters(26).Value = CType(0,Object)
+                Me.Adapter.UpdateCommand.Parameters(27).Value = CType(Original_MasterAccountExpenseId.Value,Short)
+            Else
+                Me.Adapter.UpdateCommand.Parameters(26).Value = CType(1,Object)
+                Me.Adapter.UpdateCommand.Parameters(27).Value = Global.System.DBNull.Value
+            End If
+            Me.Adapter.UpdateCommand.Parameters(28).Value = CType(AccountExpenseId,Integer)
+            Dim previousConnectionState As Global.System.Data.ConnectionState = Me.Adapter.UpdateCommand.Connection.State
+            If ((Me.Adapter.UpdateCommand.Connection.State And Global.System.Data.ConnectionState.Open)  _
+                        <> Global.System.Data.ConnectionState.Open) Then
+                Me.Adapter.UpdateCommand.Connection.Open
+            End If
+            Try 
+                Dim returnValue As Integer = Me.Adapter.UpdateCommand.ExecuteNonQuery
+                Return returnValue
+            Finally
+                If (previousConnectionState = Global.System.Data.ConnectionState.Closed) Then
+                    Me.Adapter.UpdateCommand.Connection.Close
+                End If
+            End Try
+        End Function
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0"),  _
+         Global.System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter"),  _
+         Global.System.ComponentModel.DataObjectMethodAttribute(Global.System.ComponentModel.DataObjectMethodType.Update, true)>  _
+        Public Overloads Overridable Function Update( _
+                    ByVal AccountExpenseName As String,  _
+                    ByVal AccountExpenseTypeId As Integer,  _
+                    ByVal IsBillable As Global.System.Nullable(Of Boolean),  _
+                    ByVal AccountId As Integer,  _
+                    ByVal CreatedOn As Date,  _
+                    ByVal CreatedByEmployeeId As Integer,  _
+                    ByVal ModifiedOn As Date,  _
+                    ByVal ModifiedByEmployeeId As Integer,  _
+                    ByVal IsDisabled As Boolean,  _
+                    ByVal DefaultExpenseRate As Global.System.Nullable(Of Double),  _
+                    ByVal DisabledEditingOfRate As Boolean,  _
+                    ByVal MasterAccountExpenseId As Global.System.Nullable(Of Short),  _
+                    ByVal Original_AccountExpenseId As Integer,  _
+                    ByVal Original_AccountExpenseName As String,  _
+                    ByVal Original_AccountExpenseTypeId As Integer,  _
+                    ByVal Original_IsBillable As Global.System.Nullable(Of Boolean),  _
+                    ByVal Original_AccountId As Integer,  _
+                    ByVal Original_CreatedOn As Date,  _
+                    ByVal Original_CreatedByEmployeeId As Integer,  _
+                    ByVal Original_ModifiedOn As Date,  _
+                    ByVal Original_ModifiedByEmployeeId As Integer,  _
+                    ByVal Original_IsDisabled As Boolean,  _
+                    ByVal Original_DefaultExpenseRate As Global.System.Nullable(Of Double),  _
+                    ByVal Original_DisabledEditingOfRate As Boolean,  _
+                    ByVal Original_MasterAccountExpenseId As Global.System.Nullable(Of Short)) As Integer
+            Return Me.Update(AccountExpenseName, AccountExpenseTypeId, IsBillable, AccountId, CreatedOn, CreatedByEmployeeId, ModifiedOn, ModifiedByEmployeeId, IsDisabled, DefaultExpenseRate, DisabledEditingOfRate, MasterAccountExpenseId, Original_AccountExpenseId, Original_AccountExpenseName, Original_AccountExpenseTypeId, Original_IsBillable, Original_AccountId, Original_CreatedOn, Original_CreatedByEmployeeId, Original_ModifiedOn, Original_ModifiedByEmployeeId, Original_IsDisabled, Original_DefaultExpenseRate, Original_DisabledEditingOfRate, Original_MasterAccountExpenseId, Original_AccountExpenseId)
+        End Function
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0"),  _
+         Global.System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")>  _
+        Public Overloads Overridable Function getExpenseIdFromName(ByVal ExpenseName As String) As Global.System.Nullable(Of Integer)
+            Dim command As Global.System.Data.SqlClient.SqlCommand = Me.CommandCollection(1)
+            If (ExpenseName Is Nothing) Then
+                Throw New Global.System.ArgumentNullException("ExpenseName")
+            Else
+                command.Parameters(0).Value = CType(ExpenseName,String)
+            End If
+            Dim previousConnectionState As Global.System.Data.ConnectionState = command.Connection.State
+            If ((command.Connection.State And Global.System.Data.ConnectionState.Open)  _
+                        <> Global.System.Data.ConnectionState.Open) Then
+                command.Connection.Open
+            End If
+            Dim returnValue As Object
+            Try 
+                returnValue = command.ExecuteScalar
+            Finally
+                If (previousConnectionState = Global.System.Data.ConnectionState.Closed) Then
+                    command.Connection.Close
+                End If
+            End Try
+            If ((returnValue Is Nothing)  _
+                        OrElse (returnValue.GetType Is GetType(Global.System.DBNull))) Then
+                Return New Global.System.Nullable(Of Integer)()
+            Else
+                Return New Global.System.Nullable(Of Integer)(CType(returnValue,Integer))
+            End If
+        End Function
+    End Class
+    
+    '''<summary>
+    '''Represents the connection and commands used to retrieve and save data.
+    '''</summary>
+    <Global.System.ComponentModel.DesignerCategoryAttribute("code"),  _
+     Global.System.ComponentModel.ToolboxItem(true),  _
+     Global.System.ComponentModel.DataObjectAttribute(true),  _
+     Global.System.ComponentModel.DesignerAttribute("Microsoft.VSDesigner.DataSource.Design.TableAdapterDesigner, Microsoft.VSDesigner"& _ 
+        ", Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a"),  _
+     Global.System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")>  _
+    Partial Public Class AccountEmployeeExpenseSheetTableAdapter
+        Inherits Global.System.ComponentModel.Component
+        
+        Private WithEvents _adapter As Global.System.Data.SqlClient.SqlDataAdapter
+        
+        Private _connection As Global.System.Data.SqlClient.SqlConnection
+        
+        Private _transaction As Global.System.Data.SqlClient.SqlTransaction
+        
+        Private _commandCollection() As Global.System.Data.SqlClient.SqlCommand
+        
+        Private _clearBeforeFill As Boolean
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public Sub New()
+            MyBase.New
+            Me.ClearBeforeFill = true
+        End Sub
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Protected Friend ReadOnly Property Adapter() As Global.System.Data.SqlClient.SqlDataAdapter
+            Get
+                If (Me._adapter Is Nothing) Then
+                    Me.InitAdapter
+                End If
+                Return Me._adapter
+            End Get
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Friend Property Connection() As Global.System.Data.SqlClient.SqlConnection
+            Get
+                If (Me._connection Is Nothing) Then
+                    Me.InitConnection
+                End If
+                Return Me._connection
+            End Get
+            Set
+                Me._connection = value
+                If (Not (Me.Adapter.InsertCommand) Is Nothing) Then
+                    Me.Adapter.InsertCommand.Connection = value
+                End If
+                If (Not (Me.Adapter.DeleteCommand) Is Nothing) Then
+                    Me.Adapter.DeleteCommand.Connection = value
+                End If
+                If (Not (Me.Adapter.UpdateCommand) Is Nothing) Then
+                    Me.Adapter.UpdateCommand.Connection = value
+                End If
+                Dim i As Integer = 0
+                Do While (i < Me.CommandCollection.Length)
+                    If (Not (Me.CommandCollection(i)) Is Nothing) Then
+                        CType(Me.CommandCollection(i),Global.System.Data.SqlClient.SqlCommand).Connection = value
+                    End If
+                    i = (i + 1)
+                Loop
+            End Set
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Friend Property Transaction() As Global.System.Data.SqlClient.SqlTransaction
+            Get
+                Return Me._transaction
+            End Get
+            Set
+                Me._transaction = value
+                Dim i As Integer = 0
+                Do While (i < Me.CommandCollection.Length)
+                    Me.CommandCollection(i).Transaction = Me._transaction
+                    i = (i + 1)
+                Loop
+                If ((Not (Me.Adapter) Is Nothing)  _
+                            AndAlso (Not (Me.Adapter.DeleteCommand) Is Nothing)) Then
+                    Me.Adapter.DeleteCommand.Transaction = Me._transaction
+                End If
+                If ((Not (Me.Adapter) Is Nothing)  _
+                            AndAlso (Not (Me.Adapter.InsertCommand) Is Nothing)) Then
+                    Me.Adapter.InsertCommand.Transaction = Me._transaction
+                End If
+                If ((Not (Me.Adapter) Is Nothing)  _
+                            AndAlso (Not (Me.Adapter.UpdateCommand) Is Nothing)) Then
+                    Me.Adapter.UpdateCommand.Transaction = Me._transaction
+                End If
+            End Set
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Protected ReadOnly Property CommandCollection() As Global.System.Data.SqlClient.SqlCommand()
+            Get
+                If (Me._commandCollection Is Nothing) Then
+                    Me.InitCommandCollection
+                End If
+                Return Me._commandCollection
+            End Get
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Public Property ClearBeforeFill() As Boolean
+            Get
+                Return Me._clearBeforeFill
+            End Get
+            Set
+                Me._clearBeforeFill = value
+            End Set
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Private Sub InitAdapter()
+            Me._adapter = New Global.System.Data.SqlClient.SqlDataAdapter()
+            Dim tableMapping As Global.System.Data.Common.DataTableMapping = New Global.System.Data.Common.DataTableMapping()
+            tableMapping.SourceTable = "Table"
+            tableMapping.DataSetTable = "AccountEmployeeExpenseSheet"
+            tableMapping.ColumnMappings.Add("AccountEmployeeExpenseSheetId", "AccountEmployeeExpenseSheetId")
+            tableMapping.ColumnMappings.Add("AccountId", "AccountId")
+            tableMapping.ColumnMappings.Add("AccountEmployeeId", "AccountEmployeeId")
+            tableMapping.ColumnMappings.Add("Description", "Description")
+            tableMapping.ColumnMappings.Add("ExpenseSheetDate", "ExpenseSheetDate")
+            tableMapping.ColumnMappings.Add("Approved", "Approved")
+            tableMapping.ColumnMappings.Add("Rejected", "Rejected")
+            tableMapping.ColumnMappings.Add("Submitted", "Submitted")
+            tableMapping.ColumnMappings.Add("InApproval", "InApproval")
+            tableMapping.ColumnMappings.Add("CreatedByEmployeeId", "CreatedByEmployeeId")
+            tableMapping.ColumnMappings.Add("CreatedOn", "CreatedOn")
+            tableMapping.ColumnMappings.Add("ModifiedByEmployeeId", "ModifiedByEmployeeId")
+            tableMapping.ColumnMappings.Add("ModifiedOn", "ModifiedOn")
+            tableMapping.ColumnMappings.Add("SubmittedDate", "SubmittedDate")
+            tableMapping.ColumnMappings.Add("ApprovedOn", "ApprovedOn")
+            tableMapping.ColumnMappings.Add("ApprovedByEmployeeId", "ApprovedByEmployeeId")
+            tableMapping.ColumnMappings.Add("RejectedOn", "RejectedOn")
+            tableMapping.ColumnMappings.Add("RejectedByEmployeeId", "RejectedByEmployeeId")
+            tableMapping.ColumnMappings.Add("CustomField1", "CustomField1")
+            tableMapping.ColumnMappings.Add("CustomField2", "CustomField2")
+            tableMapping.ColumnMappings.Add("CustomField3", "CustomField3")
+            tableMapping.ColumnMappings.Add("CustomField4", "CustomField4")
+            tableMapping.ColumnMappings.Add("CustomField5", "CustomField5")
+            tableMapping.ColumnMappings.Add("CustomField6", "CustomField6")
+            tableMapping.ColumnMappings.Add("CustomField7", "CustomField7")
+            tableMapping.ColumnMappings.Add("CustomField8", "CustomField8")
+            tableMapping.ColumnMappings.Add("CustomField9", "CustomField9")
+            tableMapping.ColumnMappings.Add("CustomField10", "CustomField10")
+            tableMapping.ColumnMappings.Add("CustomField11", "CustomField11")
+            tableMapping.ColumnMappings.Add("CustomField12", "CustomField12")
+            tableMapping.ColumnMappings.Add("CustomField13", "CustomField13")
+            tableMapping.ColumnMappings.Add("CustomField14", "CustomField14")
+            tableMapping.ColumnMappings.Add("CustomField15", "CustomField15")
+            tableMapping.ColumnMappings.Add("ReimbursementCurrencyId", "ReimbursementCurrencyId")
+            Me._adapter.TableMappings.Add(tableMapping)
+            Me._adapter.DeleteCommand = New Global.System.Data.SqlClient.SqlCommand()
+            Me._adapter.DeleteCommand.Connection = Me.Connection
+            Me._adapter.DeleteCommand.CommandText = "DELETE FROM [dbo].[AccountEmployeeExpenseSheet] WHERE (([AccountEmployeeExpenseSh"& _ 
+                "eetId] = @Original_AccountEmployeeExpenseSheetId) AND ([AccountId] = @Original_A"& _ 
+                "ccountId) AND ([AccountEmployeeId] = @Original_AccountEmployeeId) AND ([Descript"& _ 
+                "ion] = @Original_Description) AND ([ExpenseSheetDate] = @Original_ExpenseSheetDa"& _ 
+                "te) AND ([Approved] = @Original_Approved) AND ([Rejected] = @Original_Rejected) "& _ 
+                "AND ([Submitted] = @Original_Submitted) AND ([InApproval] = @Original_InApproval"& _ 
+                ") AND ((@IsNull_CreatedByEmployeeId = 1 AND [CreatedByEmployeeId] IS NULL) OR (["& _ 
+                "CreatedByEmployeeId] = @Original_CreatedByEmployeeId)) AND ((@IsNull_CreatedOn ="& _ 
+                " 1 AND [CreatedOn] IS NULL) OR ([CreatedOn] = @Original_CreatedOn)) AND ((@IsNul"& _ 
+                "l_ModifiedByEmployeeId = 1 AND [ModifiedByEmployeeId] IS NULL) OR ([ModifiedByEm"& _ 
+                "ployeeId] = @Original_ModifiedByEmployeeId)) AND ((@IsNull_ModifiedOn = 1 AND [M"& _ 
+                "odifiedOn] IS NULL) OR ([ModifiedOn] = @Original_ModifiedOn)) AND ((@IsNull_Subm"& _ 
+                "ittedDate = 1 AND [SubmittedDate] IS NULL) OR ([SubmittedDate] = @Original_Submi"& _ 
+                "ttedDate)) AND ((@IsNull_ApprovedOn = 1 AND [ApprovedOn] IS NULL) OR ([ApprovedO"& _ 
+                "n] = @Original_ApprovedOn)) AND ((@IsNull_ApprovedByEmployeeId = 1 AND [Approved"& _ 
+                "ByEmployeeId] IS NULL) OR ([ApprovedByEmployeeId] = @Original_ApprovedByEmployee"& _ 
+                "Id)) AND ((@IsNull_RejectedOn = 1 AND [RejectedOn] IS NULL) OR ([RejectedOn] = @"& _ 
+                "Original_RejectedOn)) AND ((@IsNull_RejectedByEmployeeId = 1 AND [RejectedByEmpl"& _ 
+                "oyeeId] IS NULL) OR ([RejectedByEmployeeId] = @Original_RejectedByEmployeeId)) A"& _ 
+                "ND ((@IsNull_CustomField1 = 1 AND [CustomField1] IS NULL) OR ([CustomField1] = @"& _ 
+                "Original_CustomField1)) AND ((@IsNull_CustomField2 = 1 AND [CustomField2] IS NUL"& _ 
+                "L) OR ([CustomField2] = @Original_CustomField2)) AND ((@IsNull_CustomField3 = 1 "& _ 
+                "AND [CustomField3] IS NULL) OR ([CustomField3] = @Original_CustomField3)) AND (("& _ 
+                "@IsNull_CustomField4 = 1 AND [CustomField4] IS NULL) OR ([CustomField4] = @Origi"& _ 
+                "nal_CustomField4)) AND ((@IsNull_CustomField5 = 1 AND [CustomField5] IS NULL) OR"& _ 
+                " ([CustomField5] = @Original_CustomField5)) AND ((@IsNull_CustomField6 = 1 AND ["& _ 
+                "CustomField6] IS NULL) OR ([CustomField6] = @Original_CustomField6)) AND ((@IsNu"& _ 
+                "ll_CustomField7 = 1 AND [CustomField7] IS NULL) OR ([CustomField7] = @Original_C"& _ 
+                "ustomField7)) AND ((@IsNull_CustomField8 = 1 AND [CustomField8] IS NULL) OR ([Cu"& _ 
+                "stomField8] = @Original_CustomField8)) AND ((@IsNull_CustomField9 = 1 AND [Custo"& _ 
+                "mField9] IS NULL) OR ([CustomField9] = @Original_CustomField9)) AND ((@IsNull_Cu"& _ 
+                "stomField10 = 1 AND [CustomField10] IS NULL) OR ([CustomField10] = @Original_Cus"& _ 
+                "tomField10)) AND ((@IsNull_CustomField11 = 1 AND [CustomField11] IS NULL) OR ([C"& _ 
+                "ustomField11] = @Original_CustomField11)) AND ((@IsNull_CustomField12 = 1 AND [C"& _ 
+                "ustomField12] IS NULL) OR ([CustomField12] = @Original_CustomField12)) AND ((@Is"& _ 
+                "Null_CustomField13 = 1 AND [CustomField13] IS NULL) OR ([CustomField13] = @Origi"& _ 
+                "nal_CustomField13)) AND ((@IsNull_CustomField14 = 1 AND [CustomField14] IS NULL)"& _ 
+                " OR ([CustomField14] = @Original_CustomField14)) AND ((@IsNull_CustomField15 = 1"& _ 
+                " AND [CustomField15] IS NULL) OR ([CustomField15] = @Original_CustomField15)) AN"& _ 
+                "D ((@IsNull_ReimbursementCurrencyId = 1 AND [ReimbursementCurrencyId] IS NULL) O"& _ 
+                "R ([ReimbursementCurrencyId] = @Original_ReimbursementCurrencyId)))"
+            Me._adapter.DeleteCommand.CommandType = Global.System.Data.CommandType.Text
+            Me._adapter.DeleteCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_AccountEmployeeExpenseSheetId", Global.System.Data.SqlDbType.UniqueIdentifier, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "AccountEmployeeExpenseSheetId", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
+            Me._adapter.DeleteCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_AccountId", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "AccountId", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
+            Me._adapter.DeleteCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_AccountEmployeeId", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "AccountEmployeeId", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
+            Me._adapter.DeleteCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_Description", Global.System.Data.SqlDbType.NVarChar, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "Description", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
+            Me._adapter.DeleteCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_ExpenseSheetDate", Global.System.Data.SqlDbType.DateTime, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "ExpenseSheetDate", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
+            Me._adapter.DeleteCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_Approved", Global.System.Data.SqlDbType.Bit, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "Approved", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
+            Me._adapter.DeleteCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_Rejected", Global.System.Data.SqlDbType.Bit, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "Rejected", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
+            Me._adapter.DeleteCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_Submitted", Global.System.Data.SqlDbType.Bit, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "Submitted", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
+            Me._adapter.DeleteCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_InApproval", Global.System.Data.SqlDbType.Bit, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "InApproval", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
+            Me._adapter.DeleteCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@IsNull_CreatedByEmployeeId", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "CreatedByEmployeeId", Global.System.Data.DataRowVersion.Original, true, Nothing, "", "", ""))
+            Me._adapter.DeleteCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_CreatedByEmployeeId", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "CreatedByEmployeeId", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
+            Me._adapter.DeleteCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@IsNull_CreatedOn", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "CreatedOn", Global.System.Data.DataRowVersion.Original, true, Nothing, "", "", ""))
+            Me._adapter.DeleteCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_CreatedOn", Global.System.Data.SqlDbType.DateTime, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "CreatedOn", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
+            Me._adapter.DeleteCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@IsNull_ModifiedByEmployeeId", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "ModifiedByEmployeeId", Global.System.Data.DataRowVersion.Original, true, Nothing, "", "", ""))
+            Me._adapter.DeleteCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_ModifiedByEmployeeId", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "ModifiedByEmployeeId", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
+            Me._adapter.DeleteCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@IsNull_ModifiedOn", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "ModifiedOn", Global.System.Data.DataRowVersion.Original, true, Nothing, "", "", ""))
+            Me._adapter.DeleteCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_ModifiedOn", Global.System.Data.SqlDbType.DateTime, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "ModifiedOn", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
+            Me._adapter.DeleteCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@IsNull_SubmittedDate", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "SubmittedDate", Global.System.Data.DataRowVersion.Original, true, Nothing, "", "", ""))
+            Me._adapter.DeleteCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_SubmittedDate", Global.System.Data.SqlDbType.DateTime, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "SubmittedDate", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
+            Me._adapter.DeleteCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@IsNull_ApprovedOn", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "ApprovedOn", Global.System.Data.DataRowVersion.Original, true, Nothing, "", "", ""))
+            Me._adapter.DeleteCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_ApprovedOn", Global.System.Data.SqlDbType.DateTime, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "ApprovedOn", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
+            Me._adapter.DeleteCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@IsNull_ApprovedByEmployeeId", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "ApprovedByEmployeeId", Global.System.Data.DataRowVersion.Original, true, Nothing, "", "", ""))
+            Me._adapter.DeleteCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_ApprovedByEmployeeId", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "ApprovedByEmployeeId", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
+            Me._adapter.DeleteCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@IsNull_RejectedOn", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "RejectedOn", Global.System.Data.DataRowVersion.Original, true, Nothing, "", "", ""))
+            Me._adapter.DeleteCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_RejectedOn", Global.System.Data.SqlDbType.DateTime, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "RejectedOn", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
+            Me._adapter.DeleteCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@IsNull_RejectedByEmployeeId", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "RejectedByEmployeeId", Global.System.Data.DataRowVersion.Original, true, Nothing, "", "", ""))
+            Me._adapter.DeleteCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_RejectedByEmployeeId", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "RejectedByEmployeeId", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
+            Me._adapter.DeleteCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@IsNull_CustomField1", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "CustomField1", Global.System.Data.DataRowVersion.Original, true, Nothing, "", "", ""))
+            Me._adapter.DeleteCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_CustomField1", Global.System.Data.SqlDbType.NVarChar, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "CustomField1", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
+            Me._adapter.DeleteCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@IsNull_CustomField2", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "CustomField2", Global.System.Data.DataRowVersion.Original, true, Nothing, "", "", ""))
+            Me._adapter.DeleteCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_CustomField2", Global.System.Data.SqlDbType.NVarChar, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "CustomField2", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
+            Me._adapter.DeleteCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@IsNull_CustomField3", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "CustomField3", Global.System.Data.DataRowVersion.Original, true, Nothing, "", "", ""))
+            Me._adapter.DeleteCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_CustomField3", Global.System.Data.SqlDbType.NVarChar, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "CustomField3", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
+            Me._adapter.DeleteCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@IsNull_CustomField4", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "CustomField4", Global.System.Data.DataRowVersion.Original, true, Nothing, "", "", ""))
+            Me._adapter.DeleteCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_CustomField4", Global.System.Data.SqlDbType.NVarChar, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "CustomField4", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
+            Me._adapter.DeleteCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@IsNull_CustomField5", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "CustomField5", Global.System.Data.DataRowVersion.Original, true, Nothing, "", "", ""))
+            Me._adapter.DeleteCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_CustomField5", Global.System.Data.SqlDbType.NVarChar, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "CustomField5", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
+            Me._adapter.DeleteCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@IsNull_CustomField6", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "CustomField6", Global.System.Data.DataRowVersion.Original, true, Nothing, "", "", ""))
+            Me._adapter.DeleteCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_CustomField6", Global.System.Data.SqlDbType.NVarChar, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "CustomField6", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
+            Me._adapter.DeleteCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@IsNull_CustomField7", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "CustomField7", Global.System.Data.DataRowVersion.Original, true, Nothing, "", "", ""))
+            Me._adapter.DeleteCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_CustomField7", Global.System.Data.SqlDbType.NVarChar, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "CustomField7", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
+            Me._adapter.DeleteCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@IsNull_CustomField8", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "CustomField8", Global.System.Data.DataRowVersion.Original, true, Nothing, "", "", ""))
+            Me._adapter.DeleteCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_CustomField8", Global.System.Data.SqlDbType.NVarChar, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "CustomField8", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
+            Me._adapter.DeleteCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@IsNull_CustomField9", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "CustomField9", Global.System.Data.DataRowVersion.Original, true, Nothing, "", "", ""))
+            Me._adapter.DeleteCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_CustomField9", Global.System.Data.SqlDbType.NVarChar, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "CustomField9", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
+            Me._adapter.DeleteCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@IsNull_CustomField10", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "CustomField10", Global.System.Data.DataRowVersion.Original, true, Nothing, "", "", ""))
+            Me._adapter.DeleteCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_CustomField10", Global.System.Data.SqlDbType.NVarChar, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "CustomField10", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
+            Me._adapter.DeleteCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@IsNull_CustomField11", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "CustomField11", Global.System.Data.DataRowVersion.Original, true, Nothing, "", "", ""))
+            Me._adapter.DeleteCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_CustomField11", Global.System.Data.SqlDbType.NVarChar, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "CustomField11", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
+            Me._adapter.DeleteCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@IsNull_CustomField12", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "CustomField12", Global.System.Data.DataRowVersion.Original, true, Nothing, "", "", ""))
+            Me._adapter.DeleteCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_CustomField12", Global.System.Data.SqlDbType.NVarChar, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "CustomField12", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
+            Me._adapter.DeleteCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@IsNull_CustomField13", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "CustomField13", Global.System.Data.DataRowVersion.Original, true, Nothing, "", "", ""))
+            Me._adapter.DeleteCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_CustomField13", Global.System.Data.SqlDbType.NVarChar, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "CustomField13", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
+            Me._adapter.DeleteCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@IsNull_CustomField14", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "CustomField14", Global.System.Data.DataRowVersion.Original, true, Nothing, "", "", ""))
+            Me._adapter.DeleteCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_CustomField14", Global.System.Data.SqlDbType.NVarChar, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "CustomField14", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
+            Me._adapter.DeleteCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@IsNull_CustomField15", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "CustomField15", Global.System.Data.DataRowVersion.Original, true, Nothing, "", "", ""))
+            Me._adapter.DeleteCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_CustomField15", Global.System.Data.SqlDbType.NVarChar, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "CustomField15", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
+            Me._adapter.DeleteCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@IsNull_ReimbursementCurrencyId", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "ReimbursementCurrencyId", Global.System.Data.DataRowVersion.Original, true, Nothing, "", "", ""))
+            Me._adapter.DeleteCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_ReimbursementCurrencyId", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "ReimbursementCurrencyId", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
+            Me._adapter.InsertCommand = New Global.System.Data.SqlClient.SqlCommand()
+            Me._adapter.InsertCommand.Connection = Me.Connection
+            Me._adapter.InsertCommand.CommandText = "INSERT INTO [dbo].[AccountEmployeeExpenseSheet] ([AccountEmployeeExpenseSheetId],"& _ 
+                " [AccountId], [AccountEmployeeId], [Description], [ExpenseSheetDate], [Approved]"& _ 
+                ", [Rejected], [Submitted], [InApproval], [CreatedByEmployeeId], [CreatedOn], [Mo"& _ 
+                "difiedByEmployeeId], [ModifiedOn], [SubmittedDate], [ApprovedOn], [ApprovedByEmp"& _ 
+                "loyeeId], [RejectedOn], [RejectedByEmployeeId], [CustomField1], [CustomField2], "& _ 
+                "[CustomField3], [CustomField4], [CustomField5], [CustomField6], [CustomField7], "& _ 
+                "[CustomField8], [CustomField9], [CustomField10], [CustomField11], [CustomField12"& _ 
+                "], [CustomField13], [CustomField14], [CustomField15], [ReimbursementCurrencyId])"& _ 
+                " VALUES (@AccountEmployeeExpenseSheetId, @AccountId, @AccountEmployeeId, @Descri"& _ 
+                "ption, @ExpenseSheetDate, @Approved, @Rejected, @Submitted, @InApproval, @Create"& _ 
+                "dByEmployeeId, @CreatedOn, @ModifiedByEmployeeId, @ModifiedOn, @SubmittedDate, @"& _ 
+                "ApprovedOn, @ApprovedByEmployeeId, @RejectedOn, @RejectedByEmployeeId, @CustomFi"& _ 
+                "eld1, @CustomField2, @CustomField3, @CustomField4, @CustomField5, @CustomField6,"& _ 
+                " @CustomField7, @CustomField8, @CustomField9, @CustomField10, @CustomField11, @C"& _ 
+                "ustomField12, @CustomField13, @CustomField14, @CustomField15, @ReimbursementCurr"& _ 
+                "encyId);"&Global.Microsoft.VisualBasic.ChrW(13)&Global.Microsoft.VisualBasic.ChrW(10)&"SELECT AccountEmployeeExpenseSheetId, AccountId, AccountEmployeeId, De"& _ 
+                "scription, ExpenseSheetDate, Approved, Rejected, Submitted, InApproval, CreatedB"& _ 
+                "yEmployeeId, CreatedOn, ModifiedByEmployeeId, ModifiedOn, SubmittedDate, Approve"& _ 
+                "dOn, ApprovedByEmployeeId, RejectedOn, RejectedByEmployeeId, CustomField1, Custo"& _ 
+                "mField2, CustomField3, CustomField4, CustomField5, CustomField6, CustomField7, C"& _ 
+                "ustomField8, CustomField9, CustomField10, CustomField11, CustomField12, CustomFi"& _ 
+                "eld13, CustomField14, CustomField15, ReimbursementCurrencyId FROM AccountEmploye"& _ 
+                "eExpenseSheet WHERE (AccountEmployeeExpenseSheetId = @AccountEmployeeExpenseShee"& _ 
+                "tId)"
+            Me._adapter.InsertCommand.CommandType = Global.System.Data.CommandType.Text
+            Me._adapter.InsertCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@AccountEmployeeExpenseSheetId", Global.System.Data.SqlDbType.UniqueIdentifier, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "AccountEmployeeExpenseSheetId", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
+            Me._adapter.InsertCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@AccountId", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "AccountId", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
+            Me._adapter.InsertCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@AccountEmployeeId", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "AccountEmployeeId", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
+            Me._adapter.InsertCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Description", Global.System.Data.SqlDbType.NVarChar, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "Description", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
+            Me._adapter.InsertCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@ExpenseSheetDate", Global.System.Data.SqlDbType.DateTime, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "ExpenseSheetDate", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
+            Me._adapter.InsertCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Approved", Global.System.Data.SqlDbType.Bit, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "Approved", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
+            Me._adapter.InsertCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Rejected", Global.System.Data.SqlDbType.Bit, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "Rejected", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
+            Me._adapter.InsertCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Submitted", Global.System.Data.SqlDbType.Bit, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "Submitted", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
+            Me._adapter.InsertCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@InApproval", Global.System.Data.SqlDbType.Bit, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "InApproval", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
+            Me._adapter.InsertCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@CreatedByEmployeeId", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "CreatedByEmployeeId", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
+            Me._adapter.InsertCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@CreatedOn", Global.System.Data.SqlDbType.DateTime, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "CreatedOn", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
+            Me._adapter.InsertCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@ModifiedByEmployeeId", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "ModifiedByEmployeeId", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
+            Me._adapter.InsertCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@ModifiedOn", Global.System.Data.SqlDbType.DateTime, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "ModifiedOn", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
+            Me._adapter.InsertCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@SubmittedDate", Global.System.Data.SqlDbType.DateTime, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "SubmittedDate", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
+            Me._adapter.InsertCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@ApprovedOn", Global.System.Data.SqlDbType.DateTime, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "ApprovedOn", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
+            Me._adapter.InsertCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@ApprovedByEmployeeId", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "ApprovedByEmployeeId", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
+            Me._adapter.InsertCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@RejectedOn", Global.System.Data.SqlDbType.DateTime, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "RejectedOn", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
+            Me._adapter.InsertCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@RejectedByEmployeeId", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "RejectedByEmployeeId", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
+            Me._adapter.InsertCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@CustomField1", Global.System.Data.SqlDbType.NVarChar, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "CustomField1", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
+            Me._adapter.InsertCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@CustomField2", Global.System.Data.SqlDbType.NVarChar, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "CustomField2", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
+            Me._adapter.InsertCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@CustomField3", Global.System.Data.SqlDbType.NVarChar, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "CustomField3", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
+            Me._adapter.InsertCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@CustomField4", Global.System.Data.SqlDbType.NVarChar, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "CustomField4", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
+            Me._adapter.InsertCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@CustomField5", Global.System.Data.SqlDbType.NVarChar, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "CustomField5", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
+            Me._adapter.InsertCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@CustomField6", Global.System.Data.SqlDbType.NVarChar, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "CustomField6", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
+            Me._adapter.InsertCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@CustomField7", Global.System.Data.SqlDbType.NVarChar, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "CustomField7", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
+            Me._adapter.InsertCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@CustomField8", Global.System.Data.SqlDbType.NVarChar, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "CustomField8", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
+            Me._adapter.InsertCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@CustomField9", Global.System.Data.SqlDbType.NVarChar, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "CustomField9", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
+            Me._adapter.InsertCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@CustomField10", Global.System.Data.SqlDbType.NVarChar, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "CustomField10", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
+            Me._adapter.InsertCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@CustomField11", Global.System.Data.SqlDbType.NVarChar, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "CustomField11", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
+            Me._adapter.InsertCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@CustomField12", Global.System.Data.SqlDbType.NVarChar, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "CustomField12", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
+            Me._adapter.InsertCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@CustomField13", Global.System.Data.SqlDbType.NVarChar, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "CustomField13", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
+            Me._adapter.InsertCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@CustomField14", Global.System.Data.SqlDbType.NVarChar, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "CustomField14", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
+            Me._adapter.InsertCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@CustomField15", Global.System.Data.SqlDbType.NVarChar, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "CustomField15", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
+            Me._adapter.InsertCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@ReimbursementCurrencyId", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "ReimbursementCurrencyId", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
+            Me._adapter.UpdateCommand = New Global.System.Data.SqlClient.SqlCommand()
+            Me._adapter.UpdateCommand.Connection = Me.Connection
+            Me._adapter.UpdateCommand.CommandText = "UPDATE [dbo].[AccountEmployeeExpenseSheet] SET [AccountEmployeeExpenseSheetId] = "& _ 
+                "@AccountEmployeeExpenseSheetId, [AccountId] = @AccountId, [AccountEmployeeId] = "& _ 
+                "@AccountEmployeeId, [Description] = @Description, [ExpenseSheetDate] = @ExpenseS"& _ 
+                "heetDate, [Approved] = @Approved, [Rejected] = @Rejected, [Submitted] = @Submitt"& _ 
+                "ed, [InApproval] = @InApproval, [CreatedByEmployeeId] = @CreatedByEmployeeId, [C"& _ 
+                "reatedOn] = @CreatedOn, [ModifiedByEmployeeId] = @ModifiedByEmployeeId, [Modifie"& _ 
+                "dOn] = @ModifiedOn, [SubmittedDate] = @SubmittedDate, [ApprovedOn] = @ApprovedOn"& _ 
+                ", [ApprovedByEmployeeId] = @ApprovedByEmployeeId, [RejectedOn] = @RejectedOn, [R"& _ 
+                "ejectedByEmployeeId] = @RejectedByEmployeeId, [CustomField1] = @CustomField1, [C"& _ 
+                "ustomField2] = @CustomField2, [CustomField3] = @CustomField3, [CustomField4] = @"& _ 
+                "CustomField4, [CustomField5] = @CustomField5, [CustomField6] = @CustomField6, [C"& _ 
+                "ustomField7] = @CustomField7, [CustomField8] = @CustomField8, [CustomField9] = @"& _ 
+                "CustomField9, [CustomField10] = @CustomField10, [CustomField11] = @CustomField11"& _ 
+                ", [CustomField12] = @CustomField12, [CustomField13] = @CustomField13, [CustomFie"& _ 
+                "ld14] = @CustomField14, [CustomField15] = @CustomField15, [ReimbursementCurrency"& _ 
+                "Id] = @ReimbursementCurrencyId WHERE (([AccountEmployeeExpenseSheetId] = @Origin"& _ 
+                "al_AccountEmployeeExpenseSheetId) AND ([AccountId] = @Original_AccountId) AND (["& _ 
+                "AccountEmployeeId] = @Original_AccountEmployeeId) AND ([Description] = @Original"& _ 
+                "_Description) AND ([ExpenseSheetDate] = @Original_ExpenseSheetDate) AND ([Approv"& _ 
+                "ed] = @Original_Approved) AND ([Rejected] = @Original_Rejected) AND ([Submitted]"& _ 
+                " = @Original_Submitted) AND ([InApproval] = @Original_InApproval) AND ((@IsNull_"& _ 
+                "CreatedByEmployeeId = 1 AND [CreatedByEmployeeId] IS NULL) OR ([CreatedByEmploye"& _ 
+                "eId] = @Original_CreatedByEmployeeId)) AND ((@IsNull_CreatedOn = 1 AND [CreatedO"& _ 
+                "n] IS NULL) OR ([CreatedOn] = @Original_CreatedOn)) AND ((@IsNull_ModifiedByEmpl"& _ 
+                "oyeeId = 1 AND [ModifiedByEmployeeId] IS NULL) OR ([ModifiedByEmployeeId] = @Ori"& _ 
+                "ginal_ModifiedByEmployeeId)) AND ((@IsNull_ModifiedOn = 1 AND [ModifiedOn] IS NU"& _ 
+                "LL) OR ([ModifiedOn] = @Original_ModifiedOn)) AND ((@IsNull_SubmittedDate = 1 AN"& _ 
+                "D [SubmittedDate] IS NULL) OR ([SubmittedDate] = @Original_SubmittedDate)) AND ("& _ 
+                "(@IsNull_ApprovedOn = 1 AND [ApprovedOn] IS NULL) OR ([ApprovedOn] = @Original_A"& _ 
+                "pprovedOn)) AND ((@IsNull_ApprovedByEmployeeId = 1 AND [ApprovedByEmployeeId] IS"& _ 
+                " NULL) OR ([ApprovedByEmployeeId] = @Original_ApprovedByEmployeeId)) AND ((@IsNu"& _ 
+                "ll_RejectedOn = 1 AND [RejectedOn] IS NULL) OR ([RejectedOn] = @Original_Rejecte"& _ 
+                "dOn)) AND ((@IsNull_RejectedByEmployeeId = 1 AND [RejectedByEmployeeId] IS NULL)"& _ 
+                " OR ([RejectedByEmployeeId] = @Original_RejectedByEmployeeId)) AND ((@IsNull_Cus"& _ 
+                "tomField1 = 1 AND [CustomField1] IS NULL) OR ([CustomField1] = @Original_CustomF"& _ 
+                "ield1)) AND ((@IsNull_CustomField2 = 1 AND [CustomField2] IS NULL) OR ([CustomFi"& _ 
+                "eld2] = @Original_CustomField2)) AND ((@IsNull_CustomField3 = 1 AND [CustomField"& _ 
+                "3] IS NULL) OR ([CustomField3] = @Original_CustomField3)) AND ((@IsNull_CustomFi"& _ 
+                "eld4 = 1 AND [CustomField4] IS NULL) OR ([CustomField4] = @Original_CustomField4"& _ 
+                ")) AND ((@IsNull_CustomField5 = 1 AND [CustomField5] IS NULL) OR ([CustomField5]"& _ 
+                " = @Original_CustomField5)) AND ((@IsNull_CustomField6 = 1 AND [CustomField6] IS"& _ 
+                " NULL) OR ([CustomField6] = @Original_CustomField6)) AND ((@IsNull_CustomField7 "& _ 
+                "= 1 AND [CustomField7] IS NULL) OR ([CustomField7] = @Original_CustomField7)) AN"& _ 
+                "D ((@IsNull_CustomField8 = 1 AND [CustomField8] IS NULL) OR ([CustomField8] = @O"& _ 
+                "riginal_CustomField8)) AND ((@IsNull_CustomField9 = 1 AND [CustomField9] IS NULL"& _ 
+                ") OR ([CustomField9] = @Original_CustomField9)) AND ((@IsNull_CustomField10 = 1 "& _ 
+                "AND [CustomField10] IS NULL) OR ([CustomField10] = @Original_CustomField10)) AND"& _ 
+                " ((@IsNull_CustomField11 = 1 AND [CustomField11] IS NULL) OR ([CustomField11] = "& _ 
+                "@Original_CustomField11)) AND ((@IsNull_CustomField12 = 1 AND [CustomField12] IS"& _ 
+                " NULL) OR ([CustomField12] = @Original_CustomField12)) AND ((@IsNull_CustomField"& _ 
+                "13 = 1 AND [CustomField13] IS NULL) OR ([CustomField13] = @Original_CustomField1"& _ 
+                "3)) AND ((@IsNull_CustomField14 = 1 AND [CustomField14] IS NULL) OR ([CustomFiel"& _ 
+                "d14] = @Original_CustomField14)) AND ((@IsNull_CustomField15 = 1 AND [CustomFiel"& _ 
+                "d15] IS NULL) OR ([CustomField15] = @Original_CustomField15)) AND ((@IsNull_Reim"& _ 
+                "bursementCurrencyId = 1 AND [ReimbursementCurrencyId] IS NULL) OR ([Reimbursemen"& _ 
+                "tCurrencyId] = @Original_ReimbursementCurrencyId)));"&Global.Microsoft.VisualBasic.ChrW(13)&Global.Microsoft.VisualBasic.ChrW(10)&"SELECT AccountEmployeeExpe"& _ 
+                "nseSheetId, AccountId, AccountEmployeeId, Description, ExpenseSheetDate, Approve"& _ 
+                "d, Rejected, Submitted, InApproval, CreatedByEmployeeId, CreatedOn, ModifiedByEm"& _ 
+                "ployeeId, ModifiedOn, SubmittedDate, ApprovedOn, ApprovedByEmployeeId, RejectedO"& _ 
+                "n, RejectedByEmployeeId, CustomField1, CustomField2, CustomField3, CustomField4,"& _ 
+                " CustomField5, CustomField6, CustomField7, CustomField8, CustomField9, CustomFie"& _ 
+                "ld10, CustomField11, CustomField12, CustomField13, CustomField14, CustomField15,"& _ 
+                " ReimbursementCurrencyId FROM AccountEmployeeExpenseSheet WHERE (AccountEmployee"& _ 
+                "ExpenseSheetId = @AccountEmployeeExpenseSheetId)"
+            Me._adapter.UpdateCommand.CommandType = Global.System.Data.CommandType.Text
+            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@AccountEmployeeExpenseSheetId", Global.System.Data.SqlDbType.UniqueIdentifier, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "AccountEmployeeExpenseSheetId", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
+            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@AccountId", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "AccountId", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
+            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@AccountEmployeeId", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "AccountEmployeeId", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
+            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Description", Global.System.Data.SqlDbType.NVarChar, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "Description", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
+            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@ExpenseSheetDate", Global.System.Data.SqlDbType.DateTime, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "ExpenseSheetDate", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
+            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Approved", Global.System.Data.SqlDbType.Bit, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "Approved", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
+            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Rejected", Global.System.Data.SqlDbType.Bit, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "Rejected", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
+            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Submitted", Global.System.Data.SqlDbType.Bit, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "Submitted", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
+            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@InApproval", Global.System.Data.SqlDbType.Bit, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "InApproval", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
+            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@CreatedByEmployeeId", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "CreatedByEmployeeId", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
+            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@CreatedOn", Global.System.Data.SqlDbType.DateTime, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "CreatedOn", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
+            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@ModifiedByEmployeeId", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "ModifiedByEmployeeId", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
+            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@ModifiedOn", Global.System.Data.SqlDbType.DateTime, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "ModifiedOn", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
+            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@SubmittedDate", Global.System.Data.SqlDbType.DateTime, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "SubmittedDate", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
+            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@ApprovedOn", Global.System.Data.SqlDbType.DateTime, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "ApprovedOn", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
+            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@ApprovedByEmployeeId", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "ApprovedByEmployeeId", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
+            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@RejectedOn", Global.System.Data.SqlDbType.DateTime, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "RejectedOn", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
+            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@RejectedByEmployeeId", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "RejectedByEmployeeId", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
+            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@CustomField1", Global.System.Data.SqlDbType.NVarChar, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "CustomField1", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
+            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@CustomField2", Global.System.Data.SqlDbType.NVarChar, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "CustomField2", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
+            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@CustomField3", Global.System.Data.SqlDbType.NVarChar, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "CustomField3", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
+            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@CustomField4", Global.System.Data.SqlDbType.NVarChar, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "CustomField4", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
+            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@CustomField5", Global.System.Data.SqlDbType.NVarChar, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "CustomField5", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
+            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@CustomField6", Global.System.Data.SqlDbType.NVarChar, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "CustomField6", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
+            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@CustomField7", Global.System.Data.SqlDbType.NVarChar, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "CustomField7", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
+            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@CustomField8", Global.System.Data.SqlDbType.NVarChar, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "CustomField8", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
+            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@CustomField9", Global.System.Data.SqlDbType.NVarChar, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "CustomField9", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
+            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@CustomField10", Global.System.Data.SqlDbType.NVarChar, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "CustomField10", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
+            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@CustomField11", Global.System.Data.SqlDbType.NVarChar, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "CustomField11", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
+            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@CustomField12", Global.System.Data.SqlDbType.NVarChar, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "CustomField12", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
+            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@CustomField13", Global.System.Data.SqlDbType.NVarChar, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "CustomField13", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
+            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@CustomField14", Global.System.Data.SqlDbType.NVarChar, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "CustomField14", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
+            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@CustomField15", Global.System.Data.SqlDbType.NVarChar, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "CustomField15", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
+            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@ReimbursementCurrencyId", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "ReimbursementCurrencyId", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
+            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_AccountEmployeeExpenseSheetId", Global.System.Data.SqlDbType.UniqueIdentifier, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "AccountEmployeeExpenseSheetId", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
+            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_AccountId", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "AccountId", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
+            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_AccountEmployeeId", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "AccountEmployeeId", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
+            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_Description", Global.System.Data.SqlDbType.NVarChar, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "Description", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
+            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_ExpenseSheetDate", Global.System.Data.SqlDbType.DateTime, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "ExpenseSheetDate", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
+            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_Approved", Global.System.Data.SqlDbType.Bit, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "Approved", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
+            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_Rejected", Global.System.Data.SqlDbType.Bit, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "Rejected", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
+            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_Submitted", Global.System.Data.SqlDbType.Bit, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "Submitted", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
+            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_InApproval", Global.System.Data.SqlDbType.Bit, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "InApproval", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
+            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@IsNull_CreatedByEmployeeId", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "CreatedByEmployeeId", Global.System.Data.DataRowVersion.Original, true, Nothing, "", "", ""))
+            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_CreatedByEmployeeId", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "CreatedByEmployeeId", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
+            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@IsNull_CreatedOn", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "CreatedOn", Global.System.Data.DataRowVersion.Original, true, Nothing, "", "", ""))
+            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_CreatedOn", Global.System.Data.SqlDbType.DateTime, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "CreatedOn", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
+            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@IsNull_ModifiedByEmployeeId", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "ModifiedByEmployeeId", Global.System.Data.DataRowVersion.Original, true, Nothing, "", "", ""))
+            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_ModifiedByEmployeeId", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "ModifiedByEmployeeId", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
+            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@IsNull_ModifiedOn", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "ModifiedOn", Global.System.Data.DataRowVersion.Original, true, Nothing, "", "", ""))
+            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_ModifiedOn", Global.System.Data.SqlDbType.DateTime, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "ModifiedOn", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
+            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@IsNull_SubmittedDate", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "SubmittedDate", Global.System.Data.DataRowVersion.Original, true, Nothing, "", "", ""))
+            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_SubmittedDate", Global.System.Data.SqlDbType.DateTime, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "SubmittedDate", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
+            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@IsNull_ApprovedOn", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "ApprovedOn", Global.System.Data.DataRowVersion.Original, true, Nothing, "", "", ""))
+            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_ApprovedOn", Global.System.Data.SqlDbType.DateTime, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "ApprovedOn", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
+            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@IsNull_ApprovedByEmployeeId", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "ApprovedByEmployeeId", Global.System.Data.DataRowVersion.Original, true, Nothing, "", "", ""))
+            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_ApprovedByEmployeeId", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "ApprovedByEmployeeId", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
+            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@IsNull_RejectedOn", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "RejectedOn", Global.System.Data.DataRowVersion.Original, true, Nothing, "", "", ""))
+            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_RejectedOn", Global.System.Data.SqlDbType.DateTime, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "RejectedOn", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
+            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@IsNull_RejectedByEmployeeId", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "RejectedByEmployeeId", Global.System.Data.DataRowVersion.Original, true, Nothing, "", "", ""))
+            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_RejectedByEmployeeId", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "RejectedByEmployeeId", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
+            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@IsNull_CustomField1", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "CustomField1", Global.System.Data.DataRowVersion.Original, true, Nothing, "", "", ""))
+            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_CustomField1", Global.System.Data.SqlDbType.NVarChar, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "CustomField1", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
+            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@IsNull_CustomField2", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "CustomField2", Global.System.Data.DataRowVersion.Original, true, Nothing, "", "", ""))
+            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_CustomField2", Global.System.Data.SqlDbType.NVarChar, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "CustomField2", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
+            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@IsNull_CustomField3", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "CustomField3", Global.System.Data.DataRowVersion.Original, true, Nothing, "", "", ""))
+            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_CustomField3", Global.System.Data.SqlDbType.NVarChar, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "CustomField3", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
+            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@IsNull_CustomField4", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "CustomField4", Global.System.Data.DataRowVersion.Original, true, Nothing, "", "", ""))
+            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_CustomField4", Global.System.Data.SqlDbType.NVarChar, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "CustomField4", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
+            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@IsNull_CustomField5", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "CustomField5", Global.System.Data.DataRowVersion.Original, true, Nothing, "", "", ""))
+            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_CustomField5", Global.System.Data.SqlDbType.NVarChar, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "CustomField5", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
+            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@IsNull_CustomField6", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "CustomField6", Global.System.Data.DataRowVersion.Original, true, Nothing, "", "", ""))
+            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_CustomField6", Global.System.Data.SqlDbType.NVarChar, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "CustomField6", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
+            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@IsNull_CustomField7", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "CustomField7", Global.System.Data.DataRowVersion.Original, true, Nothing, "", "", ""))
+            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_CustomField7", Global.System.Data.SqlDbType.NVarChar, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "CustomField7", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
+            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@IsNull_CustomField8", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "CustomField8", Global.System.Data.DataRowVersion.Original, true, Nothing, "", "", ""))
+            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_CustomField8", Global.System.Data.SqlDbType.NVarChar, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "CustomField8", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
+            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@IsNull_CustomField9", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "CustomField9", Global.System.Data.DataRowVersion.Original, true, Nothing, "", "", ""))
+            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_CustomField9", Global.System.Data.SqlDbType.NVarChar, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "CustomField9", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
+            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@IsNull_CustomField10", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "CustomField10", Global.System.Data.DataRowVersion.Original, true, Nothing, "", "", ""))
+            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_CustomField10", Global.System.Data.SqlDbType.NVarChar, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "CustomField10", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
+            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@IsNull_CustomField11", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "CustomField11", Global.System.Data.DataRowVersion.Original, true, Nothing, "", "", ""))
+            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_CustomField11", Global.System.Data.SqlDbType.NVarChar, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "CustomField11", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
+            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@IsNull_CustomField12", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "CustomField12", Global.System.Data.DataRowVersion.Original, true, Nothing, "", "", ""))
+            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_CustomField12", Global.System.Data.SqlDbType.NVarChar, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "CustomField12", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
+            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@IsNull_CustomField13", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "CustomField13", Global.System.Data.DataRowVersion.Original, true, Nothing, "", "", ""))
+            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_CustomField13", Global.System.Data.SqlDbType.NVarChar, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "CustomField13", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
+            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@IsNull_CustomField14", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "CustomField14", Global.System.Data.DataRowVersion.Original, true, Nothing, "", "", ""))
+            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_CustomField14", Global.System.Data.SqlDbType.NVarChar, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "CustomField14", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
+            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@IsNull_CustomField15", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "CustomField15", Global.System.Data.DataRowVersion.Original, true, Nothing, "", "", ""))
+            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_CustomField15", Global.System.Data.SqlDbType.NVarChar, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "CustomField15", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
+            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@IsNull_ReimbursementCurrencyId", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "ReimbursementCurrencyId", Global.System.Data.DataRowVersion.Original, true, Nothing, "", "", ""))
+            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_ReimbursementCurrencyId", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "ReimbursementCurrencyId", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
+        End Sub
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Private Sub InitConnection()
+            Me._connection = New Global.System.Data.SqlClient.SqlConnection()
+            Me._connection.ConnectionString = Global.TimeLive.Quickbooks.Integrator.My.MySettings.Default.TimeLiveDevConnectionString
+        End Sub
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
+        Private Sub InitCommandCollection()
+            Me._commandCollection = New Global.System.Data.SqlClient.SqlCommand(4) {}
+            Me._commandCollection(0) = New Global.System.Data.SqlClient.SqlCommand()
+            Me._commandCollection(0).Connection = Me.Connection
+            Me._commandCollection(0).CommandText = "SELECT AccountEmployeeExpenseSheetId, AccountId, AccountEmployeeId, Description, "& _ 
+                "ExpenseSheetDate, Approved, Rejected, Submitted, InApproval, CreatedByEmployeeId"& _ 
+                ", CreatedOn, ModifiedByEmployeeId, ModifiedOn, SubmittedDate, ApprovedOn, Approv"& _ 
+                "edByEmployeeId, RejectedOn, RejectedByEmployeeId, CustomField1, CustomField2, Cu"& _ 
+                "stomField3, CustomField4, CustomField5, CustomField6, CustomField7, CustomField8"& _ 
+                ", CustomField9, CustomField10, CustomField11, CustomField12, CustomField13, Cust"& _ 
+                "omField14, CustomField15, ReimbursementCurrencyId FROM dbo.AccountEmployeeExpens"& _ 
+                "eSheet"
+            Me._commandCollection(0).CommandType = Global.System.Data.CommandType.Text
+            Me._commandCollection(1) = New Global.System.Data.SqlClient.SqlCommand()
+            Me._commandCollection(1).Connection = Me.Connection
+            Me._commandCollection(1).CommandText = "SELECT *"&Global.Microsoft.VisualBasic.ChrW(13)&Global.Microsoft.VisualBasic.ChrW(10)&"FROM AccountEmployeeExpenseSheet"&Global.Microsoft.VisualBasic.ChrW(13)&Global.Microsoft.VisualBasic.ChrW(10)&"WHERE ExpenseSheetDate >= @StartDate "& _ 
+                "AND ExpenseSheetDate <= @EndDate"
+            Me._commandCollection(1).CommandType = Global.System.Data.CommandType.Text
+            Me._commandCollection(1).Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@StartDate", Global.System.Data.SqlDbType.DateTime, 8, Global.System.Data.ParameterDirection.Input, 0, 0, "ExpenseSheetDate", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
+            Me._commandCollection(1).Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@EndDate", Global.System.Data.SqlDbType.DateTime, 8, Global.System.Data.ParameterDirection.Input, 0, 0, "ExpenseSheetDate", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
+            Me._commandCollection(2) = New Global.System.Data.SqlClient.SqlCommand()
+            Me._commandCollection(2).Connection = Me.Connection
+            Me._commandCollection(2).CommandText = "SELECT Approved "&Global.Microsoft.VisualBasic.ChrW(13)&Global.Microsoft.VisualBasic.ChrW(10)&"FROM AccountEmployeeExpenseSheet "&Global.Microsoft.VisualBasic.ChrW(13)&Global.Microsoft.VisualBasic.ChrW(10)&"WHERE AccountEmployeeExpense"& _ 
+                "SheetId = @ExpenseSheetID"
+            Me._commandCollection(2).CommandType = Global.System.Data.CommandType.Text
+            Me._commandCollection(2).Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@ExpenseSheetID", Global.System.Data.SqlDbType.UniqueIdentifier, 16, Global.System.Data.ParameterDirection.Input, 0, 0, "AccountEmployeeExpenseSheetId", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
+            Me._commandCollection(3) = New Global.System.Data.SqlClient.SqlCommand()
+            Me._commandCollection(3).Connection = Me.Connection
+            Me._commandCollection(3).CommandText = "SELECT Rejected"&Global.Microsoft.VisualBasic.ChrW(13)&Global.Microsoft.VisualBasic.ChrW(10)&"FROM AccountEmployeeExpenseSheet "&Global.Microsoft.VisualBasic.ChrW(13)&Global.Microsoft.VisualBasic.ChrW(10)&"WHERE AccountEmployeeExpenseS"& _ 
+                "heetId = @ExpenseSheetID"
+            Me._commandCollection(3).CommandType = Global.System.Data.CommandType.Text
+            Me._commandCollection(3).Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@ExpenseSheetID", Global.System.Data.SqlDbType.UniqueIdentifier, 16, Global.System.Data.ParameterDirection.Input, 0, 0, "AccountEmployeeExpenseSheetId", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
+            Me._commandCollection(4) = New Global.System.Data.SqlClient.SqlCommand()
+            Me._commandCollection(4).Connection = Me.Connection
+            Me._commandCollection(4).CommandText = "SELECT Submitted"&Global.Microsoft.VisualBasic.ChrW(13)&Global.Microsoft.VisualBasic.ChrW(10)&"FROM AccountEmployeeExpenseSheet "&Global.Microsoft.VisualBasic.ChrW(13)&Global.Microsoft.VisualBasic.ChrW(10)&"WHERE AccountEmployeeExpense"& _ 
+                "SheetId = @ExpenseSheetID"
+            Me._commandCollection(4).CommandType = Global.System.Data.CommandType.Text
+            Me._commandCollection(4).Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@ExpenseSheetID", Global.System.Data.SqlDbType.UniqueIdentifier, 16, Global.System.Data.ParameterDirection.Input, 0, 0, "AccountEmployeeExpenseSheetId", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
+        End Sub
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0"),  _
+         Global.System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter"),  _
+         Global.System.ComponentModel.DataObjectMethodAttribute(Global.System.ComponentModel.DataObjectMethodType.Fill, true)>  _
+        Public Overloads Overridable Function Fill(ByVal dataTable As TimeLiveDataSet.AccountEmployeeExpenseSheetDataTable) As Integer
+            Me.Adapter.SelectCommand = Me.CommandCollection(0)
+            If (Me.ClearBeforeFill = true) Then
+                dataTable.Clear
+            End If
+            Dim returnValue As Integer = Me.Adapter.Fill(dataTable)
+            Return returnValue
+        End Function
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0"),  _
+         Global.System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter"),  _
+         Global.System.ComponentModel.DataObjectMethodAttribute(Global.System.ComponentModel.DataObjectMethodType.[Select], true)>  _
+        Public Overloads Overridable Function GetData() As TimeLiveDataSet.AccountEmployeeExpenseSheetDataTable
+            Me.Adapter.SelectCommand = Me.CommandCollection(0)
+            Dim dataTable As TimeLiveDataSet.AccountEmployeeExpenseSheetDataTable = New TimeLiveDataSet.AccountEmployeeExpenseSheetDataTable()
+            Me.Adapter.Fill(dataTable)
+            Return dataTable
+        End Function
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0"),  _
+         Global.System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter"),  _
+         Global.System.ComponentModel.DataObjectMethodAttribute(Global.System.ComponentModel.DataObjectMethodType.[Select], false)>  _
+        Public Overloads Overridable Function getExpenseSheetsWithinDateRange(ByVal StartDate As Date, ByVal EndDate As Date) As TimeLiveDataSet.AccountEmployeeExpenseSheetDataTable
+            Me.Adapter.SelectCommand = Me.CommandCollection(1)
+            Me.Adapter.SelectCommand.Parameters(0).Value = CType(StartDate,Date)
+            Me.Adapter.SelectCommand.Parameters(1).Value = CType(EndDate,Date)
+            Dim dataTable As TimeLiveDataSet.AccountEmployeeExpenseSheetDataTable = New TimeLiveDataSet.AccountEmployeeExpenseSheetDataTable()
+            Me.Adapter.Fill(dataTable)
+            Return dataTable
+        End Function
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0"),  _
+         Global.System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")>  _
+        Public Overloads Overridable Function Update(ByVal dataTable As TimeLiveDataSet.AccountEmployeeExpenseSheetDataTable) As Integer
+            Return Me.Adapter.Update(dataTable)
+        End Function
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0"),  _
+         Global.System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")>  _
+        Public Overloads Overridable Function Update(ByVal dataSet As TimeLiveDataSet) As Integer
+            Return Me.Adapter.Update(dataSet, "AccountEmployeeExpenseSheet")
+        End Function
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0"),  _
+         Global.System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")>  _
+        Public Overloads Overridable Function Update(ByVal dataRow As Global.System.Data.DataRow) As Integer
+            Return Me.Adapter.Update(New Global.System.Data.DataRow() {dataRow})
+        End Function
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0"),  _
+         Global.System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")>  _
+        Public Overloads Overridable Function Update(ByVal dataRows() As Global.System.Data.DataRow) As Integer
+            Return Me.Adapter.Update(dataRows)
+        End Function
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0"),  _
+         Global.System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter"),  _
+         Global.System.ComponentModel.DataObjectMethodAttribute(Global.System.ComponentModel.DataObjectMethodType.Delete, true)>  _
+        Public Overloads Overridable Function Delete( _
+                    ByVal Original_AccountEmployeeExpenseSheetId As System.Guid,  _
+                    ByVal Original_AccountId As Integer,  _
+                    ByVal Original_AccountEmployeeId As Integer,  _
+                    ByVal Original_Description As String,  _
+                    ByVal Original_ExpenseSheetDate As Date,  _
+                    ByVal Original_Approved As Boolean,  _
+                    ByVal Original_Rejected As Boolean,  _
+                    ByVal Original_Submitted As Boolean,  _
+                    ByVal Original_InApproval As Boolean,  _
+                    ByVal Original_CreatedByEmployeeId As Global.System.Nullable(Of Integer),  _
+                    ByVal Original_CreatedOn As Global.System.Nullable(Of Date),  _
+                    ByVal Original_ModifiedByEmployeeId As Global.System.Nullable(Of Integer),  _
+                    ByVal Original_ModifiedOn As Global.System.Nullable(Of Date),  _
+                    ByVal Original_SubmittedDate As Global.System.Nullable(Of Date),  _
+                    ByVal Original_ApprovedOn As Global.System.Nullable(Of Date),  _
+                    ByVal Original_ApprovedByEmployeeId As Global.System.Nullable(Of Integer),  _
+                    ByVal Original_RejectedOn As Global.System.Nullable(Of Date),  _
+                    ByVal Original_RejectedByEmployeeId As Global.System.Nullable(Of Integer),  _
+                    ByVal Original_CustomField1 As String,  _
+                    ByVal Original_CustomField2 As String,  _
+                    ByVal Original_CustomField3 As String,  _
+                    ByVal Original_CustomField4 As String,  _
+                    ByVal Original_CustomField5 As String,  _
+                    ByVal Original_CustomField6 As String,  _
+                    ByVal Original_CustomField7 As String,  _
+                    ByVal Original_CustomField8 As String,  _
+                    ByVal Original_CustomField9 As String,  _
+                    ByVal Original_CustomField10 As String,  _
+                    ByVal Original_CustomField11 As String,  _
+                    ByVal Original_CustomField12 As String,  _
+                    ByVal Original_CustomField13 As String,  _
+                    ByVal Original_CustomField14 As String,  _
+                    ByVal Original_CustomField15 As String,  _
+                    ByVal Original_ReimbursementCurrencyId As Global.System.Nullable(Of Integer)) As Integer
+            Me.Adapter.DeleteCommand.Parameters(0).Value = CType(Original_AccountEmployeeExpenseSheetId,System.Guid)
+            Me.Adapter.DeleteCommand.Parameters(1).Value = CType(Original_AccountId,Integer)
+            Me.Adapter.DeleteCommand.Parameters(2).Value = CType(Original_AccountEmployeeId,Integer)
+            If (Original_Description Is Nothing) Then
+                Throw New Global.System.ArgumentNullException("Original_Description")
+            Else
+                Me.Adapter.DeleteCommand.Parameters(3).Value = CType(Original_Description,String)
+            End If
+            Me.Adapter.DeleteCommand.Parameters(4).Value = CType(Original_ExpenseSheetDate,Date)
+            Me.Adapter.DeleteCommand.Parameters(5).Value = CType(Original_Approved,Boolean)
+            Me.Adapter.DeleteCommand.Parameters(6).Value = CType(Original_Rejected,Boolean)
+            Me.Adapter.DeleteCommand.Parameters(7).Value = CType(Original_Submitted,Boolean)
+            Me.Adapter.DeleteCommand.Parameters(8).Value = CType(Original_InApproval,Boolean)
+            If (Original_CreatedByEmployeeId.HasValue = true) Then
+                Me.Adapter.DeleteCommand.Parameters(9).Value = CType(0,Object)
+                Me.Adapter.DeleteCommand.Parameters(10).Value = CType(Original_CreatedByEmployeeId.Value,Integer)
+            Else
+                Me.Adapter.DeleteCommand.Parameters(9).Value = CType(1,Object)
+                Me.Adapter.DeleteCommand.Parameters(10).Value = Global.System.DBNull.Value
+            End If
+            If (Original_CreatedOn.HasValue = true) Then
+                Me.Adapter.DeleteCommand.Parameters(11).Value = CType(0,Object)
+                Me.Adapter.DeleteCommand.Parameters(12).Value = CType(Original_CreatedOn.Value,Date)
+            Else
+                Me.Adapter.DeleteCommand.Parameters(11).Value = CType(1,Object)
+                Me.Adapter.DeleteCommand.Parameters(12).Value = Global.System.DBNull.Value
+            End If
+            If (Original_ModifiedByEmployeeId.HasValue = true) Then
+                Me.Adapter.DeleteCommand.Parameters(13).Value = CType(0,Object)
+                Me.Adapter.DeleteCommand.Parameters(14).Value = CType(Original_ModifiedByEmployeeId.Value,Integer)
+            Else
+                Me.Adapter.DeleteCommand.Parameters(13).Value = CType(1,Object)
+                Me.Adapter.DeleteCommand.Parameters(14).Value = Global.System.DBNull.Value
+            End If
+            If (Original_ModifiedOn.HasValue = true) Then
+                Me.Adapter.DeleteCommand.Parameters(15).Value = CType(0,Object)
+                Me.Adapter.DeleteCommand.Parameters(16).Value = CType(Original_ModifiedOn.Value,Date)
+            Else
+                Me.Adapter.DeleteCommand.Parameters(15).Value = CType(1,Object)
+                Me.Adapter.DeleteCommand.Parameters(16).Value = Global.System.DBNull.Value
+            End If
+            If (Original_SubmittedDate.HasValue = true) Then
+                Me.Adapter.DeleteCommand.Parameters(17).Value = CType(0,Object)
+                Me.Adapter.DeleteCommand.Parameters(18).Value = CType(Original_SubmittedDate.Value,Date)
+            Else
+                Me.Adapter.DeleteCommand.Parameters(17).Value = CType(1,Object)
+                Me.Adapter.DeleteCommand.Parameters(18).Value = Global.System.DBNull.Value
+            End If
+            If (Original_ApprovedOn.HasValue = true) Then
+                Me.Adapter.DeleteCommand.Parameters(19).Value = CType(0,Object)
+                Me.Adapter.DeleteCommand.Parameters(20).Value = CType(Original_ApprovedOn.Value,Date)
+            Else
+                Me.Adapter.DeleteCommand.Parameters(19).Value = CType(1,Object)
+                Me.Adapter.DeleteCommand.Parameters(20).Value = Global.System.DBNull.Value
+            End If
+            If (Original_ApprovedByEmployeeId.HasValue = true) Then
+                Me.Adapter.DeleteCommand.Parameters(21).Value = CType(0,Object)
+                Me.Adapter.DeleteCommand.Parameters(22).Value = CType(Original_ApprovedByEmployeeId.Value,Integer)
+            Else
+                Me.Adapter.DeleteCommand.Parameters(21).Value = CType(1,Object)
+                Me.Adapter.DeleteCommand.Parameters(22).Value = Global.System.DBNull.Value
+            End If
+            If (Original_RejectedOn.HasValue = true) Then
+                Me.Adapter.DeleteCommand.Parameters(23).Value = CType(0,Object)
+                Me.Adapter.DeleteCommand.Parameters(24).Value = CType(Original_RejectedOn.Value,Date)
+            Else
+                Me.Adapter.DeleteCommand.Parameters(23).Value = CType(1,Object)
+                Me.Adapter.DeleteCommand.Parameters(24).Value = Global.System.DBNull.Value
+            End If
+            If (Original_RejectedByEmployeeId.HasValue = true) Then
+                Me.Adapter.DeleteCommand.Parameters(25).Value = CType(0,Object)
+                Me.Adapter.DeleteCommand.Parameters(26).Value = CType(Original_RejectedByEmployeeId.Value,Integer)
+            Else
+                Me.Adapter.DeleteCommand.Parameters(25).Value = CType(1,Object)
+                Me.Adapter.DeleteCommand.Parameters(26).Value = Global.System.DBNull.Value
+            End If
+            If (Original_CustomField1 Is Nothing) Then
+                Me.Adapter.DeleteCommand.Parameters(27).Value = CType(1,Object)
+                Me.Adapter.DeleteCommand.Parameters(28).Value = Global.System.DBNull.Value
+            Else
+                Me.Adapter.DeleteCommand.Parameters(27).Value = CType(0,Object)
+                Me.Adapter.DeleteCommand.Parameters(28).Value = CType(Original_CustomField1,String)
+            End If
+            If (Original_CustomField2 Is Nothing) Then
+                Me.Adapter.DeleteCommand.Parameters(29).Value = CType(1,Object)
+                Me.Adapter.DeleteCommand.Parameters(30).Value = Global.System.DBNull.Value
+            Else
+                Me.Adapter.DeleteCommand.Parameters(29).Value = CType(0,Object)
+                Me.Adapter.DeleteCommand.Parameters(30).Value = CType(Original_CustomField2,String)
+            End If
+            If (Original_CustomField3 Is Nothing) Then
+                Me.Adapter.DeleteCommand.Parameters(31).Value = CType(1,Object)
+                Me.Adapter.DeleteCommand.Parameters(32).Value = Global.System.DBNull.Value
+            Else
+                Me.Adapter.DeleteCommand.Parameters(31).Value = CType(0,Object)
+                Me.Adapter.DeleteCommand.Parameters(32).Value = CType(Original_CustomField3,String)
+            End If
+            If (Original_CustomField4 Is Nothing) Then
+                Me.Adapter.DeleteCommand.Parameters(33).Value = CType(1,Object)
+                Me.Adapter.DeleteCommand.Parameters(34).Value = Global.System.DBNull.Value
+            Else
+                Me.Adapter.DeleteCommand.Parameters(33).Value = CType(0,Object)
+                Me.Adapter.DeleteCommand.Parameters(34).Value = CType(Original_CustomField4,String)
+            End If
+            If (Original_CustomField5 Is Nothing) Then
+                Me.Adapter.DeleteCommand.Parameters(35).Value = CType(1,Object)
+                Me.Adapter.DeleteCommand.Parameters(36).Value = Global.System.DBNull.Value
+            Else
+                Me.Adapter.DeleteCommand.Parameters(35).Value = CType(0,Object)
+                Me.Adapter.DeleteCommand.Parameters(36).Value = CType(Original_CustomField5,String)
+            End If
+            If (Original_CustomField6 Is Nothing) Then
+                Me.Adapter.DeleteCommand.Parameters(37).Value = CType(1,Object)
+                Me.Adapter.DeleteCommand.Parameters(38).Value = Global.System.DBNull.Value
+            Else
+                Me.Adapter.DeleteCommand.Parameters(37).Value = CType(0,Object)
+                Me.Adapter.DeleteCommand.Parameters(38).Value = CType(Original_CustomField6,String)
+            End If
+            If (Original_CustomField7 Is Nothing) Then
+                Me.Adapter.DeleteCommand.Parameters(39).Value = CType(1,Object)
+                Me.Adapter.DeleteCommand.Parameters(40).Value = Global.System.DBNull.Value
+            Else
+                Me.Adapter.DeleteCommand.Parameters(39).Value = CType(0,Object)
+                Me.Adapter.DeleteCommand.Parameters(40).Value = CType(Original_CustomField7,String)
+            End If
+            If (Original_CustomField8 Is Nothing) Then
+                Me.Adapter.DeleteCommand.Parameters(41).Value = CType(1,Object)
+                Me.Adapter.DeleteCommand.Parameters(42).Value = Global.System.DBNull.Value
+            Else
+                Me.Adapter.DeleteCommand.Parameters(41).Value = CType(0,Object)
+                Me.Adapter.DeleteCommand.Parameters(42).Value = CType(Original_CustomField8,String)
+            End If
+            If (Original_CustomField9 Is Nothing) Then
+                Me.Adapter.DeleteCommand.Parameters(43).Value = CType(1,Object)
+                Me.Adapter.DeleteCommand.Parameters(44).Value = Global.System.DBNull.Value
+            Else
+                Me.Adapter.DeleteCommand.Parameters(43).Value = CType(0,Object)
+                Me.Adapter.DeleteCommand.Parameters(44).Value = CType(Original_CustomField9,String)
+            End If
+            If (Original_CustomField10 Is Nothing) Then
+                Me.Adapter.DeleteCommand.Parameters(45).Value = CType(1,Object)
+                Me.Adapter.DeleteCommand.Parameters(46).Value = Global.System.DBNull.Value
+            Else
+                Me.Adapter.DeleteCommand.Parameters(45).Value = CType(0,Object)
+                Me.Adapter.DeleteCommand.Parameters(46).Value = CType(Original_CustomField10,String)
+            End If
+            If (Original_CustomField11 Is Nothing) Then
+                Me.Adapter.DeleteCommand.Parameters(47).Value = CType(1,Object)
+                Me.Adapter.DeleteCommand.Parameters(48).Value = Global.System.DBNull.Value
+            Else
+                Me.Adapter.DeleteCommand.Parameters(47).Value = CType(0,Object)
+                Me.Adapter.DeleteCommand.Parameters(48).Value = CType(Original_CustomField11,String)
+            End If
+            If (Original_CustomField12 Is Nothing) Then
+                Me.Adapter.DeleteCommand.Parameters(49).Value = CType(1,Object)
+                Me.Adapter.DeleteCommand.Parameters(50).Value = Global.System.DBNull.Value
+            Else
+                Me.Adapter.DeleteCommand.Parameters(49).Value = CType(0,Object)
+                Me.Adapter.DeleteCommand.Parameters(50).Value = CType(Original_CustomField12,String)
+            End If
+            If (Original_CustomField13 Is Nothing) Then
+                Me.Adapter.DeleteCommand.Parameters(51).Value = CType(1,Object)
+                Me.Adapter.DeleteCommand.Parameters(52).Value = Global.System.DBNull.Value
+            Else
+                Me.Adapter.DeleteCommand.Parameters(51).Value = CType(0,Object)
+                Me.Adapter.DeleteCommand.Parameters(52).Value = CType(Original_CustomField13,String)
+            End If
+            If (Original_CustomField14 Is Nothing) Then
+                Me.Adapter.DeleteCommand.Parameters(53).Value = CType(1,Object)
+                Me.Adapter.DeleteCommand.Parameters(54).Value = Global.System.DBNull.Value
+            Else
+                Me.Adapter.DeleteCommand.Parameters(53).Value = CType(0,Object)
+                Me.Adapter.DeleteCommand.Parameters(54).Value = CType(Original_CustomField14,String)
+            End If
+            If (Original_CustomField15 Is Nothing) Then
+                Me.Adapter.DeleteCommand.Parameters(55).Value = CType(1,Object)
+                Me.Adapter.DeleteCommand.Parameters(56).Value = Global.System.DBNull.Value
+            Else
+                Me.Adapter.DeleteCommand.Parameters(55).Value = CType(0,Object)
+                Me.Adapter.DeleteCommand.Parameters(56).Value = CType(Original_CustomField15,String)
+            End If
+            If (Original_ReimbursementCurrencyId.HasValue = true) Then
+                Me.Adapter.DeleteCommand.Parameters(57).Value = CType(0,Object)
+                Me.Adapter.DeleteCommand.Parameters(58).Value = CType(Original_ReimbursementCurrencyId.Value,Integer)
+            Else
+                Me.Adapter.DeleteCommand.Parameters(57).Value = CType(1,Object)
+                Me.Adapter.DeleteCommand.Parameters(58).Value = Global.System.DBNull.Value
+            End If
+            Dim previousConnectionState As Global.System.Data.ConnectionState = Me.Adapter.DeleteCommand.Connection.State
+            If ((Me.Adapter.DeleteCommand.Connection.State And Global.System.Data.ConnectionState.Open)  _
+                        <> Global.System.Data.ConnectionState.Open) Then
+                Me.Adapter.DeleteCommand.Connection.Open
+            End If
+            Try 
+                Dim returnValue As Integer = Me.Adapter.DeleteCommand.ExecuteNonQuery
+                Return returnValue
+            Finally
+                If (previousConnectionState = Global.System.Data.ConnectionState.Closed) Then
+                    Me.Adapter.DeleteCommand.Connection.Close
+                End If
+            End Try
+        End Function
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0"),  _
+         Global.System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter"),  _
+         Global.System.ComponentModel.DataObjectMethodAttribute(Global.System.ComponentModel.DataObjectMethodType.Insert, true)>  _
+        Public Overloads Overridable Function Insert( _
+                    ByVal AccountEmployeeExpenseSheetId As System.Guid,  _
+                    ByVal AccountId As Integer,  _
+                    ByVal AccountEmployeeId As Integer,  _
+                    ByVal Description As String,  _
+                    ByVal ExpenseSheetDate As Date,  _
+                    ByVal Approved As Boolean,  _
+                    ByVal Rejected As Boolean,  _
+                    ByVal Submitted As Boolean,  _
+                    ByVal InApproval As Boolean,  _
+                    ByVal CreatedByEmployeeId As Global.System.Nullable(Of Integer),  _
+                    ByVal CreatedOn As Global.System.Nullable(Of Date),  _
+                    ByVal ModifiedByEmployeeId As Global.System.Nullable(Of Integer),  _
+                    ByVal ModifiedOn As Global.System.Nullable(Of Date),  _
+                    ByVal SubmittedDate As Global.System.Nullable(Of Date),  _
+                    ByVal ApprovedOn As Global.System.Nullable(Of Date),  _
+                    ByVal ApprovedByEmployeeId As Global.System.Nullable(Of Integer),  _
+                    ByVal RejectedOn As Global.System.Nullable(Of Date),  _
+                    ByVal RejectedByEmployeeId As Global.System.Nullable(Of Integer),  _
+                    ByVal CustomField1 As String,  _
+                    ByVal CustomField2 As String,  _
+                    ByVal CustomField3 As String,  _
+                    ByVal CustomField4 As String,  _
+                    ByVal CustomField5 As String,  _
+                    ByVal CustomField6 As String,  _
+                    ByVal CustomField7 As String,  _
+                    ByVal CustomField8 As String,  _
+                    ByVal CustomField9 As String,  _
+                    ByVal CustomField10 As String,  _
+                    ByVal CustomField11 As String,  _
+                    ByVal CustomField12 As String,  _
+                    ByVal CustomField13 As String,  _
+                    ByVal CustomField14 As String,  _
+                    ByVal CustomField15 As String,  _
+                    ByVal ReimbursementCurrencyId As Global.System.Nullable(Of Integer)) As Integer
+            Me.Adapter.InsertCommand.Parameters(0).Value = CType(AccountEmployeeExpenseSheetId,System.Guid)
+            Me.Adapter.InsertCommand.Parameters(1).Value = CType(AccountId,Integer)
+            Me.Adapter.InsertCommand.Parameters(2).Value = CType(AccountEmployeeId,Integer)
+            If (Description Is Nothing) Then
+                Throw New Global.System.ArgumentNullException("Description")
+            Else
+                Me.Adapter.InsertCommand.Parameters(3).Value = CType(Description,String)
+            End If
+            Me.Adapter.InsertCommand.Parameters(4).Value = CType(ExpenseSheetDate,Date)
+            Me.Adapter.InsertCommand.Parameters(5).Value = CType(Approved,Boolean)
+            Me.Adapter.InsertCommand.Parameters(6).Value = CType(Rejected,Boolean)
+            Me.Adapter.InsertCommand.Parameters(7).Value = CType(Submitted,Boolean)
+            Me.Adapter.InsertCommand.Parameters(8).Value = CType(InApproval,Boolean)
+            If (CreatedByEmployeeId.HasValue = true) Then
+                Me.Adapter.InsertCommand.Parameters(9).Value = CType(CreatedByEmployeeId.Value,Integer)
+            Else
+                Me.Adapter.InsertCommand.Parameters(9).Value = Global.System.DBNull.Value
+            End If
+            If (CreatedOn.HasValue = true) Then
+                Me.Adapter.InsertCommand.Parameters(10).Value = CType(CreatedOn.Value,Date)
+            Else
+                Me.Adapter.InsertCommand.Parameters(10).Value = Global.System.DBNull.Value
+            End If
+            If (ModifiedByEmployeeId.HasValue = true) Then
+                Me.Adapter.InsertCommand.Parameters(11).Value = CType(ModifiedByEmployeeId.Value,Integer)
+            Else
+                Me.Adapter.InsertCommand.Parameters(11).Value = Global.System.DBNull.Value
+            End If
+            If (ModifiedOn.HasValue = true) Then
+                Me.Adapter.InsertCommand.Parameters(12).Value = CType(ModifiedOn.Value,Date)
+            Else
+                Me.Adapter.InsertCommand.Parameters(12).Value = Global.System.DBNull.Value
+            End If
+            If (SubmittedDate.HasValue = true) Then
+                Me.Adapter.InsertCommand.Parameters(13).Value = CType(SubmittedDate.Value,Date)
+            Else
+                Me.Adapter.InsertCommand.Parameters(13).Value = Global.System.DBNull.Value
+            End If
+            If (ApprovedOn.HasValue = true) Then
+                Me.Adapter.InsertCommand.Parameters(14).Value = CType(ApprovedOn.Value,Date)
+            Else
+                Me.Adapter.InsertCommand.Parameters(14).Value = Global.System.DBNull.Value
+            End If
+            If (ApprovedByEmployeeId.HasValue = true) Then
+                Me.Adapter.InsertCommand.Parameters(15).Value = CType(ApprovedByEmployeeId.Value,Integer)
+            Else
+                Me.Adapter.InsertCommand.Parameters(15).Value = Global.System.DBNull.Value
+            End If
+            If (RejectedOn.HasValue = true) Then
+                Me.Adapter.InsertCommand.Parameters(16).Value = CType(RejectedOn.Value,Date)
+            Else
+                Me.Adapter.InsertCommand.Parameters(16).Value = Global.System.DBNull.Value
+            End If
+            If (RejectedByEmployeeId.HasValue = true) Then
+                Me.Adapter.InsertCommand.Parameters(17).Value = CType(RejectedByEmployeeId.Value,Integer)
+            Else
+                Me.Adapter.InsertCommand.Parameters(17).Value = Global.System.DBNull.Value
+            End If
+            If (CustomField1 Is Nothing) Then
+                Me.Adapter.InsertCommand.Parameters(18).Value = Global.System.DBNull.Value
+            Else
+                Me.Adapter.InsertCommand.Parameters(18).Value = CType(CustomField1,String)
+            End If
+            If (CustomField2 Is Nothing) Then
+                Me.Adapter.InsertCommand.Parameters(19).Value = Global.System.DBNull.Value
+            Else
+                Me.Adapter.InsertCommand.Parameters(19).Value = CType(CustomField2,String)
+            End If
+            If (CustomField3 Is Nothing) Then
+                Me.Adapter.InsertCommand.Parameters(20).Value = Global.System.DBNull.Value
+            Else
+                Me.Adapter.InsertCommand.Parameters(20).Value = CType(CustomField3,String)
+            End If
+            If (CustomField4 Is Nothing) Then
+                Me.Adapter.InsertCommand.Parameters(21).Value = Global.System.DBNull.Value
+            Else
+                Me.Adapter.InsertCommand.Parameters(21).Value = CType(CustomField4,String)
+            End If
+            If (CustomField5 Is Nothing) Then
+                Me.Adapter.InsertCommand.Parameters(22).Value = Global.System.DBNull.Value
+            Else
+                Me.Adapter.InsertCommand.Parameters(22).Value = CType(CustomField5,String)
+            End If
+            If (CustomField6 Is Nothing) Then
+                Me.Adapter.InsertCommand.Parameters(23).Value = Global.System.DBNull.Value
+            Else
+                Me.Adapter.InsertCommand.Parameters(23).Value = CType(CustomField6,String)
+            End If
+            If (CustomField7 Is Nothing) Then
+                Me.Adapter.InsertCommand.Parameters(24).Value = Global.System.DBNull.Value
+            Else
+                Me.Adapter.InsertCommand.Parameters(24).Value = CType(CustomField7,String)
+            End If
+            If (CustomField8 Is Nothing) Then
+                Me.Adapter.InsertCommand.Parameters(25).Value = Global.System.DBNull.Value
+            Else
+                Me.Adapter.InsertCommand.Parameters(25).Value = CType(CustomField8,String)
+            End If
+            If (CustomField9 Is Nothing) Then
+                Me.Adapter.InsertCommand.Parameters(26).Value = Global.System.DBNull.Value
+            Else
+                Me.Adapter.InsertCommand.Parameters(26).Value = CType(CustomField9,String)
+            End If
+            If (CustomField10 Is Nothing) Then
+                Me.Adapter.InsertCommand.Parameters(27).Value = Global.System.DBNull.Value
+            Else
+                Me.Adapter.InsertCommand.Parameters(27).Value = CType(CustomField10,String)
+            End If
+            If (CustomField11 Is Nothing) Then
+                Me.Adapter.InsertCommand.Parameters(28).Value = Global.System.DBNull.Value
+            Else
+                Me.Adapter.InsertCommand.Parameters(28).Value = CType(CustomField11,String)
+            End If
+            If (CustomField12 Is Nothing) Then
+                Me.Adapter.InsertCommand.Parameters(29).Value = Global.System.DBNull.Value
+            Else
+                Me.Adapter.InsertCommand.Parameters(29).Value = CType(CustomField12,String)
+            End If
+            If (CustomField13 Is Nothing) Then
+                Me.Adapter.InsertCommand.Parameters(30).Value = Global.System.DBNull.Value
+            Else
+                Me.Adapter.InsertCommand.Parameters(30).Value = CType(CustomField13,String)
+            End If
+            If (CustomField14 Is Nothing) Then
+                Me.Adapter.InsertCommand.Parameters(31).Value = Global.System.DBNull.Value
+            Else
+                Me.Adapter.InsertCommand.Parameters(31).Value = CType(CustomField14,String)
+            End If
+            If (CustomField15 Is Nothing) Then
+                Me.Adapter.InsertCommand.Parameters(32).Value = Global.System.DBNull.Value
+            Else
+                Me.Adapter.InsertCommand.Parameters(32).Value = CType(CustomField15,String)
+            End If
+            If (ReimbursementCurrencyId.HasValue = true) Then
+                Me.Adapter.InsertCommand.Parameters(33).Value = CType(ReimbursementCurrencyId.Value,Integer)
+            Else
+                Me.Adapter.InsertCommand.Parameters(33).Value = Global.System.DBNull.Value
+            End If
+            Dim previousConnectionState As Global.System.Data.ConnectionState = Me.Adapter.InsertCommand.Connection.State
+            If ((Me.Adapter.InsertCommand.Connection.State And Global.System.Data.ConnectionState.Open)  _
+                        <> Global.System.Data.ConnectionState.Open) Then
+                Me.Adapter.InsertCommand.Connection.Open
+            End If
+            Try 
+                Dim returnValue As Integer = Me.Adapter.InsertCommand.ExecuteNonQuery
+                Return returnValue
+            Finally
+                If (previousConnectionState = Global.System.Data.ConnectionState.Closed) Then
+                    Me.Adapter.InsertCommand.Connection.Close
+                End If
+            End Try
+        End Function
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0"),  _
+         Global.System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter"),  _
+         Global.System.ComponentModel.DataObjectMethodAttribute(Global.System.ComponentModel.DataObjectMethodType.Update, true)>  _
+        Public Overloads Overridable Function Update( _
+                    ByVal AccountEmployeeExpenseSheetId As System.Guid,  _
+                    ByVal AccountId As Integer,  _
+                    ByVal AccountEmployeeId As Integer,  _
+                    ByVal Description As String,  _
+                    ByVal ExpenseSheetDate As Date,  _
+                    ByVal Approved As Boolean,  _
+                    ByVal Rejected As Boolean,  _
+                    ByVal Submitted As Boolean,  _
+                    ByVal InApproval As Boolean,  _
+                    ByVal CreatedByEmployeeId As Global.System.Nullable(Of Integer),  _
+                    ByVal CreatedOn As Global.System.Nullable(Of Date),  _
+                    ByVal ModifiedByEmployeeId As Global.System.Nullable(Of Integer),  _
+                    ByVal ModifiedOn As Global.System.Nullable(Of Date),  _
+                    ByVal SubmittedDate As Global.System.Nullable(Of Date),  _
+                    ByVal ApprovedOn As Global.System.Nullable(Of Date),  _
+                    ByVal ApprovedByEmployeeId As Global.System.Nullable(Of Integer),  _
+                    ByVal RejectedOn As Global.System.Nullable(Of Date),  _
+                    ByVal RejectedByEmployeeId As Global.System.Nullable(Of Integer),  _
+                    ByVal CustomField1 As String,  _
+                    ByVal CustomField2 As String,  _
+                    ByVal CustomField3 As String,  _
+                    ByVal CustomField4 As String,  _
+                    ByVal CustomField5 As String,  _
+                    ByVal CustomField6 As String,  _
+                    ByVal CustomField7 As String,  _
+                    ByVal CustomField8 As String,  _
+                    ByVal CustomField9 As String,  _
+                    ByVal CustomField10 As String,  _
+                    ByVal CustomField11 As String,  _
+                    ByVal CustomField12 As String,  _
+                    ByVal CustomField13 As String,  _
+                    ByVal CustomField14 As String,  _
+                    ByVal CustomField15 As String,  _
+                    ByVal ReimbursementCurrencyId As Global.System.Nullable(Of Integer),  _
+                    ByVal Original_AccountEmployeeExpenseSheetId As System.Guid,  _
+                    ByVal Original_AccountId As Integer,  _
+                    ByVal Original_AccountEmployeeId As Integer,  _
+                    ByVal Original_Description As String,  _
+                    ByVal Original_ExpenseSheetDate As Date,  _
+                    ByVal Original_Approved As Boolean,  _
+                    ByVal Original_Rejected As Boolean,  _
+                    ByVal Original_Submitted As Boolean,  _
+                    ByVal Original_InApproval As Boolean,  _
+                    ByVal Original_CreatedByEmployeeId As Global.System.Nullable(Of Integer),  _
+                    ByVal Original_CreatedOn As Global.System.Nullable(Of Date),  _
+                    ByVal Original_ModifiedByEmployeeId As Global.System.Nullable(Of Integer),  _
+                    ByVal Original_ModifiedOn As Global.System.Nullable(Of Date),  _
+                    ByVal Original_SubmittedDate As Global.System.Nullable(Of Date),  _
+                    ByVal Original_ApprovedOn As Global.System.Nullable(Of Date),  _
+                    ByVal Original_ApprovedByEmployeeId As Global.System.Nullable(Of Integer),  _
+                    ByVal Original_RejectedOn As Global.System.Nullable(Of Date),  _
+                    ByVal Original_RejectedByEmployeeId As Global.System.Nullable(Of Integer),  _
+                    ByVal Original_CustomField1 As String,  _
+                    ByVal Original_CustomField2 As String,  _
+                    ByVal Original_CustomField3 As String,  _
+                    ByVal Original_CustomField4 As String,  _
+                    ByVal Original_CustomField5 As String,  _
+                    ByVal Original_CustomField6 As String,  _
+                    ByVal Original_CustomField7 As String,  _
+                    ByVal Original_CustomField8 As String,  _
+                    ByVal Original_CustomField9 As String,  _
+                    ByVal Original_CustomField10 As String,  _
+                    ByVal Original_CustomField11 As String,  _
+                    ByVal Original_CustomField12 As String,  _
+                    ByVal Original_CustomField13 As String,  _
+                    ByVal Original_CustomField14 As String,  _
+                    ByVal Original_CustomField15 As String,  _
+                    ByVal Original_ReimbursementCurrencyId As Global.System.Nullable(Of Integer)) As Integer
+            Me.Adapter.UpdateCommand.Parameters(0).Value = CType(AccountEmployeeExpenseSheetId,System.Guid)
+            Me.Adapter.UpdateCommand.Parameters(1).Value = CType(AccountId,Integer)
+            Me.Adapter.UpdateCommand.Parameters(2).Value = CType(AccountEmployeeId,Integer)
+            If (Description Is Nothing) Then
+                Throw New Global.System.ArgumentNullException("Description")
+            Else
+                Me.Adapter.UpdateCommand.Parameters(3).Value = CType(Description,String)
+            End If
+            Me.Adapter.UpdateCommand.Parameters(4).Value = CType(ExpenseSheetDate,Date)
+            Me.Adapter.UpdateCommand.Parameters(5).Value = CType(Approved,Boolean)
+            Me.Adapter.UpdateCommand.Parameters(6).Value = CType(Rejected,Boolean)
+            Me.Adapter.UpdateCommand.Parameters(7).Value = CType(Submitted,Boolean)
+            Me.Adapter.UpdateCommand.Parameters(8).Value = CType(InApproval,Boolean)
+            If (CreatedByEmployeeId.HasValue = true) Then
+                Me.Adapter.UpdateCommand.Parameters(9).Value = CType(CreatedByEmployeeId.Value,Integer)
+            Else
+                Me.Adapter.UpdateCommand.Parameters(9).Value = Global.System.DBNull.Value
+            End If
+            If (CreatedOn.HasValue = true) Then
+                Me.Adapter.UpdateCommand.Parameters(10).Value = CType(CreatedOn.Value,Date)
+            Else
+                Me.Adapter.UpdateCommand.Parameters(10).Value = Global.System.DBNull.Value
+            End If
+            If (ModifiedByEmployeeId.HasValue = true) Then
+                Me.Adapter.UpdateCommand.Parameters(11).Value = CType(ModifiedByEmployeeId.Value,Integer)
+            Else
+                Me.Adapter.UpdateCommand.Parameters(11).Value = Global.System.DBNull.Value
+            End If
+            If (ModifiedOn.HasValue = true) Then
+                Me.Adapter.UpdateCommand.Parameters(12).Value = CType(ModifiedOn.Value,Date)
+            Else
+                Me.Adapter.UpdateCommand.Parameters(12).Value = Global.System.DBNull.Value
+            End If
+            If (SubmittedDate.HasValue = true) Then
+                Me.Adapter.UpdateCommand.Parameters(13).Value = CType(SubmittedDate.Value,Date)
+            Else
+                Me.Adapter.UpdateCommand.Parameters(13).Value = Global.System.DBNull.Value
+            End If
+            If (ApprovedOn.HasValue = true) Then
+                Me.Adapter.UpdateCommand.Parameters(14).Value = CType(ApprovedOn.Value,Date)
+            Else
+                Me.Adapter.UpdateCommand.Parameters(14).Value = Global.System.DBNull.Value
+            End If
+            If (ApprovedByEmployeeId.HasValue = true) Then
+                Me.Adapter.UpdateCommand.Parameters(15).Value = CType(ApprovedByEmployeeId.Value,Integer)
+            Else
+                Me.Adapter.UpdateCommand.Parameters(15).Value = Global.System.DBNull.Value
+            End If
+            If (RejectedOn.HasValue = true) Then
+                Me.Adapter.UpdateCommand.Parameters(16).Value = CType(RejectedOn.Value,Date)
+            Else
+                Me.Adapter.UpdateCommand.Parameters(16).Value = Global.System.DBNull.Value
+            End If
+            If (RejectedByEmployeeId.HasValue = true) Then
+                Me.Adapter.UpdateCommand.Parameters(17).Value = CType(RejectedByEmployeeId.Value,Integer)
+            Else
+                Me.Adapter.UpdateCommand.Parameters(17).Value = Global.System.DBNull.Value
+            End If
+            If (CustomField1 Is Nothing) Then
+                Me.Adapter.UpdateCommand.Parameters(18).Value = Global.System.DBNull.Value
+            Else
+                Me.Adapter.UpdateCommand.Parameters(18).Value = CType(CustomField1,String)
+            End If
+            If (CustomField2 Is Nothing) Then
+                Me.Adapter.UpdateCommand.Parameters(19).Value = Global.System.DBNull.Value
+            Else
+                Me.Adapter.UpdateCommand.Parameters(19).Value = CType(CustomField2,String)
+            End If
+            If (CustomField3 Is Nothing) Then
+                Me.Adapter.UpdateCommand.Parameters(20).Value = Global.System.DBNull.Value
+            Else
+                Me.Adapter.UpdateCommand.Parameters(20).Value = CType(CustomField3,String)
+            End If
+            If (CustomField4 Is Nothing) Then
+                Me.Adapter.UpdateCommand.Parameters(21).Value = Global.System.DBNull.Value
+            Else
+                Me.Adapter.UpdateCommand.Parameters(21).Value = CType(CustomField4,String)
+            End If
+            If (CustomField5 Is Nothing) Then
+                Me.Adapter.UpdateCommand.Parameters(22).Value = Global.System.DBNull.Value
+            Else
+                Me.Adapter.UpdateCommand.Parameters(22).Value = CType(CustomField5,String)
+            End If
+            If (CustomField6 Is Nothing) Then
+                Me.Adapter.UpdateCommand.Parameters(23).Value = Global.System.DBNull.Value
+            Else
+                Me.Adapter.UpdateCommand.Parameters(23).Value = CType(CustomField6,String)
+            End If
+            If (CustomField7 Is Nothing) Then
+                Me.Adapter.UpdateCommand.Parameters(24).Value = Global.System.DBNull.Value
+            Else
+                Me.Adapter.UpdateCommand.Parameters(24).Value = CType(CustomField7,String)
+            End If
+            If (CustomField8 Is Nothing) Then
+                Me.Adapter.UpdateCommand.Parameters(25).Value = Global.System.DBNull.Value
+            Else
+                Me.Adapter.UpdateCommand.Parameters(25).Value = CType(CustomField8,String)
+            End If
+            If (CustomField9 Is Nothing) Then
+                Me.Adapter.UpdateCommand.Parameters(26).Value = Global.System.DBNull.Value
+            Else
+                Me.Adapter.UpdateCommand.Parameters(26).Value = CType(CustomField9,String)
+            End If
+            If (CustomField10 Is Nothing) Then
+                Me.Adapter.UpdateCommand.Parameters(27).Value = Global.System.DBNull.Value
+            Else
+                Me.Adapter.UpdateCommand.Parameters(27).Value = CType(CustomField10,String)
+            End If
+            If (CustomField11 Is Nothing) Then
+                Me.Adapter.UpdateCommand.Parameters(28).Value = Global.System.DBNull.Value
+            Else
+                Me.Adapter.UpdateCommand.Parameters(28).Value = CType(CustomField11,String)
+            End If
+            If (CustomField12 Is Nothing) Then
+                Me.Adapter.UpdateCommand.Parameters(29).Value = Global.System.DBNull.Value
+            Else
+                Me.Adapter.UpdateCommand.Parameters(29).Value = CType(CustomField12,String)
+            End If
+            If (CustomField13 Is Nothing) Then
+                Me.Adapter.UpdateCommand.Parameters(30).Value = Global.System.DBNull.Value
+            Else
+                Me.Adapter.UpdateCommand.Parameters(30).Value = CType(CustomField13,String)
+            End If
+            If (CustomField14 Is Nothing) Then
+                Me.Adapter.UpdateCommand.Parameters(31).Value = Global.System.DBNull.Value
+            Else
+                Me.Adapter.UpdateCommand.Parameters(31).Value = CType(CustomField14,String)
+            End If
+            If (CustomField15 Is Nothing) Then
+                Me.Adapter.UpdateCommand.Parameters(32).Value = Global.System.DBNull.Value
+            Else
+                Me.Adapter.UpdateCommand.Parameters(32).Value = CType(CustomField15,String)
+            End If
+            If (ReimbursementCurrencyId.HasValue = true) Then
+                Me.Adapter.UpdateCommand.Parameters(33).Value = CType(ReimbursementCurrencyId.Value,Integer)
+            Else
+                Me.Adapter.UpdateCommand.Parameters(33).Value = Global.System.DBNull.Value
+            End If
+            Me.Adapter.UpdateCommand.Parameters(34).Value = CType(Original_AccountEmployeeExpenseSheetId,System.Guid)
+            Me.Adapter.UpdateCommand.Parameters(35).Value = CType(Original_AccountId,Integer)
+            Me.Adapter.UpdateCommand.Parameters(36).Value = CType(Original_AccountEmployeeId,Integer)
+            If (Original_Description Is Nothing) Then
+                Throw New Global.System.ArgumentNullException("Original_Description")
+            Else
+                Me.Adapter.UpdateCommand.Parameters(37).Value = CType(Original_Description,String)
+            End If
+            Me.Adapter.UpdateCommand.Parameters(38).Value = CType(Original_ExpenseSheetDate,Date)
+            Me.Adapter.UpdateCommand.Parameters(39).Value = CType(Original_Approved,Boolean)
+            Me.Adapter.UpdateCommand.Parameters(40).Value = CType(Original_Rejected,Boolean)
+            Me.Adapter.UpdateCommand.Parameters(41).Value = CType(Original_Submitted,Boolean)
+            Me.Adapter.UpdateCommand.Parameters(42).Value = CType(Original_InApproval,Boolean)
+            If (Original_CreatedByEmployeeId.HasValue = true) Then
+                Me.Adapter.UpdateCommand.Parameters(43).Value = CType(0,Object)
+                Me.Adapter.UpdateCommand.Parameters(44).Value = CType(Original_CreatedByEmployeeId.Value,Integer)
+            Else
+                Me.Adapter.UpdateCommand.Parameters(43).Value = CType(1,Object)
+                Me.Adapter.UpdateCommand.Parameters(44).Value = Global.System.DBNull.Value
+            End If
+            If (Original_CreatedOn.HasValue = true) Then
+                Me.Adapter.UpdateCommand.Parameters(45).Value = CType(0,Object)
+                Me.Adapter.UpdateCommand.Parameters(46).Value = CType(Original_CreatedOn.Value,Date)
+            Else
+                Me.Adapter.UpdateCommand.Parameters(45).Value = CType(1,Object)
+                Me.Adapter.UpdateCommand.Parameters(46).Value = Global.System.DBNull.Value
+            End If
+            If (Original_ModifiedByEmployeeId.HasValue = true) Then
+                Me.Adapter.UpdateCommand.Parameters(47).Value = CType(0,Object)
+                Me.Adapter.UpdateCommand.Parameters(48).Value = CType(Original_ModifiedByEmployeeId.Value,Integer)
+            Else
+                Me.Adapter.UpdateCommand.Parameters(47).Value = CType(1,Object)
+                Me.Adapter.UpdateCommand.Parameters(48).Value = Global.System.DBNull.Value
+            End If
+            If (Original_ModifiedOn.HasValue = true) Then
+                Me.Adapter.UpdateCommand.Parameters(49).Value = CType(0,Object)
+                Me.Adapter.UpdateCommand.Parameters(50).Value = CType(Original_ModifiedOn.Value,Date)
+            Else
+                Me.Adapter.UpdateCommand.Parameters(49).Value = CType(1,Object)
+                Me.Adapter.UpdateCommand.Parameters(50).Value = Global.System.DBNull.Value
+            End If
+            If (Original_SubmittedDate.HasValue = true) Then
+                Me.Adapter.UpdateCommand.Parameters(51).Value = CType(0,Object)
+                Me.Adapter.UpdateCommand.Parameters(52).Value = CType(Original_SubmittedDate.Value,Date)
+            Else
+                Me.Adapter.UpdateCommand.Parameters(51).Value = CType(1,Object)
+                Me.Adapter.UpdateCommand.Parameters(52).Value = Global.System.DBNull.Value
+            End If
+            If (Original_ApprovedOn.HasValue = true) Then
+                Me.Adapter.UpdateCommand.Parameters(53).Value = CType(0,Object)
+                Me.Adapter.UpdateCommand.Parameters(54).Value = CType(Original_ApprovedOn.Value,Date)
+            Else
+                Me.Adapter.UpdateCommand.Parameters(53).Value = CType(1,Object)
+                Me.Adapter.UpdateCommand.Parameters(54).Value = Global.System.DBNull.Value
+            End If
+            If (Original_ApprovedByEmployeeId.HasValue = true) Then
+                Me.Adapter.UpdateCommand.Parameters(55).Value = CType(0,Object)
+                Me.Adapter.UpdateCommand.Parameters(56).Value = CType(Original_ApprovedByEmployeeId.Value,Integer)
+            Else
+                Me.Adapter.UpdateCommand.Parameters(55).Value = CType(1,Object)
+                Me.Adapter.UpdateCommand.Parameters(56).Value = Global.System.DBNull.Value
+            End If
+            If (Original_RejectedOn.HasValue = true) Then
+                Me.Adapter.UpdateCommand.Parameters(57).Value = CType(0,Object)
+                Me.Adapter.UpdateCommand.Parameters(58).Value = CType(Original_RejectedOn.Value,Date)
+            Else
+                Me.Adapter.UpdateCommand.Parameters(57).Value = CType(1,Object)
+                Me.Adapter.UpdateCommand.Parameters(58).Value = Global.System.DBNull.Value
+            End If
+            If (Original_RejectedByEmployeeId.HasValue = true) Then
+                Me.Adapter.UpdateCommand.Parameters(59).Value = CType(0,Object)
+                Me.Adapter.UpdateCommand.Parameters(60).Value = CType(Original_RejectedByEmployeeId.Value,Integer)
+            Else
+                Me.Adapter.UpdateCommand.Parameters(59).Value = CType(1,Object)
+                Me.Adapter.UpdateCommand.Parameters(60).Value = Global.System.DBNull.Value
+            End If
+            If (Original_CustomField1 Is Nothing) Then
+                Me.Adapter.UpdateCommand.Parameters(61).Value = CType(1,Object)
+                Me.Adapter.UpdateCommand.Parameters(62).Value = Global.System.DBNull.Value
+            Else
+                Me.Adapter.UpdateCommand.Parameters(61).Value = CType(0,Object)
+                Me.Adapter.UpdateCommand.Parameters(62).Value = CType(Original_CustomField1,String)
+            End If
+            If (Original_CustomField2 Is Nothing) Then
+                Me.Adapter.UpdateCommand.Parameters(63).Value = CType(1,Object)
+                Me.Adapter.UpdateCommand.Parameters(64).Value = Global.System.DBNull.Value
+            Else
+                Me.Adapter.UpdateCommand.Parameters(63).Value = CType(0,Object)
+                Me.Adapter.UpdateCommand.Parameters(64).Value = CType(Original_CustomField2,String)
+            End If
+            If (Original_CustomField3 Is Nothing) Then
+                Me.Adapter.UpdateCommand.Parameters(65).Value = CType(1,Object)
+                Me.Adapter.UpdateCommand.Parameters(66).Value = Global.System.DBNull.Value
+            Else
+                Me.Adapter.UpdateCommand.Parameters(65).Value = CType(0,Object)
+                Me.Adapter.UpdateCommand.Parameters(66).Value = CType(Original_CustomField3,String)
+            End If
+            If (Original_CustomField4 Is Nothing) Then
+                Me.Adapter.UpdateCommand.Parameters(67).Value = CType(1,Object)
+                Me.Adapter.UpdateCommand.Parameters(68).Value = Global.System.DBNull.Value
+            Else
+                Me.Adapter.UpdateCommand.Parameters(67).Value = CType(0,Object)
+                Me.Adapter.UpdateCommand.Parameters(68).Value = CType(Original_CustomField4,String)
+            End If
+            If (Original_CustomField5 Is Nothing) Then
+                Me.Adapter.UpdateCommand.Parameters(69).Value = CType(1,Object)
+                Me.Adapter.UpdateCommand.Parameters(70).Value = Global.System.DBNull.Value
+            Else
+                Me.Adapter.UpdateCommand.Parameters(69).Value = CType(0,Object)
+                Me.Adapter.UpdateCommand.Parameters(70).Value = CType(Original_CustomField5,String)
+            End If
+            If (Original_CustomField6 Is Nothing) Then
+                Me.Adapter.UpdateCommand.Parameters(71).Value = CType(1,Object)
+                Me.Adapter.UpdateCommand.Parameters(72).Value = Global.System.DBNull.Value
+            Else
+                Me.Adapter.UpdateCommand.Parameters(71).Value = CType(0,Object)
+                Me.Adapter.UpdateCommand.Parameters(72).Value = CType(Original_CustomField6,String)
+            End If
+            If (Original_CustomField7 Is Nothing) Then
+                Me.Adapter.UpdateCommand.Parameters(73).Value = CType(1,Object)
+                Me.Adapter.UpdateCommand.Parameters(74).Value = Global.System.DBNull.Value
+            Else
+                Me.Adapter.UpdateCommand.Parameters(73).Value = CType(0,Object)
+                Me.Adapter.UpdateCommand.Parameters(74).Value = CType(Original_CustomField7,String)
+            End If
+            If (Original_CustomField8 Is Nothing) Then
+                Me.Adapter.UpdateCommand.Parameters(75).Value = CType(1,Object)
+                Me.Adapter.UpdateCommand.Parameters(76).Value = Global.System.DBNull.Value
+            Else
+                Me.Adapter.UpdateCommand.Parameters(75).Value = CType(0,Object)
+                Me.Adapter.UpdateCommand.Parameters(76).Value = CType(Original_CustomField8,String)
+            End If
+            If (Original_CustomField9 Is Nothing) Then
+                Me.Adapter.UpdateCommand.Parameters(77).Value = CType(1,Object)
+                Me.Adapter.UpdateCommand.Parameters(78).Value = Global.System.DBNull.Value
+            Else
+                Me.Adapter.UpdateCommand.Parameters(77).Value = CType(0,Object)
+                Me.Adapter.UpdateCommand.Parameters(78).Value = CType(Original_CustomField9,String)
+            End If
+            If (Original_CustomField10 Is Nothing) Then
+                Me.Adapter.UpdateCommand.Parameters(79).Value = CType(1,Object)
+                Me.Adapter.UpdateCommand.Parameters(80).Value = Global.System.DBNull.Value
+            Else
+                Me.Adapter.UpdateCommand.Parameters(79).Value = CType(0,Object)
+                Me.Adapter.UpdateCommand.Parameters(80).Value = CType(Original_CustomField10,String)
+            End If
+            If (Original_CustomField11 Is Nothing) Then
+                Me.Adapter.UpdateCommand.Parameters(81).Value = CType(1,Object)
+                Me.Adapter.UpdateCommand.Parameters(82).Value = Global.System.DBNull.Value
+            Else
+                Me.Adapter.UpdateCommand.Parameters(81).Value = CType(0,Object)
+                Me.Adapter.UpdateCommand.Parameters(82).Value = CType(Original_CustomField11,String)
+            End If
+            If (Original_CustomField12 Is Nothing) Then
+                Me.Adapter.UpdateCommand.Parameters(83).Value = CType(1,Object)
+                Me.Adapter.UpdateCommand.Parameters(84).Value = Global.System.DBNull.Value
+            Else
+                Me.Adapter.UpdateCommand.Parameters(83).Value = CType(0,Object)
+                Me.Adapter.UpdateCommand.Parameters(84).Value = CType(Original_CustomField12,String)
+            End If
+            If (Original_CustomField13 Is Nothing) Then
+                Me.Adapter.UpdateCommand.Parameters(85).Value = CType(1,Object)
+                Me.Adapter.UpdateCommand.Parameters(86).Value = Global.System.DBNull.Value
+            Else
+                Me.Adapter.UpdateCommand.Parameters(85).Value = CType(0,Object)
+                Me.Adapter.UpdateCommand.Parameters(86).Value = CType(Original_CustomField13,String)
+            End If
+            If (Original_CustomField14 Is Nothing) Then
+                Me.Adapter.UpdateCommand.Parameters(87).Value = CType(1,Object)
+                Me.Adapter.UpdateCommand.Parameters(88).Value = Global.System.DBNull.Value
+            Else
+                Me.Adapter.UpdateCommand.Parameters(87).Value = CType(0,Object)
+                Me.Adapter.UpdateCommand.Parameters(88).Value = CType(Original_CustomField14,String)
+            End If
+            If (Original_CustomField15 Is Nothing) Then
+                Me.Adapter.UpdateCommand.Parameters(89).Value = CType(1,Object)
+                Me.Adapter.UpdateCommand.Parameters(90).Value = Global.System.DBNull.Value
+            Else
+                Me.Adapter.UpdateCommand.Parameters(89).Value = CType(0,Object)
+                Me.Adapter.UpdateCommand.Parameters(90).Value = CType(Original_CustomField15,String)
+            End If
+            If (Original_ReimbursementCurrencyId.HasValue = true) Then
+                Me.Adapter.UpdateCommand.Parameters(91).Value = CType(0,Object)
+                Me.Adapter.UpdateCommand.Parameters(92).Value = CType(Original_ReimbursementCurrencyId.Value,Integer)
+            Else
+                Me.Adapter.UpdateCommand.Parameters(91).Value = CType(1,Object)
+                Me.Adapter.UpdateCommand.Parameters(92).Value = Global.System.DBNull.Value
+            End If
+            Dim previousConnectionState As Global.System.Data.ConnectionState = Me.Adapter.UpdateCommand.Connection.State
+            If ((Me.Adapter.UpdateCommand.Connection.State And Global.System.Data.ConnectionState.Open)  _
+                        <> Global.System.Data.ConnectionState.Open) Then
+                Me.Adapter.UpdateCommand.Connection.Open
+            End If
+            Try 
+                Dim returnValue As Integer = Me.Adapter.UpdateCommand.ExecuteNonQuery
+                Return returnValue
+            Finally
+                If (previousConnectionState = Global.System.Data.ConnectionState.Closed) Then
+                    Me.Adapter.UpdateCommand.Connection.Close
+                End If
+            End Try
+        End Function
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0"),  _
+         Global.System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter"),  _
+         Global.System.ComponentModel.DataObjectMethodAttribute(Global.System.ComponentModel.DataObjectMethodType.Update, true)>  _
+        Public Overloads Overridable Function Update( _
+                    ByVal AccountId As Integer,  _
+                    ByVal AccountEmployeeId As Integer,  _
+                    ByVal Description As String,  _
+                    ByVal ExpenseSheetDate As Date,  _
+                    ByVal Approved As Boolean,  _
+                    ByVal Rejected As Boolean,  _
+                    ByVal Submitted As Boolean,  _
+                    ByVal InApproval As Boolean,  _
+                    ByVal CreatedByEmployeeId As Global.System.Nullable(Of Integer),  _
+                    ByVal CreatedOn As Global.System.Nullable(Of Date),  _
+                    ByVal ModifiedByEmployeeId As Global.System.Nullable(Of Integer),  _
+                    ByVal ModifiedOn As Global.System.Nullable(Of Date),  _
+                    ByVal SubmittedDate As Global.System.Nullable(Of Date),  _
+                    ByVal ApprovedOn As Global.System.Nullable(Of Date),  _
+                    ByVal ApprovedByEmployeeId As Global.System.Nullable(Of Integer),  _
+                    ByVal RejectedOn As Global.System.Nullable(Of Date),  _
+                    ByVal RejectedByEmployeeId As Global.System.Nullable(Of Integer),  _
+                    ByVal CustomField1 As String,  _
+                    ByVal CustomField2 As String,  _
+                    ByVal CustomField3 As String,  _
+                    ByVal CustomField4 As String,  _
+                    ByVal CustomField5 As String,  _
+                    ByVal CustomField6 As String,  _
+                    ByVal CustomField7 As String,  _
+                    ByVal CustomField8 As String,  _
+                    ByVal CustomField9 As String,  _
+                    ByVal CustomField10 As String,  _
+                    ByVal CustomField11 As String,  _
+                    ByVal CustomField12 As String,  _
+                    ByVal CustomField13 As String,  _
+                    ByVal CustomField14 As String,  _
+                    ByVal CustomField15 As String,  _
+                    ByVal ReimbursementCurrencyId As Global.System.Nullable(Of Integer),  _
+                    ByVal Original_AccountEmployeeExpenseSheetId As System.Guid,  _
+                    ByVal Original_AccountId As Integer,  _
+                    ByVal Original_AccountEmployeeId As Integer,  _
+                    ByVal Original_Description As String,  _
+                    ByVal Original_ExpenseSheetDate As Date,  _
+                    ByVal Original_Approved As Boolean,  _
+                    ByVal Original_Rejected As Boolean,  _
+                    ByVal Original_Submitted As Boolean,  _
+                    ByVal Original_InApproval As Boolean,  _
+                    ByVal Original_CreatedByEmployeeId As Global.System.Nullable(Of Integer),  _
+                    ByVal Original_CreatedOn As Global.System.Nullable(Of Date),  _
+                    ByVal Original_ModifiedByEmployeeId As Global.System.Nullable(Of Integer),  _
+                    ByVal Original_ModifiedOn As Global.System.Nullable(Of Date),  _
+                    ByVal Original_SubmittedDate As Global.System.Nullable(Of Date),  _
+                    ByVal Original_ApprovedOn As Global.System.Nullable(Of Date),  _
+                    ByVal Original_ApprovedByEmployeeId As Global.System.Nullable(Of Integer),  _
+                    ByVal Original_RejectedOn As Global.System.Nullable(Of Date),  _
+                    ByVal Original_RejectedByEmployeeId As Global.System.Nullable(Of Integer),  _
+                    ByVal Original_CustomField1 As String,  _
+                    ByVal Original_CustomField2 As String,  _
+                    ByVal Original_CustomField3 As String,  _
+                    ByVal Original_CustomField4 As String,  _
+                    ByVal Original_CustomField5 As String,  _
+                    ByVal Original_CustomField6 As String,  _
+                    ByVal Original_CustomField7 As String,  _
+                    ByVal Original_CustomField8 As String,  _
+                    ByVal Original_CustomField9 As String,  _
+                    ByVal Original_CustomField10 As String,  _
+                    ByVal Original_CustomField11 As String,  _
+                    ByVal Original_CustomField12 As String,  _
+                    ByVal Original_CustomField13 As String,  _
+                    ByVal Original_CustomField14 As String,  _
+                    ByVal Original_CustomField15 As String,  _
+                    ByVal Original_ReimbursementCurrencyId As Global.System.Nullable(Of Integer)) As Integer
+            Return Me.Update(Original_AccountEmployeeExpenseSheetId, AccountId, AccountEmployeeId, Description, ExpenseSheetDate, Approved, Rejected, Submitted, InApproval, CreatedByEmployeeId, CreatedOn, ModifiedByEmployeeId, ModifiedOn, SubmittedDate, ApprovedOn, ApprovedByEmployeeId, RejectedOn, RejectedByEmployeeId, CustomField1, CustomField2, CustomField3, CustomField4, CustomField5, CustomField6, CustomField7, CustomField8, CustomField9, CustomField10, CustomField11, CustomField12, CustomField13, CustomField14, CustomField15, ReimbursementCurrencyId, Original_AccountEmployeeExpenseSheetId, Original_AccountId, Original_AccountEmployeeId, Original_Description, Original_ExpenseSheetDate, Original_Approved, Original_Rejected, Original_Submitted, Original_InApproval, Original_CreatedByEmployeeId, Original_CreatedOn, Original_ModifiedByEmployeeId, Original_ModifiedOn, Original_SubmittedDate, Original_ApprovedOn, Original_ApprovedByEmployeeId, Original_RejectedOn, Original_RejectedByEmployeeId, Original_CustomField1, Original_CustomField2, Original_CustomField3, Original_CustomField4, Original_CustomField5, Original_CustomField6, Original_CustomField7, Original_CustomField8, Original_CustomField9, Original_CustomField10, Original_CustomField11, Original_CustomField12, Original_CustomField13, Original_CustomField14, Original_CustomField15, Original_ReimbursementCurrencyId)
+        End Function
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0"),  _
+         Global.System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")>  _
+        Public Overloads Overridable Function isApproved(ByVal ExpenseSheetID As System.Guid) As Global.System.Nullable(Of Boolean)
+            Dim command As Global.System.Data.SqlClient.SqlCommand = Me.CommandCollection(2)
+            command.Parameters(0).Value = CType(ExpenseSheetID,System.Guid)
+            Dim previousConnectionState As Global.System.Data.ConnectionState = command.Connection.State
+            If ((command.Connection.State And Global.System.Data.ConnectionState.Open)  _
+                        <> Global.System.Data.ConnectionState.Open) Then
+                command.Connection.Open
+            End If
+            Dim returnValue As Object
+            Try 
+                returnValue = command.ExecuteScalar
+            Finally
+                If (previousConnectionState = Global.System.Data.ConnectionState.Closed) Then
+                    command.Connection.Close
+                End If
+            End Try
+            If ((returnValue Is Nothing)  _
+                        OrElse (returnValue.GetType Is GetType(Global.System.DBNull))) Then
+                Return New Global.System.Nullable(Of Boolean)()
+            Else
+                Return New Global.System.Nullable(Of Boolean)(CType(returnValue,Boolean))
+            End If
+        End Function
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0"),  _
+         Global.System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")>  _
+        Public Overloads Overridable Function isRejected(ByVal ExpenseSheetID As System.Guid) As Global.System.Nullable(Of Boolean)
+            Dim command As Global.System.Data.SqlClient.SqlCommand = Me.CommandCollection(3)
+            command.Parameters(0).Value = CType(ExpenseSheetID,System.Guid)
+            Dim previousConnectionState As Global.System.Data.ConnectionState = command.Connection.State
+            If ((command.Connection.State And Global.System.Data.ConnectionState.Open)  _
+                        <> Global.System.Data.ConnectionState.Open) Then
+                command.Connection.Open
+            End If
+            Dim returnValue As Object
+            Try 
+                returnValue = command.ExecuteScalar
+            Finally
+                If (previousConnectionState = Global.System.Data.ConnectionState.Closed) Then
+                    command.Connection.Close
+                End If
+            End Try
+            If ((returnValue Is Nothing)  _
+                        OrElse (returnValue.GetType Is GetType(Global.System.DBNull))) Then
+                Return New Global.System.Nullable(Of Boolean)()
+            Else
+                Return New Global.System.Nullable(Of Boolean)(CType(returnValue,Boolean))
+            End If
+        End Function
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0"),  _
+         Global.System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")>  _
+        Public Overloads Overridable Function isSubmitted(ByVal ExpenseSheetID As System.Guid) As Global.System.Nullable(Of Boolean)
+            Dim command As Global.System.Data.SqlClient.SqlCommand = Me.CommandCollection(4)
+            command.Parameters(0).Value = CType(ExpenseSheetID,System.Guid)
+            Dim previousConnectionState As Global.System.Data.ConnectionState = command.Connection.State
+            If ((command.Connection.State And Global.System.Data.ConnectionState.Open)  _
+                        <> Global.System.Data.ConnectionState.Open) Then
+                command.Connection.Open
+            End If
+            Dim returnValue As Object
+            Try 
+                returnValue = command.ExecuteScalar
+            Finally
+                If (previousConnectionState = Global.System.Data.ConnectionState.Closed) Then
+                    command.Connection.Close
+                End If
+            End Try
+            If ((returnValue Is Nothing)  _
+                        OrElse (returnValue.GetType Is GetType(Global.System.DBNull))) Then
+                Return New Global.System.Nullable(Of Boolean)()
+            Else
+                Return New Global.System.Nullable(Of Boolean)(CType(returnValue,Boolean))
+            End If
+        End Function
+    End Class
+    
+    '''<summary>
+    '''Represents the connection and commands used to retrieve and save data.
+    '''</summary>
+    <Global.System.ComponentModel.DesignerCategoryAttribute("code"),  _
+     Global.System.ComponentModel.ToolboxItem(true),  _
+     Global.System.ComponentModel.DataObjectAttribute(true),  _
+     Global.System.ComponentModel.DesignerAttribute("Microsoft.VSDesigner.DataSource.Design.TableAdapterDesigner, Microsoft.VSDesigner"& _ 
+        ", Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a"),  _
+     Global.System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")>  _
     Partial Public Class AccountExpenseEntryTableAdapter
         Inherits Global.System.ComponentModel.Component
         
@@ -13570,13 +15799,13 @@ Namespace TimeLiveDataSetTableAdapters
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
         Private Sub InitConnection()
             Me._connection = New Global.System.Data.SqlClient.SqlConnection()
-            Me._connection.ConnectionString = Global.TimeLive.Quickbooks.Integrator.My.MySettings.Default.TimeLiveDevConnectionString1
+            Me._connection.ConnectionString = Global.TimeLive.Quickbooks.Integrator.My.MySettings.Default.TimeLiveDevConnectionString
         End Sub
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
         Private Sub InitCommandCollection()
-            Me._commandCollection = New Global.System.Data.SqlClient.SqlCommand(2) {}
+            Me._commandCollection = New Global.System.Data.SqlClient.SqlCommand(1) {}
             Me._commandCollection(0) = New Global.System.Data.SqlClient.SqlCommand()
             Me._commandCollection(0).Connection = Me.Connection
             Me._commandCollection(0).CommandText = "SELECT AccountExpenseEntryId, AccountExpenseEntryDate, AccountId, AccountEmployee"& _ 
@@ -13598,16 +15827,6 @@ Namespace TimeLiveDataSetTableAdapters
                 "eSheetId"
             Me._commandCollection(1).CommandType = Global.System.Data.CommandType.Text
             Me._commandCollection(1).Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@ExpenseSheetId", Global.System.Data.SqlDbType.UniqueIdentifier, 16, Global.System.Data.ParameterDirection.Input, 0, 0, "AccountEmployeeExpenseSheetId", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
-            Me._commandCollection(2) = New Global.System.Data.SqlClient.SqlCommand()
-            Me._commandCollection(2).Connection = Me.Connection
-            Me._commandCollection(2).CommandText = "SELECT AccountEmployeeExpenseSheetId"&Global.Microsoft.VisualBasic.ChrW(13)&Global.Microsoft.VisualBasic.ChrW(10)&"FROM   AccountExpenseEntry"&Global.Microsoft.VisualBasic.ChrW(13)&Global.Microsoft.VisualBasic.ChrW(10)&"WHERE (AccountE"& _ 
-                "mployeeId = @EmployeeId) AND (AccountExpenseEntryDate = @ExpenseDate) AND (Accou"& _ 
-                "ntExpenseId = @ExpenseId) AND (Amount = @Amount)"
-            Me._commandCollection(2).CommandType = Global.System.Data.CommandType.Text
-            Me._commandCollection(2).Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@EmployeeId", Global.System.Data.SqlDbType.Int, 4, Global.System.Data.ParameterDirection.Input, 0, 0, "AccountEmployeeId", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
-            Me._commandCollection(2).Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@ExpenseDate", Global.System.Data.SqlDbType.DateTime, 8, Global.System.Data.ParameterDirection.Input, 0, 0, "AccountExpenseEntryDate", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
-            Me._commandCollection(2).Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@ExpenseId", Global.System.Data.SqlDbType.Int, 4, Global.System.Data.ParameterDirection.Input, 0, 0, "AccountExpenseId", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
-            Me._commandCollection(2).Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Amount", Global.System.Data.SqlDbType.Float, 8, Global.System.Data.ParameterDirection.Input, 0, 0, "Amount", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
         End Sub
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
@@ -15062,2109 +17281,6 @@ Namespace TimeLiveDataSetTableAdapters
                     ByVal Original_AccountClientId As Global.System.Nullable(Of Integer)) As Integer
             Return Me.Update(AccountExpenseEntryDate, AccountId, AccountEmployeeId, AccountProjectId, AccountExpenseId, Description, Amount, TeamLeadApproved, ProjectManagerApproved, AdministratorApproved, Approved, TimeSheetApprovalPathId, CreatedOn, CreatedByEmployeeId, ModifiedOn, ModifiedByEmployeeId, IsBillable, Rejected, Quantity, Rate, AmountBeforeTax, TaxAmount, Reimburse, AccountCurrencyId, AccountPaymentMethodId, AccountBaseCurrencyId, ExchangeRate, Submitted, AccountTaxZoneId, AccountTimeExpenseBillingExpenseId, Billed, AccountEmployeeExpenseSheetId, OldAccountExpenseEntryId, AccountProjectTaskId, IsEmailSend, CustomField1, CustomField2, CustomField3, CustomField4, CustomField5, CustomField6, CustomField7, CustomField8, CustomField9, CustomField10, CustomField11, CustomField12, CustomField13, CustomField14, CustomField15, AccountClientId, Original_AccountExpenseEntryId, Original_AccountExpenseEntryDate, Original_AccountId, Original_AccountEmployeeId, Original_AccountProjectId, Original_AccountExpenseId, Original_Description, Original_Amount, Original_TeamLeadApproved, Original_ProjectManagerApproved, Original_AdministratorApproved, Original_Approved, Original_TimeSheetApprovalPathId, Original_CreatedOn, Original_CreatedByEmployeeId, Original_ModifiedOn, Original_ModifiedByEmployeeId, Original_IsBillable, Original_Rejected, Original_Quantity, Original_Rate, Original_AmountBeforeTax, Original_TaxAmount, Original_Reimburse, Original_AccountCurrencyId, Original_AccountPaymentMethodId, Original_AccountBaseCurrencyId, Original_ExchangeRate, Original_Submitted, Original_AccountTaxZoneId, Original_AccountTimeExpenseBillingExpenseId, Original_Billed, Original_AccountEmployeeExpenseSheetId, Original_OldAccountExpenseEntryId, Original_AccountProjectTaskId, Original_IsEmailSend, Original_CustomField1, Original_CustomField2, Original_CustomField3, Original_CustomField4, Original_CustomField5, Original_CustomField6, Original_CustomField7, Original_CustomField8, Original_CustomField9, Original_CustomField10, Original_CustomField11, Original_CustomField12, Original_CustomField13, Original_CustomField14, Original_CustomField15, Original_AccountClientId, Original_AccountExpenseEntryId)
         End Function
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0"),  _
-         Global.System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")>  _
-        Public Overloads Overridable Function getExpenseSheetId(ByVal EmployeeId As Integer, ByVal ExpenseDate As Date, ByVal ExpenseId As Integer, ByVal Amount As Double) As Object
-            Dim command As Global.System.Data.SqlClient.SqlCommand = Me.CommandCollection(2)
-            command.Parameters(0).Value = CType(EmployeeId,Integer)
-            command.Parameters(1).Value = CType(ExpenseDate,Date)
-            command.Parameters(2).Value = CType(ExpenseId,Integer)
-            command.Parameters(3).Value = CType(Amount,Double)
-            Dim previousConnectionState As Global.System.Data.ConnectionState = command.Connection.State
-            If ((command.Connection.State And Global.System.Data.ConnectionState.Open)  _
-                        <> Global.System.Data.ConnectionState.Open) Then
-                command.Connection.Open
-            End If
-            Dim returnValue As Object
-            Try 
-                returnValue = command.ExecuteScalar
-            Finally
-                If (previousConnectionState = Global.System.Data.ConnectionState.Closed) Then
-                    command.Connection.Close
-                End If
-            End Try
-            If ((returnValue Is Nothing)  _
-                        OrElse (returnValue.GetType Is GetType(Global.System.DBNull))) Then
-                Return Nothing
-            Else
-                Return CType(returnValue,Object)
-            End If
-        End Function
-    End Class
-    
-    '''<summary>
-    '''Represents the connection and commands used to retrieve and save data.
-    '''</summary>
-    <Global.System.ComponentModel.DesignerCategoryAttribute("code"),  _
-     Global.System.ComponentModel.ToolboxItem(true),  _
-     Global.System.ComponentModel.DataObjectAttribute(true),  _
-     Global.System.ComponentModel.DesignerAttribute("Microsoft.VSDesigner.DataSource.Design.TableAdapterDesigner, Microsoft.VSDesigner"& _ 
-        ", Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a"),  _
-     Global.System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")>  _
-    Partial Public Class AccountEmployeeExpenseSheetTableAdapter
-        Inherits Global.System.ComponentModel.Component
-        
-        Private WithEvents _adapter As Global.System.Data.SqlClient.SqlDataAdapter
-        
-        Private _connection As Global.System.Data.SqlClient.SqlConnection
-        
-        Private _transaction As Global.System.Data.SqlClient.SqlTransaction
-        
-        Private _commandCollection() As Global.System.Data.SqlClient.SqlCommand
-        
-        Private _clearBeforeFill As Boolean
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Public Sub New()
-            MyBase.New
-            Me.ClearBeforeFill = true
-        End Sub
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Protected Friend ReadOnly Property Adapter() As Global.System.Data.SqlClient.SqlDataAdapter
-            Get
-                If (Me._adapter Is Nothing) Then
-                    Me.InitAdapter
-                End If
-                Return Me._adapter
-            End Get
-        End Property
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Friend Property Connection() As Global.System.Data.SqlClient.SqlConnection
-            Get
-                If (Me._connection Is Nothing) Then
-                    Me.InitConnection
-                End If
-                Return Me._connection
-            End Get
-            Set
-                Me._connection = value
-                If (Not (Me.Adapter.InsertCommand) Is Nothing) Then
-                    Me.Adapter.InsertCommand.Connection = value
-                End If
-                If (Not (Me.Adapter.DeleteCommand) Is Nothing) Then
-                    Me.Adapter.DeleteCommand.Connection = value
-                End If
-                If (Not (Me.Adapter.UpdateCommand) Is Nothing) Then
-                    Me.Adapter.UpdateCommand.Connection = value
-                End If
-                Dim i As Integer = 0
-                Do While (i < Me.CommandCollection.Length)
-                    If (Not (Me.CommandCollection(i)) Is Nothing) Then
-                        CType(Me.CommandCollection(i),Global.System.Data.SqlClient.SqlCommand).Connection = value
-                    End If
-                    i = (i + 1)
-                Loop
-            End Set
-        End Property
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Friend Property Transaction() As Global.System.Data.SqlClient.SqlTransaction
-            Get
-                Return Me._transaction
-            End Get
-            Set
-                Me._transaction = value
-                Dim i As Integer = 0
-                Do While (i < Me.CommandCollection.Length)
-                    Me.CommandCollection(i).Transaction = Me._transaction
-                    i = (i + 1)
-                Loop
-                If ((Not (Me.Adapter) Is Nothing)  _
-                            AndAlso (Not (Me.Adapter.DeleteCommand) Is Nothing)) Then
-                    Me.Adapter.DeleteCommand.Transaction = Me._transaction
-                End If
-                If ((Not (Me.Adapter) Is Nothing)  _
-                            AndAlso (Not (Me.Adapter.InsertCommand) Is Nothing)) Then
-                    Me.Adapter.InsertCommand.Transaction = Me._transaction
-                End If
-                If ((Not (Me.Adapter) Is Nothing)  _
-                            AndAlso (Not (Me.Adapter.UpdateCommand) Is Nothing)) Then
-                    Me.Adapter.UpdateCommand.Transaction = Me._transaction
-                End If
-            End Set
-        End Property
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Protected ReadOnly Property CommandCollection() As Global.System.Data.SqlClient.SqlCommand()
-            Get
-                If (Me._commandCollection Is Nothing) Then
-                    Me.InitCommandCollection
-                End If
-                Return Me._commandCollection
-            End Get
-        End Property
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Public Property ClearBeforeFill() As Boolean
-            Get
-                Return Me._clearBeforeFill
-            End Get
-            Set
-                Me._clearBeforeFill = value
-            End Set
-        End Property
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Private Sub InitAdapter()
-            Me._adapter = New Global.System.Data.SqlClient.SqlDataAdapter()
-            Dim tableMapping As Global.System.Data.Common.DataTableMapping = New Global.System.Data.Common.DataTableMapping()
-            tableMapping.SourceTable = "Table"
-            tableMapping.DataSetTable = "AccountEmployeeExpenseSheet"
-            tableMapping.ColumnMappings.Add("AccountEmployeeExpenseSheetId", "AccountEmployeeExpenseSheetId")
-            tableMapping.ColumnMappings.Add("AccountId", "AccountId")
-            tableMapping.ColumnMappings.Add("AccountEmployeeId", "AccountEmployeeId")
-            tableMapping.ColumnMappings.Add("Description", "Description")
-            tableMapping.ColumnMappings.Add("ExpenseSheetDate", "ExpenseSheetDate")
-            tableMapping.ColumnMappings.Add("Approved", "Approved")
-            tableMapping.ColumnMappings.Add("Rejected", "Rejected")
-            tableMapping.ColumnMappings.Add("Submitted", "Submitted")
-            tableMapping.ColumnMappings.Add("InApproval", "InApproval")
-            tableMapping.ColumnMappings.Add("CreatedByEmployeeId", "CreatedByEmployeeId")
-            tableMapping.ColumnMappings.Add("CreatedOn", "CreatedOn")
-            tableMapping.ColumnMappings.Add("ModifiedByEmployeeId", "ModifiedByEmployeeId")
-            tableMapping.ColumnMappings.Add("ModifiedOn", "ModifiedOn")
-            tableMapping.ColumnMappings.Add("SubmittedDate", "SubmittedDate")
-            tableMapping.ColumnMappings.Add("ApprovedOn", "ApprovedOn")
-            tableMapping.ColumnMappings.Add("ApprovedByEmployeeId", "ApprovedByEmployeeId")
-            tableMapping.ColumnMappings.Add("RejectedOn", "RejectedOn")
-            tableMapping.ColumnMappings.Add("RejectedByEmployeeId", "RejectedByEmployeeId")
-            tableMapping.ColumnMappings.Add("CustomField1", "CustomField1")
-            tableMapping.ColumnMappings.Add("CustomField2", "CustomField2")
-            tableMapping.ColumnMappings.Add("CustomField3", "CustomField3")
-            tableMapping.ColumnMappings.Add("CustomField4", "CustomField4")
-            tableMapping.ColumnMappings.Add("CustomField5", "CustomField5")
-            tableMapping.ColumnMappings.Add("CustomField6", "CustomField6")
-            tableMapping.ColumnMappings.Add("CustomField7", "CustomField7")
-            tableMapping.ColumnMappings.Add("CustomField8", "CustomField8")
-            tableMapping.ColumnMappings.Add("CustomField9", "CustomField9")
-            tableMapping.ColumnMappings.Add("CustomField10", "CustomField10")
-            tableMapping.ColumnMappings.Add("CustomField11", "CustomField11")
-            tableMapping.ColumnMappings.Add("CustomField12", "CustomField12")
-            tableMapping.ColumnMappings.Add("CustomField13", "CustomField13")
-            tableMapping.ColumnMappings.Add("CustomField14", "CustomField14")
-            tableMapping.ColumnMappings.Add("CustomField15", "CustomField15")
-            Me._adapter.TableMappings.Add(tableMapping)
-            Me._adapter.DeleteCommand = New Global.System.Data.SqlClient.SqlCommand()
-            Me._adapter.DeleteCommand.Connection = Me.Connection
-            Me._adapter.DeleteCommand.CommandText = "DELETE FROM [dbo].[AccountEmployeeExpenseSheet] WHERE (([AccountEmployeeExpenseSh"& _ 
-                "eetId] = @Original_AccountEmployeeExpenseSheetId) AND ([AccountId] = @Original_A"& _ 
-                "ccountId) AND ([AccountEmployeeId] = @Original_AccountEmployeeId) AND ([Descript"& _ 
-                "ion] = @Original_Description) AND ([ExpenseSheetDate] = @Original_ExpenseSheetDa"& _ 
-                "te) AND ([Approved] = @Original_Approved) AND ([Rejected] = @Original_Rejected) "& _ 
-                "AND ([Submitted] = @Original_Submitted) AND ([InApproval] = @Original_InApproval"& _ 
-                ") AND ((@IsNull_CreatedByEmployeeId = 1 AND [CreatedByEmployeeId] IS NULL) OR (["& _ 
-                "CreatedByEmployeeId] = @Original_CreatedByEmployeeId)) AND ((@IsNull_CreatedOn ="& _ 
-                " 1 AND [CreatedOn] IS NULL) OR ([CreatedOn] = @Original_CreatedOn)) AND ((@IsNul"& _ 
-                "l_ModifiedByEmployeeId = 1 AND [ModifiedByEmployeeId] IS NULL) OR ([ModifiedByEm"& _ 
-                "ployeeId] = @Original_ModifiedByEmployeeId)) AND ((@IsNull_ModifiedOn = 1 AND [M"& _ 
-                "odifiedOn] IS NULL) OR ([ModifiedOn] = @Original_ModifiedOn)) AND ((@IsNull_Subm"& _ 
-                "ittedDate = 1 AND [SubmittedDate] IS NULL) OR ([SubmittedDate] = @Original_Submi"& _ 
-                "ttedDate)) AND ((@IsNull_ApprovedOn = 1 AND [ApprovedOn] IS NULL) OR ([ApprovedO"& _ 
-                "n] = @Original_ApprovedOn)) AND ((@IsNull_ApprovedByEmployeeId = 1 AND [Approved"& _ 
-                "ByEmployeeId] IS NULL) OR ([ApprovedByEmployeeId] = @Original_ApprovedByEmployee"& _ 
-                "Id)) AND ((@IsNull_RejectedOn = 1 AND [RejectedOn] IS NULL) OR ([RejectedOn] = @"& _ 
-                "Original_RejectedOn)) AND ((@IsNull_RejectedByEmployeeId = 1 AND [RejectedByEmpl"& _ 
-                "oyeeId] IS NULL) OR ([RejectedByEmployeeId] = @Original_RejectedByEmployeeId)) A"& _ 
-                "ND ((@IsNull_CustomField1 = 1 AND [CustomField1] IS NULL) OR ([CustomField1] = @"& _ 
-                "Original_CustomField1)) AND ((@IsNull_CustomField2 = 1 AND [CustomField2] IS NUL"& _ 
-                "L) OR ([CustomField2] = @Original_CustomField2)) AND ((@IsNull_CustomField3 = 1 "& _ 
-                "AND [CustomField3] IS NULL) OR ([CustomField3] = @Original_CustomField3)) AND (("& _ 
-                "@IsNull_CustomField4 = 1 AND [CustomField4] IS NULL) OR ([CustomField4] = @Origi"& _ 
-                "nal_CustomField4)) AND ((@IsNull_CustomField5 = 1 AND [CustomField5] IS NULL) OR"& _ 
-                " ([CustomField5] = @Original_CustomField5)) AND ((@IsNull_CustomField6 = 1 AND ["& _ 
-                "CustomField6] IS NULL) OR ([CustomField6] = @Original_CustomField6)) AND ((@IsNu"& _ 
-                "ll_CustomField7 = 1 AND [CustomField7] IS NULL) OR ([CustomField7] = @Original_C"& _ 
-                "ustomField7)) AND ((@IsNull_CustomField8 = 1 AND [CustomField8] IS NULL) OR ([Cu"& _ 
-                "stomField8] = @Original_CustomField8)) AND ((@IsNull_CustomField9 = 1 AND [Custo"& _ 
-                "mField9] IS NULL) OR ([CustomField9] = @Original_CustomField9)) AND ((@IsNull_Cu"& _ 
-                "stomField10 = 1 AND [CustomField10] IS NULL) OR ([CustomField10] = @Original_Cus"& _ 
-                "tomField10)) AND ((@IsNull_CustomField11 = 1 AND [CustomField11] IS NULL) OR ([C"& _ 
-                "ustomField11] = @Original_CustomField11)) AND ((@IsNull_CustomField12 = 1 AND [C"& _ 
-                "ustomField12] IS NULL) OR ([CustomField12] = @Original_CustomField12)) AND ((@Is"& _ 
-                "Null_CustomField13 = 1 AND [CustomField13] IS NULL) OR ([CustomField13] = @Origi"& _ 
-                "nal_CustomField13)) AND ((@IsNull_CustomField14 = 1 AND [CustomField14] IS NULL)"& _ 
-                " OR ([CustomField14] = @Original_CustomField14)) AND ((@IsNull_CustomField15 = 1"& _ 
-                " AND [CustomField15] IS NULL) OR ([CustomField15] = @Original_CustomField15)))"
-            Me._adapter.DeleteCommand.CommandType = Global.System.Data.CommandType.Text
-            Me._adapter.DeleteCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_AccountEmployeeExpenseSheetId", Global.System.Data.SqlDbType.UniqueIdentifier, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "AccountEmployeeExpenseSheetId", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
-            Me._adapter.DeleteCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_AccountId", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "AccountId", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
-            Me._adapter.DeleteCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_AccountEmployeeId", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "AccountEmployeeId", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
-            Me._adapter.DeleteCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_Description", Global.System.Data.SqlDbType.NVarChar, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "Description", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
-            Me._adapter.DeleteCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_ExpenseSheetDate", Global.System.Data.SqlDbType.DateTime, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "ExpenseSheetDate", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
-            Me._adapter.DeleteCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_Approved", Global.System.Data.SqlDbType.Bit, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "Approved", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
-            Me._adapter.DeleteCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_Rejected", Global.System.Data.SqlDbType.Bit, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "Rejected", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
-            Me._adapter.DeleteCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_Submitted", Global.System.Data.SqlDbType.Bit, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "Submitted", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
-            Me._adapter.DeleteCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_InApproval", Global.System.Data.SqlDbType.Bit, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "InApproval", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
-            Me._adapter.DeleteCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@IsNull_CreatedByEmployeeId", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "CreatedByEmployeeId", Global.System.Data.DataRowVersion.Original, true, Nothing, "", "", ""))
-            Me._adapter.DeleteCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_CreatedByEmployeeId", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "CreatedByEmployeeId", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
-            Me._adapter.DeleteCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@IsNull_CreatedOn", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "CreatedOn", Global.System.Data.DataRowVersion.Original, true, Nothing, "", "", ""))
-            Me._adapter.DeleteCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_CreatedOn", Global.System.Data.SqlDbType.DateTime, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "CreatedOn", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
-            Me._adapter.DeleteCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@IsNull_ModifiedByEmployeeId", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "ModifiedByEmployeeId", Global.System.Data.DataRowVersion.Original, true, Nothing, "", "", ""))
-            Me._adapter.DeleteCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_ModifiedByEmployeeId", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "ModifiedByEmployeeId", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
-            Me._adapter.DeleteCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@IsNull_ModifiedOn", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "ModifiedOn", Global.System.Data.DataRowVersion.Original, true, Nothing, "", "", ""))
-            Me._adapter.DeleteCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_ModifiedOn", Global.System.Data.SqlDbType.DateTime, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "ModifiedOn", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
-            Me._adapter.DeleteCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@IsNull_SubmittedDate", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "SubmittedDate", Global.System.Data.DataRowVersion.Original, true, Nothing, "", "", ""))
-            Me._adapter.DeleteCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_SubmittedDate", Global.System.Data.SqlDbType.DateTime, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "SubmittedDate", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
-            Me._adapter.DeleteCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@IsNull_ApprovedOn", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "ApprovedOn", Global.System.Data.DataRowVersion.Original, true, Nothing, "", "", ""))
-            Me._adapter.DeleteCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_ApprovedOn", Global.System.Data.SqlDbType.DateTime, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "ApprovedOn", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
-            Me._adapter.DeleteCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@IsNull_ApprovedByEmployeeId", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "ApprovedByEmployeeId", Global.System.Data.DataRowVersion.Original, true, Nothing, "", "", ""))
-            Me._adapter.DeleteCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_ApprovedByEmployeeId", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "ApprovedByEmployeeId", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
-            Me._adapter.DeleteCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@IsNull_RejectedOn", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "RejectedOn", Global.System.Data.DataRowVersion.Original, true, Nothing, "", "", ""))
-            Me._adapter.DeleteCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_RejectedOn", Global.System.Data.SqlDbType.DateTime, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "RejectedOn", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
-            Me._adapter.DeleteCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@IsNull_RejectedByEmployeeId", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "RejectedByEmployeeId", Global.System.Data.DataRowVersion.Original, true, Nothing, "", "", ""))
-            Me._adapter.DeleteCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_RejectedByEmployeeId", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "RejectedByEmployeeId", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
-            Me._adapter.DeleteCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@IsNull_CustomField1", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "CustomField1", Global.System.Data.DataRowVersion.Original, true, Nothing, "", "", ""))
-            Me._adapter.DeleteCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_CustomField1", Global.System.Data.SqlDbType.NVarChar, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "CustomField1", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
-            Me._adapter.DeleteCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@IsNull_CustomField2", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "CustomField2", Global.System.Data.DataRowVersion.Original, true, Nothing, "", "", ""))
-            Me._adapter.DeleteCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_CustomField2", Global.System.Data.SqlDbType.NVarChar, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "CustomField2", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
-            Me._adapter.DeleteCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@IsNull_CustomField3", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "CustomField3", Global.System.Data.DataRowVersion.Original, true, Nothing, "", "", ""))
-            Me._adapter.DeleteCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_CustomField3", Global.System.Data.SqlDbType.NVarChar, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "CustomField3", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
-            Me._adapter.DeleteCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@IsNull_CustomField4", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "CustomField4", Global.System.Data.DataRowVersion.Original, true, Nothing, "", "", ""))
-            Me._adapter.DeleteCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_CustomField4", Global.System.Data.SqlDbType.NVarChar, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "CustomField4", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
-            Me._adapter.DeleteCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@IsNull_CustomField5", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "CustomField5", Global.System.Data.DataRowVersion.Original, true, Nothing, "", "", ""))
-            Me._adapter.DeleteCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_CustomField5", Global.System.Data.SqlDbType.NVarChar, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "CustomField5", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
-            Me._adapter.DeleteCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@IsNull_CustomField6", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "CustomField6", Global.System.Data.DataRowVersion.Original, true, Nothing, "", "", ""))
-            Me._adapter.DeleteCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_CustomField6", Global.System.Data.SqlDbType.NVarChar, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "CustomField6", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
-            Me._adapter.DeleteCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@IsNull_CustomField7", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "CustomField7", Global.System.Data.DataRowVersion.Original, true, Nothing, "", "", ""))
-            Me._adapter.DeleteCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_CustomField7", Global.System.Data.SqlDbType.NVarChar, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "CustomField7", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
-            Me._adapter.DeleteCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@IsNull_CustomField8", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "CustomField8", Global.System.Data.DataRowVersion.Original, true, Nothing, "", "", ""))
-            Me._adapter.DeleteCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_CustomField8", Global.System.Data.SqlDbType.NVarChar, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "CustomField8", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
-            Me._adapter.DeleteCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@IsNull_CustomField9", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "CustomField9", Global.System.Data.DataRowVersion.Original, true, Nothing, "", "", ""))
-            Me._adapter.DeleteCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_CustomField9", Global.System.Data.SqlDbType.NVarChar, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "CustomField9", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
-            Me._adapter.DeleteCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@IsNull_CustomField10", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "CustomField10", Global.System.Data.DataRowVersion.Original, true, Nothing, "", "", ""))
-            Me._adapter.DeleteCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_CustomField10", Global.System.Data.SqlDbType.NVarChar, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "CustomField10", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
-            Me._adapter.DeleteCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@IsNull_CustomField11", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "CustomField11", Global.System.Data.DataRowVersion.Original, true, Nothing, "", "", ""))
-            Me._adapter.DeleteCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_CustomField11", Global.System.Data.SqlDbType.NVarChar, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "CustomField11", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
-            Me._adapter.DeleteCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@IsNull_CustomField12", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "CustomField12", Global.System.Data.DataRowVersion.Original, true, Nothing, "", "", ""))
-            Me._adapter.DeleteCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_CustomField12", Global.System.Data.SqlDbType.NVarChar, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "CustomField12", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
-            Me._adapter.DeleteCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@IsNull_CustomField13", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "CustomField13", Global.System.Data.DataRowVersion.Original, true, Nothing, "", "", ""))
-            Me._adapter.DeleteCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_CustomField13", Global.System.Data.SqlDbType.NVarChar, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "CustomField13", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
-            Me._adapter.DeleteCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@IsNull_CustomField14", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "CustomField14", Global.System.Data.DataRowVersion.Original, true, Nothing, "", "", ""))
-            Me._adapter.DeleteCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_CustomField14", Global.System.Data.SqlDbType.NVarChar, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "CustomField14", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
-            Me._adapter.DeleteCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@IsNull_CustomField15", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "CustomField15", Global.System.Data.DataRowVersion.Original, true, Nothing, "", "", ""))
-            Me._adapter.DeleteCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_CustomField15", Global.System.Data.SqlDbType.NVarChar, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "CustomField15", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
-            Me._adapter.InsertCommand = New Global.System.Data.SqlClient.SqlCommand()
-            Me._adapter.InsertCommand.Connection = Me.Connection
-            Me._adapter.InsertCommand.CommandText = "INSERT INTO [dbo].[AccountEmployeeExpenseSheet] ([AccountEmployeeExpenseSheetId],"& _ 
-                " [AccountId], [AccountEmployeeId], [Description], [ExpenseSheetDate], [Approved]"& _ 
-                ", [Rejected], [Submitted], [InApproval], [CreatedByEmployeeId], [CreatedOn], [Mo"& _ 
-                "difiedByEmployeeId], [ModifiedOn], [SubmittedDate], [ApprovedOn], [ApprovedByEmp"& _ 
-                "loyeeId], [RejectedOn], [RejectedByEmployeeId], [CustomField1], [CustomField2], "& _ 
-                "[CustomField3], [CustomField4], [CustomField5], [CustomField6], [CustomField7], "& _ 
-                "[CustomField8], [CustomField9], [CustomField10], [CustomField11], [CustomField12"& _ 
-                "], [CustomField13], [CustomField14], [CustomField15]) VALUES (@AccountEmployeeEx"& _ 
-                "penseSheetId, @AccountId, @AccountEmployeeId, @Description, @ExpenseSheetDate, @"& _ 
-                "Approved, @Rejected, @Submitted, @InApproval, @CreatedByEmployeeId, @CreatedOn, "& _ 
-                "@ModifiedByEmployeeId, @ModifiedOn, @SubmittedDate, @ApprovedOn, @ApprovedByEmpl"& _ 
-                "oyeeId, @RejectedOn, @RejectedByEmployeeId, @CustomField1, @CustomField2, @Custo"& _ 
-                "mField3, @CustomField4, @CustomField5, @CustomField6, @CustomField7, @CustomFiel"& _ 
-                "d8, @CustomField9, @CustomField10, @CustomField11, @CustomField12, @CustomField1"& _ 
-                "3, @CustomField14, @CustomField15);"&Global.Microsoft.VisualBasic.ChrW(13)&Global.Microsoft.VisualBasic.ChrW(10)&"SELECT AccountEmployeeExpenseSheetId, Accou"& _ 
-                "ntId, AccountEmployeeId, Description, ExpenseSheetDate, Approved, Rejected, Subm"& _ 
-                "itted, InApproval, CreatedByEmployeeId, CreatedOn, ModifiedByEmployeeId, Modifie"& _ 
-                "dOn, SubmittedDate, ApprovedOn, ApprovedByEmployeeId, RejectedOn, RejectedByEmpl"& _ 
-                "oyeeId, CustomField1, CustomField2, CustomField3, CustomField4, CustomField5, Cu"& _ 
-                "stomField6, CustomField7, CustomField8, CustomField9, CustomField10, CustomField"& _ 
-                "11, CustomField12, CustomField13, CustomField14, CustomField15 FROM AccountEmplo"& _ 
-                "yeeExpenseSheet WHERE (AccountEmployeeExpenseSheetId = @AccountEmployeeExpenseSh"& _ 
-                "eetId)"
-            Me._adapter.InsertCommand.CommandType = Global.System.Data.CommandType.Text
-            Me._adapter.InsertCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@AccountEmployeeExpenseSheetId", Global.System.Data.SqlDbType.UniqueIdentifier, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "AccountEmployeeExpenseSheetId", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
-            Me._adapter.InsertCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@AccountId", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "AccountId", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
-            Me._adapter.InsertCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@AccountEmployeeId", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "AccountEmployeeId", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
-            Me._adapter.InsertCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Description", Global.System.Data.SqlDbType.NVarChar, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "Description", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
-            Me._adapter.InsertCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@ExpenseSheetDate", Global.System.Data.SqlDbType.DateTime, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "ExpenseSheetDate", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
-            Me._adapter.InsertCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Approved", Global.System.Data.SqlDbType.Bit, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "Approved", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
-            Me._adapter.InsertCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Rejected", Global.System.Data.SqlDbType.Bit, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "Rejected", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
-            Me._adapter.InsertCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Submitted", Global.System.Data.SqlDbType.Bit, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "Submitted", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
-            Me._adapter.InsertCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@InApproval", Global.System.Data.SqlDbType.Bit, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "InApproval", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
-            Me._adapter.InsertCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@CreatedByEmployeeId", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "CreatedByEmployeeId", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
-            Me._adapter.InsertCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@CreatedOn", Global.System.Data.SqlDbType.DateTime, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "CreatedOn", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
-            Me._adapter.InsertCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@ModifiedByEmployeeId", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "ModifiedByEmployeeId", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
-            Me._adapter.InsertCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@ModifiedOn", Global.System.Data.SqlDbType.DateTime, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "ModifiedOn", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
-            Me._adapter.InsertCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@SubmittedDate", Global.System.Data.SqlDbType.DateTime, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "SubmittedDate", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
-            Me._adapter.InsertCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@ApprovedOn", Global.System.Data.SqlDbType.DateTime, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "ApprovedOn", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
-            Me._adapter.InsertCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@ApprovedByEmployeeId", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "ApprovedByEmployeeId", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
-            Me._adapter.InsertCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@RejectedOn", Global.System.Data.SqlDbType.DateTime, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "RejectedOn", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
-            Me._adapter.InsertCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@RejectedByEmployeeId", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "RejectedByEmployeeId", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
-            Me._adapter.InsertCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@CustomField1", Global.System.Data.SqlDbType.NVarChar, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "CustomField1", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
-            Me._adapter.InsertCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@CustomField2", Global.System.Data.SqlDbType.NVarChar, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "CustomField2", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
-            Me._adapter.InsertCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@CustomField3", Global.System.Data.SqlDbType.NVarChar, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "CustomField3", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
-            Me._adapter.InsertCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@CustomField4", Global.System.Data.SqlDbType.NVarChar, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "CustomField4", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
-            Me._adapter.InsertCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@CustomField5", Global.System.Data.SqlDbType.NVarChar, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "CustomField5", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
-            Me._adapter.InsertCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@CustomField6", Global.System.Data.SqlDbType.NVarChar, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "CustomField6", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
-            Me._adapter.InsertCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@CustomField7", Global.System.Data.SqlDbType.NVarChar, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "CustomField7", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
-            Me._adapter.InsertCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@CustomField8", Global.System.Data.SqlDbType.NVarChar, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "CustomField8", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
-            Me._adapter.InsertCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@CustomField9", Global.System.Data.SqlDbType.NVarChar, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "CustomField9", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
-            Me._adapter.InsertCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@CustomField10", Global.System.Data.SqlDbType.NVarChar, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "CustomField10", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
-            Me._adapter.InsertCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@CustomField11", Global.System.Data.SqlDbType.NVarChar, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "CustomField11", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
-            Me._adapter.InsertCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@CustomField12", Global.System.Data.SqlDbType.NVarChar, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "CustomField12", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
-            Me._adapter.InsertCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@CustomField13", Global.System.Data.SqlDbType.NVarChar, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "CustomField13", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
-            Me._adapter.InsertCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@CustomField14", Global.System.Data.SqlDbType.NVarChar, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "CustomField14", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
-            Me._adapter.InsertCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@CustomField15", Global.System.Data.SqlDbType.NVarChar, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "CustomField15", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
-            Me._adapter.UpdateCommand = New Global.System.Data.SqlClient.SqlCommand()
-            Me._adapter.UpdateCommand.Connection = Me.Connection
-            Me._adapter.UpdateCommand.CommandText = "UPDATE [dbo].[AccountEmployeeExpenseSheet] SET [AccountEmployeeExpenseSheetId] = "& _ 
-                "@AccountEmployeeExpenseSheetId, [AccountId] = @AccountId, [AccountEmployeeId] = "& _ 
-                "@AccountEmployeeId, [Description] = @Description, [ExpenseSheetDate] = @ExpenseS"& _ 
-                "heetDate, [Approved] = @Approved, [Rejected] = @Rejected, [Submitted] = @Submitt"& _ 
-                "ed, [InApproval] = @InApproval, [CreatedByEmployeeId] = @CreatedByEmployeeId, [C"& _ 
-                "reatedOn] = @CreatedOn, [ModifiedByEmployeeId] = @ModifiedByEmployeeId, [Modifie"& _ 
-                "dOn] = @ModifiedOn, [SubmittedDate] = @SubmittedDate, [ApprovedOn] = @ApprovedOn"& _ 
-                ", [ApprovedByEmployeeId] = @ApprovedByEmployeeId, [RejectedOn] = @RejectedOn, [R"& _ 
-                "ejectedByEmployeeId] = @RejectedByEmployeeId, [CustomField1] = @CustomField1, [C"& _ 
-                "ustomField2] = @CustomField2, [CustomField3] = @CustomField3, [CustomField4] = @"& _ 
-                "CustomField4, [CustomField5] = @CustomField5, [CustomField6] = @CustomField6, [C"& _ 
-                "ustomField7] = @CustomField7, [CustomField8] = @CustomField8, [CustomField9] = @"& _ 
-                "CustomField9, [CustomField10] = @CustomField10, [CustomField11] = @CustomField11"& _ 
-                ", [CustomField12] = @CustomField12, [CustomField13] = @CustomField13, [CustomFie"& _ 
-                "ld14] = @CustomField14, [CustomField15] = @CustomField15 WHERE (([AccountEmploye"& _ 
-                "eExpenseSheetId] = @Original_AccountEmployeeExpenseSheetId) AND ([AccountId] = @"& _ 
-                "Original_AccountId) AND ([AccountEmployeeId] = @Original_AccountEmployeeId) AND "& _ 
-                "([Description] = @Original_Description) AND ([ExpenseSheetDate] = @Original_Expe"& _ 
-                "nseSheetDate) AND ([Approved] = @Original_Approved) AND ([Rejected] = @Original_"& _ 
-                "Rejected) AND ([Submitted] = @Original_Submitted) AND ([InApproval] = @Original_"& _ 
-                "InApproval) AND ((@IsNull_CreatedByEmployeeId = 1 AND [CreatedByEmployeeId] IS N"& _ 
-                "ULL) OR ([CreatedByEmployeeId] = @Original_CreatedByEmployeeId)) AND ((@IsNull_C"& _ 
-                "reatedOn = 1 AND [CreatedOn] IS NULL) OR ([CreatedOn] = @Original_CreatedOn)) AN"& _ 
-                "D ((@IsNull_ModifiedByEmployeeId = 1 AND [ModifiedByEmployeeId] IS NULL) OR ([Mo"& _ 
-                "difiedByEmployeeId] = @Original_ModifiedByEmployeeId)) AND ((@IsNull_ModifiedOn "& _ 
-                "= 1 AND [ModifiedOn] IS NULL) OR ([ModifiedOn] = @Original_ModifiedOn)) AND ((@I"& _ 
-                "sNull_SubmittedDate = 1 AND [SubmittedDate] IS NULL) OR ([SubmittedDate] = @Orig"& _ 
-                "inal_SubmittedDate)) AND ((@IsNull_ApprovedOn = 1 AND [ApprovedOn] IS NULL) OR ("& _ 
-                "[ApprovedOn] = @Original_ApprovedOn)) AND ((@IsNull_ApprovedByEmployeeId = 1 AND"& _ 
-                " [ApprovedByEmployeeId] IS NULL) OR ([ApprovedByEmployeeId] = @Original_Approved"& _ 
-                "ByEmployeeId)) AND ((@IsNull_RejectedOn = 1 AND [RejectedOn] IS NULL) OR ([Rejec"& _ 
-                "tedOn] = @Original_RejectedOn)) AND ((@IsNull_RejectedByEmployeeId = 1 AND [Reje"& _ 
-                "ctedByEmployeeId] IS NULL) OR ([RejectedByEmployeeId] = @Original_RejectedByEmpl"& _ 
-                "oyeeId)) AND ((@IsNull_CustomField1 = 1 AND [CustomField1] IS NULL) OR ([CustomF"& _ 
-                "ield1] = @Original_CustomField1)) AND ((@IsNull_CustomField2 = 1 AND [CustomFiel"& _ 
-                "d2] IS NULL) OR ([CustomField2] = @Original_CustomField2)) AND ((@IsNull_CustomF"& _ 
-                "ield3 = 1 AND [CustomField3] IS NULL) OR ([CustomField3] = @Original_CustomField"& _ 
-                "3)) AND ((@IsNull_CustomField4 = 1 AND [CustomField4] IS NULL) OR ([CustomField4"& _ 
-                "] = @Original_CustomField4)) AND ((@IsNull_CustomField5 = 1 AND [CustomField5] I"& _ 
-                "S NULL) OR ([CustomField5] = @Original_CustomField5)) AND ((@IsNull_CustomField6"& _ 
-                " = 1 AND [CustomField6] IS NULL) OR ([CustomField6] = @Original_CustomField6)) A"& _ 
-                "ND ((@IsNull_CustomField7 = 1 AND [CustomField7] IS NULL) OR ([CustomField7] = @"& _ 
-                "Original_CustomField7)) AND ((@IsNull_CustomField8 = 1 AND [CustomField8] IS NUL"& _ 
-                "L) OR ([CustomField8] = @Original_CustomField8)) AND ((@IsNull_CustomField9 = 1 "& _ 
-                "AND [CustomField9] IS NULL) OR ([CustomField9] = @Original_CustomField9)) AND (("& _ 
-                "@IsNull_CustomField10 = 1 AND [CustomField10] IS NULL) OR ([CustomField10] = @Or"& _ 
-                "iginal_CustomField10)) AND ((@IsNull_CustomField11 = 1 AND [CustomField11] IS NU"& _ 
-                "LL) OR ([CustomField11] = @Original_CustomField11)) AND ((@IsNull_CustomField12 "& _ 
-                "= 1 AND [CustomField12] IS NULL) OR ([CustomField12] = @Original_CustomField12))"& _ 
-                " AND ((@IsNull_CustomField13 = 1 AND [CustomField13] IS NULL) OR ([CustomField13"& _ 
-                "] = @Original_CustomField13)) AND ((@IsNull_CustomField14 = 1 AND [CustomField14"& _ 
-                "] IS NULL) OR ([CustomField14] = @Original_CustomField14)) AND ((@IsNull_CustomF"& _ 
-                "ield15 = 1 AND [CustomField15] IS NULL) OR ([CustomField15] = @Original_CustomFi"& _ 
-                "eld15)));"&Global.Microsoft.VisualBasic.ChrW(13)&Global.Microsoft.VisualBasic.ChrW(10)&"SELECT AccountEmployeeExpenseSheetId, AccountId, AccountEmployeeId, D"& _ 
-                "escription, ExpenseSheetDate, Approved, Rejected, Submitted, InApproval, Created"& _ 
-                "ByEmployeeId, CreatedOn, ModifiedByEmployeeId, ModifiedOn, SubmittedDate, Approv"& _ 
-                "edOn, ApprovedByEmployeeId, RejectedOn, RejectedByEmployeeId, CustomField1, Cust"& _ 
-                "omField2, CustomField3, CustomField4, CustomField5, CustomField6, CustomField7, "& _ 
-                "CustomField8, CustomField9, CustomField10, CustomField11, CustomField12, CustomF"& _ 
-                "ield13, CustomField14, CustomField15 FROM AccountEmployeeExpenseSheet WHERE (Acc"& _ 
-                "ountEmployeeExpenseSheetId = @AccountEmployeeExpenseSheetId)"
-            Me._adapter.UpdateCommand.CommandType = Global.System.Data.CommandType.Text
-            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@AccountEmployeeExpenseSheetId", Global.System.Data.SqlDbType.UniqueIdentifier, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "AccountEmployeeExpenseSheetId", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
-            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@AccountId", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "AccountId", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
-            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@AccountEmployeeId", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "AccountEmployeeId", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
-            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Description", Global.System.Data.SqlDbType.NVarChar, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "Description", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
-            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@ExpenseSheetDate", Global.System.Data.SqlDbType.DateTime, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "ExpenseSheetDate", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
-            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Approved", Global.System.Data.SqlDbType.Bit, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "Approved", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
-            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Rejected", Global.System.Data.SqlDbType.Bit, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "Rejected", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
-            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Submitted", Global.System.Data.SqlDbType.Bit, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "Submitted", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
-            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@InApproval", Global.System.Data.SqlDbType.Bit, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "InApproval", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
-            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@CreatedByEmployeeId", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "CreatedByEmployeeId", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
-            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@CreatedOn", Global.System.Data.SqlDbType.DateTime, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "CreatedOn", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
-            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@ModifiedByEmployeeId", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "ModifiedByEmployeeId", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
-            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@ModifiedOn", Global.System.Data.SqlDbType.DateTime, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "ModifiedOn", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
-            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@SubmittedDate", Global.System.Data.SqlDbType.DateTime, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "SubmittedDate", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
-            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@ApprovedOn", Global.System.Data.SqlDbType.DateTime, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "ApprovedOn", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
-            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@ApprovedByEmployeeId", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "ApprovedByEmployeeId", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
-            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@RejectedOn", Global.System.Data.SqlDbType.DateTime, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "RejectedOn", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
-            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@RejectedByEmployeeId", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "RejectedByEmployeeId", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
-            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@CustomField1", Global.System.Data.SqlDbType.NVarChar, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "CustomField1", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
-            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@CustomField2", Global.System.Data.SqlDbType.NVarChar, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "CustomField2", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
-            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@CustomField3", Global.System.Data.SqlDbType.NVarChar, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "CustomField3", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
-            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@CustomField4", Global.System.Data.SqlDbType.NVarChar, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "CustomField4", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
-            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@CustomField5", Global.System.Data.SqlDbType.NVarChar, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "CustomField5", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
-            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@CustomField6", Global.System.Data.SqlDbType.NVarChar, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "CustomField6", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
-            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@CustomField7", Global.System.Data.SqlDbType.NVarChar, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "CustomField7", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
-            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@CustomField8", Global.System.Data.SqlDbType.NVarChar, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "CustomField8", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
-            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@CustomField9", Global.System.Data.SqlDbType.NVarChar, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "CustomField9", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
-            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@CustomField10", Global.System.Data.SqlDbType.NVarChar, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "CustomField10", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
-            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@CustomField11", Global.System.Data.SqlDbType.NVarChar, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "CustomField11", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
-            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@CustomField12", Global.System.Data.SqlDbType.NVarChar, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "CustomField12", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
-            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@CustomField13", Global.System.Data.SqlDbType.NVarChar, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "CustomField13", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
-            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@CustomField14", Global.System.Data.SqlDbType.NVarChar, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "CustomField14", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
-            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@CustomField15", Global.System.Data.SqlDbType.NVarChar, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "CustomField15", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
-            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_AccountEmployeeExpenseSheetId", Global.System.Data.SqlDbType.UniqueIdentifier, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "AccountEmployeeExpenseSheetId", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
-            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_AccountId", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "AccountId", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
-            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_AccountEmployeeId", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "AccountEmployeeId", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
-            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_Description", Global.System.Data.SqlDbType.NVarChar, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "Description", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
-            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_ExpenseSheetDate", Global.System.Data.SqlDbType.DateTime, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "ExpenseSheetDate", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
-            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_Approved", Global.System.Data.SqlDbType.Bit, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "Approved", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
-            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_Rejected", Global.System.Data.SqlDbType.Bit, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "Rejected", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
-            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_Submitted", Global.System.Data.SqlDbType.Bit, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "Submitted", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
-            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_InApproval", Global.System.Data.SqlDbType.Bit, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "InApproval", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
-            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@IsNull_CreatedByEmployeeId", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "CreatedByEmployeeId", Global.System.Data.DataRowVersion.Original, true, Nothing, "", "", ""))
-            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_CreatedByEmployeeId", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "CreatedByEmployeeId", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
-            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@IsNull_CreatedOn", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "CreatedOn", Global.System.Data.DataRowVersion.Original, true, Nothing, "", "", ""))
-            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_CreatedOn", Global.System.Data.SqlDbType.DateTime, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "CreatedOn", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
-            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@IsNull_ModifiedByEmployeeId", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "ModifiedByEmployeeId", Global.System.Data.DataRowVersion.Original, true, Nothing, "", "", ""))
-            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_ModifiedByEmployeeId", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "ModifiedByEmployeeId", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
-            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@IsNull_ModifiedOn", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "ModifiedOn", Global.System.Data.DataRowVersion.Original, true, Nothing, "", "", ""))
-            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_ModifiedOn", Global.System.Data.SqlDbType.DateTime, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "ModifiedOn", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
-            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@IsNull_SubmittedDate", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "SubmittedDate", Global.System.Data.DataRowVersion.Original, true, Nothing, "", "", ""))
-            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_SubmittedDate", Global.System.Data.SqlDbType.DateTime, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "SubmittedDate", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
-            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@IsNull_ApprovedOn", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "ApprovedOn", Global.System.Data.DataRowVersion.Original, true, Nothing, "", "", ""))
-            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_ApprovedOn", Global.System.Data.SqlDbType.DateTime, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "ApprovedOn", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
-            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@IsNull_ApprovedByEmployeeId", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "ApprovedByEmployeeId", Global.System.Data.DataRowVersion.Original, true, Nothing, "", "", ""))
-            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_ApprovedByEmployeeId", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "ApprovedByEmployeeId", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
-            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@IsNull_RejectedOn", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "RejectedOn", Global.System.Data.DataRowVersion.Original, true, Nothing, "", "", ""))
-            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_RejectedOn", Global.System.Data.SqlDbType.DateTime, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "RejectedOn", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
-            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@IsNull_RejectedByEmployeeId", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "RejectedByEmployeeId", Global.System.Data.DataRowVersion.Original, true, Nothing, "", "", ""))
-            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_RejectedByEmployeeId", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "RejectedByEmployeeId", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
-            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@IsNull_CustomField1", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "CustomField1", Global.System.Data.DataRowVersion.Original, true, Nothing, "", "", ""))
-            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_CustomField1", Global.System.Data.SqlDbType.NVarChar, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "CustomField1", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
-            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@IsNull_CustomField2", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "CustomField2", Global.System.Data.DataRowVersion.Original, true, Nothing, "", "", ""))
-            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_CustomField2", Global.System.Data.SqlDbType.NVarChar, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "CustomField2", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
-            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@IsNull_CustomField3", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "CustomField3", Global.System.Data.DataRowVersion.Original, true, Nothing, "", "", ""))
-            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_CustomField3", Global.System.Data.SqlDbType.NVarChar, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "CustomField3", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
-            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@IsNull_CustomField4", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "CustomField4", Global.System.Data.DataRowVersion.Original, true, Nothing, "", "", ""))
-            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_CustomField4", Global.System.Data.SqlDbType.NVarChar, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "CustomField4", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
-            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@IsNull_CustomField5", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "CustomField5", Global.System.Data.DataRowVersion.Original, true, Nothing, "", "", ""))
-            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_CustomField5", Global.System.Data.SqlDbType.NVarChar, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "CustomField5", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
-            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@IsNull_CustomField6", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "CustomField6", Global.System.Data.DataRowVersion.Original, true, Nothing, "", "", ""))
-            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_CustomField6", Global.System.Data.SqlDbType.NVarChar, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "CustomField6", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
-            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@IsNull_CustomField7", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "CustomField7", Global.System.Data.DataRowVersion.Original, true, Nothing, "", "", ""))
-            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_CustomField7", Global.System.Data.SqlDbType.NVarChar, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "CustomField7", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
-            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@IsNull_CustomField8", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "CustomField8", Global.System.Data.DataRowVersion.Original, true, Nothing, "", "", ""))
-            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_CustomField8", Global.System.Data.SqlDbType.NVarChar, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "CustomField8", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
-            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@IsNull_CustomField9", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "CustomField9", Global.System.Data.DataRowVersion.Original, true, Nothing, "", "", ""))
-            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_CustomField9", Global.System.Data.SqlDbType.NVarChar, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "CustomField9", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
-            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@IsNull_CustomField10", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "CustomField10", Global.System.Data.DataRowVersion.Original, true, Nothing, "", "", ""))
-            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_CustomField10", Global.System.Data.SqlDbType.NVarChar, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "CustomField10", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
-            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@IsNull_CustomField11", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "CustomField11", Global.System.Data.DataRowVersion.Original, true, Nothing, "", "", ""))
-            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_CustomField11", Global.System.Data.SqlDbType.NVarChar, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "CustomField11", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
-            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@IsNull_CustomField12", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "CustomField12", Global.System.Data.DataRowVersion.Original, true, Nothing, "", "", ""))
-            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_CustomField12", Global.System.Data.SqlDbType.NVarChar, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "CustomField12", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
-            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@IsNull_CustomField13", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "CustomField13", Global.System.Data.DataRowVersion.Original, true, Nothing, "", "", ""))
-            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_CustomField13", Global.System.Data.SqlDbType.NVarChar, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "CustomField13", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
-            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@IsNull_CustomField14", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "CustomField14", Global.System.Data.DataRowVersion.Original, true, Nothing, "", "", ""))
-            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_CustomField14", Global.System.Data.SqlDbType.NVarChar, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "CustomField14", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
-            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@IsNull_CustomField15", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "CustomField15", Global.System.Data.DataRowVersion.Original, true, Nothing, "", "", ""))
-            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_CustomField15", Global.System.Data.SqlDbType.NVarChar, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "CustomField15", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
-        End Sub
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Private Sub InitConnection()
-            Me._connection = New Global.System.Data.SqlClient.SqlConnection()
-            Me._connection.ConnectionString = Global.TimeLive.Quickbooks.Integrator.My.MySettings.Default.TimeLiveDevConnectionString1
-        End Sub
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Private Sub InitCommandCollection()
-            Me._commandCollection = New Global.System.Data.SqlClient.SqlCommand(1) {}
-            Me._commandCollection(0) = New Global.System.Data.SqlClient.SqlCommand()
-            Me._commandCollection(0).Connection = Me.Connection
-            Me._commandCollection(0).CommandText = "SELECT AccountEmployeeExpenseSheetId, AccountId, AccountEmployeeId, Description, "& _ 
-                "ExpenseSheetDate, Approved, Rejected, Submitted, InApproval, CreatedByEmployeeId"& _ 
-                ", CreatedOn, ModifiedByEmployeeId, ModifiedOn, SubmittedDate, ApprovedOn, Approv"& _ 
-                "edByEmployeeId, RejectedOn, RejectedByEmployeeId, CustomField1, CustomField2, Cu"& _ 
-                "stomField3, CustomField4, CustomField5, CustomField6, CustomField7, CustomField8"& _ 
-                ", CustomField9, CustomField10, CustomField11, CustomField12, CustomField13, Cust"& _ 
-                "omField14, CustomField15 FROM dbo.AccountEmployeeExpenseSheet"
-            Me._commandCollection(0).CommandType = Global.System.Data.CommandType.Text
-            Me._commandCollection(1) = New Global.System.Data.SqlClient.SqlCommand()
-            Me._commandCollection(1).Connection = Me.Connection
-            Me._commandCollection(1).CommandText = "SELECT *"&Global.Microsoft.VisualBasic.ChrW(13)&Global.Microsoft.VisualBasic.ChrW(10)&"FROM AccountEmployeeExpenseSheet"&Global.Microsoft.VisualBasic.ChrW(13)&Global.Microsoft.VisualBasic.ChrW(10)&"WHERE ExpenseSheetDate >= @EndDate AN"& _ 
-                "D ExpenseSheetDate <= @StartDate"
-            Me._commandCollection(1).CommandType = Global.System.Data.CommandType.Text
-            Me._commandCollection(1).Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@EndDate", Global.System.Data.SqlDbType.DateTime, 8, Global.System.Data.ParameterDirection.Input, 0, 0, "ExpenseSheetDate", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
-            Me._commandCollection(1).Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@StartDate", Global.System.Data.SqlDbType.DateTime, 8, Global.System.Data.ParameterDirection.Input, 0, 0, "ExpenseSheetDate", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
-        End Sub
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0"),  _
-         Global.System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter"),  _
-         Global.System.ComponentModel.DataObjectMethodAttribute(Global.System.ComponentModel.DataObjectMethodType.Fill, true)>  _
-        Public Overloads Overridable Function Fill(ByVal dataTable As TimeLiveDataSet.AccountEmployeeExpenseSheetDataTable) As Integer
-            Me.Adapter.SelectCommand = Me.CommandCollection(0)
-            If (Me.ClearBeforeFill = true) Then
-                dataTable.Clear
-            End If
-            Dim returnValue As Integer = Me.Adapter.Fill(dataTable)
-            Return returnValue
-        End Function
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0"),  _
-         Global.System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter"),  _
-         Global.System.ComponentModel.DataObjectMethodAttribute(Global.System.ComponentModel.DataObjectMethodType.[Select], true)>  _
-        Public Overloads Overridable Function GetData() As TimeLiveDataSet.AccountEmployeeExpenseSheetDataTable
-            Me.Adapter.SelectCommand = Me.CommandCollection(0)
-            Dim dataTable As TimeLiveDataSet.AccountEmployeeExpenseSheetDataTable = New TimeLiveDataSet.AccountEmployeeExpenseSheetDataTable()
-            Me.Adapter.Fill(dataTable)
-            Return dataTable
-        End Function
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0"),  _
-         Global.System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter"),  _
-         Global.System.ComponentModel.DataObjectMethodAttribute(Global.System.ComponentModel.DataObjectMethodType.[Select], false)>  _
-        Public Overloads Overridable Function getExpenseSheetsWithinDateRange(ByVal EndDate As Date, ByVal StartDate As Date) As TimeLiveDataSet.AccountEmployeeExpenseSheetDataTable
-            Me.Adapter.SelectCommand = Me.CommandCollection(1)
-            Me.Adapter.SelectCommand.Parameters(0).Value = CType(EndDate,Date)
-            Me.Adapter.SelectCommand.Parameters(1).Value = CType(StartDate,Date)
-            Dim dataTable As TimeLiveDataSet.AccountEmployeeExpenseSheetDataTable = New TimeLiveDataSet.AccountEmployeeExpenseSheetDataTable()
-            Me.Adapter.Fill(dataTable)
-            Return dataTable
-        End Function
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0"),  _
-         Global.System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")>  _
-        Public Overloads Overridable Function Update(ByVal dataTable As TimeLiveDataSet.AccountEmployeeExpenseSheetDataTable) As Integer
-            Return Me.Adapter.Update(dataTable)
-        End Function
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0"),  _
-         Global.System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")>  _
-        Public Overloads Overridable Function Update(ByVal dataSet As TimeLiveDataSet) As Integer
-            Return Me.Adapter.Update(dataSet, "AccountEmployeeExpenseSheet")
-        End Function
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0"),  _
-         Global.System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")>  _
-        Public Overloads Overridable Function Update(ByVal dataRow As Global.System.Data.DataRow) As Integer
-            Return Me.Adapter.Update(New Global.System.Data.DataRow() {dataRow})
-        End Function
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0"),  _
-         Global.System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")>  _
-        Public Overloads Overridable Function Update(ByVal dataRows() As Global.System.Data.DataRow) As Integer
-            Return Me.Adapter.Update(dataRows)
-        End Function
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0"),  _
-         Global.System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter"),  _
-         Global.System.ComponentModel.DataObjectMethodAttribute(Global.System.ComponentModel.DataObjectMethodType.Delete, true)>  _
-        Public Overloads Overridable Function Delete( _
-                    ByVal Original_AccountEmployeeExpenseSheetId As System.Guid,  _
-                    ByVal Original_AccountId As Integer,  _
-                    ByVal Original_AccountEmployeeId As Integer,  _
-                    ByVal Original_Description As String,  _
-                    ByVal Original_ExpenseSheetDate As Date,  _
-                    ByVal Original_Approved As Boolean,  _
-                    ByVal Original_Rejected As Boolean,  _
-                    ByVal Original_Submitted As Boolean,  _
-                    ByVal Original_InApproval As Boolean,  _
-                    ByVal Original_CreatedByEmployeeId As Global.System.Nullable(Of Integer),  _
-                    ByVal Original_CreatedOn As Global.System.Nullable(Of Date),  _
-                    ByVal Original_ModifiedByEmployeeId As Global.System.Nullable(Of Integer),  _
-                    ByVal Original_ModifiedOn As Global.System.Nullable(Of Date),  _
-                    ByVal Original_SubmittedDate As Global.System.Nullable(Of Date),  _
-                    ByVal Original_ApprovedOn As Global.System.Nullable(Of Date),  _
-                    ByVal Original_ApprovedByEmployeeId As Global.System.Nullable(Of Integer),  _
-                    ByVal Original_RejectedOn As Global.System.Nullable(Of Date),  _
-                    ByVal Original_RejectedByEmployeeId As Global.System.Nullable(Of Integer),  _
-                    ByVal Original_CustomField1 As String,  _
-                    ByVal Original_CustomField2 As String,  _
-                    ByVal Original_CustomField3 As String,  _
-                    ByVal Original_CustomField4 As String,  _
-                    ByVal Original_CustomField5 As String,  _
-                    ByVal Original_CustomField6 As String,  _
-                    ByVal Original_CustomField7 As String,  _
-                    ByVal Original_CustomField8 As String,  _
-                    ByVal Original_CustomField9 As String,  _
-                    ByVal Original_CustomField10 As String,  _
-                    ByVal Original_CustomField11 As String,  _
-                    ByVal Original_CustomField12 As String,  _
-                    ByVal Original_CustomField13 As String,  _
-                    ByVal Original_CustomField14 As String,  _
-                    ByVal Original_CustomField15 As String) As Integer
-            Me.Adapter.DeleteCommand.Parameters(0).Value = CType(Original_AccountEmployeeExpenseSheetId,System.Guid)
-            Me.Adapter.DeleteCommand.Parameters(1).Value = CType(Original_AccountId,Integer)
-            Me.Adapter.DeleteCommand.Parameters(2).Value = CType(Original_AccountEmployeeId,Integer)
-            If (Original_Description Is Nothing) Then
-                Throw New Global.System.ArgumentNullException("Original_Description")
-            Else
-                Me.Adapter.DeleteCommand.Parameters(3).Value = CType(Original_Description,String)
-            End If
-            Me.Adapter.DeleteCommand.Parameters(4).Value = CType(Original_ExpenseSheetDate,Date)
-            Me.Adapter.DeleteCommand.Parameters(5).Value = CType(Original_Approved,Boolean)
-            Me.Adapter.DeleteCommand.Parameters(6).Value = CType(Original_Rejected,Boolean)
-            Me.Adapter.DeleteCommand.Parameters(7).Value = CType(Original_Submitted,Boolean)
-            Me.Adapter.DeleteCommand.Parameters(8).Value = CType(Original_InApproval,Boolean)
-            If (Original_CreatedByEmployeeId.HasValue = true) Then
-                Me.Adapter.DeleteCommand.Parameters(9).Value = CType(0,Object)
-                Me.Adapter.DeleteCommand.Parameters(10).Value = CType(Original_CreatedByEmployeeId.Value,Integer)
-            Else
-                Me.Adapter.DeleteCommand.Parameters(9).Value = CType(1,Object)
-                Me.Adapter.DeleteCommand.Parameters(10).Value = Global.System.DBNull.Value
-            End If
-            If (Original_CreatedOn.HasValue = true) Then
-                Me.Adapter.DeleteCommand.Parameters(11).Value = CType(0,Object)
-                Me.Adapter.DeleteCommand.Parameters(12).Value = CType(Original_CreatedOn.Value,Date)
-            Else
-                Me.Adapter.DeleteCommand.Parameters(11).Value = CType(1,Object)
-                Me.Adapter.DeleteCommand.Parameters(12).Value = Global.System.DBNull.Value
-            End If
-            If (Original_ModifiedByEmployeeId.HasValue = true) Then
-                Me.Adapter.DeleteCommand.Parameters(13).Value = CType(0,Object)
-                Me.Adapter.DeleteCommand.Parameters(14).Value = CType(Original_ModifiedByEmployeeId.Value,Integer)
-            Else
-                Me.Adapter.DeleteCommand.Parameters(13).Value = CType(1,Object)
-                Me.Adapter.DeleteCommand.Parameters(14).Value = Global.System.DBNull.Value
-            End If
-            If (Original_ModifiedOn.HasValue = true) Then
-                Me.Adapter.DeleteCommand.Parameters(15).Value = CType(0,Object)
-                Me.Adapter.DeleteCommand.Parameters(16).Value = CType(Original_ModifiedOn.Value,Date)
-            Else
-                Me.Adapter.DeleteCommand.Parameters(15).Value = CType(1,Object)
-                Me.Adapter.DeleteCommand.Parameters(16).Value = Global.System.DBNull.Value
-            End If
-            If (Original_SubmittedDate.HasValue = true) Then
-                Me.Adapter.DeleteCommand.Parameters(17).Value = CType(0,Object)
-                Me.Adapter.DeleteCommand.Parameters(18).Value = CType(Original_SubmittedDate.Value,Date)
-            Else
-                Me.Adapter.DeleteCommand.Parameters(17).Value = CType(1,Object)
-                Me.Adapter.DeleteCommand.Parameters(18).Value = Global.System.DBNull.Value
-            End If
-            If (Original_ApprovedOn.HasValue = true) Then
-                Me.Adapter.DeleteCommand.Parameters(19).Value = CType(0,Object)
-                Me.Adapter.DeleteCommand.Parameters(20).Value = CType(Original_ApprovedOn.Value,Date)
-            Else
-                Me.Adapter.DeleteCommand.Parameters(19).Value = CType(1,Object)
-                Me.Adapter.DeleteCommand.Parameters(20).Value = Global.System.DBNull.Value
-            End If
-            If (Original_ApprovedByEmployeeId.HasValue = true) Then
-                Me.Adapter.DeleteCommand.Parameters(21).Value = CType(0,Object)
-                Me.Adapter.DeleteCommand.Parameters(22).Value = CType(Original_ApprovedByEmployeeId.Value,Integer)
-            Else
-                Me.Adapter.DeleteCommand.Parameters(21).Value = CType(1,Object)
-                Me.Adapter.DeleteCommand.Parameters(22).Value = Global.System.DBNull.Value
-            End If
-            If (Original_RejectedOn.HasValue = true) Then
-                Me.Adapter.DeleteCommand.Parameters(23).Value = CType(0,Object)
-                Me.Adapter.DeleteCommand.Parameters(24).Value = CType(Original_RejectedOn.Value,Date)
-            Else
-                Me.Adapter.DeleteCommand.Parameters(23).Value = CType(1,Object)
-                Me.Adapter.DeleteCommand.Parameters(24).Value = Global.System.DBNull.Value
-            End If
-            If (Original_RejectedByEmployeeId.HasValue = true) Then
-                Me.Adapter.DeleteCommand.Parameters(25).Value = CType(0,Object)
-                Me.Adapter.DeleteCommand.Parameters(26).Value = CType(Original_RejectedByEmployeeId.Value,Integer)
-            Else
-                Me.Adapter.DeleteCommand.Parameters(25).Value = CType(1,Object)
-                Me.Adapter.DeleteCommand.Parameters(26).Value = Global.System.DBNull.Value
-            End If
-            If (Original_CustomField1 Is Nothing) Then
-                Me.Adapter.DeleteCommand.Parameters(27).Value = CType(1,Object)
-                Me.Adapter.DeleteCommand.Parameters(28).Value = Global.System.DBNull.Value
-            Else
-                Me.Adapter.DeleteCommand.Parameters(27).Value = CType(0,Object)
-                Me.Adapter.DeleteCommand.Parameters(28).Value = CType(Original_CustomField1,String)
-            End If
-            If (Original_CustomField2 Is Nothing) Then
-                Me.Adapter.DeleteCommand.Parameters(29).Value = CType(1,Object)
-                Me.Adapter.DeleteCommand.Parameters(30).Value = Global.System.DBNull.Value
-            Else
-                Me.Adapter.DeleteCommand.Parameters(29).Value = CType(0,Object)
-                Me.Adapter.DeleteCommand.Parameters(30).Value = CType(Original_CustomField2,String)
-            End If
-            If (Original_CustomField3 Is Nothing) Then
-                Me.Adapter.DeleteCommand.Parameters(31).Value = CType(1,Object)
-                Me.Adapter.DeleteCommand.Parameters(32).Value = Global.System.DBNull.Value
-            Else
-                Me.Adapter.DeleteCommand.Parameters(31).Value = CType(0,Object)
-                Me.Adapter.DeleteCommand.Parameters(32).Value = CType(Original_CustomField3,String)
-            End If
-            If (Original_CustomField4 Is Nothing) Then
-                Me.Adapter.DeleteCommand.Parameters(33).Value = CType(1,Object)
-                Me.Adapter.DeleteCommand.Parameters(34).Value = Global.System.DBNull.Value
-            Else
-                Me.Adapter.DeleteCommand.Parameters(33).Value = CType(0,Object)
-                Me.Adapter.DeleteCommand.Parameters(34).Value = CType(Original_CustomField4,String)
-            End If
-            If (Original_CustomField5 Is Nothing) Then
-                Me.Adapter.DeleteCommand.Parameters(35).Value = CType(1,Object)
-                Me.Adapter.DeleteCommand.Parameters(36).Value = Global.System.DBNull.Value
-            Else
-                Me.Adapter.DeleteCommand.Parameters(35).Value = CType(0,Object)
-                Me.Adapter.DeleteCommand.Parameters(36).Value = CType(Original_CustomField5,String)
-            End If
-            If (Original_CustomField6 Is Nothing) Then
-                Me.Adapter.DeleteCommand.Parameters(37).Value = CType(1,Object)
-                Me.Adapter.DeleteCommand.Parameters(38).Value = Global.System.DBNull.Value
-            Else
-                Me.Adapter.DeleteCommand.Parameters(37).Value = CType(0,Object)
-                Me.Adapter.DeleteCommand.Parameters(38).Value = CType(Original_CustomField6,String)
-            End If
-            If (Original_CustomField7 Is Nothing) Then
-                Me.Adapter.DeleteCommand.Parameters(39).Value = CType(1,Object)
-                Me.Adapter.DeleteCommand.Parameters(40).Value = Global.System.DBNull.Value
-            Else
-                Me.Adapter.DeleteCommand.Parameters(39).Value = CType(0,Object)
-                Me.Adapter.DeleteCommand.Parameters(40).Value = CType(Original_CustomField7,String)
-            End If
-            If (Original_CustomField8 Is Nothing) Then
-                Me.Adapter.DeleteCommand.Parameters(41).Value = CType(1,Object)
-                Me.Adapter.DeleteCommand.Parameters(42).Value = Global.System.DBNull.Value
-            Else
-                Me.Adapter.DeleteCommand.Parameters(41).Value = CType(0,Object)
-                Me.Adapter.DeleteCommand.Parameters(42).Value = CType(Original_CustomField8,String)
-            End If
-            If (Original_CustomField9 Is Nothing) Then
-                Me.Adapter.DeleteCommand.Parameters(43).Value = CType(1,Object)
-                Me.Adapter.DeleteCommand.Parameters(44).Value = Global.System.DBNull.Value
-            Else
-                Me.Adapter.DeleteCommand.Parameters(43).Value = CType(0,Object)
-                Me.Adapter.DeleteCommand.Parameters(44).Value = CType(Original_CustomField9,String)
-            End If
-            If (Original_CustomField10 Is Nothing) Then
-                Me.Adapter.DeleteCommand.Parameters(45).Value = CType(1,Object)
-                Me.Adapter.DeleteCommand.Parameters(46).Value = Global.System.DBNull.Value
-            Else
-                Me.Adapter.DeleteCommand.Parameters(45).Value = CType(0,Object)
-                Me.Adapter.DeleteCommand.Parameters(46).Value = CType(Original_CustomField10,String)
-            End If
-            If (Original_CustomField11 Is Nothing) Then
-                Me.Adapter.DeleteCommand.Parameters(47).Value = CType(1,Object)
-                Me.Adapter.DeleteCommand.Parameters(48).Value = Global.System.DBNull.Value
-            Else
-                Me.Adapter.DeleteCommand.Parameters(47).Value = CType(0,Object)
-                Me.Adapter.DeleteCommand.Parameters(48).Value = CType(Original_CustomField11,String)
-            End If
-            If (Original_CustomField12 Is Nothing) Then
-                Me.Adapter.DeleteCommand.Parameters(49).Value = CType(1,Object)
-                Me.Adapter.DeleteCommand.Parameters(50).Value = Global.System.DBNull.Value
-            Else
-                Me.Adapter.DeleteCommand.Parameters(49).Value = CType(0,Object)
-                Me.Adapter.DeleteCommand.Parameters(50).Value = CType(Original_CustomField12,String)
-            End If
-            If (Original_CustomField13 Is Nothing) Then
-                Me.Adapter.DeleteCommand.Parameters(51).Value = CType(1,Object)
-                Me.Adapter.DeleteCommand.Parameters(52).Value = Global.System.DBNull.Value
-            Else
-                Me.Adapter.DeleteCommand.Parameters(51).Value = CType(0,Object)
-                Me.Adapter.DeleteCommand.Parameters(52).Value = CType(Original_CustomField13,String)
-            End If
-            If (Original_CustomField14 Is Nothing) Then
-                Me.Adapter.DeleteCommand.Parameters(53).Value = CType(1,Object)
-                Me.Adapter.DeleteCommand.Parameters(54).Value = Global.System.DBNull.Value
-            Else
-                Me.Adapter.DeleteCommand.Parameters(53).Value = CType(0,Object)
-                Me.Adapter.DeleteCommand.Parameters(54).Value = CType(Original_CustomField14,String)
-            End If
-            If (Original_CustomField15 Is Nothing) Then
-                Me.Adapter.DeleteCommand.Parameters(55).Value = CType(1,Object)
-                Me.Adapter.DeleteCommand.Parameters(56).Value = Global.System.DBNull.Value
-            Else
-                Me.Adapter.DeleteCommand.Parameters(55).Value = CType(0,Object)
-                Me.Adapter.DeleteCommand.Parameters(56).Value = CType(Original_CustomField15,String)
-            End If
-            Dim previousConnectionState As Global.System.Data.ConnectionState = Me.Adapter.DeleteCommand.Connection.State
-            If ((Me.Adapter.DeleteCommand.Connection.State And Global.System.Data.ConnectionState.Open)  _
-                        <> Global.System.Data.ConnectionState.Open) Then
-                Me.Adapter.DeleteCommand.Connection.Open
-            End If
-            Try 
-                Dim returnValue As Integer = Me.Adapter.DeleteCommand.ExecuteNonQuery
-                Return returnValue
-            Finally
-                If (previousConnectionState = Global.System.Data.ConnectionState.Closed) Then
-                    Me.Adapter.DeleteCommand.Connection.Close
-                End If
-            End Try
-        End Function
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0"),  _
-         Global.System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter"),  _
-         Global.System.ComponentModel.DataObjectMethodAttribute(Global.System.ComponentModel.DataObjectMethodType.Insert, true)>  _
-        Public Overloads Overridable Function Insert( _
-                    ByVal AccountEmployeeExpenseSheetId As System.Guid,  _
-                    ByVal AccountId As Integer,  _
-                    ByVal AccountEmployeeId As Integer,  _
-                    ByVal Description As String,  _
-                    ByVal ExpenseSheetDate As Date,  _
-                    ByVal Approved As Boolean,  _
-                    ByVal Rejected As Boolean,  _
-                    ByVal Submitted As Boolean,  _
-                    ByVal InApproval As Boolean,  _
-                    ByVal CreatedByEmployeeId As Global.System.Nullable(Of Integer),  _
-                    ByVal CreatedOn As Global.System.Nullable(Of Date),  _
-                    ByVal ModifiedByEmployeeId As Global.System.Nullable(Of Integer),  _
-                    ByVal ModifiedOn As Global.System.Nullable(Of Date),  _
-                    ByVal SubmittedDate As Global.System.Nullable(Of Date),  _
-                    ByVal ApprovedOn As Global.System.Nullable(Of Date),  _
-                    ByVal ApprovedByEmployeeId As Global.System.Nullable(Of Integer),  _
-                    ByVal RejectedOn As Global.System.Nullable(Of Date),  _
-                    ByVal RejectedByEmployeeId As Global.System.Nullable(Of Integer),  _
-                    ByVal CustomField1 As String,  _
-                    ByVal CustomField2 As String,  _
-                    ByVal CustomField3 As String,  _
-                    ByVal CustomField4 As String,  _
-                    ByVal CustomField5 As String,  _
-                    ByVal CustomField6 As String,  _
-                    ByVal CustomField7 As String,  _
-                    ByVal CustomField8 As String,  _
-                    ByVal CustomField9 As String,  _
-                    ByVal CustomField10 As String,  _
-                    ByVal CustomField11 As String,  _
-                    ByVal CustomField12 As String,  _
-                    ByVal CustomField13 As String,  _
-                    ByVal CustomField14 As String,  _
-                    ByVal CustomField15 As String) As Integer
-            Me.Adapter.InsertCommand.Parameters(0).Value = CType(AccountEmployeeExpenseSheetId,System.Guid)
-            Me.Adapter.InsertCommand.Parameters(1).Value = CType(AccountId,Integer)
-            Me.Adapter.InsertCommand.Parameters(2).Value = CType(AccountEmployeeId,Integer)
-            If (Description Is Nothing) Then
-                Throw New Global.System.ArgumentNullException("Description")
-            Else
-                Me.Adapter.InsertCommand.Parameters(3).Value = CType(Description,String)
-            End If
-            Me.Adapter.InsertCommand.Parameters(4).Value = CType(ExpenseSheetDate,Date)
-            Me.Adapter.InsertCommand.Parameters(5).Value = CType(Approved,Boolean)
-            Me.Adapter.InsertCommand.Parameters(6).Value = CType(Rejected,Boolean)
-            Me.Adapter.InsertCommand.Parameters(7).Value = CType(Submitted,Boolean)
-            Me.Adapter.InsertCommand.Parameters(8).Value = CType(InApproval,Boolean)
-            If (CreatedByEmployeeId.HasValue = true) Then
-                Me.Adapter.InsertCommand.Parameters(9).Value = CType(CreatedByEmployeeId.Value,Integer)
-            Else
-                Me.Adapter.InsertCommand.Parameters(9).Value = Global.System.DBNull.Value
-            End If
-            If (CreatedOn.HasValue = true) Then
-                Me.Adapter.InsertCommand.Parameters(10).Value = CType(CreatedOn.Value,Date)
-            Else
-                Me.Adapter.InsertCommand.Parameters(10).Value = Global.System.DBNull.Value
-            End If
-            If (ModifiedByEmployeeId.HasValue = true) Then
-                Me.Adapter.InsertCommand.Parameters(11).Value = CType(ModifiedByEmployeeId.Value,Integer)
-            Else
-                Me.Adapter.InsertCommand.Parameters(11).Value = Global.System.DBNull.Value
-            End If
-            If (ModifiedOn.HasValue = true) Then
-                Me.Adapter.InsertCommand.Parameters(12).Value = CType(ModifiedOn.Value,Date)
-            Else
-                Me.Adapter.InsertCommand.Parameters(12).Value = Global.System.DBNull.Value
-            End If
-            If (SubmittedDate.HasValue = true) Then
-                Me.Adapter.InsertCommand.Parameters(13).Value = CType(SubmittedDate.Value,Date)
-            Else
-                Me.Adapter.InsertCommand.Parameters(13).Value = Global.System.DBNull.Value
-            End If
-            If (ApprovedOn.HasValue = true) Then
-                Me.Adapter.InsertCommand.Parameters(14).Value = CType(ApprovedOn.Value,Date)
-            Else
-                Me.Adapter.InsertCommand.Parameters(14).Value = Global.System.DBNull.Value
-            End If
-            If (ApprovedByEmployeeId.HasValue = true) Then
-                Me.Adapter.InsertCommand.Parameters(15).Value = CType(ApprovedByEmployeeId.Value,Integer)
-            Else
-                Me.Adapter.InsertCommand.Parameters(15).Value = Global.System.DBNull.Value
-            End If
-            If (RejectedOn.HasValue = true) Then
-                Me.Adapter.InsertCommand.Parameters(16).Value = CType(RejectedOn.Value,Date)
-            Else
-                Me.Adapter.InsertCommand.Parameters(16).Value = Global.System.DBNull.Value
-            End If
-            If (RejectedByEmployeeId.HasValue = true) Then
-                Me.Adapter.InsertCommand.Parameters(17).Value = CType(RejectedByEmployeeId.Value,Integer)
-            Else
-                Me.Adapter.InsertCommand.Parameters(17).Value = Global.System.DBNull.Value
-            End If
-            If (CustomField1 Is Nothing) Then
-                Me.Adapter.InsertCommand.Parameters(18).Value = Global.System.DBNull.Value
-            Else
-                Me.Adapter.InsertCommand.Parameters(18).Value = CType(CustomField1,String)
-            End If
-            If (CustomField2 Is Nothing) Then
-                Me.Adapter.InsertCommand.Parameters(19).Value = Global.System.DBNull.Value
-            Else
-                Me.Adapter.InsertCommand.Parameters(19).Value = CType(CustomField2,String)
-            End If
-            If (CustomField3 Is Nothing) Then
-                Me.Adapter.InsertCommand.Parameters(20).Value = Global.System.DBNull.Value
-            Else
-                Me.Adapter.InsertCommand.Parameters(20).Value = CType(CustomField3,String)
-            End If
-            If (CustomField4 Is Nothing) Then
-                Me.Adapter.InsertCommand.Parameters(21).Value = Global.System.DBNull.Value
-            Else
-                Me.Adapter.InsertCommand.Parameters(21).Value = CType(CustomField4,String)
-            End If
-            If (CustomField5 Is Nothing) Then
-                Me.Adapter.InsertCommand.Parameters(22).Value = Global.System.DBNull.Value
-            Else
-                Me.Adapter.InsertCommand.Parameters(22).Value = CType(CustomField5,String)
-            End If
-            If (CustomField6 Is Nothing) Then
-                Me.Adapter.InsertCommand.Parameters(23).Value = Global.System.DBNull.Value
-            Else
-                Me.Adapter.InsertCommand.Parameters(23).Value = CType(CustomField6,String)
-            End If
-            If (CustomField7 Is Nothing) Then
-                Me.Adapter.InsertCommand.Parameters(24).Value = Global.System.DBNull.Value
-            Else
-                Me.Adapter.InsertCommand.Parameters(24).Value = CType(CustomField7,String)
-            End If
-            If (CustomField8 Is Nothing) Then
-                Me.Adapter.InsertCommand.Parameters(25).Value = Global.System.DBNull.Value
-            Else
-                Me.Adapter.InsertCommand.Parameters(25).Value = CType(CustomField8,String)
-            End If
-            If (CustomField9 Is Nothing) Then
-                Me.Adapter.InsertCommand.Parameters(26).Value = Global.System.DBNull.Value
-            Else
-                Me.Adapter.InsertCommand.Parameters(26).Value = CType(CustomField9,String)
-            End If
-            If (CustomField10 Is Nothing) Then
-                Me.Adapter.InsertCommand.Parameters(27).Value = Global.System.DBNull.Value
-            Else
-                Me.Adapter.InsertCommand.Parameters(27).Value = CType(CustomField10,String)
-            End If
-            If (CustomField11 Is Nothing) Then
-                Me.Adapter.InsertCommand.Parameters(28).Value = Global.System.DBNull.Value
-            Else
-                Me.Adapter.InsertCommand.Parameters(28).Value = CType(CustomField11,String)
-            End If
-            If (CustomField12 Is Nothing) Then
-                Me.Adapter.InsertCommand.Parameters(29).Value = Global.System.DBNull.Value
-            Else
-                Me.Adapter.InsertCommand.Parameters(29).Value = CType(CustomField12,String)
-            End If
-            If (CustomField13 Is Nothing) Then
-                Me.Adapter.InsertCommand.Parameters(30).Value = Global.System.DBNull.Value
-            Else
-                Me.Adapter.InsertCommand.Parameters(30).Value = CType(CustomField13,String)
-            End If
-            If (CustomField14 Is Nothing) Then
-                Me.Adapter.InsertCommand.Parameters(31).Value = Global.System.DBNull.Value
-            Else
-                Me.Adapter.InsertCommand.Parameters(31).Value = CType(CustomField14,String)
-            End If
-            If (CustomField15 Is Nothing) Then
-                Me.Adapter.InsertCommand.Parameters(32).Value = Global.System.DBNull.Value
-            Else
-                Me.Adapter.InsertCommand.Parameters(32).Value = CType(CustomField15,String)
-            End If
-            Dim previousConnectionState As Global.System.Data.ConnectionState = Me.Adapter.InsertCommand.Connection.State
-            If ((Me.Adapter.InsertCommand.Connection.State And Global.System.Data.ConnectionState.Open)  _
-                        <> Global.System.Data.ConnectionState.Open) Then
-                Me.Adapter.InsertCommand.Connection.Open
-            End If
-            Try 
-                Dim returnValue As Integer = Me.Adapter.InsertCommand.ExecuteNonQuery
-                Return returnValue
-            Finally
-                If (previousConnectionState = Global.System.Data.ConnectionState.Closed) Then
-                    Me.Adapter.InsertCommand.Connection.Close
-                End If
-            End Try
-        End Function
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0"),  _
-         Global.System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter"),  _
-         Global.System.ComponentModel.DataObjectMethodAttribute(Global.System.ComponentModel.DataObjectMethodType.Update, true)>  _
-        Public Overloads Overridable Function Update( _
-                    ByVal AccountEmployeeExpenseSheetId As System.Guid,  _
-                    ByVal AccountId As Integer,  _
-                    ByVal AccountEmployeeId As Integer,  _
-                    ByVal Description As String,  _
-                    ByVal ExpenseSheetDate As Date,  _
-                    ByVal Approved As Boolean,  _
-                    ByVal Rejected As Boolean,  _
-                    ByVal Submitted As Boolean,  _
-                    ByVal InApproval As Boolean,  _
-                    ByVal CreatedByEmployeeId As Global.System.Nullable(Of Integer),  _
-                    ByVal CreatedOn As Global.System.Nullable(Of Date),  _
-                    ByVal ModifiedByEmployeeId As Global.System.Nullable(Of Integer),  _
-                    ByVal ModifiedOn As Global.System.Nullable(Of Date),  _
-                    ByVal SubmittedDate As Global.System.Nullable(Of Date),  _
-                    ByVal ApprovedOn As Global.System.Nullable(Of Date),  _
-                    ByVal ApprovedByEmployeeId As Global.System.Nullable(Of Integer),  _
-                    ByVal RejectedOn As Global.System.Nullable(Of Date),  _
-                    ByVal RejectedByEmployeeId As Global.System.Nullable(Of Integer),  _
-                    ByVal CustomField1 As String,  _
-                    ByVal CustomField2 As String,  _
-                    ByVal CustomField3 As String,  _
-                    ByVal CustomField4 As String,  _
-                    ByVal CustomField5 As String,  _
-                    ByVal CustomField6 As String,  _
-                    ByVal CustomField7 As String,  _
-                    ByVal CustomField8 As String,  _
-                    ByVal CustomField9 As String,  _
-                    ByVal CustomField10 As String,  _
-                    ByVal CustomField11 As String,  _
-                    ByVal CustomField12 As String,  _
-                    ByVal CustomField13 As String,  _
-                    ByVal CustomField14 As String,  _
-                    ByVal CustomField15 As String,  _
-                    ByVal Original_AccountEmployeeExpenseSheetId As System.Guid,  _
-                    ByVal Original_AccountId As Integer,  _
-                    ByVal Original_AccountEmployeeId As Integer,  _
-                    ByVal Original_Description As String,  _
-                    ByVal Original_ExpenseSheetDate As Date,  _
-                    ByVal Original_Approved As Boolean,  _
-                    ByVal Original_Rejected As Boolean,  _
-                    ByVal Original_Submitted As Boolean,  _
-                    ByVal Original_InApproval As Boolean,  _
-                    ByVal Original_CreatedByEmployeeId As Global.System.Nullable(Of Integer),  _
-                    ByVal Original_CreatedOn As Global.System.Nullable(Of Date),  _
-                    ByVal Original_ModifiedByEmployeeId As Global.System.Nullable(Of Integer),  _
-                    ByVal Original_ModifiedOn As Global.System.Nullable(Of Date),  _
-                    ByVal Original_SubmittedDate As Global.System.Nullable(Of Date),  _
-                    ByVal Original_ApprovedOn As Global.System.Nullable(Of Date),  _
-                    ByVal Original_ApprovedByEmployeeId As Global.System.Nullable(Of Integer),  _
-                    ByVal Original_RejectedOn As Global.System.Nullable(Of Date),  _
-                    ByVal Original_RejectedByEmployeeId As Global.System.Nullable(Of Integer),  _
-                    ByVal Original_CustomField1 As String,  _
-                    ByVal Original_CustomField2 As String,  _
-                    ByVal Original_CustomField3 As String,  _
-                    ByVal Original_CustomField4 As String,  _
-                    ByVal Original_CustomField5 As String,  _
-                    ByVal Original_CustomField6 As String,  _
-                    ByVal Original_CustomField7 As String,  _
-                    ByVal Original_CustomField8 As String,  _
-                    ByVal Original_CustomField9 As String,  _
-                    ByVal Original_CustomField10 As String,  _
-                    ByVal Original_CustomField11 As String,  _
-                    ByVal Original_CustomField12 As String,  _
-                    ByVal Original_CustomField13 As String,  _
-                    ByVal Original_CustomField14 As String,  _
-                    ByVal Original_CustomField15 As String) As Integer
-            Me.Adapter.UpdateCommand.Parameters(0).Value = CType(AccountEmployeeExpenseSheetId,System.Guid)
-            Me.Adapter.UpdateCommand.Parameters(1).Value = CType(AccountId,Integer)
-            Me.Adapter.UpdateCommand.Parameters(2).Value = CType(AccountEmployeeId,Integer)
-            If (Description Is Nothing) Then
-                Throw New Global.System.ArgumentNullException("Description")
-            Else
-                Me.Adapter.UpdateCommand.Parameters(3).Value = CType(Description,String)
-            End If
-            Me.Adapter.UpdateCommand.Parameters(4).Value = CType(ExpenseSheetDate,Date)
-            Me.Adapter.UpdateCommand.Parameters(5).Value = CType(Approved,Boolean)
-            Me.Adapter.UpdateCommand.Parameters(6).Value = CType(Rejected,Boolean)
-            Me.Adapter.UpdateCommand.Parameters(7).Value = CType(Submitted,Boolean)
-            Me.Adapter.UpdateCommand.Parameters(8).Value = CType(InApproval,Boolean)
-            If (CreatedByEmployeeId.HasValue = true) Then
-                Me.Adapter.UpdateCommand.Parameters(9).Value = CType(CreatedByEmployeeId.Value,Integer)
-            Else
-                Me.Adapter.UpdateCommand.Parameters(9).Value = Global.System.DBNull.Value
-            End If
-            If (CreatedOn.HasValue = true) Then
-                Me.Adapter.UpdateCommand.Parameters(10).Value = CType(CreatedOn.Value,Date)
-            Else
-                Me.Adapter.UpdateCommand.Parameters(10).Value = Global.System.DBNull.Value
-            End If
-            If (ModifiedByEmployeeId.HasValue = true) Then
-                Me.Adapter.UpdateCommand.Parameters(11).Value = CType(ModifiedByEmployeeId.Value,Integer)
-            Else
-                Me.Adapter.UpdateCommand.Parameters(11).Value = Global.System.DBNull.Value
-            End If
-            If (ModifiedOn.HasValue = true) Then
-                Me.Adapter.UpdateCommand.Parameters(12).Value = CType(ModifiedOn.Value,Date)
-            Else
-                Me.Adapter.UpdateCommand.Parameters(12).Value = Global.System.DBNull.Value
-            End If
-            If (SubmittedDate.HasValue = true) Then
-                Me.Adapter.UpdateCommand.Parameters(13).Value = CType(SubmittedDate.Value,Date)
-            Else
-                Me.Adapter.UpdateCommand.Parameters(13).Value = Global.System.DBNull.Value
-            End If
-            If (ApprovedOn.HasValue = true) Then
-                Me.Adapter.UpdateCommand.Parameters(14).Value = CType(ApprovedOn.Value,Date)
-            Else
-                Me.Adapter.UpdateCommand.Parameters(14).Value = Global.System.DBNull.Value
-            End If
-            If (ApprovedByEmployeeId.HasValue = true) Then
-                Me.Adapter.UpdateCommand.Parameters(15).Value = CType(ApprovedByEmployeeId.Value,Integer)
-            Else
-                Me.Adapter.UpdateCommand.Parameters(15).Value = Global.System.DBNull.Value
-            End If
-            If (RejectedOn.HasValue = true) Then
-                Me.Adapter.UpdateCommand.Parameters(16).Value = CType(RejectedOn.Value,Date)
-            Else
-                Me.Adapter.UpdateCommand.Parameters(16).Value = Global.System.DBNull.Value
-            End If
-            If (RejectedByEmployeeId.HasValue = true) Then
-                Me.Adapter.UpdateCommand.Parameters(17).Value = CType(RejectedByEmployeeId.Value,Integer)
-            Else
-                Me.Adapter.UpdateCommand.Parameters(17).Value = Global.System.DBNull.Value
-            End If
-            If (CustomField1 Is Nothing) Then
-                Me.Adapter.UpdateCommand.Parameters(18).Value = Global.System.DBNull.Value
-            Else
-                Me.Adapter.UpdateCommand.Parameters(18).Value = CType(CustomField1,String)
-            End If
-            If (CustomField2 Is Nothing) Then
-                Me.Adapter.UpdateCommand.Parameters(19).Value = Global.System.DBNull.Value
-            Else
-                Me.Adapter.UpdateCommand.Parameters(19).Value = CType(CustomField2,String)
-            End If
-            If (CustomField3 Is Nothing) Then
-                Me.Adapter.UpdateCommand.Parameters(20).Value = Global.System.DBNull.Value
-            Else
-                Me.Adapter.UpdateCommand.Parameters(20).Value = CType(CustomField3,String)
-            End If
-            If (CustomField4 Is Nothing) Then
-                Me.Adapter.UpdateCommand.Parameters(21).Value = Global.System.DBNull.Value
-            Else
-                Me.Adapter.UpdateCommand.Parameters(21).Value = CType(CustomField4,String)
-            End If
-            If (CustomField5 Is Nothing) Then
-                Me.Adapter.UpdateCommand.Parameters(22).Value = Global.System.DBNull.Value
-            Else
-                Me.Adapter.UpdateCommand.Parameters(22).Value = CType(CustomField5,String)
-            End If
-            If (CustomField6 Is Nothing) Then
-                Me.Adapter.UpdateCommand.Parameters(23).Value = Global.System.DBNull.Value
-            Else
-                Me.Adapter.UpdateCommand.Parameters(23).Value = CType(CustomField6,String)
-            End If
-            If (CustomField7 Is Nothing) Then
-                Me.Adapter.UpdateCommand.Parameters(24).Value = Global.System.DBNull.Value
-            Else
-                Me.Adapter.UpdateCommand.Parameters(24).Value = CType(CustomField7,String)
-            End If
-            If (CustomField8 Is Nothing) Then
-                Me.Adapter.UpdateCommand.Parameters(25).Value = Global.System.DBNull.Value
-            Else
-                Me.Adapter.UpdateCommand.Parameters(25).Value = CType(CustomField8,String)
-            End If
-            If (CustomField9 Is Nothing) Then
-                Me.Adapter.UpdateCommand.Parameters(26).Value = Global.System.DBNull.Value
-            Else
-                Me.Adapter.UpdateCommand.Parameters(26).Value = CType(CustomField9,String)
-            End If
-            If (CustomField10 Is Nothing) Then
-                Me.Adapter.UpdateCommand.Parameters(27).Value = Global.System.DBNull.Value
-            Else
-                Me.Adapter.UpdateCommand.Parameters(27).Value = CType(CustomField10,String)
-            End If
-            If (CustomField11 Is Nothing) Then
-                Me.Adapter.UpdateCommand.Parameters(28).Value = Global.System.DBNull.Value
-            Else
-                Me.Adapter.UpdateCommand.Parameters(28).Value = CType(CustomField11,String)
-            End If
-            If (CustomField12 Is Nothing) Then
-                Me.Adapter.UpdateCommand.Parameters(29).Value = Global.System.DBNull.Value
-            Else
-                Me.Adapter.UpdateCommand.Parameters(29).Value = CType(CustomField12,String)
-            End If
-            If (CustomField13 Is Nothing) Then
-                Me.Adapter.UpdateCommand.Parameters(30).Value = Global.System.DBNull.Value
-            Else
-                Me.Adapter.UpdateCommand.Parameters(30).Value = CType(CustomField13,String)
-            End If
-            If (CustomField14 Is Nothing) Then
-                Me.Adapter.UpdateCommand.Parameters(31).Value = Global.System.DBNull.Value
-            Else
-                Me.Adapter.UpdateCommand.Parameters(31).Value = CType(CustomField14,String)
-            End If
-            If (CustomField15 Is Nothing) Then
-                Me.Adapter.UpdateCommand.Parameters(32).Value = Global.System.DBNull.Value
-            Else
-                Me.Adapter.UpdateCommand.Parameters(32).Value = CType(CustomField15,String)
-            End If
-            Me.Adapter.UpdateCommand.Parameters(33).Value = CType(Original_AccountEmployeeExpenseSheetId,System.Guid)
-            Me.Adapter.UpdateCommand.Parameters(34).Value = CType(Original_AccountId,Integer)
-            Me.Adapter.UpdateCommand.Parameters(35).Value = CType(Original_AccountEmployeeId,Integer)
-            If (Original_Description Is Nothing) Then
-                Throw New Global.System.ArgumentNullException("Original_Description")
-            Else
-                Me.Adapter.UpdateCommand.Parameters(36).Value = CType(Original_Description,String)
-            End If
-            Me.Adapter.UpdateCommand.Parameters(37).Value = CType(Original_ExpenseSheetDate,Date)
-            Me.Adapter.UpdateCommand.Parameters(38).Value = CType(Original_Approved,Boolean)
-            Me.Adapter.UpdateCommand.Parameters(39).Value = CType(Original_Rejected,Boolean)
-            Me.Adapter.UpdateCommand.Parameters(40).Value = CType(Original_Submitted,Boolean)
-            Me.Adapter.UpdateCommand.Parameters(41).Value = CType(Original_InApproval,Boolean)
-            If (Original_CreatedByEmployeeId.HasValue = true) Then
-                Me.Adapter.UpdateCommand.Parameters(42).Value = CType(0,Object)
-                Me.Adapter.UpdateCommand.Parameters(43).Value = CType(Original_CreatedByEmployeeId.Value,Integer)
-            Else
-                Me.Adapter.UpdateCommand.Parameters(42).Value = CType(1,Object)
-                Me.Adapter.UpdateCommand.Parameters(43).Value = Global.System.DBNull.Value
-            End If
-            If (Original_CreatedOn.HasValue = true) Then
-                Me.Adapter.UpdateCommand.Parameters(44).Value = CType(0,Object)
-                Me.Adapter.UpdateCommand.Parameters(45).Value = CType(Original_CreatedOn.Value,Date)
-            Else
-                Me.Adapter.UpdateCommand.Parameters(44).Value = CType(1,Object)
-                Me.Adapter.UpdateCommand.Parameters(45).Value = Global.System.DBNull.Value
-            End If
-            If (Original_ModifiedByEmployeeId.HasValue = true) Then
-                Me.Adapter.UpdateCommand.Parameters(46).Value = CType(0,Object)
-                Me.Adapter.UpdateCommand.Parameters(47).Value = CType(Original_ModifiedByEmployeeId.Value,Integer)
-            Else
-                Me.Adapter.UpdateCommand.Parameters(46).Value = CType(1,Object)
-                Me.Adapter.UpdateCommand.Parameters(47).Value = Global.System.DBNull.Value
-            End If
-            If (Original_ModifiedOn.HasValue = true) Then
-                Me.Adapter.UpdateCommand.Parameters(48).Value = CType(0,Object)
-                Me.Adapter.UpdateCommand.Parameters(49).Value = CType(Original_ModifiedOn.Value,Date)
-            Else
-                Me.Adapter.UpdateCommand.Parameters(48).Value = CType(1,Object)
-                Me.Adapter.UpdateCommand.Parameters(49).Value = Global.System.DBNull.Value
-            End If
-            If (Original_SubmittedDate.HasValue = true) Then
-                Me.Adapter.UpdateCommand.Parameters(50).Value = CType(0,Object)
-                Me.Adapter.UpdateCommand.Parameters(51).Value = CType(Original_SubmittedDate.Value,Date)
-            Else
-                Me.Adapter.UpdateCommand.Parameters(50).Value = CType(1,Object)
-                Me.Adapter.UpdateCommand.Parameters(51).Value = Global.System.DBNull.Value
-            End If
-            If (Original_ApprovedOn.HasValue = true) Then
-                Me.Adapter.UpdateCommand.Parameters(52).Value = CType(0,Object)
-                Me.Adapter.UpdateCommand.Parameters(53).Value = CType(Original_ApprovedOn.Value,Date)
-            Else
-                Me.Adapter.UpdateCommand.Parameters(52).Value = CType(1,Object)
-                Me.Adapter.UpdateCommand.Parameters(53).Value = Global.System.DBNull.Value
-            End If
-            If (Original_ApprovedByEmployeeId.HasValue = true) Then
-                Me.Adapter.UpdateCommand.Parameters(54).Value = CType(0,Object)
-                Me.Adapter.UpdateCommand.Parameters(55).Value = CType(Original_ApprovedByEmployeeId.Value,Integer)
-            Else
-                Me.Adapter.UpdateCommand.Parameters(54).Value = CType(1,Object)
-                Me.Adapter.UpdateCommand.Parameters(55).Value = Global.System.DBNull.Value
-            End If
-            If (Original_RejectedOn.HasValue = true) Then
-                Me.Adapter.UpdateCommand.Parameters(56).Value = CType(0,Object)
-                Me.Adapter.UpdateCommand.Parameters(57).Value = CType(Original_RejectedOn.Value,Date)
-            Else
-                Me.Adapter.UpdateCommand.Parameters(56).Value = CType(1,Object)
-                Me.Adapter.UpdateCommand.Parameters(57).Value = Global.System.DBNull.Value
-            End If
-            If (Original_RejectedByEmployeeId.HasValue = true) Then
-                Me.Adapter.UpdateCommand.Parameters(58).Value = CType(0,Object)
-                Me.Adapter.UpdateCommand.Parameters(59).Value = CType(Original_RejectedByEmployeeId.Value,Integer)
-            Else
-                Me.Adapter.UpdateCommand.Parameters(58).Value = CType(1,Object)
-                Me.Adapter.UpdateCommand.Parameters(59).Value = Global.System.DBNull.Value
-            End If
-            If (Original_CustomField1 Is Nothing) Then
-                Me.Adapter.UpdateCommand.Parameters(60).Value = CType(1,Object)
-                Me.Adapter.UpdateCommand.Parameters(61).Value = Global.System.DBNull.Value
-            Else
-                Me.Adapter.UpdateCommand.Parameters(60).Value = CType(0,Object)
-                Me.Adapter.UpdateCommand.Parameters(61).Value = CType(Original_CustomField1,String)
-            End If
-            If (Original_CustomField2 Is Nothing) Then
-                Me.Adapter.UpdateCommand.Parameters(62).Value = CType(1,Object)
-                Me.Adapter.UpdateCommand.Parameters(63).Value = Global.System.DBNull.Value
-            Else
-                Me.Adapter.UpdateCommand.Parameters(62).Value = CType(0,Object)
-                Me.Adapter.UpdateCommand.Parameters(63).Value = CType(Original_CustomField2,String)
-            End If
-            If (Original_CustomField3 Is Nothing) Then
-                Me.Adapter.UpdateCommand.Parameters(64).Value = CType(1,Object)
-                Me.Adapter.UpdateCommand.Parameters(65).Value = Global.System.DBNull.Value
-            Else
-                Me.Adapter.UpdateCommand.Parameters(64).Value = CType(0,Object)
-                Me.Adapter.UpdateCommand.Parameters(65).Value = CType(Original_CustomField3,String)
-            End If
-            If (Original_CustomField4 Is Nothing) Then
-                Me.Adapter.UpdateCommand.Parameters(66).Value = CType(1,Object)
-                Me.Adapter.UpdateCommand.Parameters(67).Value = Global.System.DBNull.Value
-            Else
-                Me.Adapter.UpdateCommand.Parameters(66).Value = CType(0,Object)
-                Me.Adapter.UpdateCommand.Parameters(67).Value = CType(Original_CustomField4,String)
-            End If
-            If (Original_CustomField5 Is Nothing) Then
-                Me.Adapter.UpdateCommand.Parameters(68).Value = CType(1,Object)
-                Me.Adapter.UpdateCommand.Parameters(69).Value = Global.System.DBNull.Value
-            Else
-                Me.Adapter.UpdateCommand.Parameters(68).Value = CType(0,Object)
-                Me.Adapter.UpdateCommand.Parameters(69).Value = CType(Original_CustomField5,String)
-            End If
-            If (Original_CustomField6 Is Nothing) Then
-                Me.Adapter.UpdateCommand.Parameters(70).Value = CType(1,Object)
-                Me.Adapter.UpdateCommand.Parameters(71).Value = Global.System.DBNull.Value
-            Else
-                Me.Adapter.UpdateCommand.Parameters(70).Value = CType(0,Object)
-                Me.Adapter.UpdateCommand.Parameters(71).Value = CType(Original_CustomField6,String)
-            End If
-            If (Original_CustomField7 Is Nothing) Then
-                Me.Adapter.UpdateCommand.Parameters(72).Value = CType(1,Object)
-                Me.Adapter.UpdateCommand.Parameters(73).Value = Global.System.DBNull.Value
-            Else
-                Me.Adapter.UpdateCommand.Parameters(72).Value = CType(0,Object)
-                Me.Adapter.UpdateCommand.Parameters(73).Value = CType(Original_CustomField7,String)
-            End If
-            If (Original_CustomField8 Is Nothing) Then
-                Me.Adapter.UpdateCommand.Parameters(74).Value = CType(1,Object)
-                Me.Adapter.UpdateCommand.Parameters(75).Value = Global.System.DBNull.Value
-            Else
-                Me.Adapter.UpdateCommand.Parameters(74).Value = CType(0,Object)
-                Me.Adapter.UpdateCommand.Parameters(75).Value = CType(Original_CustomField8,String)
-            End If
-            If (Original_CustomField9 Is Nothing) Then
-                Me.Adapter.UpdateCommand.Parameters(76).Value = CType(1,Object)
-                Me.Adapter.UpdateCommand.Parameters(77).Value = Global.System.DBNull.Value
-            Else
-                Me.Adapter.UpdateCommand.Parameters(76).Value = CType(0,Object)
-                Me.Adapter.UpdateCommand.Parameters(77).Value = CType(Original_CustomField9,String)
-            End If
-            If (Original_CustomField10 Is Nothing) Then
-                Me.Adapter.UpdateCommand.Parameters(78).Value = CType(1,Object)
-                Me.Adapter.UpdateCommand.Parameters(79).Value = Global.System.DBNull.Value
-            Else
-                Me.Adapter.UpdateCommand.Parameters(78).Value = CType(0,Object)
-                Me.Adapter.UpdateCommand.Parameters(79).Value = CType(Original_CustomField10,String)
-            End If
-            If (Original_CustomField11 Is Nothing) Then
-                Me.Adapter.UpdateCommand.Parameters(80).Value = CType(1,Object)
-                Me.Adapter.UpdateCommand.Parameters(81).Value = Global.System.DBNull.Value
-            Else
-                Me.Adapter.UpdateCommand.Parameters(80).Value = CType(0,Object)
-                Me.Adapter.UpdateCommand.Parameters(81).Value = CType(Original_CustomField11,String)
-            End If
-            If (Original_CustomField12 Is Nothing) Then
-                Me.Adapter.UpdateCommand.Parameters(82).Value = CType(1,Object)
-                Me.Adapter.UpdateCommand.Parameters(83).Value = Global.System.DBNull.Value
-            Else
-                Me.Adapter.UpdateCommand.Parameters(82).Value = CType(0,Object)
-                Me.Adapter.UpdateCommand.Parameters(83).Value = CType(Original_CustomField12,String)
-            End If
-            If (Original_CustomField13 Is Nothing) Then
-                Me.Adapter.UpdateCommand.Parameters(84).Value = CType(1,Object)
-                Me.Adapter.UpdateCommand.Parameters(85).Value = Global.System.DBNull.Value
-            Else
-                Me.Adapter.UpdateCommand.Parameters(84).Value = CType(0,Object)
-                Me.Adapter.UpdateCommand.Parameters(85).Value = CType(Original_CustomField13,String)
-            End If
-            If (Original_CustomField14 Is Nothing) Then
-                Me.Adapter.UpdateCommand.Parameters(86).Value = CType(1,Object)
-                Me.Adapter.UpdateCommand.Parameters(87).Value = Global.System.DBNull.Value
-            Else
-                Me.Adapter.UpdateCommand.Parameters(86).Value = CType(0,Object)
-                Me.Adapter.UpdateCommand.Parameters(87).Value = CType(Original_CustomField14,String)
-            End If
-            If (Original_CustomField15 Is Nothing) Then
-                Me.Adapter.UpdateCommand.Parameters(88).Value = CType(1,Object)
-                Me.Adapter.UpdateCommand.Parameters(89).Value = Global.System.DBNull.Value
-            Else
-                Me.Adapter.UpdateCommand.Parameters(88).Value = CType(0,Object)
-                Me.Adapter.UpdateCommand.Parameters(89).Value = CType(Original_CustomField15,String)
-            End If
-            Dim previousConnectionState As Global.System.Data.ConnectionState = Me.Adapter.UpdateCommand.Connection.State
-            If ((Me.Adapter.UpdateCommand.Connection.State And Global.System.Data.ConnectionState.Open)  _
-                        <> Global.System.Data.ConnectionState.Open) Then
-                Me.Adapter.UpdateCommand.Connection.Open
-            End If
-            Try 
-                Dim returnValue As Integer = Me.Adapter.UpdateCommand.ExecuteNonQuery
-                Return returnValue
-            Finally
-                If (previousConnectionState = Global.System.Data.ConnectionState.Closed) Then
-                    Me.Adapter.UpdateCommand.Connection.Close
-                End If
-            End Try
-        End Function
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0"),  _
-         Global.System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter"),  _
-         Global.System.ComponentModel.DataObjectMethodAttribute(Global.System.ComponentModel.DataObjectMethodType.Update, true)>  _
-        Public Overloads Overridable Function Update( _
-                    ByVal AccountId As Integer,  _
-                    ByVal AccountEmployeeId As Integer,  _
-                    ByVal Description As String,  _
-                    ByVal ExpenseSheetDate As Date,  _
-                    ByVal Approved As Boolean,  _
-                    ByVal Rejected As Boolean,  _
-                    ByVal Submitted As Boolean,  _
-                    ByVal InApproval As Boolean,  _
-                    ByVal CreatedByEmployeeId As Global.System.Nullable(Of Integer),  _
-                    ByVal CreatedOn As Global.System.Nullable(Of Date),  _
-                    ByVal ModifiedByEmployeeId As Global.System.Nullable(Of Integer),  _
-                    ByVal ModifiedOn As Global.System.Nullable(Of Date),  _
-                    ByVal SubmittedDate As Global.System.Nullable(Of Date),  _
-                    ByVal ApprovedOn As Global.System.Nullable(Of Date),  _
-                    ByVal ApprovedByEmployeeId As Global.System.Nullable(Of Integer),  _
-                    ByVal RejectedOn As Global.System.Nullable(Of Date),  _
-                    ByVal RejectedByEmployeeId As Global.System.Nullable(Of Integer),  _
-                    ByVal CustomField1 As String,  _
-                    ByVal CustomField2 As String,  _
-                    ByVal CustomField3 As String,  _
-                    ByVal CustomField4 As String,  _
-                    ByVal CustomField5 As String,  _
-                    ByVal CustomField6 As String,  _
-                    ByVal CustomField7 As String,  _
-                    ByVal CustomField8 As String,  _
-                    ByVal CustomField9 As String,  _
-                    ByVal CustomField10 As String,  _
-                    ByVal CustomField11 As String,  _
-                    ByVal CustomField12 As String,  _
-                    ByVal CustomField13 As String,  _
-                    ByVal CustomField14 As String,  _
-                    ByVal CustomField15 As String,  _
-                    ByVal Original_AccountEmployeeExpenseSheetId As System.Guid,  _
-                    ByVal Original_AccountId As Integer,  _
-                    ByVal Original_AccountEmployeeId As Integer,  _
-                    ByVal Original_Description As String,  _
-                    ByVal Original_ExpenseSheetDate As Date,  _
-                    ByVal Original_Approved As Boolean,  _
-                    ByVal Original_Rejected As Boolean,  _
-                    ByVal Original_Submitted As Boolean,  _
-                    ByVal Original_InApproval As Boolean,  _
-                    ByVal Original_CreatedByEmployeeId As Global.System.Nullable(Of Integer),  _
-                    ByVal Original_CreatedOn As Global.System.Nullable(Of Date),  _
-                    ByVal Original_ModifiedByEmployeeId As Global.System.Nullable(Of Integer),  _
-                    ByVal Original_ModifiedOn As Global.System.Nullable(Of Date),  _
-                    ByVal Original_SubmittedDate As Global.System.Nullable(Of Date),  _
-                    ByVal Original_ApprovedOn As Global.System.Nullable(Of Date),  _
-                    ByVal Original_ApprovedByEmployeeId As Global.System.Nullable(Of Integer),  _
-                    ByVal Original_RejectedOn As Global.System.Nullable(Of Date),  _
-                    ByVal Original_RejectedByEmployeeId As Global.System.Nullable(Of Integer),  _
-                    ByVal Original_CustomField1 As String,  _
-                    ByVal Original_CustomField2 As String,  _
-                    ByVal Original_CustomField3 As String,  _
-                    ByVal Original_CustomField4 As String,  _
-                    ByVal Original_CustomField5 As String,  _
-                    ByVal Original_CustomField6 As String,  _
-                    ByVal Original_CustomField7 As String,  _
-                    ByVal Original_CustomField8 As String,  _
-                    ByVal Original_CustomField9 As String,  _
-                    ByVal Original_CustomField10 As String,  _
-                    ByVal Original_CustomField11 As String,  _
-                    ByVal Original_CustomField12 As String,  _
-                    ByVal Original_CustomField13 As String,  _
-                    ByVal Original_CustomField14 As String,  _
-                    ByVal Original_CustomField15 As String) As Integer
-            Return Me.Update(Original_AccountEmployeeExpenseSheetId, AccountId, AccountEmployeeId, Description, ExpenseSheetDate, Approved, Rejected, Submitted, InApproval, CreatedByEmployeeId, CreatedOn, ModifiedByEmployeeId, ModifiedOn, SubmittedDate, ApprovedOn, ApprovedByEmployeeId, RejectedOn, RejectedByEmployeeId, CustomField1, CustomField2, CustomField3, CustomField4, CustomField5, CustomField6, CustomField7, CustomField8, CustomField9, CustomField10, CustomField11, CustomField12, CustomField13, CustomField14, CustomField15, Original_AccountEmployeeExpenseSheetId, Original_AccountId, Original_AccountEmployeeId, Original_Description, Original_ExpenseSheetDate, Original_Approved, Original_Rejected, Original_Submitted, Original_InApproval, Original_CreatedByEmployeeId, Original_CreatedOn, Original_ModifiedByEmployeeId, Original_ModifiedOn, Original_SubmittedDate, Original_ApprovedOn, Original_ApprovedByEmployeeId, Original_RejectedOn, Original_RejectedByEmployeeId, Original_CustomField1, Original_CustomField2, Original_CustomField3, Original_CustomField4, Original_CustomField5, Original_CustomField6, Original_CustomField7, Original_CustomField8, Original_CustomField9, Original_CustomField10, Original_CustomField11, Original_CustomField12, Original_CustomField13, Original_CustomField14, Original_CustomField15)
-        End Function
-    End Class
-    
-    '''<summary>
-    '''Represents the connection and commands used to retrieve and save data.
-    '''</summary>
-    <Global.System.ComponentModel.DesignerCategoryAttribute("code"),  _
-     Global.System.ComponentModel.ToolboxItem(true),  _
-     Global.System.ComponentModel.DataObjectAttribute(true),  _
-     Global.System.ComponentModel.DesignerAttribute("Microsoft.VSDesigner.DataSource.Design.TableAdapterDesigner, Microsoft.VSDesigner"& _ 
-        ", Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a"),  _
-     Global.System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")>  _
-    Partial Public Class AccountExpenseTableAdapter
-        Inherits Global.System.ComponentModel.Component
-        
-        Private WithEvents _adapter As Global.System.Data.SqlClient.SqlDataAdapter
-        
-        Private _connection As Global.System.Data.SqlClient.SqlConnection
-        
-        Private _transaction As Global.System.Data.SqlClient.SqlTransaction
-        
-        Private _commandCollection() As Global.System.Data.SqlClient.SqlCommand
-        
-        Private _clearBeforeFill As Boolean
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Public Sub New()
-            MyBase.New
-            Me.ClearBeforeFill = true
-        End Sub
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Protected Friend ReadOnly Property Adapter() As Global.System.Data.SqlClient.SqlDataAdapter
-            Get
-                If (Me._adapter Is Nothing) Then
-                    Me.InitAdapter
-                End If
-                Return Me._adapter
-            End Get
-        End Property
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Friend Property Connection() As Global.System.Data.SqlClient.SqlConnection
-            Get
-                If (Me._connection Is Nothing) Then
-                    Me.InitConnection
-                End If
-                Return Me._connection
-            End Get
-            Set
-                Me._connection = value
-                If (Not (Me.Adapter.InsertCommand) Is Nothing) Then
-                    Me.Adapter.InsertCommand.Connection = value
-                End If
-                If (Not (Me.Adapter.DeleteCommand) Is Nothing) Then
-                    Me.Adapter.DeleteCommand.Connection = value
-                End If
-                If (Not (Me.Adapter.UpdateCommand) Is Nothing) Then
-                    Me.Adapter.UpdateCommand.Connection = value
-                End If
-                Dim i As Integer = 0
-                Do While (i < Me.CommandCollection.Length)
-                    If (Not (Me.CommandCollection(i)) Is Nothing) Then
-                        CType(Me.CommandCollection(i),Global.System.Data.SqlClient.SqlCommand).Connection = value
-                    End If
-                    i = (i + 1)
-                Loop
-            End Set
-        End Property
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Friend Property Transaction() As Global.System.Data.SqlClient.SqlTransaction
-            Get
-                Return Me._transaction
-            End Get
-            Set
-                Me._transaction = value
-                Dim i As Integer = 0
-                Do While (i < Me.CommandCollection.Length)
-                    Me.CommandCollection(i).Transaction = Me._transaction
-                    i = (i + 1)
-                Loop
-                If ((Not (Me.Adapter) Is Nothing)  _
-                            AndAlso (Not (Me.Adapter.DeleteCommand) Is Nothing)) Then
-                    Me.Adapter.DeleteCommand.Transaction = Me._transaction
-                End If
-                If ((Not (Me.Adapter) Is Nothing)  _
-                            AndAlso (Not (Me.Adapter.InsertCommand) Is Nothing)) Then
-                    Me.Adapter.InsertCommand.Transaction = Me._transaction
-                End If
-                If ((Not (Me.Adapter) Is Nothing)  _
-                            AndAlso (Not (Me.Adapter.UpdateCommand) Is Nothing)) Then
-                    Me.Adapter.UpdateCommand.Transaction = Me._transaction
-                End If
-            End Set
-        End Property
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Protected ReadOnly Property CommandCollection() As Global.System.Data.SqlClient.SqlCommand()
-            Get
-                If (Me._commandCollection Is Nothing) Then
-                    Me.InitCommandCollection
-                End If
-                Return Me._commandCollection
-            End Get
-        End Property
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Public Property ClearBeforeFill() As Boolean
-            Get
-                Return Me._clearBeforeFill
-            End Get
-            Set
-                Me._clearBeforeFill = value
-            End Set
-        End Property
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Private Sub InitAdapter()
-            Me._adapter = New Global.System.Data.SqlClient.SqlDataAdapter()
-            Dim tableMapping As Global.System.Data.Common.DataTableMapping = New Global.System.Data.Common.DataTableMapping()
-            tableMapping.SourceTable = "Table"
-            tableMapping.DataSetTable = "AccountExpense"
-            tableMapping.ColumnMappings.Add("AccountExpenseId", "AccountExpenseId")
-            tableMapping.ColumnMappings.Add("AccountExpenseName", "AccountExpenseName")
-            tableMapping.ColumnMappings.Add("AccountExpenseTypeId", "AccountExpenseTypeId")
-            tableMapping.ColumnMappings.Add("IsBillable", "IsBillable")
-            tableMapping.ColumnMappings.Add("AccountId", "AccountId")
-            tableMapping.ColumnMappings.Add("CreatedOn", "CreatedOn")
-            tableMapping.ColumnMappings.Add("CreatedByEmployeeId", "CreatedByEmployeeId")
-            tableMapping.ColumnMappings.Add("ModifiedOn", "ModifiedOn")
-            tableMapping.ColumnMappings.Add("ModifiedByEmployeeId", "ModifiedByEmployeeId")
-            tableMapping.ColumnMappings.Add("IsDisabled", "IsDisabled")
-            tableMapping.ColumnMappings.Add("DefaultExpenseRate", "DefaultExpenseRate")
-            tableMapping.ColumnMappings.Add("DisabledEditingOfRate", "DisabledEditingOfRate")
-            tableMapping.ColumnMappings.Add("MasterAccountExpenseId", "MasterAccountExpenseId")
-            Me._adapter.TableMappings.Add(tableMapping)
-            Me._adapter.DeleteCommand = New Global.System.Data.SqlClient.SqlCommand()
-            Me._adapter.DeleteCommand.Connection = Me.Connection
-            Me._adapter.DeleteCommand.CommandText = "DELETE FROM [dbo].[AccountExpense] WHERE (([AccountExpenseId] = @Original_Account"& _ 
-                "ExpenseId) AND ([AccountExpenseName] = @Original_AccountExpenseName) AND ([Accou"& _ 
-                "ntExpenseTypeId] = @Original_AccountExpenseTypeId) AND ((@IsNull_IsBillable = 1 "& _ 
-                "AND [IsBillable] IS NULL) OR ([IsBillable] = @Original_IsBillable)) AND ([Accoun"& _ 
-                "tId] = @Original_AccountId) AND ([CreatedOn] = @Original_CreatedOn) AND ([Create"& _ 
-                "dByEmployeeId] = @Original_CreatedByEmployeeId) AND ([ModifiedOn] = @Original_Mo"& _ 
-                "difiedOn) AND ([ModifiedByEmployeeId] = @Original_ModifiedByEmployeeId) AND ([Is"& _ 
-                "Disabled] = @Original_IsDisabled) AND ((@IsNull_DefaultExpenseRate = 1 AND [Defa"& _ 
-                "ultExpenseRate] IS NULL) OR ([DefaultExpenseRate] = @Original_DefaultExpenseRate"& _ 
-                ")) AND ([DisabledEditingOfRate] = @Original_DisabledEditingOfRate) AND ((@IsNull"& _ 
-                "_MasterAccountExpenseId = 1 AND [MasterAccountExpenseId] IS NULL) OR ([MasterAcc"& _ 
-                "ountExpenseId] = @Original_MasterAccountExpenseId)))"
-            Me._adapter.DeleteCommand.CommandType = Global.System.Data.CommandType.Text
-            Me._adapter.DeleteCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_AccountExpenseId", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "AccountExpenseId", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
-            Me._adapter.DeleteCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_AccountExpenseName", Global.System.Data.SqlDbType.NVarChar, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "AccountExpenseName", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
-            Me._adapter.DeleteCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_AccountExpenseTypeId", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "AccountExpenseTypeId", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
-            Me._adapter.DeleteCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@IsNull_IsBillable", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "IsBillable", Global.System.Data.DataRowVersion.Original, true, Nothing, "", "", ""))
-            Me._adapter.DeleteCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_IsBillable", Global.System.Data.SqlDbType.Bit, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "IsBillable", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
-            Me._adapter.DeleteCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_AccountId", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "AccountId", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
-            Me._adapter.DeleteCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_CreatedOn", Global.System.Data.SqlDbType.DateTime, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "CreatedOn", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
-            Me._adapter.DeleteCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_CreatedByEmployeeId", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "CreatedByEmployeeId", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
-            Me._adapter.DeleteCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_ModifiedOn", Global.System.Data.SqlDbType.DateTime, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "ModifiedOn", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
-            Me._adapter.DeleteCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_ModifiedByEmployeeId", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "ModifiedByEmployeeId", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
-            Me._adapter.DeleteCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_IsDisabled", Global.System.Data.SqlDbType.Bit, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "IsDisabled", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
-            Me._adapter.DeleteCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@IsNull_DefaultExpenseRate", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "DefaultExpenseRate", Global.System.Data.DataRowVersion.Original, true, Nothing, "", "", ""))
-            Me._adapter.DeleteCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_DefaultExpenseRate", Global.System.Data.SqlDbType.Float, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "DefaultExpenseRate", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
-            Me._adapter.DeleteCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_DisabledEditingOfRate", Global.System.Data.SqlDbType.Bit, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "DisabledEditingOfRate", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
-            Me._adapter.DeleteCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@IsNull_MasterAccountExpenseId", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "MasterAccountExpenseId", Global.System.Data.DataRowVersion.Original, true, Nothing, "", "", ""))
-            Me._adapter.DeleteCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_MasterAccountExpenseId", Global.System.Data.SqlDbType.SmallInt, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "MasterAccountExpenseId", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
-            Me._adapter.InsertCommand = New Global.System.Data.SqlClient.SqlCommand()
-            Me._adapter.InsertCommand.Connection = Me.Connection
-            Me._adapter.InsertCommand.CommandText = "INSERT INTO [dbo].[AccountExpense] ([AccountExpenseName], [AccountExpenseTypeId],"& _ 
-                " [IsBillable], [AccountId], [CreatedOn], [CreatedByEmployeeId], [ModifiedOn], [M"& _ 
-                "odifiedByEmployeeId], [IsDisabled], [DefaultExpenseRate], [DisabledEditingOfRate"& _ 
-                "], [MasterAccountExpenseId]) VALUES (@AccountExpenseName, @AccountExpenseTypeId,"& _ 
-                " @IsBillable, @AccountId, @CreatedOn, @CreatedByEmployeeId, @ModifiedOn, @Modifi"& _ 
-                "edByEmployeeId, @IsDisabled, @DefaultExpenseRate, @DisabledEditingOfRate, @Maste"& _ 
-                "rAccountExpenseId);"&Global.Microsoft.VisualBasic.ChrW(13)&Global.Microsoft.VisualBasic.ChrW(10)&"SELECT AccountExpenseId, AccountExpenseName, AccountExpense"& _ 
-                "TypeId, IsBillable, AccountId, CreatedOn, CreatedByEmployeeId, ModifiedOn, Modif"& _ 
-                "iedByEmployeeId, IsDisabled, DefaultExpenseRate, DisabledEditingOfRate, MasterAc"& _ 
-                "countExpenseId FROM AccountExpense WHERE (AccountExpenseId = SCOPE_IDENTITY())"
-            Me._adapter.InsertCommand.CommandType = Global.System.Data.CommandType.Text
-            Me._adapter.InsertCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@AccountExpenseName", Global.System.Data.SqlDbType.NVarChar, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "AccountExpenseName", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
-            Me._adapter.InsertCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@AccountExpenseTypeId", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "AccountExpenseTypeId", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
-            Me._adapter.InsertCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@IsBillable", Global.System.Data.SqlDbType.Bit, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "IsBillable", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
-            Me._adapter.InsertCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@AccountId", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "AccountId", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
-            Me._adapter.InsertCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@CreatedOn", Global.System.Data.SqlDbType.DateTime, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "CreatedOn", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
-            Me._adapter.InsertCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@CreatedByEmployeeId", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "CreatedByEmployeeId", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
-            Me._adapter.InsertCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@ModifiedOn", Global.System.Data.SqlDbType.DateTime, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "ModifiedOn", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
-            Me._adapter.InsertCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@ModifiedByEmployeeId", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "ModifiedByEmployeeId", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
-            Me._adapter.InsertCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@IsDisabled", Global.System.Data.SqlDbType.Bit, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "IsDisabled", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
-            Me._adapter.InsertCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@DefaultExpenseRate", Global.System.Data.SqlDbType.Float, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "DefaultExpenseRate", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
-            Me._adapter.InsertCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@DisabledEditingOfRate", Global.System.Data.SqlDbType.Bit, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "DisabledEditingOfRate", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
-            Me._adapter.InsertCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@MasterAccountExpenseId", Global.System.Data.SqlDbType.SmallInt, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "MasterAccountExpenseId", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
-            Me._adapter.UpdateCommand = New Global.System.Data.SqlClient.SqlCommand()
-            Me._adapter.UpdateCommand.Connection = Me.Connection
-            Me._adapter.UpdateCommand.CommandText = "UPDATE [dbo].[AccountExpense] SET [AccountExpenseName] = @AccountExpenseName, [Ac"& _ 
-                "countExpenseTypeId] = @AccountExpenseTypeId, [IsBillable] = @IsBillable, [Accoun"& _ 
-                "tId] = @AccountId, [CreatedOn] = @CreatedOn, [CreatedByEmployeeId] = @CreatedByE"& _ 
-                "mployeeId, [ModifiedOn] = @ModifiedOn, [ModifiedByEmployeeId] = @ModifiedByEmplo"& _ 
-                "yeeId, [IsDisabled] = @IsDisabled, [DefaultExpenseRate] = @DefaultExpenseRate, ["& _ 
-                "DisabledEditingOfRate] = @DisabledEditingOfRate, [MasterAccountExpenseId] = @Mas"& _ 
-                "terAccountExpenseId WHERE (([AccountExpenseId] = @Original_AccountExpenseId) AND"& _ 
-                " ([AccountExpenseName] = @Original_AccountExpenseName) AND ([AccountExpenseTypeI"& _ 
-                "d] = @Original_AccountExpenseTypeId) AND ((@IsNull_IsBillable = 1 AND [IsBillabl"& _ 
-                "e] IS NULL) OR ([IsBillable] = @Original_IsBillable)) AND ([AccountId] = @Origin"& _ 
-                "al_AccountId) AND ([CreatedOn] = @Original_CreatedOn) AND ([CreatedByEmployeeId]"& _ 
-                " = @Original_CreatedByEmployeeId) AND ([ModifiedOn] = @Original_ModifiedOn) AND "& _ 
-                "([ModifiedByEmployeeId] = @Original_ModifiedByEmployeeId) AND ([IsDisabled] = @O"& _ 
-                "riginal_IsDisabled) AND ((@IsNull_DefaultExpenseRate = 1 AND [DefaultExpenseRate"& _ 
-                "] IS NULL) OR ([DefaultExpenseRate] = @Original_DefaultExpenseRate)) AND ([Disab"& _ 
-                "ledEditingOfRate] = @Original_DisabledEditingOfRate) AND ((@IsNull_MasterAccount"& _ 
-                "ExpenseId = 1 AND [MasterAccountExpenseId] IS NULL) OR ([MasterAccountExpenseId]"& _ 
-                " = @Original_MasterAccountExpenseId)));"&Global.Microsoft.VisualBasic.ChrW(13)&Global.Microsoft.VisualBasic.ChrW(10)&"SELECT AccountExpenseId, AccountExpense"& _ 
-                "Name, AccountExpenseTypeId, IsBillable, AccountId, CreatedOn, CreatedByEmployeeI"& _ 
-                "d, ModifiedOn, ModifiedByEmployeeId, IsDisabled, DefaultExpenseRate, DisabledEdi"& _ 
-                "tingOfRate, MasterAccountExpenseId FROM AccountExpense WHERE (AccountExpenseId ="& _ 
-                " @AccountExpenseId)"
-            Me._adapter.UpdateCommand.CommandType = Global.System.Data.CommandType.Text
-            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@AccountExpenseName", Global.System.Data.SqlDbType.NVarChar, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "AccountExpenseName", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
-            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@AccountExpenseTypeId", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "AccountExpenseTypeId", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
-            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@IsBillable", Global.System.Data.SqlDbType.Bit, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "IsBillable", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
-            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@AccountId", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "AccountId", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
-            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@CreatedOn", Global.System.Data.SqlDbType.DateTime, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "CreatedOn", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
-            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@CreatedByEmployeeId", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "CreatedByEmployeeId", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
-            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@ModifiedOn", Global.System.Data.SqlDbType.DateTime, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "ModifiedOn", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
-            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@ModifiedByEmployeeId", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "ModifiedByEmployeeId", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
-            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@IsDisabled", Global.System.Data.SqlDbType.Bit, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "IsDisabled", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
-            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@DefaultExpenseRate", Global.System.Data.SqlDbType.Float, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "DefaultExpenseRate", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
-            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@DisabledEditingOfRate", Global.System.Data.SqlDbType.Bit, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "DisabledEditingOfRate", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
-            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@MasterAccountExpenseId", Global.System.Data.SqlDbType.SmallInt, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "MasterAccountExpenseId", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
-            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_AccountExpenseId", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "AccountExpenseId", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
-            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_AccountExpenseName", Global.System.Data.SqlDbType.NVarChar, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "AccountExpenseName", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
-            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_AccountExpenseTypeId", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "AccountExpenseTypeId", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
-            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@IsNull_IsBillable", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "IsBillable", Global.System.Data.DataRowVersion.Original, true, Nothing, "", "", ""))
-            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_IsBillable", Global.System.Data.SqlDbType.Bit, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "IsBillable", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
-            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_AccountId", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "AccountId", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
-            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_CreatedOn", Global.System.Data.SqlDbType.DateTime, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "CreatedOn", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
-            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_CreatedByEmployeeId", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "CreatedByEmployeeId", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
-            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_ModifiedOn", Global.System.Data.SqlDbType.DateTime, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "ModifiedOn", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
-            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_ModifiedByEmployeeId", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "ModifiedByEmployeeId", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
-            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_IsDisabled", Global.System.Data.SqlDbType.Bit, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "IsDisabled", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
-            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@IsNull_DefaultExpenseRate", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "DefaultExpenseRate", Global.System.Data.DataRowVersion.Original, true, Nothing, "", "", ""))
-            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_DefaultExpenseRate", Global.System.Data.SqlDbType.Float, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "DefaultExpenseRate", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
-            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_DisabledEditingOfRate", Global.System.Data.SqlDbType.Bit, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "DisabledEditingOfRate", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
-            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@IsNull_MasterAccountExpenseId", Global.System.Data.SqlDbType.Int, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "MasterAccountExpenseId", Global.System.Data.DataRowVersion.Original, true, Nothing, "", "", ""))
-            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@Original_MasterAccountExpenseId", Global.System.Data.SqlDbType.SmallInt, 0, Global.System.Data.ParameterDirection.Input, 0, 0, "MasterAccountExpenseId", Global.System.Data.DataRowVersion.Original, false, Nothing, "", "", ""))
-            Me._adapter.UpdateCommand.Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@AccountExpenseId", Global.System.Data.SqlDbType.Int, 4, Global.System.Data.ParameterDirection.Input, 0, 0, "AccountExpenseId", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
-        End Sub
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Private Sub InitConnection()
-            Me._connection = New Global.System.Data.SqlClient.SqlConnection()
-            Me._connection.ConnectionString = Global.TimeLive.Quickbooks.Integrator.My.MySettings.Default.TimeLiveDevConnectionString1
-        End Sub
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>  _
-        Private Sub InitCommandCollection()
-            Me._commandCollection = New Global.System.Data.SqlClient.SqlCommand(1) {}
-            Me._commandCollection(0) = New Global.System.Data.SqlClient.SqlCommand()
-            Me._commandCollection(0).Connection = Me.Connection
-            Me._commandCollection(0).CommandText = "SELECT AccountExpenseId, AccountExpenseName, AccountExpenseTypeId, IsBillable, Ac"& _ 
-                "countId, CreatedOn, CreatedByEmployeeId, ModifiedOn, ModifiedByEmployeeId, IsDis"& _ 
-                "abled, DefaultExpenseRate, DisabledEditingOfRate, MasterAccountExpenseId FROM db"& _ 
-                "o.AccountExpense"
-            Me._commandCollection(0).CommandType = Global.System.Data.CommandType.Text
-            Me._commandCollection(1) = New Global.System.Data.SqlClient.SqlCommand()
-            Me._commandCollection(1).Connection = Me.Connection
-            Me._commandCollection(1).CommandText = "SELECT AccountExpenseId"&Global.Microsoft.VisualBasic.ChrW(13)&Global.Microsoft.VisualBasic.ChrW(10)&"FROM AccountExpense"&Global.Microsoft.VisualBasic.ChrW(13)&Global.Microsoft.VisualBasic.ChrW(10)&"WHERE (AccountExpenseName = @Expens"& _ 
-                "eName)"
-            Me._commandCollection(1).CommandType = Global.System.Data.CommandType.Text
-            Me._commandCollection(1).Parameters.Add(New Global.System.Data.SqlClient.SqlParameter("@ExpenseName", Global.System.Data.SqlDbType.NVarChar, 200, Global.System.Data.ParameterDirection.Input, 0, 0, "AccountExpenseName", Global.System.Data.DataRowVersion.Current, false, Nothing, "", "", ""))
-        End Sub
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0"),  _
-         Global.System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter"),  _
-         Global.System.ComponentModel.DataObjectMethodAttribute(Global.System.ComponentModel.DataObjectMethodType.Fill, true)>  _
-        Public Overloads Overridable Function Fill(ByVal dataTable As TimeLiveDataSet.AccountExpenseDataTable) As Integer
-            Me.Adapter.SelectCommand = Me.CommandCollection(0)
-            If (Me.ClearBeforeFill = true) Then
-                dataTable.Clear
-            End If
-            Dim returnValue As Integer = Me.Adapter.Fill(dataTable)
-            Return returnValue
-        End Function
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0"),  _
-         Global.System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter"),  _
-         Global.System.ComponentModel.DataObjectMethodAttribute(Global.System.ComponentModel.DataObjectMethodType.[Select], true)>  _
-        Public Overloads Overridable Function GetData() As TimeLiveDataSet.AccountExpenseDataTable
-            Me.Adapter.SelectCommand = Me.CommandCollection(0)
-            Dim dataTable As TimeLiveDataSet.AccountExpenseDataTable = New TimeLiveDataSet.AccountExpenseDataTable()
-            Me.Adapter.Fill(dataTable)
-            Return dataTable
-        End Function
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0"),  _
-         Global.System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")>  _
-        Public Overloads Overridable Function Update(ByVal dataTable As TimeLiveDataSet.AccountExpenseDataTable) As Integer
-            Return Me.Adapter.Update(dataTable)
-        End Function
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0"),  _
-         Global.System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")>  _
-        Public Overloads Overridable Function Update(ByVal dataSet As TimeLiveDataSet) As Integer
-            Return Me.Adapter.Update(dataSet, "AccountExpense")
-        End Function
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0"),  _
-         Global.System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")>  _
-        Public Overloads Overridable Function Update(ByVal dataRow As Global.System.Data.DataRow) As Integer
-            Return Me.Adapter.Update(New Global.System.Data.DataRow() {dataRow})
-        End Function
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0"),  _
-         Global.System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")>  _
-        Public Overloads Overridable Function Update(ByVal dataRows() As Global.System.Data.DataRow) As Integer
-            Return Me.Adapter.Update(dataRows)
-        End Function
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0"),  _
-         Global.System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter"),  _
-         Global.System.ComponentModel.DataObjectMethodAttribute(Global.System.ComponentModel.DataObjectMethodType.Delete, true)>  _
-        Public Overloads Overridable Function Delete(ByVal Original_AccountExpenseId As Integer, ByVal Original_AccountExpenseName As String, ByVal Original_AccountExpenseTypeId As Integer, ByVal Original_IsBillable As Global.System.Nullable(Of Boolean), ByVal Original_AccountId As Integer, ByVal Original_CreatedOn As Date, ByVal Original_CreatedByEmployeeId As Integer, ByVal Original_ModifiedOn As Date, ByVal Original_ModifiedByEmployeeId As Integer, ByVal Original_IsDisabled As Boolean, ByVal Original_DefaultExpenseRate As Global.System.Nullable(Of Double), ByVal Original_DisabledEditingOfRate As Boolean, ByVal Original_MasterAccountExpenseId As Global.System.Nullable(Of Short)) As Integer
-            Me.Adapter.DeleteCommand.Parameters(0).Value = CType(Original_AccountExpenseId,Integer)
-            If (Original_AccountExpenseName Is Nothing) Then
-                Throw New Global.System.ArgumentNullException("Original_AccountExpenseName")
-            Else
-                Me.Adapter.DeleteCommand.Parameters(1).Value = CType(Original_AccountExpenseName,String)
-            End If
-            Me.Adapter.DeleteCommand.Parameters(2).Value = CType(Original_AccountExpenseTypeId,Integer)
-            If (Original_IsBillable.HasValue = true) Then
-                Me.Adapter.DeleteCommand.Parameters(3).Value = CType(0,Object)
-                Me.Adapter.DeleteCommand.Parameters(4).Value = CType(Original_IsBillable.Value,Boolean)
-            Else
-                Me.Adapter.DeleteCommand.Parameters(3).Value = CType(1,Object)
-                Me.Adapter.DeleteCommand.Parameters(4).Value = Global.System.DBNull.Value
-            End If
-            Me.Adapter.DeleteCommand.Parameters(5).Value = CType(Original_AccountId,Integer)
-            Me.Adapter.DeleteCommand.Parameters(6).Value = CType(Original_CreatedOn,Date)
-            Me.Adapter.DeleteCommand.Parameters(7).Value = CType(Original_CreatedByEmployeeId,Integer)
-            Me.Adapter.DeleteCommand.Parameters(8).Value = CType(Original_ModifiedOn,Date)
-            Me.Adapter.DeleteCommand.Parameters(9).Value = CType(Original_ModifiedByEmployeeId,Integer)
-            Me.Adapter.DeleteCommand.Parameters(10).Value = CType(Original_IsDisabled,Boolean)
-            If (Original_DefaultExpenseRate.HasValue = true) Then
-                Me.Adapter.DeleteCommand.Parameters(11).Value = CType(0,Object)
-                Me.Adapter.DeleteCommand.Parameters(12).Value = CType(Original_DefaultExpenseRate.Value,Double)
-            Else
-                Me.Adapter.DeleteCommand.Parameters(11).Value = CType(1,Object)
-                Me.Adapter.DeleteCommand.Parameters(12).Value = Global.System.DBNull.Value
-            End If
-            Me.Adapter.DeleteCommand.Parameters(13).Value = CType(Original_DisabledEditingOfRate,Boolean)
-            If (Original_MasterAccountExpenseId.HasValue = true) Then
-                Me.Adapter.DeleteCommand.Parameters(14).Value = CType(0,Object)
-                Me.Adapter.DeleteCommand.Parameters(15).Value = CType(Original_MasterAccountExpenseId.Value,Short)
-            Else
-                Me.Adapter.DeleteCommand.Parameters(14).Value = CType(1,Object)
-                Me.Adapter.DeleteCommand.Parameters(15).Value = Global.System.DBNull.Value
-            End If
-            Dim previousConnectionState As Global.System.Data.ConnectionState = Me.Adapter.DeleteCommand.Connection.State
-            If ((Me.Adapter.DeleteCommand.Connection.State And Global.System.Data.ConnectionState.Open)  _
-                        <> Global.System.Data.ConnectionState.Open) Then
-                Me.Adapter.DeleteCommand.Connection.Open
-            End If
-            Try 
-                Dim returnValue As Integer = Me.Adapter.DeleteCommand.ExecuteNonQuery
-                Return returnValue
-            Finally
-                If (previousConnectionState = Global.System.Data.ConnectionState.Closed) Then
-                    Me.Adapter.DeleteCommand.Connection.Close
-                End If
-            End Try
-        End Function
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0"),  _
-         Global.System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter"),  _
-         Global.System.ComponentModel.DataObjectMethodAttribute(Global.System.ComponentModel.DataObjectMethodType.Insert, true)>  _
-        Public Overloads Overridable Function Insert(ByVal AccountExpenseName As String, ByVal AccountExpenseTypeId As Integer, ByVal IsBillable As Global.System.Nullable(Of Boolean), ByVal AccountId As Integer, ByVal CreatedOn As Date, ByVal CreatedByEmployeeId As Integer, ByVal ModifiedOn As Date, ByVal ModifiedByEmployeeId As Integer, ByVal IsDisabled As Boolean, ByVal DefaultExpenseRate As Global.System.Nullable(Of Double), ByVal DisabledEditingOfRate As Boolean, ByVal MasterAccountExpenseId As Global.System.Nullable(Of Short)) As Integer
-            If (AccountExpenseName Is Nothing) Then
-                Throw New Global.System.ArgumentNullException("AccountExpenseName")
-            Else
-                Me.Adapter.InsertCommand.Parameters(0).Value = CType(AccountExpenseName,String)
-            End If
-            Me.Adapter.InsertCommand.Parameters(1).Value = CType(AccountExpenseTypeId,Integer)
-            If (IsBillable.HasValue = true) Then
-                Me.Adapter.InsertCommand.Parameters(2).Value = CType(IsBillable.Value,Boolean)
-            Else
-                Me.Adapter.InsertCommand.Parameters(2).Value = Global.System.DBNull.Value
-            End If
-            Me.Adapter.InsertCommand.Parameters(3).Value = CType(AccountId,Integer)
-            Me.Adapter.InsertCommand.Parameters(4).Value = CType(CreatedOn,Date)
-            Me.Adapter.InsertCommand.Parameters(5).Value = CType(CreatedByEmployeeId,Integer)
-            Me.Adapter.InsertCommand.Parameters(6).Value = CType(ModifiedOn,Date)
-            Me.Adapter.InsertCommand.Parameters(7).Value = CType(ModifiedByEmployeeId,Integer)
-            Me.Adapter.InsertCommand.Parameters(8).Value = CType(IsDisabled,Boolean)
-            If (DefaultExpenseRate.HasValue = true) Then
-                Me.Adapter.InsertCommand.Parameters(9).Value = CType(DefaultExpenseRate.Value,Double)
-            Else
-                Me.Adapter.InsertCommand.Parameters(9).Value = Global.System.DBNull.Value
-            End If
-            Me.Adapter.InsertCommand.Parameters(10).Value = CType(DisabledEditingOfRate,Boolean)
-            If (MasterAccountExpenseId.HasValue = true) Then
-                Me.Adapter.InsertCommand.Parameters(11).Value = CType(MasterAccountExpenseId.Value,Short)
-            Else
-                Me.Adapter.InsertCommand.Parameters(11).Value = Global.System.DBNull.Value
-            End If
-            Dim previousConnectionState As Global.System.Data.ConnectionState = Me.Adapter.InsertCommand.Connection.State
-            If ((Me.Adapter.InsertCommand.Connection.State And Global.System.Data.ConnectionState.Open)  _
-                        <> Global.System.Data.ConnectionState.Open) Then
-                Me.Adapter.InsertCommand.Connection.Open
-            End If
-            Try 
-                Dim returnValue As Integer = Me.Adapter.InsertCommand.ExecuteNonQuery
-                Return returnValue
-            Finally
-                If (previousConnectionState = Global.System.Data.ConnectionState.Closed) Then
-                    Me.Adapter.InsertCommand.Connection.Close
-                End If
-            End Try
-        End Function
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0"),  _
-         Global.System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter"),  _
-         Global.System.ComponentModel.DataObjectMethodAttribute(Global.System.ComponentModel.DataObjectMethodType.Update, true)>  _
-        Public Overloads Overridable Function Update( _
-                    ByVal AccountExpenseName As String,  _
-                    ByVal AccountExpenseTypeId As Integer,  _
-                    ByVal IsBillable As Global.System.Nullable(Of Boolean),  _
-                    ByVal AccountId As Integer,  _
-                    ByVal CreatedOn As Date,  _
-                    ByVal CreatedByEmployeeId As Integer,  _
-                    ByVal ModifiedOn As Date,  _
-                    ByVal ModifiedByEmployeeId As Integer,  _
-                    ByVal IsDisabled As Boolean,  _
-                    ByVal DefaultExpenseRate As Global.System.Nullable(Of Double),  _
-                    ByVal DisabledEditingOfRate As Boolean,  _
-                    ByVal MasterAccountExpenseId As Global.System.Nullable(Of Short),  _
-                    ByVal Original_AccountExpenseId As Integer,  _
-                    ByVal Original_AccountExpenseName As String,  _
-                    ByVal Original_AccountExpenseTypeId As Integer,  _
-                    ByVal Original_IsBillable As Global.System.Nullable(Of Boolean),  _
-                    ByVal Original_AccountId As Integer,  _
-                    ByVal Original_CreatedOn As Date,  _
-                    ByVal Original_CreatedByEmployeeId As Integer,  _
-                    ByVal Original_ModifiedOn As Date,  _
-                    ByVal Original_ModifiedByEmployeeId As Integer,  _
-                    ByVal Original_IsDisabled As Boolean,  _
-                    ByVal Original_DefaultExpenseRate As Global.System.Nullable(Of Double),  _
-                    ByVal Original_DisabledEditingOfRate As Boolean,  _
-                    ByVal Original_MasterAccountExpenseId As Global.System.Nullable(Of Short),  _
-                    ByVal AccountExpenseId As Integer) As Integer
-            If (AccountExpenseName Is Nothing) Then
-                Throw New Global.System.ArgumentNullException("AccountExpenseName")
-            Else
-                Me.Adapter.UpdateCommand.Parameters(0).Value = CType(AccountExpenseName,String)
-            End If
-            Me.Adapter.UpdateCommand.Parameters(1).Value = CType(AccountExpenseTypeId,Integer)
-            If (IsBillable.HasValue = true) Then
-                Me.Adapter.UpdateCommand.Parameters(2).Value = CType(IsBillable.Value,Boolean)
-            Else
-                Me.Adapter.UpdateCommand.Parameters(2).Value = Global.System.DBNull.Value
-            End If
-            Me.Adapter.UpdateCommand.Parameters(3).Value = CType(AccountId,Integer)
-            Me.Adapter.UpdateCommand.Parameters(4).Value = CType(CreatedOn,Date)
-            Me.Adapter.UpdateCommand.Parameters(5).Value = CType(CreatedByEmployeeId,Integer)
-            Me.Adapter.UpdateCommand.Parameters(6).Value = CType(ModifiedOn,Date)
-            Me.Adapter.UpdateCommand.Parameters(7).Value = CType(ModifiedByEmployeeId,Integer)
-            Me.Adapter.UpdateCommand.Parameters(8).Value = CType(IsDisabled,Boolean)
-            If (DefaultExpenseRate.HasValue = true) Then
-                Me.Adapter.UpdateCommand.Parameters(9).Value = CType(DefaultExpenseRate.Value,Double)
-            Else
-                Me.Adapter.UpdateCommand.Parameters(9).Value = Global.System.DBNull.Value
-            End If
-            Me.Adapter.UpdateCommand.Parameters(10).Value = CType(DisabledEditingOfRate,Boolean)
-            If (MasterAccountExpenseId.HasValue = true) Then
-                Me.Adapter.UpdateCommand.Parameters(11).Value = CType(MasterAccountExpenseId.Value,Short)
-            Else
-                Me.Adapter.UpdateCommand.Parameters(11).Value = Global.System.DBNull.Value
-            End If
-            Me.Adapter.UpdateCommand.Parameters(12).Value = CType(Original_AccountExpenseId,Integer)
-            If (Original_AccountExpenseName Is Nothing) Then
-                Throw New Global.System.ArgumentNullException("Original_AccountExpenseName")
-            Else
-                Me.Adapter.UpdateCommand.Parameters(13).Value = CType(Original_AccountExpenseName,String)
-            End If
-            Me.Adapter.UpdateCommand.Parameters(14).Value = CType(Original_AccountExpenseTypeId,Integer)
-            If (Original_IsBillable.HasValue = true) Then
-                Me.Adapter.UpdateCommand.Parameters(15).Value = CType(0,Object)
-                Me.Adapter.UpdateCommand.Parameters(16).Value = CType(Original_IsBillable.Value,Boolean)
-            Else
-                Me.Adapter.UpdateCommand.Parameters(15).Value = CType(1,Object)
-                Me.Adapter.UpdateCommand.Parameters(16).Value = Global.System.DBNull.Value
-            End If
-            Me.Adapter.UpdateCommand.Parameters(17).Value = CType(Original_AccountId,Integer)
-            Me.Adapter.UpdateCommand.Parameters(18).Value = CType(Original_CreatedOn,Date)
-            Me.Adapter.UpdateCommand.Parameters(19).Value = CType(Original_CreatedByEmployeeId,Integer)
-            Me.Adapter.UpdateCommand.Parameters(20).Value = CType(Original_ModifiedOn,Date)
-            Me.Adapter.UpdateCommand.Parameters(21).Value = CType(Original_ModifiedByEmployeeId,Integer)
-            Me.Adapter.UpdateCommand.Parameters(22).Value = CType(Original_IsDisabled,Boolean)
-            If (Original_DefaultExpenseRate.HasValue = true) Then
-                Me.Adapter.UpdateCommand.Parameters(23).Value = CType(0,Object)
-                Me.Adapter.UpdateCommand.Parameters(24).Value = CType(Original_DefaultExpenseRate.Value,Double)
-            Else
-                Me.Adapter.UpdateCommand.Parameters(23).Value = CType(1,Object)
-                Me.Adapter.UpdateCommand.Parameters(24).Value = Global.System.DBNull.Value
-            End If
-            Me.Adapter.UpdateCommand.Parameters(25).Value = CType(Original_DisabledEditingOfRate,Boolean)
-            If (Original_MasterAccountExpenseId.HasValue = true) Then
-                Me.Adapter.UpdateCommand.Parameters(26).Value = CType(0,Object)
-                Me.Adapter.UpdateCommand.Parameters(27).Value = CType(Original_MasterAccountExpenseId.Value,Short)
-            Else
-                Me.Adapter.UpdateCommand.Parameters(26).Value = CType(1,Object)
-                Me.Adapter.UpdateCommand.Parameters(27).Value = Global.System.DBNull.Value
-            End If
-            Me.Adapter.UpdateCommand.Parameters(28).Value = CType(AccountExpenseId,Integer)
-            Dim previousConnectionState As Global.System.Data.ConnectionState = Me.Adapter.UpdateCommand.Connection.State
-            If ((Me.Adapter.UpdateCommand.Connection.State And Global.System.Data.ConnectionState.Open)  _
-                        <> Global.System.Data.ConnectionState.Open) Then
-                Me.Adapter.UpdateCommand.Connection.Open
-            End If
-            Try 
-                Dim returnValue As Integer = Me.Adapter.UpdateCommand.ExecuteNonQuery
-                Return returnValue
-            Finally
-                If (previousConnectionState = Global.System.Data.ConnectionState.Closed) Then
-                    Me.Adapter.UpdateCommand.Connection.Close
-                End If
-            End Try
-        End Function
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0"),  _
-         Global.System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter"),  _
-         Global.System.ComponentModel.DataObjectMethodAttribute(Global.System.ComponentModel.DataObjectMethodType.Update, true)>  _
-        Public Overloads Overridable Function Update( _
-                    ByVal AccountExpenseName As String,  _
-                    ByVal AccountExpenseTypeId As Integer,  _
-                    ByVal IsBillable As Global.System.Nullable(Of Boolean),  _
-                    ByVal AccountId As Integer,  _
-                    ByVal CreatedOn As Date,  _
-                    ByVal CreatedByEmployeeId As Integer,  _
-                    ByVal ModifiedOn As Date,  _
-                    ByVal ModifiedByEmployeeId As Integer,  _
-                    ByVal IsDisabled As Boolean,  _
-                    ByVal DefaultExpenseRate As Global.System.Nullable(Of Double),  _
-                    ByVal DisabledEditingOfRate As Boolean,  _
-                    ByVal MasterAccountExpenseId As Global.System.Nullable(Of Short),  _
-                    ByVal Original_AccountExpenseId As Integer,  _
-                    ByVal Original_AccountExpenseName As String,  _
-                    ByVal Original_AccountExpenseTypeId As Integer,  _
-                    ByVal Original_IsBillable As Global.System.Nullable(Of Boolean),  _
-                    ByVal Original_AccountId As Integer,  _
-                    ByVal Original_CreatedOn As Date,  _
-                    ByVal Original_CreatedByEmployeeId As Integer,  _
-                    ByVal Original_ModifiedOn As Date,  _
-                    ByVal Original_ModifiedByEmployeeId As Integer,  _
-                    ByVal Original_IsDisabled As Boolean,  _
-                    ByVal Original_DefaultExpenseRate As Global.System.Nullable(Of Double),  _
-                    ByVal Original_DisabledEditingOfRate As Boolean,  _
-                    ByVal Original_MasterAccountExpenseId As Global.System.Nullable(Of Short)) As Integer
-            Return Me.Update(AccountExpenseName, AccountExpenseTypeId, IsBillable, AccountId, CreatedOn, CreatedByEmployeeId, ModifiedOn, ModifiedByEmployeeId, IsDisabled, DefaultExpenseRate, DisabledEditingOfRate, MasterAccountExpenseId, Original_AccountExpenseId, Original_AccountExpenseName, Original_AccountExpenseTypeId, Original_IsBillable, Original_AccountId, Original_CreatedOn, Original_CreatedByEmployeeId, Original_ModifiedOn, Original_ModifiedByEmployeeId, Original_IsDisabled, Original_DefaultExpenseRate, Original_DisabledEditingOfRate, Original_MasterAccountExpenseId, Original_AccountExpenseId)
-        End Function
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0"),  _
-         Global.System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")>  _
-        Public Overloads Overridable Function getExpenseIdFromName(ByVal ExpenseName As String) As Global.System.Nullable(Of Integer)
-            Dim command As Global.System.Data.SqlClient.SqlCommand = Me.CommandCollection(1)
-            If (ExpenseName Is Nothing) Then
-                Throw New Global.System.ArgumentNullException("ExpenseName")
-            Else
-                command.Parameters(0).Value = CType(ExpenseName,String)
-            End If
-            Dim previousConnectionState As Global.System.Data.ConnectionState = command.Connection.State
-            If ((command.Connection.State And Global.System.Data.ConnectionState.Open)  _
-                        <> Global.System.Data.ConnectionState.Open) Then
-                command.Connection.Open
-            End If
-            Dim returnValue As Object
-            Try 
-                returnValue = command.ExecuteScalar
-            Finally
-                If (previousConnectionState = Global.System.Data.ConnectionState.Closed) Then
-                    command.Connection.Close
-                End If
-            End Try
-            If ((returnValue Is Nothing)  _
-                        OrElse (returnValue.GetType Is GetType(Global.System.DBNull))) Then
-                Return New Global.System.Nullable(Of Integer)()
-            Else
-                Return New Global.System.Nullable(Of Integer)(CType(returnValue,Integer))
-            End If
-        End Function
     End Class
     
     '''<summary>
@@ -17188,11 +17304,11 @@ Namespace TimeLiveDataSetTableAdapters
         
         Private _accountEmployeeTimeEntryPeriodTableAdapter As AccountEmployeeTimeEntryPeriodTableAdapter
         
-        Private _accountExpenseEntryTableAdapter As AccountExpenseEntryTableAdapter
+        Private _accountExpenseTableAdapter As AccountExpenseTableAdapter
         
         Private _accountEmployeeExpenseSheetTableAdapter As AccountEmployeeExpenseSheetTableAdapter
         
-        Private _accountExpenseTableAdapter As AccountExpenseTableAdapter
+        Private _accountExpenseEntryTableAdapter As AccountExpenseEntryTableAdapter
         
         Private _backupDataSetBeforeUpdate As Boolean
         
@@ -17270,12 +17386,12 @@ Namespace TimeLiveDataSetTableAdapters
          Global.System.ComponentModel.EditorAttribute("Microsoft.VSDesigner.DataSource.Design.TableAdapterManagerPropertyEditor, Microso"& _ 
             "ft.VSDesigner, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3"& _ 
             "a", "System.Drawing.Design.UITypeEditor")>  _
-        Public Property AccountExpenseEntryTableAdapter() As AccountExpenseEntryTableAdapter
+        Public Property AccountExpenseTableAdapter() As AccountExpenseTableAdapter
             Get
-                Return Me._accountExpenseEntryTableAdapter
+                Return Me._accountExpenseTableAdapter
             End Get
             Set
-                Me._accountExpenseEntryTableAdapter = value
+                Me._accountExpenseTableAdapter = value
             End Set
         End Property
         
@@ -17298,12 +17414,12 @@ Namespace TimeLiveDataSetTableAdapters
          Global.System.ComponentModel.EditorAttribute("Microsoft.VSDesigner.DataSource.Design.TableAdapterManagerPropertyEditor, Microso"& _ 
             "ft.VSDesigner, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3"& _ 
             "a", "System.Drawing.Design.UITypeEditor")>  _
-        Public Property AccountExpenseTableAdapter() As AccountExpenseTableAdapter
+        Public Property AccountExpenseEntryTableAdapter() As AccountExpenseEntryTableAdapter
             Get
-                Return Me._accountExpenseTableAdapter
+                Return Me._accountExpenseEntryTableAdapter
             End Get
             Set
-                Me._accountExpenseTableAdapter = value
+                Me._accountExpenseEntryTableAdapter = value
             End Set
         End Property
         
@@ -17342,17 +17458,17 @@ Namespace TimeLiveDataSetTableAdapters
                             AndAlso (Not (Me._accountEmployeeTimeEntryPeriodTableAdapter.Connection) Is Nothing)) Then
                     Return Me._accountEmployeeTimeEntryPeriodTableAdapter.Connection
                 End If
-                If ((Not (Me._accountExpenseEntryTableAdapter) Is Nothing)  _
-                            AndAlso (Not (Me._accountExpenseEntryTableAdapter.Connection) Is Nothing)) Then
-                    Return Me._accountExpenseEntryTableAdapter.Connection
+                If ((Not (Me._accountExpenseTableAdapter) Is Nothing)  _
+                            AndAlso (Not (Me._accountExpenseTableAdapter.Connection) Is Nothing)) Then
+                    Return Me._accountExpenseTableAdapter.Connection
                 End If
                 If ((Not (Me._accountEmployeeExpenseSheetTableAdapter) Is Nothing)  _
                             AndAlso (Not (Me._accountEmployeeExpenseSheetTableAdapter.Connection) Is Nothing)) Then
                     Return Me._accountEmployeeExpenseSheetTableAdapter.Connection
                 End If
-                If ((Not (Me._accountExpenseTableAdapter) Is Nothing)  _
-                            AndAlso (Not (Me._accountExpenseTableAdapter.Connection) Is Nothing)) Then
-                    Return Me._accountExpenseTableAdapter.Connection
+                If ((Not (Me._accountExpenseEntryTableAdapter) Is Nothing)  _
+                            AndAlso (Not (Me._accountExpenseEntryTableAdapter.Connection) Is Nothing)) Then
+                    Return Me._accountExpenseEntryTableAdapter.Connection
                 End If
                 Return Nothing
             End Get
@@ -17379,13 +17495,13 @@ Namespace TimeLiveDataSetTableAdapters
                 If (Not (Me._accountEmployeeTimeEntryPeriodTableAdapter) Is Nothing) Then
                     count = (count + 1)
                 End If
-                If (Not (Me._accountExpenseEntryTableAdapter) Is Nothing) Then
+                If (Not (Me._accountExpenseTableAdapter) Is Nothing) Then
                     count = (count + 1)
                 End If
                 If (Not (Me._accountEmployeeExpenseSheetTableAdapter) Is Nothing) Then
                     count = (count + 1)
                 End If
-                If (Not (Me._accountExpenseTableAdapter) Is Nothing) Then
+                If (Not (Me._accountExpenseEntryTableAdapter) Is Nothing) Then
                     count = (count + 1)
                 End If
                 Return count
@@ -17405,15 +17521,6 @@ Namespace TimeLiveDataSetTableAdapters
                 If ((Not (updatedRows) Is Nothing)  _
                             AndAlso (0 < updatedRows.Length)) Then
                     result = (result + Me._accountEmployeeExpenseSheetTableAdapter.Update(updatedRows))
-                    allChangedRows.AddRange(updatedRows)
-                End If
-            End If
-            If (Not (Me._accountExpenseTableAdapter) Is Nothing) Then
-                Dim updatedRows() As Global.System.Data.DataRow = dataSet.AccountExpense.Select(Nothing, Nothing, Global.System.Data.DataViewRowState.ModifiedCurrent)
-                updatedRows = Me.GetRealUpdatedRows(updatedRows, allAddedRows)
-                If ((Not (updatedRows) Is Nothing)  _
-                            AndAlso (0 < updatedRows.Length)) Then
-                    result = (result + Me._accountExpenseTableAdapter.Update(updatedRows))
                     allChangedRows.AddRange(updatedRows)
                 End If
             End If
@@ -17453,6 +17560,15 @@ Namespace TimeLiveDataSetTableAdapters
                     allChangedRows.AddRange(updatedRows)
                 End If
             End If
+            If (Not (Me._accountExpenseTableAdapter) Is Nothing) Then
+                Dim updatedRows() As Global.System.Data.DataRow = dataSet.AccountExpense.Select(Nothing, Nothing, Global.System.Data.DataViewRowState.ModifiedCurrent)
+                updatedRows = Me.GetRealUpdatedRows(updatedRows, allAddedRows)
+                If ((Not (updatedRows) Is Nothing)  _
+                            AndAlso (0 < updatedRows.Length)) Then
+                    result = (result + Me._accountExpenseTableAdapter.Update(updatedRows))
+                    allChangedRows.AddRange(updatedRows)
+                End If
+            End If
             If (Not (Me._accountExpenseEntryTableAdapter) Is Nothing) Then
                 Dim updatedRows() As Global.System.Data.DataRow = dataSet.AccountExpenseEntry.Select(Nothing, Nothing, Global.System.Data.DataViewRowState.ModifiedCurrent)
                 updatedRows = Me.GetRealUpdatedRows(updatedRows, allAddedRows)
@@ -17477,14 +17593,6 @@ Namespace TimeLiveDataSetTableAdapters
                 If ((Not (addedRows) Is Nothing)  _
                             AndAlso (0 < addedRows.Length)) Then
                     result = (result + Me._accountEmployeeExpenseSheetTableAdapter.Update(addedRows))
-                    allAddedRows.AddRange(addedRows)
-                End If
-            End If
-            If (Not (Me._accountExpenseTableAdapter) Is Nothing) Then
-                Dim addedRows() As Global.System.Data.DataRow = dataSet.AccountExpense.Select(Nothing, Nothing, Global.System.Data.DataViewRowState.Added)
-                If ((Not (addedRows) Is Nothing)  _
-                            AndAlso (0 < addedRows.Length)) Then
-                    result = (result + Me._accountExpenseTableAdapter.Update(addedRows))
                     allAddedRows.AddRange(addedRows)
                 End If
             End If
@@ -17520,6 +17628,14 @@ Namespace TimeLiveDataSetTableAdapters
                     allAddedRows.AddRange(addedRows)
                 End If
             End If
+            If (Not (Me._accountExpenseTableAdapter) Is Nothing) Then
+                Dim addedRows() As Global.System.Data.DataRow = dataSet.AccountExpense.Select(Nothing, Nothing, Global.System.Data.DataViewRowState.Added)
+                If ((Not (addedRows) Is Nothing)  _
+                            AndAlso (0 < addedRows.Length)) Then
+                    result = (result + Me._accountExpenseTableAdapter.Update(addedRows))
+                    allAddedRows.AddRange(addedRows)
+                End If
+            End If
             If (Not (Me._accountExpenseEntryTableAdapter) Is Nothing) Then
                 Dim addedRows() As Global.System.Data.DataRow = dataSet.AccountExpenseEntry.Select(Nothing, Nothing, Global.System.Data.DataViewRowState.Added)
                 If ((Not (addedRows) Is Nothing)  _
@@ -17543,6 +17659,14 @@ Namespace TimeLiveDataSetTableAdapters
                 If ((Not (deletedRows) Is Nothing)  _
                             AndAlso (0 < deletedRows.Length)) Then
                     result = (result + Me._accountExpenseEntryTableAdapter.Update(deletedRows))
+                    allChangedRows.AddRange(deletedRows)
+                End If
+            End If
+            If (Not (Me._accountExpenseTableAdapter) Is Nothing) Then
+                Dim deletedRows() As Global.System.Data.DataRow = dataSet.AccountExpense.Select(Nothing, Nothing, Global.System.Data.DataViewRowState.Deleted)
+                If ((Not (deletedRows) Is Nothing)  _
+                            AndAlso (0 < deletedRows.Length)) Then
+                    result = (result + Me._accountExpenseTableAdapter.Update(deletedRows))
                     allChangedRows.AddRange(deletedRows)
                 End If
             End If
@@ -17575,14 +17699,6 @@ Namespace TimeLiveDataSetTableAdapters
                 If ((Not (deletedRows) Is Nothing)  _
                             AndAlso (0 < deletedRows.Length)) Then
                     result = (result + Me._accountPartyTableAdapter.Update(deletedRows))
-                    allChangedRows.AddRange(deletedRows)
-                End If
-            End If
-            If (Not (Me._accountExpenseTableAdapter) Is Nothing) Then
-                Dim deletedRows() As Global.System.Data.DataRow = dataSet.AccountExpense.Select(Nothing, Nothing, Global.System.Data.DataViewRowState.Deleted)
-                If ((Not (deletedRows) Is Nothing)  _
-                            AndAlso (0 < deletedRows.Length)) Then
-                    result = (result + Me._accountExpenseTableAdapter.Update(deletedRows))
                     allChangedRows.AddRange(deletedRows)
                 End If
             End If
@@ -17655,8 +17771,8 @@ Namespace TimeLiveDataSetTableAdapters
                 Throw New Global.System.ArgumentException("All TableAdapters managed by a TableAdapterManager must use the same connection s"& _ 
                         "tring.")
             End If
-            If ((Not (Me._accountExpenseEntryTableAdapter) Is Nothing)  _
-                        AndAlso (Me.MatchTableAdapterConnection(Me._accountExpenseEntryTableAdapter.Connection) = false)) Then
+            If ((Not (Me._accountExpenseTableAdapter) Is Nothing)  _
+                        AndAlso (Me.MatchTableAdapterConnection(Me._accountExpenseTableAdapter.Connection) = false)) Then
                 Throw New Global.System.ArgumentException("All TableAdapters managed by a TableAdapterManager must use the same connection s"& _ 
                         "tring.")
             End If
@@ -17665,8 +17781,8 @@ Namespace TimeLiveDataSetTableAdapters
                 Throw New Global.System.ArgumentException("All TableAdapters managed by a TableAdapterManager must use the same connection s"& _ 
                         "tring.")
             End If
-            If ((Not (Me._accountExpenseTableAdapter) Is Nothing)  _
-                        AndAlso (Me.MatchTableAdapterConnection(Me._accountExpenseTableAdapter.Connection) = false)) Then
+            If ((Not (Me._accountExpenseEntryTableAdapter) Is Nothing)  _
+                        AndAlso (Me.MatchTableAdapterConnection(Me._accountExpenseEntryTableAdapter.Connection) = false)) Then
                 Throw New Global.System.ArgumentException("All TableAdapters managed by a TableAdapterManager must use the same connection s"& _ 
                         "tring.")
             End If
@@ -17738,13 +17854,13 @@ Namespace TimeLiveDataSetTableAdapters
                         adaptersWithAcceptChangesDuringUpdate.Add(Me._accountEmployeeTimeEntryPeriodTableAdapter.Adapter)
                     End If
                 End If
-                If (Not (Me._accountExpenseEntryTableAdapter) Is Nothing) Then
-                    revertConnections.Add(Me._accountExpenseEntryTableAdapter, Me._accountExpenseEntryTableAdapter.Connection)
-                    Me._accountExpenseEntryTableAdapter.Connection = CType(workConnection,Global.System.Data.SqlClient.SqlConnection)
-                    Me._accountExpenseEntryTableAdapter.Transaction = CType(workTransaction,Global.System.Data.SqlClient.SqlTransaction)
-                    If Me._accountExpenseEntryTableAdapter.Adapter.AcceptChangesDuringUpdate Then
-                        Me._accountExpenseEntryTableAdapter.Adapter.AcceptChangesDuringUpdate = false
-                        adaptersWithAcceptChangesDuringUpdate.Add(Me._accountExpenseEntryTableAdapter.Adapter)
+                If (Not (Me._accountExpenseTableAdapter) Is Nothing) Then
+                    revertConnections.Add(Me._accountExpenseTableAdapter, Me._accountExpenseTableAdapter.Connection)
+                    Me._accountExpenseTableAdapter.Connection = CType(workConnection,Global.System.Data.SqlClient.SqlConnection)
+                    Me._accountExpenseTableAdapter.Transaction = CType(workTransaction,Global.System.Data.SqlClient.SqlTransaction)
+                    If Me._accountExpenseTableAdapter.Adapter.AcceptChangesDuringUpdate Then
+                        Me._accountExpenseTableAdapter.Adapter.AcceptChangesDuringUpdate = false
+                        adaptersWithAcceptChangesDuringUpdate.Add(Me._accountExpenseTableAdapter.Adapter)
                     End If
                 End If
                 If (Not (Me._accountEmployeeExpenseSheetTableAdapter) Is Nothing) Then
@@ -17756,13 +17872,13 @@ Namespace TimeLiveDataSetTableAdapters
                         adaptersWithAcceptChangesDuringUpdate.Add(Me._accountEmployeeExpenseSheetTableAdapter.Adapter)
                     End If
                 End If
-                If (Not (Me._accountExpenseTableAdapter) Is Nothing) Then
-                    revertConnections.Add(Me._accountExpenseTableAdapter, Me._accountExpenseTableAdapter.Connection)
-                    Me._accountExpenseTableAdapter.Connection = CType(workConnection,Global.System.Data.SqlClient.SqlConnection)
-                    Me._accountExpenseTableAdapter.Transaction = CType(workTransaction,Global.System.Data.SqlClient.SqlTransaction)
-                    If Me._accountExpenseTableAdapter.Adapter.AcceptChangesDuringUpdate Then
-                        Me._accountExpenseTableAdapter.Adapter.AcceptChangesDuringUpdate = false
-                        adaptersWithAcceptChangesDuringUpdate.Add(Me._accountExpenseTableAdapter.Adapter)
+                If (Not (Me._accountExpenseEntryTableAdapter) Is Nothing) Then
+                    revertConnections.Add(Me._accountExpenseEntryTableAdapter, Me._accountExpenseEntryTableAdapter.Connection)
+                    Me._accountExpenseEntryTableAdapter.Connection = CType(workConnection,Global.System.Data.SqlClient.SqlConnection)
+                    Me._accountExpenseEntryTableAdapter.Transaction = CType(workTransaction,Global.System.Data.SqlClient.SqlTransaction)
+                    If Me._accountExpenseEntryTableAdapter.Adapter.AcceptChangesDuringUpdate Then
+                        Me._accountExpenseEntryTableAdapter.Adapter.AcceptChangesDuringUpdate = false
+                        adaptersWithAcceptChangesDuringUpdate.Add(Me._accountExpenseEntryTableAdapter.Adapter)
                     End If
                 End If
                 '
@@ -17841,17 +17957,17 @@ Namespace TimeLiveDataSetTableAdapters
                     Me._accountEmployeeTimeEntryPeriodTableAdapter.Connection = CType(revertConnections(Me._accountEmployeeTimeEntryPeriodTableAdapter),Global.System.Data.SqlClient.SqlConnection)
                     Me._accountEmployeeTimeEntryPeriodTableAdapter.Transaction = Nothing
                 End If
-                If (Not (Me._accountExpenseEntryTableAdapter) Is Nothing) Then
-                    Me._accountExpenseEntryTableAdapter.Connection = CType(revertConnections(Me._accountExpenseEntryTableAdapter),Global.System.Data.SqlClient.SqlConnection)
-                    Me._accountExpenseEntryTableAdapter.Transaction = Nothing
+                If (Not (Me._accountExpenseTableAdapter) Is Nothing) Then
+                    Me._accountExpenseTableAdapter.Connection = CType(revertConnections(Me._accountExpenseTableAdapter),Global.System.Data.SqlClient.SqlConnection)
+                    Me._accountExpenseTableAdapter.Transaction = Nothing
                 End If
                 If (Not (Me._accountEmployeeExpenseSheetTableAdapter) Is Nothing) Then
                     Me._accountEmployeeExpenseSheetTableAdapter.Connection = CType(revertConnections(Me._accountEmployeeExpenseSheetTableAdapter),Global.System.Data.SqlClient.SqlConnection)
                     Me._accountEmployeeExpenseSheetTableAdapter.Transaction = Nothing
                 End If
-                If (Not (Me._accountExpenseTableAdapter) Is Nothing) Then
-                    Me._accountExpenseTableAdapter.Connection = CType(revertConnections(Me._accountExpenseTableAdapter),Global.System.Data.SqlClient.SqlConnection)
-                    Me._accountExpenseTableAdapter.Transaction = Nothing
+                If (Not (Me._accountExpenseEntryTableAdapter) Is Nothing) Then
+                    Me._accountExpenseEntryTableAdapter.Connection = CType(revertConnections(Me._accountExpenseEntryTableAdapter),Global.System.Data.SqlClient.SqlConnection)
+                    Me._accountExpenseEntryTableAdapter.Transaction = Nothing
                 End If
                 If (0 < adaptersWithAcceptChangesDuringUpdate.Count) Then
                     Dim adapters((adaptersWithAcceptChangesDuringUpdate.Count) - 1) As Global.System.Data.Common.DataAdapter

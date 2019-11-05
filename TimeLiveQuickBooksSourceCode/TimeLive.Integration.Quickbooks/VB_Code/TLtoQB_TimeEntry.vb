@@ -417,7 +417,7 @@ Public Class TLtoQB_TimeEntry
         'step1: prepare the request
         Dim msgSetRs As IMsgSetResponse
         Try
-            ProjectName = SetLength(ProjectName)
+            'ProjectName = SetLength(ProjectName)
             Dim msgSetRq As IMsgSetRequest = MAIN.SESSMANAGER.CreateMsgSetRequest("US", 2, 0)
             msgSetRq.Attributes.OnError = ENRqOnError.roeContinue
             Dim timeAdd As ITimeTrackingAdd = msgSetRq.AppendTimeTrackingAddRq
@@ -469,7 +469,7 @@ Public Class TLtoQB_TimeEntry
         'step1: prepare the request
         Dim msgSetRs As IMsgSetResponse
         Try
-            ProjectName = SetLength(ProjectName)
+            'ProjectName = SetLength(ProjectName)
             Dim msgSetRq As IMsgSetRequest = MAIN.SESSMANAGER.CreateMsgSetRequest("US", 2, 0)
             msgSetRq.Attributes.OnError = ENRqOnError.roeContinue
             Dim timeAdd As ITimeTrackingAdd = msgSetRq.AppendTimeTrackingAddRq
@@ -522,7 +522,7 @@ Public Class TLtoQB_TimeEntry
         'step1: prepare the request
         Dim msgSetRs As IMsgSetResponse
         Try
-            ProjectName = SetLength(ProjectName)
+            'ProjectName = SetLength(ProjectName)
             Dim msgSetRq As IMsgSetRequest = MAIN.SESSMANAGER.CreateMsgSetRequest("US", 2, 0)
             msgSetRq.Attributes.OnError = ENRqOnError.roeContinue
             Dim timeAdd As ITimeTrackingAdd = msgSetRq.AppendTimeTrackingAddRq
@@ -591,7 +591,7 @@ Public Class TLtoQB_TimeEntry
         'step1: prepare the request
         Dim msgSetRs As IMsgSetResponse
         Try
-            ItemName = SetLength(ItemName)
+            'ItemName = SetLength(ItemName)
             Dim msgSetRq As IMsgSetRequest = MAIN.SESSMANAGER.CreateMsgSetRequest("US", 2, 0)
             msgSetRq.Attributes.OnError = ENRqOnError.roeContinue
             Dim AccountAdd As IAccountAdd = msgSetRq.AppendAccountAddRq
