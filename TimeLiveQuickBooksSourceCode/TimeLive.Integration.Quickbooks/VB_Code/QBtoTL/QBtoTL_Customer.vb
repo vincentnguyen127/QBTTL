@@ -22,18 +22,18 @@ Public Class QBtoTL_Customer
         Public Fax As String
         Public Enabled As Boolean
 
-        Sub New(ByVal NewlyAdded_in As String, ByVal QB_Name_in As String, ByVal Email_in As String, ByVal QB_ID_in As String, ByVal Telephone1_in As String,
-                ByVal Fax_in As String, ModTime_in As String, CreateTime_in As String, Optional Enabled_In As Boolean = True)
+        Sub New(ByVal NewlyAdded As String, ByVal QB_Name As String, ByVal Email As String, ByVal QB_ID As String, ByVal Telephone1 As String,
+                ByVal Fax As String, ModTime As String, CreateTime As String, Optional Enabled As Boolean = True)
             RecSelect = False
-            NewlyAdded = NewlyAdded_in
-            QBModTime = ModTime_in
-            QBCreateTime = CreateTime_in
-            QB_Name = QB_Name_in
-            QB_ID = QB_ID_in
-            Email = Email_in
-            Telephone1 = Telephone1_in
-            Fax = Fax_in
-            Enabled = Enabled_In
+            Me.NewlyAdded = NewlyAdded
+            Me.QBModTime = ModTime
+            Me.QBCreateTime = CreateTime
+            Me.QB_Name = QB_Name
+            Me.QB_ID = QB_ID
+            Me.Email = Email
+            Me.Telephone1 = Telephone1
+            Me.Fax = Fax
+            Me.Enabled = Enabled
         End Sub
     End Class
 
@@ -78,10 +78,7 @@ Public Class QBtoTL_Customer
             Dim custRet As ICustomerRet
             'sets status bar; If no UI, then skip
             If UI Then
-                Dim pblength As Integer = If(custRetList Is Nothing, -1, custRetList.Count)
-                If pblength >= 0 Then
-                    My.Forms.MAIN.ProgressBar1.Maximum = pblength - 1
-                End If
+                My.Forms.MAIN.ProgressBar1.Maximum += If(custRetList Is Nothing, 0, custRetList.Count)
             End If
 
             For i As Integer = 0 To If(custRetList Is Nothing, -1, custRetList.Count - 1)

@@ -1,4 +1,12 @@
 ﻿Partial Class QB_TL_IDs
+
+    Partial Public Class ChargingRelationshipsDataTable
+        Private Sub ChargingRelationshipsDataTable_ChargingRelationshipsRowChanging(sender As Object, e As ChargingRelationshipsRowChangeEvent) Handles Me.ChargingRelationshipsRowChanging
+
+        End Sub
+
+    End Class
+
     Partial Public Class Items_SubItemsDataTable
     End Class
 

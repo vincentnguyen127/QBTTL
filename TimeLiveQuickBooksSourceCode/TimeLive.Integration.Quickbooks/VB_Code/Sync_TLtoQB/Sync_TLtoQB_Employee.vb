@@ -25,7 +25,8 @@ Public Class Sync_TLtoQB_Employee
             For n As Integer = 0 To objEmployeeArray.Length - 1
                 objEmployee = objEmployeeArray(n)
                 With objEmployee
-                    Dim create As Boolean = If(nameList Is Nothing, True, nameList.Contains(objEmployee.EmployeeName))
+                    Dim employeeName As String = If(MAIN.showNamesWithComma, objEmployee.LastName + ", " + objEmployee.FirstName, objEmployee.FirstName + " " + objEmployee.LastName)
+                    Dim create As Boolean = If(nameList Is Nothing, True, nameList.Contains(employeeName))
                     If create Then
                         ' Check if in QB, adds to QB and sync data table if not
                         If .IsVendor Then
@@ -81,9 +82,7 @@ Public Class Sync_TLtoQB_Employee
                 newMsgSetRq.Attributes.OnError = ENRqOnError.roeContinue
 
                 Dim create As Boolean = True
-                If UI Then
-                    create = MsgBox("New employee found in TimeLive: " + TLEmployeeName + ". Create in QuickBooks?", MsgBoxStyle.YesNo, "Warning!") = MsgBoxResult.Yes
-                End If
+                If UI Then create = MsgBox("New employee found in TimeLive: " + TLEmployeeName + ". Create in QuickBooks?", MsgBoxStyle.YesNo, "Warning!") = MsgBoxResult.Yes
 
                 If create Then
                     ' Add TL Employee to QB
@@ -93,28 +92,28 @@ Public Class Sync_TLtoQB_Employee
                     employAdd.MiddleName.SetValue(If(objEmployee.MiddleName = Nothing, "", objEmployee.MiddleName))
                     employAdd.HiredDate.SetValue(If(objEmployee.HiredDate = Nothing, Today, objEmployee.HiredDate))
                     employAdd.Phone.SetValue(If(objEmployee.Phone = Nothing, "", objEmployee.Phone))
-                    'employAdd.Mobile.SetValue(If(objEmployee.Mobile = Nothing, "", objEmployee.Mobile)) ' Errors for some reason
-                    ' Employee Address
-                    employAdd.EmployeeAddress.Addr1.SetValue(If(objEmployee.Address1 = Nothing, "", objEmployee.Address1))
+                    employAdd.SSN.SetValue("123-45-6789")
+                    'employAdd.Mobile.SetValue(If(objEmployee.Mobile = Nothing, "", objEmployee.Mobile)) ' Throws an error for some reason
+                    employAdd.EmployeeAddress.Addr1.SetValue(If(objEmployee.Address1 = Nothing, "123 Example Street", objEmployee.Address1))
                     employAdd.EmployeeAddress.Addr2.SetValue(If(objEmployee.Address2 = Nothing, "", objEmployee.Address2))
-                    employAdd.EmployeeAddress.City.SetValue(If(objEmployee.City = Nothing, "", objEmployee.City))
-                    employAdd.EmployeeAddress.PostalCode.SetValue(If(objEmployee.PostalCode = Nothing, "", objEmployee.PostalCode))
-                    Dim state As String = If(objEmployee.State = Nothing, "", If(objEmployee.State.Length = 2, objEmployee.State.ToUpper(), If(objEmployee.State.ToLower() = "maryland", "MD", "")))
-                    employAdd.EmployeeAddress.State.SetValue(If(objEmployee.State = Nothing, "", state))
+                    employAdd.EmployeeAddress.City.SetValue(If(objEmployee.City = Nothing, "Default", objEmployee.City))
+                    employAdd.EmployeeAddress.PostalCode.SetValue(If(objEmployee.PostalCode = Nothing, "12345", objEmployee.PostalCode))
+                    Dim state As String = If(objEmployee.State = Nothing, "MD", If(objEmployee.State.Length = 2, objEmployee.State.ToUpper(), "MD"))
+                    employAdd.EmployeeAddress.State.SetValue(state)
                     employAdd.EmployeeAddress.Country.SetValue(If(objEmployee.Country = Nothing, "", objEmployee.Country))
 
-                    'step2: send the request
                     msgSetRs = MAIN.SESSMANAGER.DoRequests(newMsgSetRq)
-
-                    ' Interpret the response
-                    Dim res As IResponse
-                    res = msgSetRs.ResponseList.GetAt(0)
+                    Dim res As IResponse = msgSetRs.ResponseList.GetAt(0)
 
                     If res.StatusSeverity = "Error" Then
-                        Throw New Exception(res.StatusMessage)
+                        If UI Then
+                            MsgBox("Error adding employee " + objEmployee.EmployeeName + " Error Message: " + res.StatusMessage, MsgBoxStyle.OkOnly, "Error Adding Employee to Quickbooks")
+                        Else
+                            Throw New Exception(res.StatusMessage)
+                        End If
+                    Else
+                        My.Forms.MAIN.History("Added Name: " + TLEmployeeName.ToString + " with TimeLive ID: " + TL_ID.ToString + " to QuickBooks", "N")
                     End If
-
-                    My.Forms.MAIN.History("Added Name: " + TLEmployeeName.ToString + " with TimeLive ID: " + TL_ID.ToString + " to QuickBooks", "N")
 
                     msgSetRq = MAIN.SESSMANAGER.CreateMsgSetRequest("US", 2, 0)
                     msgSetRq.Attributes.OnError = ENRqOnError.roeContinue

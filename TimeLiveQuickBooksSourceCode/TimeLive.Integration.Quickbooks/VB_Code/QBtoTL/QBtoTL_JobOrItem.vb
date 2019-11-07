@@ -22,21 +22,22 @@ Public Class QBtoTL_JobOrItem
         Public parent As String
         Public FullName As String
         Public subParentInt As Integer
-        Sub New(ByVal NewlyAdded_in As String, ByVal QB_Name_in As String, ByVal Email_in As String, ByVal QB_ID_in As String, ByVal Telephone1_in As String,
-                ByVal Fax_in As String, QBModTime_in As String, QBCreateTime_in As String, Is_parent_in As String, FullName_in As String, subParentInt_in As Integer)
-
-            RecSelect = False
-            QB_Name = QB_Name_in
-            NewlyAdded = NewlyAdded_in
-            QB_ID = QB_ID_in
-            QBModTime = QBModTime_in
-            QBCreateTime = QBCreateTime_in
-            Email = Email_in
-            Telephone1 = Telephone1_in
-            Fax = Fax_in
-            parent = Is_parent_in
-            FullName = FullName_in
-            subParentInt = subParentInt_in
+        Public Enabled As Boolean
+        Sub New(ByVal NewlyAdded As String, ByVal QB_Name As String, ByVal Email As String, ByVal QB_ID As String, ByVal Telephone1 As String, ByVal Fax As String,
+                ByVal QBModTime As String, ByVal QBCreateTime As String, ByVal Is_parent As String, ByVal FullName As String, ByVal subParentInt As Integer, ByVal Enabled As Boolean)
+            Me.RecSelect = False
+            Me.QB_Name = QB_Name
+            Me.NewlyAdded = NewlyAdded
+            Me.QB_ID = QB_ID
+            Me.QBModTime = QBModTime
+            Me.QBCreateTime = QBCreateTime
+            Me.Email = Email
+            Me.Telephone1 = Telephone1
+            Me.Fax = Fax
+            Me.parent = Is_parent
+            Me.FullName = FullName
+            Me.subParentInt = subParentInt
+            Me.Enabled = Enabled
         End Sub
     End Class
 
@@ -88,17 +89,15 @@ Public Class QBtoTL_JobOrItem
                 Dim ptRetList As ICustomerRetList
                 ptRetList = resp.Detail
 
-                'sets status bar, If no, UI skip
+                Dim pblength As Integer = If(ptRetList Is Nothing, 0, ptRetList.Count)
+
                 If UI Then
-                    Dim pblenth As Integer = If(ptRetList Is Nothing, -1, ptRetList.Count)
-                    If pblenth >= 0 Then
-                        My.Forms.MAIN.ProgressBar1.Maximum = pblenth - 1
-                    End If
+                    My.Forms.MAIN.ProgressBar1.Maximum += pblength
                 End If
 
                 ' Should only be 1 CustomerRet object returned
                 Dim ptRet As ICustomerRet
-                For i As Integer = 0 To If(ptRetList Is Nothing, -1, ptRetList.Count - 1)
+                For i As Integer = 0 To pblength - 1
 
                     ptRet = ptRetList.GetAt(i)
                     With ptRet
@@ -119,12 +118,13 @@ Public Class QBtoTL_JobOrItem
 
                                 ' will check which type data should be added 
                                 Job_subJobData.NoItems += 1
-                                Job_subJobData.DataArray.Add(New Job_Subjob(NewlyAdd, .Name.GetValue, EmailAddress, .ListID.GetValue, Telephone1, Fax, ModTime, CreateTime, PTArray(0).ToString, .FullName.GetValue, 0))
+                                Job_subJobData.DataArray.Add(New Job_Subjob(NewlyAdd, .Name.GetValue, EmailAddress, .ListID.GetValue, Telephone1, Fax, ModTime,
+                                                                            CreateTime, PTArray(0).ToString, .FullName.GetValue, 0, .IsActive.GetValue))
                             End If
                         End If
                     End With
                     If UI Then
-                        My.Forms.MAIN.ProgressBar1.Value = i
+                        My.Forms.MAIN.ProgressBar1.Value += 1
                     End If
                 Next
             End If
@@ -164,11 +164,10 @@ Public Class QBtoTL_JobOrItem
             End If
 
             'sets status bar, If no, UI skip
+            Dim pblenth As Integer = respList.Count
+
             If UI Then
-                Dim pblenth As Integer = respList.Count
-                If pblenth >= 0 Then
-                    My.Forms.MAIN.ProgressBar1.Maximum = pblenth - 1
-                End If
+                My.Forms.MAIN.ProgressBar1.Maximum += pblenth
             End If
 
             ' Should only expect 1 response
@@ -181,7 +180,7 @@ Public Class QBtoTL_JobOrItem
 
                 Dim ptRet As IItemServiceRet
 
-                For i As Integer = 0 To ptRetList.Count - 1
+                For i As Integer = 0 To pblenth - 1
                     ' Code below should be altered similarly to above
                     ptRet = ptRetList.GetAt(i)
                     With ptRet
@@ -192,7 +191,8 @@ Public Class QBtoTL_JobOrItem
                         Dim TL_ID_Count = ISQBID_In_DataTableForItems(name, .ListID.GetValue)
                         NewlyAdd = If(TL_ID_Count, "", "N") ' N if new
                         ItemData.NoItems += 1
-                        ItemData.DataArray.Add(New Job_Subjob(NewlyAdd, name, "", .ListID.GetValue, "", "", ModTime, CreateTime, "", .FullName.GetValue, .Sublevel.GetValue))
+                        ItemData.DataArray.Add(New Job_Subjob(NewlyAdd, name, "", .ListID.GetValue, "", "", ModTime,
+                                                              CreateTime, "", .FullName.GetValue, .Sublevel.GetValue, .IsActive.GetValue))
                     End With
                 Next
             End If

@@ -13,6 +13,7 @@ Public Class MAIN
     Private p_AccountId As String
     <ThreadStatic> Public Shared SESSMANAGER As QBSessionManager
     Public Shared colonReplacer = " --> "
+    Public Shared showNamesWithComma As Boolean = True
     Public Shared TIMERTHREAD As Threading.Thread
 
     Private LoggedIn As Boolean
@@ -287,6 +288,13 @@ Public Class MAIN
         End If
 
         Return False
+    End Function
+
+    Public Shared Function commaSeperatedNameFromName(ByVal name As String)
+        If name.Contains(",") Then Return name
+
+        Dim commaSepName As String = ""
+        Return commaSepName
     End Function
 
     Public Shared Function getTimeLiveEmployeeIDFromName(ByVal Name As String)
@@ -762,8 +770,8 @@ Public Class MAIN
         clear_grids()
         TabPageExpenseReport.Visible = True
         AttributeTabControl.SelectedIndex = 5
-        SyncFromLabel.Text = "Expense Sheets"
-        SyncToLabel.Text = "Expense Entries"
+        SyncFromLabel.Text = "Sheets"
+        SyncToLabel.Text = "Entries"
 
         Dim colNames As String() = {"Sheet ID", "Employee", "Description", "Date", "Entries"}
         For Each colName As String In colNames
@@ -867,6 +875,151 @@ Public Class MAIN
         Return items_read
     End Function
 
+    Private Function loadQBdata(ByVal QBtoTLRadioButton As RadioButton, ByVal Type As Integer, ByVal Data As Object, ByVal attribute As String, ByVal ItemLastSync As DateTime)
+        Dim QBDataGridView As DataGridView = If(QBtoTLRadioButton.Checked, DataGridView1, DataGridView2)
+
+        Dim colNamesQB As New List(Of String)(New String() {"Name", "Last Modified", "New"})
+        If Type = 13 Or Type = 14 Then colNamesQB.Insert(0, "Full Name")
+
+        For Each colName As String In colNamesQB
+            Dim col As New DataGridViewTextBoxColumn
+            col.Name = colName
+            QBDataGridView.Columns.Add(col)
+        Next
+
+        Dim readItems As Integer = 0
+
+        If Data Is Nothing Then
+            History("No QuickBooks " + attribute + " data", "n")
+        Else
+            ' Note: Currently only customer stored both active and inactive; If changed, then change this line accordingly
+            readItems = If(Type = 10, Data.NoItems - Data.NoInactive, Data.NoItems)
+
+            For Each element As Object In Data.DataArray
+                Dim result As Integer = DateTime.Compare(Convert.ToDateTime(element.QBModTime.ToString()), ItemLastSync)
+                If result >= 0 Then
+                    element.RecSelect = True
+                End If
+            Next
+            For Each element As Object In Data.DataArray
+                ' Do not display rows that are disabled
+                If Not element.Enabled Then
+                    Continue For
+                End If
+
+                ' Jobs/Subjobs and Items/Subitems show full name too
+                If Type = 13 Or Type = 14 Then
+                    Dim fullName As String = replaceColonsAndRemoveUnwantedSpaces(element.FullName.ToString())
+                    If QBtoTLRadioButton.Checked Then
+                        QBDataGridView.Rows.Add(element.RecSelect, fullName, element.QB_Name.ToString(), element.QBModTime.ToString(), element.NewlyAdded)
+                    Else
+                        QBDataGridView.Rows.Add(fullName, element.QB_Name.ToString(), element.QBModTime.ToString(), element.NewlyAdded)
+                    End If
+                Else
+                    Dim name As String = If(Type = 11 Or Type = 12, If(showNamesWithComma, element.LastName + ", " + element.FirstName, element.FirstName + " " + element.LastName), element.QB_Name)
+                    If QBtoTLRadioButton.Checked Then
+                        QBDataGridView.Rows.Add(element.RecSelect, name, element.QBModTime.ToString(), element.NewlyAdded)
+                    Else
+                        QBDataGridView.Rows.Add(name, element.QBModTime.ToString(), element.NewlyAdded)
+                    End If
+                End If
+                ProgressBar1.Value += 1
+            Next
+        End If
+        Return readItems
+    End Function
+
+    Private Function getNameAndIsNew(ByVal Type As Integer, ByVal element As Object, ByVal objServices As Object, ByVal objServices2 As Object, ByVal datagrid_row As DataGridViewRow,
+                                     ByVal CustomerAdapter As QB_TL_IDsTableAdapters.CustomersTableAdapter, ByVal EmployeeAdapter As QB_TL_IDsTableAdapters.EmployeesTableAdapter,
+                                     ByVal VendorAdapter As QB_TL_IDsTableAdapters.VendorsTableAdapter, ByVal Job_SubJobAdapter As QB_TL_IDsTableAdapters.Jobs_SubJobsTableAdapter,
+                                     ByVal Item_SubItemAdapter As QB_TL_IDsTableAdapters.Items_SubItemsTableAdapter)
+        Dim ID As Integer = 0
+        Dim name As String = ""
+        Dim isNew As String = ""
+
+        Select Case Type
+                ' .ClientID always returns 0, so always do: GetClientIdByName(.ClientName)
+                ' Customers
+            Case 10
+                name = element.ClientName
+                ID = objServices.GetClientIdByName(name)
+                isNew = If(CustomerAdapter.numCustomersWithTL_ID(ID), "", "N")
+
+                ' Employees
+            Case 11 ' Will need to change this a little bit
+                name = If(showNamesWithComma, element.LastName + ", " + element.FirstName, element.FirstName + " " + element.LastName)
+                ID = objServices.GetEmployeeId(element.EmployeeName)
+                ' Do not show vendors
+                If element.isVendor Then
+                    Return Nothing
+                End If
+                isNew = If(EmployeeAdapter.numEmployeesWithTL_ID(ID), "", "N")
+
+                ' Vendors 
+            Case 12
+                name = If(showNamesWithComma, element.LastName + ", " + element.FirstName, element.FirstName + " " + element.LastName)
+                ID = objServices.GetEmployeeId(element.EmployeeName)
+                ' Do not show employees
+                If Not element.isVendor Then
+                    Return Nothing
+                End If
+                isNew = If(VendorAdapter.numVendorsWithTL_ID(ID), "", "N")
+
+                ' Jobs/Subjobs
+            Case 13
+                If element.GetType Is (New Services.TimeLive.Projects.Project).GetType Then
+                    name = element.ClientName + MAIN.colonReplacer + element.projectName
+                    ID = objServices.GetProjectId(element.projectName)
+
+                    If element.projectName.contains(":") Then ' Case where project name contains name of task as well
+                        datagrid_row.DefaultCellStyle.BackColor = Color.LightYellow
+                    End If
+                Else
+                    Dim firstColon As Integer = element.JobParent.indexOf(":")
+                    Dim projectName As String = element.JobParent.substring(0, firstColon) + colonReplacer + element.JobParent.substring(firstColon + 1)
+                    name = projectName + MAIN.colonReplacer + element.TaskName
+                    ' Checks if it is formatted with Task in Project name, and Item in Task name
+
+                    If Sync_TLtoQB_JoborItem.storedAsTaskItem(element) Then
+                        datagrid_row.DefaultCellStyle.BackColor = Color.LightYellow
+                    Else
+                        name = name.Replace(":", MAIN.colonReplacer)
+                    End If
+
+                    Try
+                        ID = objServices2.GetTaskId(element.TaskName)
+                    Catch ex As System.Web.Services.Protocols.SoapException
+                        History("Could not get TL ID of TL task '" + name +
+                                                  "' Make sure that it has a 'code' attribute in TimeLive", "i")
+                        ID = -1
+                    End Try
+                End If
+
+                ' Do not show Items
+                If (Item_SubItemAdapter.numItemsSubItemsWithTL_ID(ID)) Then
+                    Return Nothing
+                End If
+                isNew = If(Job_SubJobAdapter.numTasksSubTasksWithTL_ID(ID), "", "N")
+
+                ' Items/SubItems
+            Case 14
+                If element.GetType Is (New Services.TimeLive.Projects.Project).GetType Then
+                    name = element.ClientName + MAIN.colonReplacer + element.projectName
+                    ID = objServices.GetProjectId(element.projectName)
+                Else
+                    name = element.TaskName
+                    ID = objServices2.GetTaskId(element.TaskName)
+                End If
+                ' Do not show Jobs
+                If Job_SubJobAdapter.numTasksSubTasksWithTL_ID(ID) Then
+                    Return Nothing
+                End If
+                isNew = If(Item_SubItemAdapter.numItemsSubItemsWithTL_ID(ID), "", "N")
+        End Select
+
+        Return {name, isNew}
+    End Function
+
     Private Function display_UI(Optional sender As Object = Nothing, Optional e As EventArgs = Nothing)
         If Not LoggedIn Then
             Return 0
@@ -875,16 +1028,20 @@ Public Class MAIN
         ShowEntitiesBtn.Visible = False
         SendEmailsButton.Visible = False
 
+        ' For QuickBooks Display
         Dim ItemLastSync As DateTime
-        Dim lastSync As String
-        Dim Data
-        Dim attribute As String
-        Dim QBtoTLRadioButton As RadioButton
+        Dim lastSync As String = ""
+        Dim Data = Nothing
+        Dim attribute As String = ""
+        Dim QBtoTLRadioButton As RadioButton = Nothing
 
         'TransferTimeButton.Visible = False
         EntitiesSelectAll.Visible = False
-        ' Unselect the select all check box
-        SelectAllCheckBox.Checked = False
+
+        ' For TimeLive Display
+        Dim TLItemsArray() As Object = {}
+        Dim objServices = Nothing
+        Dim objServices2 = Nothing
 
         Select Case Type
             ' Time Entries OR Expense Entires
@@ -894,6 +1051,12 @@ Public Class MAIN
                 Return display_ExpenseEntries_UI()
             ' Customers
             Case 10
+                'TimeLive Params
+                Dim objClientServices As Services.TimeLive.Clients.Clients = connect_TL_clients(p_token)
+                objServices = objClientServices
+                TLItemsArray = objServices.GetClients()
+                ProgressBar1.Maximum = TLItemsArray.Length
+                'QuickBooks Params
                 TabPageCustomers.Visible = True
                 AttributeTabControl.SelectedIndex = 0
                 lastSync = My.Settings.CustomerLastSync
@@ -904,6 +1067,12 @@ Public Class MAIN
 
             ' Employees
             Case 11
+                'TimeLive Params
+                Dim objEmployeeServices As Services.TimeLive.Employees.Employees = connect_TL_employees(p_token)
+                objServices = objEmployeeServices
+                TLItemsArray = objServices.GetEmployees()
+                ProgressBar1.Maximum = TLItemsArray.Length
+                'QuickBooks Params
                 TabPageEmployees.Visible = True
                 CustomerSyncDirection.Visible = True
                 AttributeTabControl.SelectedIndex = 1
@@ -915,6 +1084,12 @@ Public Class MAIN
 
             ' Vendors
             Case 12
+                'TimeLive Params
+                Dim objEmployeeServices As Services.TimeLive.Employees.Employees = connect_TL_employees(p_token)
+                objServices = objEmployeeServices
+                TLItemsArray = objServices.GetEmployees()
+                ProgressBar1.Maximum = TLItemsArray.Length
+                'QuickBooks Params
                 TabPageVendor.Visible = True
                 AttributeTabControl.SelectedIndex = 2
                 lastSync = My.Settings.VendorLastSync
@@ -923,25 +1098,32 @@ Public Class MAIN
                 attribute = "vendor"
                 QBtoTLRadioButton = QBtoTLVendorRadioButton
 
-            ' Jobs / Subjobs
-            Case 13
+            ' Jobs/SubJobs | Items/SubItems (Projects/Tasks in TimeLive)
+            Case 13, 14
+                'TimeLive Params
+                Dim list As New List(Of Object)
+                Dim objProjectServices As Services.TimeLive.Projects.Projects = connect_TL_projects(p_token)
+                objServices = objProjectServices
+                list.AddRange(objServices.GetProjects())
+                Dim objTaskServices As Services.TimeLive.Tasks.Tasks = connect_TL_tasks(p_token)
+                objServices2 = objTaskServices
+                list.AddRange(objServices2.GetTasks())
+                TLItemsArray = list.ToArray()
+                ProgressBar1.Maximum = TLItemsArray.Length
+                'QuickBooks Params
+                If Type = 13 Then
+                    lastSync = My.Settings.JobLastSync
+                    JobData = job_qbtotl.GetJobSubJobData(Me, p_token, True)
+                    attribute = "job/subjob"
+                Else
+                    lastSync = My.Settings.ItemlastSync
+                    JobData = job_qbtotl.GetItemSubItemData(Me, p_token, True)
+                    attribute = "item/subitem"
+                End If
                 TabPageJobsItems.Visible = True
                 AttributeTabControl.SelectedIndex = 3
-                lastSync = My.Settings.JobLastSync
-                JobData = job_qbtotl.GetJobSubJobData(Me, p_token, True)
-                Data = JobData
-                attribute = "job/subjob"
                 QBtoTLRadioButton = QBtoTLJobItemRadioButton
-
-            ' Items / SubItems
-            Case 14
-                TabPageJobsItems.Visible = True
-                AttributeTabControl.SelectedIndex = 3
-                lastSync = My.Settings.ItemlastSync
-                JobData = job_qbtotl.GetItemSubItemData(Me, p_token, True)
                 Data = JobData
-                attribute = "item/subitem"
-                QBtoTLRadioButton = QBtoTLJobItemRadioButton
             Case Else
                 Return 0
         End Select
@@ -955,128 +1137,24 @@ Public Class MAIN
             ItemLastSync = Convert.ToDateTime(lastSync)
         End If
 
+        ProgressBar1.Value = 0
+        ProgressBar1.Maximum = If(TLItemsArray Is Nothing, 0, TLItemsArray.Length) + Data.DataArray.Count
+
         History("Synchonizing modified " + attribute + " since: " + ItemLastSync.ToString(), "n")
         clear_grids()
-        '-----------------------------------------
-        'load grid for QuickBooks (might be easier way)
-        '-----------------------------------------
-
-        Dim QBDataGridView As DataGridView = If(QBtoTLRadioButton.Checked, DataGridView1, DataGridView2)
-        Dim TLDataGridView As DataGridView = If(QBtoTLRadioButton.Checked, DataGridView2, DataGridView1)
-
-        ' Add Full Name Column for Job/Subjob and Item/SubItem
-        If Type = 13 Or Type = 14 Then
-            Dim QBcol0 As New DataGridViewTextBoxColumn
-            QBcol0.Name = "Full Name"
-            QBDataGridView.Columns.Add(QBcol0)
-        End If
-
-        Dim QBcol1 As New DataGridViewTextBoxColumn
-        QBcol1.Name = "Name"
-        QBDataGridView.Columns.Add(QBcol1)
-        Dim QBcol2 As New DataGridViewTextBoxColumn
-        QBcol2.Name = "Last Modified"
-        QBDataGridView.Columns.Add(QBcol2)
-        Dim QBcol3 As New DataGridViewTextBoxColumn
-        QBcol3.Name = "New"
-        QBDataGridView.Columns.Add(QBcol3)
-
-        Dim readItems As Integer = 0
-
-        Dim element
-        If Data Is Nothing Then
-            History("No QuickBooks " + attribute + " data", "n")
-        Else
-            ' Note: Currently only customer stored both active and inactive; If changed, then change this line accordingly
-            readItems = If(Type = 10, Data.NoItems - Data.NoInactive, Data.NoItems)
-
-            For Each element In Data.DataArray
-                Dim result As Integer = DateTime.Compare(Convert.ToDateTime(element.QBModTime.ToString()),
-                ItemLastSync)
-                If result >= 0 Then
-                    element.RecSelect = True
-                End If
-            Next
-            For Each element In Data.DataArray
-                ' Currently only customer has the enabled field, if all do then remove if type = 10
-                If Type = 10 Then
-                    If Not element.Enabled Then
-                        Continue For
-                    End If
-                End If
-
-                ' Jobs/Subjobs and Items/Subitems show full name too
-                If Type = 13 Or Type = 14 Then
-                    Dim fullName As String = replaceColonsAndRemoveUnwantedSpaces(element.FullName.ToString())
-                    If QBtoTLRadioButton.Checked Then
-                        QBDataGridView.Rows.Add(element.RecSelect, fullName, element.QB_Name.ToString(), element.QBModTime.ToString(), element.NewlyAdded)
-                    Else
-                        QBDataGridView.Rows.Add(fullName, element.QB_Name.ToString(), element.QBModTime.ToString(), element.NewlyAdded)
-                    End If
-                Else
-                    If QBtoTLRadioButton.Checked Then
-                        QBDataGridView.Rows.Add(element.RecSelect, element.QB_Name.ToString(), element.QBModTime.ToString(), element.NewlyAdded)
-                    Else
-                        QBDataGridView.Rows.Add(element.QB_Name.ToString(), element.QBModTime.ToString(), element.NewlyAdded)
-                    End If
-                End If
-            Next
-        End If
+        Dim readItems As Integer = loadQBdata(QBtoTLRadioButton, Type, Data, attribute, ItemLastSync)
 
         '-----------------------------------------
         ' Load Grid for TimeLive
         '-----------------------------------------
-        Dim TLcol1 As New DataGridViewTextBoxColumn
-        TLcol1.Name = "Name"
-        TLDataGridView.Columns.Add(TLcol1)
+        Dim TLDataGridView As DataGridView = If(QBtoTLRadioButton.Checked, DataGridView2, DataGridView1)
 
-        Dim TLcol2 As New DataGridViewTextBoxColumn
-        TLcol2.Name = "New"
-        TLDataGridView.Columns.Add(TLcol2)
-
-        Dim TLItemsArray() As Object = {}
-
-        Dim objServices = Nothing
-        ' objServices2 only used for Jobs/Subjobs (and maybe items/subitems too), will be Tasks and objServices wil be projects
-        Dim objServices2 = Nothing
-
-        ' Initialize the Service and get all items of the specified attribute
-        Select Case Type
-            ' Customers
-            Case 10
-                Dim objClientServices As Services.TimeLive.Clients.Clients = connect_TL_clients(p_token)
-                objServices = objClientServices
-                TLItemsArray = objServices.GetClients()
-
-            ' Employees, Vendors
-            Case 11, 12
-                Dim objEmployeeServices As Services.TimeLive.Employees.Employees = connect_TL_employees(p_token)
-                objServices = objEmployeeServices
-                TLItemsArray = objServices.GetEmployees()
-
-            ' Jobs/SubJobs | Items/SubItems (Projects/Tasks in TimeLive)
-            Case 13, 14
-                Dim list As List(Of Object) = New List(Of Object)
-
-                Dim objProjectServices As Services.TimeLive.Projects.Projects = connect_TL_projects(p_token)
-                objServices = objProjectServices
-                TLItemsArray = objServices.GetProjects()
-                list.AddRange(TLItemsArray)
-
-                Dim objTaskServices As Services.TimeLive.Tasks.Tasks = connect_TL_tasks(p_token)
-                objServices2 = objTaskServices
-                list.AddRange(objServices2.GetTasks())
-
-                TLItemsArray = list.ToArray()
-
-        End Select
-
-        ' Populate the table based on the TimeLive elements
-        If ProgressBar1.Maximum = Nothing Then
-            ProgressBar1.Maximum = 0
-        End If
-
-        ProgressBar1.Maximum += If(TLItemsArray Is Nothing, 0, TLItemsArray.Length)
+        Dim colNamesTL As String() = {"Name", "New"}
+        For Each colName As String In colNamesTL
+            Dim col As New DataGridViewTextBoxColumn
+            col.Name = colName
+            TLDataGridView.Columns.Add(col)
+        Next
 
         If TLItemsArray Is Nothing Or TLItemsArray.Length = 0 Then
             History("No TimeLive " + attribute + " data", "n")
@@ -1088,92 +1166,14 @@ Public Class MAIN
         Dim Job_SubJobAdapter As New QB_TL_IDsTableAdapters.Jobs_SubJobsTableAdapter()
         Dim Item_SubItemAdapter As New QB_TL_IDsTableAdapters.Items_SubItemsTableAdapter()
 
-        For Each element In TLItemsArray
-            Dim ID As Integer = 0
-            Dim name As String = ""
-            Dim isNew As String = ""
+        For Each element As Object In TLItemsArray
             Dim datagrid_row As DataGridViewRow = New DataGridViewRow()
             datagrid_row.CreateCells(TLDataGridView)
 
-            Select Case Type
-                ' .ClientID always returns 0, so always do: GetClientIdByName(.ClientName)
-                ' Customers
-                Case 10
-                    name = element.ClientName
-                    ID = objServices.GetClientIdByName(name)
-                    isNew = If(CustomerAdapter.numCustomersWithTL_ID(ID), "", "N")
-
-                ' Employees
-                Case 11 ' Will need to change this a little bit
-                    name = element.EmployeeName
-                    ID = objServices.GetEmployeeId(name)
-                    ' Do not show vendors
-                    If (VendorAdapter.numVendorsWithTL_ID(ID) Or element.isVendor) Then
-                        Continue For
-                    End If
-                    isNew = If(EmployeeAdapter.numEmployeesWithTL_ID(ID), "", "N")
-
-                ' Vendors 
-                Case 12
-                    name = element.EmployeeName
-                    ID = objServices.GetEmployeeId(name)
-                    ' Do not show employees
-                    If (EmployeeAdapter.numEmployeesWithTL_ID(ID) Or Not element.isVendor) Then
-                        Continue For
-                    End If
-                    isNew = If(VendorAdapter.numVendorsWithTL_ID(ID), "", "N")
-
-                ' Jobs/Subjobs
-                Case 13
-                    If element.GetType Is (New Services.TimeLive.Projects.Project).GetType Then
-                        name = element.ClientName + MAIN.colonReplacer + element.projectName
-                        ID = objServices.GetProjectId(element.projectName)
-
-                        If element.projectName.contains(":") Then ' Case where project name contains name of task as well
-                            datagrid_row.DefaultCellStyle.BackColor = Color.LightYellow
-                        End If
-                    Else
-                        Dim firstColon As Integer = element.JobParent.indexOf(":")
-                        Dim projectName As String = element.JobParent.substring(0, firstColon) + colonReplacer + element.JobParent.substring(firstColon + 1)
-                        name = projectName + MAIN.colonReplacer + element.TaskName
-                        ' Checks if it is formatted with Task in Project name, and Item in Task name
-
-                        If Sync_TLtoQB_JoborItem.storedAsTaskItem(element) Then
-                            datagrid_row.DefaultCellStyle.BackColor = Color.LightYellow
-                        Else
-                            name = name.Replace(":", MAIN.colonReplacer)
-                        End If
-
-                        Try
-                            ID = objServices2.GetTaskId(element.TaskName)
-                        Catch ex As System.Web.Services.Protocols.SoapException
-                            History("Could not get TL ID of TL task '" + name +
-                                                      "' Make sure that it has a 'code' attribute in TimeLive", "i")
-                            ID = -1
-                        End Try
-                    End If
-
-                    ' Do not show Items
-                    If (Item_SubItemAdapter.numItemsSubItemsWithTL_ID(ID)) Then
-                        Continue For
-                    End If
-                    isNew = If(Job_SubJobAdapter.numTasksSubTasksWithTL_ID(ID), "", "N")
-
-                ' Items/SubItems
-                Case 14
-                    If element.GetType Is (New Services.TimeLive.Projects.Project).GetType Then
-                        name = element.ClientName + MAIN.colonReplacer + element.projectName
-                        ID = objServices.GetProjectId(element.projectName)
-                    Else
-                        name = element.TaskName
-                        ID = objServices2.GetTaskId(element.TaskName)
-                    End If
-                    ' Do not show Jobs
-                    If Job_SubJobAdapter.numTasksSubTasksWithTL_ID(ID) Then
-                        Continue For
-                    End If
-                    isNew = If(Item_SubItemAdapter.numItemsSubItemsWithTL_ID(ID), "", "N")
-            End Select
+            Dim nameAndIsNew = getNameAndIsNew(Type, element, objServices, objServices2, datagrid_row, CustomerAdapter, EmployeeAdapter, VendorAdapter, Job_SubJobAdapter, Item_SubItemAdapter)
+            If nameAndIsNew Is Nothing Then Continue For
+            Dim name As String = nameAndIsNew(0)
+            Dim isNew As String = nameAndIsNew(1)
 
             ' Checks if TLDataGridView is DataGridView1 or DataGridView2
             If QBtoTLRadioButton.Checked Then
@@ -1184,6 +1184,8 @@ Public Class MAIN
             TLDataGridView.Rows.Add(datagrid_row)
             ProgressBar1.Value += 1
         Next
+
+        SelectAllCheckBox.Checked = True
 
         System.Threading.Thread.Sleep(150)
         System.Windows.Forms.Application.DoEvents()
@@ -1830,7 +1832,6 @@ Public Class MAIN
         expenseReportData.combine(emplTLData)
 
         Dim TL_ExpenseSheets As New TimeLiveDataSetTableAdapters.AccountEmployeeExpenseSheetTableAdapter
-
         Dim isApproved As Boolean = TL_ExpenseSheets.isApproved(ExpenseSheetId)
         Dim isSubmitted As Boolean = TL_ExpenseSheets.isSubmitted(ExpenseSheetId)
         Dim isRejected As Boolean = TL_ExpenseSheets.isRejected(ExpenseSheetId)
@@ -1856,6 +1857,7 @@ Public Class MAIN
                         datagrid_row.Cells(0).ReadOnly = True
                         datagrid_row.DefaultCellStyle.BackColor = Color.LightGray
                     End If
+
                     DataGridView.Rows.Add(datagrid_row)
                 End With
             Next

@@ -24,21 +24,22 @@ Public Class QBtoTL_Vendor
         Public HiredDate As String
         Public Email As String
         Public IsVendorEligibleFor1099 As Boolean
+        Public Enabled As Boolean
 
-        Sub New(ByVal NewlyAdded_in As String, ByVal QB_Name_in As String, ByVal Email_in As String, ByVal QB_ID_in As String, ByVal FirstName_in As String,
-                ByVal LastName_in As String, ByVal HiredDate_in As String, QBModTime_in As String, QBCreateTime_in As String, IsVendorEligibleFor1099_in As Boolean)
-            RecSelect = False
-            QBModTime = QBModTime_in
-            NewlyAdded = NewlyAdded_in
-            QBCreateTime = QBCreateTime_in
-            QB_Name = QB_Name_in
-            QB_ID = QB_ID_in
-            Email = Email_in
-            FirstName = FirstName_in
-            LastName = LastName_in
-            HiredDate = HiredDate_in
-            IsVendorEligibleFor1099 = IsVendorEligibleFor1099_in
-
+        Sub New(ByVal NewlyAdded As String, ByVal QB_Name As String, ByVal Email As String, ByVal QB_ID As String, ByVal FirstName As String, ByVal LastName As String,
+                ByVal HiredDate As String, ByVal QBModTime As String, ByVal QBCreateTime As String, ByVal IsVendorEligibleFor1099 As Boolean, ByVal Enabled As Boolean)
+            Me.RecSelect = False
+            Me.QBModTime = QBModTime
+            Me.NewlyAdded = NewlyAdded
+            Me.QBCreateTime = QBCreateTime
+            Me.QB_Name = QB_Name
+            Me.QB_ID = QB_ID
+            Me.Email = Email
+            Me.FirstName = FirstName
+            Me.LastName = LastName
+            Me.HiredDate = HiredDate
+            Me.IsVendorEligibleFor1099 = IsVendorEligibleFor1099
+            Me.Enabled = Enabled
         End Sub
     End Class
 
@@ -50,7 +51,6 @@ Public Class QBtoTL_Vendor
         Dim ModTime As String
         Dim CreateTime As String
         Dim VendorData As New VendorDataStructureQB
-        Dim pblenth As Integer
         Dim NewlyAdd As String
 
         'step1: prepare the request
@@ -69,10 +69,8 @@ Public Class QBtoTL_Vendor
 
             Dim vendorrespList As IResponseList
             vendorrespList = vendormsgSetRs.ResponseList
-
             Dim vendorresp As IResponse
             vendorresp = vendorrespList.GetAt(0)
-
             Dim vendorRetList As IVendorRetList
             vendorRetList = vendorresp.Detail
 
@@ -80,12 +78,9 @@ Public Class QBtoTL_Vendor
 
             If vendorresp.StatusCode = 0 Then
                 If UI Then
-                    pblenth = If(vendorRetList Is Nothing, -1, vendorRetList.Count)
-                    If pblenth >= 0 Then
-                        My.Forms.MAIN.ProgressBar1.Maximum = pblenth - 1
-                    End If
+                    My.Forms.MAIN.ProgressBar1.Maximum += vendorRetListCount
                 End If
-                For i As Integer = 0 To If(vendorRetList Is Nothing, -1, vendorRetList.Count - 1)
+                For i As Integer = 0 To vendorRetListCount - 1
                     vendorRet = vendorRetList.GetAt(i)
                     With vendorRet
                         Dim syncElbVendor As Boolean = If(My.Settings.SyncElbVendor = "", False, My.Settings.SyncElbVendor)
@@ -100,12 +95,12 @@ Public Class QBtoTL_Vendor
                                 Dim TL_ID_Count = ISQBID_In_DataTable(.Name.GetValue, .ListID.GetValue)
                                 NewlyAdd = If(TL_ID_Count, "", "N") ' N if new
                                 VendorData.NoItems += 1
-                                VendorData.DataArray.Add(New Vendor(NewlyAdd, .Name.GetValue, EmailAddress, .ListID.GetValue, FirstName, LastName, "", ModTime, CreateTime, .IsVendorEligibleFor1099.GetValue))
+                                VendorData.DataArray.Add(New Vendor(NewlyAdd, .Name.GetValue, EmailAddress, .ListID.GetValue, FirstName, LastName, "", ModTime, CreateTime, .IsVendorEligibleFor1099.GetValue, .IsActive.GetValue))
                             End If
                         End If
                     End With
                     If UI Then
-                        My.Forms.MAIN.ProgressBar1.Value = i
+                        My.Forms.MAIN.ProgressBar1.Value += 1
                     End If
                 Next
             End If

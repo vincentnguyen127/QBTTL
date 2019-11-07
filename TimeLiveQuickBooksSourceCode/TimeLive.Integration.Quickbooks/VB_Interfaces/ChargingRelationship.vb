@@ -296,6 +296,11 @@ Public Class ChargingRelationship
                     End If
 
                     Dim ret = retList.GetAt(i)
+
+                    If Not ret.IsActive.GetValue Then
+                        Continue For
+                    End If
+
                     ' Full Name for Job/SubJob or Item/SubItem
                     Dim name As String = If(attribute = 4 Or attribute = 5, ret.FullName.GetValue.replace(":", MAIN.colonReplacer), ret.Name.GetValue)
 

@@ -9,7 +9,7 @@
     <OutputType>WinExe</OutputType>
     <StartupObject>TimeLive.Quickbooks.Integrator.My.MyApplication</StartupObject>
     <RootNamespace>TimeLive.Quickbooks.Integrator</RootNamespace>
-    <AssemblyName>ense</AssemblyName>
+    <AssemblyName>TeltriumQBtoTL</AssemblyName>
     <MyType>WindowsForms</MyType>
     <SccProjectName>SAK</SccProjectName>
     <SccLocalPath>SAK</SccLocalPath>
@@ -44,7 +44,7 @@
     <DefineDebug>true</DefineDebug>
     <DefineTrace>true</DefineTrace>
     <OutputPath>bin\Debug\</OutputPath>
-    <DocumentationFile>ense.xml</DocumentationFile>
+    <DocumentationFile>TeltriumQBtoTL.xml</DocumentationFile>
     <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022,42353,42354,42355</NoWarn>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
     <PlatformTarget>x86</PlatformTarget>
@@ -56,7 +56,7 @@
     <DefineTrace>true</DefineTrace>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
-    <DocumentationFile>ense.xml</DocumentationFile>
+    <DocumentationFile>TeltriumQBtoTL.xml</DocumentationFile>
     <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022,42353,42354,42355</NoWarn>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
     <Prefer32Bit>false</Prefer32Bit>

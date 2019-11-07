@@ -25,19 +25,21 @@ Public Class QBtoTL_Employee
         Public LastName As String
         Public HiredDate As String
         Public Email As String
+        Public Enabled As Boolean
 
-        Sub New(ByVal NewlyAdded_in As String, ByVal QB_Name_in As String, ByVal Email_in As String, ByVal QB_ID_in As String, ByVal FirstName_in As String,
-                ByVal LastName_in As String, ByVal HiredDate_in As String, ModTime_in As String, CreateTime_in As String)
+        Sub New(ByVal NewlyAdded As String, ByVal QB_Name As String, ByVal Email As String, ByVal QB_ID As String, ByVal FirstName As String,
+                ByVal LastName As String, ByVal HiredDate As String, ByVal ModTime As String, ByVal CreateTime As String, ByVal Enabled As Boolean)
             RecSelect = False
-            NewlyAdded = NewlyAdded_in
-            QBModTime = ModTime_in
-            QBCreateTime = CreateTime_in
-            QB_Name = QB_Name_in
-            QB_ID = QB_ID_in
-            Email = Email_in
-            FirstName = FirstName_in
-            LastName = LastName_in
-            HiredDate = HiredDate_in
+            Me.NewlyAdded = NewlyAdded
+            Me.QBModTime = ModTime
+            Me.QBCreateTime = CreateTime
+            Me.QB_Name = QB_Name
+            Me.QB_ID = QB_ID
+            Me.Email = Email
+            Me.FirstName = FirstName
+            Me.LastName = LastName
+            Me.HiredDate = HiredDate
+            Me.Enabled = Enabled
         End Sub
     End Class
 
@@ -83,7 +85,7 @@ Public Class QBtoTL_Employee
                 'sets status bar, If no, UI skip
                 Dim pblength As Integer = If(empRetList Is Nothing, 0, empRetList.Count)
                 If UI Then
-                    My.Forms.MAIN.ProgressBar1.Maximum = pblength
+                    My.Forms.MAIN.ProgressBar1.Maximum += pblength
                 End If
 
                 For i As Integer = 0 To pblength - 1
@@ -103,7 +105,7 @@ Public Class QBtoTL_Employee
 
                         ' will check which type data should be added 
                         EmployeeData.NoItems += 1
-                        EmployeeData.DataArray.Add(New Employee(NewlyAdd, .Name.GetValue, EmailAddress, .ListID.GetValue, FirstName, LastName, ModTime, CreateTime, HiredDate))
+                        EmployeeData.DataArray.Add(New Employee(NewlyAdd, .Name.GetValue, EmailAddress, .ListID.GetValue, FirstName, LastName, ModTime, CreateTime, HiredDate, .IsActive.GetValue))
                     End With
                     If UI Then
                         My.Forms.MAIN.ProgressBar1.Value = i + 1

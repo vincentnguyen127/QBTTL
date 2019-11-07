@@ -24,7 +24,8 @@ Public Class Sync_TLtoQB_Vendor
             For n As Integer = 0 To objEmployeeArray.Length - 1
                 objEmployee = objEmployeeArray(n)
                 With objEmployee
-                    Dim create As Boolean = If(nameList Is Nothing, True, nameList.Contains(objEmployee.EmployeeName))
+                    Dim employeeName As String = If(MAIN.showNamesWithComma, objEmployee.LastName + ", " + objEmployee.FirstName, objEmployee.FirstName + " " + objEmployee.LastName)
+                    Dim create As Boolean = If(nameList Is Nothing, True, nameList.Contains(employeeName))
                     If .IsVendor And create Then
                         numSynced += If(checkQBVendorExist(.EmployeeName.ToString, .EmployeeId, objEmployee, UI), 0, 1)
                     End If
