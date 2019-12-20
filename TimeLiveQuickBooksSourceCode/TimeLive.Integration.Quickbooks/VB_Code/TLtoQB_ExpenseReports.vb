@@ -102,28 +102,47 @@ Public Class TLtoQB_ExpenseReports
         End Sub
     End Class
 
+    Private Function removeSpacesNearSemiColons(tempProjectName As String)
+        Dim projectNameSplit As String() = tempProjectName.Split(":")
+        Dim projectName As String = ""
+        For Each subProject As String In projectNameSplit
+            projectName = projectName + ":" + subProject.Trim
+        Next
+
+        Return projectName.Substring(1)
+    End Function
+
+    Private Function getQBProjectName(timeLiveID As Integer, projectObj As Services.TimeLive.Projects.Projects, clientAdapter As QB_TL_IDsTableAdapters.CustomersTableAdapter)
+        Dim projectNamesWithId As Object() = projectObj.GetProjectNameByProjectId(timeLiveID)
+        If projectNamesWithId.Length = 0 Then
+            Return ""
+        End If
+
+        Dim clientName As String = clientAdapter.GetQB_NameFromTL_ID(projectNamesWithId(0).ClientId.ToString)
+        Dim tempProjectName As String = clientName + ":" + projectNamesWithId(0).ProjectName
+        Return removeSpacesNearSemiColons(tempProjectName)
+    End Function
+
     Public Function GetExpenseReportTLData(ExpenseSheetId As Guid, ByVal EmployeeName As String, ByVal ExpenseSheetDate As Date, MainForm As MAIN, ByVal token As String, UI As Boolean) As ExpenseReportDataStructureQB
         Dim ExpenseReportData As New ExpenseReportDataStructureQB
         Dim expenseReports As TLtoQB_ExpenseReports = New TLtoQB_ExpenseReports
         Dim temp As String = Nothing
 
         Try
-            Dim objExpenseReportDB As New TimeLiveDataSetTableAdapters.AccountExpenseEntryTableAdapter
+            Dim projectObj As Services.TimeLive.Projects.Projects = MAIN.connect_TL_projects(token)
             Dim expenseObj As Services.TimeLive.ExpenseEntries.ExpenseEntries = MAIN.connect_TL_expense_reports(token)
             Dim expenseReportsBySheetId = expenseObj.GetExpenseEntriesByExpenseSheetIdForMobile(ExpenseSheetId)
-            Dim projectTableAdapter As New QB_TL_IDsTableAdapters.Jobs_SubJobsTableAdapter
 
-            'sets status bar. If no, UI skip
             If UI Then
                 My.Forms.MAIN.ProgressBar1.Maximum = expenseReportsBySheetId.Length
                 My.Forms.MAIN.ProgressBar1.Value = 0
             End If
 
+            Dim clientAdapter As New QB_TL_IDsTableAdapters.CustomersTableAdapter()
             For n As Integer = 0 To expenseReportsBySheetId.Length - 1
                 Dim objExpenseEntry As Services.TimeLive.ExpenseEntries.ExpenseEntryListForMobile = expenseReportsBySheetId(n)
                 With objExpenseEntry
-                    Dim projectName As String = projectTableAdapter.GetNamefromTLID(.AccountClientId)
-                    If projectName IsNot Nothing Then projectName = projectName.Trim
+                    Dim projectName As String = getQBProjectName(.AccountProjectId, projectObj, clientAdapter)
                     ExpenseReportData.add(New ExpenseReport(.AccountExpenseEntryId, EmployeeName, .AccountExpenseName, .ExpenseEntryDescription, projectName, .ExpenseEntryAmount, ExpenseSheetDate, ExpenseSheetId))
                 End With
 
@@ -268,7 +287,7 @@ Public Class TLtoQB_ExpenseReports
             addDebitToJournalEntry(journalEntry, Math.Round(projectToTotalExpenses(projectName), 2), projectName, sheet.Description)
         Next
 
-        Dim errorMsg As String = "Error inserting expenses for " + sheet.EmployeeName + " on " + sheet.EmployeeName + " into quickbooks."
+        Dim errorMsg As String = "Error inserting expenses for " + sheet.EmployeeName + " on " + sheet.SheetDate.ToString + " into quickbooks."
         performRequest(msgSetRq, errorMsg, UI)
 
         Return numAdded

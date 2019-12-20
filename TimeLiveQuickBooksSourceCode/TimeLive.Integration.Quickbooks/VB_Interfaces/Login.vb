@@ -25,7 +25,7 @@ Public Class Login
             objSoapHeader.Password = txtPassword.Text
             objServices.SecuredWebServiceHeaderValue = objSoapHeader
             objSoapHeader.AuthenticatedToken = objServices.AuthenticateUser()
-            objServices.GetAccountId(txtUsername.Text, txtPassword.Text)
+            AccountId = objServices.GetAccountId(txtUsername.Text, txtPassword.Text)
             If objSoapHeader.AuthenticatedToken Is Nothing Then
                 MsgBox("Invalid Username or Password")
             Else
