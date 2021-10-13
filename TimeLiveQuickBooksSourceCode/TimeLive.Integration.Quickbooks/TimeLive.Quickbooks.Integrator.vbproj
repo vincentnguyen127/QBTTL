@@ -172,6 +172,24 @@
     </Compile>
     <Compile Include="VB_Code\TLtoQB_ExpenseReports.vb" />
     <Compile Include="VB_Code\TLtoQB_TimeEntry.vb" />
+    <Compile Include="VB_Interfaces\NewForm.Designer.vb">
+      <DependentUpon>NewForm.vb</DependentUpon>
+    </Compile>
+    <Compile Include="VB_Interfaces\NewForm.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="VB_Interfaces\QuickBooksForm.Designer.vb">
+      <DependentUpon>QuickBooksForm.vb</DependentUpon>
+    </Compile>
+    <Compile Include="VB_Interfaces\QuickBooksForm.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="VB_Interfaces\TimeLiveForm.Designer.vb">
+      <DependentUpon>TimeLiveForm.vb</DependentUpon>
+    </Compile>
+    <Compile Include="VB_Interfaces\TimeLiveForm.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Web References\Services.TimeLive.Clients\Reference.vb">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -230,6 +248,15 @@
       <LastGenOutput>Resources.Designer.vb</LastGenOutput>
       <CustomToolNamespace>My.Resources</CustomToolNamespace>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="VB_Interfaces\NewForm.resx">
+      <DependentUpon>NewForm.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="VB_Interfaces\QuickBooksForm.resx">
+      <DependentUpon>QuickBooksForm.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="VB_Interfaces\TimeLiveForm.resx">
+      <DependentUpon>TimeLiveForm.vb</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

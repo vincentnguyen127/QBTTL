@@ -57,6 +57,8 @@ Public Class MAIN
 
             History("Welcome to QB2TL Sync by Telrium", "n")
 
+
+
             Using newForm = New Login()
                 If DialogResult.OK = newForm.ShowDialog() Then
                     p_token = newForm.ReturnValue1
@@ -1468,10 +1470,13 @@ Public Class MAIN
 
         Dim ItemsProcessed As Integer = 0
 
+
+
         If Type = 10 Then 'When processing customers
             Reset_Checked_Customer_Value(customerData)
             If QBtoTLCustomerRadioButton.Checked Then
                 QB_Set_Selected_Customer()
+
                 ItemsProcessed = customer_qbtotl.QBTransferCustomerToTL(customerData, p_token, Me, True)
                 History(ItemsProcessed.ToString() + " TimeLive record" + If(ItemsProcessed = 1, " was", "s were") + " created or updated", "i")
                 My.Settings.CustomerLastSync = DateTime.Now.ToString()
@@ -1697,6 +1702,64 @@ Public Class MAIN
                     customerData.DataArray.ForEach(
                         Sub(customer)
                             If customer.QB_Name = row.Cells("Name").Value.ToString Then
+
+                                ' modify customer functionality 
+                                Dim qbName, qbID, qbModeTime, qbCreateTime, email, telephone1, Fax As String
+
+                                Using newForm As ModifyForm = New ModifyForm()
+
+                                    newForm.TxtQbName.Text = customer.QB_Name
+                                    newForm.TxtQbId.Text = customer.QB_ID
+                                    newForm.txtQbModTime.Text = customer.QBModTime
+                                    newForm.txtQbCreateTime.Text = customer.QBCreateTime
+                                    newForm.txtEmail.Text = customer.Email
+                                    newForm.txtTelephone1.Text = customer.Telephone1
+                                    newForm.txtFax.Text = customer.Fax
+
+                                    newForm.txtQbModTime.Enabled = False
+                                    newForm.txtQbCreateTime.Enabled = False
+                                    newForm.TxtQbId.Enabled = False
+                                    If DialogResult.OK = newForm.ShowDialog() Then
+                                        qbName = newForm.TxtQbName.Text
+                                        'qbID = newForm.TxtQbId.Text
+                                        qbModeTime = newForm.txtQbModTime.Text
+                                        qbCreateTime = newForm.txtQbCreateTime.Text
+                                        email = newForm.txtEmail.Text
+                                        telephone1 = newForm.txtTelephone1.Text
+                                        Fax = newForm.txtFax.Text
+                                    Else
+                                        Exit Sub
+                                    End If
+                                    ' newForm.ShowDialog()
+
+
+                                End Using
+
+                                'EmailAddress = If(.Email Is Nothing, "", .Email.GetValue)
+
+
+                                If Not String.IsNullOrEmpty(qbName) Then
+                                    customer.QB_Name = qbName
+                                End If
+
+                                If Not String.IsNullOrEmpty(qbID) Then
+                                    customer.QB_ID = qbID
+                                End If
+
+                                If Not String.IsNullOrEmpty(qbModeTime) Then
+                                    customer.QBModTime = qbModeTime
+                                End If
+
+                                If Not String.IsNullOrEmpty(qbCreateTime) Then
+                                    customer.QBCreateTime = qbCreateTime
+                                End If
+
+                                If Not String.IsNullOrEmpty(email) Then
+                                    customer.Email = email
+                                End If
+
+
+                                '/////////////////
                                 customer.RecSelect = True
                             End If
                         End Sub
@@ -2044,4 +2107,160 @@ Public Class MAIN
         ChargingRelationship.Owner = Me
         ChargingRelationship.Show()
     End Sub
+
+    Private Sub btnNew_Click(sender As Object, e As EventArgs) Handles btnNew.Click
+        Dim tlName, tlEmail, tlFx, tlTel1, qbName, qbEmail, qbFx, qbTel1 As String
+        Dim UI As Boolean
+
+        Using newForm As NewForm = New NewForm()
+
+            If DialogResult.OK = newForm.ShowDialog() Then
+                tlName = newForm.TxtTimeLiveName.Text.Trim
+                tlEmail = newForm.txtTimeLiveEmail.Text.Trim
+                tlFx = newForm.txtTimeLiveFax.Text.Trim
+                tlTel1 = newForm.txtTimeLiveTelephone1.Text.Trim
+                ' get input data for Quickbooks
+                qbName = newForm.TxtQbName.Text.Trim
+                qbEmail = newForm.txtQbEmail.Text.Trim
+                qbFx = newForm.txtQbFax.Text.Trim
+                qbTel1 = newForm.txtQbTelephone1.Text.Trim
+                UI = True
+            Else
+                Exit Sub
+            End If
+            ' newForm.ShowDialog()
+            ' get input data for Timelive
+
+
+        End Using
+
+        Try
+            Dim msgSetRq As IMsgSetRequest = MAIN.SESSMANAGER.CreateMsgSetRequest("US", 2, 0)
+
+            msgSetRq.Attributes.OnError = ENRqOnError.roeContinue
+            Dim CustomerQueryRq As ICustomerQuery = msgSetRq.AppendCustomerQueryRq
+
+            CustomerQueryRq.ORCustomerListQuery.FullNameList.Add(qbName)
+            Dim msgSetRs As IMsgSetResponse = MAIN.SESSMANAGER.DoRequests(msgSetRq)
+
+            Dim response As IResponse = msgSetRs.ResponseList.GetAt(0)
+            Dim custRetList As ICustomerRetList
+            custRetList = response.Detail
+
+            Dim inQB As Boolean = Not custRetList Is Nothing
+
+            If Not inQB Then
+                Dim newMsgSetRq As IMsgSetRequest = MAIN.SESSMANAGER.CreateMsgSetRequest("US", 2, 0)
+
+                newMsgSetRq.Attributes.OnError = ENRqOnError.roeContinue
+                Dim create As Boolean = True
+
+                If UI Then
+                    create = MsgBox("New customer " + qbName + " is not existing in QuickBooks" + ". Create in QuickBooks?", MsgBoxStyle.YesNo, "Warning!") = MsgBoxResult.Yes
+                End If
+
+                If create Then
+
+                    ' Add new Customer to QB
+                    Dim custAdd As ICustomerAdd = newMsgSetRq.AppendCustomerAddRq
+                    custAdd.CompanyName.SetValue(qbName.ToString)
+                    custAdd.Name.SetValue(qbName.ToString)
+                    custAdd.Fax.SetValue(If(String.IsNullOrEmpty(qbFx), "", qbFx))
+                    custAdd.Email.SetValue(If(String.IsNullOrEmpty(qbEmail), "", qbEmail))
+                    custAdd.Phone.SetValue(If(String.IsNullOrEmpty(qbTel1), "", qbTel1))
+
+                    'step2: send the request
+                    msgSetRs = MAIN.SESSMANAGER.DoRequests(newMsgSetRq)
+
+                    ' Interpret the response
+                    Dim res As IResponse
+                    res = msgSetRs.ResponseList.GetAt(0)
+
+                    If res.StatusSeverity = "Error" Then
+                        Throw New Exception(res.StatusMessage)
+                    End If
+
+
+                End If
+                ' Make request again to make sure that we added to QB, then add to sync table
+                msgSetRq = MAIN.SESSMANAGER.CreateMsgSetRequest("US", 2, 0)
+                msgSetRq.Attributes.OnError = ENRqOnError.roeContinue
+
+                CustomerQueryRq = msgSetRq.AppendCustomerQueryRq
+                CustomerQueryRq.ORCustomerListQuery.FullNameList.Add(qbName)
+
+                msgSetRs = MAIN.SESSMANAGER.DoRequests(msgSetRq)
+                response = msgSetRs.ResponseList.GetAt(0)
+                custRetList = response.Detail
+            End If
+
+        Catch ex As Exception
+            Throw ex
+        End Try
+
+        ' request data from quickbook to get new customer that just created to create customer in timelive 
+        Dim msgSetRsTimeLive As IMsgSetResponse
+        Try
+            Dim msgSetRq As IMsgSetRequest = MAIN.SESSMANAGER.CreateMsgSetRequest("US", 2, 0) 'sessManager
+            msgSetRq.Attributes.OnError = ENRqOnError.roeContinue
+
+            '-------------------------1---------------------------------------------
+            Dim synccust As ICustomerQuery = msgSetRq.AppendCustomerQueryRq
+            synccust.ORCustomerListQuery.CustomerListFilter.ActiveStatus.SetValue(ENActiveStatus.asAll) 'asActiveOnly)
+
+            'step2: send the request
+            msgSetRsTimeLive = MAIN.SESSMANAGER.DoRequests(msgSetRq) 'sessManager
+            Dim respList As IResponseList = msgSetRsTimeLive.ResponseList
+            If (respList Is Nothing Or respList.GetAt(0).Detail Is Nothing) Then
+                ' no data
+                My.Forms.MAIN.History("No customers found...", "i")
+
+            End If
+
+            ' Should only expect 1 response
+            Dim resp As IResponse
+            resp = respList.GetAt(0)
+            'If (resp.StatusCode = 0) Then
+
+            '----------------------2------------------------------------------------
+            Dim custRetList As ICustomerRetList
+            custRetList = resp.Detail
+            '------------------------------3-----------------------------------
+            Dim custRet As ICustomerRet
+            For i As Integer = 0 To If(custRetList Is Nothing, -1, custRetList.Count - 1)
+                custRet = custRetList.GetAt(i)
+                With custRet
+                    If .ParentRef Is Nothing Then
+                        Dim abc = custRet.Name.GetValue
+                        'If custRet.Name.GetValue.ToString = qbName Then
+                        If String.Compare(custRet.Name.GetValue.ToString, qbName) = 0 Then
+                            Dim objCustomerDataStructureQB As QBtoTL_Customer.CustomerDataStructureQB = New QBtoTL_Customer.CustomerDataStructureQB()
+                            Dim objQbCustomer As QBtoTL_Customer.Customer = New QBtoTL_Customer.Customer("", tlName, tlEmail, custRet.ListID.GetValue, tlTel1, tlFx, custRet.TimeModified.GetValue.ToString, custRet.TimeCreated.GetValue.ToString, True)
+                            objQbCustomer.Enabled = True
+                            objQbCustomer.RecSelect = True
+                            objCustomerDataStructureQB.DataArray.Add(objQbCustomer)
+
+                            customer_qbtotl.QBTransferCustomerToTL(objCustomerDataStructureQB, p_token, Me, False)
+                            Exit For
+                        End If
+                    End If
+
+                End With
+                If UI Then
+                    My.Forms.MAIN.ProgressBar1.Value = i
+                End If
+            Next
+        Catch ex As Exception
+
+        End Try
+        ' Refresh after processing
+        My.Forms.MAIN.History("Refreshing after processing", "n")
+        display_UI()
+
+        System.Threading.Thread.Sleep(150)
+        System.Windows.Forms.Application.DoEvents()
+        ProgressBar1.Value = 0
+
+    End Sub
+
 End Class

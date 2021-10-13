@@ -114,4 +114,28 @@ Public Class Login
             .TimeLive_Integration_Quickbooks_Services_TimeLiveServices = WSURL + WebServiceUtilities.GetTimeLiveServiceURL
         End With
     End Sub
+
+    Private Sub txtURL_TextChanged(sender As Object, e As EventArgs) Handles txtURL.TextChanged
+
+    End Sub
+
+    Private Sub lblPassword_Click(sender As Object, e As EventArgs) Handles lblPassword.Click
+
+    End Sub
+
+    Private Sub lblUsername_Click(sender As Object, e As EventArgs) Handles lblUsername.Click
+
+    End Sub
+
+    Private Sub Label1_Click(sender As Object, e As EventArgs) Handles Label1.Click
+
+    End Sub
+
+    Private Sub txtPassword_TextChanged(sender As Object, e As EventArgs) Handles txtPassword.TextChanged
+
+    End Sub
+
+    Private Sub txtUsername_TextChanged(sender As Object, e As EventArgs) Handles txtUsername.TextChanged
+
+    End Sub
 End Class

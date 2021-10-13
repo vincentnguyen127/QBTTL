@@ -43,14 +43,14 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="TeltriumQBtoTL.exe" size="2037248">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="TeltriumQBtoTL.exe" size="2060288">
       <assemblyIdentity name="TeltriumQBtoTL" version="1.0.0.0" language="neutral" processorArchitecture="x86" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>7Wu2a4f3oyQINV3osq4AwEh/T1He7qsaiwxhrqcY6zo=</dsig:DigestValue>
+        <dsig:DigestValue>4fa0FuGLf/uShHLVvOGgbdXS/0oC2iz8ZYk73+yhey8=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
@@ -72,13 +72,13 @@
       <dsig:DigestValue>Z4jcD1d39TG9yTwvMCdWXrbaRD75TIBxu1cF1hiWsnM=</dsig:DigestValue>
     </hash>
   </file>
-  <file name="TeltriumQBtoTL.exe.config" size="9032">
+  <file name="TeltriumQBtoTL.exe.config" size="9979">
     <hash>
       <dsig:Transforms>
         <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
       </dsig:Transforms>
       <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-      <dsig:DigestValue>2N5uDnnPd6r4EGt00PKXtMn8G1CbhpQ6RXKMW/9oN50=</dsig:DigestValue>
+      <dsig:DigestValue>nfpE7p3EByP5ozFjhqu+nPNUYqykcBB6FB9LAWOeRWM=</dsig:DigestValue>
     </hash>
   </file>
   <file name="TimeLiveQuickBooks.ico" size="370070">

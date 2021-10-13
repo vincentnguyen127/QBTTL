@@ -6,6 +6,22 @@ TeltriumQBtoTL
 </name>
 </assembly>
 <members>
+<member name="T:TimeLive.Quickbooks.Integrator.My.Resources.Resources">
+<summary>
+  A strongly-typed resource class, for looking up localized strings, etc.
+</summary>
+</member>
+<member name="P:TimeLive.Quickbooks.Integrator.My.Resources.Resources.ResourceManager">
+<summary>
+  Returns the cached ResourceManager instance used by this class.
+</summary>
+</member>
+<member name="P:TimeLive.Quickbooks.Integrator.My.Resources.Resources.Culture">
+<summary>
+  Overrides the current thread's CurrentUICulture property for all
+  resource lookups using this strongly typed resource class.
+</summary>
+</member>
 <member name="M:TimeLive.Quickbooks.Integrator.ChargingRelationship.QBData(System.Int32)">
  <summary>
  Helper Function to get the desired data for the attribute
@@ -730,22 +746,6 @@ Used to sort self-referenced table's rows
  </summary>
  <param name="sender"></param>
  <param name="e"></param>
-</member>
-<member name="T:TimeLive.Quickbooks.Integrator.My.Resources.Resources">
-<summary>
-  A strongly-typed resource class, for looking up localized strings, etc.
-</summary>
-</member>
-<member name="P:TimeLive.Quickbooks.Integrator.My.Resources.Resources.ResourceManager">
-<summary>
-  Returns the cached ResourceManager instance used by this class.
-</summary>
-</member>
-<member name="P:TimeLive.Quickbooks.Integrator.My.Resources.Resources.Culture">
-<summary>
-  Overrides the current thread's CurrentUICulture property for all
-  resource lookups using this strongly typed resource class.
-</summary>
 </member>
 <member name="M:TimeLive.Quickbooks.Integrator.TLtoQB_TimeEntry.ISTLID_In_DataTable(System.String)">
  <summary>

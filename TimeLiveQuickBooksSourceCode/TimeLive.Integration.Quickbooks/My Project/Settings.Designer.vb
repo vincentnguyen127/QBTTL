@@ -601,8 +601,8 @@ Namespace My
         <Global.System.Configuration.ApplicationScopedSettingAttribute(),  _
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.Configuration.SpecialSettingAttribute(Global.System.Configuration.SpecialSetting.ConnectionString),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("Data Source=SQL01;Initial Catalog=TL_QB_Relationship_Dev;User ID=sa;Password=$bas"& _ 
-            "eline00")>  _
+         Global.System.Configuration.DefaultSettingValueAttribute("Data Source=SQL01;Initial Catalog=TL_QB_Relationship_Dev;User ID=dev1teltrium@tel"& _ 
+            "trium.com;Password=4April1983!")>  _
         Public ReadOnly Property TL_QB_RelationshipConnectionString() As String
             Get
                 Return CType(Me("TL_QB_RelationshipConnectionString"),String)
@@ -612,8 +612,8 @@ Namespace My
         <Global.System.Configuration.ApplicationScopedSettingAttribute(),  _
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.Configuration.SpecialSettingAttribute(Global.System.Configuration.SpecialSetting.ConnectionString),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("Data Source=teltriumsrv3;Initial Catalog=TimeLive;User ID=sa;Password=$baseline00"& _ 
-            "")>  _
+         Global.System.Configuration.DefaultSettingValueAttribute("Data Source=teltriumsrv3;Initial Catalog=TimeLive;User ID=dev1teltrium@teltrium.c"& _ 
+            "om;Password=4April1983!")>  _
         Public ReadOnly Property TimeLiveDevConnectionString() As String
             Get
                 Return CType(Me("TimeLiveDevConnectionString"),String)
@@ -636,7 +636,7 @@ Namespace My
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.Configuration.SpecialSettingAttribute(Global.System.Configuration.SpecialSetting.ConnectionString),  _
          Global.System.Configuration.DefaultSettingValueAttribute("Data Source=SQL01.teltrium.local;Initial Catalog=TimeLiveDev;Persist Security Inf"& _ 
-            "o=True;User ID=sa;Password=$baseline00")>  _
+            "o=True;User ID=dev1teltrium@teltrium.com;Password=4April1983!")>  _
         Public ReadOnly Property TimeLiveDevConnectionString1() As String
             Get
                 Return CType(Me("TimeLiveDevConnectionString1"),String)

@@ -56,6 +56,7 @@ Partial Class MAIN
         Me.TLtoQBVendorRadioButton = New System.Windows.Forms.RadioButton()
         Me.AttributeTabControl = New System.Windows.Forms.TabControl()
         Me.TabPageCustomers = New System.Windows.Forms.TabPage()
+        Me.btnNew = New System.Windows.Forms.Button()
         Me.RefreshCustomers = New System.Windows.Forms.Button()
         Me.CustomerSyncDirection = New System.Windows.Forms.GroupBox()
         Me.TLtoQBCustomerRadioButton = New System.Windows.Forms.RadioButton()
@@ -135,9 +136,10 @@ Partial Class MAIN
         'RefreshJobsOrItems
         '
         Me.RefreshJobsOrItems.Image = CType(resources.GetObject("RefreshJobsOrItems.Image"), System.Drawing.Image)
-        Me.RefreshJobsOrItems.Location = New System.Drawing.Point(368, 13)
+        Me.RefreshJobsOrItems.Location = New System.Drawing.Point(491, 16)
+        Me.RefreshJobsOrItems.Margin = New System.Windows.Forms.Padding(4)
         Me.RefreshJobsOrItems.Name = "RefreshJobsOrItems"
-        Me.RefreshJobsOrItems.Size = New System.Drawing.Size(60, 58)
+        Me.RefreshJobsOrItems.Size = New System.Drawing.Size(80, 71)
         Me.RefreshJobsOrItems.TabIndex = 4
         Me.RefreshJobsOrItems.UseVisualStyleBackColor = True
         '
@@ -145,9 +147,11 @@ Partial Class MAIN
         '
         Me.JobItemSyncDirection.Controls.Add(Me.TLtoQBJobItemRadioButton)
         Me.JobItemSyncDirection.Controls.Add(Me.QBtoTLJobItemRadioButton)
-        Me.JobItemSyncDirection.Location = New System.Drawing.Point(6, 6)
+        Me.JobItemSyncDirection.Location = New System.Drawing.Point(8, 7)
+        Me.JobItemSyncDirection.Margin = New System.Windows.Forms.Padding(4)
         Me.JobItemSyncDirection.Name = "JobItemSyncDirection"
-        Me.JobItemSyncDirection.Size = New System.Drawing.Size(344, 69)
+        Me.JobItemSyncDirection.Padding = New System.Windows.Forms.Padding(4)
+        Me.JobItemSyncDirection.Size = New System.Drawing.Size(459, 85)
         Me.JobItemSyncDirection.TabIndex = 3
         Me.JobItemSyncDirection.TabStop = False
         Me.JobItemSyncDirection.Text = "Sync Direction"
@@ -155,9 +159,10 @@ Partial Class MAIN
         'TLtoQBJobItemRadioButton
         '
         Me.TLtoQBJobItemRadioButton.AutoSize = True
-        Me.TLtoQBJobItemRadioButton.Location = New System.Drawing.Point(170, 28)
+        Me.TLtoQBJobItemRadioButton.Location = New System.Drawing.Point(227, 34)
+        Me.TLtoQBJobItemRadioButton.Margin = New System.Windows.Forms.Padding(4)
         Me.TLtoQBJobItemRadioButton.Name = "TLtoQBJobItemRadioButton"
-        Me.TLtoQBJobItemRadioButton.Size = New System.Drawing.Size(68, 17)
+        Me.TLtoQBJobItemRadioButton.Size = New System.Drawing.Size(78, 20)
         Me.TLtoQBJobItemRadioButton.TabIndex = 1
         Me.TLtoQBJobItemRadioButton.TabStop = True
         Me.TLtoQBJobItemRadioButton.Text = "TL -> QB"
@@ -167,9 +172,10 @@ Partial Class MAIN
         '
         Me.QBtoTLJobItemRadioButton.AutoSize = True
         Me.QBtoTLJobItemRadioButton.Checked = True
-        Me.QBtoTLJobItemRadioButton.Location = New System.Drawing.Point(29, 28)
+        Me.QBtoTLJobItemRadioButton.Location = New System.Drawing.Point(39, 34)
+        Me.QBtoTLJobItemRadioButton.Margin = New System.Windows.Forms.Padding(4)
         Me.QBtoTLJobItemRadioButton.Name = "QBtoTLJobItemRadioButton"
-        Me.QBtoTLJobItemRadioButton.Size = New System.Drawing.Size(68, 17)
+        Me.QBtoTLJobItemRadioButton.Size = New System.Drawing.Size(78, 20)
         Me.QBtoTLJobItemRadioButton.TabIndex = 0
         Me.QBtoTLJobItemRadioButton.TabStop = True
         Me.QBtoTLJobItemRadioButton.Text = "QB -> TL"
@@ -178,18 +184,20 @@ Partial Class MAIN
         'SyncFromLabel
         '
         Me.SyncFromLabel.AutoSize = True
-        Me.SyncFromLabel.Location = New System.Drawing.Point(7, 10)
+        Me.SyncFromLabel.Location = New System.Drawing.Point(9, 12)
+        Me.SyncFromLabel.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.SyncFromLabel.Name = "SyncFromLabel"
-        Me.SyncFromLabel.Size = New System.Drawing.Size(65, 13)
+        Me.SyncFromLabel.Size = New System.Drawing.Size(81, 16)
         Me.SyncFromLabel.TabIndex = 41
         Me.SyncFromLabel.Text = "QuickBooks"
         '
         'SyncToLabel
         '
         Me.SyncToLabel.AutoSize = True
-        Me.SyncToLabel.Location = New System.Drawing.Point(3, 10)
+        Me.SyncToLabel.Location = New System.Drawing.Point(4, 12)
+        Me.SyncToLabel.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.SyncToLabel.Name = "SyncToLabel"
-        Me.SyncToLabel.Size = New System.Drawing.Size(50, 13)
+        Me.SyncToLabel.Size = New System.Drawing.Size(64, 16)
         Me.SyncToLabel.TabIndex = 43
         Me.SyncToLabel.Text = "TimeLive"
         '
@@ -198,7 +206,8 @@ Partial Class MAIN
         Me.SplitContainer1.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
             Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.SplitContainer1.Location = New System.Drawing.Point(6, 3)
+        Me.SplitContainer1.Location = New System.Drawing.Point(8, 4)
+        Me.SplitContainer1.Margin = New System.Windows.Forms.Padding(4)
         Me.SplitContainer1.Name = "SplitContainer1"
         '
         'SplitContainer1.Panel1
@@ -214,16 +223,18 @@ Partial Class MAIN
         Me.SplitContainer1.Panel2.Controls.Add(Me.EntitiesSelectAll)
         Me.SplitContainer1.Panel2.Controls.Add(Me.SyncToLabel)
         Me.SplitContainer1.Panel2.Controls.Add(Me.DataGridView2)
-        Me.SplitContainer1.Size = New System.Drawing.Size(720, 400)
-        Me.SplitContainer1.SplitterDistance = 344
+        Me.SplitContainer1.Size = New System.Drawing.Size(960, 491)
+        Me.SplitContainer1.SplitterDistance = 458
+        Me.SplitContainer1.SplitterWidth = 5
         Me.SplitContainer1.TabIndex = 44
         '
         'SelectAllCheckBox
         '
         Me.SelectAllCheckBox.AutoSize = True
-        Me.SelectAllCheckBox.Location = New System.Drawing.Point(88, 10)
+        Me.SelectAllCheckBox.Location = New System.Drawing.Point(117, 12)
+        Me.SelectAllCheckBox.Margin = New System.Windows.Forms.Padding(4)
         Me.SelectAllCheckBox.Name = "SelectAllCheckBox"
-        Me.SelectAllCheckBox.Size = New System.Drawing.Size(70, 17)
+        Me.SelectAllCheckBox.Size = New System.Drawing.Size(83, 20)
         Me.SelectAllCheckBox.TabIndex = 42
         Me.SelectAllCheckBox.Text = "Select All"
         Me.SelectAllCheckBox.UseVisualStyleBackColor = True
@@ -236,9 +247,10 @@ Partial Class MAIN
         Me.DataGridView1.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.DisplayedCells
         Me.DataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
         Me.DataGridView1.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.ckBox})
-        Me.DataGridView1.Location = New System.Drawing.Point(0, 31)
+        Me.DataGridView1.Location = New System.Drawing.Point(0, 38)
+        Me.DataGridView1.Margin = New System.Windows.Forms.Padding(4)
         Me.DataGridView1.Name = "DataGridView1"
-        Me.DataGridView1.Size = New System.Drawing.Size(333, 247)
+        Me.DataGridView1.Size = New System.Drawing.Size(443, 303)
         Me.DataGridView1.TabIndex = 38
         '
         'ckBox
@@ -250,9 +262,10 @@ Partial Class MAIN
         'EntitiesSelectAll
         '
         Me.EntitiesSelectAll.AutoSize = True
-        Me.EntitiesSelectAll.Location = New System.Drawing.Point(69, 9)
+        Me.EntitiesSelectAll.Location = New System.Drawing.Point(92, 11)
+        Me.EntitiesSelectAll.Margin = New System.Windows.Forms.Padding(4)
         Me.EntitiesSelectAll.Name = "EntitiesSelectAll"
-        Me.EntitiesSelectAll.Size = New System.Drawing.Size(70, 17)
+        Me.EntitiesSelectAll.Size = New System.Drawing.Size(83, 20)
         Me.EntitiesSelectAll.TabIndex = 44
         Me.EntitiesSelectAll.Text = "Select All"
         Me.EntitiesSelectAll.UseVisualStyleBackColor = True
@@ -264,9 +277,10 @@ Partial Class MAIN
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.DataGridView2.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.DisplayedCells
         Me.DataGridView2.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
-        Me.DataGridView2.Location = New System.Drawing.Point(0, 31)
+        Me.DataGridView2.Location = New System.Drawing.Point(0, 38)
+        Me.DataGridView2.Margin = New System.Windows.Forms.Padding(4)
         Me.DataGridView2.Name = "DataGridView2"
-        Me.DataGridView2.Size = New System.Drawing.Size(353, 247)
+        Me.DataGridView2.Size = New System.Drawing.Size(471, 303)
         Me.DataGridView2.TabIndex = 42
         '
         'SplitContainer2
@@ -274,7 +288,8 @@ Partial Class MAIN
         Me.SplitContainer2.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
             Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.SplitContainer2.Location = New System.Drawing.Point(-2, 156)
+        Me.SplitContainer2.Location = New System.Drawing.Point(-3, 192)
+        Me.SplitContainer2.Margin = New System.Windows.Forms.Padding(4)
         Me.SplitContainer2.Name = "SplitContainer2"
         Me.SplitContainer2.Orientation = System.Windows.Forms.Orientation.Horizontal
         '
@@ -285,8 +300,9 @@ Partial Class MAIN
         'SplitContainer2.Panel2
         '
         Me.SplitContainer2.Panel2.Controls.Add(Me.StatusWindow)
-        Me.SplitContainer2.Size = New System.Drawing.Size(720, 400)
-        Me.SplitContainer2.SplitterDistance = 280
+        Me.SplitContainer2.Size = New System.Drawing.Size(960, 492)
+        Me.SplitContainer2.SplitterDistance = 344
+        Me.SplitContainer2.SplitterWidth = 5
         Me.SplitContainer2.TabIndex = 45
         '
         'StatusWindow
@@ -298,21 +314,23 @@ Partial Class MAIN
         Me.StatusWindow.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.StatusWindow.ForeColor = System.Drawing.SystemColors.ButtonHighlight
         Me.StatusWindow.ImeMode = System.Windows.Forms.ImeMode.NoControl
-        Me.StatusWindow.Location = New System.Drawing.Point(4, 2)
+        Me.StatusWindow.Location = New System.Drawing.Point(5, 2)
+        Me.StatusWindow.Margin = New System.Windows.Forms.Padding(4)
         Me.StatusWindow.Multiline = True
         Me.StatusWindow.Name = "StatusWindow"
         Me.StatusWindow.ReadOnly = True
         Me.StatusWindow.ScrollBars = System.Windows.Forms.ScrollBars.Vertical
-        Me.StatusWindow.Size = New System.Drawing.Size(720, 103)
+        Me.StatusWindow.Size = New System.Drawing.Size(959, 125)
         Me.StatusWindow.TabIndex = 13
         '
         'StatusStrip
         '
         Me.StatusStrip.ImageScalingSize = New System.Drawing.Size(24, 24)
         Me.StatusStrip.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.CurrentTime, Me.NextProcessingTime})
-        Me.StatusStrip.Location = New System.Drawing.Point(0, 613)
+        Me.StatusStrip.Location = New System.Drawing.Point(0, 760)
         Me.StatusStrip.Name = "StatusStrip"
-        Me.StatusStrip.Size = New System.Drawing.Size(720, 24)
+        Me.StatusStrip.Padding = New System.Windows.Forms.Padding(1, 0, 19, 0)
+        Me.StatusStrip.Size = New System.Drawing.Size(960, 24)
         Me.StatusStrip.TabIndex = 49
         Me.StatusStrip.Text = "StatusStrip"
         '
@@ -351,9 +369,9 @@ Partial Class MAIN
         Me.ToolStrip1.Dock = System.Windows.Forms.DockStyle.None
         Me.ToolStrip1.ImageScalingSize = New System.Drawing.Size(32, 32)
         Me.ToolStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.settingbtn, Me.loginbtn, Me.btn_systemsync, Me.btn_relationships, Me.clearlogbtn, Me.Exitbtn})
-        Me.ToolStrip1.Location = New System.Drawing.Point(-2, 0)
+        Me.ToolStrip1.Location = New System.Drawing.Point(-3, 0)
         Me.ToolStrip1.Name = "ToolStrip1"
-        Me.ToolStrip1.Size = New System.Drawing.Size(724, 50)
+        Me.ToolStrip1.Size = New System.Drawing.Size(965, 62)
         Me.ToolStrip1.TabIndex = 50
         Me.ToolStrip1.Text = "ToolStrip1"
         '
@@ -411,9 +429,10 @@ Partial Class MAIN
         '
         Me.TabPageJobsItems.Controls.Add(Me.RefreshJobsOrItems)
         Me.TabPageJobsItems.Controls.Add(Me.JobItemSyncDirection)
-        Me.TabPageJobsItems.Location = New System.Drawing.Point(4, 22)
+        Me.TabPageJobsItems.Location = New System.Drawing.Point(4, 25)
+        Me.TabPageJobsItems.Margin = New System.Windows.Forms.Padding(4)
         Me.TabPageJobsItems.Name = "TabPageJobsItems"
-        Me.TabPageJobsItems.Size = New System.Drawing.Size(716, 82)
+        Me.TabPageJobsItems.Size = New System.Drawing.Size(957, 104)
         Me.TabPageJobsItems.TabIndex = 6
         Me.TabPageJobsItems.Text = "Jobs/Items Options"
         Me.TabPageJobsItems.UseVisualStyleBackColor = True
@@ -422,18 +441,20 @@ Partial Class MAIN
         '
         Me.ProgressBar1.Anchor = CType(((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.ProgressBar1.Location = New System.Drawing.Point(-2, 558)
+        Me.ProgressBar1.Location = New System.Drawing.Point(-3, 687)
+        Me.ProgressBar1.Margin = New System.Windows.Forms.Padding(4)
         Me.ProgressBar1.Maximum = 10
         Me.ProgressBar1.Name = "ProgressBar1"
-        Me.ProgressBar1.Size = New System.Drawing.Size(720, 15)
+        Me.ProgressBar1.Size = New System.Drawing.Size(960, 18)
         Me.ProgressBar1.TabIndex = 44
         '
         'TLtoQBVendorRadioButton
         '
         Me.TLtoQBVendorRadioButton.AutoSize = True
-        Me.TLtoQBVendorRadioButton.Location = New System.Drawing.Point(170, 28)
+        Me.TLtoQBVendorRadioButton.Location = New System.Drawing.Point(227, 34)
+        Me.TLtoQBVendorRadioButton.Margin = New System.Windows.Forms.Padding(4)
         Me.TLtoQBVendorRadioButton.Name = "TLtoQBVendorRadioButton"
-        Me.TLtoQBVendorRadioButton.Size = New System.Drawing.Size(68, 17)
+        Me.TLtoQBVendorRadioButton.Size = New System.Drawing.Size(78, 20)
         Me.TLtoQBVendorRadioButton.TabIndex = 1
         Me.TLtoQBVendorRadioButton.TabStop = True
         Me.TLtoQBVendorRadioButton.Text = "TL -> QB"
@@ -449,30 +470,43 @@ Partial Class MAIN
         Me.AttributeTabControl.Controls.Add(Me.TabPageJobsItems)
         Me.AttributeTabControl.Controls.Add(Me.TabPageTimeTransfer)
         Me.AttributeTabControl.Controls.Add(Me.TabPageExpenseReport)
-        Me.AttributeTabControl.Location = New System.Drawing.Point(-2, 53)
+        Me.AttributeTabControl.Location = New System.Drawing.Point(-3, 65)
+        Me.AttributeTabControl.Margin = New System.Windows.Forms.Padding(4)
         Me.AttributeTabControl.Name = "AttributeTabControl"
         Me.AttributeTabControl.SelectedIndex = 0
-        Me.AttributeTabControl.Size = New System.Drawing.Size(724, 108)
+        Me.AttributeTabControl.Size = New System.Drawing.Size(965, 133)
         Me.AttributeTabControl.TabIndex = 48
         '
         'TabPageCustomers
         '
+        Me.TabPageCustomers.Controls.Add(Me.btnNew)
         Me.TabPageCustomers.Controls.Add(Me.RefreshCustomers)
         Me.TabPageCustomers.Controls.Add(Me.CustomerSyncDirection)
-        Me.TabPageCustomers.Location = New System.Drawing.Point(4, 22)
+        Me.TabPageCustomers.Location = New System.Drawing.Point(4, 25)
+        Me.TabPageCustomers.Margin = New System.Windows.Forms.Padding(4)
         Me.TabPageCustomers.Name = "TabPageCustomers"
-        Me.TabPageCustomers.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPageCustomers.Size = New System.Drawing.Size(716, 82)
+        Me.TabPageCustomers.Padding = New System.Windows.Forms.Padding(4)
+        Me.TabPageCustomers.Size = New System.Drawing.Size(957, 104)
         Me.TabPageCustomers.TabIndex = 3
         Me.TabPageCustomers.Text = "Customers Options"
         Me.TabPageCustomers.UseVisualStyleBackColor = True
         '
+        'btnNew
+        '
+        Me.btnNew.Location = New System.Drawing.Point(592, 64)
+        Me.btnNew.Name = "btnNew"
+        Me.btnNew.Size = New System.Drawing.Size(75, 23)
+        Me.btnNew.TabIndex = 2
+        Me.btnNew.Text = "New"
+        Me.btnNew.UseVisualStyleBackColor = True
+        '
         'RefreshCustomers
         '
         Me.RefreshCustomers.Image = CType(resources.GetObject("RefreshCustomers.Image"), System.Drawing.Image)
-        Me.RefreshCustomers.Location = New System.Drawing.Point(368, 13)
+        Me.RefreshCustomers.Location = New System.Drawing.Point(491, 16)
+        Me.RefreshCustomers.Margin = New System.Windows.Forms.Padding(4)
         Me.RefreshCustomers.Name = "RefreshCustomers"
-        Me.RefreshCustomers.Size = New System.Drawing.Size(60, 58)
+        Me.RefreshCustomers.Size = New System.Drawing.Size(80, 71)
         Me.RefreshCustomers.TabIndex = 1
         Me.RefreshCustomers.TextAlign = System.Drawing.ContentAlignment.BottomCenter
         Me.RefreshCustomers.UseVisualStyleBackColor = True
@@ -481,9 +515,11 @@ Partial Class MAIN
         '
         Me.CustomerSyncDirection.Controls.Add(Me.TLtoQBCustomerRadioButton)
         Me.CustomerSyncDirection.Controls.Add(Me.QBtoTLCustomerRadioButton)
-        Me.CustomerSyncDirection.Location = New System.Drawing.Point(6, 6)
+        Me.CustomerSyncDirection.Location = New System.Drawing.Point(8, 7)
+        Me.CustomerSyncDirection.Margin = New System.Windows.Forms.Padding(4)
         Me.CustomerSyncDirection.Name = "CustomerSyncDirection"
-        Me.CustomerSyncDirection.Size = New System.Drawing.Size(344, 69)
+        Me.CustomerSyncDirection.Padding = New System.Windows.Forms.Padding(4)
+        Me.CustomerSyncDirection.Size = New System.Drawing.Size(459, 85)
         Me.CustomerSyncDirection.TabIndex = 0
         Me.CustomerSyncDirection.TabStop = False
         Me.CustomerSyncDirection.Text = "Sync Direction"
@@ -491,9 +527,10 @@ Partial Class MAIN
         'TLtoQBCustomerRadioButton
         '
         Me.TLtoQBCustomerRadioButton.AutoSize = True
-        Me.TLtoQBCustomerRadioButton.Location = New System.Drawing.Point(170, 28)
+        Me.TLtoQBCustomerRadioButton.Location = New System.Drawing.Point(227, 34)
+        Me.TLtoQBCustomerRadioButton.Margin = New System.Windows.Forms.Padding(4)
         Me.TLtoQBCustomerRadioButton.Name = "TLtoQBCustomerRadioButton"
-        Me.TLtoQBCustomerRadioButton.Size = New System.Drawing.Size(68, 17)
+        Me.TLtoQBCustomerRadioButton.Size = New System.Drawing.Size(78, 20)
         Me.TLtoQBCustomerRadioButton.TabIndex = 1
         Me.TLtoQBCustomerRadioButton.TabStop = True
         Me.TLtoQBCustomerRadioButton.Text = "TL -> QB"
@@ -503,9 +540,10 @@ Partial Class MAIN
         '
         Me.QBtoTLCustomerRadioButton.AutoSize = True
         Me.QBtoTLCustomerRadioButton.Checked = True
-        Me.QBtoTLCustomerRadioButton.Location = New System.Drawing.Point(29, 28)
+        Me.QBtoTLCustomerRadioButton.Location = New System.Drawing.Point(39, 34)
+        Me.QBtoTLCustomerRadioButton.Margin = New System.Windows.Forms.Padding(4)
         Me.QBtoTLCustomerRadioButton.Name = "QBtoTLCustomerRadioButton"
-        Me.QBtoTLCustomerRadioButton.Size = New System.Drawing.Size(68, 17)
+        Me.QBtoTLCustomerRadioButton.Size = New System.Drawing.Size(78, 20)
         Me.QBtoTLCustomerRadioButton.TabIndex = 0
         Me.QBtoTLCustomerRadioButton.TabStop = True
         Me.QBtoTLCustomerRadioButton.Text = "QB -> TL"
@@ -515,10 +553,11 @@ Partial Class MAIN
         '
         Me.TabPageEmployees.Controls.Add(Me.RefreshEmployees)
         Me.TabPageEmployees.Controls.Add(Me.EmployeeSyncDirection)
-        Me.TabPageEmployees.Location = New System.Drawing.Point(4, 22)
+        Me.TabPageEmployees.Location = New System.Drawing.Point(4, 25)
+        Me.TabPageEmployees.Margin = New System.Windows.Forms.Padding(4)
         Me.TabPageEmployees.Name = "TabPageEmployees"
-        Me.TabPageEmployees.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPageEmployees.Size = New System.Drawing.Size(716, 82)
+        Me.TabPageEmployees.Padding = New System.Windows.Forms.Padding(4)
+        Me.TabPageEmployees.Size = New System.Drawing.Size(957, 104)
         Me.TabPageEmployees.TabIndex = 4
         Me.TabPageEmployees.Text = "Employees Options"
         Me.TabPageEmployees.UseVisualStyleBackColor = True
@@ -526,9 +565,10 @@ Partial Class MAIN
         'RefreshEmployees
         '
         Me.RefreshEmployees.Image = CType(resources.GetObject("RefreshEmployees.Image"), System.Drawing.Image)
-        Me.RefreshEmployees.Location = New System.Drawing.Point(368, 13)
+        Me.RefreshEmployees.Location = New System.Drawing.Point(491, 16)
+        Me.RefreshEmployees.Margin = New System.Windows.Forms.Padding(4)
         Me.RefreshEmployees.Name = "RefreshEmployees"
-        Me.RefreshEmployees.Size = New System.Drawing.Size(60, 58)
+        Me.RefreshEmployees.Size = New System.Drawing.Size(80, 71)
         Me.RefreshEmployees.TabIndex = 2
         Me.RefreshEmployees.UseVisualStyleBackColor = True
         '
@@ -536,9 +576,11 @@ Partial Class MAIN
         '
         Me.EmployeeSyncDirection.Controls.Add(Me.TLtoQBEmployeeRadioButton)
         Me.EmployeeSyncDirection.Controls.Add(Me.QBtoTLEmployeeRadioButton)
-        Me.EmployeeSyncDirection.Location = New System.Drawing.Point(6, 6)
+        Me.EmployeeSyncDirection.Location = New System.Drawing.Point(8, 7)
+        Me.EmployeeSyncDirection.Margin = New System.Windows.Forms.Padding(4)
         Me.EmployeeSyncDirection.Name = "EmployeeSyncDirection"
-        Me.EmployeeSyncDirection.Size = New System.Drawing.Size(344, 69)
+        Me.EmployeeSyncDirection.Padding = New System.Windows.Forms.Padding(4)
+        Me.EmployeeSyncDirection.Size = New System.Drawing.Size(459, 85)
         Me.EmployeeSyncDirection.TabIndex = 1
         Me.EmployeeSyncDirection.TabStop = False
         Me.EmployeeSyncDirection.Text = "Sync Direction"
@@ -546,9 +588,10 @@ Partial Class MAIN
         'TLtoQBEmployeeRadioButton
         '
         Me.TLtoQBEmployeeRadioButton.AutoSize = True
-        Me.TLtoQBEmployeeRadioButton.Location = New System.Drawing.Point(170, 28)
+        Me.TLtoQBEmployeeRadioButton.Location = New System.Drawing.Point(227, 34)
+        Me.TLtoQBEmployeeRadioButton.Margin = New System.Windows.Forms.Padding(4)
         Me.TLtoQBEmployeeRadioButton.Name = "TLtoQBEmployeeRadioButton"
-        Me.TLtoQBEmployeeRadioButton.Size = New System.Drawing.Size(68, 17)
+        Me.TLtoQBEmployeeRadioButton.Size = New System.Drawing.Size(78, 20)
         Me.TLtoQBEmployeeRadioButton.TabIndex = 1
         Me.TLtoQBEmployeeRadioButton.TabStop = True
         Me.TLtoQBEmployeeRadioButton.Text = "TL -> QB"
@@ -558,9 +601,10 @@ Partial Class MAIN
         '
         Me.QBtoTLEmployeeRadioButton.AutoSize = True
         Me.QBtoTLEmployeeRadioButton.Checked = True
-        Me.QBtoTLEmployeeRadioButton.Location = New System.Drawing.Point(29, 28)
+        Me.QBtoTLEmployeeRadioButton.Location = New System.Drawing.Point(39, 34)
+        Me.QBtoTLEmployeeRadioButton.Margin = New System.Windows.Forms.Padding(4)
         Me.QBtoTLEmployeeRadioButton.Name = "QBtoTLEmployeeRadioButton"
-        Me.QBtoTLEmployeeRadioButton.Size = New System.Drawing.Size(68, 17)
+        Me.QBtoTLEmployeeRadioButton.Size = New System.Drawing.Size(78, 20)
         Me.QBtoTLEmployeeRadioButton.TabIndex = 0
         Me.QBtoTLEmployeeRadioButton.TabStop = True
         Me.QBtoTLEmployeeRadioButton.Text = "QB -> TL"
@@ -570,10 +614,11 @@ Partial Class MAIN
         '
         Me.TabPageVendor.Controls.Add(Me.RefreshVendors)
         Me.TabPageVendor.Controls.Add(Me.VendorSyncDirection)
-        Me.TabPageVendor.Location = New System.Drawing.Point(4, 22)
+        Me.TabPageVendor.Location = New System.Drawing.Point(4, 25)
+        Me.TabPageVendor.Margin = New System.Windows.Forms.Padding(4)
         Me.TabPageVendor.Name = "TabPageVendor"
-        Me.TabPageVendor.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPageVendor.Size = New System.Drawing.Size(716, 82)
+        Me.TabPageVendor.Padding = New System.Windows.Forms.Padding(4)
+        Me.TabPageVendor.Size = New System.Drawing.Size(957, 104)
         Me.TabPageVendor.TabIndex = 5
         Me.TabPageVendor.Text = "Vendors Options"
         Me.TabPageVendor.UseVisualStyleBackColor = True
@@ -581,9 +626,10 @@ Partial Class MAIN
         'RefreshVendors
         '
         Me.RefreshVendors.Image = CType(resources.GetObject("RefreshVendors.Image"), System.Drawing.Image)
-        Me.RefreshVendors.Location = New System.Drawing.Point(368, 13)
+        Me.RefreshVendors.Location = New System.Drawing.Point(491, 16)
+        Me.RefreshVendors.Margin = New System.Windows.Forms.Padding(4)
         Me.RefreshVendors.Name = "RefreshVendors"
-        Me.RefreshVendors.Size = New System.Drawing.Size(60, 58)
+        Me.RefreshVendors.Size = New System.Drawing.Size(80, 71)
         Me.RefreshVendors.TabIndex = 3
         Me.RefreshVendors.UseVisualStyleBackColor = True
         '
@@ -591,9 +637,11 @@ Partial Class MAIN
         '
         Me.VendorSyncDirection.Controls.Add(Me.TLtoQBVendorRadioButton)
         Me.VendorSyncDirection.Controls.Add(Me.QBtoTLVendorRadioButton)
-        Me.VendorSyncDirection.Location = New System.Drawing.Point(6, 6)
+        Me.VendorSyncDirection.Location = New System.Drawing.Point(8, 7)
+        Me.VendorSyncDirection.Margin = New System.Windows.Forms.Padding(4)
         Me.VendorSyncDirection.Name = "VendorSyncDirection"
-        Me.VendorSyncDirection.Size = New System.Drawing.Size(344, 69)
+        Me.VendorSyncDirection.Padding = New System.Windows.Forms.Padding(4)
+        Me.VendorSyncDirection.Size = New System.Drawing.Size(459, 85)
         Me.VendorSyncDirection.TabIndex = 2
         Me.VendorSyncDirection.TabStop = False
         Me.VendorSyncDirection.Text = "Sync Direction"
@@ -602,9 +650,10 @@ Partial Class MAIN
         '
         Me.QBtoTLVendorRadioButton.AutoSize = True
         Me.QBtoTLVendorRadioButton.Checked = True
-        Me.QBtoTLVendorRadioButton.Location = New System.Drawing.Point(29, 28)
+        Me.QBtoTLVendorRadioButton.Location = New System.Drawing.Point(39, 34)
+        Me.QBtoTLVendorRadioButton.Margin = New System.Windows.Forms.Padding(4)
         Me.QBtoTLVendorRadioButton.Name = "QBtoTLVendorRadioButton"
-        Me.QBtoTLVendorRadioButton.Size = New System.Drawing.Size(68, 17)
+        Me.QBtoTLVendorRadioButton.Size = New System.Drawing.Size(78, 20)
         Me.QBtoTLVendorRadioButton.TabIndex = 0
         Me.QBtoTLVendorRadioButton.TabStop = True
         Me.QBtoTLVendorRadioButton.Text = "QB -> TL"
@@ -622,10 +671,11 @@ Partial Class MAIN
         Me.TabPageTimeTransfer.Controls.Add(Me.dpStartDate)
         Me.TabPageTimeTransfer.Controls.Add(Me.time_nextWeek)
         Me.TabPageTimeTransfer.Controls.Add(Me.time_btn_currentweek)
-        Me.TabPageTimeTransfer.Location = New System.Drawing.Point(4, 22)
+        Me.TabPageTimeTransfer.Location = New System.Drawing.Point(4, 25)
+        Me.TabPageTimeTransfer.Margin = New System.Windows.Forms.Padding(4)
         Me.TabPageTimeTransfer.Name = "TabPageTimeTransfer"
-        Me.TabPageTimeTransfer.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPageTimeTransfer.Size = New System.Drawing.Size(716, 82)
+        Me.TabPageTimeTransfer.Padding = New System.Windows.Forms.Padding(4)
+        Me.TabPageTimeTransfer.Size = New System.Drawing.Size(957, 104)
         Me.TabPageTimeTransfer.TabIndex = 2
         Me.TabPageTimeTransfer.Text = "Time Transfer Options"
         Me.TabPageTimeTransfer.UseVisualStyleBackColor = True
@@ -633,9 +683,10 @@ Partial Class MAIN
         'RefreshTimeTransfer
         '
         Me.RefreshTimeTransfer.Image = CType(resources.GetObject("RefreshTimeTransfer.Image"), System.Drawing.Image)
-        Me.RefreshTimeTransfer.Location = New System.Drawing.Point(603, 13)
+        Me.RefreshTimeTransfer.Location = New System.Drawing.Point(804, 16)
+        Me.RefreshTimeTransfer.Margin = New System.Windows.Forms.Padding(4)
         Me.RefreshTimeTransfer.Name = "RefreshTimeTransfer"
-        Me.RefreshTimeTransfer.Size = New System.Drawing.Size(60, 58)
+        Me.RefreshTimeTransfer.Size = New System.Drawing.Size(80, 71)
         Me.RefreshTimeTransfer.TabIndex = 45
         Me.RefreshTimeTransfer.UseVisualStyleBackColor = True
         '
@@ -644,25 +695,28 @@ Partial Class MAIN
         Me.cbWageType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cbWageType.FormattingEnabled = True
         Me.cbWageType.Items.AddRange(New Object() {"Bonus", "Comission", "Hourly-Overtime", "Hourly-Regular", "Hourly-Sick", "Hourly-Vacation", "Salary-Regular", "Salary-Sick", "Salary-Vacation"})
-        Me.cbWageType.Location = New System.Drawing.Point(351, 16)
+        Me.cbWageType.Location = New System.Drawing.Point(468, 20)
+        Me.cbWageType.Margin = New System.Windows.Forms.Padding(4)
         Me.cbWageType.Name = "cbWageType"
-        Me.cbWageType.Size = New System.Drawing.Size(219, 21)
+        Me.cbWageType.Size = New System.Drawing.Size(291, 24)
         Me.cbWageType.TabIndex = 43
         '
         'lblWageType
         '
         Me.lblWageType.AutoSize = True
-        Me.lblWageType.Location = New System.Drawing.Point(279, 20)
+        Me.lblWageType.Location = New System.Drawing.Point(372, 25)
+        Me.lblWageType.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.lblWageType.Name = "lblWageType"
-        Me.lblWageType.Size = New System.Drawing.Size(66, 13)
+        Me.lblWageType.Size = New System.Drawing.Size(83, 16)
         Me.lblWageType.TabIndex = 44
         Me.lblWageType.Text = "Wage Type:"
         '
         'time_prevWeek
         '
-        Me.time_prevWeek.Location = New System.Drawing.Point(48, 40)
+        Me.time_prevWeek.Location = New System.Drawing.Point(64, 49)
+        Me.time_prevWeek.Margin = New System.Windows.Forms.Padding(4)
         Me.time_prevWeek.Name = "time_prevWeek"
-        Me.time_prevWeek.Size = New System.Drawing.Size(50, 23)
+        Me.time_prevWeek.Size = New System.Drawing.Size(67, 28)
         Me.time_prevWeek.TabIndex = 41
         Me.time_prevWeek.Text = "<<"
         Me.time_prevWeek.UseVisualStyleBackColor = True
@@ -670,18 +724,20 @@ Partial Class MAIN
         'lblUptoDate
         '
         Me.lblUptoDate.AutoSize = True
-        Me.lblUptoDate.Location = New System.Drawing.Point(141, 20)
+        Me.lblUptoDate.Location = New System.Drawing.Point(188, 25)
+        Me.lblUptoDate.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.lblUptoDate.Name = "lblUptoDate"
-        Me.lblUptoDate.Size = New System.Drawing.Size(24, 13)
+        Me.lblUptoDate.Size = New System.Drawing.Size(29, 16)
         Me.lblUptoDate.TabIndex = 39
         Me.lblUptoDate.Text = "Up:"
         '
         'lblFromDate
         '
         Me.lblFromDate.AutoSize = True
-        Me.lblFromDate.Location = New System.Drawing.Point(9, 20)
+        Me.lblFromDate.Location = New System.Drawing.Point(12, 25)
+        Me.lblFromDate.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.lblFromDate.Name = "lblFromDate"
-        Me.lblFromDate.Size = New System.Drawing.Size(33, 13)
+        Me.lblFromDate.Size = New System.Drawing.Size(42, 16)
         Me.lblFromDate.TabIndex = 38
         Me.lblFromDate.Text = "From:"
         '
@@ -689,34 +745,38 @@ Partial Class MAIN
         '
         Me.dpEndDate.CustomFormat = ""
         Me.dpEndDate.Format = System.Windows.Forms.DateTimePickerFormat.[Short]
-        Me.dpEndDate.Location = New System.Drawing.Point(171, 14)
+        Me.dpEndDate.Location = New System.Drawing.Point(228, 17)
+        Me.dpEndDate.Margin = New System.Windows.Forms.Padding(4)
         Me.dpEndDate.Name = "dpEndDate"
-        Me.dpEndDate.Size = New System.Drawing.Size(87, 20)
+        Me.dpEndDate.Size = New System.Drawing.Size(115, 22)
         Me.dpEndDate.TabIndex = 37
         '
         'dpStartDate
         '
         Me.dpStartDate.CustomFormat = ""
         Me.dpStartDate.Format = System.Windows.Forms.DateTimePickerFormat.[Short]
-        Me.dpStartDate.Location = New System.Drawing.Point(48, 15)
+        Me.dpStartDate.Location = New System.Drawing.Point(64, 18)
+        Me.dpStartDate.Margin = New System.Windows.Forms.Padding(4)
         Me.dpStartDate.Name = "dpStartDate"
-        Me.dpStartDate.Size = New System.Drawing.Size(87, 20)
+        Me.dpStartDate.Size = New System.Drawing.Size(115, 22)
         Me.dpStartDate.TabIndex = 36
         '
         'time_nextWeek
         '
-        Me.time_nextWeek.Location = New System.Drawing.Point(208, 40)
+        Me.time_nextWeek.Location = New System.Drawing.Point(277, 49)
+        Me.time_nextWeek.Margin = New System.Windows.Forms.Padding(4)
         Me.time_nextWeek.Name = "time_nextWeek"
-        Me.time_nextWeek.Size = New System.Drawing.Size(50, 23)
+        Me.time_nextWeek.Size = New System.Drawing.Size(67, 28)
         Me.time_nextWeek.TabIndex = 42
         Me.time_nextWeek.Text = ">>"
         Me.time_nextWeek.UseVisualStyleBackColor = True
         '
         'time_btn_currentweek
         '
-        Me.time_btn_currentweek.Location = New System.Drawing.Point(104, 40)
+        Me.time_btn_currentweek.Location = New System.Drawing.Point(139, 49)
+        Me.time_btn_currentweek.Margin = New System.Windows.Forms.Padding(4)
         Me.time_btn_currentweek.Name = "time_btn_currentweek"
-        Me.time_btn_currentweek.Size = New System.Drawing.Size(98, 23)
+        Me.time_btn_currentweek.Size = New System.Drawing.Size(131, 28)
         Me.time_btn_currentweek.TabIndex = 40
         Me.time_btn_currentweek.Text = "Current Week"
         Me.time_btn_currentweek.UseVisualStyleBackColor = True
@@ -731,10 +791,11 @@ Partial Class MAIN
         Me.TabPageExpenseReport.Controls.Add(Me.expenseReportStartDate)
         Me.TabPageExpenseReport.Controls.Add(Me.expense_nextWeek)
         Me.TabPageExpenseReport.Controls.Add(Me.expense_btn_currWeek)
-        Me.TabPageExpenseReport.Location = New System.Drawing.Point(4, 22)
+        Me.TabPageExpenseReport.Location = New System.Drawing.Point(4, 25)
+        Me.TabPageExpenseReport.Margin = New System.Windows.Forms.Padding(4)
         Me.TabPageExpenseReport.Name = "TabPageExpenseReport"
-        Me.TabPageExpenseReport.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPageExpenseReport.Size = New System.Drawing.Size(716, 82)
+        Me.TabPageExpenseReport.Padding = New System.Windows.Forms.Padding(4)
+        Me.TabPageExpenseReport.Size = New System.Drawing.Size(957, 104)
         Me.TabPageExpenseReport.TabIndex = 7
         Me.TabPageExpenseReport.Text = "Expense Report Options"
         Me.TabPageExpenseReport.UseVisualStyleBackColor = True
@@ -742,17 +803,19 @@ Partial Class MAIN
         'refreshExpenseReport
         '
         Me.refreshExpenseReport.Image = CType(resources.GetObject("refreshExpenseReport.Image"), System.Drawing.Image)
-        Me.refreshExpenseReport.Location = New System.Drawing.Point(281, 13)
+        Me.refreshExpenseReport.Location = New System.Drawing.Point(375, 16)
+        Me.refreshExpenseReport.Margin = New System.Windows.Forms.Padding(4)
         Me.refreshExpenseReport.Name = "refreshExpenseReport"
-        Me.refreshExpenseReport.Size = New System.Drawing.Size(60, 58)
+        Me.refreshExpenseReport.Size = New System.Drawing.Size(80, 71)
         Me.refreshExpenseReport.TabIndex = 50
         Me.refreshExpenseReport.UseVisualStyleBackColor = True
         '
         'expense_prevWeek
         '
-        Me.expense_prevWeek.Location = New System.Drawing.Point(48, 40)
+        Me.expense_prevWeek.Location = New System.Drawing.Point(64, 49)
+        Me.expense_prevWeek.Margin = New System.Windows.Forms.Padding(4)
         Me.expense_prevWeek.Name = "expense_prevWeek"
-        Me.expense_prevWeek.Size = New System.Drawing.Size(50, 23)
+        Me.expense_prevWeek.Size = New System.Drawing.Size(67, 28)
         Me.expense_prevWeek.TabIndex = 48
         Me.expense_prevWeek.Text = "<<"
         Me.expense_prevWeek.UseVisualStyleBackColor = True
@@ -760,18 +823,20 @@ Partial Class MAIN
         'ToLabelExpenseReports
         '
         Me.ToLabelExpenseReports.AutoSize = True
-        Me.ToLabelExpenseReports.Location = New System.Drawing.Point(141, 20)
+        Me.ToLabelExpenseReports.Location = New System.Drawing.Point(188, 25)
+        Me.ToLabelExpenseReports.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.ToLabelExpenseReports.Name = "ToLabelExpenseReports"
-        Me.ToLabelExpenseReports.Size = New System.Drawing.Size(24, 13)
+        Me.ToLabelExpenseReports.Size = New System.Drawing.Size(29, 16)
         Me.ToLabelExpenseReports.TabIndex = 46
         Me.ToLabelExpenseReports.Text = "Up:"
         '
         'fromLabelExpenseReports
         '
         Me.fromLabelExpenseReports.AutoSize = True
-        Me.fromLabelExpenseReports.Location = New System.Drawing.Point(9, 20)
+        Me.fromLabelExpenseReports.Location = New System.Drawing.Point(12, 25)
+        Me.fromLabelExpenseReports.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.fromLabelExpenseReports.Name = "fromLabelExpenseReports"
-        Me.fromLabelExpenseReports.Size = New System.Drawing.Size(33, 13)
+        Me.fromLabelExpenseReports.Size = New System.Drawing.Size(42, 16)
         Me.fromLabelExpenseReports.TabIndex = 45
         Me.fromLabelExpenseReports.Text = "From:"
         '
@@ -779,34 +844,38 @@ Partial Class MAIN
         '
         Me.expenseReportEndDate.CustomFormat = ""
         Me.expenseReportEndDate.Format = System.Windows.Forms.DateTimePickerFormat.[Short]
-        Me.expenseReportEndDate.Location = New System.Drawing.Point(171, 14)
+        Me.expenseReportEndDate.Location = New System.Drawing.Point(228, 17)
+        Me.expenseReportEndDate.Margin = New System.Windows.Forms.Padding(4)
         Me.expenseReportEndDate.Name = "expenseReportEndDate"
-        Me.expenseReportEndDate.Size = New System.Drawing.Size(87, 20)
+        Me.expenseReportEndDate.Size = New System.Drawing.Size(115, 22)
         Me.expenseReportEndDate.TabIndex = 44
         '
         'expenseReportStartDate
         '
         Me.expenseReportStartDate.CustomFormat = ""
         Me.expenseReportStartDate.Format = System.Windows.Forms.DateTimePickerFormat.[Short]
-        Me.expenseReportStartDate.Location = New System.Drawing.Point(48, 15)
+        Me.expenseReportStartDate.Location = New System.Drawing.Point(64, 18)
+        Me.expenseReportStartDate.Margin = New System.Windows.Forms.Padding(4)
         Me.expenseReportStartDate.Name = "expenseReportStartDate"
-        Me.expenseReportStartDate.Size = New System.Drawing.Size(87, 20)
+        Me.expenseReportStartDate.Size = New System.Drawing.Size(115, 22)
         Me.expenseReportStartDate.TabIndex = 43
         '
         'expense_nextWeek
         '
-        Me.expense_nextWeek.Location = New System.Drawing.Point(208, 40)
+        Me.expense_nextWeek.Location = New System.Drawing.Point(277, 49)
+        Me.expense_nextWeek.Margin = New System.Windows.Forms.Padding(4)
         Me.expense_nextWeek.Name = "expense_nextWeek"
-        Me.expense_nextWeek.Size = New System.Drawing.Size(50, 23)
+        Me.expense_nextWeek.Size = New System.Drawing.Size(67, 28)
         Me.expense_nextWeek.TabIndex = 49
         Me.expense_nextWeek.Text = ">>"
         Me.expense_nextWeek.UseVisualStyleBackColor = True
         '
         'expense_btn_currWeek
         '
-        Me.expense_btn_currWeek.Location = New System.Drawing.Point(104, 40)
+        Me.expense_btn_currWeek.Location = New System.Drawing.Point(139, 49)
+        Me.expense_btn_currWeek.Margin = New System.Windows.Forms.Padding(4)
         Me.expense_btn_currWeek.Name = "expense_btn_currWeek"
-        Me.expense_btn_currWeek.Size = New System.Drawing.Size(98, 23)
+        Me.expense_btn_currWeek.Size = New System.Drawing.Size(131, 28)
         Me.expense_btn_currWeek.TabIndex = 47
         Me.expense_btn_currWeek.Text = "Current Week"
         Me.expense_btn_currWeek.UseVisualStyleBackColor = True
@@ -814,9 +883,10 @@ Partial Class MAIN
         'ShowEntitiesBtn
         '
         Me.ShowEntitiesBtn.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.ShowEntitiesBtn.Location = New System.Drawing.Point(523, 583)
+        Me.ShowEntitiesBtn.Location = New System.Drawing.Point(697, 718)
+        Me.ShowEntitiesBtn.Margin = New System.Windows.Forms.Padding(4)
         Me.ShowEntitiesBtn.Name = "ShowEntitiesBtn"
-        Me.ShowEntitiesBtn.Size = New System.Drawing.Size(98, 23)
+        Me.ShowEntitiesBtn.Size = New System.Drawing.Size(131, 28)
         Me.ShowEntitiesBtn.TabIndex = 45
         Me.ShowEntitiesBtn.Text = "Show"
         Me.ShowEntitiesBtn.UseVisualStyleBackColor = True
@@ -826,9 +896,10 @@ Partial Class MAIN
         '
         Me.btnTransfer.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.btnTransfer.ImeMode = System.Windows.Forms.ImeMode.NoControl
-        Me.btnTransfer.Location = New System.Drawing.Point(627, 583)
+        Me.btnTransfer.Location = New System.Drawing.Point(836, 718)
+        Me.btnTransfer.Margin = New System.Windows.Forms.Padding(4)
         Me.btnTransfer.Name = "btnTransfer"
-        Me.btnTransfer.Size = New System.Drawing.Size(75, 23)
+        Me.btnTransfer.Size = New System.Drawing.Size(100, 28)
         Me.btnTransfer.TabIndex = 46
         Me.btnTransfer.Text = "Process"
         Me.btnTransfer.UseVisualStyleBackColor = True
@@ -836,9 +907,10 @@ Partial Class MAIN
         'SendEmailsButton
         '
         Me.SendEmailsButton.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
-        Me.SendEmailsButton.Location = New System.Drawing.Point(4, 579)
+        Me.SendEmailsButton.Location = New System.Drawing.Point(5, 713)
+        Me.SendEmailsButton.Margin = New System.Windows.Forms.Padding(4)
         Me.SendEmailsButton.Name = "SendEmailsButton"
-        Me.SendEmailsButton.Size = New System.Drawing.Size(75, 23)
+        Me.SendEmailsButton.Size = New System.Drawing.Size(100, 28)
         Me.SendEmailsButton.TabIndex = 52
         Me.SendEmailsButton.Text = "Send Emails"
         Me.SendEmailsButton.UseVisualStyleBackColor = True
@@ -846,10 +918,10 @@ Partial Class MAIN
         '
         'MAIN
         '
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
+        Me.AutoScaleDimensions = New System.Drawing.SizeF(8.0!, 16.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.AutoSize = True
-        Me.ClientSize = New System.Drawing.Size(720, 637)
+        Me.ClientSize = New System.Drawing.Size(960, 784)
         Me.Controls.Add(Me.SendEmailsButton)
         Me.Controls.Add(Me.ShowEntitiesBtn)
         Me.Controls.Add(Me.SplitContainer2)
@@ -861,6 +933,7 @@ Partial Class MAIN
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.IsMdiContainer = True
+        Me.Margin = New System.Windows.Forms.Padding(4)
         Me.Name = "MAIN"
         Me.Text = "TimeLive Quickbooks Integrator"
         Me.WindowState = System.Windows.Forms.FormWindowState.Maximized
@@ -969,4 +1042,5 @@ Partial Class MAIN
     Friend WithEvents expense_btn_currWeek As Button
     Friend WithEvents expenseReportEndDate As DateTimePicker
     Friend WithEvents refreshExpenseReport As Button
+    Friend WithEvents btnNew As Button
 End Class
