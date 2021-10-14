@@ -115,9 +115,7 @@ Public Class Login
         End With
     End Sub
 
-    Private Sub txtURL_TextChanged(sender As Object, e As EventArgs) Handles txtURL.TextChanged
 
-    End Sub
 
     Private Sub lblPassword_Click(sender As Object, e As EventArgs) Handles lblPassword.Click
 

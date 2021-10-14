@@ -22,7 +22,6 @@ Partial Class ModifyForm
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Me.txtTelephone1 = New System.Windows.Forms.TextBox()
         Me.btnCancel = New System.Windows.Forms.Button()
         Me.lblPassword = New System.Windows.Forms.Label()
         Me.btnOK = New System.Windows.Forms.Button()
@@ -32,19 +31,12 @@ Partial Class ModifyForm
         Me.lbName = New System.Windows.Forms.Label()
         Me.TxtName = New System.Windows.Forms.TextBox()
         Me.txtFax = New System.Windows.Forms.TextBox()
+        Me.txtTelephone2 = New System.Windows.Forms.MaskedTextBox()
         Me.SuspendLayout()
-        '
-        'txtTelephone1
-        '
-        Me.txtTelephone1.Location = New System.Drawing.Point(123, 113)
-        Me.txtTelephone1.Margin = New System.Windows.Forms.Padding(4)
-        Me.txtTelephone1.Name = "txtTelephone1"
-        Me.txtTelephone1.Size = New System.Drawing.Size(307, 22)
-        Me.txtTelephone1.TabIndex = 4
         '
         'btnCancel
         '
-        Me.btnCancel.Location = New System.Drawing.Point(214, 143)
+        Me.btnCancel.Location = New System.Drawing.Point(235, 151)
         Me.btnCancel.Margin = New System.Windows.Forms.Padding(4)
         Me.btnCancel.Name = "btnCancel"
         Me.btnCancel.Size = New System.Drawing.Size(104, 37)
@@ -55,16 +47,16 @@ Partial Class ModifyForm
         'lblPassword
         '
         Me.lblPassword.AutoSize = True
-        Me.lblPassword.Location = New System.Drawing.Point(17, 116)
+        Me.lblPassword.Location = New System.Drawing.Point(49, 122)
         Me.lblPassword.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.lblPassword.Name = "lblPassword"
-        Me.lblPassword.Size = New System.Drawing.Size(87, 16)
+        Me.lblPassword.Size = New System.Drawing.Size(80, 16)
         Me.lblPassword.TabIndex = 14
-        Me.lblPassword.Text = "Telephone 1:"
+        Me.lblPassword.Text = "Telephone: " & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10)
         '
         'btnOK
         '
-        Me.btnOK.Location = New System.Drawing.Point(326, 143)
+        Me.btnOK.Location = New System.Drawing.Point(347, 151)
         Me.btnOK.Margin = New System.Windows.Forms.Padding(4)
         Me.btnOK.Name = "btnOK"
         Me.btnOK.Size = New System.Drawing.Size(104, 37)
@@ -75,7 +67,7 @@ Partial Class ModifyForm
         'Label3
         '
         Me.Label3.AutoSize = True
-        Me.Label3.Location = New System.Drawing.Point(74, 90)
+        Me.Label3.Location = New System.Drawing.Point(95, 99)
         Me.Label3.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.Label3.Name = "Label3"
         Me.Label3.Size = New System.Drawing.Size(33, 16)
@@ -85,7 +77,7 @@ Partial Class ModifyForm
         'Label4
         '
         Me.Label4.AutoSize = True
-        Me.Label4.Location = New System.Drawing.Point(63, 62)
+        Me.Label4.Location = New System.Drawing.Point(84, 68)
         Me.Label4.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.Label4.Name = "Label4"
         Me.Label4.Size = New System.Drawing.Size(45, 16)
@@ -94,7 +86,7 @@ Partial Class ModifyForm
         '
         'txtEmail
         '
-        Me.txtEmail.Location = New System.Drawing.Point(123, 58)
+        Me.txtEmail.Location = New System.Drawing.Point(144, 65)
         Me.txtEmail.Margin = New System.Windows.Forms.Padding(4)
         Me.txtEmail.Name = "txtEmail"
         Me.txtEmail.Size = New System.Drawing.Size(307, 22)
@@ -103,7 +95,7 @@ Partial Class ModifyForm
         'lbName
         '
         Me.lbName.AutoSize = True
-        Me.lbName.Location = New System.Drawing.Point(57, 29)
+        Me.lbName.Location = New System.Drawing.Point(81, 36)
         Me.lbName.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.lbName.Name = "lbName"
         Me.lbName.Size = New System.Drawing.Size(48, 16)
@@ -112,7 +104,7 @@ Partial Class ModifyForm
         '
         'TxtName
         '
-        Me.TxtName.Location = New System.Drawing.Point(123, 29)
+        Me.TxtName.Location = New System.Drawing.Point(144, 36)
         Me.TxtName.Margin = New System.Windows.Forms.Padding(4)
         Me.TxtName.Name = "TxtName"
         Me.TxtName.Size = New System.Drawing.Size(307, 22)
@@ -120,24 +112,32 @@ Partial Class ModifyForm
         '
         'txtFax
         '
-        Me.txtFax.Location = New System.Drawing.Point(123, 86)
+        Me.txtFax.Location = New System.Drawing.Point(144, 93)
         Me.txtFax.Margin = New System.Windows.Forms.Padding(4)
         Me.txtFax.Name = "txtFax"
         Me.txtFax.Size = New System.Drawing.Size(307, 22)
         Me.txtFax.TabIndex = 3
         '
+        'txtTelephone2
+        '
+        Me.txtTelephone2.Location = New System.Drawing.Point(144, 122)
+        Me.txtTelephone2.Mask = "000-000-0000"
+        Me.txtTelephone2.Name = "txtTelephone2"
+        Me.txtTelephone2.Size = New System.Drawing.Size(307, 22)
+        Me.txtTelephone2.TabIndex = 4
+        '
         'ModifyForm
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(8.0!, 16.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(490, 209)
+        Me.ClientSize = New System.Drawing.Size(524, 215)
+        Me.Controls.Add(Me.txtTelephone2)
         Me.Controls.Add(Me.txtFax)
         Me.Controls.Add(Me.lbName)
         Me.Controls.Add(Me.TxtName)
         Me.Controls.Add(Me.Label3)
         Me.Controls.Add(Me.Label4)
         Me.Controls.Add(Me.txtEmail)
-        Me.Controls.Add(Me.txtTelephone1)
         Me.Controls.Add(Me.btnCancel)
         Me.Controls.Add(Me.lblPassword)
         Me.Controls.Add(Me.btnOK)
@@ -148,7 +148,6 @@ Partial Class ModifyForm
         Me.PerformLayout()
 
     End Sub
-    Friend WithEvents txtTelephone1 As TextBox
     Friend WithEvents btnCancel As Button
     Friend WithEvents lblPassword As Label
     Friend WithEvents btnOK As Button
@@ -158,4 +157,5 @@ Partial Class ModifyForm
     Friend WithEvents lbName As Label
     Friend WithEvents TxtName As TextBox
     Friend WithEvents txtFax As TextBox
+    Friend WithEvents txtTelephone2 As MaskedTextBox
 End Class

@@ -1701,13 +1701,13 @@ Public Class MAIN
         Using newForm As ModifyForm = New ModifyForm()
             newForm.TxtName.Text = customer.QB_Name
             newForm.txtEmail.Text = customer.Email
-            newForm.txtTelephone1.Text = customer.Telephone1
+            newForm.txtTelephone2.Text = customer.Telephone1
             newForm.txtFax.Text = customer.Fax
 
             If DialogResult.OK = newForm.ShowDialog() Then
                 name = newForm.TxtName.Text
                 email = newForm.txtEmail.Text
-                telephone1 = newForm.txtTelephone1.Text
+                telephone1 = newForm.txtTelephone2.Text
                 Fax = newForm.txtFax.Text
             Else
                 Exit Sub

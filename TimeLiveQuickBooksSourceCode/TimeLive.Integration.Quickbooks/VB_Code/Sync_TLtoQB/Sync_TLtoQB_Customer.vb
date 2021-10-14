@@ -87,12 +87,12 @@ Public Class Sync_TLtoQB_Customer
                         newForm.TxtName.Text = TLClientName
                         newForm.txtFax.Text = objClient.Fax
                         newForm.txtEmail.Text = objClient.EmailAddress
-                        newForm.txtTelephone1.Text = objClient.Telephone1
+                        newForm.txtTelephone2.Text = objClient.Telephone1
                         If DialogResult.OK = newForm.ShowDialog() Then
                             tlName = newForm.TxtName.Text
                             tlEmail = newForm.txtEmail.Text
                             tlFax = newForm.txtFax.Text
-                            tlPhone = newForm.txtTelephone1.Text
+                            tlPhone = newForm.txtTelephone2.Text
                         End If
 
                         ' get the input field from Timelive dialog box

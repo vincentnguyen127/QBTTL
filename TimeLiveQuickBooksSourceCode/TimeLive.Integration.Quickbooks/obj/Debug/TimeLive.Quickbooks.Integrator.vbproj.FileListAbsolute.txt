@@ -255,9 +255,7 @@ C:\Users\Dev1Teltrium\Repos\TimeLive.Quickbooks\TimeLiveQuickBooksSourceCode\Tim
 C:\Users\Dev1Teltrium\Repos\TimeLive.Quickbooks\TimeLiveQuickBooksSourceCode\TimeLive.Integration.Quickbooks\obj\Debug\TimeLive.Quickbooks.Integrator.MAIN.resources
 C:\Users\Dev1Teltrium\Repos\TimeLive.Quickbooks\TimeLiveQuickBooksSourceCode\TimeLive.Integration.Quickbooks\obj\Debug\TimeLive.Quickbooks.Integrator.Login.resources
 C:\Users\Dev1Teltrium\Repos\TimeLive.Quickbooks\TimeLiveQuickBooksSourceCode\TimeLive.Integration.Quickbooks\obj\Debug\TimeLive.Quickbooks.Integrator.Resources.resources
-C:\Users\Dev1Teltrium\Repos\TimeLive.Quickbooks\TimeLiveQuickBooksSourceCode\TimeLive.Integration.Quickbooks\obj\Debug\TimeLive.Quickbooks.Integrator.NewForm.resources
 C:\Users\Dev1Teltrium\Repos\TimeLive.Quickbooks\TimeLiveQuickBooksSourceCode\TimeLive.Integration.Quickbooks\obj\Debug\TimeLive.Quickbooks.Integrator.ModifyForm.resources
-C:\Users\Dev1Teltrium\Repos\TimeLive.Quickbooks\TimeLiveQuickBooksSourceCode\TimeLive.Integration.Quickbooks\obj\Debug\TimeLive.Quickbooks.Integrator.TimeLiveForm.resources
 C:\Users\Dev1Teltrium\Repos\TimeLive.Quickbooks\TimeLiveQuickBooksSourceCode\TimeLive.Integration.Quickbooks\obj\Debug\TimeLive.Quickbooks.Integrator.vbproj.GenerateResource.cache
 C:\Users\Dev1Teltrium\Repos\TimeLive.Quickbooks\TimeLiveQuickBooksSourceCode\TimeLive.Integration.Quickbooks\obj\Debug\TimeLive.Quickbooks.Integrator.vbproj.CoreCompileInputs.cache
 C:\Users\Dev1Teltrium\Repos\TimeLive.Quickbooks\TimeLiveQuickBooksSourceCode\TimeLive.Integration.Quickbooks\obj\Debug\TeltriumQBtoTL.exe.manifest
