@@ -1695,6 +1695,27 @@ Public Class MAIN
         Return TL_Names
     End Function
 
+    Private Sub Get_Customer_Form(customer As QBtoTL_Customer.Customer, ByRef name As String, ByRef email As String, ByRef telephone1 As String, ByRef Fax As String)
+
+
+        Using newForm As ModifyForm = New ModifyForm()
+            newForm.TxtName.Text = customer.QB_Name
+            newForm.txtEmail.Text = customer.Email
+            newForm.txtTelephone1.Text = customer.Telephone1
+            newForm.txtFax.Text = customer.Fax
+
+            If DialogResult.OK = newForm.ShowDialog() Then
+                name = newForm.TxtName.Text
+                email = newForm.txtEmail.Text
+                telephone1 = newForm.txtTelephone1.Text
+                Fax = newForm.txtFax.Text
+            Else
+                Exit Sub
+            End If
+        End Using
+
+
+    End Sub
     Private Sub QB_Set_Selected_Customer()
         If DataGridView1 IsNot Nothing Then
             For Each row As DataGridViewRow In DataGridView1.Rows
@@ -1703,64 +1724,18 @@ Public Class MAIN
                         Sub(customer)
                             If customer.QB_Name = row.Cells("Name").Value.ToString Then
 
-                                ' modify customer functionality 
-                                Dim qbName, qbID, qbModeTime, qbCreateTime, email, telephone1, Fax As String
-
-                                Using newForm As ModifyForm = New ModifyForm()
-
-                                    newForm.TxtQbName.Text = customer.QB_Name
-                                    newForm.TxtQbId.Text = customer.QB_ID
-                                    newForm.txtQbModTime.Text = customer.QBModTime
-                                    newForm.txtQbCreateTime.Text = customer.QBCreateTime
-                                    newForm.txtEmail.Text = customer.Email
-                                    newForm.txtTelephone1.Text = customer.Telephone1
-                                    newForm.txtFax.Text = customer.Fax
-
-                                    newForm.txtQbModTime.Enabled = False
-                                    newForm.txtQbCreateTime.Enabled = False
-                                    newForm.TxtQbId.Enabled = False
-                                    If DialogResult.OK = newForm.ShowDialog() Then
-                                        qbName = newForm.TxtQbName.Text
-                                        'qbID = newForm.TxtQbId.Text
-                                        qbModeTime = newForm.txtQbModTime.Text
-                                        qbCreateTime = newForm.txtQbCreateTime.Text
-                                        email = newForm.txtEmail.Text
-                                        telephone1 = newForm.txtTelephone1.Text
-                                        Fax = newForm.txtFax.Text
-                                    Else
-                                        Exit Sub
-                                    End If
-                                    ' newForm.ShowDialog()
+                                ' ask user if they want to modify the fields before send it to timelive 
+                                Dim name, email, telephone1, Fax As String
 
 
-                                End Using
+                                Get_Customer_Form(customer, name, email, telephone1, Fax)
 
-                                'EmailAddress = If(.Email Is Nothing, "", .Email.GetValue)
-
-
-                                If Not String.IsNullOrEmpty(qbName) Then
-                                    customer.QB_Name = qbName
-                                End If
-
-                                If Not String.IsNullOrEmpty(qbID) Then
-                                    customer.QB_ID = qbID
-                                End If
-
-                                If Not String.IsNullOrEmpty(qbModeTime) Then
-                                    customer.QBModTime = qbModeTime
-                                End If
-
-                                If Not String.IsNullOrEmpty(qbCreateTime) Then
-                                    customer.QBCreateTime = qbCreateTime
-                                End If
-
-                                If Not String.IsNullOrEmpty(email) Then
-                                    customer.Email = email
-                                End If
-
-
-                                '/////////////////
+                                customer.QB_Name = If(String.IsNullOrEmpty(name), customer.QB_Name, name)
+                                customer.Email = If(String.IsNullOrEmpty(email), customer.Email, email)
+                                customer.Telephone1 = If(String.IsNullOrEmpty(telephone1), customer.Telephone1, telephone1)
+                                customer.Fax = If(String.IsNullOrEmpty(Fax), customer.Fax, Fax)
                                 customer.RecSelect = True
+                                customer.NewlyAdded = ""
                             End If
                         End Sub
                     )
@@ -2109,30 +2084,33 @@ Public Class MAIN
     End Sub
 
     Private Sub btnNew_Click(sender As Object, e As EventArgs) Handles btnNew.Click
-        Dim tlName, tlEmail, tlFx, tlTel1, qbName, qbEmail, qbFx, qbTel1 As String
+        ' Dim tlName, tlEmail, tlFx, tlTel1, qbName, qbEmail, qbFx, qbTel1 As String
+        Dim name, email, fax, telephone1 As String
+
+        Dim objCustomer As QBtoTL_Customer.Customer = New QBtoTL_Customer.Customer(Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing)
+        Get_Customer_Form(objCustomer, name, email, fax, telephone1)
+
         Dim UI As Boolean
 
-        Using newForm As NewForm = New NewForm()
+        'Using newForm As NewForm = New NewForm()
 
-            If DialogResult.OK = newForm.ShowDialog() Then
-                tlName = newForm.TxtTimeLiveName.Text.Trim
-                tlEmail = newForm.txtTimeLiveEmail.Text.Trim
-                tlFx = newForm.txtTimeLiveFax.Text.Trim
-                tlTel1 = newForm.txtTimeLiveTelephone1.Text.Trim
-                ' get input data for Quickbooks
-                qbName = newForm.TxtQbName.Text.Trim
-                qbEmail = newForm.txtQbEmail.Text.Trim
-                qbFx = newForm.txtQbFax.Text.Trim
-                qbTel1 = newForm.txtQbTelephone1.Text.Trim
-                UI = True
-            Else
-                Exit Sub
-            End If
-            ' newForm.ShowDialog()
-            ' get input data for Timelive
-
-
-        End Using
+        '    If DialogResult.OK = newForm.ShowDialog() Then
+        '        tlName = newForm.TxtTimeLiveName.Text.Trim
+        '        tlEmail = newForm.txtTimeLiveEmail.Text.Trim
+        '        tlFx = newForm.txtTimeLiveFax.Text.Trim
+        '        tlTel1 = newForm.txtTimeLiveTelephone1.Text.Trim
+        '        ' get input data for Quickbooks
+        '        qbName = newForm.TxtQbName.Text.Trim
+        '        qbEmail = newForm.txtQbEmail.Text.Trim
+        '        qbFx = newForm.txtQbFax.Text.Trim
+        '        qbTel1 = newForm.txtQbTelephone1.Text.Trim
+        '        UI = True
+        '    Else
+        '        Exit Sub
+        '    End If
+        '    ' newForm.ShowDialog()
+        '    ' get input data for Timelive
+        'End Using
 
         Try
             Dim msgSetRq As IMsgSetRequest = MAIN.SESSMANAGER.CreateMsgSetRequest("US", 2, 0)
@@ -2140,7 +2118,7 @@ Public Class MAIN
             msgSetRq.Attributes.OnError = ENRqOnError.roeContinue
             Dim CustomerQueryRq As ICustomerQuery = msgSetRq.AppendCustomerQueryRq
 
-            CustomerQueryRq.ORCustomerListQuery.FullNameList.Add(qbName)
+            CustomerQueryRq.ORCustomerListQuery.FullNameList.Add(name)
             Dim msgSetRs As IMsgSetResponse = MAIN.SESSMANAGER.DoRequests(msgSetRq)
 
             Dim response As IResponse = msgSetRs.ResponseList.GetAt(0)
@@ -2156,18 +2134,18 @@ Public Class MAIN
                 Dim create As Boolean = True
 
                 If UI Then
-                    create = MsgBox("New customer " + qbName + " is not existing in QuickBooks" + ". Create in QuickBooks?", MsgBoxStyle.YesNo, "Warning!") = MsgBoxResult.Yes
+                    create = MsgBox("New customer " + name + " is not existing in QuickBooks" + ". Create in QuickBooks?", MsgBoxStyle.YesNo, "Warning!") = MsgBoxResult.Yes
                 End If
 
                 If create Then
 
                     ' Add new Customer to QB
                     Dim custAdd As ICustomerAdd = newMsgSetRq.AppendCustomerAddRq
-                    custAdd.CompanyName.SetValue(qbName.ToString)
-                    custAdd.Name.SetValue(qbName.ToString)
-                    custAdd.Fax.SetValue(If(String.IsNullOrEmpty(qbFx), "", qbFx))
-                    custAdd.Email.SetValue(If(String.IsNullOrEmpty(qbEmail), "", qbEmail))
-                    custAdd.Phone.SetValue(If(String.IsNullOrEmpty(qbTel1), "", qbTel1))
+                    custAdd.CompanyName.SetValue(name.ToString)
+                    custAdd.Name.SetValue(name.ToString)
+                    custAdd.Fax.SetValue(If(String.IsNullOrEmpty(fax), "", fax))
+                    custAdd.Email.SetValue(If(String.IsNullOrEmpty(email), "", email))
+                    custAdd.Phone.SetValue(If(String.IsNullOrEmpty(telephone1), "", telephone1))
 
                     'step2: send the request
                     msgSetRs = MAIN.SESSMANAGER.DoRequests(newMsgSetRq)
@@ -2187,7 +2165,7 @@ Public Class MAIN
                 msgSetRq.Attributes.OnError = ENRqOnError.roeContinue
 
                 CustomerQueryRq = msgSetRq.AppendCustomerQueryRq
-                CustomerQueryRq.ORCustomerListQuery.FullNameList.Add(qbName)
+                CustomerQueryRq.ORCustomerListQuery.FullNameList.Add(name)
 
                 msgSetRs = MAIN.SESSMANAGER.DoRequests(msgSetRq)
                 response = msgSetRs.ResponseList.GetAt(0)
@@ -2233,9 +2211,9 @@ Public Class MAIN
                     If .ParentRef Is Nothing Then
                         Dim abc = custRet.Name.GetValue
                         'If custRet.Name.GetValue.ToString = qbName Then
-                        If String.Compare(custRet.Name.GetValue.ToString, qbName) = 0 Then
+                        If String.Compare(custRet.Name.GetValue.ToString, name) = 0 Then
                             Dim objCustomerDataStructureQB As QBtoTL_Customer.CustomerDataStructureQB = New QBtoTL_Customer.CustomerDataStructureQB()
-                            Dim objQbCustomer As QBtoTL_Customer.Customer = New QBtoTL_Customer.Customer("", tlName, tlEmail, custRet.ListID.GetValue, tlTel1, tlFx, custRet.TimeModified.GetValue.ToString, custRet.TimeCreated.GetValue.ToString, True)
+                            Dim objQbCustomer As QBtoTL_Customer.Customer = New QBtoTL_Customer.Customer("", name, email, custRet.ListID.GetValue, telephone1, fax, custRet.TimeModified.GetValue.ToString, custRet.TimeCreated.GetValue.ToString, True)
                             objQbCustomer.Enabled = True
                             objQbCustomer.RecSelect = True
                             objCustomerDataStructureQB.DataArray.Add(objQbCustomer)

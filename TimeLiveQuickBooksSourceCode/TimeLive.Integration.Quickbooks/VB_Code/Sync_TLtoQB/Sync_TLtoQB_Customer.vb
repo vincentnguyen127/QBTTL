@@ -83,21 +83,33 @@ Public Class Sync_TLtoQB_Customer
                     ' modify Customer before adding TL Customer to QB
                     Dim tlName, tlEmail, tlFax, tlPhone As String
 
-                    ' get the input field from Timelive dialog box
-                    Using newForm As TimeLiveForm = New TimeLiveForm()
-
-                        newForm.TxtTimeLiveName.Text = TLClientName.ToString
+                    Using newForm As ModifyForm = New ModifyForm()
+                        newForm.TxtName.Text = TLClientName
                         newForm.txtFax.Text = objClient.Fax
                         newForm.txtEmail.Text = objClient.EmailAddress
                         newForm.txtTelephone1.Text = objClient.Telephone1
                         If DialogResult.OK = newForm.ShowDialog() Then
-                            tlName = newForm.TxtTimeLiveName.Text
+                            tlName = newForm.TxtName.Text
                             tlEmail = newForm.txtEmail.Text
                             tlFax = newForm.txtFax.Text
                             tlPhone = newForm.txtTelephone1.Text
-                        Else
-                            Exit Function
                         End If
+
+                        ' get the input field from Timelive dialog box
+                        'Using newForm As TimeLiveForm = New TimeLiveForm()
+
+                        'newForm.TxtTimeLiveName.Text = TLClientName.ToString
+                        'newForm.txtFax.Text = objClient.Fax
+                        'newForm.txtEmail.Text = objClient.EmailAddress
+                        'newForm.txtTelephone1.Text = objClient.Telephone1
+                        'If DialogResult.OK = newForm.ShowDialog() Then
+                        '    tlName = newForm.TxtTimeLiveName.Text
+                        '    tlEmail = newForm.txtEmail.Text
+                        '    tlFax = newForm.txtFax.Text
+                        '    tlPhone = newForm.txtTelephone1.Text
+                        'Else
+                        '    Exit Function
+                        'End If
                         'newForm.ShowDialog()
 
 

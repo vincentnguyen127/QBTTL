@@ -178,10 +178,10 @@
     <Compile Include="VB_Interfaces\NewForm.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="VB_Interfaces\QuickBooksForm.Designer.vb">
-      <DependentUpon>QuickBooksForm.vb</DependentUpon>
+    <Compile Include="VB_Interfaces\CustomerForm.Designer.vb">
+      <DependentUpon>CustomerForm.vb</DependentUpon>
     </Compile>
-    <Compile Include="VB_Interfaces\QuickBooksForm.vb">
+    <Compile Include="VB_Interfaces\CustomerForm.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="VB_Interfaces\TimeLiveForm.Designer.vb">
@@ -252,8 +252,8 @@
     <EmbeddedResource Include="VB_Interfaces\NewForm.resx">
       <DependentUpon>NewForm.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="VB_Interfaces\QuickBooksForm.resx">
-      <DependentUpon>QuickBooksForm.vb</DependentUpon>
+    <EmbeddedResource Include="VB_Interfaces\CustomerForm.resx">
+      <DependentUpon>CustomerForm.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="VB_Interfaces\TimeLiveForm.resx">
       <DependentUpon>TimeLiveForm.vb</DependentUpon>
