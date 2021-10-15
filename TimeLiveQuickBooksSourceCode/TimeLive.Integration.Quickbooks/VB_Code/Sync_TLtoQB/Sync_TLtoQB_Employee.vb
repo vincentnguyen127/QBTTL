@@ -87,28 +87,29 @@ Public Class Sync_TLtoQB_Employee
                 If create Then
 
 
-                    Dim tlName, tlFirstName, tlLastName, tlEmail, tlHiredDate As String
+                    Dim tlFirstName, tlLastName, tlEmail, tlHiredDate As String
 
                     Using newForm As EmployeeForm = New EmployeeForm()
                         'newForm.txtName.Text = TLEmployeeName
                         newForm.txtFirstName.Text = objEmployee.FirstName
                         newForm.txtLastName.Text = objEmployee.LastName
                         newForm.mTxtHiredDate.Text = objEmployee.HiredDate
-                        newForm.txtEmail.Text = objEmployee.EmailAddress
+                        'newForm.txtEmail.Text = objEmployee.EmailAddress
 
                         If DialogResult.OK = newForm.ShowDialog() Then
                             ' tlName = newForm.txtName.Text
                             tlFirstName = newForm.txtFirstName.Text
                             tlLastName = newForm.txtLastName.Text
                             tlHiredDate = newForm.mTxtHiredDate.Text
-                            tlEmail = newForm.txtEmail.Text
+                            '   tlEmail = newForm.txtEmail.Text
                         End If
                     End Using
-                    TLEmployeeName = If(Not String.IsNullOrEmpty(tlName), tlName, TLEmployeeName)
+                    TLEmployeeName = tlFirstName + " " + tlLastName
+                    'TLEmployeeName = If(Not String.IsNullOrEmpty(tlName), tlName, TLEmployeeName)
                     objEmployee.FirstName = If(Not String.IsNullOrEmpty(tlFirstName), tlFirstName, objEmployee.FirstName)
                     objEmployee.LastName = If(Not String.IsNullOrEmpty(tlLastName), tlLastName, objEmployee.LastName)
                     objEmployee.HiredDate = If(Not String.IsNullOrEmpty(tlHiredDate), tlHiredDate, objEmployee.HiredDate)
-                    objEmployee.EmailAddress = If(Not String.IsNullOrEmpty(tlEmail), tlEmail, objEmployee.EmailAddress)
+                    'objEmployee.EmailAddress = If(Not String.IsNullOrEmpty(tlEmail), tlEmail, objEmployee.EmailAddress)
 
 
 

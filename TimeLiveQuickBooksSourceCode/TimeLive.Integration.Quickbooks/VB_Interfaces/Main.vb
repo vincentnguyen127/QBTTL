@@ -1745,18 +1745,18 @@ Public Class MAIN
         End If
     End Sub
 
-    Private Sub Get_Employee_Form(employee As QBtoTL_Employee.Employee, ByRef empFirstName As String, ByRef empLastName As String, ByRef empEmail As String, ByRef empHiredDate As String)
+    Private Sub Get_Employee_Form(employee As QBtoTL_Employee.Employee, ByRef empFirstName As String, ByRef empLastName As String, ByRef empHiredDate As String)
 
 
         Using newForm As EmployeeForm = New EmployeeForm()
             newForm.txtFirstName.Text = employee.FirstName
             newForm.txtLastName.Text = employee.LastName
-            newForm.txtEmail.Text = employee.Email
+            '  newForm.txtEmail.Text = employee.Email
             newForm.mTxtHiredDate.Text = employee.HiredDate
             If DialogResult.OK = newForm.ShowDialog() Then
                 empFirstName = newForm.txtFirstName.Text
                 empLastName = newForm.txtLastName.Text
-                empEmail = newForm.txtLastName.Text
+                '    empEmail = newForm.txtLastName.Text
                 empHiredDate = newForm.mTxtHiredDate.Text
             Else
                 Exit Sub
@@ -1776,13 +1776,14 @@ Public Class MAIN
                             'row.Cells("Name").Value.ToString
                             If employee.QB_Name = formatQbName.Trim Then
 
-                                Dim empFirstName, empLastName, empEmail, empHiredDate As String
+                                Dim empFirstName, empLastName, empHiredDate As String
 
-                                Get_Employee_Form(employee, empFirstName, empLastName, empEmail, empHiredDate)
+
+                                Get_Employee_Form(employee, empFirstName, empLastName, empHiredDate)
 
                                 employee.FirstName = If(empFirstName Is Nothing, "", empFirstName)
                                 employee.LastName = If(empLastName Is Nothing, "", empLastName)
-                                employee.Email = If(empEmail Is Nothing, "", empEmail)
+                                '  employee.Email = If(empEmail Is Nothing, "", empEmail)
                                 employee.HiredDate = If(empHiredDate Is Nothing, "", empHiredDate)
                                 employee.RecSelect = True
                                 employee.NewlyAdded = ""
@@ -2274,4 +2275,185 @@ Public Class MAIN
 
     End Sub
 
+    Private Sub btnNewEmployee_Click(sender As Object, e As EventArgs) Handles btnNewEmployee.Click
+        Dim empFristName, empLastName, empHiredDate As String
+
+        Dim objEmployee As QBtoTL_Employee.Employee = New QBtoTL_Employee.Employee(Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing)
+
+        Get_Employee_Form(objEmployee, empFristName, empLastName, empHiredDate)
+
+        Dim UI As Boolean
+        Dim TLEmployeeName As String = empFristName + " " + empLastName
+
+
+        Try
+            'sessManager = New QBSessionManagerClass()
+            Dim msgSetRq As IMsgSetRequest = MAIN.SESSMANAGER.CreateMsgSetRequest("US", 2, 0)
+            msgSetRq.Attributes.OnError = ENRqOnError.roeContinue
+
+            Dim EmployeeQueryRq As IEmployeeQuery = msgSetRq.AppendEmployeeQueryRq
+            EmployeeQueryRq.ORListQuery.FullNameList.Add(TLEmployeeName)
+            'sessManager.OpenConnection("App", "TimeLive Quickbooks")
+            'sessManager.BeginSession("", ENOpenMode.omDontCare)
+            Dim msgSetRs As IMsgSetResponse = MAIN.SESSMANAGER.DoRequests(msgSetRq)
+
+            Dim response As IResponse = msgSetRs.ResponseList.GetAt(0)
+            Dim empRetList As IEmployeeRetList = response.Detail
+
+            Dim inQB = Not empRetList Is Nothing
+
+            If Not inQB Then
+                Dim newMsgSetRq As IMsgSetRequest = MAIN.SESSMANAGER.CreateMsgSetRequest("US", 2, 0)
+                newMsgSetRq.Attributes.OnError = ENRqOnError.roeContinue
+
+                Dim create As Boolean = True
+                If UI Then create = MsgBox("New employee found in TimeLive: " + TLEmployeeName + ". Create in QuickBooks?", MsgBoxStyle.YesNo, "Warning!") = MsgBoxResult.Yes
+
+                If create Then
+
+
+                    '  TLEmployeeName = If(Not String.IsNullOrEmpty(tlName), tlName, TLEmployeeName)
+
+                    objEmployee.FirstName = If(Not String.IsNullOrEmpty(empFristName), empFristName, objEmployee.FirstName)
+                    objEmployee.LastName = If(Not String.IsNullOrEmpty(empLastName), empLastName, objEmployee.LastName)
+                    objEmployee.HiredDate = If(Not String.IsNullOrEmpty(empHiredDate), empHiredDate, objEmployee.HiredDate)
+                    '  objEmployee.EmailAddress = If(Not String.IsNullOrEmpty(tlEmail), tlEmail, objEmployee.EmailAddress)
+
+
+
+                    ' Add TL Employee to QB
+                    Dim employAdd As IEmployeeAdd = newMsgSetRq.AppendEmployeeAddRq
+                    employAdd.FirstName.SetValue(If(objEmployee.FirstName = Nothing, "", objEmployee.FirstName))
+                    employAdd.LastName.SetValue(If(objEmployee.LastName = Nothing, "", objEmployee.LastName))
+                    'employAdd.MiddleName.SetValue(If(objEmployee.MiddleName = Nothing, "", objEmployee.MiddleName))
+                    employAdd.HiredDate.SetValue(If(objEmployee.HiredDate = Nothing, Today, objEmployee.HiredDate))
+                    'employAdd.Phone.SetValue(If(objEmployee.Phone = Nothing, "", objEmployee.Phone))
+                    'employAdd.SSN.SetValue("123-45-6789")
+                    'employAdd.Mobile.SetValue(If(objEmployee.Mobile = Nothing, "", objEmployee.Mobile)) ' Throws an error for some reason
+                    'employAdd.EmployeeAddress.Addr1.SetValue(If(objEmployee.Address1 = Nothing, "123 Example Street", objEmployee.Address1))
+                    'employAdd.EmployeeAddress.Addr2.SetValue(If(objEmployee.Address2 = Nothing, "", objEmployee.Address2))
+                    'employAdd.EmployeeAddress.City.SetValue(If(objEmployee.City = Nothing, "Default", objEmployee.City))
+                    'employAdd.EmployeeAddress.PostalCode.SetValue(If(objEmployee.PostalCode = Nothing, "12345", objEmployee.PostalCode))
+                    'Dim state As String = If(objEmployee.State = Nothing, "MD", If(objEmployee.State.Length = 2, objEmployee.State.ToUpper(), "MD"))
+                    'employAdd.EmployeeAddress.State.SetValue(state)
+                    'employAdd.EmployeeAddress.Country.SetValue(If(objEmployee.Country = Nothing, "", objEmployee.Country))
+
+                    msgSetRs = MAIN.SESSMANAGER.DoRequests(newMsgSetRq)
+                    'Dim res As IResponse = msgSetRs.ResponseList.GetAt(0)
+
+                    'If res.StatusSeverity = "Error" Then
+                    '    If UI Then
+                    '        MsgBox("Error adding employee " + objEmployee.EmployeeName + " Error Message: " + res.StatusMessage, MsgBoxStyle.OkOnly, "Error Adding Employee to Quickbooks")
+                    '    Else
+                    '        Throw New Exception(res.StatusMessage)
+                    '    End If
+                    'Else
+                    '    My.Forms.MAIN.History("Added Name: " + TLEmployeeName.ToString + " with TimeLive ID: " + TL_ID.ToString + " to QuickBooks", "N")
+                    'End If
+
+                    msgSetRq = MAIN.SESSMANAGER.CreateMsgSetRequest("US", 2, 0)
+                    msgSetRq.Attributes.OnError = ENRqOnError.roeContinue
+
+                    EmployeeQueryRq = msgSetRq.AppendEmployeeQueryRq
+                    EmployeeQueryRq.ORListQuery.FullNameList.Add(TLEmployeeName)
+
+                    msgSetRs = MAIN.SESSMANAGER.DoRequests(msgSetRq)
+                    response = msgSetRs.ResponseList.GetAt(0)
+                    empRetList = response.Detail
+
+                End If
+            End If
+            'Assume only one return
+
+        Catch ex As Exception
+            Throw ex
+        End Try
+        '========================
+        Dim msgSetRsTimeLive As IMsgSetResponse
+        Try
+            Dim msgSetRq As IMsgSetRequest = MAIN.SESSMANAGER.CreateMsgSetRequest("US", 2, 0) 'sessManager
+            msgSetRq.Attributes.OnError = ENRqOnError.roeContinue
+
+            '------------------------------1-----------------------------------
+            Dim employeequery As IEmployeeQuery = msgSetRq.AppendEmployeeQueryRq
+            employeequery.ORListQuery.ListFilter.ActiveStatus.SetValue(ENActiveStatus.asActiveOnly)
+
+            'step2: send the request
+            msgSetRsTimeLive = MAIN.SESSMANAGER.DoRequests(msgSetRq)
+            Dim respList As IResponseList = msgSetRsTimeLive.ResponseList
+
+            If respList Is Nothing Then
+                ' no data
+                My.Forms.MAIN.History("No Employees found...", "i")
+                'Return Nothing
+            End If
+            ' Should only expect 1 response
+            Dim resp As IResponse
+            resp = respList.GetAt(0)
+            If resp.StatusCode = 0 Then
+                '------------------------------2-----------------------------------
+                Dim empRetList As IEmployeeRetList
+                empRetList = resp.Detail
+
+                '------------------------------3-----------------------------------
+                Dim empRet As IEmployeeRet
+                'sets status bar, If no, UI skip
+                Dim pblength As Integer = If(empRetList Is Nothing, 0, empRetList.Count)
+                If UI Then
+                    My.Forms.MAIN.ProgressBar1.Maximum += pblength
+                End If
+
+                For i As Integer = 0 To pblength - 1
+                    empRet = empRetList.GetAt(i)
+
+                    With empRet
+                        ' EmailAddress = If(.Email Is Nothing, "", .Email.GetValue)
+
+                        Dim name As String = If(.Name Is Nothing, "", .Name.GetValue)
+                        If (String.Compare(name, TLEmployeeName.Trim) = 0) Then
+
+
+                            Dim objEmployeeDataStructureQB As QBtoTL_Employee.EmployeeDataStructureQB = New QBtoTL_Employee.EmployeeDataStructureQB()
+                            Dim objQbEmployee As QBtoTL_Employee.Employee = New QBtoTL_Employee.Employee("", TLEmployeeName, Nothing, .ListID.GetValue, empFristName, empLastName, empHiredDate, .TimeModified.GetValue, .TimeCreated.GetValue, True)
+                            objQbEmployee.RecSelect = True
+                            employeeData.NoItems += 1
+                            objEmployeeDataStructureQB.DataArray.Add(objQbEmployee)
+                            employee_qbtotl.QBTransferEmployeeToTL(objEmployeeDataStructureQB, p_token, Me, False)
+                            Exit For
+
+                        End If
+                        'HiredDate = If(.HiredDate Is Nothing, "", .HiredDate.GetValue)
+                        'CreateTime = If(.TimeCreated Is Nothing, "", .TimeCreated.GetValue.ToString)
+                        'ModTime = If(.TimeModified Is Nothing, CreateTime, .TimeModified.GetValue.ToString)
+
+                        'Dim TL_ID_Count = ISQBID_In_DataTable(.Name.GetValue, .ListID.GetValue)
+
+                        'NewlyAdd = If(TL_ID_Count, "", "N") ' N if new
+
+                        ' will check which type data should be added 
+                        'employeeData.NoItems += 1
+                        'employeeData.DataArray.Add(New Employee(NewlyAdd, .Name.GetValue, EmailAddress, .ListID.GetValue, FirstName, LastName, ModTime, CreateTime, HiredDate, .IsActive.GetValue))
+                    End With
+                    If UI Then
+                        My.Forms.MAIN.ProgressBar1.Value = i + 1
+                    End If
+                Next
+            End If
+            If msgSetRsTimeLive.ResponseList.GetAt(0).StatusSeverity = "Error" Then
+                My.Forms.MAIN.History(msgSetRsTimeLive.ResponseList.GetAt(0).StatusMessage, "C")
+                Throw New Exception(msgSetRsTimeLive.ResponseList.GetAt(0).StatusMessage)
+            End If
+        Catch ex As Exception
+            My.Forms.MAIN.History(ex.ToString, "C")
+            Throw ex
+        End Try
+        ' Refresh after processing
+        My.Forms.MAIN.History("Refreshing after processing", "n")
+        display_UI()
+
+        System.Threading.Thread.Sleep(150)
+        System.Windows.Forms.Application.DoEvents()
+        ProgressBar1.Value = 0
+
+    End Sub
 End Class

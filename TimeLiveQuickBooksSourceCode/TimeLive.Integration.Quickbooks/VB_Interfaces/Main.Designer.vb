@@ -93,6 +93,7 @@ Partial Class MAIN
         Me.ShowEntitiesBtn = New System.Windows.Forms.Button()
         Me.btnTransfer = New System.Windows.Forms.Button()
         Me.SendEmailsButton = New System.Windows.Forms.Button()
+        Me.btnNewEmployee = New System.Windows.Forms.Button()
         Me.JobItemSyncDirection.SuspendLayout()
         CType(Me.SplitContainer1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SplitContainer1.Panel1.SuspendLayout()
@@ -280,7 +281,7 @@ Partial Class MAIN
         Me.DataGridView2.Location = New System.Drawing.Point(0, 38)
         Me.DataGridView2.Margin = New System.Windows.Forms.Padding(4)
         Me.DataGridView2.Name = "DataGridView2"
-        Me.DataGridView2.Size = New System.Drawing.Size(471, 303)
+        Me.DataGridView2.Size = New System.Drawing.Size(470, 303)
         Me.DataGridView2.TabIndex = 42
         '
         'SplitContainer2
@@ -320,7 +321,7 @@ Partial Class MAIN
         Me.StatusWindow.Name = "StatusWindow"
         Me.StatusWindow.ReadOnly = True
         Me.StatusWindow.ScrollBars = System.Windows.Forms.ScrollBars.Vertical
-        Me.StatusWindow.Size = New System.Drawing.Size(959, 125)
+        Me.StatusWindow.Size = New System.Drawing.Size(959, 124)
         Me.StatusWindow.TabIndex = 13
         '
         'StatusStrip
@@ -551,6 +552,7 @@ Partial Class MAIN
         '
         'TabPageEmployees
         '
+        Me.TabPageEmployees.Controls.Add(Me.btnNewEmployee)
         Me.TabPageEmployees.Controls.Add(Me.RefreshEmployees)
         Me.TabPageEmployees.Controls.Add(Me.EmployeeSyncDirection)
         Me.TabPageEmployees.Location = New System.Drawing.Point(4, 25)
@@ -916,6 +918,15 @@ Partial Class MAIN
         Me.SendEmailsButton.UseVisualStyleBackColor = True
         Me.SendEmailsButton.Visible = False
         '
+        'btnNewEmployee
+        '
+        Me.btnNewEmployee.Location = New System.Drawing.Point(578, 64)
+        Me.btnNewEmployee.Name = "btnNewEmployee"
+        Me.btnNewEmployee.Size = New System.Drawing.Size(75, 23)
+        Me.btnNewEmployee.TabIndex = 3
+        Me.btnNewEmployee.Text = "New"
+        Me.btnNewEmployee.UseVisualStyleBackColor = True
+        '
         'MAIN
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(8.0!, 16.0!)
@@ -1043,4 +1054,5 @@ Partial Class MAIN
     Friend WithEvents expenseReportEndDate As DateTimePicker
     Friend WithEvents refreshExpenseReport As Button
     Friend WithEvents btnNew As Button
+    Friend WithEvents btnNewEmployee As Button
 End Class
