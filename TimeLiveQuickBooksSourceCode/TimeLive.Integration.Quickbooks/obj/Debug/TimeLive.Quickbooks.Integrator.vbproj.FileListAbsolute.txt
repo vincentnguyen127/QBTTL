@@ -263,3 +263,4 @@ C:\Users\Dev1Teltrium\Repos\TimeLive.Quickbooks\TimeLiveQuickBooksSourceCode\Tim
 C:\Users\Dev1Teltrium\Repos\TimeLive.Quickbooks\TimeLiveQuickBooksSourceCode\TimeLive.Integration.Quickbooks\obj\Debug\TeltriumQBtoTL.exe
 C:\Users\Dev1Teltrium\Repos\TimeLive.Quickbooks\TimeLiveQuickBooksSourceCode\TimeLive.Integration.Quickbooks\obj\Debug\TeltriumQBtoTL.xml
 C:\Users\Dev1Teltrium\Repos\TimeLive.Quickbooks\TimeLiveQuickBooksSourceCode\TimeLive.Integration.Quickbooks\obj\Debug\TeltriumQBtoTL.pdb
+C:\Users\Dev1Teltrium\Repos\TimeLive.Quickbooks\TimeLiveQuickBooksSourceCode\TimeLive.Integration.Quickbooks\obj\Debug\TimeLive.Quickbooks.Integrator.EmployeeForm.resources

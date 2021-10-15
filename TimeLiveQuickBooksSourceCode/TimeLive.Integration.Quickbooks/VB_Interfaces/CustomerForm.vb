@@ -1,5 +1,4 @@
 ﻿Imports System.Text.RegularExpressions
-Imports System.Net.Mail
 Public Class ModifyForm
 
 
@@ -36,10 +35,6 @@ Public Class ModifyForm
         Me.Close()
     End Sub
 
-    Private Sub ModifyForm_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-
-    End Sub
-
     Private Sub TxtName_TextChanged(sender As Object, e As EventArgs) Handles TxtName.TextChanged
 
         If Me.TxtName.TextLength >= 41 Then
@@ -57,19 +52,14 @@ Public Class ModifyForm
 
     Private Sub txtFax_TextChanged(sender As Object, e As EventArgs) Handles txtFax.TextChanged
         If Me.txtFax.TextLength > 21 Then
-            MessageBox.Show("The email should be less than 21 chars")
+            MessageBox.Show("The fax should be less than 21 chars")
         End If
     End Sub
 
-    Private Sub txtTelephone1_TextChanged(sender As Object, e As EventArgs)
-        If Me.txtFax.TextLength > 21 Then
-            MessageBox.Show("The email should be less than 21 chars")
-        End If
-    End Sub
 
     Private Sub MaskedTextBox1_MaskInputRejected(sender As Object, e As MaskInputRejectedEventArgs) Handles txtTelephone2.MaskInputRejected
         If Me.txtTelephone2.TextLength > 21 Then
-            MessageBox.Show("The email should be less than 21 chars")
+            MessageBox.Show("The telephone should be less than 21 chars")
         End If
     End Sub
 End Class

@@ -1745,14 +1745,47 @@ Public Class MAIN
         End If
     End Sub
 
+    Private Sub Get_Employee_Form(employee As QBtoTL_Employee.Employee, ByRef empFirstName As String, ByRef empLastName As String, ByRef empEmail As String, ByRef empHiredDate As String)
+
+
+        Using newForm As EmployeeForm = New EmployeeForm()
+            newForm.txtFirstName.Text = employee.FirstName
+            newForm.txtLastName.Text = employee.LastName
+            newForm.txtEmail.Text = employee.Email
+            newForm.mTxtHiredDate.Text = employee.HiredDate
+            If DialogResult.OK = newForm.ShowDialog() Then
+                empFirstName = newForm.txtFirstName.Text
+                empLastName = newForm.txtLastName.Text
+                empEmail = newForm.txtLastName.Text
+                empHiredDate = newForm.mTxtHiredDate.Text
+            Else
+                Exit Sub
+            End If
+        End Using
+    End Sub
     Private Sub Set_Selected_Employee()
         If DataGridView1 IsNot Nothing Then
             For Each row As DataGridViewRow In DataGridView1.Rows
                 If row.Cells("Name").Value IsNot Nothing And row.Cells("ckBox").Value = True Then
                     employeeData.DataArray.ForEach(
                         Sub(employee)
-                            If employee.QB_Name = row.Cells("Name").Value.ToString Then
+
+                            ' format name to compare
+                            Dim qbNameArray() As String = row.Cells("Name").Value.ToString.Split(",")
+                            Dim formatQbName As String = qbNameArray(1) + " " + qbNameArray(0)
+                            'row.Cells("Name").Value.ToString
+                            If employee.QB_Name = formatQbName.Trim Then
+
+                                Dim empFirstName, empLastName, empEmail, empHiredDate As String
+
+                                Get_Employee_Form(employee, empFirstName, empLastName, empEmail, empHiredDate)
+
+                                employee.FirstName = If(empFirstName Is Nothing, "", empFirstName)
+                                employee.LastName = If(empLastName Is Nothing, "", empLastName)
+                                employee.Email = If(empEmail Is Nothing, "", empEmail)
+                                employee.HiredDate = If(empHiredDate Is Nothing, "", empHiredDate)
                                 employee.RecSelect = True
+                                employee.NewlyAdded = ""
                             End If
                         End Sub
                     )

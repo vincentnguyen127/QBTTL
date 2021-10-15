@@ -95,12 +95,12 @@ Partial Class ModifyForm
         'lbName
         '
         Me.lbName.AutoSize = True
-        Me.lbName.Location = New System.Drawing.Point(81, 36)
+        Me.lbName.Location = New System.Drawing.Point(73, 36)
         Me.lbName.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.lbName.Name = "lbName"
-        Me.lbName.Size = New System.Drawing.Size(48, 16)
+        Me.lbName.Size = New System.Drawing.Size(56, 16)
         Me.lbName.TabIndex = 24
-        Me.lbName.Text = "Name:"
+        Me.lbName.Text = "* Name:"
         '
         'TxtName
         '
@@ -143,7 +143,7 @@ Partial Class ModifyForm
         Me.Controls.Add(Me.btnOK)
         Me.Margin = New System.Windows.Forms.Padding(4)
         Me.Name = "ModifyForm"
-        Me.Text = "ModifyQuickBooks"
+        Me.Text = "Customer Entry"
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
