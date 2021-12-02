@@ -84,7 +84,7 @@ Public Class Sync_TLtoQB_Customer
                     Dim tlName, tlEmail, tlFax, tlPhone As String
 
                     Using newForm As ModifyForm = New ModifyForm()
-                        newForm.TxtName.Text = TLClientName
+                        newForm.TxtName.Text = objClient.ClientName
                         newForm.txtFax.Text = objClient.Fax
                         newForm.txtEmail.Text = objClient.EmailAddress
                         newForm.txtTelephone2.Text = objClient.Telephone1
@@ -93,6 +93,8 @@ Public Class Sync_TLtoQB_Customer
                             tlEmail = newForm.txtEmail.Text
                             tlFax = newForm.txtFax.Text
                             tlPhone = newForm.txtTelephone2.Text
+                        Else
+                            Exit Function
                         End If
 
                         ' get the input field from Timelive dialog box
@@ -114,7 +116,7 @@ Public Class Sync_TLtoQB_Customer
 
 
                     End Using
-                    TLClientName = If(Not String.IsNullOrEmpty(tlName), tlName, TLClientName)
+                    objClient.ClientName = If(Not String.IsNullOrEmpty(tlName), tlName, objClient.ClientName)
                     objClient.Fax = If(Not String.IsNullOrEmpty(tlFax), tlFax, objClient.Fax)
                     objClient.EmailAddress = If(Not String.IsNullOrEmpty(tlEmail), tlEmail, objClient.EmailAddress)
                     objClient.Telephone1 = If(Not String.IsNullOrEmpty(tlPhone), tlPhone, objClient.Telephone1)
@@ -122,7 +124,7 @@ Public Class Sync_TLtoQB_Customer
                     ' Add TL Customer to QB
                     Dim custAdd As ICustomerAdd = newMsgSetRq.AppendCustomerAddRq
                     custAdd.CompanyName.SetValue(TLClientName.ToString)
-                    custAdd.Name.SetValue(TLClientName.ToString)
+                    custAdd.Name.SetValue(objClient.ClientName.ToString)
                     custAdd.Fax.SetValue(If(objClient.Fax = Nothing, "", objClient.Fax))
                     custAdd.Email.SetValue(If(objClient.EmailAddress = Nothing, "", objClient.EmailAddress))
                     custAdd.Phone.SetValue(If(objClient.Telephone1 = Nothing, "", objClient.Telephone1))

@@ -184,6 +184,12 @@
     <Compile Include="VB_Interfaces\CustomerForm.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="VB_Interfaces\VendorForm.Designer.vb">
+      <DependentUpon>VendorForm.vb</DependentUpon>
+    </Compile>
+    <Compile Include="VB_Interfaces\VendorForm.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Web References\Services.TimeLive.Clients\Reference.vb">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -248,6 +254,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="VB_Interfaces\CustomerForm.resx">
       <DependentUpon>CustomerForm.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="VB_Interfaces\VendorForm.resx">
+      <DependentUpon>VendorForm.vb</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

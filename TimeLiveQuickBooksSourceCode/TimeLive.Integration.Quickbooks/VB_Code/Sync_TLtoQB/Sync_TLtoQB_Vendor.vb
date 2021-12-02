@@ -77,6 +77,31 @@ Public Class Sync_TLtoQB_Vendor
                     create = MsgBox("New vendor found in TimeLive: " + TLEmployeeName + ". Create in QuickBooks?", MsgBoxStyle.YesNo, "Warning!") = MsgBoxResult.Yes
                 End If
                 If create Then
+
+
+                    Dim tlFirstName, tlLastName As String
+
+                    Using newForm As VendorForm = New VendorForm()
+                        'newForm.txtName.Text = TLEmployeeName
+                        newForm.txtFirstName.Text = objEmployee.FirstName
+                        newForm.txtLastName.Text = objEmployee.LastName
+                        'newForm.mTxtHiredDate.Text = objEmployee.HiredDate.ToString("MM/dd/yyyy")
+                        'newForm.txtEmail.Text = objEmployee.EmailAddress
+
+                        If DialogResult.OK = newForm.ShowDialog() Then
+                            ' tlName = newForm.txtName.Text
+                            tlFirstName = newForm.txtFirstName.Text
+                            tlLastName = newForm.txtLastName.Text
+                            'tlHiredDate = newForm.mTxtHiredDate.Text
+                            '   tlEmail = newForm.txtEmail.Text
+                        Else
+                            Exit Function
+                        End If
+                    End Using
+                    objEmployee.FirstName = If(Not String.IsNullOrEmpty(tlFirstName), tlFirstName, objEmployee.FirstName)
+                    objEmployee.LastName = If(Not String.IsNullOrEmpty(tlLastName), tlLastName, objEmployee.LastName)
+
+
                     Dim newMsgSetRq As IMsgSetRequest = MAIN.SESSMANAGER.CreateMsgSetRequest("US", 2, 0)
                     newMsgSetRq.Attributes.OnError = ENRqOnError.roeContinue
                     ' Add TL Employee to QB as a Vendor

@@ -54,78 +54,72 @@ Partial Class EmployeeForm
         '
         'mTxtHiredDate
         '
-        Me.mTxtHiredDate.Location = New System.Drawing.Point(143, 95)
+        Me.mTxtHiredDate.Location = New System.Drawing.Point(107, 77)
+        Me.mTxtHiredDate.Margin = New System.Windows.Forms.Padding(2, 2, 2, 2)
         Me.mTxtHiredDate.Mask = "00/00/0000"
         Me.mTxtHiredDate.Name = "mTxtHiredDate"
-        Me.mTxtHiredDate.Size = New System.Drawing.Size(170, 22)
-        Me.mTxtHiredDate.TabIndex = 28
+        Me.mTxtHiredDate.Size = New System.Drawing.Size(128, 20)
+        Me.mTxtHiredDate.TabIndex = 3
         Me.mTxtHiredDate.ValidatingType = GetType(Date)
         '
         'lbName
         '
         Me.lbName.AutoSize = True
-        Me.lbName.Location = New System.Drawing.Point(44, 36)
-        Me.lbName.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.lbName.Location = New System.Drawing.Point(33, 29)
         Me.lbName.Name = "lbName"
-        Me.lbName.Size = New System.Drawing.Size(84, 16)
+        Me.lbName.Size = New System.Drawing.Size(67, 13)
         Me.lbName.TabIndex = 34
         Me.lbName.Text = "* First Name:"
         '
         'txtFirstName
         '
-        Me.txtFirstName.Location = New System.Drawing.Point(143, 36)
-        Me.txtFirstName.Margin = New System.Windows.Forms.Padding(4)
+        Me.txtFirstName.Location = New System.Drawing.Point(107, 29)
         Me.txtFirstName.Name = "txtFirstName"
-        Me.txtFirstName.Size = New System.Drawing.Size(170, 22)
-        Me.txtFirstName.TabIndex = 25
+        Me.txtFirstName.Size = New System.Drawing.Size(128, 20)
+        Me.txtFirstName.TabIndex = 0
         '
         'btnCancel
         '
-        Me.btnCancel.Location = New System.Drawing.Point(391, 200)
-        Me.btnCancel.Margin = New System.Windows.Forms.Padding(4)
+        Me.btnCancel.Location = New System.Drawing.Point(293, 162)
         Me.btnCancel.Name = "btnCancel"
-        Me.btnCancel.Size = New System.Drawing.Size(104, 37)
-        Me.btnCancel.TabIndex = 30
+        Me.btnCancel.Size = New System.Drawing.Size(78, 30)
+        Me.btnCancel.TabIndex = 13
         Me.btnCancel.Text = "Cancel"
         Me.btnCancel.UseVisualStyleBackColor = True
         '
         'lblPassword
         '
         Me.lblPassword.AutoSize = True
-        Me.lblPassword.Location = New System.Drawing.Point(44, 95)
-        Me.lblPassword.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.lblPassword.Location = New System.Drawing.Point(33, 77)
         Me.lblPassword.Name = "lblPassword"
-        Me.lblPassword.Size = New System.Drawing.Size(84, 16)
+        Me.lblPassword.Size = New System.Drawing.Size(68, 13)
         Me.lblPassword.TabIndex = 31
         Me.lblPassword.Text = "* Hired Date:"
         '
         'btnOK
         '
-        Me.btnOK.Location = New System.Drawing.Point(503, 200)
-        Me.btnOK.Margin = New System.Windows.Forms.Padding(4)
+        Me.btnOK.Location = New System.Drawing.Point(377, 162)
         Me.btnOK.Name = "btnOK"
-        Me.btnOK.Size = New System.Drawing.Size(104, 37)
-        Me.btnOK.TabIndex = 29
+        Me.btnOK.Size = New System.Drawing.Size(78, 30)
+        Me.btnOK.TabIndex = 12
         Me.btnOK.Text = "OK"
         Me.btnOK.UseVisualStyleBackColor = True
         '
         'Label2
         '
         Me.Label2.AutoSize = True
-        Me.Label2.Location = New System.Drawing.Point(44, 66)
-        Me.Label2.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.Label2.Location = New System.Drawing.Point(33, 54)
         Me.Label2.Name = "Label2"
-        Me.Label2.Size = New System.Drawing.Size(84, 16)
+        Me.Label2.Size = New System.Drawing.Size(68, 13)
         Me.Label2.TabIndex = 38
         Me.Label2.Text = "* Last Name:"
         '
         'txtLastName
         '
-        Me.txtLastName.Location = New System.Drawing.Point(143, 66)
-        Me.txtLastName.Margin = New System.Windows.Forms.Padding(4)
+        Me.txtLastName.Location = New System.Drawing.Point(107, 54)
         Me.txtLastName.Name = "txtLastName"
-        Me.txtLastName.Size = New System.Drawing.Size(170, 22)
-        Me.txtLastName.TabIndex = 37
+        Me.txtLastName.Size = New System.Drawing.Size(128, 20)
+        Me.txtLastName.TabIndex = 2
         '
         'ContextMenuStrip1
         '
@@ -135,170 +129,152 @@ Partial Class EmployeeForm
         'Label1
         '
         Me.Label1.AutoSize = True
-        Me.Label1.Location = New System.Drawing.Point(329, 72)
-        Me.Label1.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.Label1.Location = New System.Drawing.Point(242, 54)
         Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(103, 16)
+        Me.Label1.Size = New System.Drawing.Size(83, 13)
         Me.Label1.TabIndex = 44
         Me.Label1.Text = "Address Line 1: "
         '
         'txtAdressLine1
         '
-        Me.txtAdressLine1.Location = New System.Drawing.Point(437, 66)
-        Me.txtAdressLine1.Margin = New System.Windows.Forms.Padding(4)
+        Me.txtAdressLine1.Location = New System.Drawing.Point(328, 54)
         Me.txtAdressLine1.Name = "txtAdressLine1"
-        Me.txtAdressLine1.Size = New System.Drawing.Size(170, 22)
-        Me.txtAdressLine1.TabIndex = 43
+        Me.txtAdressLine1.Size = New System.Drawing.Size(128, 20)
+        Me.txtAdressLine1.TabIndex = 4
         '
         'Label3
         '
         Me.Label3.AutoSize = True
-        Me.Label3.Location = New System.Drawing.Point(337, 36)
-        Me.Label3.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.Label3.Location = New System.Drawing.Point(253, 29)
         Me.Label3.Name = "Label3"
-        Me.Label3.Size = New System.Drawing.Size(92, 16)
+        Me.Label3.Size = New System.Drawing.Size(72, 13)
         Me.Label3.TabIndex = 42
         Me.Label3.Text = "Middle Name:"
         '
         'txtMiddleName
         '
-        Me.txtMiddleName.Location = New System.Drawing.Point(437, 36)
-        Me.txtMiddleName.Margin = New System.Windows.Forms.Padding(4)
+        Me.txtMiddleName.Location = New System.Drawing.Point(328, 29)
         Me.txtMiddleName.Name = "txtMiddleName"
-        Me.txtMiddleName.Size = New System.Drawing.Size(170, 22)
-        Me.txtMiddleName.TabIndex = 39
+        Me.txtMiddleName.Size = New System.Drawing.Size(128, 20)
+        Me.txtMiddleName.TabIndex = 1
         '
         'Label4
         '
         Me.Label4.AutoSize = True
-        Me.Label4.Location = New System.Drawing.Point(329, 103)
-        Me.Label4.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.Label4.Location = New System.Drawing.Point(247, 84)
         Me.Label4.Name = "Label4"
-        Me.Label4.Size = New System.Drawing.Size(100, 16)
+        Me.Label4.Size = New System.Drawing.Size(80, 13)
         Me.Label4.TabIndex = 41
         Me.Label4.Text = "Address Line 2:"
         '
         'Label5
         '
         Me.Label5.AutoSize = True
-        Me.Label5.Location = New System.Drawing.Point(387, 156)
-        Me.Label5.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.Label5.Location = New System.Drawing.Point(290, 127)
         Me.Label5.Name = "Label5"
-        Me.Label5.Size = New System.Drawing.Size(42, 16)
+        Me.Label5.Size = New System.Drawing.Size(35, 13)
         Me.Label5.TabIndex = 50
         Me.Label5.Text = "State:"
         '
         'txtState
         '
-        Me.txtState.Location = New System.Drawing.Point(437, 156)
-        Me.txtState.Margin = New System.Windows.Forms.Padding(4)
+        Me.txtState.Location = New System.Drawing.Point(328, 127)
         Me.txtState.Name = "txtState"
-        Me.txtState.Size = New System.Drawing.Size(58, 22)
-        Me.txtState.TabIndex = 49
+        Me.txtState.Size = New System.Drawing.Size(44, 20)
+        Me.txtState.TabIndex = 7
         '
         'Label6
         '
         Me.Label6.AutoSize = True
-        Me.Label6.Location = New System.Drawing.Point(396, 126)
-        Me.Label6.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.Label6.Location = New System.Drawing.Point(297, 102)
         Me.Label6.Name = "Label6"
-        Me.Label6.Size = New System.Drawing.Size(33, 16)
+        Me.Label6.Size = New System.Drawing.Size(27, 13)
         Me.Label6.TabIndex = 48
         Me.Label6.Text = "City:"
         '
         'txtCity
         '
-        Me.txtCity.Location = New System.Drawing.Point(437, 126)
-        Me.txtCity.Margin = New System.Windows.Forms.Padding(4)
+        Me.txtCity.Location = New System.Drawing.Point(328, 102)
         Me.txtCity.Name = "txtCity"
-        Me.txtCity.Size = New System.Drawing.Size(170, 22)
-        Me.txtCity.TabIndex = 45
+        Me.txtCity.Size = New System.Drawing.Size(128, 20)
+        Me.txtCity.TabIndex = 6
         '
         'Label7
         '
         Me.Label7.AutoSize = True
-        Me.Label7.Location = New System.Drawing.Point(510, 159)
-        Me.Label7.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.Label7.Location = New System.Drawing.Point(382, 129)
         Me.Label7.Name = "Label7"
-        Me.Label7.Size = New System.Drawing.Size(31, 16)
+        Me.Label7.Size = New System.Drawing.Size(27, 13)
         Me.Label7.TabIndex = 47
         Me.Label7.Text = "ZIP:"
         '
         'txtAddressLine2
         '
-        Me.txtAddressLine2.Location = New System.Drawing.Point(437, 97)
-        Me.txtAddressLine2.Margin = New System.Windows.Forms.Padding(4)
+        Me.txtAddressLine2.Location = New System.Drawing.Point(328, 79)
         Me.txtAddressLine2.Name = "txtAddressLine2"
-        Me.txtAddressLine2.Size = New System.Drawing.Size(170, 22)
-        Me.txtAddressLine2.TabIndex = 51
+        Me.txtAddressLine2.Size = New System.Drawing.Size(128, 20)
+        Me.txtAddressLine2.TabIndex = 5
         '
         'txtZipCode
         '
-        Me.txtZipCode.Location = New System.Drawing.Point(549, 156)
-        Me.txtZipCode.Margin = New System.Windows.Forms.Padding(4)
+        Me.txtZipCode.Location = New System.Drawing.Point(412, 127)
         Me.txtZipCode.Name = "txtZipCode"
-        Me.txtZipCode.Size = New System.Drawing.Size(58, 22)
-        Me.txtZipCode.TabIndex = 52
+        Me.txtZipCode.Size = New System.Drawing.Size(44, 20)
+        Me.txtZipCode.TabIndex = 8
         '
         'txtHomePhone
         '
-        Me.txtHomePhone.Location = New System.Drawing.Point(143, 124)
-        Me.txtHomePhone.Margin = New System.Windows.Forms.Padding(4)
+        Me.txtHomePhone.Location = New System.Drawing.Point(107, 101)
         Me.txtHomePhone.Name = "txtHomePhone"
-        Me.txtHomePhone.Size = New System.Drawing.Size(170, 22)
-        Me.txtHomePhone.TabIndex = 56
+        Me.txtHomePhone.Size = New System.Drawing.Size(128, 20)
+        Me.txtHomePhone.TabIndex = 9
         '
         'Label8
         '
         Me.Label8.AutoSize = True
-        Me.Label8.Location = New System.Drawing.Point(46, 153)
-        Me.Label8.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.Label8.Location = New System.Drawing.Point(34, 124)
         Me.Label8.Name = "Label8"
-        Me.Label8.Size = New System.Drawing.Size(82, 16)
+        Me.Label8.Size = New System.Drawing.Size(67, 13)
         Me.Label8.TabIndex = 55
         Me.Label8.Text = "WorkPhone:"
         '
         'txtWorkPhone
         '
-        Me.txtWorkPhone.Location = New System.Drawing.Point(143, 153)
-        Me.txtWorkPhone.Margin = New System.Windows.Forms.Padding(4)
+        Me.txtWorkPhone.Location = New System.Drawing.Point(107, 124)
         Me.txtWorkPhone.Name = "txtWorkPhone"
-        Me.txtWorkPhone.Size = New System.Drawing.Size(170, 22)
-        Me.txtWorkPhone.TabIndex = 54
+        Me.txtWorkPhone.Size = New System.Drawing.Size(128, 20)
+        Me.txtWorkPhone.TabIndex = 10
         '
         'Label9
         '
         Me.Label9.AutoSize = True
-        Me.Label9.Location = New System.Drawing.Point(38, 129)
-        Me.Label9.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.Label9.Location = New System.Drawing.Point(28, 105)
         Me.Label9.Name = "Label9"
-        Me.Label9.Size = New System.Drawing.Size(90, 16)
+        Me.Label9.Size = New System.Drawing.Size(72, 13)
         Me.Label9.TabIndex = 53
         Me.Label9.Text = "Home Phone:"
         '
         'Label10
         '
         Me.Label10.AutoSize = True
-        Me.Label10.Location = New System.Drawing.Point(34, 185)
-        Me.Label10.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.Label10.Location = New System.Drawing.Point(26, 150)
         Me.Label10.Name = "Label10"
-        Me.Label10.Size = New System.Drawing.Size(94, 16)
+        Me.Label10.Size = New System.Drawing.Size(75, 13)
         Me.Label10.TabIndex = 58
         Me.Label10.Text = "Mobile Phone:"
         '
         'txtMobilePhone
         '
-        Me.txtMobilePhone.Location = New System.Drawing.Point(143, 185)
-        Me.txtMobilePhone.Margin = New System.Windows.Forms.Padding(4)
+        Me.txtMobilePhone.Location = New System.Drawing.Point(107, 150)
         Me.txtMobilePhone.Name = "txtMobilePhone"
-        Me.txtMobilePhone.Size = New System.Drawing.Size(170, 22)
-        Me.txtMobilePhone.TabIndex = 57
+        Me.txtMobilePhone.Size = New System.Drawing.Size(128, 20)
+        Me.txtMobilePhone.TabIndex = 11
         '
         'EmployeeForm
         '
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(8.0!, 16.0!)
+        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(669, 272)
+        Me.ClientSize = New System.Drawing.Size(502, 221)
         Me.Controls.Add(Me.Label10)
         Me.Controls.Add(Me.txtMobilePhone)
         Me.Controls.Add(Me.txtHomePhone)
@@ -325,6 +301,7 @@ Partial Class EmployeeForm
         Me.Controls.Add(Me.btnCancel)
         Me.Controls.Add(Me.lblPassword)
         Me.Controls.Add(Me.btnOK)
+        Me.Margin = New System.Windows.Forms.Padding(2, 2, 2, 2)
         Me.Name = "EmployeeForm"
         Me.Text = "Employee Entry"
         Me.ResumeLayout(False)

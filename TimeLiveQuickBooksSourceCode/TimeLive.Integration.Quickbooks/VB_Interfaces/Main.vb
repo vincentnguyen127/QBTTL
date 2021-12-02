@@ -1470,8 +1470,6 @@ Public Class MAIN
 
         Dim ItemsProcessed As Integer = 0
 
-
-
         If Type = 10 Then 'When processing customers
             Reset_Checked_Customer_Value(customerData)
             If QBtoTLCustomerRadioButton.Checked Then
@@ -1695,7 +1693,7 @@ Public Class MAIN
         Return TL_Names
     End Function
 
-    Private Sub Get_Customer_Form(customer As QBtoTL_Customer.Customer, ByRef name As String, ByRef email As String, ByRef telephone1 As String, ByRef Fax As String)
+    Private Sub Get_Customer_Form(ByRef customer As QBtoTL_Customer.Customer)
 
 
         Using newForm As ModifyForm = New ModifyForm()
@@ -1705,10 +1703,11 @@ Public Class MAIN
             newForm.txtFax.Text = customer.Fax
 
             If DialogResult.OK = newForm.ShowDialog() Then
-                name = newForm.TxtName.Text
-                email = newForm.txtEmail.Text
-                telephone1 = newForm.txtTelephone2.Text
-                Fax = newForm.txtFax.Text
+                customer.QB_Name = newForm.TxtName.Text.Trim()
+                customer.Email = newForm.txtEmail.Text.Trim()
+                customer.Telephone1 = newForm.txtTelephone2.Text.Trim()
+                customer.Fax = newForm.txtFax.Text.Trim()
+                customer.RecSelect = True
             Else
                 Exit Sub
             End If
@@ -1724,18 +1723,9 @@ Public Class MAIN
                         Sub(customer)
                             If customer.QB_Name = row.Cells("Name").Value.ToString Then
 
-                                ' ask user if they want to modify the fields before send it to timelive 
-                                Dim name, email, telephone1, Fax As String
+                                ' Ask user if they want to modify the fields before send it to timelive 
+                                Get_Customer_Form(customer)
 
-
-                                Get_Customer_Form(customer, name, email, telephone1, Fax)
-
-                                customer.QB_Name = If(String.IsNullOrEmpty(name), customer.QB_Name, name)
-                                customer.Email = If(String.IsNullOrEmpty(email), customer.Email, email)
-                                customer.Telephone1 = If(String.IsNullOrEmpty(telephone1), customer.Telephone1, telephone1)
-                                customer.Fax = If(String.IsNullOrEmpty(Fax), customer.Fax, Fax)
-                                customer.RecSelect = True
-                                customer.NewlyAdded = ""
                             End If
                         End Sub
                     )
@@ -1745,19 +1735,25 @@ Public Class MAIN
         End If
     End Sub
 
-    Private Sub Get_Employee_Form(employee As QBtoTL_Employee.Employee, ByRef empFirstName As String, ByRef empLastName As String, ByRef empHiredDate As String)
-
+    Private Sub Get_Employee_Form(ByRef employee As QBtoTL_Employee.Employee)
 
         Using newForm As EmployeeForm = New EmployeeForm()
             newForm.txtFirstName.Text = employee.FirstName
             newForm.txtLastName.Text = employee.LastName
-            '  newForm.txtEmail.Text = employee.Email
-            newForm.mTxtHiredDate.Text = employee.HiredDate
+            newForm.mTxtHiredDate.Text = employee.HiredDate.ToString("MM/dd/yyyy")
+
+
             If DialogResult.OK = newForm.ShowDialog() Then
-                empFirstName = newForm.txtFirstName.Text
-                empLastName = newForm.txtLastName.Text
-                '    empEmail = newForm.txtLastName.Text
-                empHiredDate = newForm.mTxtHiredDate.Text
+                'empFirstName = newForm.txtFirstName.Text.Trim()
+                'empLastName = newForm.txtLastName.Text.Trim()
+                'empHiredDate = newForm.mTxtHiredDate.Text.Trim()
+
+                employee.FirstName = newForm.txtFirstName.Text.Trim()
+                employee.LastName = newForm.txtLastName.Text.Trim()
+                employee.HiredDate = newForm.mTxtHiredDate.Text.Trim()
+                employee.QB_Name = employee.FirstName + " " + employee.LastName
+                employee.RecSelect = True
+                employee.NewlyAdded = ""
             Else
                 Exit Sub
             End If
@@ -1771,22 +1767,15 @@ Public Class MAIN
                         Sub(employee)
 
                             ' format name to compare
-                            Dim qbNameArray() As String = row.Cells("Name").Value.ToString.Split(",")
-                            Dim formatQbName As String = qbNameArray(1) + " " + qbNameArray(0)
+                            'Dim qbNameArray() As String = row.Cells("Name").Value.ToString.Split(",")
+                            'Dim formatQbName As String = qbNameArray(1) + " " + qbNameArray(0)
+
                             'row.Cells("Name").Value.ToString
-                            If employee.QB_Name = formatQbName.Trim Then
+                            'If employee.QB_Name = row.Cells("Name").Value.ToString.Replace(",", "").Trim() Then 'formatQbName.Trim Then
+                            If employee.LastName + " " + employee.FirstName = row.Cells("Name").Value.ToString.Replace(",", "").Trim() Then
 
-                                Dim empFirstName, empLastName, empHiredDate As String
-
-
-                                Get_Employee_Form(employee, empFirstName, empLastName, empHiredDate)
-
-                                employee.FirstName = If(empFirstName Is Nothing, "", empFirstName)
-                                employee.LastName = If(empLastName Is Nothing, "", empLastName)
-                                '  employee.Email = If(empEmail Is Nothing, "", empEmail)
-                                employee.HiredDate = If(empHiredDate Is Nothing, "", empHiredDate)
-                                employee.RecSelect = True
-                                employee.NewlyAdded = ""
+                                ' Edit the data before tranfer if need it 
+                                Get_Employee_Form(employee)
                             End If
                         End Sub
                     )
@@ -1828,14 +1817,37 @@ Public Class MAIN
         Next
     End Sub
 
+    Private Sub Get_Vendor_Form(ByRef vendor As QBtoTL_Vendor.Vendor)
+
+        Using newForm As VendorForm = New VendorForm()
+            newForm.txtFirstName.Text = vendor.FirstName
+            newForm.txtLastName.Text = vendor.LastName
+            ' newForm.mTxtHiredDate.Text = vendor.HiredDate '.ToString("MM/dd/yyyy")
+            'newForm.txtEmail.Text = vendor.Email
+
+
+            If DialogResult.OK = newForm.ShowDialog() Then
+                vendor.FirstName = newForm.txtFirstName.Text.Trim()
+                vendor.LastName = newForm.txtLastName.Text.Trim()
+                vendor.QB_Name = vendor.FirstName + " " + vendor.LastName
+                vendor.RecSelect = True
+                'vendor.NewlyAdded = ""
+            Else
+                Exit Sub
+            End If
+        End Using
+    End Sub
+
     Private Sub Set_Selected_Vendor()
         If DataGridView1 IsNot Nothing Then
             For Each row As DataGridViewRow In DataGridView1.Rows
                 If row.Cells("Name").Value IsNot Nothing And row.Cells("ckBox").Value Then
                     vendorData.DataArray.ForEach(
                         Sub(vendor)
-                            If vendor.QB_Name = row.Cells("Name").Value.ToString Then
-                                vendor.RecSelect = True
+                            If vendor.LastName + " " + vendor.FirstName = row.Cells("Name").Value.ToString.Replace(",", "").Trim() Then
+
+                                Get_Vendor_Form(vendor)
+
                             End If
                         End Sub
                     )
@@ -2118,33 +2130,17 @@ Public Class MAIN
     End Sub
 
     Private Sub btnNew_Click(sender As Object, e As EventArgs) Handles btnNew.Click
-        ' Dim tlName, tlEmail, tlFx, tlTel1, qbName, qbEmail, qbFx, qbTel1 As String
-        Dim name, email, fax, telephone1 As String
 
-        Dim objCustomer As QBtoTL_Customer.Customer = New QBtoTL_Customer.Customer(Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing)
-        Get_Customer_Form(objCustomer, name, email, fax, telephone1)
 
-        Dim UI As Boolean
 
-        'Using newForm As NewForm = New NewForm()
+        Dim objCustomer As New QBtoTL_Customer.Customer(Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing)
+        Get_Customer_Form(objCustomer)
+        ' If user want to cancel, stop it
+        If objCustomer.RecSelect = False Then
+            Exit Sub
+        End If
 
-        '    If DialogResult.OK = newForm.ShowDialog() Then
-        '        tlName = newForm.TxtTimeLiveName.Text.Trim
-        '        tlEmail = newForm.txtTimeLiveEmail.Text.Trim
-        '        tlFx = newForm.txtTimeLiveFax.Text.Trim
-        '        tlTel1 = newForm.txtTimeLiveTelephone1.Text.Trim
-        '        ' get input data for Quickbooks
-        '        qbName = newForm.TxtQbName.Text.Trim
-        '        qbEmail = newForm.txtQbEmail.Text.Trim
-        '        qbFx = newForm.txtQbFax.Text.Trim
-        '        qbTel1 = newForm.txtQbTelephone1.Text.Trim
-        '        UI = True
-        '    Else
-        '        Exit Sub
-        '    End If
-        '    ' newForm.ShowDialog()
-        '    ' get input data for Timelive
-        'End Using
+        Dim UI As Boolean = True
 
         Try
             Dim msgSetRq As IMsgSetRequest = MAIN.SESSMANAGER.CreateMsgSetRequest("US", 2, 0)
@@ -2168,18 +2164,18 @@ Public Class MAIN
                 Dim create As Boolean = True
 
                 If UI Then
-                    create = MsgBox("New customer " + name + " is not existing in QuickBooks" + ". Create in QuickBooks?", MsgBoxStyle.YesNo, "Warning!") = MsgBoxResult.Yes
+                    create = MsgBox("New customer " + objCustomer.QB_Name + " is not existing in QuickBooks" + ". Create in QuickBooks?", MsgBoxStyle.YesNo, "Warning!") = MsgBoxResult.Yes
                 End If
 
                 If create Then
 
                     ' Add new Customer to QB
                     Dim custAdd As ICustomerAdd = newMsgSetRq.AppendCustomerAddRq
-                    custAdd.CompanyName.SetValue(name.ToString)
-                    custAdd.Name.SetValue(name.ToString)
-                    custAdd.Fax.SetValue(If(String.IsNullOrEmpty(fax), "", fax))
-                    custAdd.Email.SetValue(If(String.IsNullOrEmpty(email), "", email))
-                    custAdd.Phone.SetValue(If(String.IsNullOrEmpty(telephone1), "", telephone1))
+                    custAdd.CompanyName.SetValue(objCustomer.QB_Name.ToString)
+                    custAdd.Name.SetValue(objCustomer.QB_Name.ToString)
+                    custAdd.Fax.SetValue(If(String.IsNullOrEmpty(objCustomer.Fax), "", objCustomer.Fax))
+                    custAdd.Email.SetValue(If(String.IsNullOrEmpty(objCustomer.Email), "", objCustomer.Email))
+                    custAdd.Phone.SetValue(If(String.IsNullOrEmpty(objCustomer.Telephone1), "", objCustomer.Telephone1))
 
                     'step2: send the request
                     msgSetRs = MAIN.SESSMANAGER.DoRequests(newMsgSetRq)
@@ -2210,80 +2206,102 @@ Public Class MAIN
             Throw ex
         End Try
 
-        ' request data from quickbook to get new customer that just created to create customer in timelive 
-        Dim msgSetRsTimeLive As IMsgSetResponse
-        Try
-            Dim msgSetRq As IMsgSetRequest = MAIN.SESSMANAGER.CreateMsgSetRequest("US", 2, 0) 'sessManager
-            msgSetRq.Attributes.OnError = ENRqOnError.roeContinue
+        ' request data from quickbook to get new customer that just created to create customer in timelive
+        Dim obj_QBtoTL_Customer As New QBtoTL_Customer
+        Dim customerData As New QBtoTL_Customer.CustomerDataStructureQB
 
-            '-------------------------1---------------------------------------------
-            Dim synccust As ICustomerQuery = msgSetRq.AppendCustomerQueryRq
-            synccust.ORCustomerListQuery.CustomerListFilter.ActiveStatus.SetValue(ENActiveStatus.asAll) 'asActiveOnly)
-
-            'step2: send the request
-            msgSetRsTimeLive = MAIN.SESSMANAGER.DoRequests(msgSetRq) 'sessManager
-            Dim respList As IResponseList = msgSetRsTimeLive.ResponseList
-            If (respList Is Nothing Or respList.GetAt(0).Detail Is Nothing) Then
-                ' no data
-                My.Forms.MAIN.History("No customers found...", "i")
-
-            End If
-
-            ' Should only expect 1 response
-            Dim resp As IResponse
-            resp = respList.GetAt(0)
-            'If (resp.StatusCode = 0) Then
-
-            '----------------------2------------------------------------------------
-            Dim custRetList As ICustomerRetList
-            custRetList = resp.Detail
-            '------------------------------3-----------------------------------
-            Dim custRet As ICustomerRet
-            For i As Integer = 0 To If(custRetList Is Nothing, -1, custRetList.Count - 1)
-                custRet = custRetList.GetAt(i)
-                With custRet
-                    If .ParentRef Is Nothing Then
-                        Dim abc = custRet.Name.GetValue
-                        'If custRet.Name.GetValue.ToString = qbName Then
-                        If String.Compare(custRet.Name.GetValue.ToString, name) = 0 Then
-                            Dim objCustomerDataStructureQB As QBtoTL_Customer.CustomerDataStructureQB = New QBtoTL_Customer.CustomerDataStructureQB()
-                            Dim objQbCustomer As QBtoTL_Customer.Customer = New QBtoTL_Customer.Customer("", name, email, custRet.ListID.GetValue, telephone1, fax, custRet.TimeModified.GetValue.ToString, custRet.TimeCreated.GetValue.ToString, True)
-                            objQbCustomer.Enabled = True
-                            objQbCustomer.RecSelect = True
-                            objCustomerDataStructureQB.DataArray.Add(objQbCustomer)
-
-                            customer_qbtotl.QBTransferCustomerToTL(objCustomerDataStructureQB, p_token, Me, False)
-                            Exit For
-                        End If
-                    End If
-
-                End With
-                If UI Then
-                    My.Forms.MAIN.ProgressBar1.Value = i
+        'Get the current List of Customer in Quickbooks
+        customerData = obj_QBtoTL_Customer.GetCustomerQBData(Me, True)
+        Reset_Checked_Customer_Value(customerData)
+        If employeeData IsNot Nothing Then
+            For Each element As QBtoTL_Customer.Customer In customerData.DataArray
+                If element.QB_Name = objCustomer.QB_Name Then
+                    element.RecSelect = True
+                    Exit For
                 End If
             Next
-        Catch ex As Exception
-
-        End Try
-        ' Refresh after processing
-        My.Forms.MAIN.History("Refreshing after processing", "n")
+        End If
+        'Select the new created vendor 
+        obj_QBtoTL_Customer.QBTransferCustomerToTL(customerData, p_token, Me, True)
         display_UI()
+        '=======================
+        'Dim msgSetRsTimeLive As IMsgSetResponse
+        'Try
+        '    Dim msgSetRq As IMsgSetRequest = MAIN.SESSMANAGER.CreateMsgSetRequest("US", 2, 0) 'sessManager
+        '    msgSetRq.Attributes.OnError = ENRqOnError.roeContinue
 
-        System.Threading.Thread.Sleep(150)
-        System.Windows.Forms.Application.DoEvents()
-        ProgressBar1.Value = 0
+        '    '-------------------------1---------------------------------------------
+        '    Dim synccust As ICustomerQuery = msgSetRq.AppendCustomerQueryRq
+        '    synccust.ORCustomerListQuery.CustomerListFilter.ActiveStatus.SetValue(ENActiveStatus.asAll) 'asActiveOnly)
+
+        '    'step2: send the request
+        '    msgSetRsTimeLive = MAIN.SESSMANAGER.DoRequests(msgSetRq) 'sessManager
+        '    Dim respList As IResponseList = msgSetRsTimeLive.ResponseList
+        '    If (respList Is Nothing Or respList.GetAt(0).Detail Is Nothing) Then
+        '        ' no data
+        '        My.Forms.MAIN.History("No customers found...", "i")
+
+        '    End If
+
+        '    ' Should only expect 1 response
+        '    Dim resp As IResponse
+        '    resp = respList.GetAt(0)
+        '    'If (resp.StatusCode = 0) Then
+
+        '    '----------------------2------------------------------------------------
+        '    Dim custRetList As ICustomerRetList
+        '    custRetList = resp.Detail
+        '    '------------------------------3-----------------------------------
+        '    Dim custRet As ICustomerRet
+        '    For i As Integer = 0 To If(custRetList Is Nothing, -1, custRetList.Count - 1)
+        '        custRet = custRetList.GetAt(i)
+        '        With custRet
+        '            If .ParentRef Is Nothing Then
+        '                'for debuging 
+        '                Dim checkingName = custRet.Name.GetValue
+        '                'If custRet.Name.GetValue.ToString = qbName Then
+        '                If String.Compare(custRet.Name.GetValue.ToString, name) = 0 Then
+        '                    Dim objCustomerDataStructureQB As QBtoTL_Customer.CustomerDataStructureQB = New QBtoTL_Customer.CustomerDataStructureQB()
+        '                    Dim objQbCustomer As QBtoTL_Customer.Customer = New QBtoTL_Customer.Customer("", name, email, custRet.ListID.GetValue, telephone1, fax, custRet.TimeModified.GetValue.ToString, custRet.TimeCreated.GetValue.ToString, True)
+        '                    objQbCustomer.Enabled = True
+        '                    objQbCustomer.RecSelect = True
+        '                    objCustomerDataStructureQB.DataArray.Add(objQbCustomer)
+
+        '                    customer_qbtotl.QBTransferCustomerToTL(objCustomerDataStructureQB, p_token, Me, False)
+        '                    Exit For
+        '                End If
+        '            End If
+
+        '        End With
+        '        If UI Then
+        '            My.Forms.MAIN.ProgressBar1.Value = i
+        '        End If
+        '    Next
+        'Catch ex As Exception
+
+        'End Try
+        '' Refresh after processing
+        'My.Forms.MAIN.History("Refreshing after processing", "n")
+        'display_UI()
+
+        'System.Threading.Thread.Sleep(150)
+        'System.Windows.Forms.Application.DoEvents()
+        'ProgressBar1.Value = 0
 
     End Sub
 
     Private Sub btnNewEmployee_Click(sender As Object, e As EventArgs) Handles btnNewEmployee.Click
-        Dim empFristName, empLastName, empHiredDate As String
 
-        Dim objEmployee As QBtoTL_Employee.Employee = New QBtoTL_Employee.Employee(Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing)
+        Dim objEmployee As New QBtoTL_Employee.Employee(Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing)
 
-        Get_Employee_Form(objEmployee, empFristName, empLastName, empHiredDate)
+        Get_Employee_Form(objEmployee)
+        ' if user would like to cancel create new employee
+        If objEmployee.RecSelect = False Then
+            Exit Sub
+        End If
 
-        Dim UI As Boolean
-        Dim TLEmployeeName As String = empFristName + " " + empLastName
+        Dim UI As Boolean = True
+        Dim TLEmployeeName As String = objEmployee.FirstName + " " + objEmployee.LastName
 
 
         Try
@@ -2310,16 +2328,6 @@ Public Class MAIN
                 If UI Then create = MsgBox("New employee found in TimeLive: " + TLEmployeeName + ". Create in QuickBooks?", MsgBoxStyle.YesNo, "Warning!") = MsgBoxResult.Yes
 
                 If create Then
-
-
-                    '  TLEmployeeName = If(Not String.IsNullOrEmpty(tlName), tlName, TLEmployeeName)
-
-                    objEmployee.FirstName = If(Not String.IsNullOrEmpty(empFristName), empFristName, objEmployee.FirstName)
-                    objEmployee.LastName = If(Not String.IsNullOrEmpty(empLastName), empLastName, objEmployee.LastName)
-                    objEmployee.HiredDate = If(Not String.IsNullOrEmpty(empHiredDate), empHiredDate, objEmployee.HiredDate)
-                    '  objEmployee.EmailAddress = If(Not String.IsNullOrEmpty(tlEmail), tlEmail, objEmployee.EmailAddress)
-
-
 
                     ' Add TL Employee to QB
                     Dim employAdd As IEmployeeAdd = newMsgSetRq.AppendEmployeeAddRq
@@ -2369,91 +2377,133 @@ Public Class MAIN
             Throw ex
         End Try
         '========================
-        Dim msgSetRsTimeLive As IMsgSetResponse
-        Try
-            Dim msgSetRq As IMsgSetRequest = MAIN.SESSMANAGER.CreateMsgSetRequest("US", 2, 0) 'sessManager
-            msgSetRq.Attributes.OnError = ENRqOnError.roeContinue
+        'Send new created employee in QuckBook to TimeLive
+        Dim obj_QBtoTl_Employee As New QBtoTL_Employee
+        Dim employeeData As New QBtoTL_Employee.EmployeeDataStructureQB
 
-            '------------------------------1-----------------------------------
-            Dim employeequery As IEmployeeQuery = msgSetRq.AppendEmployeeQueryRq
-            employeequery.ORListQuery.ListFilter.ActiveStatus.SetValue(ENActiveStatus.asActiveOnly)
-
-            'step2: send the request
-            msgSetRsTimeLive = MAIN.SESSMANAGER.DoRequests(msgSetRq)
-            Dim respList As IResponseList = msgSetRsTimeLive.ResponseList
-
-            If respList Is Nothing Then
-                ' no data
-                My.Forms.MAIN.History("No Employees found...", "i")
-                'Return Nothing
-            End If
-            ' Should only expect 1 response
-            Dim resp As IResponse
-            resp = respList.GetAt(0)
-            If resp.StatusCode = 0 Then
-                '------------------------------2-----------------------------------
-                Dim empRetList As IEmployeeRetList
-                empRetList = resp.Detail
-
-                '------------------------------3-----------------------------------
-                Dim empRet As IEmployeeRet
-                'sets status bar, If no, UI skip
-                Dim pblength As Integer = If(empRetList Is Nothing, 0, empRetList.Count)
-                If UI Then
-                    My.Forms.MAIN.ProgressBar1.Maximum += pblength
+        'Get the current List of Employee in Quickbooks
+        employeeData = obj_QBtoTl_Employee.GetEmployeeQBData(Me, True)
+        Reset_Checked_Employee_Value(employeeData)
+        If employeeData IsNot Nothing Then
+            For Each element As QBtoTL_Employee.Employee In employeeData.DataArray
+                If element.QB_Name = objEmployee.QB_Name Then
+                    element.RecSelect = True
+                    Exit For
                 End If
+            Next
+        End If
+        'Select the new created vendor 
+        obj_QBtoTl_Employee.QBTransferEmployeeToTL(employeeData, p_token, Me, True)
+        display_UI()
+    End Sub
 
-                For i As Integer = 0 To pblength - 1
-                    empRet = empRetList.GetAt(i)
+    Private Sub btnNewVendor_Click(sender As Object, e As EventArgs) Handles btnNewVendor.Click
 
-                    With empRet
-                        ' EmailAddress = If(.Email Is Nothing, "", .Email.GetValue)
+        Dim objEmployee As New QBtoTL_Vendor.Vendor(Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing)
 
-                        Dim name As String = If(.Name Is Nothing, "", .Name.GetValue)
-                        If (String.Compare(name, TLEmployeeName.Trim) = 0) Then
+        Get_Vendor_Form(objEmployee)
+        'if users want to cancel create new vendor
+        If objEmployee.RecSelect = False Then
+            Exit Sub
+        End If
+
+        Dim UI As Boolean
+        Dim TLEmployeeName As String = objEmployee.QB_Name
+
+        Try
+            Dim msgSetRq As IMsgSetRequest = MAIN.SESSMANAGER.CreateMsgSetRequest("US", 2, 0)
+
+            msgSetRq.Attributes.OnError = ENRqOnError.roeContinue
+            Dim VendorQueryRq As IVendorQuery = msgSetRq.AppendVendorQueryRq
+
+            VendorQueryRq.ORVendorListQuery.FullNameList.Add(TLEmployeeName)
+            Dim msgSetRs As IMsgSetResponse = MAIN.SESSMANAGER.DoRequests(msgSetRq)
+
+            Dim response As IResponse = msgSetRs.ResponseList.GetAt(0)
+            Dim vendorRetList As IVendorRetList
+            vendorRetList = response.Detail
+
+            Dim inQB As Boolean = Not vendorRetList Is Nothing
+
+            ' Add to QB if not present
+            If Not inQB Then
+                Dim create As Boolean = True
+                If UI Then
+                    create = MsgBox("New vendor found in TimeLive: " + TLEmployeeName + ". Create in QuickBooks?", MsgBoxStyle.YesNo, "Warning!") = MsgBoxResult.Yes
+                End If
+                If create Then
+
+                    Dim newMsgSetRq As IMsgSetRequest = MAIN.SESSMANAGER.CreateMsgSetRequest("US", 2, 0)
+                    newMsgSetRq.Attributes.OnError = ENRqOnError.roeContinue
+                    ' Add TL Employee to QB as a Vendor
+                    Dim vendorAdd As IVendorAdd = newMsgSetRq.AppendVendorAddRq
+                    vendorAdd.IsVendorEligibleFor1099.SetValue(True)
+                    vendorAdd.VendorTypeRef.FullName.SetValue("1099 contractor")
+                    vendorAdd.Name.SetValue(objEmployee.FirstName + " " + objEmployee.LastName)
+                    vendorAdd.FirstName.SetValue(If(objEmployee.FirstName = Nothing, "", objEmployee.FirstName))
+                    vendorAdd.LastName.SetValue(If(objEmployee.LastName = Nothing, "", objEmployee.LastName))
+                    'vendorAdd.MiddleName.SetValue(If(objEmployee.MiddleName = Nothing, "", objEmployee.MiddleName))
+                    'vendorAdd.OpenBalanceDate.SetValue(If(objEmployee.HiredDate = Nothing, Date.Now, objEmployee.HiredDate))
+                    'vendorAdd.Phone.SetValue(If(objEmployee.Phone = Nothing, "", objEmployee.Phone))
+                    'vendorAdd.Mobile.SetValue(If(objEmployee.Mobile = Nothing, "", objEmployee.Mobile)) ' Errors for some reason
+
+                    ' Employee Address
+                    'vendorAdd.VendorAddress.Addr1.SetValue(If(objEmployee.Address1 = Nothing, "", objEmployee.Address1))
+                    'vendorAdd.VendorAddress.Addr2.SetValue(If(objEmployee.Address2 = Nothing, "", objEmployee.Address2))
+                    'vendorAdd.VendorAddress.City.SetValue(If(objEmployee.City = Nothing, "", objEmployee.City))
+                    'vendorAdd.VendorAddress.PostalCode.SetValue(If(objEmployee.PostalCode = Nothing, "", objEmployee.PostalCode))
+                    'vendorAdd.VendorAddress.State.SetValue(If(objEmployee.State = Nothing, "", objEmployee.State))
+                    'vendorAdd.VendorAddress.Country.SetValue(If(objEmployee.Country = Nothing, "", objEmployee.Country))
 
 
-                            Dim objEmployeeDataStructureQB As QBtoTL_Employee.EmployeeDataStructureQB = New QBtoTL_Employee.EmployeeDataStructureQB()
-                            Dim objQbEmployee As QBtoTL_Employee.Employee = New QBtoTL_Employee.Employee("", TLEmployeeName, Nothing, .ListID.GetValue, empFristName, empLastName, empHiredDate, .TimeModified.GetValue, .TimeCreated.GetValue, True)
-                            objQbEmployee.RecSelect = True
-                            employeeData.NoItems += 1
-                            objEmployeeDataStructureQB.DataArray.Add(objQbEmployee)
-                            employee_qbtotl.QBTransferEmployeeToTL(objEmployeeDataStructureQB, p_token, Me, False)
-                            Exit For
+                    'step2: send the request
+                    msgSetRs = MAIN.SESSMANAGER.DoRequests(newMsgSetRq)
 
-                        End If
-                        'HiredDate = If(.HiredDate Is Nothing, "", .HiredDate.GetValue)
-                        'CreateTime = If(.TimeCreated Is Nothing, "", .TimeCreated.GetValue.ToString)
-                        'ModTime = If(.TimeModified Is Nothing, CreateTime, .TimeModified.GetValue.ToString)
+                    ' Interpret the response
+                    Dim res As IResponse
+                    res = msgSetRs.ResponseList.GetAt(0)
 
-                        'Dim TL_ID_Count = ISQBID_In_DataTable(.Name.GetValue, .ListID.GetValue)
-
-                        'NewlyAdd = If(TL_ID_Count, "", "N") ' N if new
-
-                        ' will check which type data should be added 
-                        'employeeData.NoItems += 1
-                        'employeeData.DataArray.Add(New Employee(NewlyAdd, .Name.GetValue, EmailAddress, .ListID.GetValue, FirstName, LastName, ModTime, CreateTime, HiredDate, .IsActive.GetValue))
-                    End With
-                    If UI Then
-                        My.Forms.MAIN.ProgressBar1.Value = i + 1
+                    If res.StatusSeverity = "Error" Then
+                        Throw New Exception(res.StatusMessage)
                     End If
-                Next
+
+                    My.Forms.MAIN.History("Added Name: " + TLEmployeeName.ToString + " to QuickBooks", "N")
+
+                    msgSetRq = MAIN.SESSMANAGER.CreateMsgSetRequest("US", 2, 0)
+                    msgSetRq.Attributes.OnError = ENRqOnError.roeContinue
+
+                    VendorQueryRq = msgSetRq.AppendVendorQueryRq
+                    VendorQueryRq.ORVendorListQuery.FullNameList.Add(TLEmployeeName)
+
+                    msgSetRs = MAIN.SESSMANAGER.DoRequests(msgSetRq)
+                    response = msgSetRs.ResponseList.GetAt(0)
+                    vendorRetList = response.Detail
+                    'Else
+                    '    Return False
+                End If
+                'Else
             End If
-            If msgSetRsTimeLive.ResponseList.GetAt(0).StatusSeverity = "Error" Then
-                My.Forms.MAIN.History(msgSetRsTimeLive.ResponseList.GetAt(0).StatusMessage, "C")
-                Throw New Exception(msgSetRsTimeLive.ResponseList.GetAt(0).StatusMessage)
-            End If
+
         Catch ex As Exception
-            My.Forms.MAIN.History(ex.ToString, "C")
             Throw ex
         End Try
-        ' Refresh after processing
-        My.Forms.MAIN.History("Refreshing after processing", "n")
+        'Send new created vendor in QuckBook to TimeLive
+        Dim obj_QBtoTl_Vendor As New QBtoTL_Vendor
+        Dim VendorData As New QBtoTL_Vendor.VendorDataStructureQB
+        'Get the current List of Vendor in Quickbooks
+        VendorData = obj_QBtoTl_Vendor.GetVendorQBData(Me, True)
+        Reset_Checked_Vendor_Value(VendorData)
+        If VendorData IsNot Nothing Then
+            For Each element As QBtoTL_Vendor.Vendor In VendorData.DataArray
+                If element.QB_Name = objEmployee.QB_Name Then
+                    element.RecSelect = True
+                    Exit For
+                End If
+            Next
+        End If
+        'Select the new created vendor 
+        obj_QBtoTl_Vendor.QBTransferVendorToTL(VendorData, p_token, Me, True)
         display_UI()
-
-        System.Threading.Thread.Sleep(150)
-        System.Windows.Forms.Application.DoEvents()
-        ProgressBar1.Value = 0
 
     End Sub
 End Class

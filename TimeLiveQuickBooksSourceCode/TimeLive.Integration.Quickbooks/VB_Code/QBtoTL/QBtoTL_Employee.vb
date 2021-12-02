@@ -23,13 +23,13 @@ Public Class QBtoTL_Employee
         Public QBCreateTime As String
         Public FirstName As String
         Public LastName As String
-        Public HiredDate As String
+        Public HiredDate As Date
         Public Email As String
         Public Enabled As Boolean
 
 
         Sub New(ByVal NewlyAdded As String, ByVal QB_Name As String, ByVal Email As String, ByVal QB_ID As String, ByVal FirstName As String,
-                ByVal LastName As String, ByVal HiredDate As String, ByVal ModTime As String, ByVal CreateTime As String, ByVal Enabled As Boolean)
+                ByVal LastName As String, ByVal HiredDate As Date, ByVal ModTime As String, ByVal CreateTime As String, ByVal Enabled As Boolean)
             RecSelect = False
             Me.NewlyAdded = NewlyAdded
             Me.QBModTime = ModTime

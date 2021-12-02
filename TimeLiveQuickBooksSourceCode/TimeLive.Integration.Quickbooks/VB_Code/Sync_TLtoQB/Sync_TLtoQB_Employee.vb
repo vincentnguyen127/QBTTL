@@ -93,7 +93,7 @@ Public Class Sync_TLtoQB_Employee
                         'newForm.txtName.Text = TLEmployeeName
                         newForm.txtFirstName.Text = objEmployee.FirstName
                         newForm.txtLastName.Text = objEmployee.LastName
-                        newForm.mTxtHiredDate.Text = objEmployee.HiredDate
+                        newForm.mTxtHiredDate.Text = objEmployee.HiredDate.ToString("MM/dd/yyyy")
                         'newForm.txtEmail.Text = objEmployee.EmailAddress
 
                         If DialogResult.OK = newForm.ShowDialog() Then
@@ -102,8 +102,11 @@ Public Class Sync_TLtoQB_Employee
                             tlLastName = newForm.txtLastName.Text
                             tlHiredDate = newForm.mTxtHiredDate.Text
                             '   tlEmail = newForm.txtEmail.Text
+                        Else
+                            Exit Function
                         End If
                     End Using
+
                     TLEmployeeName = tlFirstName + " " + tlLastName
                     'TLEmployeeName = If(Not String.IsNullOrEmpty(tlName), tlName, TLEmployeeName)
                     objEmployee.FirstName = If(Not String.IsNullOrEmpty(tlFirstName), tlFirstName, objEmployee.FirstName)
