@@ -53,6 +53,8 @@ Public Class QBtoTL_Vendor
         Dim VendorData As New VendorDataStructureQB
         Dim NewlyAdd As String
 
+
+
         'step1: prepare the request
         Dim vendormsgSetRs As IMsgSetResponse
 
@@ -90,6 +92,7 @@ Public Class QBtoTL_Vendor
                             LastName = If(.LastName Is Nothing, "", .LastName.GetValue)
                             CreateTime = If(.TimeCreated Is Nothing, "", .TimeCreated.GetValue.ToString)
                             ModTime = If(.TimeModified Is Nothing, CreateTime, .TimeModified.GetValue.ToString)
+
                             ' will check which type data should be added 
                             If .IsVendorEligibleFor1099.GetValue Then
                                 Dim TL_ID_Count = ISQBID_In_DataTable(.Name.GetValue, .ListID.GetValue)

@@ -55,7 +55,7 @@ Public Class QBtoTL_Customer
 
             '-------------------------1---------------------------------------------
             Dim synccust As ICustomerQuery = msgSetRq.AppendCustomerQueryRq
-            synccust.ORCustomerListQuery.CustomerListFilter.ActiveStatus.SetValue(ENActiveStatus.asAll) 'asActiveOnly)
+            synccust.ORCustomerListQuery.CustomerListFilter.ActiveStatus.SetValue(ENActiveStatus.asActiveOnly) 'asActiveOnly) or asAll
 
             'step2: send the request
             msgSetRs = MAIN.SESSMANAGER.DoRequests(msgSetRq) 'sessManager

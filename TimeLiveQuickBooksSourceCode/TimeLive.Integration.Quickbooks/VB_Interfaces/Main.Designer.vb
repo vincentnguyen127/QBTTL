@@ -68,6 +68,7 @@ Partial Class MAIN
         Me.TLtoQBEmployeeRadioButton = New System.Windows.Forms.RadioButton()
         Me.QBtoTLEmployeeRadioButton = New System.Windows.Forms.RadioButton()
         Me.TabPageVendor = New System.Windows.Forms.TabPage()
+        Me.btnNewVendor = New System.Windows.Forms.Button()
         Me.RefreshVendors = New System.Windows.Forms.Button()
         Me.VendorSyncDirection = New System.Windows.Forms.GroupBox()
         Me.QBtoTLVendorRadioButton = New System.Windows.Forms.RadioButton()
@@ -94,7 +95,7 @@ Partial Class MAIN
         Me.ShowEntitiesBtn = New System.Windows.Forms.Button()
         Me.btnTransfer = New System.Windows.Forms.Button()
         Me.SendEmailsButton = New System.Windows.Forms.Button()
-        Me.btnNewVendor = New System.Windows.Forms.Button()
+        Me.btnTreeView = New System.Windows.Forms.Button()
         Me.JobItemSyncDirection.SuspendLayout()
         CType(Me.SplitContainer1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SplitContainer1.Panel1.SuspendLayout()
@@ -412,6 +413,7 @@ Partial Class MAIN
         '
         'TabPageJobsItems
         '
+        Me.TabPageJobsItems.Controls.Add(Me.btnTreeView)
         Me.TabPageJobsItems.Controls.Add(Me.RefreshJobsOrItems)
         Me.TabPageJobsItems.Controls.Add(Me.JobItemSyncDirection)
         Me.TabPageJobsItems.Location = New System.Drawing.Point(4, 22)
@@ -465,7 +467,7 @@ Partial Class MAIN
         Me.TabPageCustomers.Controls.Add(Me.CustomerSyncDirection)
         Me.TabPageCustomers.Location = New System.Drawing.Point(4, 22)
         Me.TabPageCustomers.Name = "TabPageCustomers"
-        Me.TabPageCustomers.Padding = New System.Windows.Forms.Padding(3, 3, 3, 3)
+        Me.TabPageCustomers.Padding = New System.Windows.Forms.Padding(3)
         Me.TabPageCustomers.Size = New System.Drawing.Size(716, 82)
         Me.TabPageCustomers.TabIndex = 3
         Me.TabPageCustomers.Text = "Customers Options"
@@ -474,7 +476,7 @@ Partial Class MAIN
         'btnNew
         '
         Me.btnNew.Location = New System.Drawing.Point(444, 52)
-        Me.btnNew.Margin = New System.Windows.Forms.Padding(2, 2, 2, 2)
+        Me.btnNew.Margin = New System.Windows.Forms.Padding(2)
         Me.btnNew.Name = "btnNew"
         Me.btnNew.Size = New System.Drawing.Size(56, 19)
         Me.btnNew.TabIndex = 2
@@ -532,7 +534,7 @@ Partial Class MAIN
         Me.TabPageEmployees.Controls.Add(Me.EmployeeSyncDirection)
         Me.TabPageEmployees.Location = New System.Drawing.Point(4, 22)
         Me.TabPageEmployees.Name = "TabPageEmployees"
-        Me.TabPageEmployees.Padding = New System.Windows.Forms.Padding(3, 3, 3, 3)
+        Me.TabPageEmployees.Padding = New System.Windows.Forms.Padding(3)
         Me.TabPageEmployees.Size = New System.Drawing.Size(716, 82)
         Me.TabPageEmployees.TabIndex = 4
         Me.TabPageEmployees.Text = "Employees Options"
@@ -541,7 +543,7 @@ Partial Class MAIN
         'btnNewEmployee
         '
         Me.btnNewEmployee.Location = New System.Drawing.Point(434, 52)
-        Me.btnNewEmployee.Margin = New System.Windows.Forms.Padding(2, 2, 2, 2)
+        Me.btnNewEmployee.Margin = New System.Windows.Forms.Padding(2)
         Me.btnNewEmployee.Name = "btnNewEmployee"
         Me.btnNewEmployee.Size = New System.Drawing.Size(56, 19)
         Me.btnNewEmployee.TabIndex = 3
@@ -598,11 +600,21 @@ Partial Class MAIN
         Me.TabPageVendor.Controls.Add(Me.VendorSyncDirection)
         Me.TabPageVendor.Location = New System.Drawing.Point(4, 22)
         Me.TabPageVendor.Name = "TabPageVendor"
-        Me.TabPageVendor.Padding = New System.Windows.Forms.Padding(3, 3, 3, 3)
+        Me.TabPageVendor.Padding = New System.Windows.Forms.Padding(3)
         Me.TabPageVendor.Size = New System.Drawing.Size(716, 82)
         Me.TabPageVendor.TabIndex = 5
         Me.TabPageVendor.Text = "Vendors Options"
         Me.TabPageVendor.UseVisualStyleBackColor = True
+        '
+        'btnNewVendor
+        '
+        Me.btnNewVendor.Location = New System.Drawing.Point(442, 52)
+        Me.btnNewVendor.Margin = New System.Windows.Forms.Padding(2)
+        Me.btnNewVendor.Name = "btnNewVendor"
+        Me.btnNewVendor.Size = New System.Drawing.Size(56, 19)
+        Me.btnNewVendor.TabIndex = 4
+        Me.btnNewVendor.Text = "New"
+        Me.btnNewVendor.UseVisualStyleBackColor = True
         '
         'RefreshVendors
         '
@@ -650,7 +662,7 @@ Partial Class MAIN
         Me.TabPageTimeTransfer.Controls.Add(Me.time_btn_currentweek)
         Me.TabPageTimeTransfer.Location = New System.Drawing.Point(4, 22)
         Me.TabPageTimeTransfer.Name = "TabPageTimeTransfer"
-        Me.TabPageTimeTransfer.Padding = New System.Windows.Forms.Padding(3, 3, 3, 3)
+        Me.TabPageTimeTransfer.Padding = New System.Windows.Forms.Padding(3)
         Me.TabPageTimeTransfer.Size = New System.Drawing.Size(716, 82)
         Me.TabPageTimeTransfer.TabIndex = 2
         Me.TabPageTimeTransfer.Text = "Time Transfer Options"
@@ -759,7 +771,7 @@ Partial Class MAIN
         Me.TabPageExpenseReport.Controls.Add(Me.expense_btn_currWeek)
         Me.TabPageExpenseReport.Location = New System.Drawing.Point(4, 22)
         Me.TabPageExpenseReport.Name = "TabPageExpenseReport"
-        Me.TabPageExpenseReport.Padding = New System.Windows.Forms.Padding(3, 3, 3, 3)
+        Me.TabPageExpenseReport.Padding = New System.Windows.Forms.Padding(3)
         Me.TabPageExpenseReport.Size = New System.Drawing.Size(716, 82)
         Me.TabPageExpenseReport.TabIndex = 7
         Me.TabPageExpenseReport.Text = "Expense Report Options"
@@ -870,15 +882,15 @@ Partial Class MAIN
         Me.SendEmailsButton.UseVisualStyleBackColor = True
         Me.SendEmailsButton.Visible = False
         '
-        'btnNewVendor
+        'btnTreeView
         '
-        Me.btnNewVendor.Location = New System.Drawing.Point(442, 52)
-        Me.btnNewVendor.Margin = New System.Windows.Forms.Padding(2)
-        Me.btnNewVendor.Name = "btnNewVendor"
-        Me.btnNewVendor.Size = New System.Drawing.Size(56, 19)
-        Me.btnNewVendor.TabIndex = 4
-        Me.btnNewVendor.Text = "New"
-        Me.btnNewVendor.UseVisualStyleBackColor = True
+        Me.btnTreeView.Location = New System.Drawing.Point(443, 52)
+        Me.btnTreeView.Margin = New System.Windows.Forms.Padding(2)
+        Me.btnTreeView.Name = "btnTreeView"
+        Me.btnTreeView.Size = New System.Drawing.Size(73, 19)
+        Me.btnTreeView.TabIndex = 5
+        Me.btnTreeView.Text = "Tree View"
+        Me.btnTreeView.UseVisualStyleBackColor = True
         '
         'MAIN
         '
@@ -1008,4 +1020,5 @@ Partial Class MAIN
     Friend WithEvents btnNew As Button
     Friend WithEvents btnNewEmployee As Button
     Friend WithEvents btnNewVendor As Button
+    Friend WithEvents btnTreeView As Button
 End Class
