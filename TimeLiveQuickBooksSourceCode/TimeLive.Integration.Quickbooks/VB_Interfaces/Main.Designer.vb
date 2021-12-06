@@ -52,6 +52,7 @@ Partial Class MAIN
         Me.btn_relationships = New System.Windows.Forms.ToolStripButton()
         Me.clearlogbtn = New System.Windows.Forms.ToolStripButton()
         Me.TabPageJobsItems = New System.Windows.Forms.TabPage()
+        Me.btnTreeView = New System.Windows.Forms.Button()
         Me.ProgressBar1 = New System.Windows.Forms.ProgressBar()
         Me.TLtoQBVendorRadioButton = New System.Windows.Forms.RadioButton()
         Me.AttributeTabControl = New System.Windows.Forms.TabControl()
@@ -95,7 +96,6 @@ Partial Class MAIN
         Me.ShowEntitiesBtn = New System.Windows.Forms.Button()
         Me.btnTransfer = New System.Windows.Forms.Button()
         Me.SendEmailsButton = New System.Windows.Forms.Button()
-        Me.btnTreeView = New System.Windows.Forms.Button()
         Me.JobItemSyncDirection.SuspendLayout()
         CType(Me.SplitContainer1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SplitContainer1.Panel1.SuspendLayout()
@@ -422,6 +422,16 @@ Partial Class MAIN
         Me.TabPageJobsItems.TabIndex = 6
         Me.TabPageJobsItems.Text = "Jobs/Items Options"
         Me.TabPageJobsItems.UseVisualStyleBackColor = True
+        '
+        'btnTreeView
+        '
+        Me.btnTreeView.Location = New System.Drawing.Point(443, 52)
+        Me.btnTreeView.Margin = New System.Windows.Forms.Padding(2)
+        Me.btnTreeView.Name = "btnTreeView"
+        Me.btnTreeView.Size = New System.Drawing.Size(73, 19)
+        Me.btnTreeView.TabIndex = 5
+        Me.btnTreeView.Text = "Tree View"
+        Me.btnTreeView.UseVisualStyleBackColor = True
         '
         'ProgressBar1
         '
@@ -881,16 +891,6 @@ Partial Class MAIN
         Me.SendEmailsButton.Text = "Send Emails"
         Me.SendEmailsButton.UseVisualStyleBackColor = True
         Me.SendEmailsButton.Visible = False
-        '
-        'btnTreeView
-        '
-        Me.btnTreeView.Location = New System.Drawing.Point(443, 52)
-        Me.btnTreeView.Margin = New System.Windows.Forms.Padding(2)
-        Me.btnTreeView.Name = "btnTreeView"
-        Me.btnTreeView.Size = New System.Drawing.Size(73, 19)
-        Me.btnTreeView.TabIndex = 5
-        Me.btnTreeView.Text = "Tree View"
-        Me.btnTreeView.UseVisualStyleBackColor = True
         '
         'MAIN
         '

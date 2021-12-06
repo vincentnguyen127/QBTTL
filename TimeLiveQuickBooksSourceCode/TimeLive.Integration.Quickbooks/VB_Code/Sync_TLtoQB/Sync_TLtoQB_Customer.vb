@@ -15,8 +15,7 @@ Public Class Sync_TLtoQB_Customer
         Try
             ' connect to Timelive
             Dim objClientServices As Services.TimeLive.Clients.Clients = MAIN.connect_TL_clients(p_token)
-            Dim objClientArray() As Object
-            objClientArray = objClientServices.GetClients()
+            Dim objClientArray() As Object = objClientServices.GetClients()
             Dim objClient As New Services.TimeLive.Clients.Client
 
             If Not MainForm Is Nothing Then

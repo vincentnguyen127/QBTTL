@@ -56,6 +56,84 @@ Public Class QBtoTL_JobOrItem
     End Class
 
     '---------------------------------------Get Job Data ---------------------------------
+    Public Function GetJobSubJobData() As JobDataStructureQB
+        Dim EmailAddress As String
+        Dim Telephone1 As String
+        Dim Fax As String
+        Dim ModTime As String
+        Dim CreateTime As String
+        Dim Job_subJobData As New JobDataStructureQB
+        Dim NewlyAdd As String
+
+        'step1: prepare the request
+        Dim msgSetRs As IMsgSetResponse
+        Try
+            Dim msgSetRq As IMsgSetRequest = MAIN.SESSMANAGER.CreateMsgSetRequest("US", 2, 0) 'sessManager
+            msgSetRq.Attributes.OnError = ENRqOnError.roeContinue
+            ' Customer Query 
+            Dim synccust As ICustomerQuery = msgSetRq.AppendCustomerQueryRq
+
+            synccust.ORCustomerListQuery.CustomerListFilter.ActiveStatus.SetValue(ENActiveStatus.asActiveOnly)
+
+            'step2: send the request
+            msgSetRs = MAIN.SESSMANAGER.DoRequests(msgSetRq) 'sessManager
+            Dim respList As IResponseList
+            respList = msgSetRs.ResponseList
+            If respList Is Nothing Then
+                Return Nothing
+            End If
+            ' Should only expect 1 response
+            Dim resp As IResponse
+            resp = respList.GetAt(0)
+            If (resp.StatusCode = 0) Then
+                Dim ptRetList As ICustomerRetList
+                ptRetList = resp.Detail
+
+                Dim pblength As Integer = If(ptRetList Is Nothing, 0, ptRetList.Count)
+
+
+                ' Should only be 1 CustomerRet object returned
+                Dim ptRet As ICustomerRet
+                For i As Integer = 0 To pblength - 1
+
+                    ptRet = ptRetList.GetAt(i)
+                    With ptRet
+                        If Not .ParentRef Is Nothing Then
+                            Dim PTArray() As String = Split(.FullName.GetValue, ":")
+                            If PTArray.Length >= 2 Then
+                                Dim name = .Name.GetValue
+                                Dim full_name = .FullName.GetValue
+                                EmailAddress = If(.Email Is Nothing, "", .Email.GetValue)
+                                Telephone1 = If(.Phone Is Nothing, "", .Phone.GetValue)
+                                Fax = If(.Fax Is Nothing, "", .Fax.GetValue)
+                                CreateTime = If(.TimeCreated Is Nothing, "", .TimeCreated.GetValue.ToString)
+                                ModTime = If(.TimeModified Is Nothing, CreateTime, .TimeModified.GetValue.ToString)
+
+                                Dim TL_ID_Count = ISQBID_In_DataTableForJobs(.FullName.GetValue, .ListID.GetValue)
+
+                                NewlyAdd = If(TL_ID_Count, "", "N") ' N if new
+
+                                ' will check which type data should be added 
+                                Job_subJobData.NoItems += 1
+                                Job_subJobData.DataArray.Add(New Job_Subjob(NewlyAdd, .Name.GetValue, EmailAddress, .ListID.GetValue, Telephone1, Fax, ModTime,
+                                                                            CreateTime, PTArray(0).ToString, .FullName.GetValue, 0, .IsActive.GetValue))
+                            End If
+                        End If
+                    End With
+
+                Next
+            End If
+            If msgSetRs.ResponseList.GetAt(0).StatusSeverity = "Error" Then
+                My.Forms.MAIN.History(msgSetRs.ResponseList.GetAt(0).StatusMessage, "C")
+                Throw New Exception(msgSetRs.ResponseList.GetAt(0).StatusMessage)
+            End If
+        Catch ex As Exception
+            My.Forms.MAIN.History(ex.ToString, "C")
+            'MAIN.QUITQBSESSION()
+            Throw ex
+        End Try
+        Return Job_subJobData
+    End Function
     Public Function GetJobSubJobData(MainForm As MAIN, p_token As String, UI As Boolean) As JobDataStructureQB
         Dim EmailAddress As String
         Dim Telephone1 As String

@@ -2511,28 +2511,75 @@ Public Class MAIN
     End Sub
 
     Private Sub BtnTreeView_Click(sender As Object, e As EventArgs) Handles btnTreeView.Click
+
+        ' Connect to TimeLive Client
+        Dim objClientServices As Services.TimeLive.Clients.Clients = MAIN.connect_TL_clients(p_token)
+        Dim objClientArray() As Object = objClientServices.GetClients()
+        Dim objClient As New Services.TimeLive.Clients.Client
+
+        ' Connect to TimeLive Tasks
+        Dim objTaskServices As Services.TimeLive.Tasks.Tasks = MAIN.connect_TL_tasks(p_token)
+        Dim objTaskArray() As Object = objTaskServices.GetTasks
+        Dim objTask As New Services.TimeLive.Tasks.Task
+
+        'Connect to TimeLive Projects
+        Dim objProjectServices As Services.TimeLive.Projects.Projects = MAIN.connect_TL_projects(p_token)
+        Dim objProjectArray() As Object = objProjectServices.GetProjects
+        Dim objProject As New Services.TimeLive.Projects.Project
+
+        '
+        Dim taskDataArray As New List(Of Array)
+        For Each item As Services.TimeLive.Tasks.Task In objTaskArray
+            item.JobParent += ":" + item.TaskName
+            Dim TaskArray() As String = Split(item.JobParent, ":")
+            taskDataArray.Add(TaskArray)
+        Next
+
+        Using tlTreeView As TreeView = New TreeView()
+            For Each client As Services.TimeLive.Clients.Client In objClientArray
+                tlTreeView.CustomerJobTLTreeView.Nodes.Add(client.ClientName, client.ClientName)
+                For Each project As Services.TimeLive.Projects.Project In objProjectArray
+                    If project.ClientName = client.ClientName Then
+                        tlTreeView.CustomerJobTLTreeView.Nodes(client.ClientName).Nodes.Add(project.ProjectName, project.ProjectName)
+                        For i As Integer = 0 To taskDataArray.Count - 1
+                            If taskDataArray(i)(0) = client.ClientName Then
+                                If taskDataArray(i).Length = 3 Then
+                                    ' adding project node
+                                    tlTreeView.CustomerJobTLTreeView.Nodes(client.ClientName).Nodes(project.ProjectName)Nodes.Add(taskDataArray(i)(2), taskDataArray(i)(2))
+                                ElseIf taskDataArray(i).Length = 4 Then
+                                    tlTreeView.CustomerJobTLTreeView.Nodes(client.ClientName).Nodes(taskDataArray(i)(1)).Nodes.Add(taskDataArray(i)(2), taskDataArray(i)(2))
+                                ElseIf taskDataArray(i).Length = 5 Then
+                                    tlTreeView.CustomerJobTLTreeView.Nodes(client.ClientName).Nodes(taskDataArray(i)(1)).Nodes(taskDataArray(i)(2)).Nodes.Add(taskDataArray(i)(3), taskDataArray(i)(3))
+                                Else
+                                    tlTreeView.CustomerJobTLTreeView.Nodes(client.ClientName).Nodes(taskDataArray(i)(1)).Nodes(taskDataArray(i)(2)).Nodes(taskDataArray(i)(3)).Nodes.Add(taskDataArray(i)(4), taskDataArray(i)(4))
+                                End If
+                            End If
+                        Next
+                    End If
+                Next
+
+
+            Next
+            tlTreeView.ShowDialog()
+        End Using
+
+
+
+
+
+
+
+        '========================================================
         Dim obj1_QBtoTL_Customer As New QBtoTL_Customer
         Dim customerData As New QBtoTL_Customer.CustomerDataStructureQB
 
         Dim obj_QBtoTL_JobOrItem As New QBtoTL_JobOrItem
         Dim jobData As New QBtoTL_JobOrItem.JobDataStructureQB
 
-        customerData = obj1_QBtoTL_Customer.GetCustomerQBData(Me, True)
-        jobData = obj_QBtoTL_JobOrItem.GetJobSubJobData(Me, p_token, True)
+        ' get customers and jobs data from quickbook
+        customerData = obj1_QBtoTL_Customer.GetCustomerQBData()
+        jobData = obj_QBtoTL_JobOrItem.GetJobSubJobData()
 
-
-
-        'For Each item As QBtoTL_JobOrItem.Job_Subjob In jobData.DataArray
-
-        '    Console.WriteLine(item.FullName)
-        'Next
-
-        'Using treeView As TreeView = New TreeView()
-        '    For Each item As QBtoTL_JobOrItem.Job_Subjob In jobData.DataArray
-        '        treeView.CustomerJobTreeView.Nodes.Add(New TreeNode(item.FullName))
-        '    Next
-        '    treeView.ShowDialog()
-        'End Using
 
         Dim jobDataArray As New List(Of Array)
         For Each item As QBtoTL_JobOrItem.Job_Subjob In jobData.DataArray
@@ -2540,130 +2587,44 @@ Public Class MAIN
             jobDataArray.Add(TaskArray)
         Next
 
-        'For Each jobs As Array In DataArray
-        '    TreeView.CustomerJobTreeView.Nodes.Add(jobs(0))
-        '    'treeView.CustomerJobTreeView.Nodes(0).Nodes.Add(jobs(1))
-        '    'treeView.CustomerJobTreeView.Nodes(0).Nodes(1).Nodes.Add(jobs(2))
-
+        ' populate in QuickBook Tree View
         Using treeView As TreeView = New TreeView()
-
             For Each customer As QBtoTL_Customer.Customer In customerData.DataArray
-                treeView.CustomerJobTreeView.Nodes.Add(customer.QB_Name, customer.QB_Name)
+                treeView.CustomerJobQBTreeView.Nodes.Add(customer.QB_Name, customer.QB_Name)
                 For i As Integer = 0 To jobDataArray.Count - 1
                     If jobDataArray(i)(0) = customer.QB_Name Then
                         Dim jobLength As Integer = jobDataArray(i).Length
                         If jobLength = 2 Then
-                            treeView.CustomerJobTreeView.Nodes(customer.QB_Name).Nodes.Add(jobDataArray(i)(1), jobDataArray(i)(1))
+                            treeView.CustomerJobQBTreeView.Nodes(customer.QB_Name).Nodes.Add(jobDataArray(i)(1), jobDataArray(i)(1))
                             Continue For
                         ElseIf jobLength = 3 Then
-                            treeView.CustomerJobTreeView.Nodes(customer.QB_Name).Nodes(jobDataArray(i)(1)).Nodes.Add(jobDataArray(i)(2), jobDataArray(i)(2))
+                            treeView.CustomerJobQBTreeView.Nodes(customer.QB_Name).Nodes(jobDataArray(i)(1)).Nodes.Add(jobDataArray(i)(2), jobDataArray(i)(2))
                             Continue For
                         ElseIf jobLength = 4 Then
-                            treeView.CustomerJobTreeView.Nodes(customer.QB_Name).Nodes(jobDataArray(i)(1)).Nodes(jobDataArray(i)(2)).Nodes.Add(jobDataArray(i)(3), jobDataArray(i)(3))
+                            treeView.CustomerJobQBTreeView.Nodes(customer.QB_Name).Nodes(jobDataArray(i)(1)).Nodes(jobDataArray(i)(2)).Nodes.Add(jobDataArray(i)(3), jobDataArray(i)(3))
                             Continue For
                         Else
-                            treeView.CustomerJobTreeView.Nodes(customer.QB_Name).Nodes(jobDataArray(i)(1)).Nodes(jobDataArray(i)(2)).Nodes(jobDataArray(i)(3)).Nodes.Add(jobDataArray(i)(4, jobDataArray(i)(4)))
+                            treeView.CustomerJobQBTreeView.Nodes(customer.QB_Name).Nodes(jobDataArray(i)(1)).Nodes(jobDataArray(i)(2)).Nodes(jobDataArray(i)(3)).Nodes.Add(jobDataArray(i)(4), jobDataArray(i)(4))
                             Continue For
                         End If
                     End If
                 Next
             Next
+            ' expand tree 
+            'For Each n As TreeNode In treeView.CustomerJobQBTreeView.Nodes
+            '    n.Expand()
+            'Next
             treeView.ShowDialog()
         End Using
-
-        'For i As Integer = 0 To customerData.DataArray.Count - 1
-        '    'adding root
-        '    treeView.CustomerJobTreeView.Nodes.Add(customerData.DataArray(i).QB_Name)
-        '    For j As Integer = 0 To jobDataArray.Count - 1
-        '        If jobDataArray(j)(0) = customerData.DataArray(i).QB_Name Then
-        '            'adding second level
-        '            treeView.CustomerJobTreeView.Nodes(i).Nodes.Add(jobDataArray(j)(1))
-
-
-        '            For k As Integer = 1 To jobDataArray(j).Length - 1
-        '                Dim checkLevel1 As String = jobDataArray(0)(1)
-
-        '                treeView.CustomerJobTreeView.Nodes(i).Nodes.Add(jobDataArray(j)(k))
-        '                treeView.CustomerJobTreeView.Nodes(i).Nodes(k).Nodes.Add(jobDataArray(j)(k + 1))
-        '            Next
+        '===================================================
+        '1.Get data from timelive
+        '2.Populate timelive data in timelive treeview
 
 
 
-        'If jobDataArray(j).Length = 2 Then
-        '        treeView.CustomerJobTreeView.Nodes(i).Nodes.Add(jobDataArray(j)(1))
-        '    End If
-        '    If jobDataArray(j).Length = 3 Then
-        '        treeView.CustomerJobTreeView.Nodes(i).Nodes(0).Nodes.Add(jobDataArray(j)(2))
-        '    End If
 
-
-        'If jobDataArray(j).Length = 4 Then
-        '    treeView.CustomerJobTreeView.Nodes(i).Nodes(0).Nodes(0).Nodes.Add(jobDataArray(j)(3))
-        'End If
-
-
-
-        'treeView.CustomerJobTreeView.Nodes(i).Nodes.Add(jobDataArray(j)(1))
-        'If jobDataArray(j).Length = 3 Then
-        '    treeView.CustomerJobTreeView.Nodes(i).Nodes(1).Nodes.Add(jobDataArray(j)(2))
-        'End If
-
-        'For k As Integer = 1 To jobDataArray(j).Length - 1
-        '    If j > 0 Then
-        '        If jobDataArray(j)(k) = jobDataArray(j - 1)(k) Then
-        '            Continue For
-        '        End If
-        '    End If
-        '    treeView.CustomerJobTreeView.Nodes(i).Nodes.Add(jobDataArray(j)(k))
-        'Next
-
-
-        'For k As Integer = 1 To jobDataArray(j).Length - 1
-
-        'Next
-
-
-
-        'If jobDataArray(j).Length >= 3 Then
-        '    If jobDataArray(j)(2) = jobDataArray(j)(1) Then
-        '        treeView.CustomerJobTreeView.Nodes(i).Nodes(1).Nodes.Add(jobDataArray(j)(2))
-        '    End If
-        'End If
-        'End If
-
-        '    Next
-        'Next
-
-        'For Each customer As QBtoTL_Customer.Customer In customerData.DataArray
-        '    treeView.CustomerJobTreeView.Nodes.Add(customer.QB_Name)
-        '    For Each jobs As Array In jobDataArray
-        '        If jobs(0) = customer.QB_Name.Trim() Then
-        '            For Each job As String In jobs
-        '                treeView.CustomerJobTreeView.Node
-        '            Next
-        '        End If
-
-        '    Next
-
-        'Next
-
-
-        'For i As Integer = 1 To 4
-
-        '    Console.WriteLine("i value: {0}", i)
-
-        'Next
-
-        'Dim root = New TreeNode("Application")
-        'TreeView1.Nodes.Add(root)
-        'TreeView1.Nodes(0).Nodes.Add(New TreeNode("Project 1"))
-
-
-        'Dim TaskArray() As String = Split(element.FullName, ":")
-
-        'Using newForm As ModifyForm = New ModifyForm()
-        '    newForm.TxtName.Text = customer.QB_Name
-        '    newForm.txtEmail.Text
 
     End Sub
+
+
 End Class

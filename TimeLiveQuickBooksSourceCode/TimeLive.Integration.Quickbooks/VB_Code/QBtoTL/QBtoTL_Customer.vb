@@ -36,6 +36,91 @@ Public Class QBtoTL_Customer
             Me.Enabled = Enabled
         End Sub
     End Class
+    Public Function GetCustomerQBData() As CustomerDataStructureQB
+        Dim EmailAddress As String
+        Dim Telephone1 As String
+        Dim Fax As String
+        Dim ModTime As String
+        Dim CreateTime As String
+        Dim CustomerData As New CustomerDataStructureQB
+        Dim NewlyAdd As String
+
+        'step1: prepare the request
+        Dim msgSetRs As IMsgSetResponse
+
+        Try
+            Dim msgSetRq As IMsgSetRequest = MAIN.SESSMANAGER.CreateMsgSetRequest("US", 2, 0) 'sessManager
+            msgSetRq.Attributes.OnError = ENRqOnError.roeContinue
+
+            '-------------------------1---------------------------------------------
+            Dim synccust As ICustomerQuery = msgSetRq.AppendCustomerQueryRq
+            synccust.ORCustomerListQuery.CustomerListFilter.ActiveStatus.SetValue(ENActiveStatus.asActiveOnly) 'asActiveOnly) or asAll
+
+            'step2: send the request
+            msgSetRs = MAIN.SESSMANAGER.DoRequests(msgSetRq) 'sessManager
+            Dim respList As IResponseList = msgSetRs.ResponseList
+            If (respList Is Nothing Or respList.GetAt(0).Detail Is Nothing) Then
+                ' no data
+                My.Forms.MAIN.History("No customers found...", "i")
+                Return Nothing
+            End If
+            ' Should only expect 1 response
+            Dim resp As IResponse
+            resp = respList.GetAt(0)
+            'If (resp.StatusCode = 0) Then
+
+            '----------------------2------------------------------------------------
+            Dim custRetList As ICustomerRetList
+            custRetList = resp.Detail
+
+            '------------------------------3-----------------------------------
+            Dim custRet As ICustomerRet
+            'sets status bar; If no UI, then skip
+
+
+            For i As Integer = 0 To If(custRetList Is Nothing, -1, custRetList.Count - 1)
+                custRet = custRetList.GetAt(i)
+                With custRet
+                    If .ParentRef Is Nothing Then
+                        EmailAddress = If(.Email Is Nothing, "", .Email.GetValue)
+                        Telephone1 = If(.Phone Is Nothing, "", .Phone.GetValue)
+                        Fax = If(.Fax Is Nothing, "", .Fax.GetValue)
+                        CreateTime = If(.TimeCreated Is Nothing, "", .TimeCreated.GetValue.ToString)
+                        ModTime = If(.TimeModified Is Nothing, CreateTime, .TimeModified.GetValue.ToString)
+
+                        ' will check which type data should be added 
+                        CustomerData.NoItems += 1
+                        If Not .IsActive.GetValue Then
+                            CustomerData.NoInactive += 1
+                        End If
+                        'Check if newlyadded
+                        'Dim TL_ID_Count As Int16 = 0 ' Delete
+                        Dim TL_ID_Count = ISQBID_In_DataTable(.Name.GetValue, .ListID.GetValue) 'Timeouts
+
+                        NewlyAdd = If(TL_ID_Count, "", "N") ' N if new
+                        CustomerData.DataArray.Add(New Customer(NewlyAdd, .Name.GetValue, EmailAddress, .ListID.GetValue, Telephone1, Fax, ModTime, CreateTime, .IsActive.GetValue))
+                        ' Debugging purposes only, delete
+                        If Not .IsActive.GetValue Then
+                            My.Forms.MAIN.History(.Name.GetValue + " is not active", "i")
+                        End If
+                    End If
+                End With
+
+            Next
+            'End If
+            If msgSetRs.ResponseList.GetAt(0).StatusSeverity = "Error" Then
+                My.Forms.MAIN.History(msgSetRs.ResponseList.GetAt(0).StatusMessage, "C")
+                Throw New Exception(msgSetRs.ResponseList.GetAt(0).StatusMessage)
+            End If
+
+        Catch ex As Exception
+            My.Forms.MAIN.History(ex.ToString, "C")
+            'MAIN.QUITQBSESSION()
+            Throw ex
+        End Try
+
+        Return CustomerData
+    End Function
 
     Public Function GetCustomerQBData(MainForm As MAIN, UI As Boolean) As CustomerDataStructureQB
         Dim EmailAddress As String
