@@ -2512,63 +2512,38 @@ Public Class MAIN
 
     Private Sub BtnTreeView_Click(sender As Object, e As EventArgs) Handles btnTreeView.Click
 
+
+        'data for populating timelive treeview
+        '==============================================
         ' Connect to TimeLive Client
         Dim objClientServices As Services.TimeLive.Clients.Clients = MAIN.connect_TL_clients(p_token)
         Dim objClientArray() As Object = objClientServices.GetClients()
-        Dim objClient As New Services.TimeLive.Clients.Client
+        'Dim objClient As New Services.TimeLive.Clients.Client
 
         ' Connect to TimeLive Tasks
         Dim objTaskServices As Services.TimeLive.Tasks.Tasks = MAIN.connect_TL_tasks(p_token)
         Dim objTaskArray() As Object = objTaskServices.GetTasks
-        Dim objTask As New Services.TimeLive.Tasks.Task
+        'Dim objTask As New Services.TimeLive.Tasks.Task
 
         'Connect to TimeLive Projects
         Dim objProjectServices As Services.TimeLive.Projects.Projects = MAIN.connect_TL_projects(p_token)
         Dim objProjectArray() As Object = objProjectServices.GetProjects
-        Dim objProject As New Services.TimeLive.Projects.Project
+        ' Dim objProject As New Services.TimeLive.Projects.Project
 
-        '
+        'Create data structure in vb for task data  
         Dim taskDataArray As New List(Of Array)
         For Each item As Services.TimeLive.Tasks.Task In objTaskArray
             item.JobParent += ":" + item.TaskName
             Dim TaskArray() As String = Split(item.JobParent, ":")
             taskDataArray.Add(TaskArray)
         Next
+        ' limit only 5 level in tree view
+        'Using tlTreeView As TreeView = New TreeView()
 
-        Using tlTreeView As TreeView = New TreeView()
-            For Each client As Services.TimeLive.Clients.Client In objClientArray
-                tlTreeView.CustomerJobTLTreeView.Nodes.Add(client.ClientName, client.ClientName)
-                For Each project As Services.TimeLive.Projects.Project In objProjectArray
-                    If project.ClientName = client.ClientName Then
-                        tlTreeView.CustomerJobTLTreeView.Nodes(client.ClientName).Nodes.Add(project.ProjectName, project.ProjectName)
-                        For i As Integer = 0 To taskDataArray.Count - 1
-                            If taskDataArray(i)(0) = client.ClientName Then
-                                If taskDataArray(i).Length = 3 Then
-                                    ' adding project node
-                                    tlTreeView.CustomerJobTLTreeView.Nodes(client.ClientName).Nodes(project.ProjectName)Nodes.Add(taskDataArray(i)(2), taskDataArray(i)(2))
-                                ElseIf taskDataArray(i).Length = 4 Then
-                                    tlTreeView.CustomerJobTLTreeView.Nodes(client.ClientName).Nodes(taskDataArray(i)(1)).Nodes.Add(taskDataArray(i)(2), taskDataArray(i)(2))
-                                ElseIf taskDataArray(i).Length = 5 Then
-                                    tlTreeView.CustomerJobTLTreeView.Nodes(client.ClientName).Nodes(taskDataArray(i)(1)).Nodes(taskDataArray(i)(2)).Nodes.Add(taskDataArray(i)(3), taskDataArray(i)(3))
-                                Else
-                                    tlTreeView.CustomerJobTLTreeView.Nodes(client.ClientName).Nodes(taskDataArray(i)(1)).Nodes(taskDataArray(i)(2)).Nodes(taskDataArray(i)(3)).Nodes.Add(taskDataArray(i)(4), taskDataArray(i)(4))
-                                End If
-                            End If
-                        Next
-                    End If
-                Next
+        '    tlTreeView.ShowDialog()
+        'End Using
 
-
-            Next
-            tlTreeView.ShowDialog()
-        End Using
-
-
-
-
-
-
-
+        'data for populating QuickBooks treeview
         '========================================================
         Dim obj1_QBtoTL_Customer As New QBtoTL_Customer
         Dim customerData As New QBtoTL_Customer.CustomerDataStructureQB
@@ -2587,8 +2562,35 @@ Public Class MAIN
             jobDataArray.Add(TaskArray)
         Next
 
-        ' populate in QuickBook Tree View
+        ' populate in QuickBook and TimeLive Tree View
         Using treeView As TreeView = New TreeView()
+            'TimeLive-----------
+            For Each client As Services.TimeLive.Clients.Client In objClientArray
+                treeView.CustomerJobTLTreeView.Nodes.Add(client.ClientName, client.ClientName)
+                For Each project As Services.TimeLive.Projects.Project In objProjectArray
+                    If project.ClientName = client.ClientName Then
+                        treeView.CustomerJobTLTreeView.Nodes(client.ClientName).Nodes.Add(project.ProjectName, project.ProjectName)
+                        For i As Integer = 0 To taskDataArray.Count - 1
+                            If taskDataArray(i)(0) = client.ClientName Then
+                                If taskDataArray(i).Length = 3 Then
+                                    ' adding project node
+                                    treeView.CustomerJobTLTreeView.Nodes(client.ClientName).Nodes(project.ProjectName).Nodes.Add(taskDataArray(i)(2), taskDataArray(i)(2))
+                                ElseIf taskDataArray(i).Length = 4 Then
+                                    treeView.CustomerJobTLTreeView.Nodes(client.ClientName).Nodes(project.ProjectName).Nodes(taskDataArray(i)(2)).Nodes.Add(taskDataArray(i)(3), taskDataArray(i)(3))
+                                ElseIf taskDataArray(i).Length = 5 Then
+                                    treeView.CustomerJobTLTreeView.Nodes(client.ClientName).Nodes(project.ProjectName).Nodes(taskDataArray(i)(2)).Nodes(taskDataArray(i)(3)).Nodes.Add(taskDataArray(i)(4), taskDataArray(i)(4))
+                                    'ElseIf taskDataArray(i).Length = 6 Then
+                                    '    tlTreeView.CustomerJobTLTreeView.Nodes(client.ClientName).Nodes(project.ProjectName).Nodes(taskDataArray(i)(2)).Nodes(taskDataArray(i)(3)).Nodes(taskDataArray(i)(4)).Nodes.Add(taskDataArray(i)(5), taskDataArray(i)(5))
+                                Else
+                                    'In timelive, users can create more than 5 level. However, Quickbook allows only 5 level including clients. Therefore, we should do the same thing in timelive  
+                                    Throw New Exception("Created More than 5 level of a tree")
+                                End If
+                            End If
+                        Next
+                    End If
+                Next
+            Next
+            'QuickBooks-------
             For Each customer As QBtoTL_Customer.Customer In customerData.DataArray
                 treeView.CustomerJobQBTreeView.Nodes.Add(customer.QB_Name, customer.QB_Name)
                 For i As Integer = 0 To jobDataArray.Count - 1
@@ -2616,13 +2618,6 @@ Public Class MAIN
             'Next
             treeView.ShowDialog()
         End Using
-        '===================================================
-        '1.Get data from timelive
-        '2.Populate timelive data in timelive treeview
-
-
-
-
 
     End Sub
 
