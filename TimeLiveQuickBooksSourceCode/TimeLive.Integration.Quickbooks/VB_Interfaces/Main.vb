@@ -9,7 +9,7 @@ Imports System.Globalization
 Imports System.Net.Mail
 Public Class MAIN
 
-    Private p_token As String
+    Public Shared p_token As String
     Private p_AccountId As String
     <ThreadStatic> Public Shared SESSMANAGER As QBSessionManager
     Public Shared colonReplacer = " --> "
@@ -2616,7 +2616,9 @@ Public Class MAIN
             'For Each n As TreeNode In treeView.CustomerJobQBTreeView.Nodes
             '    n.Expand()
             'Next
+
             treeView.ShowDialog()
+
         End Using
 
     End Sub

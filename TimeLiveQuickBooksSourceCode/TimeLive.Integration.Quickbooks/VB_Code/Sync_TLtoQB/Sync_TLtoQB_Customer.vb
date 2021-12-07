@@ -96,24 +96,6 @@ Public Class Sync_TLtoQB_Customer
                             Exit Function
                         End If
 
-                        ' get the input field from Timelive dialog box
-                        'Using newForm As TimeLiveForm = New TimeLiveForm()
-
-                        'newForm.TxtTimeLiveName.Text = TLClientName.ToString
-                        'newForm.txtFax.Text = objClient.Fax
-                        'newForm.txtEmail.Text = objClient.EmailAddress
-                        'newForm.txtTelephone1.Text = objClient.Telephone1
-                        'If DialogResult.OK = newForm.ShowDialog() Then
-                        '    tlName = newForm.TxtTimeLiveName.Text
-                        '    tlEmail = newForm.txtEmail.Text
-                        '    tlFax = newForm.txtFax.Text
-                        '    tlPhone = newForm.txtTelephone1.Text
-                        'Else
-                        '    Exit Function
-                        'End If
-                        'newForm.ShowDialog()
-
-
                     End Using
                     objClient.ClientName = If(Not String.IsNullOrEmpty(tlName), tlName, objClient.ClientName)
                     objClient.Fax = If(Not String.IsNullOrEmpty(tlFax), tlFax, objClient.Fax)
