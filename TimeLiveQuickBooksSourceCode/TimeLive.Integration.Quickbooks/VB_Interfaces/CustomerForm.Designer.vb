@@ -22,6 +22,7 @@ Partial Class ModifyForm
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
+        Me.components = New System.ComponentModel.Container()
         Me.btnCancel = New System.Windows.Forms.Button()
         Me.lblPassword = New System.Windows.Forms.Label()
         Me.btnOK = New System.Windows.Forms.Button()
@@ -32,14 +33,15 @@ Partial Class ModifyForm
         Me.TxtName = New System.Windows.Forms.TextBox()
         Me.txtFax = New System.Windows.Forms.TextBox()
         Me.txtTelephone2 = New System.Windows.Forms.MaskedTextBox()
+        Me.ErrorProvider1 = New System.Windows.Forms.ErrorProvider(Me.components)
+        CType(Me.ErrorProvider1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'btnCancel
         '
-        Me.btnCancel.Location = New System.Drawing.Point(235, 151)
-        Me.btnCancel.Margin = New System.Windows.Forms.Padding(4)
+        Me.btnCancel.Location = New System.Drawing.Point(176, 123)
         Me.btnCancel.Name = "btnCancel"
-        Me.btnCancel.Size = New System.Drawing.Size(104, 37)
+        Me.btnCancel.Size = New System.Drawing.Size(78, 30)
         Me.btnCancel.TabIndex = 13
         Me.btnCancel.Text = "Cancel"
         Me.btnCancel.UseVisualStyleBackColor = True
@@ -47,19 +49,17 @@ Partial Class ModifyForm
         'lblPassword
         '
         Me.lblPassword.AutoSize = True
-        Me.lblPassword.Location = New System.Drawing.Point(49, 122)
-        Me.lblPassword.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.lblPassword.Location = New System.Drawing.Point(37, 99)
         Me.lblPassword.Name = "lblPassword"
-        Me.lblPassword.Size = New System.Drawing.Size(80, 16)
+        Me.lblPassword.Size = New System.Drawing.Size(64, 13)
         Me.lblPassword.TabIndex = 14
         Me.lblPassword.Text = "Telephone: " & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10)
         '
         'btnOK
         '
-        Me.btnOK.Location = New System.Drawing.Point(347, 151)
-        Me.btnOK.Margin = New System.Windows.Forms.Padding(4)
+        Me.btnOK.Location = New System.Drawing.Point(260, 123)
         Me.btnOK.Name = "btnOK"
-        Me.btnOK.Size = New System.Drawing.Size(104, 37)
+        Me.btnOK.Size = New System.Drawing.Size(78, 30)
         Me.btnOK.TabIndex = 7
         Me.btnOK.Text = "OK"
         Me.btnOK.UseVisualStyleBackColor = True
@@ -67,70 +67,69 @@ Partial Class ModifyForm
         'Label3
         '
         Me.Label3.AutoSize = True
-        Me.Label3.Location = New System.Drawing.Point(95, 99)
-        Me.Label3.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.Label3.Location = New System.Drawing.Point(71, 80)
         Me.Label3.Name = "Label3"
-        Me.Label3.Size = New System.Drawing.Size(33, 16)
+        Me.Label3.Size = New System.Drawing.Size(27, 13)
         Me.Label3.TabIndex = 20
         Me.Label3.Text = "Fax:"
         '
         'Label4
         '
         Me.Label4.AutoSize = True
-        Me.Label4.Location = New System.Drawing.Point(84, 68)
-        Me.Label4.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.Label4.Location = New System.Drawing.Point(63, 55)
         Me.Label4.Name = "Label4"
-        Me.Label4.Size = New System.Drawing.Size(45, 16)
+        Me.Label4.Size = New System.Drawing.Size(35, 13)
         Me.Label4.TabIndex = 19
         Me.Label4.Text = "Email:"
         '
         'txtEmail
         '
-        Me.txtEmail.Location = New System.Drawing.Point(144, 65)
-        Me.txtEmail.Margin = New System.Windows.Forms.Padding(4)
+        Me.txtEmail.Location = New System.Drawing.Point(108, 53)
         Me.txtEmail.Name = "txtEmail"
-        Me.txtEmail.Size = New System.Drawing.Size(307, 22)
+        Me.txtEmail.Size = New System.Drawing.Size(231, 20)
         Me.txtEmail.TabIndex = 2
         '
         'lbName
         '
         Me.lbName.AutoSize = True
-        Me.lbName.Location = New System.Drawing.Point(73, 36)
-        Me.lbName.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.lbName.Location = New System.Drawing.Point(55, 29)
         Me.lbName.Name = "lbName"
-        Me.lbName.Size = New System.Drawing.Size(56, 16)
+        Me.lbName.Size = New System.Drawing.Size(45, 13)
         Me.lbName.TabIndex = 24
         Me.lbName.Text = "* Name:"
         '
         'TxtName
         '
-        Me.TxtName.Location = New System.Drawing.Point(144, 36)
-        Me.TxtName.Margin = New System.Windows.Forms.Padding(4)
+        Me.TxtName.Location = New System.Drawing.Point(108, 29)
         Me.TxtName.Name = "TxtName"
-        Me.TxtName.Size = New System.Drawing.Size(307, 22)
+        Me.TxtName.Size = New System.Drawing.Size(231, 20)
         Me.TxtName.TabIndex = 1
         '
         'txtFax
         '
-        Me.txtFax.Location = New System.Drawing.Point(144, 93)
-        Me.txtFax.Margin = New System.Windows.Forms.Padding(4)
+        Me.txtFax.Location = New System.Drawing.Point(108, 76)
         Me.txtFax.Name = "txtFax"
-        Me.txtFax.Size = New System.Drawing.Size(307, 22)
+        Me.txtFax.Size = New System.Drawing.Size(231, 20)
         Me.txtFax.TabIndex = 3
         '
         'txtTelephone2
         '
-        Me.txtTelephone2.Location = New System.Drawing.Point(144, 122)
+        Me.txtTelephone2.Location = New System.Drawing.Point(108, 99)
+        Me.txtTelephone2.Margin = New System.Windows.Forms.Padding(2, 2, 2, 2)
         Me.txtTelephone2.Mask = "000-000-0000"
         Me.txtTelephone2.Name = "txtTelephone2"
-        Me.txtTelephone2.Size = New System.Drawing.Size(307, 22)
+        Me.txtTelephone2.Size = New System.Drawing.Size(231, 20)
         Me.txtTelephone2.TabIndex = 4
+        '
+        'ErrorProvider1
+        '
+        Me.ErrorProvider1.ContainerControl = Me
         '
         'ModifyForm
         '
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(8.0!, 16.0!)
+        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(524, 215)
+        Me.ClientSize = New System.Drawing.Size(393, 175)
         Me.Controls.Add(Me.txtTelephone2)
         Me.Controls.Add(Me.txtFax)
         Me.Controls.Add(Me.lbName)
@@ -141,9 +140,9 @@ Partial Class ModifyForm
         Me.Controls.Add(Me.btnCancel)
         Me.Controls.Add(Me.lblPassword)
         Me.Controls.Add(Me.btnOK)
-        Me.Margin = New System.Windows.Forms.Padding(4)
         Me.Name = "ModifyForm"
         Me.Text = "Customer Entry"
+        CType(Me.ErrorProvider1, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -158,4 +157,5 @@ Partial Class ModifyForm
     Friend WithEvents TxtName As TextBox
     Friend WithEvents txtFax As TextBox
     Friend WithEvents txtTelephone2 As MaskedTextBox
+    Friend WithEvents ErrorProvider1 As ErrorProvider
 End Class

@@ -81,4 +81,14 @@
 
 
     End Sub
+
+    Private Sub btnAddNode_Click(sender As Object, e As EventArgs) Handles btnAddNode.Click
+        Dim new_node As String = InputBox("Enter Node Name")
+        Dim selected_node As String = TextBoxTimeLiveName.Text
+        Dim timeLive_node_id As String = TextBoxTimeLiveID.Text
+
+
+
+
+    End Sub
 End Class

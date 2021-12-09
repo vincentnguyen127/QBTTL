@@ -37,6 +37,7 @@ Partial Class TreeView
         Me.TextBoxTimeLiveName = New System.Windows.Forms.TextBox()
         Me.Label7 = New System.Windows.Forms.Label()
         Me.TextBoxTimeLiveID = New System.Windows.Forms.TextBox()
+        Me.btnAddNode = New System.Windows.Forms.Button()
         Me.SuspendLayout()
         '
         'CustomerJobQBTreeView
@@ -157,11 +158,21 @@ Partial Class TreeView
         Me.TextBoxTimeLiveID.Size = New System.Drawing.Size(131, 20)
         Me.TextBoxTimeLiveID.TabIndex = 27
         '
+        'btnAddNode
+        '
+        Me.btnAddNode.Location = New System.Drawing.Point(822, 131)
+        Me.btnAddNode.Name = "btnAddNode"
+        Me.btnAddNode.Size = New System.Drawing.Size(75, 23)
+        Me.btnAddNode.TabIndex = 33
+        Me.btnAddNode.Text = "Add Node"
+        Me.btnAddNode.UseVisualStyleBackColor = True
+        '
         'TreeView
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(1106, 451)
+        Me.Controls.Add(Me.btnAddNode)
         Me.Controls.Add(Me.Label5)
         Me.Controls.Add(Me.Label6)
         Me.Controls.Add(Me.TextBoxTimeLiveName)
@@ -198,4 +209,5 @@ Partial Class TreeView
     Friend WithEvents TextBoxTimeLiveName As TextBox
     Friend WithEvents Label7 As Label
     Friend WithEvents TextBoxTimeLiveID As TextBox
+    Friend WithEvents btnAddNode As Button
 End Class

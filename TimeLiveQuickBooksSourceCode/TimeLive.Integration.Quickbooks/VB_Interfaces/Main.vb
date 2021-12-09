@@ -2532,11 +2532,34 @@ Public Class MAIN
 
         'Create data structure in vb for task data  
         Dim taskDataArray As New List(Of Array)
+        Dim firstTaskLevel As New List(Of Array)
+        Dim secondTaskLevel As New List(Of Array)
+        Dim thirdTaskLevel As New List(Of Array)
+
+
+
+        'For Each item As Services.TimeLive.Tasks.Task In objTaskArray
+        '    item.JobParent += ":" + item.TaskName
+        '    Dim TaskArray() As String = Split(item.JobParent, ":")
+        '    taskDataArray.Add(TaskArray)
+        'Next
+
         For Each item As Services.TimeLive.Tasks.Task In objTaskArray
             item.JobParent += ":" + item.TaskName
             Dim TaskArray() As String = Split(item.JobParent, ":")
-            taskDataArray.Add(TaskArray)
+            Dim lengthTaskArray As Integer = TaskArray.Length
+            If lengthTaskArray = 3 Then
+                firstTaskLevel.Add(TaskArray)
+            ElseIf lengthTaskArray = 4 Then
+                secondTaskLevel.Add(TaskArray)
+            Else
+                thirdTaskLevel.Add(TaskArray)
+            End If
+            'taskDataArray.Add(TaskArray)
         Next
+        taskDataArray.AddRange(firstTaskLevel)
+        taskDataArray.AddRange(secondTaskLevel)
+        taskDataArray.AddRange(thirdTaskLevel)
         ' limit only 5 level in tree view
         'Using tlTreeView As TreeView = New TreeView()
 
@@ -2571,14 +2594,14 @@ Public Class MAIN
                     If project.ClientName = client.ClientName Then
                         treeView.CustomerJobTLTreeView.Nodes(client.ClientName).Nodes.Add(project.ProjectName, project.ProjectName)
                         For i As Integer = 0 To taskDataArray.Count - 1
-                            If taskDataArray(i)(0) = client.ClientName Then
+                            If taskDataArray(i)(1) = project.ProjectName Then
                                 If taskDataArray(i).Length = 3 Then
                                     ' adding project node
                                     treeView.CustomerJobTLTreeView.Nodes(client.ClientName).Nodes(project.ProjectName).Nodes.Add(taskDataArray(i)(2), taskDataArray(i)(2))
                                 ElseIf taskDataArray(i).Length = 4 Then
                                     treeView.CustomerJobTLTreeView.Nodes(client.ClientName).Nodes(project.ProjectName).Nodes(taskDataArray(i)(2)).Nodes.Add(taskDataArray(i)(3), taskDataArray(i)(3))
                                 ElseIf taskDataArray(i).Length = 5 Then
-                                    treeView.CustomerJobTLTreeView.Nodes(client.ClientName).Nodes(project.ProjectName).Nodes(taskDataArray(i)(2)).Nodes(taskDataArray(i)(3)).Nodes.Add(taskDataArray(i)(4), taskDataArray(i)(4))
+                                    treeView.CustomerJobTLTreeView.Nodes(client.ClientName).Nodes(project.ProjectName.Trim).Nodes(taskDataArray(i)(2)).Nodes(taskDataArray(i)(3)).Nodes.Add(taskDataArray(i)(4), taskDataArray(i)(4))
                                     'ElseIf taskDataArray(i).Length = 6 Then
                                     '    tlTreeView.CustomerJobTLTreeView.Nodes(client.ClientName).Nodes(project.ProjectName).Nodes(taskDataArray(i)(2)).Nodes(taskDataArray(i)(3)).Nodes(taskDataArray(i)(4)).Nodes.Add(taskDataArray(i)(5), taskDataArray(i)(5))
                                 Else

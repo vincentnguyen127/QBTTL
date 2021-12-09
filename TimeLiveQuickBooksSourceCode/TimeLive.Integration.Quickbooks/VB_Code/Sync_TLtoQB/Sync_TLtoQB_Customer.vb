@@ -83,7 +83,7 @@ Public Class Sync_TLtoQB_Customer
                     Dim tlName, tlEmail, tlFax, tlPhone As String
 
                     Using newForm As ModifyForm = New ModifyForm()
-                        newForm.TxtName.Text = objClient.ClientName
+                        newForm.TxtName.Text = TLClientName 'objClient.ClientName
                         newForm.txtFax.Text = objClient.Fax
                         newForm.txtEmail.Text = objClient.EmailAddress
                         newForm.txtTelephone2.Text = objClient.Telephone1
