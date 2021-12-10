@@ -22,6 +22,7 @@ Public Class QBtoTL_Customer
         Public Fax As String
         Public Enabled As Boolean
 
+
         Sub New(ByVal NewlyAdded As String, ByVal QB_Name As String, ByVal Email As String, ByVal QB_ID As String, ByVal Telephone1 As String,
                 ByVal Fax As String, ModTime As String, CreateTime As String, Optional Enabled As Boolean = True)
             RecSelect = False
@@ -34,6 +35,7 @@ Public Class QBtoTL_Customer
             Me.Telephone1 = Telephone1
             Me.Fax = Fax
             Me.Enabled = Enabled
+
         End Sub
     End Class
     Public Function GetCustomerQBData() As CustomerDataStructureQB
@@ -130,6 +132,7 @@ Public Class QBtoTL_Customer
         Dim CreateTime As String
         Dim CustomerData As New CustomerDataStructureQB
         Dim NewlyAdd As String
+
 
         'step1: prepare the request
         Dim msgSetRs As IMsgSetResponse

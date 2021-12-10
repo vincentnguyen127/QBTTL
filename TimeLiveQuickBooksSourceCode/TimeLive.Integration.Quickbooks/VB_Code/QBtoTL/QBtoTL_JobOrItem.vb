@@ -421,7 +421,6 @@ Public Class QBtoTL_JobOrItem
                             End If
 
                             Dim nProjectId As Integer = objProjectServices.GetProjectId(PTArray(1)) ' Was ProjectName, which was Nothing 
-
                             Dim nTaskTypeId As Integer = objTaskServices.GetTaskTypeId()
                             Dim nTaskStatusId As Integer = objTaskServices.GetTaskStatusId()
                             Dim nPriorityId As Integer = objTaskServices.GetTaskPriorityId()

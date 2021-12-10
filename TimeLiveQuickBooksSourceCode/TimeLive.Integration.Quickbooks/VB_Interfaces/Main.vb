@@ -15,6 +15,10 @@ Public Class MAIN
     Public Shared colonReplacer = " --> "
     Public Shared showNamesWithComma As Boolean = True
     Public Shared TIMERTHREAD As Threading.Thread
+    'This field is used to control treeview's refresing 
+    Public Shared treeViewFlag As Boolean = False
+
+
 
     Private LoggedIn As Boolean
     Private Type As Integer
@@ -2509,10 +2513,18 @@ Public Class MAIN
         display_UI()
 
     End Sub
+    'Private Sub selectall_checkbox(sender As Object, e As EventArgs) Handles SelectAllCheckBox.CheckedChanged
+    '    If DataGridView1 IsNot Nothing Then
+    '        For Each row As DataGridViewRow In DataGridView1.Rows
+    '            If row.Cells.Item(1).Value IsNot Nothing Then
+    '                row.Cells("ckBox").Value = SelectAllCheckBox.Checked
+    '            End If
+    '        Next
+    '    End If
+    'End Sub
 
-    Private Sub BtnTreeView_Click(sender As Object, e As EventArgs) Handles btnTreeView.Click
 
-
+    Public Function generate_treeview(p_token As String)
         'data for populating timelive treeview
         '==============================================
         ' Connect to TimeLive Client
@@ -2537,13 +2549,11 @@ Public Class MAIN
         Dim thirdTaskLevel As New List(Of Array)
 
 
-
         'For Each item As Services.TimeLive.Tasks.Task In objTaskArray
         '    item.JobParent += ":" + item.TaskName
         '    Dim TaskArray() As String = Split(item.JobParent, ":")
         '    taskDataArray.Add(TaskArray)
         'Next
-
         For Each item As Services.TimeLive.Tasks.Task In objTaskArray
             item.JobParent += ":" + item.TaskName
             Dim TaskArray() As String = Split(item.JobParent, ":")
@@ -2586,7 +2596,11 @@ Public Class MAIN
         Next
 
         ' populate in QuickBook and TimeLive Tree View
-        Using treeView As TreeView = New TreeView()
+
+        'treeView.CustomerJobQBTreeView.Nodes.Clear()
+        'treeView.CustomerJobTLTreeView.Nodes.Clear()
+
+        Using treeView As TLQBTreeView = New TLQBTreeView()
             'TimeLive-----------
             For Each client As Services.TimeLive.Clients.Client In objClientArray
                 treeView.CustomerJobTLTreeView.Nodes.Add(client.ClientName, client.ClientName)
@@ -2639,12 +2653,16 @@ Public Class MAIN
             'For Each n As TreeNode In treeView.CustomerJobQBTreeView.Nodes
             '    n.Expand()
             'Next
-
             treeView.ShowDialog()
-
         End Using
+        If Not treeViewFlag Then
+            generate_treeview(p_token)
+        End If
+    End Function
 
+    Private Sub BtnTreeView_Click(sender As Object, e As EventArgs) Handles btnTreeView.Click
+
+        generate_treeview(p_token)
     End Sub
-
 
 End Class
