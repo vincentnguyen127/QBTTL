@@ -1,4 +1,7 @@
-﻿Public Class TLQBTreeView
+﻿Imports System.Runtime.InteropServices
+Imports QBFC13Lib
+Public Class TLQBTreeView
+    Dim obj_main As New MAIN
     Private Sub CustomerJobTreeView_AfterSelect(sender As Object, e As TreeViewEventArgs) Handles CustomerJobQBTreeView.AfterSelect
         'TextBoxKey.Text = CustomerJobTreeView.SelectedNode.Text
         Dim selected_node = CustomerJobQBTreeView.SelectedNode.Text
@@ -20,17 +23,17 @@
 
         For Each customer As QBtoTL_Customer.Customer In customerData.DataArray
             If customer.QB_Name = selected_node Then
-                TextBoxKey.Text = customer.QB_ID
-                TextBoxName.Text = customer.QB_Name
-
+                TextBoxKeyQB.Text = customer.QB_ID
+                TextBoxNameQB.Text = customer.QB_Name
+                TextBoxFullNameQB.Text = customer.QB_Name
                 Exit Sub
             End If
         Next
         For Each jobs As QBtoTL_JobOrItem.Job_Subjob In jobData.DataArray
             If jobs.QB_Name = selected_node Then
-                TextBoxKey.Text = jobs.QB_ID
-                TextBoxName.Text = jobs.QB_Name
-
+                TextBoxKeyQB.Text = jobs.QB_ID
+                TextBoxNameQB.Text = jobs.QB_Name
+                TextBoxFullNameQB.Text = jobs.FullName
                 Exit Sub
             End If
         Next
@@ -90,7 +93,6 @@
 
     Private Sub btnAddNode_Click(sender As Object, e As EventArgs) Handles btnAddNodeTL.Click
 
-        Me.Close()
 
         'Check the the node is selected or not
         If String.IsNullOrEmpty(TextBoxTimeLiveName.Text.Trim()) Then
@@ -117,7 +119,7 @@
 
 
         'connecting timelive
-        Dim obj_main As New MAIN
+        'Dim obj_main As New MAIN
 
 
         Dim objProjectServices As Services.TimeLive.Projects.Projects = MAIN.connect_TL_projects(obj_main.p_token)
@@ -193,7 +195,7 @@
 
             'obj_main.generate_treeview(obj_main.p_token)
         End If
-
+        Me.Close()
     End Sub
 
     Private Sub ButtonTreeViewClose_Click(sender As Object, e As EventArgs) Handles ButtonTreeViewClose.Click
@@ -203,6 +205,45 @@
     End Sub
 
     Private Sub btnAddNodeQB_Click(sender As Object, e As EventArgs) Handles btnAddNodeQB.Click
+        'Check the the node is selected or not
+        If String.IsNullOrEmpty(TextBoxNameQB.Text.Trim()) Then
+            MessageBox.Show("Please select a node first")
+            Exit Sub
+        End If
+        'Gather the inputs 
+        Dim selected_node As String = TextBoxNameQB.Text.Trim()
+        Dim quickbook_node_id As String = TextBoxKeyQB.Text.Trim()
+        Dim fullname As String = TextBoxFullNameQB.Text.Trim()
+        Dim name() As String = fullname.Split(":")
+        If name.Length > 4 Then
+            MessageBox.Show("Can't create more than 5 level")
+            Exit Sub
+        End If
+
+        Dim new_node As String = InputBox("Enter Node Name").Trim()
+        'Check if the new node is empty or not
+        If String.IsNullOrEmpty(new_node) Then
+            MessageBox.Show("New node can not be empty or null")
+            Exit Sub
+        End If
+
+        Dim MsgSetRq As IMsgSetRequest = MAIN.SESSMANAGER.CreateMsgSetRequest("US", 2, 0)
+        MsgSetRq.Attributes.OnError = ENRqOnError.roeContinue
+
+        Dim jobAdd As ICustomerAdd = MsgSetRq.AppendCustomerAddRq
+        jobAdd.ParentRef.FullName.SetValue(fullname)
+        jobAdd.Name.SetValue(new_node)
+
+        Dim msgSetRs As IMsgSetResponse = MAIN.SESSMANAGER.DoRequests(MsgSetRq)
+        Dim res As IResponse = msgSetRs.ResponseList.GetAt(0)
+
+        If res.StatusSeverity = "Error" Then
+            Throw New Exception(res.StatusMessage)
+        End If
+
+
+        Me.Close()
+
 
     End Sub
 End Class

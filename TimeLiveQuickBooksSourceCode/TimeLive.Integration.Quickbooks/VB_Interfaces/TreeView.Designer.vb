@@ -23,11 +23,11 @@ Partial Class TLQBTreeView
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
         Me.CustomerJobQBTreeView = New System.Windows.Forms.TreeView()
-        Me.TextBoxKey = New System.Windows.Forms.TextBox()
+        Me.TextBoxKeyQB = New System.Windows.Forms.TextBox()
         Me.AccountExpenseEntryTableAdapter1 = New TimeLive.Quickbooks.Integrator.TimeLiveDataSetTableAdapters.AccountExpenseEntryTableAdapter()
         Me.txtKey = New System.Windows.Forms.Label()
         Me.Label1 = New System.Windows.Forms.Label()
-        Me.TextBoxName = New System.Windows.Forms.TextBox()
+        Me.TextBoxNameQB = New System.Windows.Forms.TextBox()
         Me.CustomerJobTLTreeView = New System.Windows.Forms.TreeView()
         Me.Label2 = New System.Windows.Forms.Label()
         Me.Label3 = New System.Windows.Forms.Label()
@@ -53,12 +53,12 @@ Partial Class TLQBTreeView
         Me.CustomerJobQBTreeView.Size = New System.Drawing.Size(259, 329)
         Me.CustomerJobQBTreeView.TabIndex = 0
         '
-        'TextBoxKey
+        'TextBoxKeyQB
         '
-        Me.TextBoxKey.Location = New System.Drawing.Point(392, 53)
-        Me.TextBoxKey.Name = "TextBoxKey"
-        Me.TextBoxKey.Size = New System.Drawing.Size(235, 20)
-        Me.TextBoxKey.TabIndex = 1
+        Me.TextBoxKeyQB.Location = New System.Drawing.Point(392, 60)
+        Me.TextBoxKeyQB.Name = "TextBoxKeyQB"
+        Me.TextBoxKeyQB.Size = New System.Drawing.Size(235, 20)
+        Me.TextBoxKeyQB.TabIndex = 1
         '
         'AccountExpenseEntryTableAdapter1
         '
@@ -67,7 +67,7 @@ Partial Class TLQBTreeView
         'txtKey
         '
         Me.txtKey.AutoSize = True
-        Me.txtKey.Location = New System.Drawing.Point(312, 56)
+        Me.txtKey.Location = New System.Drawing.Point(312, 63)
         Me.txtKey.Name = "txtKey"
         Me.txtKey.Size = New System.Drawing.Size(74, 13)
         Me.txtKey.TabIndex = 20
@@ -82,12 +82,12 @@ Partial Class TLQBTreeView
         Me.Label1.TabIndex = 22
         Me.Label1.Text = "QuickBook Name:"
         '
-        'TextBoxName
+        'TextBoxNameQB
         '
-        Me.TextBoxName.Location = New System.Drawing.Point(392, 79)
-        Me.TextBoxName.Name = "TextBoxName"
-        Me.TextBoxName.Size = New System.Drawing.Size(235, 20)
-        Me.TextBoxName.TabIndex = 21
+        Me.TextBoxNameQB.Location = New System.Drawing.Point(392, 86)
+        Me.TextBoxNameQB.Name = "TextBoxNameQB"
+        Me.TextBoxNameQB.Size = New System.Drawing.Size(235, 20)
+        Me.TextBoxNameQB.TabIndex = 21
         '
         'CustomerJobTLTreeView
         '
@@ -210,7 +210,7 @@ Partial Class TLQBTreeView
         'Label9
         '
         Me.Label9.AutoSize = True
-        Me.Label9.Location = New System.Drawing.Point(311, 109)
+        Me.Label9.Location = New System.Drawing.Point(325, 109)
         Me.Label9.Name = "Label9"
         Me.Label9.Size = New System.Drawing.Size(57, 13)
         Me.Label9.TabIndex = 39
@@ -245,9 +245,9 @@ Partial Class TLQBTreeView
         Me.Controls.Add(Me.Label2)
         Me.Controls.Add(Me.CustomerJobTLTreeView)
         Me.Controls.Add(Me.Label1)
-        Me.Controls.Add(Me.TextBoxName)
+        Me.Controls.Add(Me.TextBoxNameQB)
         Me.Controls.Add(Me.txtKey)
-        Me.Controls.Add(Me.TextBoxKey)
+        Me.Controls.Add(Me.TextBoxKeyQB)
         Me.Controls.Add(Me.CustomerJobQBTreeView)
         Me.Name = "TLQBTreeView"
         Me.Text = "TreeView"
@@ -257,11 +257,11 @@ Partial Class TLQBTreeView
     End Sub
 
     Friend WithEvents CustomerJobQBTreeView As Windows.Forms.TreeView
-    Friend WithEvents TextBoxKey As TextBox
+    Friend WithEvents TextBoxKeyQB As TextBox
     Friend WithEvents AccountExpenseEntryTableAdapter1 As TimeLiveDataSetTableAdapters.AccountExpenseEntryTableAdapter
     Friend WithEvents txtKey As Label
     Friend WithEvents Label1 As Label
-    Friend WithEvents TextBoxName As TextBox
+    Friend WithEvents TextBoxNameQB As TextBox
     Friend WithEvents CustomerJobTLTreeView As Windows.Forms.TreeView
     Friend WithEvents Label2 As Label
     Friend WithEvents Label3 As Label

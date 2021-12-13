@@ -1144,6 +1144,7 @@ Public Class MAIN
         End If
 
         ProgressBar1.Value = 0
+
         ProgressBar1.Maximum = If(TLItemsArray Is Nothing, 0, TLItemsArray.Length) + Data.DataArray.Count
 
         History("Synchonizing modified " + attribute + " since: " + ItemLastSync.ToString(), "n")

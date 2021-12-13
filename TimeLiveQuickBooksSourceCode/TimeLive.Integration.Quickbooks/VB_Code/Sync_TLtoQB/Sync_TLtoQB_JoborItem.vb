@@ -61,6 +61,8 @@ Public Class Sync_TLtoQB_JoborItem
 
                 If create Then
                     ' Checks if projectName contains ':', seperate and then add project then task
+
+                    'checkQBJobSubJobExist(objProject.ClientName, objProject.ProjectName, projectID.ToString, UI, p_token, cancel_opt)
                     Dim ret = checkQBJobSubJobExist(objProject.ClientName, objProject.ProjectName, projectID.ToString, UI, p_token, cancel_opt)
 
                     If ret = -2 Then ' Cancel was selected
@@ -406,7 +408,111 @@ Public Class Sync_TLtoQB_JoborItem
     '''     1 -> Did not exist in QB, added to QB
     '''     2+ -> Did not exist in QB, and 1 or more of its parents did not exist in QB either, all added to QB
     ''' </returns>
+
     Public Function checkQBJobSubJobExist(ByRef Parent As String, ByRef TL_Name As String, ByVal TL_ID As Integer, ByVal UI As Boolean,
+                                          ByVal p_token As String, Optional ByVal cancel_opt As Boolean = False, Optional taskAsItem As Boolean = False) As Integer
+        Try
+            removeSpacesBetweenColonsAndSetLengthOfFields(Parent, MAX_CUSTOMER_LEN)
+            removeSpacesBetweenColonsAndSetLengthOfFields(TL_Name, MAX_CUSTOMER_LEN)
+
+            Dim numAdded As Integer = 0
+            Dim TLJobSubJobName As String = Parent + ":" + TL_Name
+            Dim jobOrTask As String = If(TLJobSubJobName.Split(":").Length = 2, "Job", "Task")
+
+            Dim msgSetRq As IMsgSetRequest = MAIN.SESSMANAGER.CreateMsgSetRequest("US", 2, 0)
+            msgSetRq.Attributes.OnError = ENRqOnError.roeContinue
+
+            Dim TaskSubTaskQueryRq As ICustomerQuery = msgSetRq.AppendCustomerQueryRq
+            TaskSubTaskQueryRq.ORCustomerListQuery.FullNameList.Add(TLJobSubJobName)
+
+            Dim msgSetRs As IMsgSetResponse = MAIN.SESSMANAGER.DoRequests(msgSetRq)
+            Dim jobsubjobsRetList As ICustomerRetList = msgSetRs.ResponseList.GetAt(0).Detail
+            Dim inQB As Boolean = Not jobsubjobsRetList Is Nothing
+            Dim newMsgSetRq As IMsgSetRequest = MAIN.SESSMANAGER.CreateMsgSetRequest("US", 2, 0)
+            newMsgSetRq.Attributes.OnError = ENRqOnError.roeContinue
+
+            If TLJobSubJobName.IndexOf(":") > 0 And Not inQB Then
+                Dim MsgBox_result = askUserToCreateInQB(UI, cancel_opt, TLJobSubJobName, jobOrTask)
+
+                If MsgBox_result = MsgBoxResult.Cancel Then
+                    Return -2
+                ElseIf MsgBox_result = MsgBoxResult.No Then
+                    Return -1
+                Else
+                    ' Case where Project and Task + SubTasks are all stored within Project, semicolon seperated, in TimeLive
+                    ' In this case, add project and parent tasks to the parent array.
+                    If TL_Name.Contains(":") Then
+                        Parent = Parent + ":" + TL_Name.Substring(0, TL_Name.LastIndexOf(":"))
+                        TL_Name = TL_Name.Substring(TL_Name.LastIndexOf(":") + 1)
+                        taskAsItem = True
+                    End If
+
+                    Dim ParentArray() As String = Parent.Split(":")
+
+                    Dim numAddedThisRound As Integer = 0
+
+                    ' Recursively checks that prior fields exist, and adds them if they were not
+                    If ParentArray.Length = 1 Then
+                        numAddedThisRound = checkProjectsCustomerIsInQB(Parent, TLJobSubJobName, p_token, UI)
+                    Else
+                        numAddedThisRound = checkTasksProjectIsInQB(Parent, TLJobSubJobName, p_token, UI, ParentArray, taskAsItem, cancel_opt)
+                    End If
+
+                    If numAddedThisRound = -1 Then
+                        Return -1
+                    Else
+                        numAdded += numAddedThisRound
+                    End If
+
+                    Dim CustomerAdapter As New QB_TL_IDsTableAdapters.CustomersTableAdapter()
+                    Dim QB_Customer As String = CustomerAdapter.GetQB_NameFromTL_Name(ParentArray(0))
+                    QB_Customer = If(QB_Customer Is Nothing, ParentArray(0), QB_Customer.Trim)
+                    Dim QB_Parent As String = If(Parent.Contains(":"), QB_Customer + Parent.Substring(Parent.IndexOf(":")), QB_Customer)
+
+                    Dim jobAdd As ICustomerAdd = newMsgSetRq.AppendCustomerAddRq
+                    jobAdd.ParentRef.FullName.SetValue(QB_Parent)
+                    jobAdd.Name.SetValue(TL_Name)
+
+                    msgSetRs = MAIN.SESSMANAGER.DoRequests(newMsgSetRq)
+                    Dim res As IResponse
+                    res = msgSetRs.ResponseList.GetAt(0)
+
+                    If res.StatusSeverity = "Error" Then
+                        Throw New Exception(res.StatusMessage)
+                    End If
+
+                    msgSetRq = MAIN.SESSMANAGER.CreateMsgSetRequest("US", 2, 0)
+                    msgSetRq.Attributes.OnError = ENRqOnError.roeContinue
+
+                    TaskSubTaskQueryRq = msgSetRq.AppendCustomerQueryRq
+                    TaskSubTaskQueryRq.ORCustomerListQuery.FullNameList.Add(TLJobSubJobName)
+
+                    msgSetRs = MAIN.SESSMANAGER.DoRequests(msgSetRq)
+                    jobsubjobsRetList = msgSetRs.ResponseList.GetAt(0).Detail
+                    numAdded += 1
+
+                    My.Forms.MAIN.History(jobOrTask + " in Timelive with name: " + TLJobSubJobName + " added to QuickBooks", "N")
+                End If
+            End If
+
+            If jobsubjobsRetList IsNot Nothing Then
+                Dim JobSubJobsRet As ICustomerRet = jobsubjobsRetList.GetAt(0)
+                Dim qb_name As String = JobSubJobsRet.Name.GetValue.ToString
+                Dim qb_id As String = JobSubJobsRet.ListID.GetValue.ToString
+
+                If inQB Then
+                    My.Forms.MAIN.History("Found " + jobOrTask + " in QB with name: " + qb_name + " --> ID: " + qb_id, "i")
+                End If
+                addToTableAdapter(qb_name, qb_id, TLJobSubJobName, TL_ID)
+            End If
+
+            Return numAdded
+        Catch ex As Exception
+            Throw ex
+        End Try
+    End Function
+
+    Public Function checkQBJobSubJobExistTreeView(ByRef Parent As String, ByRef TL_Name As String, ByVal UI As Boolean,
                                           ByVal p_token As String, Optional ByVal cancel_opt As Boolean = False, Optional taskAsItem As Boolean = False) As Integer
         Try
             removeSpacesBetweenColonsAndSetLengthOfFields(Parent, MAX_CUSTOMER_LEN)
@@ -488,17 +594,6 @@ Public Class Sync_TLtoQB_JoborItem
 
                     My.Forms.MAIN.History(jobOrTask + " in Timelive with name: " + TLJobSubJobName + " added to QuickBooks", "N")
                 End If
-            End If
-
-            If jobsubjobsRetList IsNot Nothing Then
-                Dim JobSubJobsRet As ICustomerRet = jobsubjobsRetList.GetAt(0)
-                Dim qb_name As String = JobSubJobsRet.Name.GetValue.ToString
-                Dim qb_id As String = JobSubJobsRet.ListID.GetValue.ToString
-
-                If inQB Then
-                    My.Forms.MAIN.History("Found " + jobOrTask + " in QB with name: " + qb_name + " --> ID: " + qb_id, "i")
-                End If
-                addToTableAdapter(qb_name, qb_id, TLJobSubJobName, TL_ID)
             End If
 
             Return numAdded
