@@ -2,6 +2,7 @@
 Imports QBFC13Lib
 Public Class TLQBTreeView
     Dim obj_main As New MAIN
+    Dim job_TLSync As Sync_TLtoQB_JoborItem = New Sync_TLtoQB_JoborItem
     Private Sub CustomerJobTreeView_AfterSelect(sender As Object, e As TreeViewEventArgs) Handles CustomerJobQBTreeView.AfterSelect
         'TextBoxKey.Text = CustomerJobTreeView.SelectedNode.Text
         Dim selected_node = CustomerJobQBTreeView.SelectedNode.Text
@@ -121,7 +122,6 @@ Public Class TLQBTreeView
         'connecting timelive
         'Dim obj_main As New MAIN
 
-
         Dim objProjectServices As Services.TimeLive.Projects.Projects = MAIN.connect_TL_projects(obj_main.p_token)
         Dim objTaskServices As Services.TimeLive.Tasks.Tasks = MAIN.connect_TL_tasks(obj_main.p_token)
         Dim objClientServices As Services.TimeLive.Clients.Clients = MAIN.connect_TL_clients(obj_main.p_token)
@@ -148,12 +148,13 @@ Public Class TLQBTreeView
 
         'identify the selected node is client, project, or tasks 
         'if the selected node is a client, create project
-
+        Dim nodes As New List(Of String)
         If Array.Exists(objClientServices.GetClients, Function(clnt As Services.TimeLive.Clients.Client) clnt.ClientName = selected_node) Then
             Try
                 objProjectServices.InsertProject(nProjectTypeId, Convert.ToInt32(timeLive_node_id), 0, 0, nProjectBillingTypeId, new_node, "",
                                                  Now.Date, Now.AddMonths(1).Date, nProjectStatusId, nTeamLeadId, nProjectManagerId, 0, 0, 1, "Months", "",
                                                  0, nProjectBillingRateTypeId, False, True, 0, Now.Date, nTeamLeadId, Now.Date, nTeamLeadId, False)
+
 
 
             Catch ex As System.Web.Services.Protocols.SoapException
@@ -162,7 +163,7 @@ Public Class TLQBTreeView
                 Throw ex
             End Try
 
-            'obj_main.generate_treeview(obj_main.p_token)
+
             'if the selected node is a project, create task 
         ElseIf Array.Exists(objProjectServices.GetProjects, Function(proj As Services.TimeLive.Projects.Project) proj.ProjectName = selected_node) Then
             Dim nProjectId As Integer = objProjectServices.GetProjectId(name(1))
@@ -177,7 +178,7 @@ Public Class TLQBTreeView
             Catch ex As Exception
                 Throw ex
             End Try
-            'obj_main.generate_treeview(obj_main.p_token)
+
             ' if the selected node is a task, create sub stask 
         Else
             Dim nProjectId As Integer = objProjectServices.GetProjectId(name(1))
@@ -193,8 +194,11 @@ Public Class TLQBTreeView
                 Throw ex
             End Try
 
-            'obj_main.generate_treeview(obj_main.p_token)
         End If
+
+
+        nodes.Add(fullname + ":" + new_node)
+        job_TLSync.SyncJobsSubJobData(obj_main.p_token, obj_main, True, nodes)
         Me.Close()
     End Sub
 
