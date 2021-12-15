@@ -2514,16 +2514,19 @@ Public Class MAIN
         display_UI()
 
     End Sub
-    'Private Sub selectall_checkbox(sender As Object, e As EventArgs) Handles SelectAllCheckBox.CheckedChanged
-    '    If DataGridView1 IsNot Nothing Then
-    '        For Each row As DataGridViewRow In DataGridView1.Rows
-    '            If row.Cells.Item(1).Value IsNot Nothing Then
-    '                row.Cells("ckBox").Value = SelectAllCheckBox.Checked
-    '            End If
-    '        Next
-    '    End If
-    'End Sub
 
+
+    Private Function recursive_treeview(treeNode As TreeNode)
+        Console.WriteLine(treeNode.Text)
+        For Each item As TreeNode In treeNode.Nodes
+            recursive_treeview(item)
+        Next
+    End Function
+    Private Function iterate_treeview(treeView As TreeView)
+        For Each item As TreeNode In treeView.Nodes
+            recursive_treeview(item)
+        Next
+    End Function
 
     Public Function generate_treeview(p_token As String)
         'data for populating timelive treeview
@@ -2601,22 +2604,64 @@ Public Class MAIN
         'treeView.CustomerJobQBTreeView.Nodes.Clear()
         'treeView.CustomerJobTLTreeView.Nodes.Clear()
 
+        'check if timelive items in the database if not make it red
+        'if timelive items in the database but it is not exsit in quickbook make it green
+
+        'check the timelive items  are in synchronization table
+
+
+        'Dim nodes As New List(Of String)
+
+        'For Each item As Object In objProjectArray
+        '    Dim projectID As Integer = objProjectServices.GetProjectId(item.ProjectName)
+        '    Dim inTL As Integer = obj_Sync_TLtoQB_JoborItem.IsTLID_In_JobsSubJobsDataTable(projectID.ToString())
+        '    'not in local databae 
+        '    If inTL = 0 Then
+        '        'Console.WriteLine(item.ProjectName)
+        '        'nodes.Add(item.ClientName + ":" + item.ProjectName)
+        '        'job_TLSync.SyncJobsSubJobData(p_token, Me, True, nodes)
+        '    End If
+        'Next
+        'For Each item As Object In objTaskArray
+        '    Dim taskID As Integer = objTaskServices.GetTaskId(item.TaskName)
+        '    Dim inTL As Integer = obj_Sync_TLtoQB_JoborItem.IsTLID_In_JobsSubJobsDataTable(taskID.ToString())
+        '    If inTL = 0 Then
+        '        Console.WriteLine(item.TaskName)
+        '        nodes.Add(item.JobParent + ":" + item.TaskName)
+        '        job_TLSync.SyncJobsSubJobData(p_token, Me, True, nodes)
+        '    End If
+        'Next
+
+
+
+
+        Dim obj_Sync_TLtoQB_JoborItem As New Sync_TLtoQB_JoborItem()
+
         Using treeView As TLQBTreeView = New TLQBTreeView()
             'TimeLive-----------
+            treeView.CustomerJobTLTreeView.Nodes.Add("TimeLive", "TimeLive")
             For Each client As Services.TimeLive.Clients.Client In objClientArray
-                treeView.CustomerJobTLTreeView.Nodes.Add(client.ClientName, client.ClientName)
+                treeView.CustomerJobTLTreeView.Nodes("TimeLive").Nodes.Add(client.ClientName, client.ClientName)
                 For Each project As Services.TimeLive.Projects.Project In objProjectArray
                     If project.ClientName = client.ClientName Then
-                        treeView.CustomerJobTLTreeView.Nodes(client.ClientName).Nodes.Add(project.ProjectName, project.ProjectName)
+
+                        Dim projectID As Integer = objProjectServices.GetProjectId(project.ProjectName)
+                        Dim inTL As Integer = obj_Sync_TLtoQB_JoborItem.IsTLID_In_JobsSubJobsDataTable(projectID.ToString())
+                        If inTL = 0 Then
+                            treeView.CustomerJobTLTreeView.Nodes("TimeLive").Nodes(client.ClientName).Nodes.Add(project.ProjectName, project.ProjectName).ForeColor = Color.Red
+                        Else
+                            treeView.CustomerJobTLTreeView.Nodes("TimeLive").Nodes(client.ClientName).Nodes.Add(project.ProjectName, project.ProjectName)
+                        End If
+
                         For i As Integer = 0 To taskDataArray.Count - 1
                             If taskDataArray(i)(1) = project.ProjectName Then
                                 If taskDataArray(i).Length = 3 Then
                                     ' adding project node
-                                    treeView.CustomerJobTLTreeView.Nodes(client.ClientName).Nodes(project.ProjectName).Nodes.Add(taskDataArray(i)(2), taskDataArray(i)(2))
+                                    treeView.CustomerJobTLTreeView.Nodes("TimeLive").Nodes(client.ClientName).Nodes(project.ProjectName).Nodes.Add(taskDataArray(i)(2), taskDataArray(i)(2))
                                 ElseIf taskDataArray(i).Length = 4 Then
-                                    treeView.CustomerJobTLTreeView.Nodes(client.ClientName).Nodes(project.ProjectName).Nodes(taskDataArray(i)(2)).Nodes.Add(taskDataArray(i)(3), taskDataArray(i)(3))
+                                    treeView.CustomerJobTLTreeView.Nodes("TimeLive").Nodes(client.ClientName).Nodes(project.ProjectName).Nodes(taskDataArray(i)(2)).Nodes.Add(taskDataArray(i)(3), taskDataArray(i)(3))
                                 ElseIf taskDataArray(i).Length = 5 Then
-                                    treeView.CustomerJobTLTreeView.Nodes(client.ClientName).Nodes(project.ProjectName.Trim).Nodes(taskDataArray(i)(2)).Nodes(taskDataArray(i)(3)).Nodes.Add(taskDataArray(i)(4), taskDataArray(i)(4))
+                                    treeView.CustomerJobTLTreeView.Nodes("TimeLive").Nodes(client.ClientName).Nodes(project.ProjectName.Trim).Nodes(taskDataArray(i)(2)).Nodes(taskDataArray(i)(3)).Nodes.Add(taskDataArray(i)(4), taskDataArray(i)(4))
                                     'ElseIf taskDataArray(i).Length = 6 Then
                                     '    tlTreeView.CustomerJobTLTreeView.Nodes(client.ClientName).Nodes(project.ProjectName).Nodes(taskDataArray(i)(2)).Nodes(taskDataArray(i)(3)).Nodes(taskDataArray(i)(4)).Nodes.Add(taskDataArray(i)(5), taskDataArray(i)(5))
                                 Else
@@ -2628,6 +2673,16 @@ Public Class MAIN
                     End If
                 Next
             Next
+            'iterate timelive treeview
+            'iterate_treeview(treeView.CustomerJobTLTreeView)
+
+
+
+            'IsTLID_In_JobsSubJobsDataTable()
+            'Dim objTaskArray() As Object = objTaskServices.GetTasks
+
+            'TextBoxTimeLiveID.Text = objProjectServices.GetProjectId(project.ProjectName)
+            ' Dim nodes As New List(Of String)
             'QuickBooks-------
             For Each customer As QBtoTL_Customer.Customer In customerData.DataArray
                 treeView.CustomerJobQBTreeView.Nodes.Add(customer.QB_Name, customer.QB_Name)
@@ -2650,10 +2705,11 @@ Public Class MAIN
                     End If
                 Next
             Next
-            ' expand tree 
-            'For Each n As TreeNode In treeView.CustomerJobQBTreeView.Nodes
-            '    n.Expand()
-            'Next
+            'check if the quickbook items are in synchronization table
+
+
+            treeView.CustomerJobTLTreeView.ExpandAll()
+            treeView.CustomerJobQBTreeView.ExpandAll()
             treeView.ShowDialog()
         End Using
         If Not treeViewFlag Then

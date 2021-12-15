@@ -432,8 +432,9 @@ Public Class Sync_TLtoQB_JoborItem
             newMsgSetRq.Attributes.OnError = ENRqOnError.roeContinue
 
             If TLJobSubJobName.IndexOf(":") > 0 And Not inQB Then
-                Dim MsgBox_result = askUserToCreateInQB(UI, cancel_opt, TLJobSubJobName, jobOrTask)
-
+                'Dim MsgBox_result = askUserToCreateInQB(UI, cancel_opt, TLJobSubJobName, jobOrTask)
+                'remove the msbBox 
+                Dim MsgBox_result = MsgBoxResult.Yes
                 If MsgBox_result = MsgBoxResult.Cancel Then
                     Return -2
                 ElseIf MsgBox_result = MsgBoxResult.No Then
@@ -651,7 +652,7 @@ Public Class Sync_TLtoQB_JoborItem
     ''' 1 -> one record in data table
     ''' 2 -> more than one record in data table
     ''' </returns>
-    Private Function IsTLID_In_JobsSubJobsDataTable(ByVal mytlID As String) As Int16
+    Public Function IsTLID_In_JobsSubJobsDataTable(ByVal mytlID As String) As Int16
         Dim JobAdapter As New QB_TL_IDsTableAdapters.Jobs_SubJobsTableAdapter
         Dim quickbooksIDs As QB_TL_IDs.Jobs_SubJobsDataTable = JobAdapter.GetJobsByTLID(mytlID)
         Return Math.Min(2, quickbooksIDs.Count)
