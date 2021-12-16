@@ -338,3 +338,4 @@ C:\Users\Dev1Teltrium\Repos\Quickbooks.TimeLive.Dev\QuickBooksIntegrationTimeLiv
 C:\Users\Dev1Teltrium\Repos\Quickbooks.TimeLive.Dev\QuickBooksIntegrationTimeLive\TimeLiveQuickBooksSourceCode\TimeLive.Integration.Quickbooks\obj\Debug\TeltriumQBtoTL.xml
 C:\Users\Dev1Teltrium\Repos\Quickbooks.TimeLive.Dev\QuickBooksIntegrationTimeLive\TimeLiveQuickBooksSourceCode\TimeLive.Integration.Quickbooks\obj\Debug\TeltriumQBtoTL.pdb
 C:\Users\Dev1Teltrium\Repos\Quickbooks.TimeLive.Dev\QuickBooksIntegrationTimeLive\TimeLiveQuickBooksSourceCode\TimeLive.Integration.Quickbooks\obj\Debug\TimeLive.Quickbooks.Integrator.TLQBTreeView.resources
+C:\Users\Dev1Teltrium\Repos\Quickbooks.TimeLive.Dev\QuickBooksIntegrationTimeLive\TimeLiveQuickBooksSourceCode\TimeLive.Integration.Quickbooks\obj\Debug\TimeLive.Quickbooks.Integrator.JoborItemForm.resources

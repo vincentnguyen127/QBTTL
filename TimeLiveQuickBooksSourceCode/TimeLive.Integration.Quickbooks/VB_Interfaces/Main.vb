@@ -2156,7 +2156,7 @@ Public Class MAIN
             msgSetRq.Attributes.OnError = ENRqOnError.roeContinue
             Dim CustomerQueryRq As ICustomerQuery = msgSetRq.AppendCustomerQueryRq
 
-            CustomerQueryRq.ORCustomerListQuery.FullNameList.Add(name)
+            CustomerQueryRq.ORCustomerListQuery.FullNameList.Add(Name)
             Dim msgSetRs As IMsgSetResponse = MAIN.SESSMANAGER.DoRequests(msgSetRq)
 
             Dim response As IResponse = msgSetRs.ResponseList.GetAt(0)
@@ -2203,7 +2203,7 @@ Public Class MAIN
                 msgSetRq.Attributes.OnError = ENRqOnError.roeContinue
 
                 CustomerQueryRq = msgSetRq.AppendCustomerQueryRq
-                CustomerQueryRq.ORCustomerListQuery.FullNameList.Add(name)
+                CustomerQueryRq.ORCustomerListQuery.FullNameList.Add(Name)
 
                 msgSetRs = MAIN.SESSMANAGER.DoRequests(msgSetRq)
                 response = msgSetRs.ResponseList.GetAt(0)
@@ -2538,7 +2538,8 @@ Public Class MAIN
 
         ' Connect to TimeLive Tasks
         Dim objTaskServices As Services.TimeLive.Tasks.Tasks = MAIN.connect_TL_tasks(p_token)
-        Dim objTaskArray() As Object = objTaskServices.GetTasks
+        ' Dim objTaskArray() As Object = objTaskServices.GetTasks
+        Dim objTaskArray() As Object = objTaskServices.GetTasks()
         'Dim objTask As New Services.TimeLive.Tasks.Task
 
         'Connect to TimeLive Projects
@@ -2575,10 +2576,6 @@ Public Class MAIN
         taskDataArray.AddRange(secondTaskLevel)
         taskDataArray.AddRange(thirdTaskLevel)
         ' limit only 5 level in tree view
-        'Using tlTreeView As TreeView = New TreeView()
-
-        '    tlTreeView.ShowDialog()
-        'End Using
 
         'data for populating QuickBooks treeview
         '========================================================
@@ -2644,26 +2641,89 @@ Public Class MAIN
                 treeView.CustomerJobTLTreeView.Nodes("TimeLive").Nodes.Add(client.ClientName, client.ClientName)
                 For Each project As Services.TimeLive.Projects.Project In objProjectArray
                     If project.ClientName = client.ClientName Then
+                        'check the record is in the sql database, if it is not, make it red
+                        Dim ID As Integer = objProjectServices.GetProjectId(project.ProjectName)
+                        Dim inSqlDataOrNot As Integer = obj_Sync_TLtoQB_JoborItem.IsTLID_In_JobsSubJobsDataTable(ID.ToString())
 
-                        Dim projectID As Integer = objProjectServices.GetProjectId(project.ProjectName)
-                        Dim inTL As Integer = obj_Sync_TLtoQB_JoborItem.IsTLID_In_JobsSubJobsDataTable(projectID.ToString())
-                        If inTL = 0 Then
+                        If inSqlDataOrNot = 0 Then
                             treeView.CustomerJobTLTreeView.Nodes("TimeLive").Nodes(client.ClientName).Nodes.Add(project.ProjectName, project.ProjectName).ForeColor = Color.Red
+                            ' if the record is in the SQL databaes and it is not in quickbook, make it blue
                         Else
-                            treeView.CustomerJobTLTreeView.Nodes("TimeLive").Nodes(client.ClientName).Nodes.Add(project.ProjectName, project.ProjectName)
+                            Dim qbFlag As Boolean = False
+                            For Each item As Object In jobData.DataArray
+                                If project.ProjectName = item.QB_Name Then
+                                    treeView.CustomerJobTLTreeView.Nodes("TimeLive").Nodes(client.ClientName).Nodes.Add(project.ProjectName, project.ProjectName)
+                                    qbFlag = True
+                                    Exit For
+                                End If
+                            Next
+                            If qbFlag = False Then
+                                treeView.CustomerJobTLTreeView.Nodes("TimeLive").Nodes(client.ClientName).Nodes.Add(project.ProjectName, project.ProjectName).ForeColor = Color.Blue
+                            End If
+
                         End If
 
                         For i As Integer = 0 To taskDataArray.Count - 1
                             If taskDataArray(i)(1) = project.ProjectName Then
-                                If taskDataArray(i).Length = 3 Then
-                                    ' adding project node
-                                    treeView.CustomerJobTLTreeView.Nodes("TimeLive").Nodes(client.ClientName).Nodes(project.ProjectName).Nodes.Add(taskDataArray(i)(2), taskDataArray(i)(2))
-                                ElseIf taskDataArray(i).Length = 4 Then
-                                    treeView.CustomerJobTLTreeView.Nodes("TimeLive").Nodes(client.ClientName).Nodes(project.ProjectName).Nodes(taskDataArray(i)(2)).Nodes.Add(taskDataArray(i)(3), taskDataArray(i)(3))
-                                ElseIf taskDataArray(i).Length = 5 Then
-                                    treeView.CustomerJobTLTreeView.Nodes("TimeLive").Nodes(client.ClientName).Nodes(project.ProjectName.Trim).Nodes(taskDataArray(i)(2)).Nodes(taskDataArray(i)(3)).Nodes.Add(taskDataArray(i)(4), taskDataArray(i)(4))
-                                    'ElseIf taskDataArray(i).Length = 6 Then
-                                    '    tlTreeView.CustomerJobTLTreeView.Nodes(client.ClientName).Nodes(project.ProjectName).Nodes(taskDataArray(i)(2)).Nodes(taskDataArray(i)(3)).Nodes(taskDataArray(i)(4)).Nodes.Add(taskDataArray(i)(5), taskDataArray(i)(5))
+                                Dim taskDataArrayLength As Integer = taskDataArray(i).Length
+                                If taskDataArrayLength = 3 Then
+                                    ' adding project node                    
+                                    ID = objTaskServices.GetTaskId(taskDataArray(i)(taskDataArrayLength - 1).ToString())
+                                    inSqlDataOrNot = obj_Sync_TLtoQB_JoborItem.IsTLID_In_JobsSubJobsDataTable(ID.ToString())
+                                    If inSqlDataOrNot = 0 Then
+                                        treeView.CustomerJobTLTreeView.Nodes("TimeLive").Nodes(client.ClientName).Nodes(project.ProjectName).Nodes.Add(taskDataArray(i)(2), taskDataArray(i)(2)).ForeColor = Color.Red
+                                    Else
+                                        Dim qbFlag As Boolean = False
+                                        For Each item As Object In jobData.DataArray
+                                            If taskDataArray(i)(taskDataArrayLength - 1).ToString() = item.QB_Name Then
+                                                treeView.CustomerJobTLTreeView.Nodes("TimeLive").Nodes(client.ClientName).Nodes(project.ProjectName).Nodes.Add(taskDataArray(i)(2), taskDataArray(i)(2))
+                                                qbFlag = True
+                                                Exit For
+                                            End If
+                                        Next
+                                        If Not qbFlag Then
+                                            treeView.CustomerJobTLTreeView.Nodes("TimeLive").Nodes(client.ClientName).Nodes(project.ProjectName).Nodes.Add(taskDataArray(i)(2), taskDataArray(i)(2)).ForeColor = Color.Blue
+                                        End If
+                                    End If
+
+
+                                ElseIf taskDataArrayLength = 4 Then
+                                    ID = objTaskServices.GetTaskId(taskDataArray(i)(taskDataArrayLength - 1).ToString())
+                                    inSqlDataOrNot = obj_Sync_TLtoQB_JoborItem.IsTLID_In_JobsSubJobsDataTable(ID.ToString())
+                                    If inSqlDataOrNot = 0 Then
+                                        treeView.CustomerJobTLTreeView.Nodes("TimeLive").Nodes(client.ClientName).Nodes(project.ProjectName).Nodes(taskDataArray(i)(2)).Nodes.Add(taskDataArray(i)(3), taskDataArray(i)(3)).ForeColor = Color.Red
+                                    Else
+                                        Dim qbFlag As Boolean = False
+                                        For Each item As Object In jobData.DataArray
+                                            If taskDataArray(i)(taskDataArrayLength - 1).ToString() = item.QB_Name Then
+                                                treeView.CustomerJobTLTreeView.Nodes("TimeLive").Nodes(client.ClientName).Nodes(project.ProjectName).Nodes(taskDataArray(i)(2)).Nodes.Add(taskDataArray(i)(3), taskDataArray(i)(3))
+                                                qbFlag = True
+                                                Exit For
+                                            End If
+                                        Next
+                                        If Not qbFlag Then
+                                            treeView.CustomerJobTLTreeView.Nodes("TimeLive").Nodes(client.ClientName).Nodes(project.ProjectName).Nodes(taskDataArray(i)(2)).Nodes.Add(taskDataArray(i)(3), taskDataArray(i)(3)).ForeColor = Color.Blue
+                                        End If
+                                    End If
+                                ElseIf taskDataArrayLength = 5 Then
+                                    ID = objTaskServices.GetTaskId(taskDataArray(i)(taskDataArrayLength - 1).ToString())
+                                    inSqlDataOrNot = obj_Sync_TLtoQB_JoborItem.IsTLID_In_JobsSubJobsDataTable(ID.ToString())
+                                    If inSqlDataOrNot = 0 Then
+                                        treeView.CustomerJobTLTreeView.Nodes("TimeLive").Nodes(client.ClientName).Nodes(project.ProjectName.Trim).Nodes(taskDataArray(i)(2)).Nodes(taskDataArray(i)(3)).Nodes.Add(taskDataArray(i)(4), taskDataArray(i)(4)).ForeColor = Color.Red
+                                    Else
+                                        Dim qbFlag As Boolean = False
+                                        For Each item As Object In jobData.DataArray
+                                            If taskDataArray(i)(taskDataArrayLength - 1).ToString() = item.QB_Name Then
+                                                treeView.CustomerJobTLTreeView.Nodes("TimeLive").Nodes(client.ClientName).Nodes(project.ProjectName.Trim).Nodes(taskDataArray(i)(2)).Nodes(taskDataArray(i)(3)).Nodes.Add(taskDataArray(i)(4), taskDataArray(i)(4))
+                                                qbFlag = True
+                                                Exit For
+                                            End If
+                                        Next
+                                        If Not qbFlag Then
+                                            treeView.CustomerJobTLTreeView.Nodes("TimeLive").Nodes(client.ClientName).Nodes(project.ProjectName.Trim).Nodes(taskDataArray(i)(2)).Nodes(taskDataArray(i)(3)).Nodes.Add(taskDataArray(i)(4), taskDataArray(i)(4)).ForeColor = Color.Blue
+                                        End If
+                                    End If
+
                                 Else
                                     'In timelive, users can create more than 5 level. However, Quickbook allows only 5 level including clients. Therefore, we should do the same thing in timelive  
                                     Throw New Exception("Created More than 5 level of a tree")
@@ -2673,16 +2733,7 @@ Public Class MAIN
                     End If
                 Next
             Next
-            'iterate timelive treeview
-            'iterate_treeview(treeView.CustomerJobTLTreeView)
 
-
-
-            'IsTLID_In_JobsSubJobsDataTable()
-            'Dim objTaskArray() As Object = objTaskServices.GetTasks
-
-            'TextBoxTimeLiveID.Text = objProjectServices.GetProjectId(project.ProjectName)
-            ' Dim nodes As New List(Of String)
             'QuickBooks-------
             For Each customer As QBtoTL_Customer.Customer In customerData.DataArray
                 treeView.CustomerJobQBTreeView.Nodes.Add(customer.QB_Name, customer.QB_Name)
