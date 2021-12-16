@@ -90,28 +90,29 @@ Public Class TLQBTreeView
                 TextBoxTimeLiveID.Text = objClientServices.GetClientIdByName(client.ClientName)
                 TextBoxTimeLiveName.Text = client.ClientName
                 TextBoxFullNameTL.Text = client.ClientName
-                Exit Sub
+                Exit For
             End If
         Next
 
-        For Each project As Services.TimeLive.Projects.Project In objProjectArray
-            If project.ProjectName = selected_node Then
-                TextBoxTimeLiveID.Text = objProjectServices.GetProjectId(project.ProjectName)
-                TextBoxTimeLiveName.Text = project.ProjectName
-                TextBoxFullNameTL.Text = project.ClientName + ":" + project.ProjectName
-                Exit Sub
-            End If
-        Next
-        For Each task As Services.TimeLive.Tasks.Task In objTaskArray
-            If task.TaskName = selected_node Then
-                TextBoxTimeLiveID.Text = objTaskServices.GetTaskId(task.TaskName)
-                TextBoxTimeLiveName.Text = task.TaskName
-                TextBoxFullNameTL.Text = task.JobParent + ":" + task.TaskName
-                Exit Sub
-            End If
-        Next
-        If CustomerJobTLTreeView.SelectedNode.ForeColor.Name = "Red" Then
-            Console.WriteLine("abc")
+        If String.IsNullOrEmpty(TextBoxTimeLiveID.Text) Then
+            For Each project As Services.TimeLive.Projects.Project In objProjectArray
+                If project.ProjectName = selected_node Then
+                    TextBoxTimeLiveID.Text = objProjectServices.GetProjectId(project.ProjectName)
+                    TextBoxTimeLiveName.Text = project.ProjectName
+                    TextBoxFullNameTL.Text = project.ClientName + ":" + project.ProjectName
+                    Exit For
+                End If
+            Next
+        End If
+        If String.IsNullOrEmpty(TextBoxTimeLiveID.Text) Then
+            For Each task As Services.TimeLive.Tasks.Task In objTaskArray
+                If task.TaskName = selected_node Then
+                    TextBoxTimeLiveID.Text = objTaskServices.GetTaskId(task.TaskName)
+                    TextBoxTimeLiveName.Text = task.TaskName
+                    TextBoxFullNameTL.Text = task.JobParent + ":" + task.TaskName
+                    Exit For
+                End If
+            Next
         End If
 
 
@@ -123,6 +124,9 @@ Public Class TLQBTreeView
                 If DialogResult.OK = jobOrItemform.ShowDialog Then
                     nodes.Add(TextBoxFullNameTL.Text.Trim())
                     job_TLSync.SyncJobsSubJobData(obj_main.p_token, obj_main, True, nodes)
+                    Me.Close()
+                    'obj_main.generate_treeview(obj_main.p_token)
+
                 Else
                     Exit Sub
                 End If
