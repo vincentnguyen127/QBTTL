@@ -51,7 +51,7 @@ Public Class TLQBTreeView
         ' Connect to TimeLive Client
         Dim objClientServices As Services.TimeLive.Clients.Clients = MAIN.connect_TL_clients(obj_main.p_token)
         Dim objClientArray() As Object = objClientServices.GetClients()
-        'Dim objClient As New Services.TimeLive.Clients.Client
+
 
         ' Connect to TimeLive Tasks
         Dim objTaskServices As Services.TimeLive.Tasks.Tasks = MAIN.connect_TL_tasks(obj_main.p_token)

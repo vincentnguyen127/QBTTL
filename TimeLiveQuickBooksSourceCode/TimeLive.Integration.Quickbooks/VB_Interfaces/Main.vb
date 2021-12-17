@@ -2755,4 +2755,73 @@ Public Class MAIN
         generate_treeview(p_token)
     End Sub
 
+    Private Sub btnServiceItemTreeView_Click(sender As Object, e As EventArgs) Handles btnServiceItemTreeView.Click
+
+    End Sub
+
+    Private Sub Button1_Click(sender As Object, e As EventArgs) Handles btnServiceItemQbTreeView.Click
+        'connect to quickbook
+
+        Dim msgSetRq As IMsgSetRequest = MAIN.SESSMANAGER.CreateMsgSetRequest("US", 2, 0)
+        msgSetRq.Attributes.OnError = ENRqOnError.roeContinue
+
+        Dim ServiceItemQueryRq As IItemServiceQuery = msgSetRq.AppendItemServiceQueryRq
+        Dim msgSetRs As IMsgSetResponse = MAIN.SESSMANAGER.DoRequests(msgSetRq)
+        Dim itemServiceRetList As IItemServiceRetList = msgSetRs.ResponseList.GetAt(0).Detail
+
+        'retrive item service dataa
+        Dim itemServices As New List(Of String)
+        For i As Integer = 0 To itemServiceRetList.Count - 1
+            Dim itemServiceRet As IItemServiceRet = itemServiceRetList.GetAt(i)
+            With itemServiceRet
+                itemServices.Add(If(.FullName Is Nothing, "", .FullName.GetValue.ToString.Trim))
+            End With
+        Next
+
+        Dim itemServicesFirtNode As New List(Of String)
+        Dim itemServicesArray As New List(Of Array)
+        For Each item As String In itemServices
+            If item.Contains(":") Then
+                Dim items() As String = Split(item, ":")
+                itemServicesArray.Add(items)
+            Else
+                itemServicesFirtNode.Add(item)
+            End If
+
+        Next
+        'generate tree view
+
+
+        Using treeView As ServiceItemTreeView = New ServiceItemTreeView()
+            For Each firstNode As String In itemServicesFirtNode
+                treeView.ServiceItemQbTreeView.Nodes.Add(firstNode, firstNode)
+                For i As Integer = 0 To itemServicesArray.Count - 1
+                    If itemServicesArray(i)(0) = firstNode Then
+                        Dim arrayLength As Integer = itemServicesArray(i).Length
+                        If arrayLength = 2 Then
+                            treeView.ServiceItemQbTreeView.Nodes(firstNode).Nodes.Add(itemServicesArray(i)(1), itemServicesArray(i)(1))
+                            Continue For
+                        ElseIf arrayLength = 3 Then
+                            treeView.ServiceItemQbTreeView.Nodes(firstNode).Nodes(itemServicesArray(i)(1)).Nodes.Add(itemServicesArray(i)(2), itemServicesArray(i)(2))
+                            Continue For
+                        ElseIf arrayLength = 4 Then
+                            treeView.ServiceItemQbTreeView.Nodes(firstNode).Nodes(itemServicesArray(i)(1)).Nodes(itemServicesArray(i)(2)).Nodes.Add(itemServicesArray(i)(3), itemServicesArray(i)(3))
+                            Continue For
+                        Else
+                            treeView.ServiceItemQbTreeView.Nodes(firstNode).Nodes(itemServicesArray(i)(1)).Nodes(itemServicesArray(i)(2)).Nodes(itemServicesArray(i)(3)).Nodes.Add(itemServicesArray(i)(4), itemServicesArray(i)(4))
+                        End If
+                    End If
+                Next
+            Next
+
+            treeView.ServiceItemQbTreeView.ExpandAll()
+            treeView.ShowDialog()
+
+        End Using
+
+
+
+
+
+    End Sub
 End Class

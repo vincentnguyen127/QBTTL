@@ -96,6 +96,9 @@ Partial Class MAIN
         Me.ShowEntitiesBtn = New System.Windows.Forms.Button()
         Me.btnTransfer = New System.Windows.Forms.Button()
         Me.SendEmailsButton = New System.Windows.Forms.Button()
+        Me.TabPage1 = New System.Windows.Forms.TabPage()
+        Me.btnServiceItemTreeView = New System.Windows.Forms.Button()
+        Me.btnServiceItemQbTreeView = New System.Windows.Forms.Button()
         Me.JobItemSyncDirection.SuspendLayout()
         CType(Me.SplitContainer1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SplitContainer1.Panel1.SuspendLayout()
@@ -119,6 +122,7 @@ Partial Class MAIN
         Me.VendorSyncDirection.SuspendLayout()
         Me.TabPageTimeTransfer.SuspendLayout()
         Me.TabPageExpenseReport.SuspendLayout()
+        Me.TabPage1.SuspendLayout()
         Me.SuspendLayout()
         '
         'ToolStripButton2
@@ -218,8 +222,8 @@ Partial Class MAIN
         Me.SplitContainer1.Panel2.Controls.Add(Me.EntitiesSelectAll)
         Me.SplitContainer1.Panel2.Controls.Add(Me.SyncToLabel)
         Me.SplitContainer1.Panel2.Controls.Add(Me.DataGridView2)
-        Me.SplitContainer1.Size = New System.Drawing.Size(720, 398)
-        Me.SplitContainer1.SplitterDistance = 343
+        Me.SplitContainer1.Size = New System.Drawing.Size(969, 398)
+        Me.SplitContainer1.SplitterDistance = 461
         Me.SplitContainer1.TabIndex = 44
         '
         'SelectAllCheckBox
@@ -242,7 +246,7 @@ Partial Class MAIN
         Me.DataGridView1.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.ckBox})
         Me.DataGridView1.Location = New System.Drawing.Point(0, 31)
         Me.DataGridView1.Name = "DataGridView1"
-        Me.DataGridView1.Size = New System.Drawing.Size(331, 245)
+        Me.DataGridView1.Size = New System.Drawing.Size(449, 245)
         Me.DataGridView1.TabIndex = 38
         '
         'ckBox
@@ -270,7 +274,7 @@ Partial Class MAIN
         Me.DataGridView2.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
         Me.DataGridView2.Location = New System.Drawing.Point(0, 31)
         Me.DataGridView2.Name = "DataGridView2"
-        Me.DataGridView2.Size = New System.Drawing.Size(352, 245)
+        Me.DataGridView2.Size = New System.Drawing.Size(483, 245)
         Me.DataGridView2.TabIndex = 42
         '
         'SplitContainer2
@@ -289,7 +293,7 @@ Partial Class MAIN
         'SplitContainer2.Panel2
         '
         Me.SplitContainer2.Panel2.Controls.Add(Me.StatusWindow)
-        Me.SplitContainer2.Size = New System.Drawing.Size(720, 400)
+        Me.SplitContainer2.Size = New System.Drawing.Size(969, 400)
         Me.SplitContainer2.SplitterDistance = 279
         Me.SplitContainer2.TabIndex = 45
         '
@@ -307,7 +311,7 @@ Partial Class MAIN
         Me.StatusWindow.Name = "StatusWindow"
         Me.StatusWindow.ReadOnly = True
         Me.StatusWindow.ScrollBars = System.Windows.Forms.ScrollBars.Vertical
-        Me.StatusWindow.Size = New System.Drawing.Size(720, 102)
+        Me.StatusWindow.Size = New System.Drawing.Size(969, 102)
         Me.StatusWindow.TabIndex = 13
         '
         'StatusStrip
@@ -316,7 +320,7 @@ Partial Class MAIN
         Me.StatusStrip.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.CurrentTime, Me.NextProcessingTime})
         Me.StatusStrip.Location = New System.Drawing.Point(0, 613)
         Me.StatusStrip.Name = "StatusStrip"
-        Me.StatusStrip.Size = New System.Drawing.Size(720, 24)
+        Me.StatusStrip.Size = New System.Drawing.Size(969, 24)
         Me.StatusStrip.TabIndex = 49
         Me.StatusStrip.Text = "StatusStrip"
         '
@@ -357,7 +361,7 @@ Partial Class MAIN
         Me.ToolStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.settingbtn, Me.loginbtn, Me.btn_systemsync, Me.btn_relationships, Me.clearlogbtn, Me.Exitbtn})
         Me.ToolStrip1.Location = New System.Drawing.Point(-2, 0)
         Me.ToolStrip1.Name = "ToolStrip1"
-        Me.ToolStrip1.Size = New System.Drawing.Size(724, 50)
+        Me.ToolStrip1.Size = New System.Drawing.Size(973, 50)
         Me.ToolStrip1.TabIndex = 50
         Me.ToolStrip1.Text = "ToolStrip1"
         '
@@ -413,12 +417,13 @@ Partial Class MAIN
         '
         'TabPageJobsItems
         '
+        Me.TabPageJobsItems.Controls.Add(Me.btnServiceItemQbTreeView)
         Me.TabPageJobsItems.Controls.Add(Me.btnTreeView)
         Me.TabPageJobsItems.Controls.Add(Me.RefreshJobsOrItems)
         Me.TabPageJobsItems.Controls.Add(Me.JobItemSyncDirection)
         Me.TabPageJobsItems.Location = New System.Drawing.Point(4, 22)
         Me.TabPageJobsItems.Name = "TabPageJobsItems"
-        Me.TabPageJobsItems.Size = New System.Drawing.Size(716, 82)
+        Me.TabPageJobsItems.Size = New System.Drawing.Size(965, 82)
         Me.TabPageJobsItems.TabIndex = 6
         Me.TabPageJobsItems.Text = "Jobs/Items Options"
         Me.TabPageJobsItems.UseVisualStyleBackColor = True
@@ -440,7 +445,7 @@ Partial Class MAIN
         Me.ProgressBar1.Location = New System.Drawing.Point(-2, 558)
         Me.ProgressBar1.Maximum = 10
         Me.ProgressBar1.Name = "ProgressBar1"
-        Me.ProgressBar1.Size = New System.Drawing.Size(720, 15)
+        Me.ProgressBar1.Size = New System.Drawing.Size(969, 15)
         Me.ProgressBar1.TabIndex = 44
         '
         'TLtoQBVendorRadioButton
@@ -456,6 +461,7 @@ Partial Class MAIN
         '
         'AttributeTabControl
         '
+        Me.AttributeTabControl.AccessibleName = ""
         Me.AttributeTabControl.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.AttributeTabControl.Controls.Add(Me.TabPageCustomers)
@@ -464,10 +470,11 @@ Partial Class MAIN
         Me.AttributeTabControl.Controls.Add(Me.TabPageJobsItems)
         Me.AttributeTabControl.Controls.Add(Me.TabPageTimeTransfer)
         Me.AttributeTabControl.Controls.Add(Me.TabPageExpenseReport)
+        Me.AttributeTabControl.Controls.Add(Me.TabPage1)
         Me.AttributeTabControl.Location = New System.Drawing.Point(-2, 53)
         Me.AttributeTabControl.Name = "AttributeTabControl"
         Me.AttributeTabControl.SelectedIndex = 0
-        Me.AttributeTabControl.Size = New System.Drawing.Size(724, 108)
+        Me.AttributeTabControl.Size = New System.Drawing.Size(973, 108)
         Me.AttributeTabControl.TabIndex = 48
         '
         'TabPageCustomers
@@ -673,7 +680,7 @@ Partial Class MAIN
         Me.TabPageTimeTransfer.Location = New System.Drawing.Point(4, 22)
         Me.TabPageTimeTransfer.Name = "TabPageTimeTransfer"
         Me.TabPageTimeTransfer.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPageTimeTransfer.Size = New System.Drawing.Size(716, 82)
+        Me.TabPageTimeTransfer.Size = New System.Drawing.Size(965, 82)
         Me.TabPageTimeTransfer.TabIndex = 2
         Me.TabPageTimeTransfer.Text = "Time Transfer Options"
         Me.TabPageTimeTransfer.UseVisualStyleBackColor = True
@@ -782,7 +789,7 @@ Partial Class MAIN
         Me.TabPageExpenseReport.Location = New System.Drawing.Point(4, 22)
         Me.TabPageExpenseReport.Name = "TabPageExpenseReport"
         Me.TabPageExpenseReport.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPageExpenseReport.Size = New System.Drawing.Size(716, 82)
+        Me.TabPageExpenseReport.Size = New System.Drawing.Size(965, 82)
         Me.TabPageExpenseReport.TabIndex = 7
         Me.TabPageExpenseReport.Text = "Expense Report Options"
         Me.TabPageExpenseReport.UseVisualStyleBackColor = True
@@ -862,7 +869,7 @@ Partial Class MAIN
         'ShowEntitiesBtn
         '
         Me.ShowEntitiesBtn.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.ShowEntitiesBtn.Location = New System.Drawing.Point(523, 583)
+        Me.ShowEntitiesBtn.Location = New System.Drawing.Point(772, 583)
         Me.ShowEntitiesBtn.Name = "ShowEntitiesBtn"
         Me.ShowEntitiesBtn.Size = New System.Drawing.Size(98, 23)
         Me.ShowEntitiesBtn.TabIndex = 45
@@ -874,7 +881,7 @@ Partial Class MAIN
         '
         Me.btnTransfer.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.btnTransfer.ImeMode = System.Windows.Forms.ImeMode.NoControl
-        Me.btnTransfer.Location = New System.Drawing.Point(627, 583)
+        Me.btnTransfer.Location = New System.Drawing.Point(876, 583)
         Me.btnTransfer.Name = "btnTransfer"
         Me.btnTransfer.Size = New System.Drawing.Size(75, 23)
         Me.btnTransfer.TabIndex = 46
@@ -892,12 +899,41 @@ Partial Class MAIN
         Me.SendEmailsButton.UseVisualStyleBackColor = True
         Me.SendEmailsButton.Visible = False
         '
+        'TabPage1
+        '
+        Me.TabPage1.Controls.Add(Me.btnServiceItemTreeView)
+        Me.TabPage1.Location = New System.Drawing.Point(4, 22)
+        Me.TabPage1.Name = "TabPage1"
+        Me.TabPage1.Padding = New System.Windows.Forms.Padding(3)
+        Me.TabPage1.Size = New System.Drawing.Size(965, 82)
+        Me.TabPage1.TabIndex = 8
+        Me.TabPage1.Text = "Service Item"
+        Me.TabPage1.UseVisualStyleBackColor = True
+        '
+        'btnServiceItemTreeView
+        '
+        Me.btnServiceItemTreeView.Location = New System.Drawing.Point(625, 36)
+        Me.btnServiceItemTreeView.Name = "btnServiceItemTreeView"
+        Me.btnServiceItemTreeView.Size = New System.Drawing.Size(75, 23)
+        Me.btnServiceItemTreeView.TabIndex = 0
+        Me.btnServiceItemTreeView.Text = "Service Item Tree View"
+        Me.btnServiceItemTreeView.UseVisualStyleBackColor = True
+        '
+        'btnServiceItemQbTreeView
+        '
+        Me.btnServiceItemQbTreeView.Location = New System.Drawing.Point(521, 52)
+        Me.btnServiceItemQbTreeView.Name = "btnServiceItemQbTreeView"
+        Me.btnServiceItemQbTreeView.Size = New System.Drawing.Size(148, 23)
+        Me.btnServiceItemQbTreeView.TabIndex = 6
+        Me.btnServiceItemQbTreeView.Text = "Service Item Tree View"
+        Me.btnServiceItemQbTreeView.UseVisualStyleBackColor = True
+        '
         'MAIN
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.AutoSize = True
-        Me.ClientSize = New System.Drawing.Size(720, 637)
+        Me.ClientSize = New System.Drawing.Size(969, 637)
         Me.Controls.Add(Me.SendEmailsButton)
         Me.Controls.Add(Me.ShowEntitiesBtn)
         Me.Controls.Add(Me.SplitContainer2)
@@ -946,6 +982,7 @@ Partial Class MAIN
         Me.TabPageTimeTransfer.PerformLayout()
         Me.TabPageExpenseReport.ResumeLayout(False)
         Me.TabPageExpenseReport.PerformLayout()
+        Me.TabPage1.ResumeLayout(False)
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -1021,4 +1058,7 @@ Partial Class MAIN
     Friend WithEvents btnNewEmployee As Button
     Friend WithEvents btnNewVendor As Button
     Friend WithEvents btnTreeView As Button
+    Friend WithEvents TabPage1 As TabPage
+    Friend WithEvents btnServiceItemTreeView As Button
+    Friend WithEvents btnServiceItemQbTreeView As Button
 End Class
