@@ -2554,11 +2554,7 @@ Public Class MAIN
         Dim thirdTaskLevel As New List(Of Array)
 
 
-        'For Each item As Services.TimeLive.Tasks.Task In objTaskArray
-        '    item.JobParent += ":" + item.TaskName
-        '    Dim TaskArray() As String = Split(item.JobParent, ":")
-        '    taskDataArray.Add(TaskArray)
-        'Next
+
         For Each item As Services.TimeLive.Tasks.Task In objTaskArray
             item.JobParent += ":" + item.TaskName
             Dim TaskArray() As String = Split(item.JobParent, ":")
@@ -2598,52 +2594,38 @@ Public Class MAIN
 
         ' populate in QuickBook and TimeLive Tree View
 
-        'treeView.CustomerJobQBTreeView.Nodes.Clear()
-        'treeView.CustomerJobTLTreeView.Nodes.Clear()
-
-        'check if timelive items in the database if not make it red
-        'if timelive items in the database but it is not exsit in quickbook make it green
-
-        'check the timelive items  are in synchronization table
-
-
-        'Dim nodes As New List(Of String)
-
-        'For Each item As Object In objProjectArray
-        '    Dim projectID As Integer = objProjectServices.GetProjectId(item.ProjectName)
-        '    Dim inTL As Integer = obj_Sync_TLtoQB_JoborItem.IsTLID_In_JobsSubJobsDataTable(projectID.ToString())
-        '    'not in local databae 
-        '    If inTL = 0 Then
-        '        'Console.WriteLine(item.ProjectName)
-        '        'nodes.Add(item.ClientName + ":" + item.ProjectName)
-        '        'job_TLSync.SyncJobsSubJobData(p_token, Me, True, nodes)
-        '    End If
-        'Next
-        'For Each item As Object In objTaskArray
-        '    Dim taskID As Integer = objTaskServices.GetTaskId(item.TaskName)
-        '    Dim inTL As Integer = obj_Sync_TLtoQB_JoborItem.IsTLID_In_JobsSubJobsDataTable(taskID.ToString())
-        '    If inTL = 0 Then
-        '        Console.WriteLine(item.TaskName)
-        '        nodes.Add(item.JobParent + ":" + item.TaskName)
-        '        job_TLSync.SyncJobsSubJobData(p_token, Me, True, nodes)
-        '    End If
-        'Next
-
-
-
-
         Dim obj_Sync_TLtoQB_JoborItem As New Sync_TLtoQB_JoborItem()
+        Dim obj_Sync_TLtoQB__Customer As New Sync_TLtoQB_Customer()
 
         Using treeView As TLQBTreeView = New TLQBTreeView()
             'TimeLive-----------
             treeView.CustomerJobTLTreeView.Nodes.Add("TimeLive", "TimeLive")
             For Each client As Services.TimeLive.Clients.Client In objClientArray
-                treeView.CustomerJobTLTreeView.Nodes("TimeLive").Nodes.Add(client.ClientName, client.ClientName)
+                'check the customer is in the database or in quickbook, make it red if it is not in the database and blue if it is not in quickbook and the database
+                Dim ID As Integer = objClientServices.GetClientIdByName(client.ClientName)
+                Dim inSqlDataOrNot As Integer = obj_Sync_TLtoQB__Customer.IsTLID_In_CustomerDataTable(ID.ToString())
+                If inSqlDataOrNot = 0 Then
+                    treeView.CustomerJobTLTreeView.Nodes("TimeLive").Nodes.Add(client.ClientName, client.ClientName).ForeColor = Color.Red
+                Else
+                    Dim qbFlag As Boolean = False
+                    For Each item As Object In customerData.DataArray
+                        If item.QB_Name = client.ClientName Then
+                            treeView.CustomerJobTLTreeView.Nodes("TimeLive").Nodes.Add(client.ClientName, client.ClientName)
+                            qbFlag = True
+                            Exit For
+                        End If
+                    Next
+                    If qbFlag = False Then
+                        treeView.CustomerJobTLTreeView.Nodes("TimeLive").Nodes.Add(client.ClientName, client.ClientName).ForeColor = Color.Blue
+                    End If
+                End If
+
+
                 For Each project As Services.TimeLive.Projects.Project In objProjectArray
                     If project.ClientName = client.ClientName Then
                         'check the record is in the sql database, if it is not, make it red
-                        Dim ID As Integer = objProjectServices.GetProjectId(project.ProjectName)
-                        Dim inSqlDataOrNot As Integer = obj_Sync_TLtoQB_JoborItem.IsTLID_In_JobsSubJobsDataTable(ID.ToString())
+                        ID = objProjectServices.GetProjectId(project.ProjectName)
+                        inSqlDataOrNot = obj_Sync_TLtoQB_JoborItem.IsTLID_In_JobsSubJobsDataTable(ID.ToString())
 
                         If inSqlDataOrNot = 0 Then
                             treeView.CustomerJobTLTreeView.Nodes("TimeLive").Nodes(client.ClientName).Nodes.Add(project.ProjectName, project.ProjectName).ForeColor = Color.Red

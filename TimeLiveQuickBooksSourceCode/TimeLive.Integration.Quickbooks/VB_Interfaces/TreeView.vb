@@ -2,7 +2,8 @@
 Imports QBFC13Lib
 Public Class TLQBTreeView
     Dim obj_main As New MAIN
-    Dim job_TLSync As Sync_TLtoQB_JoborItem = New Sync_TLtoQB_JoborItem
+    Dim job_TLSync As Sync_TLtoQB_JoborItem = New Sync_TLtoQB_JoborItem()
+    Dim customer_TLSync As Sync_TLtoQB_Customer = New Sync_TLtoQB_Customer()
     Private Sub CustomerJobTreeView_AfterSelect(sender As Object, e As TreeViewEventArgs) Handles CustomerJobQBTreeView.AfterSelect
         'TextBoxKey.Text = CustomerJobTreeView.SelectedNode.Text
         Dim selected_node = CustomerJobQBTreeView.SelectedNode.Text
@@ -46,30 +47,6 @@ Public Class TLQBTreeView
         Dim selected_node = CustomerJobTLTreeView.SelectedNode.Text
         Dim obj_main As New MAIN
 
-
-        'If DialogResult.OK = newForm.ShowDialog() Then
-        '    customer.QB_Name = newForm.TxtName.Text.Trim()
-        '    customer.Email = newForm.txtEmail.Text.Trim()
-        '    customer.Telephone1 = newForm.txtTelephone2.Text.Trim()
-        '    customer.Fax = newForm.txtFax.Text.Trim()
-        '    customer.RecSelect = True
-        'Else
-        '    Exit Sub
-        'End If
-
-        'Dim MsgBox_result As MsgBoxResult = MsgBoxResult.Yes
-        'If UI Then
-        '    If cancel_opt Then
-        '        MsgBox_result = MsgBox("New " + Type + " found in TimeLive: " & vbCrLf & value & vbCrLf & "Create in QuickBooks?", MsgBoxStyle.YesNoCancel, "Warning!")
-        '    Else
-        '        MsgBox_result = MsgBox("New " + Type + " found in TimeLive: " & vbCrLf & value & vbCrLf & "Create in QuickBooks?", MsgBoxStyle.YesNo, "Warning!")
-        '    End If
-        'End If
-        'Return MsgBox_result
-
-        'records are in the synchronization database
-        'Dim MsgBox_result = askUserToCreateInQB(UI, cancel_opt, TLJobSubJobName, jobOrTask)
-
         'Retreiving customers, projects, task from timelive 
         ' Connect to TimeLive Client
         Dim objClientServices As Services.TimeLive.Clients.Clients = MAIN.connect_TL_clients(obj_main.p_token)
@@ -85,11 +62,14 @@ Public Class TLQBTreeView
         Dim objProjectServices As Services.TimeLive.Projects.Projects = MAIN.connect_TL_projects(obj_main.p_token)
         Dim objProjectArray() As Object = objProjectServices.GetProjects
 
+        Dim obj_client As Services.TimeLive.Clients.Client
+
         For Each client As Services.TimeLive.Clients.Client In objClientArray
             If client.ClientName = selected_node Then
                 TextBoxTimeLiveID.Text = objClientServices.GetClientIdByName(client.ClientName)
                 TextBoxTimeLiveName.Text = client.ClientName
                 TextBoxFullNameTL.Text = client.ClientName
+                obj_client = client
                 Exit For
             End If
         Next
@@ -115,44 +95,29 @@ Public Class TLQBTreeView
             Next
         End If
 
-
-        'ask users if they would like to create record in syn database
-        Dim nodes As List(Of String) = New List(Of String)
-        If CustomerJobTLTreeView.SelectedNode.ForeColor.Name = "Red" Or CustomerJobTLTreeView.SelectedNode.ForeColor.Name = "Blue" Then
-            Using jobOrItemform As JoborItemForm = New JoborItemForm()
-                jobOrItemform.txtJobtName.Text = selected_node
-                If DialogResult.OK = jobOrItemform.ShowDialog Then
-                    nodes.Add(TextBoxFullNameTL.Text.Trim())
-                    job_TLSync.SyncJobsSubJobData(obj_main.p_token, obj_main, True, nodes)
-                    Me.Close()
-                    'obj_main.generate_treeview(obj_main.p_token)
-
-                Else
-                    Exit Sub
-                End If
-            End Using
+        Dim customerOrJobs As String = If(TextBoxFullNameTL.Text.Contains(":"), "jobs", "customer")
+        If customerOrJobs = "jobs" Then
+            'ask users if they would like to create record in syn database
+            Dim nodes As List(Of String) = New List(Of String)
+            If CustomerJobTLTreeView.SelectedNode.ForeColor.Name = "Red" Or CustomerJobTLTreeView.SelectedNode.ForeColor.Name = "Blue" Then
+                Using jobOrItemform As JoborItemForm = New JoborItemForm()
+                    jobOrItemform.txtJobtName.Text = selected_node
+                    If DialogResult.OK = jobOrItemform.ShowDialog Then
+                        nodes.Add(TextBoxFullNameTL.Text.Trim())
+                        job_TLSync.SyncJobsSubJobData(obj_main.p_token, obj_main, True, nodes)
+                        Me.Close()
+                    Else
+                        Exit Sub
+                    End If
+                End Using
+            End If
+        Else
+            'create customer
+            customer_TLSync.checkQBCustomerExist(TextBoxTimeLiveName.Text.Trim(), TextBoxTimeLiveID.Text.Trim(), obj_client, False)
         End If
 
 
-        'For Each item As Object In objProjectArray
-        '    Dim projectID As Integer = objProjectServices.GetProjectId(item.ProjectName)
-        '    Dim inTL As Integer = obj_Sync_TLtoQB_JoborItem.IsTLID_In_JobsSubJobsDataTable(projectID.ToString())
-        '    'not in local databae 
-        '    If inTL = 0 Then
-        '        'Console.WriteLine(item.ProjectName)
-        '        'nodes.Add(item.ClientName + ":" + item.ProjectName)
-        '        'job_TLSync.SyncJobsSubJobData(p_token, Me, True, nodes)
-        '    End If
-        'Next
-        'For Each item As Object In objTaskArray
-        '    Dim taskID As Integer = objTaskServices.GetTaskId(item.TaskName)
-        '    Dim inTL As Integer = obj_Sync_TLtoQB_JoborItem.IsTLID_In_JobsSubJobsDataTable(taskID.ToString())
-        '    If inTL = 0 Then
-        '        Console.WriteLine(item.TaskName)
-        '        nodes.Add(item.JobParent + ":" + item.TaskName)
-        '        job_TLSync.SyncJobsSubJobData(p_token, Me, True, nodes)
-        '    End If
-        'Next
+
 
 
     End Sub
@@ -186,7 +151,7 @@ Public Class TLQBTreeView
 
 
         'connecting timelive
-        'Dim obj_main As New MAIN
+
 
         Dim objProjectServices As Services.TimeLive.Projects.Projects = MAIN.connect_TL_projects(obj_main.p_token)
         Dim objTaskServices As Services.TimeLive.Tasks.Tasks = MAIN.connect_TL_tasks(obj_main.p_token)

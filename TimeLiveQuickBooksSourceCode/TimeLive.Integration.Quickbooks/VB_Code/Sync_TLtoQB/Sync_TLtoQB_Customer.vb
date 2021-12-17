@@ -214,7 +214,7 @@ Public Class Sync_TLtoQB_Customer
     ''' 1 -> one record in data table
     ''' 2 -> more than one record in data table
     ''' </returns>
-    Private Function IsTLID_In_CustomerDataTable(ByVal mytlID As String) As Int16
+    Public Function IsTLID_In_CustomerDataTable(ByVal mytlID As String) As Int16
         Dim CustomerAdapter As New QB_TL_IDsTableAdapters.CustomersTableAdapter
         Dim quickbooksIDs As QB_TL_IDs.CustomersDataTable = CustomerAdapter.GetCustomersByTLID(mytlID)
         Return Math.Min(2, quickbooksIDs.Count)
