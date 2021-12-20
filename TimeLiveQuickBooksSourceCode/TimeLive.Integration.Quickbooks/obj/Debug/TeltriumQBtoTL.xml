@@ -696,6 +696,26 @@ Update Order Option
 Used to sort self-referenced table's rows
 </summary>
 </member>
+<member name="M:TimeLive.Quickbooks.Integrator.ChargingRelationship_2.QBData(System.Int32)">
+ <summary>
+ Helper Function to get the desired data for the attribute
+ </summary>
+ <param name="attribute">
+ 1 -> Employee
+ 2 -> Vendors
+ 3 -> Payroll Item
+ 4 -> Job/SubJob
+ 5 -> Item/SubItem
+ </param>
+ <returns></returns>
+</member>
+<member name="M:TimeLive.Quickbooks.Integrator.ChargingRelationship_2.Filter_SelectedIndexChanged(System.Object,System.EventArgs)">
+ <summary>
+ Filters the shown relationships based on the selected attribute
+ </summary>
+ <param name="sender"></param>
+ <param name="e"></param>
+</member>
 <member name="M:TimeLive.Quickbooks.Integrator.MAIN.GetEmailFromTLID(System.String)">
  <summary>
  Get the email of an employee based on their id, using TimeLive Web Services

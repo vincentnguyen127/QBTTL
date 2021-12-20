@@ -1,0 +1,37 @@
+﻿Public Class AddNewRelationship
+    Private obj_ChargingRelationship_2 As New ChargingRelationship_2
+
+
+    Private Sub TextBoxEmployee_TextChanged(sender As Object, e As EventArgs)
+
+    End Sub
+
+    Private Sub TextBoxEmployee_Click(sender As Object, e As EventArgs)
+
+
+    End Sub
+
+    Private Sub btnOK_Click(sender As Object, e As EventArgs) Handles btnOK.Click
+        Me.DialogResult = DialogResult.OK
+    End Sub
+
+    Private Sub btnCancel_Click(sender As Object, e As EventArgs) Handles btnCancel.Click
+        Me.Close()
+    End Sub
+
+    Private Sub ComboBoxEmployee_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ComboBoxEmployee.SelectedIndexChanged
+
+    End Sub
+
+    Private Sub AddNewRelationship_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+
+    End Sub
+
+    Private Sub TextBoxJob_TextChanged(sender As Object, e As EventArgs) Handles TextBoxJob.TextChanged
+
+    End Sub
+
+    Private Sub TextBoxJob_Click(sender As Object, e As EventArgs) Handles TextBoxJob.Click
+        obj_ChargingRelationship_2.generate_treeview()
+    End Sub
+End Class

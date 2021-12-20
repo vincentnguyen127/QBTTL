@@ -50,8 +50,10 @@ Partial Class MAIN
         Me.loginbtn = New System.Windows.Forms.ToolStripButton()
         Me.btn_systemsync = New System.Windows.Forms.ToolStripButton()
         Me.btn_relationships = New System.Windows.Forms.ToolStripButton()
+        Me.btn_relationships2 = New System.Windows.Forms.ToolStripButton()
         Me.clearlogbtn = New System.Windows.Forms.ToolStripButton()
         Me.TabPageJobsItems = New System.Windows.Forms.TabPage()
+        Me.btnServiceItemQbTreeView = New System.Windows.Forms.Button()
         Me.btnTreeView = New System.Windows.Forms.Button()
         Me.ProgressBar1 = New System.Windows.Forms.ProgressBar()
         Me.TLtoQBVendorRadioButton = New System.Windows.Forms.RadioButton()
@@ -93,12 +95,11 @@ Partial Class MAIN
         Me.expenseReportStartDate = New System.Windows.Forms.DateTimePicker()
         Me.expense_nextWeek = New System.Windows.Forms.Button()
         Me.expense_btn_currWeek = New System.Windows.Forms.Button()
+        Me.TabPage1 = New System.Windows.Forms.TabPage()
+        Me.btnServiceItemTreeView = New System.Windows.Forms.Button()
         Me.ShowEntitiesBtn = New System.Windows.Forms.Button()
         Me.btnTransfer = New System.Windows.Forms.Button()
         Me.SendEmailsButton = New System.Windows.Forms.Button()
-        Me.TabPage1 = New System.Windows.Forms.TabPage()
-        Me.btnServiceItemTreeView = New System.Windows.Forms.Button()
-        Me.btnServiceItemQbTreeView = New System.Windows.Forms.Button()
         Me.JobItemSyncDirection.SuspendLayout()
         CType(Me.SplitContainer1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SplitContainer1.Panel1.SuspendLayout()
@@ -358,7 +359,7 @@ Partial Class MAIN
         Me.ToolStrip1.AutoSize = False
         Me.ToolStrip1.Dock = System.Windows.Forms.DockStyle.None
         Me.ToolStrip1.ImageScalingSize = New System.Drawing.Size(32, 32)
-        Me.ToolStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.settingbtn, Me.loginbtn, Me.btn_systemsync, Me.btn_relationships, Me.clearlogbtn, Me.Exitbtn})
+        Me.ToolStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.settingbtn, Me.loginbtn, Me.btn_systemsync, Me.btn_relationships, Me.btn_relationships2, Me.clearlogbtn, Me.Exitbtn})
         Me.ToolStrip1.Location = New System.Drawing.Point(-2, 0)
         Me.ToolStrip1.Name = "ToolStrip1"
         Me.ToolStrip1.Size = New System.Drawing.Size(973, 50)
@@ -405,6 +406,16 @@ Partial Class MAIN
         Me.btn_relationships.Text = "Relationships"
         Me.btn_relationships.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText
         '
+        'btn_relationships2
+        '
+        Me.btn_relationships2.AutoSize = False
+        Me.btn_relationships2.Image = CType(resources.GetObject("btn_relationships2.Image"), System.Drawing.Image)
+        Me.btn_relationships2.ImageTransparentColor = System.Drawing.Color.Magenta
+        Me.btn_relationships2.Name = "btn_relationships2"
+        Me.btn_relationships2.Size = New System.Drawing.Size(100, 50)
+        Me.btn_relationships2.Text = "Relationships_2"
+        Me.btn_relationships2.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText
+        '
         'clearlogbtn
         '
         Me.clearlogbtn.AutoSize = False
@@ -427,6 +438,15 @@ Partial Class MAIN
         Me.TabPageJobsItems.TabIndex = 6
         Me.TabPageJobsItems.Text = "Jobs/Items Options"
         Me.TabPageJobsItems.UseVisualStyleBackColor = True
+        '
+        'btnServiceItemQbTreeView
+        '
+        Me.btnServiceItemQbTreeView.Location = New System.Drawing.Point(521, 52)
+        Me.btnServiceItemQbTreeView.Name = "btnServiceItemQbTreeView"
+        Me.btnServiceItemQbTreeView.Size = New System.Drawing.Size(148, 23)
+        Me.btnServiceItemQbTreeView.TabIndex = 6
+        Me.btnServiceItemQbTreeView.Text = "Service Item Tree View"
+        Me.btnServiceItemQbTreeView.UseVisualStyleBackColor = True
         '
         'btnTreeView
         '
@@ -485,7 +505,7 @@ Partial Class MAIN
         Me.TabPageCustomers.Location = New System.Drawing.Point(4, 22)
         Me.TabPageCustomers.Name = "TabPageCustomers"
         Me.TabPageCustomers.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPageCustomers.Size = New System.Drawing.Size(716, 82)
+        Me.TabPageCustomers.Size = New System.Drawing.Size(965, 82)
         Me.TabPageCustomers.TabIndex = 3
         Me.TabPageCustomers.Text = "Customers Options"
         Me.TabPageCustomers.UseVisualStyleBackColor = True
@@ -552,7 +572,7 @@ Partial Class MAIN
         Me.TabPageEmployees.Location = New System.Drawing.Point(4, 22)
         Me.TabPageEmployees.Name = "TabPageEmployees"
         Me.TabPageEmployees.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPageEmployees.Size = New System.Drawing.Size(716, 82)
+        Me.TabPageEmployees.Size = New System.Drawing.Size(965, 82)
         Me.TabPageEmployees.TabIndex = 4
         Me.TabPageEmployees.Text = "Employees Options"
         Me.TabPageEmployees.UseVisualStyleBackColor = True
@@ -618,7 +638,7 @@ Partial Class MAIN
         Me.TabPageVendor.Location = New System.Drawing.Point(4, 22)
         Me.TabPageVendor.Name = "TabPageVendor"
         Me.TabPageVendor.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPageVendor.Size = New System.Drawing.Size(716, 82)
+        Me.TabPageVendor.Size = New System.Drawing.Size(965, 82)
         Me.TabPageVendor.TabIndex = 5
         Me.TabPageVendor.Text = "Vendors Options"
         Me.TabPageVendor.UseVisualStyleBackColor = True
@@ -866,6 +886,26 @@ Partial Class MAIN
         Me.expense_btn_currWeek.Text = "Current Week"
         Me.expense_btn_currWeek.UseVisualStyleBackColor = True
         '
+        'TabPage1
+        '
+        Me.TabPage1.Controls.Add(Me.btnServiceItemTreeView)
+        Me.TabPage1.Location = New System.Drawing.Point(4, 22)
+        Me.TabPage1.Name = "TabPage1"
+        Me.TabPage1.Padding = New System.Windows.Forms.Padding(3)
+        Me.TabPage1.Size = New System.Drawing.Size(965, 82)
+        Me.TabPage1.TabIndex = 8
+        Me.TabPage1.Text = "Service Item"
+        Me.TabPage1.UseVisualStyleBackColor = True
+        '
+        'btnServiceItemTreeView
+        '
+        Me.btnServiceItemTreeView.Location = New System.Drawing.Point(625, 36)
+        Me.btnServiceItemTreeView.Name = "btnServiceItemTreeView"
+        Me.btnServiceItemTreeView.Size = New System.Drawing.Size(75, 23)
+        Me.btnServiceItemTreeView.TabIndex = 0
+        Me.btnServiceItemTreeView.Text = "Service Item Tree View"
+        Me.btnServiceItemTreeView.UseVisualStyleBackColor = True
+        '
         'ShowEntitiesBtn
         '
         Me.ShowEntitiesBtn.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
@@ -898,35 +938,6 @@ Partial Class MAIN
         Me.SendEmailsButton.Text = "Send Emails"
         Me.SendEmailsButton.UseVisualStyleBackColor = True
         Me.SendEmailsButton.Visible = False
-        '
-        'TabPage1
-        '
-        Me.TabPage1.Controls.Add(Me.btnServiceItemTreeView)
-        Me.TabPage1.Location = New System.Drawing.Point(4, 22)
-        Me.TabPage1.Name = "TabPage1"
-        Me.TabPage1.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage1.Size = New System.Drawing.Size(965, 82)
-        Me.TabPage1.TabIndex = 8
-        Me.TabPage1.Text = "Service Item"
-        Me.TabPage1.UseVisualStyleBackColor = True
-        '
-        'btnServiceItemTreeView
-        '
-        Me.btnServiceItemTreeView.Location = New System.Drawing.Point(625, 36)
-        Me.btnServiceItemTreeView.Name = "btnServiceItemTreeView"
-        Me.btnServiceItemTreeView.Size = New System.Drawing.Size(75, 23)
-        Me.btnServiceItemTreeView.TabIndex = 0
-        Me.btnServiceItemTreeView.Text = "Service Item Tree View"
-        Me.btnServiceItemTreeView.UseVisualStyleBackColor = True
-        '
-        'btnServiceItemQbTreeView
-        '
-        Me.btnServiceItemQbTreeView.Location = New System.Drawing.Point(521, 52)
-        Me.btnServiceItemQbTreeView.Name = "btnServiceItemQbTreeView"
-        Me.btnServiceItemQbTreeView.Size = New System.Drawing.Size(148, 23)
-        Me.btnServiceItemQbTreeView.TabIndex = 6
-        Me.btnServiceItemQbTreeView.Text = "Service Item Tree View"
-        Me.btnServiceItemQbTreeView.UseVisualStyleBackColor = True
         '
         'MAIN
         '
@@ -1011,7 +1022,7 @@ Partial Class MAIN
     Friend WithEvents settingbtn As ToolStripButton
     Friend WithEvents loginbtn As ToolStripButton
     Friend WithEvents btn_systemsync As ToolStripButton
-    Friend WithEvents btn_relationships As ToolStripButton
+    Friend WithEvents btn_relationships2 As ToolStripButton
     Friend WithEvents clearlogbtn As ToolStripButton
     Friend WithEvents TabPageJobsItems As TabPage
     Friend WithEvents ProgressBar1 As ProgressBar
@@ -1061,4 +1072,5 @@ Partial Class MAIN
     Friend WithEvents TabPage1 As TabPage
     Friend WithEvents btnServiceItemTreeView As Button
     Friend WithEvents btnServiceItemQbTreeView As Button
+    Friend WithEvents btn_relationships As ToolStripButton
 End Class

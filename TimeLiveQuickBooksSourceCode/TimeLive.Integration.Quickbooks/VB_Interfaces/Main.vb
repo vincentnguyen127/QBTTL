@@ -1641,7 +1641,23 @@ Public Class MAIN
         Dim jobAdapter As New QB_TL_IDsTableAdapters.Jobs_SubJobsTableAdapter
         ProgressBar1.Maximum = DataGridView.Rows.Count
         For Each row As DataGridViewRow In DataGridView.Rows
-            If row.Cells("Date").Value IsNot Nothing And row.Cells("ckBox").Value And TimeEntryData.NoItems Then
+
+
+            'If DataGridView1 IsNot Nothing Then
+            '    For Each row As DataGridViewRow In DataGridView1.Rows
+            '        If row.Cells("Name").Value IsNot Nothing And row.Cells("ckBox").Value Then
+            '            Dim full_name As String = row.Cells("Name").Value.ToString.Replace(MAIN.colonReplacer, ":")
+            '            TL_Names.Add(full_name)
+            '            History("Item selected for processing: " + row.Cells("Name").Value, "n")
+            '        End If
+            '    Next
+            'End If
+            'Date
+            Dim abc = row.Cells(1).Value
+            Dim cbc = row.Cells(0).Value
+            Dim dfd = TimeEntryData.NoItems
+            If row.Cells("Name").Value IsNot Nothing And row.Cells("ckBox").Value And TimeEntryData.NoItems Then
+                'If row.Cells("Name").Value IsNot Nothing And row.Cells("ckBox").Value Then
                 Dim fullTaskName As String = row.Cells("Task").Value.ToString()
                 ' Checks for a time entry in our data array which has the correct employee, job/subjob, and date
                 Dim itemName As String = Nothing
@@ -1723,6 +1739,8 @@ Public Class MAIN
     Private Sub QB_Set_Selected_Customer()
         If DataGridView1 IsNot Nothing Then
             For Each row As DataGridViewRow In DataGridView1.Rows
+
+
                 If row.Cells("Name").Value IsNot Nothing And row.Cells("ckBox").Value = True Then
                     customerData.DataArray.ForEach(
                         Sub(customer)
@@ -2132,9 +2150,9 @@ Public Class MAIN
         End If
     End Sub
 
-    Private Sub btn_relationships_Click(sender As Object, e As EventArgs) Handles btn_relationships.Click
-        ChargingRelationship.Owner = Me
-        ChargingRelationship.Show()
+    Private Sub btn_relationships_Click(sender As Object, e As EventArgs) Handles btn_relationships2.Click
+        ChargingRelationship_2.Owner = Me
+        ChargingRelationship_2.Show()
     End Sub
 
     Private Sub btnNew_Click(sender As Object, e As EventArgs) Handles btnNew.Click
@@ -2528,6 +2546,9 @@ Public Class MAIN
         Next
     End Function
 
+    Public Function generate_relationship_treeview(p_token As String)
+
+    End Function
     Public Function generate_treeview(p_token As String)
         'data for populating timelive treeview
         '==============================================
@@ -2755,13 +2776,11 @@ Public Class MAIN
         generate_treeview(p_token)
     End Sub
 
-    Private Sub btnServiceItemTreeView_Click(sender As Object, e As EventArgs) Handles btnServiceItemTreeView.Click
 
-    End Sub
 
-    Private Sub Button1_Click(sender As Object, e As EventArgs) Handles btnServiceItemQbTreeView.Click
+    Private Sub btnServiceItemQbTreeView_Click(sender As Object, e As EventArgs) Handles btnServiceItemQbTreeView.Click
+        '========service items===========================
         'connect to quickbook
-
         Dim msgSetRq As IMsgSetRequest = MAIN.SESSMANAGER.CreateMsgSetRequest("US", 2, 0)
         msgSetRq.Attributes.OnError = ENRqOnError.roeContinue
 
@@ -2789,8 +2808,14 @@ Public Class MAIN
             End If
 
         Next
-        'generate tree view
+        '===========payroll items====================================
+        'msgSetRq = MAIN.SESSMANAGER.CreateMsgSetRequest("US", 2, 0)
+        'msgSetRq.Attributes.OnError = ENRqOnError.roeContinue
 
+        'msgSetRq.appendpayroll
+
+
+        'generate tree view
 
         Using treeView As ServiceItemTreeView = New ServiceItemTreeView()
             For Each firstNode As String In itemServicesFirtNode
@@ -2823,5 +2848,10 @@ Public Class MAIN
 
 
 
+    End Sub
+
+    Private Sub btn_relationships_Click_1(sender As Object, e As EventArgs) Handles btn_relationships.Click
+        ChargingRelationship.Owner = Me
+        ChargingRelationship.Show()
     End Sub
 End Class

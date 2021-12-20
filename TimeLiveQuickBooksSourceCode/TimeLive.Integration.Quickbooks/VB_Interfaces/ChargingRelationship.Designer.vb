@@ -25,9 +25,15 @@ Partial Class ChargingRelationship
         Me.components = New System.ComponentModel.Container()
         Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Me.ChargingRelationshipsBindingSource = New System.Windows.Forms.BindingSource(Me.components)
-        Me.JobsSubJobsBindingSource = New System.Windows.Forms.BindingSource(Me.components)
+        Me.QBTLIDsBindingSource = New System.Windows.Forms.BindingSource(Me.components)
+        Me.QB_TL_IDs = New TimeLive.Quickbooks.Integrator.QB_TL_IDs()
         Me.btn_Save = New System.Windows.Forms.Button()
         Me.DataGridView1 = New System.Windows.Forms.DataGridView()
+        Me.IDDataGridViewTextBoxColumn = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.EmployeeQBIDDataGridViewTextBoxColumn = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.JobSubJobQBIDDataGridViewTextBoxColumn = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.PayrollItemQBIDDataGridViewTextBoxColumn = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.ItemSubItemQBIDDataGridViewTextBoxColumn = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.CustomersBindingSource = New System.Windows.Forms.BindingSource(Me.components)
         Me.btn_Delete = New System.Windows.Forms.Button()
         Me.btn_close = New System.Windows.Forms.Button()
@@ -44,13 +50,6 @@ Partial Class ChargingRelationship
         Me.SplitContainer1 = New System.Windows.Forms.SplitContainer()
         Me.SplitContainer2 = New System.Windows.Forms.SplitContainer()
         Me.SplitContainer3 = New System.Windows.Forms.SplitContainer()
-        Me.IDDataGridViewTextBoxColumn = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.EmployeeQBIDDataGridViewTextBoxColumn = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.JobSubJobQBIDDataGridViewTextBoxColumn = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.PayrollItemQBIDDataGridViewTextBoxColumn = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.ItemSubItemQBIDDataGridViewTextBoxColumn = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.QBTLIDsBindingSource = New System.Windows.Forms.BindingSource(Me.components)
-        Me.QB_TL_IDs = New TimeLive.Quickbooks.Integrator.QB_TL_IDs()
         Me.EmployeesBindingSource = New System.Windows.Forms.BindingSource(Me.components)
         Me.ItemsSubItemsBindingSource = New System.Windows.Forms.BindingSource(Me.components)
         Me.EmployeesTableAdapter = New TimeLive.Quickbooks.Integrator.QB_TL_IDsTableAdapters.EmployeesTableAdapter()
@@ -60,32 +59,46 @@ Partial Class ChargingRelationship
         Me.ChargingRelationshipsTableAdapter = New TimeLive.Quickbooks.Integrator.QB_TL_IDsTableAdapters.ChargingRelationshipsTableAdapter()
         Me.CustomersTableAdapter = New TimeLive.Quickbooks.Integrator.QB_TL_IDsTableAdapters.CustomersTableAdapter()
         Me.EmployeesBindingSource1 = New System.Windows.Forms.BindingSource(Me.components)
+        Me.JobsSubJobsBindingSource = New System.Windows.Forms.BindingSource(Me.components)
         CType(Me.ChargingRelationshipsBindingSource, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.JobsSubJobsBindingSource, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.QBTLIDsBindingSource, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.QB_TL_IDs, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.DataGridView1, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.CustomersBindingSource, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.ChargingRelationshipsBindingSource1, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.ChargingRelationshipsBindingSource2, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.SplitContainer1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SplitContainer1.Panel1.SuspendLayout()
         Me.SplitContainer1.Panel2.SuspendLayout()
         Me.SplitContainer1.SuspendLayout()
+        CType(Me.SplitContainer2, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SplitContainer2.Panel1.SuspendLayout()
         Me.SplitContainer2.Panel2.SuspendLayout()
         Me.SplitContainer2.SuspendLayout()
+        CType(Me.SplitContainer3, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SplitContainer3.Panel1.SuspendLayout()
         Me.SplitContainer3.Panel2.SuspendLayout()
         Me.SplitContainer3.SuspendLayout()
-        CType(Me.QBTLIDsBindingSource, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.QB_TL_IDs, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.EmployeesBindingSource, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.ItemsSubItemsBindingSource, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.EmployeesBindingSource1, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.JobsSubJobsBindingSource, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'ChargingRelationshipsBindingSource
         '
         Me.ChargingRelationshipsBindingSource.DataMember = "ChargingRelationships"
         Me.ChargingRelationshipsBindingSource.DataSource = Me.QBTLIDsBindingSource
+        '
+        'QBTLIDsBindingSource
+        '
+        Me.QBTLIDsBindingSource.DataSource = Me.QB_TL_IDs
+        Me.QBTLIDsBindingSource.Position = 0
+        '
+        'QB_TL_IDs
+        '
+        Me.QB_TL_IDs.DataSetName = "QB_TL_IDs"
+        Me.QB_TL_IDs.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema
         '
         'btn_Save
         '
@@ -119,6 +132,42 @@ Partial Class ChargingRelationship
         Me.DataGridView1.RowHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.[Single]
         Me.DataGridView1.Size = New System.Drawing.Size(783, 285)
         Me.DataGridView1.TabIndex = 0
+        '
+        'IDDataGridViewTextBoxColumn
+        '
+        Me.IDDataGridViewTextBoxColumn.DataPropertyName = "ID"
+        Me.IDDataGridViewTextBoxColumn.HeaderText = "ID"
+        Me.IDDataGridViewTextBoxColumn.Name = "IDDataGridViewTextBoxColumn"
+        Me.IDDataGridViewTextBoxColumn.ReadOnly = True
+        Me.IDDataGridViewTextBoxColumn.Width = 50
+        '
+        'EmployeeQBIDDataGridViewTextBoxColumn
+        '
+        Me.EmployeeQBIDDataGridViewTextBoxColumn.DataPropertyName = "EmployeeQB_ID"
+        Me.EmployeeQBIDDataGridViewTextBoxColumn.HeaderText = "Employee"
+        Me.EmployeeQBIDDataGridViewTextBoxColumn.Name = "EmployeeQBIDDataGridViewTextBoxColumn"
+        Me.EmployeeQBIDDataGridViewTextBoxColumn.ReadOnly = True
+        Me.EmployeeQBIDDataGridViewTextBoxColumn.Resizable = System.Windows.Forms.DataGridViewTriState.[True]
+        '
+        'JobSubJobQBIDDataGridViewTextBoxColumn
+        '
+        Me.JobSubJobQBIDDataGridViewTextBoxColumn.DataPropertyName = "JobSubJobQB_ID"
+        Me.JobSubJobQBIDDataGridViewTextBoxColumn.HeaderText = "JobSubJobQB_ID"
+        Me.JobSubJobQBIDDataGridViewTextBoxColumn.Name = "JobSubJobQBIDDataGridViewTextBoxColumn"
+        Me.JobSubJobQBIDDataGridViewTextBoxColumn.Resizable = System.Windows.Forms.DataGridViewTriState.[True]
+        '
+        'PayrollItemQBIDDataGridViewTextBoxColumn
+        '
+        Me.PayrollItemQBIDDataGridViewTextBoxColumn.DataPropertyName = "PayrollItemQB_ID"
+        Me.PayrollItemQBIDDataGridViewTextBoxColumn.HeaderText = "PayrollItemQB_ID"
+        Me.PayrollItemQBIDDataGridViewTextBoxColumn.Name = "PayrollItemQBIDDataGridViewTextBoxColumn"
+        Me.PayrollItemQBIDDataGridViewTextBoxColumn.ReadOnly = True
+        '
+        'ItemSubItemQBIDDataGridViewTextBoxColumn
+        '
+        Me.ItemSubItemQBIDDataGridViewTextBoxColumn.DataPropertyName = "ItemSubItemQB_ID"
+        Me.ItemSubItemQBIDDataGridViewTextBoxColumn.HeaderText = "ItemSubItemQB_ID"
+        Me.ItemSubItemQBIDDataGridViewTextBoxColumn.Name = "ItemSubItemQBIDDataGridViewTextBoxColumn"
         '
         'CustomersBindingSource
         '
@@ -305,52 +354,6 @@ Partial Class ChargingRelationship
         Me.SplitContainer3.SplitterDistance = 182
         Me.SplitContainer3.TabIndex = 0
         '
-        'IDDataGridViewTextBoxColumn
-        '
-        Me.IDDataGridViewTextBoxColumn.DataPropertyName = "ID"
-        Me.IDDataGridViewTextBoxColumn.HeaderText = "ID"
-        Me.IDDataGridViewTextBoxColumn.Name = "IDDataGridViewTextBoxColumn"
-        Me.IDDataGridViewTextBoxColumn.ReadOnly = True
-        Me.IDDataGridViewTextBoxColumn.Width = 50
-        '
-        'EmployeeQBIDDataGridViewTextBoxColumn
-        '
-        Me.EmployeeQBIDDataGridViewTextBoxColumn.DataPropertyName = "EmployeeQB_ID"
-        Me.EmployeeQBIDDataGridViewTextBoxColumn.HeaderText = "Employee"
-        Me.EmployeeQBIDDataGridViewTextBoxColumn.Name = "EmployeeQBIDDataGridViewTextBoxColumn"
-        Me.EmployeeQBIDDataGridViewTextBoxColumn.ReadOnly = True
-        Me.EmployeeQBIDDataGridViewTextBoxColumn.Resizable = System.Windows.Forms.DataGridViewTriState.[True]
-        '
-        'JobSubJobQBIDDataGridViewTextBoxColumn
-        '
-        Me.JobSubJobQBIDDataGridViewTextBoxColumn.DataPropertyName = "JobSubJobQB_ID"
-        Me.JobSubJobQBIDDataGridViewTextBoxColumn.HeaderText = "JobSubJobQB_ID"
-        Me.JobSubJobQBIDDataGridViewTextBoxColumn.Name = "JobSubJobQBIDDataGridViewTextBoxColumn"
-        Me.JobSubJobQBIDDataGridViewTextBoxColumn.Resizable = System.Windows.Forms.DataGridViewTriState.[True]
-        '
-        'PayrollItemQBIDDataGridViewTextBoxColumn
-        '
-        Me.PayrollItemQBIDDataGridViewTextBoxColumn.DataPropertyName = "PayrollItemQB_ID"
-        Me.PayrollItemQBIDDataGridViewTextBoxColumn.HeaderText = "PayrollItemQB_ID"
-        Me.PayrollItemQBIDDataGridViewTextBoxColumn.Name = "PayrollItemQBIDDataGridViewTextBoxColumn"
-        Me.PayrollItemQBIDDataGridViewTextBoxColumn.ReadOnly = True
-        '
-        'ItemSubItemQBIDDataGridViewTextBoxColumn
-        '
-        Me.ItemSubItemQBIDDataGridViewTextBoxColumn.DataPropertyName = "ItemSubItemQB_ID"
-        Me.ItemSubItemQBIDDataGridViewTextBoxColumn.HeaderText = "ItemSubItemQB_ID"
-        Me.ItemSubItemQBIDDataGridViewTextBoxColumn.Name = "ItemSubItemQBIDDataGridViewTextBoxColumn"
-        '
-        'QBTLIDsBindingSource
-        '
-        Me.QBTLIDsBindingSource.DataSource = Me.QB_TL_IDs
-        Me.QBTLIDsBindingSource.Position = 0
-        '
-        'QB_TL_IDs
-        '
-        Me.QB_TL_IDs.DataSetName = "QB_TL_IDs"
-        Me.QB_TL_IDs.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema
-        '
         'EmployeesBindingSource
         '
         Me.EmployeesBindingSource.DataMember = "Employees"
@@ -390,6 +393,9 @@ Partial Class ChargingRelationship
         Me.EmployeesBindingSource1.DataMember = "Employees"
         Me.EmployeesBindingSource1.DataSource = Me.QB_TL_IDs
         '
+        'JobsSubJobsBindingSource
+        '
+        '
         'ChargingRelationship
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -404,29 +410,32 @@ Partial Class ChargingRelationship
         Me.Name = "ChargingRelationship"
         Me.Text = "ChargingRelationship"
         CType(Me.ChargingRelationshipsBindingSource, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.JobsSubJobsBindingSource, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.QBTLIDsBindingSource, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.QB_TL_IDs, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.DataGridView1, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.CustomersBindingSource, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.ChargingRelationshipsBindingSource1, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.ChargingRelationshipsBindingSource2, System.ComponentModel.ISupportInitialize).EndInit()
         Me.SplitContainer1.Panel1.ResumeLayout(False)
         Me.SplitContainer1.Panel2.ResumeLayout(False)
+        CType(Me.SplitContainer1, System.ComponentModel.ISupportInitialize).EndInit()
         Me.SplitContainer1.ResumeLayout(False)
         Me.SplitContainer2.Panel1.ResumeLayout(False)
         Me.SplitContainer2.Panel1.PerformLayout()
         Me.SplitContainer2.Panel2.ResumeLayout(False)
         Me.SplitContainer2.Panel2.PerformLayout()
+        CType(Me.SplitContainer2, System.ComponentModel.ISupportInitialize).EndInit()
         Me.SplitContainer2.ResumeLayout(False)
         Me.SplitContainer3.Panel1.ResumeLayout(False)
         Me.SplitContainer3.Panel1.PerformLayout()
         Me.SplitContainer3.Panel2.ResumeLayout(False)
         Me.SplitContainer3.Panel2.PerformLayout()
+        CType(Me.SplitContainer3, System.ComponentModel.ISupportInitialize).EndInit()
         Me.SplitContainer3.ResumeLayout(False)
-        CType(Me.QBTLIDsBindingSource, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.QB_TL_IDs, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.EmployeesBindingSource, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.ItemsSubItemsBindingSource, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.EmployeesBindingSource1, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.JobsSubJobsBindingSource, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
 
     End Sub

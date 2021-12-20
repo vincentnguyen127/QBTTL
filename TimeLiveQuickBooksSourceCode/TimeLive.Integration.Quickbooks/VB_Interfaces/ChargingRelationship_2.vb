@@ -2,7 +2,14 @@
 Imports System.Configuration
 Imports System.Collections.Generic
 
-Public Class ChargingRelationship
+Public Class ChargingRelationship_2
+    Shared EmployeesQBData As New DataTable
+    Shared VendorsQBData As New DataTable
+    Shared JobsSubJobsQBData As New DataTable
+    Shared ItemsSubItemsQBData As New DataTable
+    Shared PayrollItemsQBData As New DataTable
+    Public Shared FormAddNewRelationshiop As New AddNewRelationship
+
     Public Class Job_Subjob
         Private _QBName As String = String.Empty
         Private _QBID As String = String.Empty
@@ -14,13 +21,6 @@ Public Class ChargingRelationship
     End Class
 
     Private Sub ChargingRelationship_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-
-        Dim EmployeesQBData As New DataTable
-        Dim VendorsQBData As New DataTable
-        Dim JobsSubJobsQBData As New DataTable
-        Dim ItemsSubItemsQBData As New DataTable
-        Dim PayrollItemsQBData As New DataTable
-
         Me.EmployeesTableAdapter.Fill(Me.QB_TL_IDs.Employees)
         Me.Jobs_SubJobsTableAdapter.Fill(Me.QB_TL_IDs.Jobs_SubJobs) ' Maybe do this?
         Me.VendorsTableAdapter.Fill(Me.QB_TL_IDs.Vendors) ' Maybe do this?
@@ -32,6 +32,7 @@ Public Class ChargingRelationship
         VendorsQBData = QB1099Vendors()
         PayrollItemsQBData = QBPayrollItems()
         ItemsSubItemsQBData = QBItemsSubItems()
+
 
         ' Add all Employees to Employee Filter Box
         For Each employee As DataRow In EmployeesQBData.Rows
@@ -555,16 +556,81 @@ Public Class ChargingRelationship
 
     End Sub
 
-    'Private Sub ChargingRelationshipsBindingSource_CurrentChanged(sender As Object, e As EventArgs) Handles MyBasesBindingSource.CurrentChanged
+    Private Sub btnAddNew_Click(sender As Object, e As EventArgs) Handles btnAddNew.Click
 
-    'End Sub
 
-    'Private Sub ChargingRelationshipsBindingSource1_CurrentChanged(sender As Object, e As EventArgs) Handles MyBasesBindingSource1.CurrentChanged
 
-    'End Sub
 
-    'Private Sub ChargingRelationshipsBindingSource2_CurrentChanged(sender As Object, e As EventArgs) Handles MyBasesBindingSource2.CurrentChanged
+        ' Using form As AddNewRelationship = New AddNewRelationship
 
-    'End Sub
+
+        ' Add all Employees to Employee Filter Box
+        For Each employee As DataRow In EmployeesQBData.Rows
+                FormAddNewRelationshiop.ComboBoxEmployee.Items.Add(employee(0))
+            Next
+
+
+
+
+            ' Add all Payroll Items to Payroll Filter Box
+            For Each payrollItem As DataRow In PayrollItemsQBData.Rows
+                FormAddNewRelationshiop.ComboBoxPayroll.Items.Add(payrollItem(0))
+            Next
+
+        FormAddNewRelationshiop.ShowDialog()
+
+
+
+        ' End Using
+    End Sub
+
+    Public Function generate_treeview()
+
+
+        Dim jobData As List(Of Array) = New List(Of Array)
+        For Each job As Object In JobsSubJobsQBData.Rows
+            jobData.Add(Split(job(0), "-->"))
+        Next
+
+        'Trim whitespaces
+        For i As Integer = 0 To jobData.Count - 1
+            For j As Integer = 0 To jobData(i).Length - 1
+                jobData(i)(j) = jobData(i)(j).Trim()
+            Next
+        Next
+
+        'Get custoemrs or clients 
+        Dim customers As New List(Of String)
+        For Each item As Array In jobData
+            If item.Length = 2 And Not customers.Contains(item(0)) Then
+                customers.Add(item(0))
+            End If
+        Next
+
+        Using form As RelationshipTreeView = New RelationshipTreeView
+
+            For Each customer As String In customers
+                customer = customer.Trim()
+                form.TreeViewRelationship.Nodes.Add(customer, customer)
+                For i As Integer = 0 To jobData.Count - 1
+                    If jobData(i)(0).Trim() = customer Then
+                        Dim itemLength As Integer = jobData(i).Length
+                        If itemLength = 2 Then
+                            form.TreeViewRelationship.Nodes(customer).Nodes.Add(jobData(i)(1), jobData(i)(1))
+                        ElseIf itemLength = 3 Then
+                            form.TreeViewRelationship.Nodes(customer).Nodes(jobData(i)(1)).Nodes.Add(jobData(i)(2), jobData(i)(2))
+                        ElseIf itemLength = 4 Then
+                            form.TreeViewRelationship.Nodes(customer).Nodes(jobData(i)(1)).Nodes(jobData(i)(2)).Nodes.Add(jobData(i)(3), jobData(i)(3))
+                        Else
+                            form.TreeViewRelationship.Nodes(customer).Nodes(jobData(i)(1)).Nodes(jobData(i)(2)).Nodes(jobData(i)(3)).Nodes.Add(jobData(i)(4), jobData(i)(4))
+                        End If
+                    End If
+                Next
+            Next
+            form.TreeViewRelationship.ExpandAll()
+
+            form.ShowDialog()
+        End Using
+    End Function
 End Class
 
