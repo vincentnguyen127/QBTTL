@@ -1,6 +1,7 @@
 ﻿Imports QBFC13Lib
 Imports System.Configuration
 Imports System.Collections.Generic
+Imports System.Linq
 
 Public Class ChargingRelationship_2
     Shared EmployeesQBData As New DataTable
@@ -32,6 +33,17 @@ Public Class ChargingRelationship_2
         VendorsQBData = QB1099Vendors()
         PayrollItemsQBData = QBPayrollItems()
         ItemsSubItemsQBData = QBItemsSubItems()
+
+        ' Add all Employees to Employee Filter Box for adding new relationship
+        For Each employee As DataRow In EmployeesQBData.Rows
+            FormAddNewRelationshiop.ComboBoxEmployee.Items.Add(employee(0))
+        Next
+
+
+        ' Add all Payroll Items to Payroll Filter Box for adding new relationship
+        For Each payrollItem As DataRow In PayrollItemsQBData.Rows
+            FormAddNewRelationshiop.ComboBoxPayroll.Items.Add(payrollItem(0))
+        Next
 
 
         ' Add all Employees to Employee Filter Box
@@ -131,6 +143,7 @@ Public Class ChargingRelationship_2
             Dim row As DataRow = Me.QB_TL_IDs.ChargingRelationships.Rows(numRow)
             Dim remove As Boolean = True
 
+
             ' Remove the row if Employee, Subjob, or Payroll attributes are not chosen (are null)
             If IsDBNull(row(1)) Or IsDBNull(row(2)) Then ' Or IsDBNull(row(3)) 'Or IsDBNull(row(4))
                 Me.QB_TL_IDs.ChargingRelationships.RemoveChargingRelationshipsRow(row)
@@ -200,6 +213,8 @@ Public Class ChargingRelationship_2
         End While
 
         'ChargingRelationshipsTableAdapter.DeleteInvalidRelationships()
+
+
 
 
         DataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells
@@ -558,34 +573,125 @@ Public Class ChargingRelationship_2
 
     Private Sub btnAddNew_Click(sender As Object, e As EventArgs) Handles btnAddNew.Click
 
-
-
-
         ' Using form As AddNewRelationship = New AddNewRelationship
 
+        'reset the form
+        FormAddNewRelationshiop.ComboBoxEmployee.SelectedItem = Nothing
+        FormAddNewRelationshiop.TextBoxJob.Text = String.Empty
+        FormAddNewRelationshiop.ComboBoxPayroll.SelectedItem = Nothing
+        FormAddNewRelationshiop.TextBoxItem.Text = String.Empty
 
-        ' Add all Employees to Employee Filter Box
-        For Each employee As DataRow In EmployeesQBData.Rows
-                FormAddNewRelationshiop.ComboBoxEmployee.Items.Add(employee(0))
+
+        'Shared EmployeesQBData As New DataTable
+        'Shared VendorsQBData As New DataTable
+        'Shared JobsSubJobsQBData As New DataTable
+        'Shared ItemsSubItemsQBData As New DataTable
+        'Shared PayrollItemsQBData As New DataTable
+
+
+        If DialogResult.OK = FormAddNewRelationshiop.ShowDialog() Then
+            Dim employeeName As String = FormAddNewRelationshiop.ComboBoxEmployee.Text
+            Dim employeeID As String
+            For Each employee As DataRow In EmployeesQBData.Rows
+                If employee(0) = employeeName Then
+                    employeeID = employee(1)
+                    Exit For
+                End If
+            Next
+
+            Dim jobName As String = FormAddNewRelationshiop.TextBoxJob.Text
+            Dim jobID As String
+            For Each jobs As DataRow In JobsSubJobsQBData.Rows
+                Dim array As New List(Of Array)
+                array.Add(Split(jobs(0), "-->"))
+                If array(0)(array(0).Length - 1).Trim() = jobName Then
+                    jobID = jobs(1)
+                    Exit For
+                End If
             Next
 
 
-
-
-            ' Add all Payroll Items to Payroll Filter Box
-            For Each payrollItem As DataRow In PayrollItemsQBData.Rows
-                FormAddNewRelationshiop.ComboBoxPayroll.Items.Add(payrollItem(0))
+            Dim payrollName As String = FormAddNewRelationshiop.ComboBoxPayroll.Text
+            Dim payrollId As String
+            For Each payrolls As DataRow In PayrollItemsQBData.Rows
+                If payrolls(0) = payrollName Then
+                    payrollId = payrolls(1)
+                End If
             Next
 
-        FormAddNewRelationshiop.ShowDialog()
+
+            Dim itemName As String = FormAddNewRelationshiop.TextBoxItem.Text
+            Dim itemID As String
+            For Each items As DataRow In ItemsSubItemsQBData.Rows
+                Dim array As New List(Of Array)
+                array.Add(Split(items(0), "-->"))
+                If array(0)(array(0).Length - 1).Trim() = itemName Then
+                    itemID = items(1)
+                    Exit For
+                End If
+            Next
+
+
+            Dim ChargingRelationshipAdapter As New QB_TL_IDsTableAdapters.ChargingRelationshipsTableAdapter()
+            '  ChargingRelationshipAdapter.Insert(employeeID, jobID, payrollId, itemID)
+            DataGridView1.Refresh()
+
+        End If
 
 
 
-        ' End Using
     End Sub
+    Public Function generate_items_treeview()
+        Dim itemData As List(Of Array) = New List(Of Array)
+        For Each items As DataRow In ItemsSubItemsQBData.Rows
+            itemData.Add(Split(items(0), "-->"))
+        Next
 
-    Public Function generate_treeview()
+        'trim whitespaces
+        For i As Integer = 0 To itemData.Count - 1
+            For j As Integer = 0 To itemData(i).Length - 1
+                itemData(i)(j) = itemData(i)(j).Trim()
+            Next
+        Next
 
+        'get first node level 
+        Dim firstNodes As New List(Of String)
+        For Each item As Array In itemData
+            If item.Length = 1 Then 'And Not firstNodes.Contains(item(0)) Then
+                firstNodes.Add(item(0))
+            End If
+        Next
+
+        Using form As RelationshipTreeView = New RelationshipTreeView
+            form.LabelRelationshipTreeView.Text = "Items"
+            For Each firstNode As String In firstNodes
+                form.TreeViewRelationship.Nodes.Add(firstNode, firstNode)
+                For i As Integer = 0 To itemData.Count - 1
+                    If itemData(i)(0) = firstNode Then
+                        Dim itemDataLength As Integer = itemData(i).Length
+                        If itemDataLength = 2 Then
+                            form.TreeViewRelationship.Nodes(firstNode).Nodes.Add(itemData(i)(1), itemData(i)(1))
+                        ElseIf itemDataLength = 3 Then
+                            form.TreeViewRelationship.Nodes(firstNode).Nodes(itemData(i)(1)).Nodes.Add(itemData(i)(2), itemData(i)(2))
+                        ElseIf itemDataLength = 4 Then
+                            form.TreeViewRelationship.Nodes(firstNode).Nodes(itemData(i)(1)).Nodes(itemData(i)(2)).Nodes.Add(itemData(i)(3), itemData(i)(3))
+                        ElseIf itemDataLength = 5 Then
+                            form.TreeViewRelationship.Nodes(firstNode).Nodes(itemData(i)(1)).Nodes(itemData(i)(2)).Nodes(itemData(i)(3)).Nodes.Add(itemData(i)(4), itemData(i)(4))
+                        End If
+                    End If
+                Next
+            Next
+            form.TreeViewRelationship.TabStop = False
+
+
+            form.TreeViewRelationship.ExpandAll()
+
+            form.ShowDialog()
+        End Using
+
+    End Function
+
+    Public Function generate_jobs_treeview()
 
         Dim jobData As List(Of Array) = New List(Of Array)
         For Each job As Object In JobsSubJobsQBData.Rows
@@ -599,7 +705,7 @@ Public Class ChargingRelationship_2
             Next
         Next
 
-        'Get custoemrs or clients 
+        'Get customer  
         Dim customers As New List(Of String)
         For Each item As Array In jobData
             If item.Length = 2 And Not customers.Contains(item(0)) Then
@@ -607,13 +713,13 @@ Public Class ChargingRelationship_2
             End If
         Next
 
-        Using form As RelationshipTreeView = New RelationshipTreeView
 
+        Using form As RelationshipTreeView = New RelationshipTreeView
+            form.LabelRelationshipTreeView.Text = "Jobs"
             For Each customer As String In customers
-                customer = customer.Trim()
                 form.TreeViewRelationship.Nodes.Add(customer, customer)
                 For i As Integer = 0 To jobData.Count - 1
-                    If jobData(i)(0).Trim() = customer Then
+                    If jobData(i)(0) = customer Then
                         Dim itemLength As Integer = jobData(i).Length
                         If itemLength = 2 Then
                             form.TreeViewRelationship.Nodes(customer).Nodes.Add(jobData(i)(1), jobData(i)(1))
@@ -621,12 +727,15 @@ Public Class ChargingRelationship_2
                             form.TreeViewRelationship.Nodes(customer).Nodes(jobData(i)(1)).Nodes.Add(jobData(i)(2), jobData(i)(2))
                         ElseIf itemLength = 4 Then
                             form.TreeViewRelationship.Nodes(customer).Nodes(jobData(i)(1)).Nodes(jobData(i)(2)).Nodes.Add(jobData(i)(3), jobData(i)(3))
-                        Else
+                        ElseIf itemLength = 5 Then
                             form.TreeViewRelationship.Nodes(customer).Nodes(jobData(i)(1)).Nodes(jobData(i)(2)).Nodes(jobData(i)(3)).Nodes.Add(jobData(i)(4), jobData(i)(4))
                         End If
                     End If
                 Next
             Next
+            form.TreeViewRelationship.TabStop = False
+
+
             form.TreeViewRelationship.ExpandAll()
 
             form.ShowDialog()

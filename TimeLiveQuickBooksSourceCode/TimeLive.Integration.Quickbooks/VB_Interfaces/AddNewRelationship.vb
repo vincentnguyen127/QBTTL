@@ -2,6 +2,7 @@
     Private obj_ChargingRelationship_2 As New ChargingRelationship_2
 
 
+
     Private Sub TextBoxEmployee_TextChanged(sender As Object, e As EventArgs)
 
     End Sub
@@ -31,7 +32,16 @@
 
     End Sub
 
-    Private Sub TextBoxJob_Click(sender As Object, e As EventArgs) Handles TextBoxJob.Click
-        obj_ChargingRelationship_2.generate_treeview()
+    Public Sub TextBoxJob_Click(sender As Object, e As EventArgs) Handles TextBoxJob.Click
+        obj_ChargingRelationship_2.generate_jobs_treeview()
+    End Sub
+
+    Private Sub TextBoxItem_TextChanged(sender As Object, e As EventArgs) Handles TextBoxItem.TextChanged
+
+    End Sub
+
+
+    Private Sub TextBoxItem_Click(sender As Object, e As EventArgs) Handles TextBoxItem.Click
+        obj_ChargingRelationship_2.generate_items_treeview()
     End Sub
 End Class
