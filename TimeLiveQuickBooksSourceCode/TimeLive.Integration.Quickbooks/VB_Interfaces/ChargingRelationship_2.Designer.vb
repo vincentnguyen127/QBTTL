@@ -313,6 +313,7 @@ Partial Class ChargingRelationship_2
         Me.DataGridView1.Location = New System.Drawing.Point(9, 86)
         Me.DataGridView1.Name = "DataGridView1"
         Me.DataGridView1.RowHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.[Single]
+        Me.DataGridView1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
         Me.DataGridView1.Size = New System.Drawing.Size(783, 285)
         Me.DataGridView1.TabIndex = 13
         '

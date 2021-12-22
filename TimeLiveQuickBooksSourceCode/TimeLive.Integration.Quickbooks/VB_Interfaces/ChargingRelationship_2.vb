@@ -9,7 +9,7 @@ Public Class ChargingRelationship_2
     Shared JobsSubJobsQBData As New DataTable
     Shared ItemsSubItemsQBData As New DataTable
     Shared PayrollItemsQBData As New DataTable
-    Public Shared FormAddNewRelationshiop As New AddNewRelationship
+    Public Shared FormAddNewRelationship As New AddNewRelationship
 
     Public Class Job_Subjob
         Private _QBName As String = String.Empty
@@ -35,16 +35,20 @@ Public Class ChargingRelationship_2
         ItemsSubItemsQBData = QBItemsSubItems()
 
         ' Add all Employees to Employee Filter Box for adding new relationship
-        For Each employee As DataRow In EmployeesQBData.Rows
-            FormAddNewRelationshiop.ComboBoxEmployee.Items.Add(employee(0))
-        Next
+
+        If FormAddNewRelationship.ComboBoxEmployee.Items.Count = 0 Then
+            For Each employee As DataRow In EmployeesQBData.Rows
+                FormAddNewRelationship.ComboBoxEmployee.Items.Add(employee(0))
+            Next
+        End If
 
 
         ' Add all Payroll Items to Payroll Filter Box for adding new relationship
-        For Each payrollItem As DataRow In PayrollItemsQBData.Rows
-            FormAddNewRelationshiop.ComboBoxPayroll.Items.Add(payrollItem(0))
-        Next
-
+        If FormAddNewRelationship.ComboBoxPayroll.Items.Count = 0 Then
+            For Each payrollItem As DataRow In PayrollItemsQBData.Rows
+                FormAddNewRelationship.ComboBoxPayroll.Items.Add(payrollItem(0))
+            Next
+        End If
 
         ' Add all Employees to Employee Filter Box
         For Each employee As DataRow In EmployeesQBData.Rows
@@ -214,9 +218,6 @@ Public Class ChargingRelationship_2
 
         'ChargingRelationshipsTableAdapter.DeleteInvalidRelationships()
 
-
-
-
         DataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells
         DataGridView1.AutoResizeColumns()
         Me.Show()
@@ -373,6 +374,7 @@ Public Class ChargingRelationship_2
             ascend(e.ColumnIndex) = If(ascend(e.ColumnIndex), 0, 1)
         End If
     End Sub
+
 
     ''' <summary>
     ''' Filters the shown relationships based on the selected attribute
@@ -571,74 +573,66 @@ Public Class ChargingRelationship_2
 
     End Sub
 
+    Private Function ResetChargingRelationshipForm()
+        FormAddNewRelationship.ComboBoxEmployee.SelectedItem = Nothing
+        FormAddNewRelationship.TextBoxJob.Text = String.Empty
+        FormAddNewRelationship.ComboBoxPayroll.SelectedItem = Nothing
+        FormAddNewRelationship.TextBoxItem.Text = String.Empty
+    End Function
     Private Sub btnAddNew_Click(sender As Object, e As EventArgs) Handles btnAddNew.Click
 
-        ' Using form As AddNewRelationship = New AddNewRelationship
 
         'reset the form
-        FormAddNewRelationshiop.ComboBoxEmployee.SelectedItem = Nothing
-        FormAddNewRelationshiop.TextBoxJob.Text = String.Empty
-        FormAddNewRelationshiop.ComboBoxPayroll.SelectedItem = Nothing
-        FormAddNewRelationshiop.TextBoxItem.Text = String.Empty
+        ResetChargingRelationshipForm()
 
 
-        'Shared EmployeesQBData As New DataTable
-        'Shared VendorsQBData As New DataTable
-        'Shared JobsSubJobsQBData As New DataTable
-        'Shared ItemsSubItemsQBData As New DataTable
-        'Shared PayrollItemsQBData As New DataTable
+        If DialogResult.OK = FormAddNewRelationship.ShowDialog() Then
+            Dim employeeName As String = FormAddNewRelationship.ComboBoxEmployee.Text
+            Dim employeeID As String = ReturnIDByeName(employeeName, "employee")
 
+            Dim jobName As String = FormAddNewRelationship.TextBoxJob.Text
+            Dim jobID As String = ReturnIDByeName(jobName, "job")
 
-        If DialogResult.OK = FormAddNewRelationshiop.ShowDialog() Then
-            Dim employeeName As String = FormAddNewRelationshiop.ComboBoxEmployee.Text
-            Dim employeeID As String
-            For Each employee As DataRow In EmployeesQBData.Rows
-                If employee(0) = employeeName Then
-                    employeeID = employee(1)
-                    Exit For
-                End If
-            Next
+            Dim payrollName As String = FormAddNewRelationship.ComboBoxPayroll.Text
+            Dim payrollId As String = ReturnIDByeName(payrollName, "payroll")
 
-            Dim jobName As String = FormAddNewRelationshiop.TextBoxJob.Text
-            Dim jobID As String
-            For Each jobs As DataRow In JobsSubJobsQBData.Rows
-                Dim array As New List(Of Array)
-                array.Add(Split(jobs(0), "-->"))
-                If array(0)(array(0).Length - 1).Trim() = jobName Then
-                    jobID = jobs(1)
-                    Exit For
-                End If
-            Next
-
-
-            Dim payrollName As String = FormAddNewRelationshiop.ComboBoxPayroll.Text
-            Dim payrollId As String
-            For Each payrolls As DataRow In PayrollItemsQBData.Rows
-                If payrolls(0) = payrollName Then
-                    payrollId = payrolls(1)
-                End If
-            Next
-
-
-            Dim itemName As String = FormAddNewRelationshiop.TextBoxItem.Text
-            Dim itemID As String
-            For Each items As DataRow In ItemsSubItemsQBData.Rows
-                Dim array As New List(Of Array)
-                array.Add(Split(items(0), "-->"))
-                If array(0)(array(0).Length - 1).Trim() = itemName Then
-                    itemID = items(1)
-                    Exit For
-                End If
-            Next
-
+            Dim itemName As String = FormAddNewRelationship.TextBoxItem.Text
+            Dim itemID As String = ReturnIDByeName(itemName, "item")
 
             Dim ChargingRelationshipAdapter As New QB_TL_IDsTableAdapters.ChargingRelationshipsTableAdapter()
-            '  ChargingRelationshipAdapter.Insert(employeeID, jobID, payrollId, itemID)
+            If Not String.IsNullOrEmpty(employeeID) And Not String.IsNullOrEmpty(jobID) And Not String.IsNullOrEmpty(payrollId) And Not String.IsNullOrEmpty(itemID) Then
+                ChargingRelationshipAdapter.Insert(employeeID, jobID, payrollId, itemID)
+            End If
+
+            'populate datagridview 
+            'DataGridView1.Rows(DataGridView1.Rows.Count - 1).Cells(1).Value = employeeID
+            'DataGridView1.Rows(DataGridView1.Rows.Count - 1).Cells(2).Value = jobID
+            'DataGridView1.Rows(DataGridView1.Rows.Count - 1).Cells(3).Value = payrollId
+            'DataGridView1.Rows(DataGridView1.Rows.Count - 1).Cells(4).Value = itemID
+
+            ' Int nRowIndex = DataGridView1.Rows.Count - 1;
+            '   Int nColumnIndex = 3;
+            ' DataGridView1.Rows.Add()
             DataGridView1.Refresh()
+
+            'Try
+            '    DataGridView1.Update()
+            '    'Me.ChargingRelationshipsTableAdapter.Update(Me.QB_TL_IDs.ChargingRelationships)
+
+            'Catch ex As Exception
+            '    My.Forms.MAIN.History(ex.ToString, "C")
+            '    ' Before throwing exception, close the session manager if it is open
+            '    'MAIN.QUITQBSESSION()
+            '    Throw ex
+            'End Try
 
         End If
 
 
+
+        ' ChargingRelationship_2.Owner = Me
+
+        'ChargingRelationship_2.Show()
 
     End Sub
     Public Function generate_items_treeview()
@@ -741,5 +735,77 @@ Public Class ChargingRelationship_2
             form.ShowDialog()
         End Using
     End Function
+
+    Private Function ReturnIDByeName(name As String, type As String) As String
+        type = type.Trim()
+        If type = "employee" Then
+            For Each employee As DataRow In EmployeesQBData.Rows
+                If employee(0) = name Then
+                    Return employee(1)
+                End If
+            Next
+            Return String.Empty
+        ElseIf type = "job" Then
+            For Each job As DataRow In JobsSubJobsQBData.Rows
+                If job(0) = name Then
+                    Return job(1)
+                End If
+            Next
+            Return String.Empty
+        ElseIf type = "payroll" Then
+            For Each payroll As DataRow In PayrollItemsQBData.Rows
+                If payroll(0) = name Then
+                    Return payroll(1)
+                End If
+            Next
+            Return String.Empty
+        ElseIf type = "item" Then
+            For Each item As DataRow In ItemsSubItemsQBData.Rows
+                If item(0) = name Then
+                    Return item(1)
+                End If
+            Next
+            Return String.Empty
+        Else
+            Throw New SystemException("wrong type or name")
+        End If
+
+    End Function
+
+
+    Private Sub DataGridView1_Click(sender As Object, e As EventArgs) Handles DataGridView1.Click
+
+        'reset the form 
+        ResetChargingRelationshipForm()
+
+        If DataGridView1.CurrentRow.Index <> DataGridView1.RowCount - 1 Then
+            FormAddNewRelationship.ComboBoxEmployee.Text = DataGridView1.CurrentRow.Cells(1).FormattedValue.ToString()
+            FormAddNewRelationship.TextBoxJob.Text = DataGridView1.CurrentRow.Cells(2).FormattedValue.ToString()
+            FormAddNewRelationship.ComboBoxPayroll.Text = DataGridView1.CurrentRow.Cells(3).FormattedValue.ToString()
+            FormAddNewRelationship.TextBoxItem.Text = DataGridView1.CurrentRow.Cells(4).FormattedValue.ToString()
+
+
+            If DialogResult.OK = FormAddNewRelationship.ShowDialog() Then
+                DataGridView1.CurrentRow.Cells(1).Value = ReturnIDByeName(FormAddNewRelationship.ComboBoxEmployee.Text, "employee")
+                DataGridView1.CurrentRow.Cells(2).Value = ReturnIDByeName(FormAddNewRelationship.TextBoxJob.Text, "job")
+                DataGridView1.CurrentRow.Cells(3).Value = ReturnIDByeName(FormAddNewRelationship.ComboBoxPayroll.Text, "payroll")
+                DataGridView1.CurrentRow.Cells(4).Value = ReturnIDByeName(FormAddNewRelationship.TextBoxItem.Text, "item")
+                Dim id As String = DataGridView1.CurrentRow.Cells(0).Value.ToString
+                Dim employeeID As String = DataGridView1.CurrentRow.Cells(1).Value
+                Dim jobID As String = DataGridView1.CurrentRow.Cells(2).Value
+                Dim payrollID As String = DataGridView1.CurrentRow.Cells(3).Value
+                Dim itemID As String = DataGridView1.CurrentRow.Cells(4).Value
+
+                Try
+                    Me.ChargingRelationshipsTableAdapter.Update(employeeID, jobID, payrollID, itemID, id)
+                    DataGridView1.Refresh()
+                Catch ex As Exception
+                    My.Forms.MAIN.History(ex.ToString, "C")
+                    Throw ex
+                End Try
+            End If
+        End If
+
+    End Sub
 End Class
 
