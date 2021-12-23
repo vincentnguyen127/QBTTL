@@ -28,15 +28,15 @@ Partial Class RelationshipTreeView
         '
         'TreeViewRelationship
         '
-        Me.TreeViewRelationship.Location = New System.Drawing.Point(32, 39)
+        Me.TreeViewRelationship.Location = New System.Drawing.Point(1, 28)
         Me.TreeViewRelationship.Name = "TreeViewRelationship"
-        Me.TreeViewRelationship.Size = New System.Drawing.Size(241, 379)
+        Me.TreeViewRelationship.Size = New System.Drawing.Size(245, 166)
         Me.TreeViewRelationship.TabIndex = 0
         '
         'LabelRelationshipTreeView
         '
         Me.LabelRelationshipTreeView.AutoSize = True
-        Me.LabelRelationshipTreeView.Location = New System.Drawing.Point(132, 9)
+        Me.LabelRelationshipTreeView.Location = New System.Drawing.Point(107, 9)
         Me.LabelRelationshipTreeView.Name = "LabelRelationshipTreeView"
         Me.LabelRelationshipTreeView.Size = New System.Drawing.Size(39, 13)
         Me.LabelRelationshipTreeView.TabIndex = 1
@@ -46,9 +46,10 @@ Partial Class RelationshipTreeView
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(336, 454)
+        Me.ClientSize = New System.Drawing.Size(248, 197)
         Me.Controls.Add(Me.LabelRelationshipTreeView)
         Me.Controls.Add(Me.TreeViewRelationship)
+        Me.Location = New System.Drawing.Point(100, 100)
         Me.Name = "RelationshipTreeView"
         Me.Text = "RelationshipTreeView"
         Me.ResumeLayout(False)

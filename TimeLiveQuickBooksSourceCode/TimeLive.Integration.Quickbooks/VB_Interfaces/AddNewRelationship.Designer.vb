@@ -32,13 +32,15 @@ Partial Class AddNewRelationship
         Me.btnOK = New System.Windows.Forms.Button()
         Me.ComboBoxEmployee = New System.Windows.Forms.ComboBox()
         Me.ComboBoxPayroll = New System.Windows.Forms.ComboBox()
+        Me.btnJobs = New System.Windows.Forms.Button()
+        Me.btnItems = New System.Windows.Forms.Button()
         Me.SuspendLayout()
         '
         'Label2
         '
         Me.Label2.AutoSize = True
         Me.Label2.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label2.Location = New System.Drawing.Point(75, 60)
+        Me.Label2.Location = New System.Drawing.Point(67, 33)
         Me.Label2.Name = "Label2"
         Me.Label2.Size = New System.Drawing.Size(62, 15)
         Me.Label2.TabIndex = 2
@@ -46,16 +48,17 @@ Partial Class AddNewRelationship
         '
         'TextBoxJob
         '
-        Me.TextBoxJob.Location = New System.Drawing.Point(160, 95)
+        Me.TextBoxJob.Location = New System.Drawing.Point(152, 68)
         Me.TextBoxJob.Name = "TextBoxJob"
-        Me.TextBoxJob.Size = New System.Drawing.Size(184, 20)
+        Me.TextBoxJob.RightToLeft = System.Windows.Forms.RightToLeft.No
+        Me.TextBoxJob.Size = New System.Drawing.Size(131, 20)
         Me.TextBoxJob.TabIndex = 1
         '
         'Label1
         '
         Me.Label1.AutoSize = True
         Me.Label1.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label1.Location = New System.Drawing.Point(50, 100)
+        Me.Label1.Location = New System.Drawing.Point(42, 73)
         Me.Label1.Name = "Label1"
         Me.Label1.Size = New System.Drawing.Size(87, 15)
         Me.Label1.TabIndex = 4
@@ -63,16 +66,16 @@ Partial Class AddNewRelationship
         '
         'TextBoxItem
         '
-        Me.TextBoxItem.Location = New System.Drawing.Point(160, 173)
+        Me.TextBoxItem.Location = New System.Drawing.Point(152, 146)
         Me.TextBoxItem.Name = "TextBoxItem"
-        Me.TextBoxItem.Size = New System.Drawing.Size(184, 20)
+        Me.TextBoxItem.Size = New System.Drawing.Size(131, 20)
         Me.TextBoxItem.TabIndex = 3
         '
         'Label3
         '
         Me.Label3.AutoSize = True
         Me.Label3.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label3.Location = New System.Drawing.Point(39, 178)
+        Me.Label3.Location = New System.Drawing.Point(31, 151)
         Me.Label3.Name = "Label3"
         Me.Label3.Size = New System.Drawing.Size(98, 15)
         Me.Label3.TabIndex = 8
@@ -82,7 +85,7 @@ Partial Class AddNewRelationship
         '
         Me.Label4.AutoSize = True
         Me.Label4.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label4.Location = New System.Drawing.Point(66, 143)
+        Me.Label4.Location = New System.Drawing.Point(58, 116)
         Me.Label4.Name = "Label4"
         Me.Label4.Size = New System.Drawing.Size(71, 15)
         Me.Label4.TabIndex = 6
@@ -90,7 +93,7 @@ Partial Class AddNewRelationship
         '
         'btnCancel
         '
-        Me.btnCancel.Location = New System.Drawing.Point(174, 211)
+        Me.btnCancel.Location = New System.Drawing.Point(113, 184)
         Me.btnCancel.Name = "btnCancel"
         Me.btnCancel.Size = New System.Drawing.Size(75, 23)
         Me.btnCancel.TabIndex = 5
@@ -99,7 +102,7 @@ Partial Class AddNewRelationship
         '
         'btnOK
         '
-        Me.btnOK.Location = New System.Drawing.Point(269, 211)
+        Me.btnOK.Location = New System.Drawing.Point(208, 184)
         Me.btnOK.Name = "btnOK"
         Me.btnOK.Size = New System.Drawing.Size(75, 23)
         Me.btnOK.TabIndex = 4
@@ -109,24 +112,48 @@ Partial Class AddNewRelationship
         'ComboBoxEmployee
         '
         Me.ComboBoxEmployee.FormattingEnabled = True
-        Me.ComboBoxEmployee.Location = New System.Drawing.Point(160, 59)
+        Me.ComboBoxEmployee.Location = New System.Drawing.Point(152, 32)
         Me.ComboBoxEmployee.Name = "ComboBoxEmployee"
-        Me.ComboBoxEmployee.Size = New System.Drawing.Size(184, 21)
+        Me.ComboBoxEmployee.Size = New System.Drawing.Size(131, 21)
         Me.ComboBoxEmployee.TabIndex = 0
         '
         'ComboBoxPayroll
         '
         Me.ComboBoxPayroll.FormattingEnabled = True
-        Me.ComboBoxPayroll.Location = New System.Drawing.Point(160, 137)
+        Me.ComboBoxPayroll.Location = New System.Drawing.Point(152, 110)
         Me.ComboBoxPayroll.Name = "ComboBoxPayroll"
-        Me.ComboBoxPayroll.Size = New System.Drawing.Size(184, 21)
+        Me.ComboBoxPayroll.Size = New System.Drawing.Size(131, 21)
         Me.ComboBoxPayroll.TabIndex = 2
+        '
+        'btnJobs
+        '
+        Me.btnJobs.FlatAppearance.BorderColor = System.Drawing.Color.Black
+        Me.btnJobs.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.btnJobs.Location = New System.Drawing.Point(258, 68)
+        Me.btnJobs.Name = "btnJobs"
+        Me.btnJobs.Size = New System.Drawing.Size(25, 20)
+        Me.btnJobs.TabIndex = 9
+        Me.btnJobs.Text = "T"
+        Me.btnJobs.UseVisualStyleBackColor = True
+        '
+        'btnItems
+        '
+        Me.btnItems.FlatAppearance.BorderColor = System.Drawing.Color.Black
+        Me.btnItems.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.btnItems.Location = New System.Drawing.Point(258, 146)
+        Me.btnItems.Name = "btnItems"
+        Me.btnItems.Size = New System.Drawing.Size(25, 20)
+        Me.btnItems.TabIndex = 10
+        Me.btnItems.Text = "T"
+        Me.btnItems.UseVisualStyleBackColor = True
         '
         'AddNewRelationship
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(448, 321)
+        Me.ClientSize = New System.Drawing.Size(327, 265)
+        Me.Controls.Add(Me.btnItems)
+        Me.Controls.Add(Me.btnJobs)
         Me.Controls.Add(Me.ComboBoxPayroll)
         Me.Controls.Add(Me.ComboBoxEmployee)
         Me.Controls.Add(Me.btnOK)
@@ -153,4 +180,6 @@ Partial Class AddNewRelationship
     Friend WithEvents btnOK As Button
     Friend WithEvents ComboBoxEmployee As ComboBox
     Friend WithEvents ComboBoxPayroll As ComboBox
+    Friend WithEvents btnJobs As Button
+    Friend WithEvents btnItems As Button
 End Class

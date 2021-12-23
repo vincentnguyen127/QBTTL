@@ -17,4 +17,7 @@
 
     End Sub
 
+    Private Sub LabelRelationshipTreeView_Click(sender As Object, e As EventArgs) Handles LabelRelationshipTreeView.Click
+
+    End Sub
 End Class

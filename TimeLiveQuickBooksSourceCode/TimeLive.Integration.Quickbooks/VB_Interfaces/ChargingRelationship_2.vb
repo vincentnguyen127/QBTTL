@@ -90,6 +90,7 @@ Public Class ChargingRelationship_2
                 .DataSource = EmployeesQBData
                 .DisplayMember = "QB_Name"
                 .ValueMember = "QB_ID"
+                .DisplayStyle = DataGridViewComboBoxDisplayStyle.Nothing
             End With
 
             .Columns.Remove(DataGridView1.Columns(1))
@@ -104,6 +105,7 @@ Public Class ChargingRelationship_2
                 .DataSource = JobsSubJobsQBData
                 .DisplayMember = "QB_Name"
                 .ValueMember = "QB_ID"
+                .DisplayStyle = DataGridViewComboBoxDisplayStyle.Nothing
             End With
 
             .Columns.Remove(DataGridView1.Columns(2))
@@ -118,6 +120,7 @@ Public Class ChargingRelationship_2
                 .DataSource = PayrollItemsQBData
                 .DisplayMember = "QB_Name"
                 .ValueMember = "QB_ID"
+                .DisplayStyle = DataGridViewComboBoxDisplayStyle.Nothing
             End With
 
             .Columns.Remove(DataGridView1.Columns(3))
@@ -132,6 +135,7 @@ Public Class ChargingRelationship_2
                 .DataSource = ItemsSubItemsQBData
                 .DisplayMember = "QB_Name"
                 .ValueMember = "QB_ID"
+                .DisplayStyle = DataGridViewComboBoxDisplayStyle.Nothing
             End With
 
             .Columns.Remove(DataGridView1.Columns(4))
@@ -582,6 +586,7 @@ Public Class ChargingRelationship_2
     Private Sub btnAddNew_Click(sender As Object, e As EventArgs) Handles btnAddNew.Click
 
 
+
         'reset the form
         ResetChargingRelationshipForm()
 
@@ -603,6 +608,13 @@ Public Class ChargingRelationship_2
             If Not String.IsNullOrEmpty(employeeID) And Not String.IsNullOrEmpty(jobID) And Not String.IsNullOrEmpty(payrollId) And Not String.IsNullOrEmpty(itemID) Then
                 ChargingRelationshipAdapter.Insert(employeeID, jobID, payrollId, itemID)
             End If
+
+
+
+
+
+            'RelationshipTreeView.Show()
+            'RelationshipTreeView.MdiParent = FormAddNewRelationship
 
             'populate datagridview 
             'DataGridView1.Rows(DataGridView1.Rows.Count - 1).Cells(1).Value = employeeID
@@ -687,6 +699,7 @@ Public Class ChargingRelationship_2
 
     Public Function generate_jobs_treeview()
 
+
         Dim jobData As List(Of Array) = New List(Of Array)
         For Each job As Object In JobsSubJobsQBData.Rows
             jobData.Add(Split(job(0), "-->"))
@@ -728,12 +741,38 @@ Public Class ChargingRelationship_2
                 Next
             Next
             form.TreeViewRelationship.TabStop = False
-
-
             form.TreeViewRelationship.ExpandAll()
-
             form.ShowDialog()
         End Using
+
+        'With RelationshipTreeView
+        '    RelationshipTreeView.LabelRelationshipTreeView.Text = "Jobs"
+        '    For Each customer As String In customers
+        '        RelationshipTreeView.TreeViewRelationship.Nodes.Add(customer, customer)
+        '        For i As Integer = 0 To jobData.Count - 1
+        '            If jobData(i)(0) = customer Then
+        '                Dim itemLength As Integer = jobData(i).Length
+        '                If itemLength = 2 Then
+        '                    RelationshipTreeView.TreeViewRelationship.Nodes(customer).Nodes.Add(jobData(i)(1), jobData(i)(1))
+        '                ElseIf itemLength = 3 Then
+        '                    RelationshipTreeView.TreeViewRelationship.Nodes(customer).Nodes(jobData(i)(1)).Nodes.Add(jobData(i)(2), jobData(i)(2))
+        '                ElseIf itemLength = 4 Then
+        '                    RelationshipTreeView.TreeViewRelationship.Nodes(customer).Nodes(jobData(i)(1)).Nodes(jobData(i)(2)).Nodes.Add(jobData(i)(3), jobData(i)(3))
+        '                ElseIf itemLength = 5 Then
+        '                    RelationshipTreeView.TreeViewRelationship.Nodes(customer).Nodes(jobData(i)(1)).Nodes(jobData(i)(2)).Nodes(jobData(i)(3)).Nodes.Add(jobData(i)(4), jobData(i)(4))
+        '                End If
+        '            End If
+        '        Next
+        '    Next
+        '    RelationshipTreeView.TreeViewRelationship.TabStop = False
+        '    RelationshipTreeView.TreeViewRelationship.ExpandAll()
+        '    RelationshipTreeView.ShowDialog()
+
+        '    'AddNewRelationship.IsMdiContainer = True
+        '    'RelationshipTreeView.MdiParent = AddNewRelationship
+
+        'End With
+
     End Function
 
     Private Function ReturnIDByeName(name As String, type As String) As String
@@ -777,8 +816,9 @@ Public Class ChargingRelationship_2
 
         'reset the form 
         ResetChargingRelationshipForm()
-
-        If DataGridView1.CurrentRow.Index <> DataGridView1.RowCount - 1 Then
+        If DataGridView1.CurrentRow.Index = DataGridView1.RowCount - 1 Then
+            btnAddNew_Click(sender, e)
+        Else
             FormAddNewRelationship.ComboBoxEmployee.Text = DataGridView1.CurrentRow.Cells(1).FormattedValue.ToString()
             FormAddNewRelationship.TextBoxJob.Text = DataGridView1.CurrentRow.Cells(2).FormattedValue.ToString()
             FormAddNewRelationship.ComboBoxPayroll.Text = DataGridView1.CurrentRow.Cells(3).FormattedValue.ToString()

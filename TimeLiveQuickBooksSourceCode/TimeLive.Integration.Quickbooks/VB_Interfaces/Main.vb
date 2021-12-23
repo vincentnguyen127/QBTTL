@@ -1641,22 +1641,8 @@ Public Class MAIN
         Dim jobAdapter As New QB_TL_IDsTableAdapters.Jobs_SubJobsTableAdapter
         ProgressBar1.Maximum = DataGridView.Rows.Count
         For Each row As DataGridViewRow In DataGridView.Rows
-
-
-            'If DataGridView1 IsNot Nothing Then
-            '    For Each row As DataGridViewRow In DataGridView1.Rows
-            '        If row.Cells("Name").Value IsNot Nothing And row.Cells("ckBox").Value Then
-            '            Dim full_name As String = row.Cells("Name").Value.ToString.Replace(MAIN.colonReplacer, ":")
-            '            TL_Names.Add(full_name)
-            '            History("Item selected for processing: " + row.Cells("Name").Value, "n")
-            '        End If
-            '    Next
-            'End If
-            'Date
-            Dim abc = row.Cells(1).Value
-            Dim cbc = row.Cells(0).Value
-            Dim dfd = TimeEntryData.NoItems
-            If row.Cells("Name").Value IsNot Nothing And row.Cells("ckBox").Value And TimeEntryData.NoItems Then
+            'And TimeEntryData.NoItems
+            If row.Cells("Name").Value IsNot Nothing And row.Cells("ckBox").Value Then
                 'If row.Cells("Name").Value IsNot Nothing And row.Cells("ckBox").Value Then
                 Dim fullTaskName As String = row.Cells("Task").Value.ToString()
                 ' Checks for a time entry in our data array which has the correct employee, job/subjob, and date

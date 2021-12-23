@@ -34,6 +34,7 @@
 
     Public Sub TextBoxJob_Click(sender As Object, e As EventArgs) Handles TextBoxJob.Click
         obj_ChargingRelationship_2.generate_jobs_treeview()
+        ' RelationshipTreeView.MdiParent = Me
     End Sub
 
     Private Sub TextBoxItem_TextChanged(sender As Object, e As EventArgs) Handles TextBoxItem.TextChanged
@@ -42,6 +43,14 @@
 
 
     Private Sub TextBoxItem_Click(sender As Object, e As EventArgs) Handles TextBoxItem.Click
+        obj_ChargingRelationship_2.generate_items_treeview()
+    End Sub
+
+    Private Sub btnJobs_Click(sender As Object, e As EventArgs) Handles btnJobs.Click
+        obj_ChargingRelationship_2.generate_jobs_treeview()
+    End Sub
+
+    Private Sub btnItems_Click(sender As Object, e As EventArgs) Handles btnItems.Click
         obj_ChargingRelationship_2.generate_items_treeview()
     End Sub
 End Class
