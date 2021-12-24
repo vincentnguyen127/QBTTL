@@ -814,7 +814,11 @@ Public Class ChargingRelationship_2
 
     Private Sub DataGridView1_Click(sender As Object, e As EventArgs) Handles DataGridView1.Click
 
-        'reset the form 
+
+
+    End Sub
+
+    Private Sub DataGridView1_CellMouseDoubleClick(sender As Object, e As DataGridViewCellMouseEventArgs) Handles DataGridView1.CellMouseDoubleClick
         ResetChargingRelationshipForm()
         If DataGridView1.CurrentRow.Index = DataGridView1.RowCount - 1 Then
             btnAddNew_Click(sender, e)
@@ -845,7 +849,12 @@ Public Class ChargingRelationship_2
                 End Try
             End If
         End If
+    End Sub
+
+    Private Sub DataGridView1_DoubleClick(sender As Object, e As EventArgs) Handles DataGridView1.DoubleClick
+        'reset the form 
 
     End Sub
 End Class
+
 
