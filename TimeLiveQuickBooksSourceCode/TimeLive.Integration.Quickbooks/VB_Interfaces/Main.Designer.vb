@@ -59,7 +59,6 @@ Partial Class MAIN
         Me.TLtoQBVendorRadioButton = New System.Windows.Forms.RadioButton()
         Me.AttributeTabControl = New System.Windows.Forms.TabControl()
         Me.TabPageCustomers = New System.Windows.Forms.TabPage()
-        Me.btnNew = New System.Windows.Forms.Button()
         Me.RefreshCustomers = New System.Windows.Forms.Button()
         Me.CustomerSyncDirection = New System.Windows.Forms.GroupBox()
         Me.TLtoQBCustomerRadioButton = New System.Windows.Forms.RadioButton()
@@ -97,6 +96,7 @@ Partial Class MAIN
         Me.expense_btn_currWeek = New System.Windows.Forms.Button()
         Me.TabPage1 = New System.Windows.Forms.TabPage()
         Me.btnServiceItemTreeView = New System.Windows.Forms.Button()
+        Me.btnNew = New System.Windows.Forms.Button()
         Me.ShowEntitiesBtn = New System.Windows.Forms.Button()
         Me.btnTransfer = New System.Windows.Forms.Button()
         Me.SendEmailsButton = New System.Windows.Forms.Button()
@@ -499,7 +499,6 @@ Partial Class MAIN
         '
         'TabPageCustomers
         '
-        Me.TabPageCustomers.Controls.Add(Me.btnNew)
         Me.TabPageCustomers.Controls.Add(Me.RefreshCustomers)
         Me.TabPageCustomers.Controls.Add(Me.CustomerSyncDirection)
         Me.TabPageCustomers.Location = New System.Drawing.Point(4, 22)
@@ -509,16 +508,6 @@ Partial Class MAIN
         Me.TabPageCustomers.TabIndex = 3
         Me.TabPageCustomers.Text = "Customers Options"
         Me.TabPageCustomers.UseVisualStyleBackColor = True
-        '
-        'btnNew
-        '
-        Me.btnNew.Location = New System.Drawing.Point(444, 52)
-        Me.btnNew.Margin = New System.Windows.Forms.Padding(2)
-        Me.btnNew.Name = "btnNew"
-        Me.btnNew.Size = New System.Drawing.Size(56, 19)
-        Me.btnNew.TabIndex = 2
-        Me.btnNew.Text = "New"
-        Me.btnNew.UseVisualStyleBackColor = True
         '
         'RefreshCustomers
         '
@@ -906,6 +895,17 @@ Partial Class MAIN
         Me.btnServiceItemTreeView.Text = "Service Item Tree View"
         Me.btnServiceItemTreeView.UseVisualStyleBackColor = True
         '
+        'btnNew
+        '
+        Me.btnNew.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+        Me.btnNew.Location = New System.Drawing.Point(84, 578)
+        Me.btnNew.Margin = New System.Windows.Forms.Padding(2)
+        Me.btnNew.Name = "btnNew"
+        Me.btnNew.Size = New System.Drawing.Size(78, 24)
+        Me.btnNew.TabIndex = 2
+        Me.btnNew.Text = "New"
+        Me.btnNew.UseVisualStyleBackColor = True
+        '
         'ShowEntitiesBtn
         '
         Me.ShowEntitiesBtn.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
@@ -945,6 +945,7 @@ Partial Class MAIN
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.AutoSize = True
         Me.ClientSize = New System.Drawing.Size(969, 637)
+        Me.Controls.Add(Me.btnNew)
         Me.Controls.Add(Me.SendEmailsButton)
         Me.Controls.Add(Me.ShowEntitiesBtn)
         Me.Controls.Add(Me.SplitContainer2)

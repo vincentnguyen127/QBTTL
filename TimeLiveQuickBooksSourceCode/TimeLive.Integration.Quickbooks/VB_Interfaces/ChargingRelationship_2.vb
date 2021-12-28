@@ -610,9 +610,6 @@ Public Class ChargingRelationship_2
             End If
 
 
-
-
-
             'RelationshipTreeView.Show()
             'RelationshipTreeView.MdiParent = FormAddNewRelationship
 
