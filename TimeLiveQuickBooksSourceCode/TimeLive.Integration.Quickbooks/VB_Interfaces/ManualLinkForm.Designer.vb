@@ -33,7 +33,7 @@ Partial Class ManualLinkForm
         'Label1
         '
         Me.Label1.AutoSize = True
-        Me.Label1.Location = New System.Drawing.Point(23, 29)
+        Me.Label1.Location = New System.Drawing.Point(12, 29)
         Me.Label1.Name = "Label1"
         Me.Label1.Size = New System.Drawing.Size(39, 13)
         Me.Label1.TabIndex = 0
@@ -50,7 +50,7 @@ Partial Class ManualLinkForm
         'ComboBox2
         '
         Me.ComboBox2.FormattingEnabled = True
-        Me.ComboBox2.Location = New System.Drawing.Point(278, 26)
+        Me.ComboBox2.Location = New System.Drawing.Point(300, 26)
         Me.ComboBox2.Name = "ComboBox2"
         Me.ComboBox2.Size = New System.Drawing.Size(121, 21)
         Me.ComboBox2.TabIndex = 3
@@ -58,7 +58,7 @@ Partial Class ManualLinkForm
         'Label2
         '
         Me.Label2.AutoSize = True
-        Me.Label2.Location = New System.Drawing.Point(224, 32)
+        Me.Label2.Location = New System.Drawing.Point(206, 29)
         Me.Label2.Name = "Label2"
         Me.Label2.Size = New System.Drawing.Size(39, 13)
         Me.Label2.TabIndex = 2
@@ -86,7 +86,7 @@ Partial Class ManualLinkForm
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(438, 94)
+        Me.ClientSize = New System.Drawing.Size(443, 119)
         Me.Controls.Add(Me.btnOK)
         Me.Controls.Add(Me.btnCancel)
         Me.Controls.Add(Me.ComboBox2)

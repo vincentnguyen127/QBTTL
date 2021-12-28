@@ -146,6 +146,7 @@ Public Class QBtoTL_Vendor
         Dim nWorkingDayTypeId As Guid = objEmployeeServices.GetEmployeeWorkingDayTypeId()
         Dim nBillingTypeId As Integer = objEmployeeServices.GetEmployeeBillingTypeId()
 
+
         'sets status bar. If no, UI skip
         Dim incrementbar As Integer = 0
         If UI = True Then

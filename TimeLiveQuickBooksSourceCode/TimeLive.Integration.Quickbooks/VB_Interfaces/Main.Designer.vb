@@ -96,7 +96,7 @@ Partial Class MAIN
         Me.expense_btn_currWeek = New System.Windows.Forms.Button()
         Me.TabPage1 = New System.Windows.Forms.TabPage()
         Me.btnServiceItemTreeView = New System.Windows.Forms.Button()
-        Me.btnNew = New System.Windows.Forms.Button()
+        Me.btnNewCustomer = New System.Windows.Forms.Button()
         Me.ShowEntitiesBtn = New System.Windows.Forms.Button()
         Me.btnTransfer = New System.Windows.Forms.Button()
         Me.SendEmailsButton = New System.Windows.Forms.Button()
@@ -555,7 +555,6 @@ Partial Class MAIN
         '
         'TabPageEmployees
         '
-        Me.TabPageEmployees.Controls.Add(Me.btnNewEmployee)
         Me.TabPageEmployees.Controls.Add(Me.RefreshEmployees)
         Me.TabPageEmployees.Controls.Add(Me.EmployeeSyncDirection)
         Me.TabPageEmployees.Location = New System.Drawing.Point(4, 22)
@@ -568,12 +567,13 @@ Partial Class MAIN
         '
         'btnNewEmployee
         '
-        Me.btnNewEmployee.Location = New System.Drawing.Point(434, 52)
+        Me.btnNewEmployee.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+        Me.btnNewEmployee.Location = New System.Drawing.Point(8, 578)
         Me.btnNewEmployee.Margin = New System.Windows.Forms.Padding(2)
         Me.btnNewEmployee.Name = "btnNewEmployee"
-        Me.btnNewEmployee.Size = New System.Drawing.Size(56, 19)
+        Me.btnNewEmployee.Size = New System.Drawing.Size(86, 23)
         Me.btnNewEmployee.TabIndex = 3
-        Me.btnNewEmployee.Text = "New"
+        Me.btnNewEmployee.Text = "New Employee"
         Me.btnNewEmployee.UseVisualStyleBackColor = True
         '
         'RefreshEmployees
@@ -621,7 +621,6 @@ Partial Class MAIN
         '
         'TabPageVendor
         '
-        Me.TabPageVendor.Controls.Add(Me.btnNewVendor)
         Me.TabPageVendor.Controls.Add(Me.RefreshVendors)
         Me.TabPageVendor.Controls.Add(Me.VendorSyncDirection)
         Me.TabPageVendor.Location = New System.Drawing.Point(4, 22)
@@ -634,12 +633,13 @@ Partial Class MAIN
         '
         'btnNewVendor
         '
-        Me.btnNewVendor.Location = New System.Drawing.Point(442, 52)
+        Me.btnNewVendor.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+        Me.btnNewVendor.Location = New System.Drawing.Point(11, 578)
         Me.btnNewVendor.Margin = New System.Windows.Forms.Padding(2)
         Me.btnNewVendor.Name = "btnNewVendor"
-        Me.btnNewVendor.Size = New System.Drawing.Size(56, 19)
+        Me.btnNewVendor.Size = New System.Drawing.Size(78, 19)
         Me.btnNewVendor.TabIndex = 4
-        Me.btnNewVendor.Text = "New"
+        Me.btnNewVendor.Text = "New Vendor"
         Me.btnNewVendor.UseVisualStyleBackColor = True
         '
         'RefreshVendors
@@ -895,16 +895,16 @@ Partial Class MAIN
         Me.btnServiceItemTreeView.Text = "Service Item Tree View"
         Me.btnServiceItemTreeView.UseVisualStyleBackColor = True
         '
-        'btnNew
+        'btnNewCustomer
         '
-        Me.btnNew.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
-        Me.btnNew.Location = New System.Drawing.Point(84, 578)
-        Me.btnNew.Margin = New System.Windows.Forms.Padding(2)
-        Me.btnNew.Name = "btnNew"
-        Me.btnNew.Size = New System.Drawing.Size(78, 24)
-        Me.btnNew.TabIndex = 2
-        Me.btnNew.Text = "New"
-        Me.btnNew.UseVisualStyleBackColor = True
+        Me.btnNewCustomer.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+        Me.btnNewCustomer.Location = New System.Drawing.Point(7, 580)
+        Me.btnNewCustomer.Margin = New System.Windows.Forms.Padding(2)
+        Me.btnNewCustomer.Name = "btnNewCustomer"
+        Me.btnNewCustomer.Size = New System.Drawing.Size(98, 22)
+        Me.btnNewCustomer.TabIndex = 2
+        Me.btnNewCustomer.Text = "New  Customer"
+        Me.btnNewCustomer.UseVisualStyleBackColor = True
         '
         'ShowEntitiesBtn
         '
@@ -945,7 +945,9 @@ Partial Class MAIN
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.AutoSize = True
         Me.ClientSize = New System.Drawing.Size(969, 637)
-        Me.Controls.Add(Me.btnNew)
+        Me.Controls.Add(Me.btnNewVendor)
+        Me.Controls.Add(Me.btnNewEmployee)
+        Me.Controls.Add(Me.btnNewCustomer)
         Me.Controls.Add(Me.SendEmailsButton)
         Me.Controls.Add(Me.ShowEntitiesBtn)
         Me.Controls.Add(Me.SplitContainer2)
@@ -1066,7 +1068,7 @@ Partial Class MAIN
     Friend WithEvents expense_btn_currWeek As Button
     Friend WithEvents expenseReportEndDate As DateTimePicker
     Friend WithEvents refreshExpenseReport As Button
-    Friend WithEvents btnNew As Button
+    Friend WithEvents btnNewCustomer As Button
     Friend WithEvents btnNewEmployee As Button
     Friend WithEvents btnNewVendor As Button
     Friend WithEvents btnTreeView As Button

@@ -43,14 +43,14 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="TeltriumQBtoTL.exe" size="2142208">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="TeltriumQBtoTL.exe" size="2144256">
       <assemblyIdentity name="TeltriumQBtoTL" version="1.0.0.0" language="neutral" processorArchitecture="x86" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>QkShnhXHN4qYbd4lf/qhU32TpKBPxhLi1bhqjPxc0ss=</dsig:DigestValue>
+        <dsig:DigestValue>yWMtFBC7NM2hWNMnPAA1rGBUw4rDCReid/7CiOyZvMY=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
