@@ -669,8 +669,8 @@ Public Class MAIN
         Dim datagrid_row As DataGridViewRow = New DataGridViewRow()
         datagrid_row.CreateCells(DataGridView1)
         datagrid_row.SetValues(True, emplName, hoursWorked)
-        Dim startDate As Date = Convert.ToDateTime(dpStartDate.Value)
-
+        'Dim startDate As Date = Convert.ToDateTime(dpStartDate.Value)
+        Dim sdfsdf As TimeLiveDataSet.AccountEmployeeTimeEntryPeriodDataTable = TL_TimeEntries.GetData()
 
         ' Change color of the row based on submission status
         If TL_TimeEntries.GetTotalNumRejectedEntries(emplID, dpStartDate.Value, dpEndDate.Value) Then
@@ -1784,8 +1784,7 @@ Public Class MAIN
         Dim jobAdapter As New QB_TL_IDsTableAdapters.Jobs_SubJobsTableAdapter
         ProgressBar1.Maximum = DataGridView.Rows.Count
         For Each row As DataGridViewRow In DataGridView.Rows
-            'And TimeEntryData.NoItems
-            If row.Cells("Name").Value IsNot Nothing And row.Cells("ckBox").Value Then
+            If row.Cells("Date").Value IsNot Nothing And row.Cells("ckBox").Value And TimeEntryData.NoItems Then
                 'If row.Cells("Name").Value IsNot Nothing And row.Cells("ckBox").Value Then
                 Dim fullTaskName As String = row.Cells("Task").Value.ToString()
                 ' Checks for a time entry in our data array which has the correct employee, job/subjob, and date
@@ -2115,13 +2114,41 @@ Public Class MAIN
         End If
 
         Dim TL_TimeEntries As New TimeLiveDataSetTableAdapters.AccountEmployeeTimeEntryPeriodTableAdapter
+        'Dim ChargingRelationshipAdapter As New QB_TL_IDsTableAdapters.ChargingRelationshipsTableAdapter
+
+        'Dim employeeQBData As Object = employee_qbtotl.GetEmployeeQBData(Nothing, False).DataArray
+        'Dim jobSubJobData As Object = job_qbtotl.GetJobSubJobData(Me, p_token, True).DataArray
+
+        'job_qbtotl.GetJobSubJobData(Me, p_token, True)
 
         If TimeEntryData IsNot Nothing Then
             For Each element As TLtoQB_TimeEntry.TimeEntry In emplTLData.DataArray
                 With element
+                    'Dim qbEmployeeID As String
+                    'Dim qbJobID As String
+                    'For Each item As QBtoTL_Employee.Employee In employeeQBData
+                    '    If element.EmployeeName = item.QB_Name Then
+                    '        qbEmployeeID = item.QB_ID
+                    '        Exit For
+                    '    End If
+                    'Next
+                    'For Each item As QBtoTL_JobOrItem.Job_Subjob In jobSubJobData
+                    '    If item.QB_Name = element.TaskWithParent Then
+                    '        qbJobID = item.QB_ID
+                    '        Exit For
+                    '    End If
+                    'Next
+
+                    'Dim chargingRelationshipsDataTable As QB_TL_IDs.ChargingRelationshipsDataTable = ChargingRelationshipAdapter.GetPayrollItemIDByEmployeeIDAndJob_SubJobID(qbEmployeeID, qbJobID)
+                    '.PayrollItem = chargingRelationshipsDataTable(0).PayrollItemQB_ID.Trim().ToString()
+                    '.PayrollName = If(payroll_dict.ContainsKey(.PayrollItem), payroll_dict(.PayrollItem), .PayrollItem)
                     Dim Item_SubItemID As String = Nothing
                     Dim TotalHours As Double = TotalTimeToHours(.TotalTime)
                     Dim payrollDisp As String = If(payroll_dict Is Nothing, .PayrollItem, If(payroll_dict.ContainsKey(.PayrollItem), payroll_dict(.PayrollItem), .PayrollItem))
+                    '.ServiceItem = chargingRelationshipsDataTable(0).ItemSubItemQB_ID.Trim().ToString()
+                    '.ServiceName = If(item_dict.ContainsKey(.ServiceItem), item_dict(.ServiceItem), .ServiceItem)
+
+
                     Dim ServiceDisp As String
                     Dim fullName As String
 
@@ -2216,8 +2243,8 @@ Public Class MAIN
         Dim myCWR As CalendarWeekRule = myCI.DateTimeFormat.CalendarWeekRule
         Dim myFirstDOW As DayOfWeek = myCI.DateTimeFormat.FirstDayOfWeek
 
-        ' Return firstdateofweek(Now.Year, myCal.GetWeekOfYear(DateTime.Now, myCWR, myFirstDOW), DayOfWeek.Saturday)
-        Return firstdateofweek(Now.Year, myCal.GetWeekOfYear(DateTime.Now, myCWR, myFirstDOW), DayOfWeek.Monday)
+        Return firstdateofweek(Now.Year, myCal.GetWeekOfYear(DateTime.Now, myCWR, myFirstDOW), DayOfWeek.Saturday)
+        ' Return firstdateofweek(Now.Year, myCal.GetWeekOfYear(DateTime.Now, myCWR, myFirstDOW), DayOfWeek.Monday)
     End Function
 
     Private Function firstdateofweek(ByVal year As Integer, ByVal week As Integer, Optional firstdayofweek As DayOfWeek = DayOfWeek.Monday) As Date
@@ -3217,4 +3244,6 @@ Public Class MAIN
 
 
     End Sub
+
+
 End Class

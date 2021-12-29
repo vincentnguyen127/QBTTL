@@ -50,7 +50,7 @@
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>yWMtFBC7NM2hWNMnPAA1rGBUw4rDCReid/7CiOyZvMY=</dsig:DigestValue>
+        <dsig:DigestValue>Ql89eutYt76XJpPuHlDIiYaC6kEdJsVdmfrpXRN+LbY=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
@@ -72,13 +72,13 @@
       <dsig:DigestValue>Z4jcD1d39TG9yTwvMCdWXrbaRD75TIBxu1cF1hiWsnM=</dsig:DigestValue>
     </hash>
   </file>
-  <file name="TeltriumQBtoTL.exe.config" size="9989">
+  <file name="TeltriumQBtoTL.exe.config" size="9992">
     <hash>
       <dsig:Transforms>
         <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
       </dsig:Transforms>
       <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-      <dsig:DigestValue>cb7fEv//ATd9xyIp7+D0nrPLnRp/hl170oxfx6Y2EMA=</dsig:DigestValue>
+      <dsig:DigestValue>gMVSDqlw48cbkJxEef+yQ0dh2Ey5+o528/XiP8NSR44=</dsig:DigestValue>
     </hash>
   </file>
   <file name="TimeLiveQuickBooks.ico" size="370070">

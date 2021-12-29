@@ -586,7 +586,6 @@ Public Class ChargingRelationship_2
     Private Sub btnAddNew_Click(sender As Object, e As EventArgs) Handles btnAddNew.Click
 
 
-
         'reset the form
         ResetChargingRelationshipForm()
 
