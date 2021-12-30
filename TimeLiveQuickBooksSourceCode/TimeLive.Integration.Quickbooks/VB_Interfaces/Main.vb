@@ -3051,159 +3051,198 @@ Public Class MAIN
     End Sub
 
     Private Sub DataGridView1_DoubleClick(sender As Object, e As EventArgs) Handles DataGridView1.DoubleClick
+        Dim ChargingRelationsihpAdapter As New QB_TL_IDsTableAdapters.ChargingRelationshipsTableAdapter()
+        Dim CustomerAdapter As New QB_TL_IDsTableAdapters.CustomersTableAdapter()
+        Dim EmployeeAdapter As New QB_TL_IDsTableAdapters.EmployeesTableAdapter()
+        Dim VendorAdapter As New QB_TL_IDsTableAdapters.VendorsTableAdapter()
 
-        Dim formManualLink As New ManualLinkForm()
-        formManualLink.Label1.Text = "TimeLive"
-        For Each row As DataGridViewRow In DataGridView2.Rows
-            Dim Name As String = row.Cells("Name").Value
-            If Not String.IsNullOrEmpty(Name) Then
-                formManualLink.ComboBox1.Items.Add(Name)
-            End If
-        Next
-        formManualLink.Label2.Text = "QuickBooks"
-        If DataGridView1.ColumnCount > 4 Then
-            For Each row As DataGridViewRow In DataGridView1.Rows
-                Dim Name As String = row.Cells(1).Value
-                If Not String.IsNullOrEmpty(Name) Then
-                    formManualLink.ComboBox2.Items.Add(Name)
+        Dim chargingRelationshipTable As QB_TL_IDs.ChargingRelationshipsDataTable = ChargingRelationsihpAdapter.GetChargingRelationships()
+        If Type = 20 Then
+            Dim empName As String = DataGridView1.CurrentRow.Cells("Name").Value
+            Dim empObj = EmployeeAdapter.GetCorrespondingQB_IDbyQB_Name(empName)
+            Dim isLinked As Boolean
+            If empObj.Count > 0 Then
+                Dim empQuickBookID As String = empObj(0).QuickBookS_ID.trim()
+                For i As Integer = 0 To chargingRelationshipTable.Count - 1
+                    If chargingRelationshipTable(i).EmployeeQB_ID.Trim() = empQuickBookID Then
+                        isLinked = True
+                    End If
+                Next
+
+                If Not isLinked Then
+                    MsgBox("No Associated QuickBooks record.", MsgBoxStyle.Exclamation, "Alert")
+                    Exit Sub
                 End If
-            Next
-            formManualLink.ComboBox2.Text = DataGridView1.CurrentRow.Cells(1).Value.ToString()
-            formManualLink.ComboBox2.Enabled = False
-        Else
-            For Each row As DataGridViewRow In DataGridView1.Rows
+                'ChargingRelationship_2.Owner = Me
+                'ChargingRelationship_2.Show()
+
+
+
+                ChargingRelationship_2.EmployeeFilterBox.Text = empName
+                ChargingRelationship_2.EmployeeFilterBox.Enabled = False
+                ChargingRelationship_2.PayrollFilterBox.Enabled = False
+                ChargingRelationship_2.ItemFilterBox.Enabled = False
+                ChargingRelationship_2.JobFilterBox.Enabled = False
+                Dim sdfds As String = ChargingRelationship_2.EmployeeFilterBox.Text
+
+                ChargingRelationship_2.Show()
+
+                'Using chargingRelationship As New ChargingRelationship_2
+                '    chargingRelationship.EmployeeFilterBox.Text = empName
+                '    chargingRelationship.EmployeeFilterBox.Enabled = False
+                '    chargingRelationship.PayrollFilterBox.Enabled = False
+                '    chargingRelationship.ItemFilterBox.Enabled = False
+                '    chargingRelationship.JobFilterBox.Enabled = False
+
+                '    chargingRelationship.ShowDialog()
+                'End Using
+            Else
+                MsgBox("employee is not in employee table.", MsgBoxStyle.Exclamation, "Alert")
+                Exit Sub
+            End If
+        End If
+        If Type = 10 Or Type = 11 Or Type = 12 Or Type = 13 Then
+            Dim formManualLink As New ManualLinkForm()
+            formManualLink.Label1.Text = "TimeLive"
+            For Each row As DataGridViewRow In DataGridView2.Rows
                 Dim Name As String = row.Cells("Name").Value
                 If Not String.IsNullOrEmpty(Name) Then
-                    formManualLink.ComboBox2.Items.Add(Name)
+                    formManualLink.ComboBox1.Items.Add(Name)
                 End If
             Next
-            formManualLink.ComboBox2.Text = DataGridView1.CurrentRow.Cells("Name").Value.ToString()
-            formManualLink.ComboBox2.Enabled = False
-        End If
-
-
-        'formManualLink.ComboBox2.Text = DataGridView1.CurrentRow.Cells("Name").Value.ToString()
-        'formManualLink.ComboBox2.Enabled = False
-
-        If DataGridView1.CurrentRow.DefaultCellStyle.ForeColor = Color.Blue Or DataGridView1.CurrentRow.DefaultCellStyle.ForeColor = Nothing Then
-            formManualLink.ComboBox1.Text = formManualLink.ComboBox2.Text.Trim() 'CustomerAdapter.GetTL_NameFromQB_Name(formManualLink.ComboBox2.Text).Trim()            
-        End If
-        'customer 
-        If Type = 10 Then
-            Dim CustomerAdapter As New QB_TL_IDsTableAdapters.CustomersTableAdapter()
-            'connecting to timelive 
-            Dim objClientServices As Services.TimeLive.Clients.Clients = MAIN.connect_TL_clients(p_token)
-            ' get the current row of datagridview1 for the combobox2
-
-            If DialogResult.OK = formManualLink.ShowDialog Then
-                'get all the input parameters to insert into the customer table
-                Dim tlName As String = formManualLink.ComboBox1.Text
-                Dim tlID As String = objClientServices.GetClientIdByName(tlName)
-                Dim qbName As String = formManualLink.ComboBox2.Text
-                Dim qbID As String
-                For Each customer As QBtoTL_Customer.Customer In customerData.DataArray
-                    If customer.QB_Name = qbName Then
-                        qbID = customer.QB_ID
-                        Exit For
+            formManualLink.Label2.Text = "QuickBooks"
+            If DataGridView1.ColumnCount > 4 Then
+                For Each row As DataGridViewRow In DataGridView1.Rows
+                    Dim Name As String = row.Cells(1).Value
+                    If Not String.IsNullOrEmpty(Name) Then
+                        formManualLink.ComboBox2.Items.Add(Name)
                     End If
                 Next
-                CustomerAdapter.Insert(qbID, tlID, qbName, tlName)
-            End If
-        ElseIf Type = 11 Then
-            Dim EmployeeAdapter As New QB_TL_IDsTableAdapters.EmployeesTableAdapter()
-            'Connecting to timelive
-            Dim objEmployeeServices As Services.TimeLive.Employees.Employees = MAIN.connect_TL_employees(p_token)
-
-            If DialogResult.OK = formManualLink.ShowDialog Then
-                'get all the input parameters to insert into the customer table
-                Dim tlName As String = formManualLink.ComboBox1.Text
-                Dim newTlName As String = ShowNamesWithoutComma(tlName).Trim()
-                Dim tlID As String = objEmployeeServices.GetEmployeeId(newTlName)
-                Dim qbName As String = formManualLink.ComboBox2.Text
-                Dim qbID As String
-                Dim newQbName As String = ShowNamesWithoutComma(qbName)
-                For Each employee As QBtoTL_Employee.Employee In employeeData.DataArray
-                    If employee.QB_Name = newQbName Then
-                        qbID = employee.QB_ID
-                        Exit For
+                formManualLink.ComboBox2.Text = DataGridView1.CurrentRow.Cells(1).Value.ToString()
+                formManualLink.ComboBox2.Enabled = False
+            Else
+                For Each row As DataGridViewRow In DataGridView1.Rows
+                    Dim Name As String = row.Cells("Name").Value
+                    If Not String.IsNullOrEmpty(Name) Then
+                        formManualLink.ComboBox2.Items.Add(Name)
                     End If
                 Next
-                EmployeeAdapter.Insert(qbID, tlID, newQbName, newTlName)
-            End If
-        ElseIf Type = 12 Then
-            Dim VendorAdapter As New QB_TL_IDsTableAdapters.VendorsTableAdapter()
-            Dim objVendorServices As Services.TimeLive.Employees.Employees = MAIN.connect_TL_employees(p_token)
-            If DialogResult.OK = formManualLink.ShowDialog Then
-                Dim tlName As String = formManualLink.ComboBox1.Text
-                Dim newTlName As String = ShowNamesWithoutComma(tlName).Trim
-                Dim tlID As String = objVendorServices.GetEmployeeId(newTlName)
-                Dim qbName As String = formManualLink.ComboBox2.Text
-                Dim qbID As String
-                Dim newQbName As String = ShowNamesWithoutComma(qbName)
-                For Each vendor As QBtoTL_Vendor.Vendor In vendorData.DataArray
-                    If vendor.QB_Name = newQbName Then
-                        qbID = vendor.QB_ID
-                        Exit For
-                    End If
-                Next
-                VendorAdapter.Insert(qbID, tlID, newQbName, newTlName)
+                formManualLink.ComboBox2.Text = DataGridView1.CurrentRow.Cells("Name").Value.ToString()
+                formManualLink.ComboBox2.Enabled = False
             End If
 
-            'Dim objVendorArray() As Object = objVendorServices.GetEmployees
+            If DataGridView1.CurrentRow.DefaultCellStyle.ForeColor = Color.Blue Or DataGridView1.CurrentRow.DefaultCellStyle.ForeColor = Nothing Then
+                formManualLink.ComboBox1.Text = formManualLink.ComboBox2.Text.Trim()
+            End If
+            'customer 
+            If Type = 10 Then
+                'connecting to timelive 
+                Dim objClientServices As Services.TimeLive.Clients.Clients = MAIN.connect_TL_clients(p_token)
+                ' get the current row of datagridview1 for the combobox2
 
-
-            'Dim objEmployeeServices As Services.TimeLive.Employees.Employees = MAIN.connect_TL_employees(p_token)
-            'Dim objEmployeeArray() As Object
-            'objEmployeeArray = objEmployeeServices.GetEmployees
-            'Dim objEmployee As New Services.TimeLive.Employees.Employee
-        ElseIf Type = 13 Then
-            Dim jobSubJobAdapter As New QB_TL_IDsTableAdapters.Jobs_SubJobsTableAdapter()
-            Dim objProjectServices As Services.TimeLive.Projects.Projects = MAIN.connect_TL_projects(p_token)
-            Dim objTaskServices As Services.TimeLive.Tasks.Tasks = MAIN.connect_TL_tasks(p_token)
-            If DialogResult.OK = formManualLink.ShowDialog Then
-                Dim tlName As String = formManualLink.ComboBox1.Text
-                Dim tlNameArray As Array = Split(tlName, " --> ")
-                Dim count As Integer = tlNameArray.Length
-                Dim newTlName As String = Replace(tlName, " --> ", ":")
-                'It's project in timelive
-                Dim tlID As String
-                If count = 2 Then
-                    tlID = objProjectServices.GetProjectId(tlNameArray(count - 1))
-                    'It's task in timelieve
-                Else
-                    Dim dffd = objTaskServices.GetTasks()
-                    tlID = objTaskServices.GetTaskId(tlNameArray(count - 1))
+                If DialogResult.OK = formManualLink.ShowDialog Then
+                    'get all the input parameters to insert into the customer table
+                    Dim tlName As String = formManualLink.ComboBox1.Text
+                    Dim tlID As String = objClientServices.GetClientIdByName(tlName)
+                    Dim qbName As String = formManualLink.ComboBox2.Text
+                    Dim qbID As String
+                    For Each customer As QBtoTL_Customer.Customer In customerData.DataArray
+                        If customer.QB_Name = qbName Then
+                            qbID = customer.QB_ID
+                            Exit For
+                        End If
+                    Next
+                    CustomerAdapter.Insert(qbID, tlID, qbName, tlName)
                 End If
-                Dim qbName As String = formManualLink.ComboBox2.Text
-                Dim qbNameArray As Array = Split(qbName, " --> ")
-                count = qbNameArray.Length
-                Dim newQBname As String = qbNameArray(count - 1)
-                Dim qbID As String
-                For Each job As QBtoTL_JobOrItem.Job_Subjob In JobData.DataArray
-                    If job.QB_Name = newQBname Then
-                        qbID = job.QB_ID
-                        Exit For
+            ElseIf Type = 11 Then
+
+                'Connecting to timelive
+                Dim objEmployeeServices As Services.TimeLive.Employees.Employees = MAIN.connect_TL_employees(p_token)
+
+                If DialogResult.OK = formManualLink.ShowDialog Then
+                    'get all the input parameters to insert into the customer table
+                    Dim tlName As String = formManualLink.ComboBox1.Text
+                    Dim newTlName As String = ShowNamesWithoutComma(tlName).Trim()
+                    Dim tlID As String = objEmployeeServices.GetEmployeeId(newTlName)
+                    Dim qbName As String = formManualLink.ComboBox2.Text
+                    Dim qbID As String
+                    Dim newQbName As String = ShowNamesWithoutComma(qbName)
+                    For Each employee As QBtoTL_Employee.Employee In employeeData.DataArray
+                        If employee.QB_Name = newQbName Then
+                            qbID = employee.QB_ID
+                            Exit For
+                        End If
+                    Next
+                    EmployeeAdapter.Insert(qbID, tlID, newQbName, newTlName)
+                End If
+            ElseIf Type = 12 Then
+
+                Dim objVendorServices As Services.TimeLive.Employees.Employees = MAIN.connect_TL_employees(p_token)
+                If DialogResult.OK = formManualLink.ShowDialog Then
+                    Dim tlName As String = formManualLink.ComboBox1.Text
+                    Dim newTlName As String = ShowNamesWithoutComma(tlName).Trim
+                    Dim tlID As String = objVendorServices.GetEmployeeId(newTlName)
+                    Dim qbName As String = formManualLink.ComboBox2.Text
+                    Dim qbID As String
+                    Dim newQbName As String = ShowNamesWithoutComma(qbName)
+                    For Each vendor As QBtoTL_Vendor.Vendor In vendorData.DataArray
+                        If vendor.QB_Name = newQbName Then
+                            qbID = vendor.QB_ID
+                            Exit For
+                        End If
+                    Next
+                    VendorAdapter.Insert(qbID, tlID, newQbName, newTlName)
+                End If
+            ElseIf Type = 13 Then
+                Dim jobSubJobAdapter As New QB_TL_IDsTableAdapters.Jobs_SubJobsTableAdapter()
+                Dim objProjectServices As Services.TimeLive.Projects.Projects = MAIN.connect_TL_projects(p_token)
+                Dim objTaskServices As Services.TimeLive.Tasks.Tasks = MAIN.connect_TL_tasks(p_token)
+                If DialogResult.OK = formManualLink.ShowDialog Then
+                    Dim tlName As String = formManualLink.ComboBox1.Text
+                    Dim tlNameArray As Array = Split(tlName, " --> ")
+                    Dim count As Integer = tlNameArray.Length
+                    Dim newTlName As String = Replace(tlName, " --> ", ":")
+                    'It's project in timelive
+                    Dim tlID As String
+                    If count = 2 Then
+                        tlID = objProjectServices.GetProjectId(tlNameArray(count - 1))
+                        'It's task in timelieve
+                    Else
+                        Dim dffd = objTaskServices.GetTasks()
+                        tlID = objTaskServices.GetTaskId(tlNameArray(count - 1))
                     End If
-                Next
-                Try
-                    jobSubJobAdapter.Insert(qbID, tlID, newQBname, newTlName)
-                Catch ex As Exception
+                    Dim qbName As String = formManualLink.ComboBox2.Text
+                    Dim qbNameArray As Array = Split(qbName, " --> ")
+                    count = qbNameArray.Length
+                    Dim newQBname As String = qbNameArray(count - 1)
+                    Dim qbID As String
+                    For Each job As QBtoTL_JobOrItem.Job_Subjob In JobData.DataArray
+                        If job.QB_Name = newQBname Then
+                            qbID = job.QB_ID
+                            Exit For
+                        End If
+                    Next
+                    Try
+                        jobSubJobAdapter.Insert(qbID, tlID, newQBname, newTlName)
+                    Catch ex As Exception
 
-                End Try
+                    End Try
 
+                End If
             End If
+
+            display_UI()
         End If
 
-        display_UI()
     End Sub
 
     Private Function ShowNamesWithoutComma(fullname As String) As String
         Dim nameArray() As String = Split(fullname, ",")
         Return nameArray(1).Trim + " " + nameArray(0).Trim()
     End Function
-    Private Sub DataGridView1_CellContentClick(sender As Object, e As DataGridViewCellEventArgs) Handles DataGridView1.CellContentClick
-
-    End Sub
+    'Private Sub DataGridView1_CellContentClick(sender As Object, e As DataGridViewCellEventArgs) Handles DataGridView1.CellContentClick
+    '    MsgBox("No Associated QuickBooks record.", MsgBoxStyle.Exclamation, "Alert")
+    'End Sub
 
     Private Sub DataGridView2_DoubleClick(sender As Object, e As EventArgs) Handles DataGridView2.DoubleClick
         Dim formManualLink As New ManualLinkForm()
@@ -3325,52 +3364,7 @@ Public Class MAIN
         End If
         display_UI()
 
-        'Dim CustomerAdapter As New QB_TL_IDsTableAdapters.CustomersTableAdapter()
-        'Dim formManualLink As New ManualLinkForm()
-        'formManualLink.Label1.Text = "QuickBooks"
-        'For Each row As DataGridViewRow In DataGridView1.Rows
-        '    Dim Name As String = row.Cells("Name").Value
-        '    If Not String.IsNullOrEmpty(Name) Then
-        '        formManualLink.ComboBox1.Items.Add(Name)
-        '    End If
-        'Next
-        'formManualLink.Label2.Text = "TimeLive"
-        'For Each row As DataGridViewRow In DataGridView2.Rows
-        '    Dim Name As String = row.Cells("Name").Value
-        '    If Not String.IsNullOrEmpty(Name) Then
-        '        formManualLink.ComboBox2.Items.Add(Name)
-        '    End If
-        'Next
 
-
-        'formManualLink.ComboBox2.Text = DataGridView2.CurrentRow.Cells("Name").Value.ToString()
-        'formManualLink.ComboBox2.Enabled = False
-
-
-        'If DataGridView2.CurrentRow.DefaultCellStyle.ForeColor = Color.Blue Then
-        '    formManualLink.ComboBox1.Text = CustomerAdapter.GetTL_NameFromQB_Name(formManualLink.ComboBox2.Text).Trim()
-        'ElseIf DataGridView2.CurrentRow.DefaultCellStyle.ForeColor = Nothing Then
-        '    formManualLink.ComboBox1.Text = formManualLink.ComboBox2.Text.Trim()
-        'End If
-        ''connecting to timelive 
-        'Dim objClientServices As Services.TimeLive.Clients.Clients = MAIN.connect_TL_clients(p_token)
-
-
-        'If DialogResult.OK = formManualLink.ShowDialog Then
-        '    Dim tlName As String = formManualLink.ComboBox2.Text
-        '    Dim tlID As String = objClientServices.GetClientIdByName(tlName)
-        '    Dim qbName As String = formManualLink.ComboBox1.Text
-        '    Dim qbID As String
-        '    For Each customer As QBtoTL_Customer.Customer In customerData.DataArray
-        '        If customer.QB_Name = qbName Then
-        '            qbID = customer.QB_ID
-        '            Exit For
-        '        End If
-        '    Next
-
-        '    CustomerAdapter.Insert(qbID, tlID, qbName, tlName)
-        '    display_UI()
-        'End If
 
 
     End Sub

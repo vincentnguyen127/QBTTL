@@ -589,6 +589,11 @@ Public Class ChargingRelationship_2
         'reset the form
         ResetChargingRelationshipForm()
 
+        If Not String.IsNullOrEmpty(Me.EmployeeFilterBox.Text) Then
+            FormAddNewRelationship.ComboBoxEmployee.Text = Me.EmployeeFilterBox.Text
+        End If
+
+
 
         If DialogResult.OK = FormAddNewRelationship.ShowDialog() Then
             Dim employeeName As String = FormAddNewRelationship.ComboBoxEmployee.Text
