@@ -1266,12 +1266,24 @@ Public Class MAIN
         'For Quickbooks
         'getting list of timelive name 
         Dim listTlName As New List(Of String)
-        For Each tlRow As DataGridViewRow In datagridView2.Rows
-            Dim tlName As String = tlRow.Cells("Name").Value
-            If Not String.IsNullOrEmpty(tlName) Then
-                listTlName.Add(tlName)
-            End If
-        Next
+
+        If datagridView2.Columns.Count > 2 Then
+            For Each tlRow As DataGridViewRow In datagridView2.Rows
+                Dim tlName As String = tlRow.Cells(1).Value
+                If Not String.IsNullOrEmpty(tlName) Then
+                    listTlName.Add(tlName)
+                End If
+            Next
+        Else
+            For Each tlRow As DataGridViewRow In datagridView2.Rows
+                Dim tlName As String = tlRow.Cells("Name").Value
+                If Not String.IsNullOrEmpty(tlName) Then
+                    listTlName.Add(tlName)
+                End If
+            Next
+        End If
+
+
         If attribute = "customer" Then
             Dim customerAdapter As New QB_TL_IDsTableAdapters.CustomersTableAdapter()
             For Each qbRow As DataGridViewRow In datagridView1.Rows
@@ -1332,6 +1344,37 @@ Public Class MAIN
                         Next
                         If Not String.IsNullOrEmpty(qbID) Then
                             Dim isLinked = vendorAdapter.GetCorrespondingTL_ID(qbID).Count
+                            If isLinked > 0 Then
+                                qbRow.DefaultCellStyle.ForeColor = Color.Blue
+                            End If
+                        End If
+                    End If
+                End If
+            Next
+        ElseIf attribute = "job/subjob" Then
+            Dim jobSubJobAdapter As New QB_TL_IDsTableAdapters.Jobs_SubJobsTableAdapter()
+            For Each qbRow As DataGridViewRow In datagridView1.Rows
+                Dim qbName As String
+                If datagridView1.Columns.Count > 2 Then
+                    qbName = qbRow.Cells(1).Value
+                Else
+                    qbName = qbRow.Cells("Name").Value
+                End If
+
+                If Not String.IsNullOrEmpty(qbName) Then
+                    If Not listTlName.Contains(qbName) Then
+                        qbRow.DefaultCellStyle.ForeColor = Color.DarkGray
+                    Else
+                        Dim qbID As String
+                        For Each job As QBtoTL_JobOrItem.Job_Subjob In JobData.DataArray
+                            Dim jobFullName As String = Replace(job.FullName, ":", " --> ")
+                            If jobFullName = qbName Then
+                                qbID = job.QB_ID
+                                Exit For
+                            End If
+                        Next
+                        If Not String.IsNullOrEmpty(qbID) Then
+                            Dim isLinked = jobSubJobAdapter.GetCorrespondingTL_ID(qbID).Count
                             If isLinked > 0 Then
                                 qbRow.DefaultCellStyle.ForeColor = Color.Blue
                             End If
@@ -3018,14 +3061,30 @@ Public Class MAIN
             End If
         Next
         formManualLink.Label2.Text = "QuickBooks"
-        For Each row As DataGridViewRow In DataGridView1.Rows
-            Dim Name As String = row.Cells("Name").Value
-            If Not String.IsNullOrEmpty(Name) Then
-                formManualLink.ComboBox2.Items.Add(Name)
-            End If
-        Next
-        formManualLink.ComboBox2.Text = DataGridView1.CurrentRow.Cells("Name").Value.ToString()
-        formManualLink.ComboBox2.Enabled = False
+        If DataGridView1.ColumnCount > 4 Then
+            For Each row As DataGridViewRow In DataGridView1.Rows
+                Dim Name As String = row.Cells(1).Value
+                If Not String.IsNullOrEmpty(Name) Then
+                    formManualLink.ComboBox2.Items.Add(Name)
+                End If
+            Next
+            formManualLink.ComboBox2.Text = DataGridView1.CurrentRow.Cells(1).Value.ToString()
+            formManualLink.ComboBox2.Enabled = False
+        Else
+            For Each row As DataGridViewRow In DataGridView1.Rows
+                Dim Name As String = row.Cells("Name").Value
+                If Not String.IsNullOrEmpty(Name) Then
+                    formManualLink.ComboBox2.Items.Add(Name)
+                End If
+            Next
+            formManualLink.ComboBox2.Text = DataGridView1.CurrentRow.Cells("Name").Value.ToString()
+            formManualLink.ComboBox2.Enabled = False
+        End If
+
+
+        'formManualLink.ComboBox2.Text = DataGridView1.CurrentRow.Cells("Name").Value.ToString()
+        'formManualLink.ComboBox2.Enabled = False
+
         If DataGridView1.CurrentRow.DefaultCellStyle.ForeColor = Color.Blue Or DataGridView1.CurrentRow.DefaultCellStyle.ForeColor = Nothing Then
             formManualLink.ComboBox1.Text = formManualLink.ComboBox2.Text.Trim() 'CustomerAdapter.GetTL_NameFromQB_Name(formManualLink.ComboBox2.Text).Trim()            
         End If
@@ -3097,7 +3156,42 @@ Public Class MAIN
             'Dim objEmployeeArray() As Object
             'objEmployeeArray = objEmployeeServices.GetEmployees
             'Dim objEmployee As New Services.TimeLive.Employees.Employee
+        ElseIf Type = 13 Then
+            Dim jobSubJobAdapter As New QB_TL_IDsTableAdapters.Jobs_SubJobsTableAdapter()
+            Dim objProjectServices As Services.TimeLive.Projects.Projects = MAIN.connect_TL_projects(p_token)
+            Dim objTaskServices As Services.TimeLive.Tasks.Tasks = MAIN.connect_TL_tasks(p_token)
+            If DialogResult.OK = formManualLink.ShowDialog Then
+                Dim tlName As String = formManualLink.ComboBox1.Text
+                Dim tlNameArray As Array = Split(tlName, " --> ")
+                Dim count As Integer = tlNameArray.Length
+                Dim newTlName As String = Replace(tlName, " --> ", ":")
+                'It's project in timelive
+                Dim tlID As String
+                If count = 2 Then
+                    tlID = objProjectServices.GetProjectId(tlNameArray(count - 1))
+                    'It's task in timelieve
+                Else
+                    Dim dffd = objTaskServices.GetTasks()
+                    tlID = objTaskServices.GetTaskId(tlNameArray(count - 1))
+                End If
+                Dim qbName As String = formManualLink.ComboBox2.Text
+                Dim qbNameArray As Array = Split(qbName, " --> ")
+                count = qbNameArray.Length
+                Dim newQBname As String = qbNameArray(count - 1)
+                Dim qbID As String
+                For Each job As QBtoTL_JobOrItem.Job_Subjob In JobData.DataArray
+                    If job.QB_Name = newQBname Then
+                        qbID = job.QB_ID
+                        Exit For
+                    End If
+                Next
+                Try
+                    jobSubJobAdapter.Insert(qbID, tlID, newQBname, newTlName)
+                Catch ex As Exception
 
+                End Try
+
+            End If
         End If
 
         display_UI()
@@ -3191,6 +3285,42 @@ Public Class MAIN
                     End If
                 Next
                 VendorAdapter.Insert(qbID, tlID, newQbName, newTlName)
+            End If
+        ElseIf Type = 13 Then
+            Dim jobSubJobAdapter As New QB_TL_IDsTableAdapters.Jobs_SubJobsTableAdapter()
+            Dim objProjectServices As Services.TimeLive.Projects.Projects = MAIN.connect_TL_projects(p_token)
+            Dim objTaskServices As Services.TimeLive.Tasks.Tasks = MAIN.connect_TL_tasks(p_token)
+            If DialogResult.OK = formManualLink.ShowDialog Then
+                Dim tlName As String = formManualLink.ComboBox2.Text
+                Dim tlNameArray As Array = Split(tlName, " --> ")
+                Dim count As Integer = tlNameArray.Length
+                Dim newTlName As String = Replace(tlName, " --> ", ":")
+                'It's project in timelive
+                Dim tlID As String
+                If count = 2 Then
+                    tlID = objProjectServices.GetProjectId(tlNameArray(count - 1))
+                    'It's task in timelieve
+                Else
+                    Dim dffd = objTaskServices.GetTasks()
+                    tlID = objTaskServices.GetTaskId(tlNameArray(count - 1))
+                End If
+                Dim qbName As String = formManualLink.ComboBox1.Text
+                Dim qbNameArray As Array = Split(qbName, " --> ")
+                count = qbNameArray.Length
+                Dim newQBname As String = qbNameArray(count - 1)
+                Dim qbID As String
+                For Each job As QBtoTL_JobOrItem.Job_Subjob In JobData.DataArray
+                    If job.QB_Name = newQBname Then
+                        qbID = job.QB_ID
+                        Exit For
+                    End If
+                Next
+                Try
+                    jobSubJobAdapter.Insert(qbID, tlID, newQBname, newTlName)
+                Catch ex As Exception
+
+                End Try
+
             End If
         End If
         display_UI()
