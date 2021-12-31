@@ -166,6 +166,12 @@
     <Compile Include="VB_Interfaces\JoborItemForm.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="VB_Interfaces\JobSubJobTreeView.Designer.vb">
+      <DependentUpon>JobSubJobTreeView.vb</DependentUpon>
+    </Compile>
+    <Compile Include="VB_Interfaces\JobSubJobTreeView.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="VB_Interfaces\Main.Designer.vb">
       <DependentUpon>Main.vb</DependentUpon>
     </Compile>
@@ -290,6 +296,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="VB_Interfaces\JoborItemForm.resx">
       <DependentUpon>JoborItemForm.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="VB_Interfaces\JobSubJobTreeView.resx">
+      <DependentUpon>JobSubJobTreeView.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="VB_Interfaces\Main.resx">
       <DependentUpon>Main.vb</DependentUpon>

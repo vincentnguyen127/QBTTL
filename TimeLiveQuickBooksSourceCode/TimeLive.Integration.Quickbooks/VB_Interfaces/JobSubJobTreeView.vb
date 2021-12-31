@@ -1,50 +1,10 @@
-﻿Imports System.Runtime.InteropServices
-Imports QBFC13Lib
-Public Class TLQBTreeView
+﻿Public Class JobSubJobTreeView
     Dim obj_main As New MAIN
     Dim job_TLSync As Sync_TLtoQB_JoborItem = New Sync_TLtoQB_JoborItem()
     Dim customer_TLSync As Sync_TLtoQB_Customer = New Sync_TLtoQB_Customer()
-    Private Sub CustomerJobTreeView_AfterSelect(sender As Object, e As TreeViewEventArgs) Handles CustomerJobQBTreeView.AfterSelect
-        'TextBoxKey.Text = CustomerJobTreeView.SelectedNode.Text
-        Dim selected_node = CustomerJobQBTreeView.SelectedNode.Text
 
-
-        ' Getting customers and jobs data from Quickbooks
-
-        Dim obj1_QBtoTL_Customer As New QBtoTL_Customer
-        Dim customerData As New QBtoTL_Customer.CustomerDataStructureQB
-
-        Dim obj_QBtoTL_JobOrItem As New QBtoTL_JobOrItem
-        Dim jobData As New QBtoTL_JobOrItem.JobDataStructureQB
-
-
-        customerData = obj1_QBtoTL_Customer.GetCustomerQBData()
-        jobData = obj_QBtoTL_JobOrItem.GetJobSubJobData()
-
-
-
-        For Each customer As QBtoTL_Customer.Customer In customerData.DataArray
-            If customer.QB_Name = selected_node Then
-                TextBoxKeyQB.Text = customer.QB_ID
-                TextBoxNameQB.Text = customer.QB_Name
-                TextBoxFullNameQB.Text = customer.QB_Name
-                Exit Sub
-            End If
-        Next
-        For Each jobs As QBtoTL_JobOrItem.Job_Subjob In jobData.DataArray
-            If jobs.QB_Name = selected_node Then
-                TextBoxKeyQB.Text = jobs.QB_ID
-                TextBoxNameQB.Text = jobs.QB_Name
-                TextBoxFullNameQB.Text = jobs.FullName
-                Exit Sub
-            End If
-        Next
-
-
-    End Sub
-
-    Private Sub CustomerJobTLTreeView_AfterSelect(sender As Object, e As TreeViewEventArgs) Handles CustomerJobTLTreeView.AfterSelect
-        Dim selected_node = CustomerJobTLTreeView.SelectedNode.Text
+    Private Sub TreeViewJobSubJob_AfterSelect(sender As Object, e As TreeViewEventArgs) Handles TreeViewJobSubJob.AfterSelect
+        Dim selected_node = TreeViewJobSubJob.SelectedNode.Text
         Dim obj_main As New MAIN
 
         'Retreiving customers, projects, task from timelive 
@@ -84,45 +44,18 @@ Public Class TLQBTreeView
             Next
 
         For Each task As Services.TimeLive.Tasks.Task In objTaskArray
-                If task.TaskName = selected_node Then
-                    TextBoxTimeLiveID.Text = objTaskServices.GetTaskId(task.TaskName)
-                    TextBoxTimeLiveName.Text = task.TaskName
-                    TextBoxFullNameTL.Text = task.JobParent + ":" + task.TaskName
-                    Exit For
-                End If
-            Next
-
-
-        Dim customerOrJobs As String = If(TextBoxFullNameTL.Text.Contains(":"), "jobs", "customer")
-        If customerOrJobs = "jobs" Then
-            'ask users if they would like to create record in syn database
-            Dim nodes As List(Of String) = New List(Of String)
-            If CustomerJobTLTreeView.SelectedNode.ForeColor.Name = "Red" Or CustomerJobTLTreeView.SelectedNode.ForeColor.Name = "Blue" Then
-                Using jobOrItemform As JoborItemForm = New JoborItemForm()
-                    jobOrItemform.txtJobtName.Text = selected_node
-                    If DialogResult.OK = jobOrItemform.ShowDialog Then
-                        nodes.Add(TextBoxFullNameTL.Text.Trim())
-                        job_TLSync.SyncJobsSubJobData(obj_main.p_token, obj_main, True, nodes)
-                        Me.Close()
-                    Else
-                        Exit Sub
-                    End If
-                End Using
+            If task.TaskName = selected_node Then
+                TextBoxTimeLiveID.Text = objTaskServices.GetTaskId(task.TaskName)
+                TextBoxTimeLiveName.Text = task.TaskName
+                TextBoxFullNameTL.Text = task.JobParent + ":" + task.TaskName
+                Exit For
             End If
-        Else
-            'create customer
-            customer_TLSync.checkQBCustomerExist(TextBoxTimeLiveName.Text.Trim(), TextBoxTimeLiveID.Text.Trim(), obj_client, False)
-        End If
-
-
-
+        Next
 
 
     End Sub
 
-
-    Private Sub btnAddNode_Click(sender As Object, e As EventArgs) Handles btnAddNodeTL.Click
-
+    Private Sub btnAddNode_Click(sender As Object, e As EventArgs) Handles btnAddNode.Click
         'Check the the node is selected or not
         If String.IsNullOrEmpty(TextBoxTimeLiveName.Text.Trim()) Then
             MessageBox.Show("Please select a node first")
@@ -231,75 +164,6 @@ Public Class TLQBTreeView
     End Sub
 
     Private Sub ButtonTreeViewClose_Click(sender As Object, e As EventArgs) Handles ButtonTreeViewClose.Click
-
         Me.Close()
-        MAIN.treeViewFlag = True
-    End Sub
-
-    Private Sub btnAddNodeQB_Click(sender As Object, e As EventArgs) Handles btnAddNodeQB.Click
-        'Check the the node is selected or not
-        If String.IsNullOrEmpty(TextBoxNameQB.Text.Trim()) Then
-            MessageBox.Show("Please select a node first")
-            Exit Sub
-        End If
-        'Gather the inputs 
-        Dim selected_node As String = TextBoxNameQB.Text.Trim()
-        Dim quickbook_node_id As String = TextBoxKeyQB.Text.Trim()
-        Dim fullname As String = TextBoxFullNameQB.Text.Trim()
-        Dim name() As String = fullname.Split(":")
-        If name.Length > 4 Then
-            MessageBox.Show("Can't create more than 5 level")
-            Exit Sub
-        End If
-
-        Dim new_node As String = InputBox("Enter Node Name").Trim()
-        'Check if the new node is empty or not
-        If String.IsNullOrEmpty(new_node) Then
-            MessageBox.Show("New node can not be empty or null")
-            Exit Sub
-        End If
-
-        Dim MsgSetRq As IMsgSetRequest = MAIN.SESSMANAGER.CreateMsgSetRequest("US", 2, 0)
-        MsgSetRq.Attributes.OnError = ENRqOnError.roeContinue
-
-        Dim jobAdd As ICustomerAdd = MsgSetRq.AppendCustomerAddRq
-        jobAdd.ParentRef.FullName.SetValue(fullname)
-        jobAdd.Name.SetValue(new_node)
-
-        Dim msgSetRs As IMsgSetResponse = MAIN.SESSMANAGER.DoRequests(MsgSetRq)
-        Dim res As IResponse = msgSetRs.ResponseList.GetAt(0)
-
-        If res.StatusSeverity = "Error" Then
-            Throw New Exception(res.StatusMessage)
-        End If
-
-
-        Me.Close()
-
-
-    End Sub
-
-    Private Sub Label8_Click(sender As Object, e As EventArgs) Handles Label8.Click
-
-    End Sub
-
-    Private Sub TextBoxFullNameTL_TextChanged(sender As Object, e As EventArgs) Handles TextBoxFullNameTL.TextChanged
-
-    End Sub
-
-    Private Sub Label6_Click(sender As Object, e As EventArgs) Handles Label6.Click
-
-    End Sub
-
-    Private Sub TextBoxTimeLiveName_TextChanged(sender As Object, e As EventArgs) Handles TextBoxTimeLiveName.TextChanged
-
-    End Sub
-
-    Private Sub Label7_Click(sender As Object, e As EventArgs) Handles Label7.Click
-
-    End Sub
-
-    Private Sub TextBoxTimeLiveID_TextChanged(sender As Object, e As EventArgs) Handles TextBoxTimeLiveID.TextChanged
-
     End Sub
 End Class

@@ -53,7 +53,6 @@ Partial Class MAIN
         Me.btn_relationships2 = New System.Windows.Forms.ToolStripButton()
         Me.clearlogbtn = New System.Windows.Forms.ToolStripButton()
         Me.TabPageJobsItems = New System.Windows.Forms.TabPage()
-        Me.btnServiceItemQbTreeView = New System.Windows.Forms.Button()
         Me.btnTreeView = New System.Windows.Forms.Button()
         Me.ProgressBar1 = New System.Windows.Forms.ProgressBar()
         Me.TLtoQBVendorRadioButton = New System.Windows.Forms.RadioButton()
@@ -100,6 +99,7 @@ Partial Class MAIN
         Me.ShowEntitiesBtn = New System.Windows.Forms.Button()
         Me.btnTransfer = New System.Windows.Forms.Button()
         Me.SendEmailsButton = New System.Windows.Forms.Button()
+        Me.btnCreateJobItem = New System.Windows.Forms.Button()
         Me.JobItemSyncDirection.SuspendLayout()
         CType(Me.SplitContainer1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SplitContainer1.Panel1.SuspendLayout()
@@ -428,7 +428,6 @@ Partial Class MAIN
         '
         'TabPageJobsItems
         '
-        Me.TabPageJobsItems.Controls.Add(Me.btnServiceItemQbTreeView)
         Me.TabPageJobsItems.Controls.Add(Me.btnTreeView)
         Me.TabPageJobsItems.Controls.Add(Me.RefreshJobsOrItems)
         Me.TabPageJobsItems.Controls.Add(Me.JobItemSyncDirection)
@@ -438,15 +437,6 @@ Partial Class MAIN
         Me.TabPageJobsItems.TabIndex = 6
         Me.TabPageJobsItems.Text = "Jobs/Items Options"
         Me.TabPageJobsItems.UseVisualStyleBackColor = True
-        '
-        'btnServiceItemQbTreeView
-        '
-        Me.btnServiceItemQbTreeView.Location = New System.Drawing.Point(521, 52)
-        Me.btnServiceItemQbTreeView.Name = "btnServiceItemQbTreeView"
-        Me.btnServiceItemQbTreeView.Size = New System.Drawing.Size(148, 23)
-        Me.btnServiceItemQbTreeView.TabIndex = 6
-        Me.btnServiceItemQbTreeView.Text = "Service Item Tree View"
-        Me.btnServiceItemQbTreeView.UseVisualStyleBackColor = True
         '
         'btnTreeView
         '
@@ -859,7 +849,7 @@ Partial Class MAIN
         Me.TabPage1.Location = New System.Drawing.Point(4, 22)
         Me.TabPage1.Name = "TabPage1"
         Me.TabPage1.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage1.Size = New System.Drawing.Size(965, 82)
+        Me.TabPage1.Size = New System.Drawing.Size(1089, 82)
         Me.TabPage1.TabIndex = 8
         Me.TabPage1.Text = "Service Item"
         Me.TabPage1.UseVisualStyleBackColor = True
@@ -939,12 +929,23 @@ Partial Class MAIN
         Me.SendEmailsButton.UseVisualStyleBackColor = True
         Me.SendEmailsButton.Visible = False
         '
+        'btnCreateJobItem
+        '
+        Me.btnCreateJobItem.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+        Me.btnCreateJobItem.Location = New System.Drawing.Point(6, 577)
+        Me.btnCreateJobItem.Name = "btnCreateJobItem"
+        Me.btnCreateJobItem.Size = New System.Drawing.Size(99, 23)
+        Me.btnCreateJobItem.TabIndex = 7
+        Me.btnCreateJobItem.Text = "New Job/Items"
+        Me.btnCreateJobItem.UseVisualStyleBackColor = True
+        '
         'MAIN
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.AutoSize = True
         Me.ClientSize = New System.Drawing.Size(1093, 638)
+        Me.Controls.Add(Me.btnCreateJobItem)
         Me.Controls.Add(Me.btnNewVendor)
         Me.Controls.Add(Me.btnNewEmployee)
         Me.Controls.Add(Me.btnNewCustomer)
@@ -1074,6 +1075,6 @@ Partial Class MAIN
     Friend WithEvents btnTreeView As Button
     Friend WithEvents TabPage1 As TabPage
     Friend WithEvents btnServiceItemTreeView As Button
-    Friend WithEvents btnServiceItemQbTreeView As Button
     Friend WithEvents btn_relationships As ToolStripButton
+    Friend WithEvents btnCreateJobItem As Button
 End Class

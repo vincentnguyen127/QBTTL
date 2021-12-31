@@ -344,3 +344,4 @@ C:\Users\Dev1Teltrium\Repos\Quickbooks.TimeLive.Dev\QuickBooksIntegrationTimeLiv
 C:\Users\Dev1Teltrium\Repos\Quickbooks.TimeLive.Dev\QuickBooksIntegrationTimeLive\TimeLiveQuickBooksSourceCode\TimeLive.Integration.Quickbooks\obj\Debug\TimeLive.Quickbooks.Integrator.AddNewRelationship.resources
 C:\Users\Dev1Teltrium\Repos\Quickbooks.TimeLive.Dev\QuickBooksIntegrationTimeLive\TimeLiveQuickBooksSourceCode\TimeLive.Integration.Quickbooks\obj\Debug\TimeLive.Quickbooks.Integrator.RelationshipTreeView.resources
 C:\Users\Dev1Teltrium\Repos\Quickbooks.TimeLive.Dev\QuickBooksIntegrationTimeLive\TimeLiveQuickBooksSourceCode\TimeLive.Integration.Quickbooks\obj\Debug\TimeLive.Quickbooks.Integrator.ManualLinkForm.resources
+C:\Users\Dev1Teltrium\Repos\Quickbooks.TimeLive.Dev\QuickBooksIntegrationTimeLive\TimeLiveQuickBooksSourceCode\TimeLive.Integration.Quickbooks\obj\Debug\TimeLive.Quickbooks.Integrator.JobSubJobTreeView.resources

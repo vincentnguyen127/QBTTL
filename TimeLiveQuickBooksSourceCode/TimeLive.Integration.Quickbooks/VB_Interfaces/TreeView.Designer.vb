@@ -67,7 +67,7 @@ Partial Class TLQBTreeView
         'txtKey
         '
         Me.txtKey.AutoSize = True
-        Me.txtKey.Location = New System.Drawing.Point(312, 63)
+        Me.txtKey.Location = New System.Drawing.Point(309, 69)
         Me.txtKey.Name = "txtKey"
         Me.txtKey.Size = New System.Drawing.Size(74, 13)
         Me.txtKey.TabIndex = 20
@@ -76,7 +76,7 @@ Partial Class TLQBTreeView
         'Label1
         '
         Me.Label1.AutoSize = True
-        Me.Label1.Location = New System.Drawing.Point(295, 83)
+        Me.Label1.Location = New System.Drawing.Point(292, 89)
         Me.Label1.Name = "Label1"
         Me.Label1.Size = New System.Drawing.Size(94, 13)
         Me.Label1.TabIndex = 22
