@@ -641,6 +641,7 @@ Public Class ChargingRelationship_2
 
         End If
 
+        Me.Close()
 
 
         ' ChargingRelationship_2.Owner = Me

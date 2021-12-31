@@ -44,21 +44,21 @@ Partial Class ManualLinkForm
         Me.ComboBox1.FormattingEnabled = True
         Me.ComboBox1.Location = New System.Drawing.Point(79, 26)
         Me.ComboBox1.Name = "ComboBox1"
-        Me.ComboBox1.Size = New System.Drawing.Size(121, 21)
+        Me.ComboBox1.Size = New System.Drawing.Size(182, 21)
         Me.ComboBox1.TabIndex = 1
         '
         'ComboBox2
         '
         Me.ComboBox2.FormattingEnabled = True
-        Me.ComboBox2.Location = New System.Drawing.Point(300, 26)
+        Me.ComboBox2.Location = New System.Drawing.Point(317, 26)
         Me.ComboBox2.Name = "ComboBox2"
-        Me.ComboBox2.Size = New System.Drawing.Size(121, 21)
+        Me.ComboBox2.Size = New System.Drawing.Size(182, 21)
         Me.ComboBox2.TabIndex = 3
         '
         'Label2
         '
         Me.Label2.AutoSize = True
-        Me.Label2.Location = New System.Drawing.Point(206, 29)
+        Me.Label2.Location = New System.Drawing.Point(267, 26)
         Me.Label2.Name = "Label2"
         Me.Label2.Size = New System.Drawing.Size(39, 13)
         Me.Label2.TabIndex = 2
@@ -66,7 +66,7 @@ Partial Class ManualLinkForm
         '
         'btnCancel
         '
-        Me.btnCancel.Location = New System.Drawing.Point(227, 59)
+        Me.btnCancel.Location = New System.Drawing.Point(251, 62)
         Me.btnCancel.Name = "btnCancel"
         Me.btnCancel.Size = New System.Drawing.Size(75, 23)
         Me.btnCancel.TabIndex = 4
@@ -75,7 +75,7 @@ Partial Class ManualLinkForm
         '
         'btnOK
         '
-        Me.btnOK.Location = New System.Drawing.Point(317, 59)
+        Me.btnOK.Location = New System.Drawing.Point(341, 62)
         Me.btnOK.Name = "btnOK"
         Me.btnOK.Size = New System.Drawing.Size(75, 23)
         Me.btnOK.TabIndex = 5
@@ -86,7 +86,7 @@ Partial Class ManualLinkForm
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(443, 119)
+        Me.ClientSize = New System.Drawing.Size(552, 119)
         Me.Controls.Add(Me.btnOK)
         Me.Controls.Add(Me.btnCancel)
         Me.Controls.Add(Me.ComboBox2)

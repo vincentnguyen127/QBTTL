@@ -1209,9 +1209,15 @@ Public Class MAIN
         'if the item exist, but it not linked, turn it black 
         'if it is not linked, turn blue 
 
-
+        '  If QBtoTLRadioButton.Checked Then
         VerifyItem(attribute, DataGridView1, DataGridView2)
-        VerifyItem(attribute, DataGridView2, DataGridView1)
+            VerifyItem(attribute, DataGridView2, DataGridView1)
+        'Else
+        '    VerifyItem(attribute, DataGridView2, DataGridView1)
+        '    VerifyItem(attribute, DataGridView1, DataGridView2)
+        'End If
+
+
 
 
         'For Quickbooks
@@ -1269,9 +1275,34 @@ Public Class MAIN
         'getting list of timelive name 
         Dim listTlName As New List(Of String)
 
-        If datagridView2.Columns.Count > 2 Then
+        'If attribute = "job/subjob" Then
+        '    If datagridView2.Columns.Count > 3 Then
+        '        For Each tlRow As DataGridViewRow In datagridView2.Rows
+        '            Dim tlName As String = tlRow.Cells("Full Name").Value
+        '            If Not String.IsNullOrEmpty(tlName) Then
+        '                listTlName.Add(tlName)
+        '            End If
+        '        Next
+        '    Else
+        '        For Each tlRow As DataGridViewRow In datagridView2.Rows
+        '            Dim tlName As String = tlRow.Cells("Name").Value
+        '            If Not String.IsNullOrEmpty(tlName) Then
+        '                listTlName.Add(tlName)
+        '            End If
+        '        Next
+        '    End If
+        'Else
+        '    For Each tlRow As DataGridViewRow In datagridView2.Rows
+        '        Dim tlName As String = tlRow.Cells("Name").Value
+        '        If Not String.IsNullOrEmpty(tlName) Then
+        '            listTlName.Add(tlName)
+        '        End If
+        '    Next
+        'End If
+
+        If datagridView2.Columns.Count > datagridView1.Columns.Count And attribute = "job/subjob" Then
             For Each tlRow As DataGridViewRow In datagridView2.Rows
-                Dim tlName As String = tlRow.Cells(1).Value
+                Dim tlName As String = tlRow.Cells("Full Name").Value
                 If Not String.IsNullOrEmpty(tlName) Then
                     listTlName.Add(tlName)
                 End If
@@ -1357,8 +1388,8 @@ Public Class MAIN
             Dim jobSubJobAdapter As New QB_TL_IDsTableAdapters.Jobs_SubJobsTableAdapter()
             For Each qbRow As DataGridViewRow In datagridView1.Rows
                 Dim qbName As String
-                If datagridView1.Columns.Count > 2 Then
-                    qbName = qbRow.Cells(1).Value
+                If datagridView1.Columns.Count > datagridView2.Columns.Count Then
+                    qbName = qbRow.Cells("Full Name").Value
                 Else
                     qbName = qbRow.Cells("Name").Value
                 End If
@@ -1949,7 +1980,7 @@ Public Class MAIN
                 employee.HiredDate = newForm.mTxtHiredDate.Text.Trim()
                 employee.QB_Name = employee.FirstName + " " + employee.LastName
                 employee.RecSelect = True
-                employee.NewlyAdded = ""
+                '  employee.NewlyAdded = ""
             Else
                 Exit Sub
             End If
@@ -3490,6 +3521,10 @@ Public Class MAIN
 
 
         ' Using treeView As TLQBTreeView = New TLQBTreeView()
+
+    End Sub
+
+    Private Sub DataGridView1_CellContentClick(sender As Object, e As DataGridViewCellEventArgs) Handles DataGridView1.CellContentClick
 
     End Sub
 End Class
