@@ -82,4 +82,6 @@ Public Class ModifyForm
         '    ErrorProvider1.SetError(TxtName, String.Empty)
         'End If
     End Sub
+
+
 End Class

@@ -50,7 +50,7 @@ Partial Class ManualLinkForm
         'ComboBox2
         '
         Me.ComboBox2.FormattingEnabled = True
-        Me.ComboBox2.Location = New System.Drawing.Point(317, 26)
+        Me.ComboBox2.Location = New System.Drawing.Point(341, 26)
         Me.ComboBox2.Name = "ComboBox2"
         Me.ComboBox2.Size = New System.Drawing.Size(182, 21)
         Me.ComboBox2.TabIndex = 3
@@ -86,7 +86,7 @@ Partial Class ManualLinkForm
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(552, 119)
+        Me.ClientSize = New System.Drawing.Size(573, 119)
         Me.Controls.Add(Me.btnOK)
         Me.Controls.Add(Me.btnCancel)
         Me.Controls.Add(Me.ComboBox2)

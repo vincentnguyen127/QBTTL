@@ -518,7 +518,7 @@ Public Class QBtoTL_Employee
         Return str.Substring(0, Math.Min(50, str.Length))
     End Function
 
-    Private Function CreatePassword(Date_string As String) As String
+    Public Function CreatePassword(Date_string As String) As String
         Dim Date_array() As String = Date_string.Split("/")
         If Date_array.Length < 3 Then
             Return Date_string

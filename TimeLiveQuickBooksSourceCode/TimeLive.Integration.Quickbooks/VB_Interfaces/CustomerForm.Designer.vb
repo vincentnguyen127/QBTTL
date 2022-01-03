@@ -34,12 +34,15 @@ Partial Class ModifyForm
         Me.txtFax = New System.Windows.Forms.TextBox()
         Me.txtTelephone2 = New System.Windows.Forms.MaskedTextBox()
         Me.ErrorProvider1 = New System.Windows.Forms.ErrorProvider(Me.components)
+        Me.RadioButtonBothQBTL = New System.Windows.Forms.RadioButton()
+        Me.RadioButtonQuickBooks = New System.Windows.Forms.RadioButton()
+        Me.RadioButtonTimeLive = New System.Windows.Forms.RadioButton()
         CType(Me.ErrorProvider1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'btnCancel
         '
-        Me.btnCancel.Location = New System.Drawing.Point(176, 123)
+        Me.btnCancel.Location = New System.Drawing.Point(173, 151)
         Me.btnCancel.Name = "btnCancel"
         Me.btnCancel.Size = New System.Drawing.Size(78, 30)
         Me.btnCancel.TabIndex = 13
@@ -49,7 +52,7 @@ Partial Class ModifyForm
         'lblPassword
         '
         Me.lblPassword.AutoSize = True
-        Me.lblPassword.Location = New System.Drawing.Point(37, 99)
+        Me.lblPassword.Location = New System.Drawing.Point(34, 127)
         Me.lblPassword.Name = "lblPassword"
         Me.lblPassword.Size = New System.Drawing.Size(64, 13)
         Me.lblPassword.TabIndex = 14
@@ -57,7 +60,7 @@ Partial Class ModifyForm
         '
         'btnOK
         '
-        Me.btnOK.Location = New System.Drawing.Point(260, 123)
+        Me.btnOK.Location = New System.Drawing.Point(257, 151)
         Me.btnOK.Name = "btnOK"
         Me.btnOK.Size = New System.Drawing.Size(78, 30)
         Me.btnOK.TabIndex = 7
@@ -67,7 +70,7 @@ Partial Class ModifyForm
         'Label3
         '
         Me.Label3.AutoSize = True
-        Me.Label3.Location = New System.Drawing.Point(71, 80)
+        Me.Label3.Location = New System.Drawing.Point(68, 108)
         Me.Label3.Name = "Label3"
         Me.Label3.Size = New System.Drawing.Size(27, 13)
         Me.Label3.TabIndex = 20
@@ -76,7 +79,7 @@ Partial Class ModifyForm
         'Label4
         '
         Me.Label4.AutoSize = True
-        Me.Label4.Location = New System.Drawing.Point(63, 55)
+        Me.Label4.Location = New System.Drawing.Point(60, 83)
         Me.Label4.Name = "Label4"
         Me.Label4.Size = New System.Drawing.Size(35, 13)
         Me.Label4.TabIndex = 19
@@ -84,7 +87,7 @@ Partial Class ModifyForm
         '
         'txtEmail
         '
-        Me.txtEmail.Location = New System.Drawing.Point(108, 53)
+        Me.txtEmail.Location = New System.Drawing.Point(105, 81)
         Me.txtEmail.Name = "txtEmail"
         Me.txtEmail.Size = New System.Drawing.Size(231, 20)
         Me.txtEmail.TabIndex = 2
@@ -92,7 +95,7 @@ Partial Class ModifyForm
         'lbName
         '
         Me.lbName.AutoSize = True
-        Me.lbName.Location = New System.Drawing.Point(55, 29)
+        Me.lbName.Location = New System.Drawing.Point(52, 57)
         Me.lbName.Name = "lbName"
         Me.lbName.Size = New System.Drawing.Size(45, 13)
         Me.lbName.TabIndex = 24
@@ -100,22 +103,22 @@ Partial Class ModifyForm
         '
         'TxtName
         '
-        Me.TxtName.Location = New System.Drawing.Point(108, 29)
+        Me.TxtName.Location = New System.Drawing.Point(105, 57)
         Me.TxtName.Name = "TxtName"
         Me.TxtName.Size = New System.Drawing.Size(231, 20)
         Me.TxtName.TabIndex = 1
         '
         'txtFax
         '
-        Me.txtFax.Location = New System.Drawing.Point(108, 76)
+        Me.txtFax.Location = New System.Drawing.Point(105, 104)
         Me.txtFax.Name = "txtFax"
         Me.txtFax.Size = New System.Drawing.Size(231, 20)
         Me.txtFax.TabIndex = 3
         '
         'txtTelephone2
         '
-        Me.txtTelephone2.Location = New System.Drawing.Point(108, 99)
-        Me.txtTelephone2.Margin = New System.Windows.Forms.Padding(2, 2, 2, 2)
+        Me.txtTelephone2.Location = New System.Drawing.Point(105, 127)
+        Me.txtTelephone2.Margin = New System.Windows.Forms.Padding(2)
         Me.txtTelephone2.Mask = "000-000-0000"
         Me.txtTelephone2.Name = "txtTelephone2"
         Me.txtTelephone2.Size = New System.Drawing.Size(231, 20)
@@ -125,11 +128,46 @@ Partial Class ModifyForm
         '
         Me.ErrorProvider1.ContainerControl = Me
         '
+        'RadioButtonBothQBTL
+        '
+        Me.RadioButtonBothQBTL.AutoSize = True
+        Me.RadioButtonBothQBTL.Checked = True
+        Me.RadioButtonBothQBTL.Location = New System.Drawing.Point(22, 22)
+        Me.RadioButtonBothQBTL.Name = "RadioButtonBothQBTL"
+        Me.RadioButtonBothQBTL.Size = New System.Drawing.Size(150, 17)
+        Me.RadioButtonBothQBTL.TabIndex = 25
+        Me.RadioButtonBothQBTL.TabStop = True
+        Me.RadioButtonBothQBTL.Text = "Both Quicks and TimeLive"
+        Me.RadioButtonBothQBTL.UseVisualStyleBackColor = True
+        '
+        'RadioButtonQuickBooks
+        '
+        Me.RadioButtonQuickBooks.AutoSize = True
+        Me.RadioButtonQuickBooks.Location = New System.Drawing.Point(178, 22)
+        Me.RadioButtonQuickBooks.Name = "RadioButtonQuickBooks"
+        Me.RadioButtonQuickBooks.Size = New System.Drawing.Size(107, 17)
+        Me.RadioButtonQuickBooks.TabIndex = 26
+        Me.RadioButtonQuickBooks.Text = "QuickBooks Only"
+        Me.RadioButtonQuickBooks.UseVisualStyleBackColor = True
+        '
+        'RadioButtonTimeLive
+        '
+        Me.RadioButtonTimeLive.AutoSize = True
+        Me.RadioButtonTimeLive.Location = New System.Drawing.Point(291, 22)
+        Me.RadioButtonTimeLive.Name = "RadioButtonTimeLive"
+        Me.RadioButtonTimeLive.Size = New System.Drawing.Size(92, 17)
+        Me.RadioButtonTimeLive.TabIndex = 27
+        Me.RadioButtonTimeLive.Text = "TimeLive Only"
+        Me.RadioButtonTimeLive.UseVisualStyleBackColor = True
+        '
         'ModifyForm
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(393, 175)
+        Me.ClientSize = New System.Drawing.Size(402, 205)
+        Me.Controls.Add(Me.RadioButtonTimeLive)
+        Me.Controls.Add(Me.RadioButtonQuickBooks)
+        Me.Controls.Add(Me.RadioButtonBothQBTL)
         Me.Controls.Add(Me.txtTelephone2)
         Me.Controls.Add(Me.txtFax)
         Me.Controls.Add(Me.lbName)
@@ -158,4 +196,7 @@ Partial Class ModifyForm
     Friend WithEvents txtFax As TextBox
     Friend WithEvents txtTelephone2 As MaskedTextBox
     Friend WithEvents ErrorProvider1 As ErrorProvider
+    Friend WithEvents RadioButtonTimeLive As RadioButton
+    Friend WithEvents RadioButtonQuickBooks As RadioButton
+    Friend WithEvents RadioButtonBothQBTL As RadioButton
 End Class

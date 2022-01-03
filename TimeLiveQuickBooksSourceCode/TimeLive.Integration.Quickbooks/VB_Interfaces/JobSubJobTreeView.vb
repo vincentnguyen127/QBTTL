@@ -166,4 +166,56 @@
     Private Sub ButtonTreeViewClose_Click(sender As Object, e As EventArgs) Handles ButtonTreeViewClose.Click
         Me.Close()
     End Sub
+
+    Private Sub RadioButtonQuickBooks_CheckedChanged(sender As Object, e As EventArgs) Handles RadioButtonQuickBooks.Click
+        Me.TreeViewJobSubJob.Nodes.Clear()
+    End Sub
+
+    Private Sub RadioButtonBothQBTL_CheckedChanged(sender As Object, e As EventArgs) Handles RadioButtonBothQBTL.Click
+        Dim jobDataArray As New List(Of Array)
+        For Each row As DataGridViewRow In MAIN.DataGridView1.Rows
+            If row.DefaultCellStyle.ForeColor = Color.Blue Then
+                Dim fullName As String = row.Cells(1).Value
+                Dim fullNameArray() As String = Split(fullName, " --> ")
+                jobDataArray.Add(fullNameArray)
+            End If
+        Next
+        'add the first node 
+        Dim customerNode As New List(Of String)
+        For i As Integer = 0 To jobDataArray.Count - 1
+            If jobDataArray(i).Length = 2 Then
+                Dim customerName = jobDataArray(i)(0)
+                If Not customerNode.Contains(customerName) Then
+                    customerNode.Add(customerName)
+                End If
+            End If
+        Next
+
+        For Each customer As String In customerNode
+            Me.TreeViewJobSubJob.Nodes.Add(customer, customer)
+        Next
+
+        For i As Integer = 0 To jobDataArray.Count - 1
+            Dim lengthArr As Integer = jobDataArray(i).Length
+            If lengthArr = 2 Then
+                Me.TreeViewJobSubJob.Nodes(jobDataArray(i)(0)).Nodes.Add(jobDataArray(i)(1), jobDataArray(i)(1))
+            ElseIf lengthArr = 3 Then
+                Me.TreeViewJobSubJob.Nodes(jobDataArray(i)(0)).Nodes(jobDataArray(i)(1)).Nodes.Add(jobDataArray(i)(2), jobDataArray(i)(2))
+            ElseIf lengthArr = 4 Then
+                Me.TreeViewJobSubJob.Nodes(jobDataArray(i)(0)).Nodes(jobDataArray(i)(1)).Nodes(jobDataArray(i)(2)).Nodes.Add(jobDataArray(i)(3), jobDataArray(i)(3))
+            ElseIf lengthArr = 5 Then
+                Me.TreeViewJobSubJob.Nodes(jobDataArray(i)(0)).Nodes(jobDataArray(i)(1)).Nodes(jobDataArray(i)(2)).Nodes(jobDataArray(i)(3)).Nodes.Add(jobDataArray(i)(4), jobDataArray(i)(4))
+            Else
+                Throw New Exception("Created More than 5 level of a tree")
+            End If
+        Next
+        Me.TreeViewJobSubJob.ExpandAll()
+        Me.TreeViewJobSubJob.Update()
+
+
+    End Sub
+
+    Private Sub RadioButtonTimeLive_CheckedChanged(sender As Object, e As EventArgs) Handles RadioButtonTimeLive.Click
+
+    End Sub
 End Class

@@ -26,12 +26,15 @@ Partial Class JoborItemForm
         Me.txtJobtName = New System.Windows.Forms.TextBox()
         Me.btnCancel = New System.Windows.Forms.Button()
         Me.btnOK = New System.Windows.Forms.Button()
+        Me.RadioButtonTimeLive = New System.Windows.Forms.RadioButton()
+        Me.RadioButtonQuickBooks = New System.Windows.Forms.RadioButton()
+        Me.RadioButtonBothQBTL = New System.Windows.Forms.RadioButton()
         Me.SuspendLayout()
         '
         'lbJobName
         '
         Me.lbJobName.AutoSize = True
-        Me.lbJobName.Location = New System.Drawing.Point(36, 39)
+        Me.lbJobName.Location = New System.Drawing.Point(46, 55)
         Me.lbJobName.Name = "lbJobName"
         Me.lbJobName.Size = New System.Drawing.Size(68, 13)
         Me.lbJobName.TabIndex = 36
@@ -39,14 +42,14 @@ Partial Class JoborItemForm
         '
         'txtJobtName
         '
-        Me.txtJobtName.Location = New System.Drawing.Point(110, 39)
+        Me.txtJobtName.Location = New System.Drawing.Point(120, 55)
         Me.txtJobtName.Name = "txtJobtName"
         Me.txtJobtName.Size = New System.Drawing.Size(128, 20)
         Me.txtJobtName.TabIndex = 1
         '
         'btnCancel
         '
-        Me.btnCancel.Location = New System.Drawing.Point(99, 75)
+        Me.btnCancel.Location = New System.Drawing.Point(86, 92)
         Me.btnCancel.Name = "btnCancel"
         Me.btnCancel.Size = New System.Drawing.Size(78, 30)
         Me.btnCancel.TabIndex = 3
@@ -55,18 +58,54 @@ Partial Class JoborItemForm
         '
         'btnOK
         '
-        Me.btnOK.Location = New System.Drawing.Point(183, 75)
+        Me.btnOK.Location = New System.Drawing.Point(170, 92)
         Me.btnOK.Name = "btnOK"
         Me.btnOK.Size = New System.Drawing.Size(78, 30)
         Me.btnOK.TabIndex = 2
         Me.btnOK.Text = "OK"
         Me.btnOK.UseVisualStyleBackColor = True
         '
+        'RadioButtonTimeLive
+        '
+        Me.RadioButtonTimeLive.AutoSize = True
+        Me.RadioButtonTimeLive.Location = New System.Drawing.Point(292, 21)
+        Me.RadioButtonTimeLive.Name = "RadioButtonTimeLive"
+        Me.RadioButtonTimeLive.Size = New System.Drawing.Size(92, 17)
+        Me.RadioButtonTimeLive.TabIndex = 39
+        Me.RadioButtonTimeLive.TabStop = True
+        Me.RadioButtonTimeLive.Text = "TimeLive Only"
+        Me.RadioButtonTimeLive.UseVisualStyleBackColor = True
+        '
+        'RadioButtonQuickBooks
+        '
+        Me.RadioButtonQuickBooks.AutoSize = True
+        Me.RadioButtonQuickBooks.Location = New System.Drawing.Point(179, 21)
+        Me.RadioButtonQuickBooks.Name = "RadioButtonQuickBooks"
+        Me.RadioButtonQuickBooks.Size = New System.Drawing.Size(107, 17)
+        Me.RadioButtonQuickBooks.TabIndex = 38
+        Me.RadioButtonQuickBooks.TabStop = True
+        Me.RadioButtonQuickBooks.Text = "QuickBooks Only"
+        Me.RadioButtonQuickBooks.UseVisualStyleBackColor = True
+        '
+        'RadioButtonBothQBTL
+        '
+        Me.RadioButtonBothQBTL.AutoSize = True
+        Me.RadioButtonBothQBTL.Location = New System.Drawing.Point(23, 21)
+        Me.RadioButtonBothQBTL.Name = "RadioButtonBothQBTL"
+        Me.RadioButtonBothQBTL.Size = New System.Drawing.Size(150, 17)
+        Me.RadioButtonBothQBTL.TabIndex = 37
+        Me.RadioButtonBothQBTL.TabStop = True
+        Me.RadioButtonBothQBTL.Text = "Both Quicks and TimeLive"
+        Me.RadioButtonBothQBTL.UseVisualStyleBackColor = True
+        '
         'JoborItemForm
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(364, 168)
+        Me.ClientSize = New System.Drawing.Size(406, 147)
+        Me.Controls.Add(Me.RadioButtonTimeLive)
+        Me.Controls.Add(Me.RadioButtonQuickBooks)
+        Me.Controls.Add(Me.RadioButtonBothQBTL)
         Me.Controls.Add(Me.btnCancel)
         Me.Controls.Add(Me.btnOK)
         Me.Controls.Add(Me.lbJobName)
@@ -82,4 +121,7 @@ Partial Class JoborItemForm
     Friend WithEvents txtJobtName As TextBox
     Friend WithEvents btnCancel As Button
     Friend WithEvents btnOK As Button
+    Friend WithEvents RadioButtonTimeLive As RadioButton
+    Friend WithEvents RadioButtonQuickBooks As RadioButton
+    Friend WithEvents RadioButtonBothQBTL As RadioButton
 End Class

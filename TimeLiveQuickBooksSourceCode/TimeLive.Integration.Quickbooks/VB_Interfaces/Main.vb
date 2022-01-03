@@ -20,6 +20,8 @@ Public Class MAIN
 
 
 
+
+
     Private LoggedIn As Boolean
     Private Type As Integer
     Private emailBody As String
@@ -1212,61 +1214,7 @@ Public Class MAIN
         '  If QBtoTLRadioButton.Checked Then
         VerifyItem(attribute, DataGridView1, DataGridView2)
             VerifyItem(attribute, DataGridView2, DataGridView1)
-        'Else
-        '    VerifyItem(attribute, DataGridView2, DataGridView1)
-        '    VerifyItem(attribute, DataGridView1, DataGridView2)
-        'End If
 
-
-
-
-        'For Quickbooks
-        'getting list of timelive name 
-        'Dim listTlName As New List(Of String)
-        'For Each tlRow As DataGridViewRow In DataGridView2.Rows
-        '    Dim tlName As String = tlRow.Cells("Name").Value
-        '    If Not String.IsNullOrEmpty(tlName) Then
-        '        listTlName.Add(tlName)
-        '    End If
-        'Next
-
-        'For Each qbRow As DataGridViewRow In DataGridView1.Rows
-        '    Dim qbName As String = qbRow.Cells("Name").Value
-        '    'skip the last row in quickbook data grid rows 
-        '    If Not String.IsNullOrEmpty(qbName) Then
-        '        If Not listTlName.Contains(qbName) Then
-        '            qbRow.DefaultCellStyle.ForeColor = Color.DarkGray
-        '        Else
-        '            Dim isLinked = CustomerAdapter.GetTL_NameFromQB_Name(qbName)
-        '            If Not String.IsNullOrEmpty(isLinked) Then
-        '                qbRow.DefaultCellStyle.ForeColor = Color.Blue
-        '            End If
-        '        End If
-        '    End If
-        'Next
-        'For TimeLive
-        'Getting list of quickbook name
-        'Dim listQbName As New List(Of String)
-        'For Each qbRow As DataGridViewRow In DataGridView1.Rows
-        '    Dim qbName As String = qbRow.Cells("Name").Value
-        '    If Not String.IsNullOrEmpty(qbName) Then
-        '        listQbName.Add(qbName)
-        '    End If
-        'Next
-
-        'For Each tlRow As DataGridViewRow In DataGridView2.Rows
-        '    Dim tlName = tlRow.Cells("Name").Value
-        '    If Not String.IsNullOrEmpty(tlName) Then
-        '        If Not listQbName.Contains(tlName) Then
-        '            tlRow.DefaultCellStyle.ForeColor = Color.DarkGray
-        '        Else
-        '            Dim isLinked = CustomerAdapter.GetQB_NameFromTL_Name(tlName)
-        '            If Not String.IsNullOrEmpty(isLinked) Then
-        '                tlRow.DefaultCellStyle.ForeColor = Color.Blue
-        '            End If
-        '        End If
-        '    End If
-        'Next
         Return readItems
     End Function
 
@@ -1275,30 +1223,7 @@ Public Class MAIN
         'getting list of timelive name 
         Dim listTlName As New List(Of String)
 
-        'If attribute = "job/subjob" Then
-        '    If datagridView2.Columns.Count > 3 Then
-        '        For Each tlRow As DataGridViewRow In datagridView2.Rows
-        '            Dim tlName As String = tlRow.Cells("Full Name").Value
-        '            If Not String.IsNullOrEmpty(tlName) Then
-        '                listTlName.Add(tlName)
-        '            End If
-        '        Next
-        '    Else
-        '        For Each tlRow As DataGridViewRow In datagridView2.Rows
-        '            Dim tlName As String = tlRow.Cells("Name").Value
-        '            If Not String.IsNullOrEmpty(tlName) Then
-        '                listTlName.Add(tlName)
-        '            End If
-        '        Next
-        '    End If
-        'Else
-        '    For Each tlRow As DataGridViewRow In datagridView2.Rows
-        '        Dim tlName As String = tlRow.Cells("Name").Value
-        '        If Not String.IsNullOrEmpty(tlName) Then
-        '            listTlName.Add(tlName)
-        '        End If
-        '    Next
-        'End If
+
 
         If datagridView2.Columns.Count > datagridView1.Columns.Count And attribute = "job/subjob" Then
             For Each tlRow As DataGridViewRow In datagridView2.Rows
@@ -1918,7 +1843,7 @@ Public Class MAIN
         Return TL_Names
     End Function
 
-    Private Sub Get_Customer_Form(ByRef customer As QBtoTL_Customer.Customer)
+    Private Function Get_Customer_Form(ByRef customer As QBtoTL_Customer.Customer) As ModifyForm
 
 
         Using newForm As ModifyForm = New ModifyForm()
@@ -1928,18 +1853,22 @@ Public Class MAIN
             newForm.txtFax.Text = customer.Fax
 
             If DialogResult.OK = newForm.ShowDialog() Then
+
                 customer.QB_Name = newForm.TxtName.Text.Trim()
                 customer.Email = newForm.txtEmail.Text.Trim()
                 customer.Telephone1 = newForm.txtTelephone2.Text.Trim()
                 customer.Fax = newForm.txtFax.Text.Trim()
                 customer.RecSelect = True
+                customer.Enabled = True
+
+                Return newForm
             Else
-                Exit Sub
+                Exit Function
             End If
         End Using
 
 
-    End Sub
+    End Function
     Private Sub QB_Set_Selected_Customer()
         If DataGridView1 IsNot Nothing Then
             For Each row As DataGridViewRow In DataGridView1.Rows
@@ -1962,7 +1891,7 @@ Public Class MAIN
         End If
     End Sub
 
-    Private Sub Get_Employee_Form(ByRef employee As QBtoTL_Employee.Employee)
+    Private Function Get_Employee_Form(ByRef employee As QBtoTL_Employee.Employee) As EmployeeForm
 
         Using newForm As EmployeeForm = New EmployeeForm()
             newForm.txtFirstName.Text = employee.FirstName
@@ -1980,12 +1909,14 @@ Public Class MAIN
                 employee.HiredDate = newForm.mTxtHiredDate.Text.Trim()
                 employee.QB_Name = employee.FirstName + " " + employee.LastName
                 employee.RecSelect = True
+
+                Return newForm
                 '  employee.NewlyAdded = ""
             Else
-                Exit Sub
+                Exit Function
             End If
         End Using
-    End Sub
+    End Function
     Private Sub Set_Selected_Employee()
         If DataGridView1 IsNot Nothing Then
             For Each row As DataGridViewRow In DataGridView1.Rows
@@ -2044,11 +1975,12 @@ Public Class MAIN
         Next
     End Sub
 
-    Private Sub Get_Vendor_Form(ByRef vendor As QBtoTL_Vendor.Vendor)
+    Private Function Get_Vendor_Form(ByRef vendor As QBtoTL_Vendor.Vendor) As VendorForm
 
         Using newForm As VendorForm = New VendorForm()
             newForm.txtFirstName.Text = vendor.FirstName
             newForm.txtLastName.Text = vendor.LastName
+            newForm.mTxtHiredDate.Text = vendor.HiredDate
             'newForm.txtEmail.Text = vendor.Email
             'newForm.mTxtHiredDate.Text = vendor.HiredDate.ToString("MM/dd/yyyy")
             'newForm.txtEmail.Text = vendor.Email
@@ -2058,15 +1990,16 @@ Public Class MAIN
                 vendor.FirstName = newForm.txtFirstName.Text.Trim()
                 vendor.LastName = newForm.txtLastName.Text.Trim()
                 'vendor.Email = newForm.txtEmail.Text.Trim()
-                'vendor.HiredDate = newForm.mTxtHiredDate.Text.Trim()
+                vendor.HiredDate = newForm.mTxtHiredDate.Text.Trim()
                 vendor.QB_Name = vendor.FirstName + " " + vendor.LastName
                 vendor.RecSelect = True
                 'vendor.NewlyAdded = ""
+                Return newForm
             Else
-                Exit Sub
+                Exit Function
             End If
         End Using
-    End Sub
+    End Function
 
     Private Sub Set_Selected_Vendor()
         If DataGridView1 IsNot Nothing Then
@@ -2388,24 +2321,14 @@ Public Class MAIN
         ChargingRelationship_2.Show()
     End Sub
 
-    Private Sub btnNew_Click(sender As Object, e As EventArgs) Handles btnNewCustomer.Click
-
-        Dim objCustomer As New QBtoTL_Customer.Customer(Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing)
-        Get_Customer_Form(objCustomer)
-        ' If user want to cancel, stop it
-        If objCustomer.RecSelect = False Then
-            Exit Sub
-        End If
-
-        Dim UI As Boolean = True
-
+    Private Function CreateNewCustomer(objCustomer As QBtoTL_Customer.Customer)
         Try
             Dim msgSetRq As IMsgSetRequest = MAIN.SESSMANAGER.CreateMsgSetRequest("US", 2, 0)
 
             msgSetRq.Attributes.OnError = ENRqOnError.roeContinue
             Dim CustomerQueryRq As ICustomerQuery = msgSetRq.AppendCustomerQueryRq
 
-            CustomerQueryRq.ORCustomerListQuery.FullNameList.Add(Name)
+            CustomerQueryRq.ORCustomerListQuery.FullNameList.Add(objCustomer.QB_Name)
             Dim msgSetRs As IMsgSetResponse = MAIN.SESSMANAGER.DoRequests(msgSetRq)
 
             Dim response As IResponse = msgSetRs.ResponseList.GetAt(0)
@@ -2418,8 +2341,8 @@ Public Class MAIN
                 Dim newMsgSetRq As IMsgSetRequest = MAIN.SESSMANAGER.CreateMsgSetRequest("US", 2, 0)
 
                 newMsgSetRq.Attributes.OnError = ENRqOnError.roeContinue
-                Dim create As Boolean = True
-
+                Dim create As Boolean
+                Dim UI As Boolean = True
                 If UI Then
                     create = MsgBox("New customer " + objCustomer.QB_Name + " is not existing in QuickBooks" + ". Create in QuickBooks?", MsgBoxStyle.YesNo, "Warning!") = MsgBoxResult.Yes
                 End If
@@ -2462,105 +2385,66 @@ Public Class MAIN
         Catch ex As Exception
             Throw ex
         End Try
+    End Function
+    Private Sub btnNew_Click(sender As Object, e As EventArgs) Handles btnNewCustomer.Click
 
-        ' request data from quickbook to get new customer that just created to create customer in timelive
-        Dim obj_QBtoTL_Customer As New QBtoTL_Customer
-        Dim customerData As New QBtoTL_Customer.CustomerDataStructureQB
+        Dim objCustomer As New QBtoTL_Customer.Customer(Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing)
+        Dim newCustomerForm As ModifyForm = Get_Customer_Form(objCustomer)
 
-        'Get the current List of Customer in Quickbooks
-        customerData = obj_QBtoTL_Customer.GetCustomerQBData(Me, True)
-        Reset_Checked_Customer_Value(customerData)
-        If employeeData IsNot Nothing Then
-            For Each element As QBtoTL_Customer.Customer In customerData.DataArray
-                If element.QB_Name = objCustomer.QB_Name Then
-                    element.RecSelect = True
-                    Exit For
-                End If
-            Next
-        End If
-        'Select the new created vendor 
-        obj_QBtoTL_Customer.QBTransferCustomerToTL(customerData, p_token, Me, True)
-        display_UI()
-        '=======================
-        'Dim msgSetRsTimeLive As IMsgSetResponse
-        'Try
-        '    Dim msgSetRq As IMsgSetRequest = MAIN.SESSMANAGER.CreateMsgSetRequest("US", 2, 0) 'sessManager
-        '    msgSetRq.Attributes.OnError = ENRqOnError.roeContinue
-
-        '    '-------------------------1---------------------------------------------
-        '    Dim synccust As ICustomerQuery = msgSetRq.AppendCustomerQueryRq
-        '    synccust.ORCustomerListQuery.CustomerListFilter.ActiveStatus.SetValue(ENActiveStatus.asAll) 'asActiveOnly)
-
-        '    'step2: send the request
-        '    msgSetRsTimeLive = MAIN.SESSMANAGER.DoRequests(msgSetRq) 'sessManager
-        '    Dim respList As IResponseList = msgSetRsTimeLive.ResponseList
-        '    If (respList Is Nothing Or respList.GetAt(0).Detail Is Nothing) Then
-        '        ' no data
-        '        My.Forms.MAIN.History("No customers found...", "i")
-
-        '    End If
-
-        '    ' Should only expect 1 response
-        '    Dim resp As IResponse
-        '    resp = respList.GetAt(0)
-        '    'If (resp.StatusCode = 0) Then
-
-        '    '----------------------2------------------------------------------------
-        '    Dim custRetList As ICustomerRetList
-        '    custRetList = resp.Detail
-        '    '------------------------------3-----------------------------------
-        '    Dim custRet As ICustomerRet
-        '    For i As Integer = 0 To If(custRetList Is Nothing, -1, custRetList.Count - 1)
-        '        custRet = custRetList.GetAt(i)
-        '        With custRet
-        '            If .ParentRef Is Nothing Then
-        '                'for debuging 
-        '                Dim checkingName = custRet.Name.GetValue
-        '                'If custRet.Name.GetValue.ToString = qbName Then
-        '                If String.Compare(custRet.Name.GetValue.ToString, name) = 0 Then
-        '                    Dim objCustomerDataStructureQB As QBtoTL_Customer.CustomerDataStructureQB = New QBtoTL_Customer.CustomerDataStructureQB()
-        '                    Dim objQbCustomer As QBtoTL_Customer.Customer = New QBtoTL_Customer.Customer("", name, email, custRet.ListID.GetValue, telephone1, fax, custRet.TimeModified.GetValue.ToString, custRet.TimeCreated.GetValue.ToString, True)
-        '                    objQbCustomer.Enabled = True
-        '                    objQbCustomer.RecSelect = True
-        '                    objCustomerDataStructureQB.DataArray.Add(objQbCustomer)
-
-        '                    customer_qbtotl.QBTransferCustomerToTL(objCustomerDataStructureQB, p_token, Me, False)
-        '                    Exit For
-        '                End If
-        '            End If
-
-        '        End With
-        '        If UI Then
-        '            My.Forms.MAIN.ProgressBar1.Value = i
-        '        End If
-        '    Next
-        'Catch ex As Exception
-
-        'End Try
-        '' Refresh after processing
-        'My.Forms.MAIN.History("Refreshing after processing", "n")
-        'display_UI()
-
-        'System.Threading.Thread.Sleep(150)
-        'System.Windows.Forms.Application.DoEvents()
-        'ProgressBar1.Value = 0
-
-    End Sub
-
-    Private Sub btnNewEmployee_Click(sender As Object, e As EventArgs) Handles btnNewEmployee.Click
-
-        Dim objEmployee As New QBtoTL_Employee.Employee(Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing)
-
-        Get_Employee_Form(objEmployee)
-        ' if user would like to cancel create new employee
-        If objEmployee.RecSelect = False Then
+        ' If user want to cancel, stop it
+        'If objCustomer.RecSelect = False Then
+        '    Exit Sub
+        'End If
+        If newCustomerForm Is Nothing Then
             Exit Sub
         End If
 
+        Dim obj_QBtoTL_Customer As New QBtoTL_Customer
+        Dim customerData As New QBtoTL_Customer.CustomerDataStructureQB
+
+        Dim objClientServices As Services.TimeLive.Clients.Clients = MAIN.connect_TL_clients(p_token)
+
+
+        If newCustomerForm.RadioButtonQuickBooks.Checked = True Then
+            CreateNewCustomer(objCustomer)
+        ElseIf newCustomerForm.RadioButtonTimeLive.Checked = True Then
+            Dim isInTl As Integer
+            Try
+                isInTl = objClientServices.GetClientIdByName(objCustomer.QB_Name)
+            Catch ex As Exception
+
+            End Try
+            If isInTl Then
+                MsgBox("New Client found in TimeLive. Can not create new Client")
+            Else
+                objClientServices.InsertClient(objCustomer.QB_Name, obj_QBtoTL_Customer.SetLength(objCustomer.QB_Name), objCustomer.Email, "", "", 233, "",
+              "", "", objCustomer.Telephone1, "no telephone 2 yet", objCustomer.Fax, 0, "", "", objCustomer.Enabled, False, Now.Date, 0, Now.Date, 0)
+
+                My.Forms.MAIN.History("Create new TimeLive  successfuly.", "i")
+            End If
+        Else
+            CreateNewCustomer(objCustomer)
+            'Get the current List of Customer in Quickbooks
+            customerData = obj_QBtoTL_Customer.GetCustomerQBData(Me, True)
+            Reset_Checked_Customer_Value(customerData)
+            If customerData IsNot Nothing Then
+                For Each element As QBtoTL_Customer.Customer In customerData.DataArray
+                    If element.QB_Name = objCustomer.QB_Name Then
+                        element.RecSelect = True
+                        Exit For
+                    End If
+                Next
+            End If
+            'Select the new created customer
+            obj_QBtoTL_Customer.QBTransferCustomerToTL(customerData, p_token, Me, True)
+        End If
+
+        display_UI()
+
+    End Sub
+    Private Function CreateNewEmployee(objEmployee As QBtoTL_Employee.Employee)
         Dim UI As Boolean = True
         Dim TLEmployeeName As String = objEmployee.FirstName + " " + objEmployee.LastName
-
-
         Try
             'sessManager = New QBSessionManagerClass()
             Dim msgSetRq As IMsgSetRequest = MAIN.SESSMANAGER.CreateMsgSetRequest("US", 2, 0)
@@ -2633,37 +2517,91 @@ Public Class MAIN
         Catch ex As Exception
             Throw ex
         End Try
-        '========================
-        'Send new created employee in QuckBook to TimeLive
+    End Function
+    Private Sub btnNewEmployee_Click(sender As Object, e As EventArgs) Handles btnNewEmployee.Click
+
         Dim obj_QBtoTl_Employee As New QBtoTL_Employee
         Dim employeeData As New QBtoTL_Employee.EmployeeDataStructureQB
 
-        'Get the current List of Employee in Quickbooks
-        employeeData = obj_QBtoTl_Employee.GetEmployeeQBData(Me, True)
-        Reset_Checked_Employee_Value(employeeData)
-        If employeeData IsNot Nothing Then
-            For Each element As QBtoTL_Employee.Employee In employeeData.DataArray
-                If element.QB_Name = objEmployee.QB_Name Then
-                    element.RecSelect = True
-                    Exit For
-                End If
-            Next
-        End If
-        'Select the new created vendor 
-        obj_QBtoTl_Employee.QBTransferEmployeeToTL(employeeData, p_token, Me, True)
-        display_UI()
-    End Sub
+        Dim objServices As New Services.TimeLiveServices
+        Dim authentication As New Services.SecuredWebServiceHeader
+        authentication.AuthenticatedToken = p_token
+        objServices.SecuredWebServiceHeaderValue = authentication
+        Dim objEmployeeServices As Services.TimeLive.Employees.Employees = MAIN.connect_TL_employees(p_token)
 
-    Private Sub btnNewVendor_Click(sender As Object, e As EventArgs) Handles btnNewVendor.Click
+        Dim nDepartmentId As Integer = objServices.GetDepartmentId()
+        Dim nRoleId As Integer = objEmployeeServices.GetUserRoleId()
+        Dim nLocationId As Integer = objServices.GetLocationId()
+        Dim nEmployeeTypeId As Guid = objEmployeeServices.GetEmployeeTypeId()
+        Dim nEmployeeStatusId As Integer = objEmployeeServices.GetEmployeeStatusId()
+        Dim nWorkingDayTypeId As Guid = objEmployeeServices.GetEmployeeWorkingDayTypeId()
+        Dim nBillingTypeId As Integer = objEmployeeServices.GetEmployeeBillingTypeId()
 
-        Dim objEmployee As New QBtoTL_Vendor.Vendor(Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing)
 
-        Get_Vendor_Form(objEmployee)
-        'if users want to cancel create new vendor
-        If objEmployee.RecSelect = False Then
+
+        Dim objEmployee As New QBtoTL_Employee.Employee(Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing)
+
+
+        Dim newEmployeeForm As EmployeeForm = Get_Employee_Form(objEmployee)
+        ' if user would like to cancel create new employee
+        'If objEmployee.RecSelect = False Then
+        '    Exit Sub
+        'End If
+        If newEmployeeForm Is Nothing Then
             Exit Sub
         End If
 
+
+
+        If newEmployeeForm.RadioButtonQuickBooks.Checked Then
+            CreateNewEmployee(objEmployee)
+        ElseIf newEmployeeForm.RadioButtonTimeLive.Checked Then
+            Dim TLEmployeeName As String = objEmployee.FirstName + " " + objEmployee.LastName
+            Dim isInTl As Boolean
+
+            Try
+                isInTl = objEmployeeServices.GetEmployeeId(TLEmployeeName)
+            Catch ex As Exception
+
+            End Try
+            'create = MsgBox("New employee found: " + element.QB_Name + ". Create?", MsgBoxStyle.YesNo, "Warning!") = MsgBoxResult.Yes
+            If isInTl Then
+                MsgBox("New Employee found in TimeLive. Can not create new Employee")
+            Else
+                Dim Email As String = objEmployee.FirstName(0) + objEmployee.LastName + "@teltrium.com"
+                objEmployeeServices.InsertEmployee(Email, obj_QBtoTl_Employee.CreatePassword(objEmployee.HiredDate), objEmployee.FirstName, objEmployee.LastName, Email, TLEmployeeName,
+                                                               nDepartmentId, nRoleId, nLocationId, 233, nBillingTypeId, Now.Date,
+                                                               -1, 0, 6, 0, 0, nEmployeeTypeId, nEmployeeStatusId, "", objEmployee.HiredDate,
+                                                               Now.Date, nWorkingDayTypeId, System.Guid.Empty, 0, System.Guid.Empty,
+                                                               False, "", "", "", "", "", "", "", "", "", "Mr.", True)
+            End If
+
+
+        Else
+                CreateNewEmployee(objEmployee)
+                '========================
+                'Send new created employee in QuckBook to TimeLive
+
+
+                'Get the current List of Employee in Quickbooks
+                employeeData = obj_QBtoTl_Employee.GetEmployeeQBData(Me, True)
+                Reset_Checked_Employee_Value(employeeData)
+                If employeeData IsNot Nothing Then
+                    For Each element As QBtoTL_Employee.Employee In employeeData.DataArray
+                        If element.QB_Name = objEmployee.QB_Name Then
+                            element.RecSelect = True
+                            Exit For
+                        End If
+                    Next
+                End If
+                'Select the new created vendor 
+                obj_QBtoTl_Employee.QBTransferEmployeeToTL(employeeData, p_token, Me, True)
+            End If
+
+        display_UI()
+    End Sub
+
+    Private Function CreateNewVendor(objEmployee As QBtoTL_Vendor.Vendor)
         Dim UI As Boolean
         Dim TLEmployeeName As String = objEmployee.QB_Name
 
@@ -2744,22 +2682,88 @@ Public Class MAIN
         Catch ex As Exception
             Throw ex
         End Try
-        'Send new created vendor in QuckBook to TimeLive
+    End Function
+    Private Sub btnNewVendor_Click(sender As Object, e As EventArgs) Handles btnNewVendor.Click
+
+        Dim objEmployee As New QBtoTL_Vendor.Vendor(Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing, Nothing)
+
         Dim obj_QBtoTl_Vendor As New QBtoTL_Vendor
         Dim VendorData As New QBtoTL_Vendor.VendorDataStructureQB
-        'Get the current List of Vendor in Quickbooks
-        VendorData = obj_QBtoTl_Vendor.GetVendorQBData(Me, True)
-        Reset_Checked_Vendor_Value(VendorData)
-        If VendorData IsNot Nothing Then
-            For Each element As QBtoTL_Vendor.Vendor In VendorData.DataArray
-                If element.QB_Name = objEmployee.QB_Name Then
-                    element.RecSelect = True
-                    Exit For
-                End If
-            Next
+        Dim objEmployeeServices As Services.TimeLive.Employees.Employees = MAIN.connect_TL_employees(p_token)
+
+        Dim objServices As New Services.TimeLiveServices
+        Dim authentication2 As New Services.SecuredWebServiceHeader
+        authentication2.AuthenticatedToken = p_token
+        objServices.SecuredWebServiceHeaderValue = authentication2
+
+        Dim nDepartmentId As Integer = objServices.GetDepartmentId()
+        Dim nRoleId As Integer = objEmployeeServices.GetUserRoleId()
+        Dim nLocationId As Integer = objServices.GetLocationId()
+        'Dim nEmployeeTypeId As Guid = objEmployeeServices.GetEmployeeTypeId() '= {c2189a83 - 86aa-4972-83E9-5c814fc4eb69}
+
+        ' Sets employee type in TimeLive to Consultant instead of Full-Time Hourly
+        Dim nEmployeeTypeId As Guid = New Guid("{cae3a1c1-f2cb-419a-a53f-b47cf5ef6e3b}")
+        Dim val = nEmployeeTypeId.ToByteArray()
+        Dim nEmployeeStatusId As Integer = objEmployeeServices.GetEmployeeStatusId()
+        Dim nWorkingDayTypeId As Guid = objEmployeeServices.GetEmployeeWorkingDayTypeId()
+        Dim nBillingTypeId As Integer = objEmployeeServices.GetEmployeeBillingTypeId()
+
+
+        Dim newVendorForm As VendorForm = Get_Vendor_Form(objEmployee)
+        'if users want to cancel create new vendor
+        'If objEmployee.RecSelect = False Then
+        '    Exit Sub
+        'End If
+        If newVendorForm Is Nothing Then
+            Exit Sub
         End If
-        'Select the new created vendor 
-        obj_QBtoTl_Vendor.QBTransferVendorToTL(VendorData, p_token, Me, True)
+        If newVendorForm.RadioButtonQuickBooks.Checked Then
+            CreateNewVendor(objEmployee)
+        ElseIf newVendorForm.RadioButtonTimeLive.Checked Then
+            Dim isInTl As Boolean
+            Try
+                isInTl = objEmployeeServices.GetEmployeeId(objEmployee.QB_Name)
+            Catch ex As Exception
+
+            End Try
+
+            If isInTl Then
+                MsgBox("New Vendor found in TimeLive. Can no create new Vendor")
+            Else
+                Dim EmailAddress As String = objEmployee.FirstName(0) + objEmployee.LastName + "@Teltrium.com"
+
+
+                objEmployeeServices.InsertEmployee(EmailAddress, obj_QBtoTl_Vendor.CreatePassword(objEmployee.HiredDate), objEmployee.FirstName,
+                                       objEmployee.LastName, EmailAddress, objEmployee.QB_Name, nDepartmentId, nRoleId, nLocationId,
+                                       233, nBillingTypeId, Now.Date, -1, 0, 6, 0, 0, nEmployeeTypeId, nEmployeeStatusId,
+                                       "", Now.Date, Now.Date, nWorkingDayTypeId, System.Guid.Empty, 0, System.Guid.Empty, False,
+                                       "", "", "", "", "", "", "", "", "", "Mr.", True)
+
+
+            End If
+
+        Else
+            CreateNewVendor(objEmployee)
+            'Send new created vendor in QuckBook to TimeLive
+
+            'Get the current List of Vendor in Quickbooks
+            vendorData = obj_QBtoTl_Vendor.GetVendorQBData(Me, True)
+            Reset_Checked_Vendor_Value(VendorData)
+            If VendorData IsNot Nothing Then
+                For Each element As QBtoTL_Vendor.Vendor In VendorData.DataArray
+                    If element.QB_Name = objEmployee.QB_Name Then
+                        element.RecSelect = True
+                        Exit For
+                    End If
+                Next
+            End If
+            'Select the new created vendor 
+            obj_QBtoTl_Vendor.QBTransferVendorToTL(VendorData, p_token, Me, True)
+
+        End If
+
+
+
         display_UI()
 
     End Sub
@@ -3344,6 +3348,7 @@ Public Class MAIN
 
         Using treeview As JobSubJobTreeView = New JobSubJobTreeView()
             With treeview
+
                 Dim jobDataArray As New List(Of Array)
                 For Each row As DataGridViewRow In DataGridView1.Rows
                     If row.DefaultCellStyle.ForeColor = Color.Blue Then

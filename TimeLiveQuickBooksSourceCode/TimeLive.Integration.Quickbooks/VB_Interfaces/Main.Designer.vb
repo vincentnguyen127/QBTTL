@@ -866,10 +866,10 @@ Partial Class MAIN
         'btnNewEmployee
         '
         Me.btnNewEmployee.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
-        Me.btnNewEmployee.Location = New System.Drawing.Point(8, 579)
+        Me.btnNewEmployee.Location = New System.Drawing.Point(308, 580)
         Me.btnNewEmployee.Margin = New System.Windows.Forms.Padding(2)
         Me.btnNewEmployee.Name = "btnNewEmployee"
-        Me.btnNewEmployee.Size = New System.Drawing.Size(86, 23)
+        Me.btnNewEmployee.Size = New System.Drawing.Size(93, 23)
         Me.btnNewEmployee.TabIndex = 3
         Me.btnNewEmployee.Text = "New Employee"
         Me.btnNewEmployee.UseVisualStyleBackColor = True
@@ -877,10 +877,10 @@ Partial Class MAIN
         'btnNewVendor
         '
         Me.btnNewVendor.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
-        Me.btnNewVendor.Location = New System.Drawing.Point(11, 579)
+        Me.btnNewVendor.Location = New System.Drawing.Point(209, 580)
         Me.btnNewVendor.Margin = New System.Windows.Forms.Padding(2)
         Me.btnNewVendor.Name = "btnNewVendor"
-        Me.btnNewVendor.Size = New System.Drawing.Size(78, 19)
+        Me.btnNewVendor.Size = New System.Drawing.Size(95, 22)
         Me.btnNewVendor.TabIndex = 4
         Me.btnNewVendor.Text = "New Vendor"
         Me.btnNewVendor.UseVisualStyleBackColor = True
@@ -932,9 +932,9 @@ Partial Class MAIN
         'btnCreateJobItem
         '
         Me.btnCreateJobItem.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
-        Me.btnCreateJobItem.Location = New System.Drawing.Point(6, 577)
+        Me.btnCreateJobItem.Location = New System.Drawing.Point(110, 580)
         Me.btnCreateJobItem.Name = "btnCreateJobItem"
-        Me.btnCreateJobItem.Size = New System.Drawing.Size(99, 23)
+        Me.btnCreateJobItem.Size = New System.Drawing.Size(94, 23)
         Me.btnCreateJobItem.TabIndex = 7
         Me.btnCreateJobItem.Text = "New Job/Items"
         Me.btnCreateJobItem.UseVisualStyleBackColor = True
