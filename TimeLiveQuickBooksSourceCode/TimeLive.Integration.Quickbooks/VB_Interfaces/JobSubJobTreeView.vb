@@ -1,56 +1,97 @@
-﻿Public Class JobSubJobTreeView
+﻿Imports QBFC13Lib
+Public Class JobSubJobTreeView
     Dim obj_main As New MAIN
     Dim job_TLSync As Sync_TLtoQB_JoborItem = New Sync_TLtoQB_JoborItem()
     Dim customer_TLSync As Sync_TLtoQB_Customer = New Sync_TLtoQB_Customer()
+    Dim job_qbtotl As New QBtoTL_JobOrItem
+    Dim JobData As New QBtoTL_JobOrItem.JobDataStructureQB
+    Dim customerData As New QBtoTL_Customer.CustomerDataStructureQB
+    Dim customer_qbtotl As QBtoTL_Customer = New QBtoTL_Customer
+
+    Private Sub JobSubJobTreeView_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        customerData = customer_qbtotl.GetCustomerQBData(Nothing, False)
+        JobData = job_qbtotl.GetJobSubJobData(MAIN, obj_main.p_token, True)
+    End Sub
 
     Private Sub TreeViewJobSubJob_AfterSelect(sender As Object, e As TreeViewEventArgs) Handles TreeViewJobSubJob.AfterSelect
         Dim selected_node = TreeViewJobSubJob.SelectedNode.Text
         Dim obj_main As New MAIN
+        TextBoxTimeLiveID.Text = ""
+        TextBoxTimeLiveName.Text = ""
+        TextBoxFullNameTL.Text = ""
 
-        'Retreiving customers, projects, task from timelive 
-        ' Connect to TimeLive Client
-        Dim objClientServices As Services.TimeLive.Clients.Clients = MAIN.connect_TL_clients(obj_main.p_token)
-        Dim objClientArray() As Object = objClientServices.GetClients()
+        If Me.RadioButtonBothQBTL.Checked Or Me.RadioButtonTimeLive.Checked Then
+            'Retreiving customers, projects, task from timelive 
+            ' Connect to TimeLive Client
+            Dim objClientServices As Services.TimeLive.Clients.Clients = MAIN.connect_TL_clients(obj_main.p_token)
+            Dim objClientArray() As Object = objClientServices.GetClients()
 
 
-        ' Connect to TimeLive Tasks
-        Dim objTaskServices As Services.TimeLive.Tasks.Tasks = MAIN.connect_TL_tasks(obj_main.p_token)
-        Dim objTaskArray() As Object = objTaskServices.GetTasks
-        'Dim objTask As New Services.TimeLive.Tasks.Task
+            ' Connect to TimeLive Tasks
+            Dim objTaskServices As Services.TimeLive.Tasks.Tasks = MAIN.connect_TL_tasks(obj_main.p_token)
+            Dim objTaskArray() As Object = objTaskServices.GetTasks
+            'Dim objTask As New Services.TimeLive.Tasks.Task
 
-        'Connect to TimeLive Projects
-        Dim objProjectServices As Services.TimeLive.Projects.Projects = MAIN.connect_TL_projects(obj_main.p_token)
-        Dim objProjectArray() As Object = objProjectServices.GetProjects
+            'Connect to TimeLive Projects
+            Dim objProjectServices As Services.TimeLive.Projects.Projects = MAIN.connect_TL_projects(obj_main.p_token)
+            Dim objProjectArray() As Object = objProjectServices.GetProjects
 
-        Dim obj_client As Services.TimeLive.Clients.Client
+            Dim obj_client As Services.TimeLive.Clients.Client
 
-        For Each client As Services.TimeLive.Clients.Client In objClientArray
-            If client.ClientName = selected_node Then
-                TextBoxTimeLiveID.Text = objClientServices.GetClientIdByName(client.ClientName)
-                TextBoxTimeLiveName.Text = client.ClientName
-                TextBoxFullNameTL.Text = client.ClientName
-                obj_client = client
-                Exit For
-            End If
-        Next
-
-        For Each project As Services.TimeLive.Projects.Project In objProjectArray
-                If project.ProjectName = selected_node Then
-                    TextBoxTimeLiveID.Text = objProjectServices.GetProjectId(project.ProjectName)
-                    TextBoxTimeLiveName.Text = project.ProjectName
-                    TextBoxFullNameTL.Text = project.ClientName + ":" + project.ProjectName
+            For Each client As Services.TimeLive.Clients.Client In objClientArray
+                If client.ClientName = selected_node Then
+                    TextBoxTimeLiveID.Text = objClientServices.GetClientIdByName(client.ClientName)
+                    TextBoxTimeLiveName.Text = client.ClientName
+                    TextBoxFullNameTL.Text = client.ClientName
+                    obj_client = client
                     Exit For
                 End If
             Next
 
-        For Each task As Services.TimeLive.Tasks.Task In objTaskArray
-            If task.TaskName = selected_node Then
-                TextBoxTimeLiveID.Text = objTaskServices.GetTaskId(task.TaskName)
-                TextBoxTimeLiveName.Text = task.TaskName
-                TextBoxFullNameTL.Text = task.JobParent + ":" + task.TaskName
-                Exit For
+            If String.IsNullOrEmpty(TextBoxTimeLiveID.Text) Then
+                For Each project As Services.TimeLive.Projects.Project In objProjectArray
+                    If project.ProjectName = selected_node Then
+                        TextBoxTimeLiveID.Text = objProjectServices.GetProjectId(project.ProjectName)
+                        TextBoxTimeLiveName.Text = project.ProjectName
+                        TextBoxFullNameTL.Text = project.ClientName + ":" + project.ProjectName
+                        Exit For
+                    End If
+                Next
             End If
-        Next
+
+            If String.IsNullOrEmpty(TextBoxTimeLiveID.Text) Then
+                For Each task As Services.TimeLive.Tasks.Task In objTaskArray
+                    If task.TaskName = selected_node Then
+                        TextBoxTimeLiveID.Text = objTaskServices.GetTaskId(task.TaskName)
+                        TextBoxTimeLiveName.Text = task.TaskName
+                        TextBoxFullNameTL.Text = task.JobParent + ":" + task.TaskName
+                        Exit For
+                    End If
+                Next
+            End If
+        Else
+            For Each customer As QBtoTL_Customer.Customer In customerData.DataArray
+                If customer.QB_Name = selected_node Then
+                    TextBoxTimeLiveID.Text = customer.QB_ID
+                    TextBoxTimeLiveName.Text = customer.QB_Name
+                    TextBoxFullNameTL.Text = customer.QB_Name
+                    Exit For
+                End If
+            Next
+
+            If String.IsNullOrEmpty(TextBoxTimeLiveID.Text) Then
+                For Each job As QBtoTL_JobOrItem.Job_Subjob In JobData.DataArray
+                    If job.QB_Name = selected_node Then
+                        TextBoxTimeLiveID.Text = job.QB_ID
+                        TextBoxTimeLiveName.Text = job.QB_Name
+                        TextBoxFullNameTL.Text = job.FullName
+                        Exit For
+                    End If
+                Next
+            End If
+
+        End If
+
 
 
     End Sub
@@ -66,10 +107,7 @@
         Dim timeLive_node_id As String = TextBoxTimeLiveID.Text.Trim()
         Dim fullname As String = TextBoxFullNameTL.Text.Trim()
         Dim name() As String = fullname.Split(":")
-        If name.Length > 4 Then
-            MessageBox.Show("Can't create more than 5 level")
-            Exit Sub
-        End If
+
 
         Dim new_node As String = InputBox("Enter Node Name").Trim()
         'Check if the new node is empty or not
@@ -78,11 +116,31 @@
             Exit Sub
         End If
 
+        If Me.RadioButtonQuickBooks.Checked Then
+            'Check if new node is in QuickBooks
+            Dim isInQb As Boolean
+            For Each job As QBtoTL_JobOrItem.Job_Subjob In JobData.DataArray
+                isInQb = If(job.QB_Name = new_node, True, False)
+                Exit For
+            Next
+            If isInQb Then
+                MsgBox("The new Node is in QuickBooks, can not create new node")
+            Else
+                Dim newMsgSetRq = MAIN.SESSMANAGER.CreateMsgSetRequest("US", 2, 0)
+
+                Dim jobAdd As ICustomerAdd = newMsgSetRq.AppendCustomerAddRq
+                jobAdd.ParentRef.FullName.SetValue(fullname)
+                jobAdd.Name.SetValue(new_node)
+
+                Dim msgSetRs As IMsgSetResponse = MAIN.SESSMANAGER.DoRequests(newMsgSetRq)
+                Dim res As IResponse
+                res = msgSetRs.ResponseList.GetAt(0)
+            End If
+            Exit Sub
+        End If
 
 
         'connecting timelive
-
-
         Dim objProjectServices As Services.TimeLive.Projects.Projects = MAIN.connect_TL_projects(obj_main.p_token)
         Dim objTaskServices As Services.TimeLive.Tasks.Tasks = MAIN.connect_TL_tasks(obj_main.p_token)
         Dim objClientServices As Services.TimeLive.Clients.Clients = MAIN.connect_TL_clients(obj_main.p_token)
@@ -101,85 +159,166 @@
         Dim nProjectBillingRateTypeId As Integer = objProjectServices.GetProjectBillingRateTypeId()
 
 
-
         Dim nTaskTypeId As Integer = objTaskServices.GetTaskTypeId()
         Dim nTaskStatusId As Integer = objTaskServices.GetTaskStatusId()
         Dim nPriorityId As Integer = objTaskServices.GetTaskPriorityId()
         Dim nCurrencyId As Integer = objServices.GetCurrencyId()
 
-        'identify the selected node is client, project, or tasks 
-        'if the selected node is a client, create project
+
         Dim nodes As New List(Of String)
-        If Array.Exists(objClientServices.GetClients, Function(clnt As Services.TimeLive.Clients.Client) clnt.ClientName = selected_node) Then
-            Try
-                objProjectServices.InsertProject(nProjectTypeId, Convert.ToInt32(timeLive_node_id), 0, 0, nProjectBillingTypeId, new_node, "",
+
+        If Me.RadioButtonTimeLive.Checked Then
+            If Array.Exists(objClientServices.GetClients, Function(clnt As Services.TimeLive.Clients.Client) clnt.ClientName = selected_node) Then
+                Try
+                    objProjectServices.InsertProject(nProjectTypeId, Convert.ToInt32(timeLive_node_id), 0, 0, nProjectBillingTypeId, new_node, "",
                                                  Now.Date, Now.AddMonths(1).Date, nProjectStatusId, nTeamLeadId, nProjectManagerId, 0, 0, 1, "Months", "",
                                                  0, nProjectBillingRateTypeId, False, True, 0, Now.Date, nTeamLeadId, Now.Date, nTeamLeadId, False)
 
 
 
-            Catch ex As System.Web.Services.Protocols.SoapException
-                ' Do Nothing
-            Catch ex As Exception
-                Throw ex
-            End Try
+                Catch ex As System.Web.Services.Protocols.SoapException
+                    ' Do Nothing
+                Catch ex As Exception
+                    Throw ex
+                End Try
 
 
-            'if the selected node is a project, create task 
-        ElseIf Array.Exists(objProjectServices.GetProjects, Function(proj As Services.TimeLive.Projects.Project) proj.ProjectName = selected_node) Then
-            Dim nProjectId As Integer = objProjectServices.GetProjectId(name(1))
-            Dim nProjectMilestoneId As Integer = objProjectServices.GetProjectMilestoneIdByProjectId(nProjectId)
-            Try
-                objTaskServices.InsertTask(nProjectId, 0, new_node, new_node, nTaskTypeId, 1, "Months", 0, False, Now.AddMonths(1).Date, nTaskStatusId,
+                'if the selected node is a project, create task 
+            ElseIf Array.Exists(objProjectServices.GetProjects, Function(proj As Services.TimeLive.Projects.Project) proj.ProjectName = selected_node) Then
+                Dim nProjectId As Integer = objProjectServices.GetProjectId(name(1))
+                Dim nProjectMilestoneId As Integer = objProjectServices.GetProjectMilestoneIdByProjectId(nProjectId)
+                Try
+                    objTaskServices.InsertTask(nProjectId, 0, new_node, new_node, nTaskTypeId, 1, "Months", 0, False, Now.AddMonths(1).Date, nTaskStatusId,
                                                nPriorityId, nProjectMilestoneId, False, True, Now.Date, nTeamLeadId, Now.Date, nTeamLeadId, 0, 0,
                                                "Days", True, new_node, 0, False, nCurrencyId)
 
-            Catch ex As System.Web.Services.Protocols.SoapException
-                ' Do Nothing
-            Catch ex As Exception
-                Throw ex
-            End Try
+                Catch ex As System.Web.Services.Protocols.SoapException
+                    ' Do Nothing
+                Catch ex As Exception
+                    Throw ex
+                End Try
 
-            ' if the selected node is a task, create sub stask 
+                ' if the selected node is a task, create sub stask 
+            Else
+                Dim nProjectId As Integer = objProjectServices.GetProjectId(name(1))
+                Dim nParentTaskId As Integer = objTaskServices.GetTaskId(name(name.Length - 1))
+                Dim nProjectMilestoneId As Integer = objProjectServices.GetProjectMilestoneIdByProjectId(nProjectId)
+                Try
+                    objTaskServices.InsertTask(nProjectId, nParentTaskId, new_node, new_node, nTaskTypeId, 1, "Months", 0, False, Now.AddMonths(1).Date, nTaskStatusId,
+                                               nPriorityId, nProjectMilestoneId, False, True, Now.Date, nTeamLeadId, Now.Date, nTeamLeadId, 0, 0,
+                                               "Days", True, new_node, 0, False, nCurrencyId)
+                Catch ex As System.Web.Services.Protocols.SoapException
+                    ' Do Nothing
+                Catch ex As Exception
+                    Throw ex
+                End Try
+            End If
+        ElseIf Me.RadioButtonBothQBTL.Checked Then
+            If Array.Exists(objClientServices.GetClients, Function(clnt As Services.TimeLive.Clients.Client) clnt.ClientName = selected_node) Then
+                Try
+                    objProjectServices.InsertProject(nProjectTypeId, Convert.ToInt32(timeLive_node_id), 0, 0, nProjectBillingTypeId, new_node, "",
+                                                 Now.Date, Now.AddMonths(1).Date, nProjectStatusId, nTeamLeadId, nProjectManagerId, 0, 0, 1, "Months", "",
+                                                 0, nProjectBillingRateTypeId, False, True, 0, Now.Date, nTeamLeadId, Now.Date, nTeamLeadId, False)
+
+
+
+                Catch ex As System.Web.Services.Protocols.SoapException
+                    ' Do Nothing
+                Catch ex As Exception
+                    Throw ex
+                End Try
+
+
+                'if the selected node is a project, create task 
+            ElseIf Array.Exists(objProjectServices.GetProjects, Function(proj As Services.TimeLive.Projects.Project) proj.ProjectName = selected_node) Then
+                Dim nProjectId As Integer = objProjectServices.GetProjectId(name(1))
+                Dim nProjectMilestoneId As Integer = objProjectServices.GetProjectMilestoneIdByProjectId(nProjectId)
+                Try
+                    objTaskServices.InsertTask(nProjectId, 0, new_node, new_node, nTaskTypeId, 1, "Months", 0, False, Now.AddMonths(1).Date, nTaskStatusId,
+                                               nPriorityId, nProjectMilestoneId, False, True, Now.Date, nTeamLeadId, Now.Date, nTeamLeadId, 0, 0,
+                                               "Days", True, new_node, 0, False, nCurrencyId)
+
+                Catch ex As System.Web.Services.Protocols.SoapException
+                    ' Do Nothing
+                Catch ex As Exception
+                    Throw ex
+                End Try
+
+                ' if the selected node is a task, create sub stask 
+            Else
+                Dim nProjectId As Integer = objProjectServices.GetProjectId(name(1))
+                Dim nParentTaskId As Integer = objTaskServices.GetTaskId(name(name.Length - 1))
+                Dim nProjectMilestoneId As Integer = objProjectServices.GetProjectMilestoneIdByProjectId(nProjectId)
+                Try
+                    objTaskServices.InsertTask(nProjectId, nParentTaskId, new_node, new_node, nTaskTypeId, 1, "Months", 0, False, Now.AddMonths(1).Date, nTaskStatusId,
+                                               nPriorityId, nProjectMilestoneId, False, True, Now.Date, nTeamLeadId, Now.Date, nTeamLeadId, 0, 0,
+                                               "Days", True, new_node, 0, False, nCurrencyId)
+                Catch ex As System.Web.Services.Protocols.SoapException
+                    ' Do Nothing
+                Catch ex As Exception
+                    Throw ex
+                End Try
+            End If
+            nodes.Add(fullname + ":" + new_node)
+            job_TLSync.SyncJobsSubJobData(obj_main.p_token, obj_main, True, nodes)
         Else
-            Dim nProjectId As Integer = objProjectServices.GetProjectId(name(1))
-            Dim nParentTaskId As Integer = objTaskServices.GetTaskId(name(name.Length - 1))
-            Dim nProjectMilestoneId As Integer = objProjectServices.GetProjectMilestoneIdByProjectId(nProjectId)
-            Try
-                objTaskServices.InsertTask(nProjectId, nParentTaskId, new_node, new_node, nTaskTypeId, 1, "Months", 0, False, Now.AddMonths(1).Date, nTaskStatusId,
-                                               nPriorityId, nProjectMilestoneId, False, True, Now.Date, nTeamLeadId, Now.Date, nTeamLeadId, 0, 0,
-                                               "Days", True, new_node, 0, False, nCurrencyId)
-            Catch ex As System.Web.Services.Protocols.SoapException
-                ' Do Nothing
-            Catch ex As Exception
-                Throw ex
-            End Try
+
 
         End If
 
 
-        nodes.Add(fullname + ":" + new_node)
-        job_TLSync.SyncJobsSubJobData(obj_main.p_token, obj_main, True, nodes)
         Me.Close()
     End Sub
+    Private Function AddTimeLiveNode()
+
+    End Function
 
     Private Sub ButtonTreeViewClose_Click(sender As Object, e As EventArgs) Handles ButtonTreeViewClose.Click
         Me.Close()
     End Sub
 
     Private Sub RadioButtonQuickBooks_CheckedChanged(sender As Object, e As EventArgs) Handles RadioButtonQuickBooks.Click
-        Me.TreeViewJobSubJob.Nodes.Clear()
+        GenerateTreeView("QB")
     End Sub
 
     Private Sub RadioButtonBothQBTL_CheckedChanged(sender As Object, e As EventArgs) Handles RadioButtonBothQBTL.Click
+        GenerateTreeView("QBTL")
+    End Sub
+
+    Private Sub RadioButtonTimeLive_CheckedChanged(sender As Object, e As EventArgs) Handles RadioButtonTimeLive.Click
+        GenerateTreeView("TL")
+    End Sub
+
+    Private Function GenerateTreeView(input As String)
+        Me.TreeViewJobSubJob.Nodes.Clear()
+
         Dim jobDataArray As New List(Of Array)
-        For Each row As DataGridViewRow In MAIN.DataGridView1.Rows
-            If row.DefaultCellStyle.ForeColor = Color.Blue Then
-                Dim fullName As String = row.Cells(1).Value
+        'QuickBooks and TimeLive
+        If input = "QBTL" Then
+            Me.Label1.Text = "Both Quicks and TimeLive"
+            For Each row As DataGridViewRow In MAIN.DataGridView1.Rows
+                If row.DefaultCellStyle.ForeColor = Color.Blue Then
+                    Dim fullName As String = row.Cells("Full Name").Value
+                    Dim fullNameArray() As String = Split(fullName, " --> ")
+                    jobDataArray.Add(fullNameArray)
+                End If
+            Next
+        ElseIf input = "QB" Then
+            Me.Label1.Text = "QuickBooks only"
+            For Each row As DataGridViewRow In MAIN.DataGridView1.Rows
+                Dim fullName As String = row.Cells("Full Name").Value
                 Dim fullNameArray() As String = Split(fullName, " --> ")
                 jobDataArray.Add(fullNameArray)
-            End If
-        Next
+            Next
+        Else
+            Me.Label1.Text = "TimeLive only"
+            For Each row As DataGridViewRow In MAIN.DataGridView2.Rows
+                Dim fullName As String = row.Cells("Name").Value
+                Dim fullNameArray() As String = Split(fullName, " --> ")
+                jobDataArray.Add(fullNameArray)
+            Next
+        End If
+
         'add the first node 
         Dim customerNode As New List(Of String)
         For i As Integer = 0 To jobDataArray.Count - 1
@@ -197,7 +336,9 @@
 
         For i As Integer = 0 To jobDataArray.Count - 1
             Dim lengthArr As Integer = jobDataArray(i).Length
-            If lengthArr = 2 Then
+            If lengthArr = 1 Then
+                Continue For
+            ElseIf lengthArr = 2 Then
                 Me.TreeViewJobSubJob.Nodes(jobDataArray(i)(0)).Nodes.Add(jobDataArray(i)(1), jobDataArray(i)(1))
             ElseIf lengthArr = 3 Then
                 Me.TreeViewJobSubJob.Nodes(jobDataArray(i)(0)).Nodes(jobDataArray(i)(1)).Nodes.Add(jobDataArray(i)(2), jobDataArray(i)(2))
@@ -212,10 +353,7 @@
         Me.TreeViewJobSubJob.ExpandAll()
         Me.TreeViewJobSubJob.Update()
 
+    End Function
 
-    End Sub
 
-    Private Sub RadioButtonTimeLive_CheckedChanged(sender As Object, e As EventArgs) Handles RadioButtonTimeLive.Click
-
-    End Sub
 End Class

@@ -3352,7 +3352,7 @@ Public Class MAIN
                 Dim jobDataArray As New List(Of Array)
                 For Each row As DataGridViewRow In DataGridView1.Rows
                     If row.DefaultCellStyle.ForeColor = Color.Blue Then
-                        Dim fullName As String = row.Cells(1).Value
+                        Dim fullName As String = row.Cells("Full Name").Value
                         Dim fullNameArray() As String = Split(fullName, " --> ")
                         jobDataArray.Add(fullNameArray)
                     End If
@@ -3532,4 +3532,6 @@ Public Class MAIN
     Private Sub DataGridView1_CellContentClick(sender As Object, e As DataGridViewCellEventArgs) Handles DataGridView1.CellContentClick
 
     End Sub
+
+
 End Class
