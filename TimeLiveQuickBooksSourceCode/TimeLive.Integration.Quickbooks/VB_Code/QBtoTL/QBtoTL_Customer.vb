@@ -5,10 +5,12 @@ Imports System.Net.Mail
 Imports System.Data.SqlClient
 
 Public Class QBtoTL_Customer
+
     Public Class CustomerDataStructureQB
         Public NoItems As Integer = 0
         Public DataArray As New List(Of Customer)
         Public NoInactive As Integer = 0
+
     End Class
     Public Class Customer
         Public RecSelect As Boolean
@@ -21,6 +23,8 @@ Public Class QBtoTL_Customer
         Public Telephone1 As String
         Public Fax As String
         Public Enabled As Boolean
+        Public EditSequence As String
+
 
 
         Sub New(ByVal NewlyAdded As String, ByVal QB_Name As String, ByVal Email As String, ByVal QB_ID As String, ByVal Telephone1 As String,
@@ -132,6 +136,7 @@ Public Class QBtoTL_Customer
         Dim CreateTime As String
         Dim CustomerData As New CustomerDataStructureQB
         Dim NewlyAdd As String
+        Dim EditSequence As Object
 
 
         'step1: prepare the request
@@ -179,6 +184,7 @@ Public Class QBtoTL_Customer
                         CreateTime = If(.TimeCreated Is Nothing, "", .TimeCreated.GetValue.ToString)
                         ModTime = If(.TimeModified Is Nothing, CreateTime, .TimeModified.GetValue.ToString)
 
+
                         ' will check which type data should be added 
                         CustomerData.NoItems += 1
                         If Not .IsActive.GetValue Then
@@ -213,6 +219,67 @@ Public Class QBtoTL_Customer
         End Try
 
         Return CustomerData
+    End Function
+
+    'Modify individual customer in QB
+    Public Function ModifyCustomer(customerName As String)
+        'send the request to QB to get the selected customer infor 
+        Dim msgSetRq As IMsgSetRequest = MAIN.SESSMANAGER.CreateMsgSetRequest("US", 2, 0)
+
+        msgSetRq.Attributes.OnError = ENRqOnError.roeContinue
+        Dim CustomerQueryRq As ICustomerQuery = msgSetRq.AppendCustomerQueryRq
+
+        'CustomerQueryRq.ORCustomerListQuery.CustomerListFilter.ActiveStatus.SetValue(ENActiveStatus.asActiveOnly) 'asActiveOnly) or asAll
+        CustomerQueryRq.ORCustomerListQuery.FullNameList.Add(customerName)
+        Dim msgSetRs As IMsgSetResponse = MAIN.SESSMANAGER.DoRequests(msgSetRq)
+
+        Dim response As IResponse = msgSetRs.ResponseList.GetAt(0)
+        Dim custRetList As ICustomerRetList
+        custRetList = response.Detail
+
+        Dim custRet As ICustomerRet = custRetList.GetAt(0)
+
+        Dim EmailAddress As String
+        Dim Telephone1 As String
+        Dim Fax As String
+        Dim ModTime As String
+        Dim CreateTime As String
+        Dim NewlyAdd As String
+
+
+        With custRet
+            EmailAddress = If(.Email Is Nothing, "", .Email.GetValue)
+            Telephone1 = If(.Phone Is Nothing, "", .Phone.GetValue)
+            Fax = If(.Fax Is Nothing, "", .Fax.GetValue)
+            CreateTime = If(.TimeCreated Is Nothing, "", .TimeCreated.GetValue.ToString)
+            ModTime = If(.TimeModified Is Nothing, CreateTime, .TimeModified.GetValue.ToString)
+        End With
+
+        Dim customer As QBtoTL_Customer.Customer = New QBtoTL_Customer.Customer(NewlyAdd, custRet.Name.GetValue, EmailAddress, custRet.ListID.GetValue, Telephone1, Fax, ModTime, CreateTime, custRet.IsActive.GetValue)
+        customer.EditSequence = custRet.EditSequence.GetValue
+
+
+        MAIN.Get_Customer_Form(customer)
+
+
+        Try
+            Dim newMsgSetRq As IMsgSetRequest = MAIN.SESSMANAGER.CreateMsgSetRequest("US", 2, 0)
+
+
+            Dim customerMod As ICustomerMod = newMsgSetRq.AppendCustomerModRq
+            customerMod.Name.SetValue(customer.QB_Name)
+            customerMod.ListID.SetValue(customer.QB_ID)
+            customerMod.EditSequence.SetValue(customer.EditSequence)
+            customerMod.Email.SetValue(customer.Email)
+            customerMod.Phone.SetValue(customer.Telephone1)
+            customerMod.Fax.SetValue(customer.Fax)
+
+            msgSetRq = MAIN.SESSMANAGER.DoRequests(newMsgSetRq)
+            Dim res As IResponse = msgSetRq.ResponseList.GetAt(0)
+        Catch ex As Exception
+
+        End Try
+
     End Function
 
     Public Function QBTransferCustomerToTL(ByRef objData As QBtoTL_Customer.CustomerDataStructureQB,

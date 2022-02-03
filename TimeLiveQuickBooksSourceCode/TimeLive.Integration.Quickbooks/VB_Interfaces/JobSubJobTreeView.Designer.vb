@@ -35,20 +35,23 @@ Partial Class JobSubJobTreeView
         Me.RadioButtonQuickBooks = New System.Windows.Forms.RadioButton()
         Me.RadioButtonBothQBTL = New System.Windows.Forms.RadioButton()
         Me.Label1 = New System.Windows.Forms.Label()
+        Me.GroupBox1 = New System.Windows.Forms.GroupBox()
+        Me.GroupBox2 = New System.Windows.Forms.GroupBox()
+        Me.GroupBox2.SuspendLayout()
         Me.SuspendLayout()
         '
         'TreeViewJobSubJob
         '
-        Me.TreeViewJobSubJob.Location = New System.Drawing.Point(12, 37)
+        Me.TreeViewJobSubJob.Location = New System.Drawing.Point(12, 33)
         Me.TreeViewJobSubJob.Name = "TreeViewJobSubJob"
-        Me.TreeViewJobSubJob.Size = New System.Drawing.Size(239, 336)
+        Me.TreeViewJobSubJob.Size = New System.Drawing.Size(239, 306)
         Me.TreeViewJobSubJob.TabIndex = 0
         '
         'ButtonTreeViewClose
         '
-        Me.ButtonTreeViewClose.Location = New System.Drawing.Point(404, 173)
+        Me.ButtonTreeViewClose.Location = New System.Drawing.Point(538, 346)
         Me.ButtonTreeViewClose.Name = "ButtonTreeViewClose"
-        Me.ButtonTreeViewClose.Size = New System.Drawing.Size(71, 23)
+        Me.ButtonTreeViewClose.Size = New System.Drawing.Size(79, 32)
         Me.ButtonTreeViewClose.TabIndex = 44
         Me.ButtonTreeViewClose.Text = "Close"
         Me.ButtonTreeViewClose.UseVisualStyleBackColor = True
@@ -56,7 +59,7 @@ Partial Class JobSubJobTreeView
         'Label8
         '
         Me.Label8.AutoSize = True
-        Me.Label8.Location = New System.Drawing.Point(264, 137)
+        Me.Label8.Location = New System.Drawing.Point(22, 74)
         Me.Label8.Name = "Label8"
         Me.Label8.Size = New System.Drawing.Size(57, 13)
         Me.Label8.TabIndex = 43
@@ -64,9 +67,9 @@ Partial Class JobSubJobTreeView
         '
         'btnAddNode
         '
-        Me.btnAddNode.Location = New System.Drawing.Point(310, 173)
+        Me.btnAddNode.Location = New System.Drawing.Point(15, 347)
         Me.btnAddNode.Name = "btnAddNode"
-        Me.btnAddNode.Size = New System.Drawing.Size(71, 23)
+        Me.btnAddNode.Size = New System.Drawing.Size(71, 31)
         Me.btnAddNode.TabIndex = 41
         Me.btnAddNode.Text = "Add Node"
         Me.btnAddNode.UseVisualStyleBackColor = True
@@ -74,7 +77,7 @@ Partial Class JobSubJobTreeView
         'Label6
         '
         Me.Label6.AutoSize = True
-        Me.Label6.Location = New System.Drawing.Point(283, 111)
+        Me.Label6.Location = New System.Drawing.Point(41, 48)
         Me.Label6.Name = "Label6"
         Me.Label6.Size = New System.Drawing.Size(38, 13)
         Me.Label6.TabIndex = 40
@@ -83,7 +86,7 @@ Partial Class JobSubJobTreeView
         'Label7
         '
         Me.Label7.AutoSize = True
-        Me.Label7.Location = New System.Drawing.Point(300, 88)
+        Me.Label7.Location = New System.Drawing.Point(58, 25)
         Me.Label7.Name = "Label7"
         Me.Label7.Size = New System.Drawing.Size(21, 13)
         Me.Label7.TabIndex = 38
@@ -91,21 +94,24 @@ Partial Class JobSubJobTreeView
         '
         'TextBoxFullNameTL
         '
-        Me.TextBoxFullNameTL.Location = New System.Drawing.Point(327, 137)
+        Me.TextBoxFullNameTL.Enabled = False
+        Me.TextBoxFullNameTL.Location = New System.Drawing.Point(85, 74)
         Me.TextBoxFullNameTL.Name = "TextBoxFullNameTL"
         Me.TextBoxFullNameTL.Size = New System.Drawing.Size(256, 20)
         Me.TextBoxFullNameTL.TabIndex = 47
         '
         'TextBoxTimeLiveName
         '
-        Me.TextBoxTimeLiveName.Location = New System.Drawing.Point(327, 111)
+        Me.TextBoxTimeLiveName.Enabled = False
+        Me.TextBoxTimeLiveName.Location = New System.Drawing.Point(85, 48)
         Me.TextBoxTimeLiveName.Name = "TextBoxTimeLiveName"
         Me.TextBoxTimeLiveName.Size = New System.Drawing.Size(256, 20)
         Me.TextBoxTimeLiveName.TabIndex = 46
         '
         'TextBoxTimeLiveID
         '
-        Me.TextBoxTimeLiveID.Location = New System.Drawing.Point(327, 85)
+        Me.TextBoxTimeLiveID.Enabled = False
+        Me.TextBoxTimeLiveID.Location = New System.Drawing.Point(85, 22)
         Me.TextBoxTimeLiveID.Name = "TextBoxTimeLiveID"
         Me.TextBoxTimeLiveID.Size = New System.Drawing.Size(256, 20)
         Me.TextBoxTimeLiveID.TabIndex = 45
@@ -113,7 +119,7 @@ Partial Class JobSubJobTreeView
         'RadioButtonTimeLive
         '
         Me.RadioButtonTimeLive.AutoSize = True
-        Me.RadioButtonTimeLive.Location = New System.Drawing.Point(538, 37)
+        Me.RadioButtonTimeLive.Location = New System.Drawing.Point(541, 52)
         Me.RadioButtonTimeLive.Name = "RadioButtonTimeLive"
         Me.RadioButtonTimeLive.Size = New System.Drawing.Size(92, 17)
         Me.RadioButtonTimeLive.TabIndex = 64
@@ -124,7 +130,7 @@ Partial Class JobSubJobTreeView
         'RadioButtonQuickBooks
         '
         Me.RadioButtonQuickBooks.AutoSize = True
-        Me.RadioButtonQuickBooks.Location = New System.Drawing.Point(425, 37)
+        Me.RadioButtonQuickBooks.Location = New System.Drawing.Point(428, 52)
         Me.RadioButtonQuickBooks.Name = "RadioButtonQuickBooks"
         Me.RadioButtonQuickBooks.Size = New System.Drawing.Size(107, 17)
         Me.RadioButtonQuickBooks.TabIndex = 63
@@ -136,7 +142,7 @@ Partial Class JobSubJobTreeView
         '
         Me.RadioButtonBothQBTL.AutoSize = True
         Me.RadioButtonBothQBTL.Checked = True
-        Me.RadioButtonBothQBTL.Location = New System.Drawing.Point(269, 37)
+        Me.RadioButtonBothQBTL.Location = New System.Drawing.Point(272, 52)
         Me.RadioButtonBothQBTL.Name = "RadioButtonBothQBTL"
         Me.RadioButtonBothQBTL.Size = New System.Drawing.Size(150, 17)
         Me.RadioButtonBothQBTL.TabIndex = 62
@@ -147,32 +153,54 @@ Partial Class JobSubJobTreeView
         'Label1
         '
         Me.Label1.AutoSize = True
-        Me.Label1.Location = New System.Drawing.Point(97, 9)
+        Me.Label1.Location = New System.Drawing.Point(12, 17)
         Me.Label1.Name = "Label1"
         Me.Label1.Size = New System.Drawing.Size(39, 13)
         Me.Label1.TabIndex = 65
         Me.Label1.Text = "Label1"
         '
+        'GroupBox1
+        '
+        Me.GroupBox1.Location = New System.Drawing.Point(257, 31)
+        Me.GroupBox1.Name = "GroupBox1"
+        Me.GroupBox1.Size = New System.Drawing.Size(380, 48)
+        Me.GroupBox1.TabIndex = 68
+        Me.GroupBox1.TabStop = False
+        Me.GroupBox1.Text = "Application"
+        '
+        'GroupBox2
+        '
+        Me.GroupBox2.Controls.Add(Me.TextBoxFullNameTL)
+        Me.GroupBox2.Controls.Add(Me.Label7)
+        Me.GroupBox2.Controls.Add(Me.Label6)
+        Me.GroupBox2.Controls.Add(Me.Label8)
+        Me.GroupBox2.Controls.Add(Me.TextBoxTimeLiveID)
+        Me.GroupBox2.Controls.Add(Me.TextBoxTimeLiveName)
+        Me.GroupBox2.Location = New System.Drawing.Point(257, 90)
+        Me.GroupBox2.Name = "GroupBox2"
+        Me.GroupBox2.Size = New System.Drawing.Size(380, 109)
+        Me.GroupBox2.TabIndex = 69
+        Me.GroupBox2.TabStop = False
+        Me.GroupBox2.Text = "Selected tree record details"
+        '
         'JobSubJobTreeView
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(642, 390)
+        Me.ClientSize = New System.Drawing.Size(649, 390)
         Me.Controls.Add(Me.Label1)
         Me.Controls.Add(Me.RadioButtonTimeLive)
         Me.Controls.Add(Me.RadioButtonQuickBooks)
         Me.Controls.Add(Me.RadioButtonBothQBTL)
-        Me.Controls.Add(Me.TextBoxFullNameTL)
-        Me.Controls.Add(Me.TextBoxTimeLiveName)
-        Me.Controls.Add(Me.TextBoxTimeLiveID)
         Me.Controls.Add(Me.ButtonTreeViewClose)
-        Me.Controls.Add(Me.Label8)
         Me.Controls.Add(Me.btnAddNode)
-        Me.Controls.Add(Me.Label6)
-        Me.Controls.Add(Me.Label7)
         Me.Controls.Add(Me.TreeViewJobSubJob)
+        Me.Controls.Add(Me.GroupBox1)
+        Me.Controls.Add(Me.GroupBox2)
         Me.Name = "JobSubJobTreeView"
-        Me.Text = "JobSubJobTreeView"
+        Me.Text = "Jobs/Items Create"
+        Me.GroupBox2.ResumeLayout(False)
+        Me.GroupBox2.PerformLayout()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -191,4 +219,6 @@ Partial Class JobSubJobTreeView
     Friend WithEvents RadioButtonQuickBooks As RadioButton
     Friend WithEvents RadioButtonBothQBTL As RadioButton
     Friend WithEvents Label1 As Label
+    Friend WithEvents GroupBox1 As GroupBox
+    Friend WithEvents GroupBox2 As GroupBox
 End Class

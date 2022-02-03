@@ -53,21 +53,24 @@ Partial Class MAIN
         Me.btn_relationships2 = New System.Windows.Forms.ToolStripButton()
         Me.clearlogbtn = New System.Windows.Forms.ToolStripButton()
         Me.TabPageJobsItems = New System.Windows.Forms.TabPage()
-        Me.btnTreeView = New System.Windows.Forms.Button()
+        Me.Label5 = New System.Windows.Forms.Label()
         Me.ProgressBar1 = New System.Windows.Forms.ProgressBar()
         Me.TLtoQBVendorRadioButton = New System.Windows.Forms.RadioButton()
         Me.AttributeTabControl = New System.Windows.Forms.TabControl()
         Me.TabPageCustomers = New System.Windows.Forms.TabPage()
+        Me.Label2 = New System.Windows.Forms.Label()
         Me.RefreshCustomers = New System.Windows.Forms.Button()
         Me.CustomerSyncDirection = New System.Windows.Forms.GroupBox()
         Me.TLtoQBCustomerRadioButton = New System.Windows.Forms.RadioButton()
         Me.QBtoTLCustomerRadioButton = New System.Windows.Forms.RadioButton()
         Me.TabPageEmployees = New System.Windows.Forms.TabPage()
+        Me.Label3 = New System.Windows.Forms.Label()
         Me.RefreshEmployees = New System.Windows.Forms.Button()
         Me.EmployeeSyncDirection = New System.Windows.Forms.GroupBox()
         Me.TLtoQBEmployeeRadioButton = New System.Windows.Forms.RadioButton()
         Me.QBtoTLEmployeeRadioButton = New System.Windows.Forms.RadioButton()
         Me.TabPageVendor = New System.Windows.Forms.TabPage()
+        Me.Label4 = New System.Windows.Forms.Label()
         Me.RefreshVendors = New System.Windows.Forms.Button()
         Me.VendorSyncDirection = New System.Windows.Forms.GroupBox()
         Me.QBtoTLVendorRadioButton = New System.Windows.Forms.RadioButton()
@@ -83,6 +86,7 @@ Partial Class MAIN
         Me.time_nextWeek = New System.Windows.Forms.Button()
         Me.time_btn_currentweek = New System.Windows.Forms.Button()
         Me.TabPageExpenseReport = New System.Windows.Forms.TabPage()
+        Me.Label6 = New System.Windows.Forms.Label()
         Me.refreshExpenseReport = New System.Windows.Forms.Button()
         Me.expense_prevWeek = New System.Windows.Forms.Button()
         Me.ToLabelExpenseReports = New System.Windows.Forms.Label()
@@ -146,7 +150,7 @@ Partial Class MAIN
         Me.RefreshJobsOrItems.Image = CType(resources.GetObject("RefreshJobsOrItems.Image"), System.Drawing.Image)
         Me.RefreshJobsOrItems.Location = New System.Drawing.Point(368, 13)
         Me.RefreshJobsOrItems.Name = "RefreshJobsOrItems"
-        Me.RefreshJobsOrItems.Size = New System.Drawing.Size(60, 58)
+        Me.RefreshJobsOrItems.Size = New System.Drawing.Size(60, 50)
         Me.RefreshJobsOrItems.TabIndex = 4
         Me.RefreshJobsOrItems.UseVisualStyleBackColor = True
         '
@@ -428,7 +432,7 @@ Partial Class MAIN
         '
         'TabPageJobsItems
         '
-        Me.TabPageJobsItems.Controls.Add(Me.btnTreeView)
+        Me.TabPageJobsItems.Controls.Add(Me.Label5)
         Me.TabPageJobsItems.Controls.Add(Me.RefreshJobsOrItems)
         Me.TabPageJobsItems.Controls.Add(Me.JobItemSyncDirection)
         Me.TabPageJobsItems.Location = New System.Drawing.Point(4, 22)
@@ -438,15 +442,14 @@ Partial Class MAIN
         Me.TabPageJobsItems.Text = "Jobs/Items Options"
         Me.TabPageJobsItems.UseVisualStyleBackColor = True
         '
-        'btnTreeView
+        'Label5
         '
-        Me.btnTreeView.Location = New System.Drawing.Point(443, 52)
-        Me.btnTreeView.Margin = New System.Windows.Forms.Padding(2)
-        Me.btnTreeView.Name = "btnTreeView"
-        Me.btnTreeView.Size = New System.Drawing.Size(73, 19)
-        Me.btnTreeView.TabIndex = 5
-        Me.btnTreeView.Text = "Tree View"
-        Me.btnTreeView.UseVisualStyleBackColor = True
+        Me.Label5.AutoSize = True
+        Me.Label5.Location = New System.Drawing.Point(372, 62)
+        Me.Label5.Name = "Label5"
+        Me.Label5.Size = New System.Drawing.Size(56, 13)
+        Me.Label5.TabIndex = 45
+        Me.Label5.Text = "Auto Sync"
         '
         'ProgressBar1
         '
@@ -489,6 +492,7 @@ Partial Class MAIN
         '
         'TabPageCustomers
         '
+        Me.TabPageCustomers.Controls.Add(Me.Label2)
         Me.TabPageCustomers.Controls.Add(Me.RefreshCustomers)
         Me.TabPageCustomers.Controls.Add(Me.CustomerSyncDirection)
         Me.TabPageCustomers.Location = New System.Drawing.Point(4, 22)
@@ -499,12 +503,21 @@ Partial Class MAIN
         Me.TabPageCustomers.Text = "Customers Options"
         Me.TabPageCustomers.UseVisualStyleBackColor = True
         '
+        'Label2
+        '
+        Me.Label2.AutoSize = True
+        Me.Label2.Location = New System.Drawing.Point(371, 62)
+        Me.Label2.Name = "Label2"
+        Me.Label2.Size = New System.Drawing.Size(56, 13)
+        Me.Label2.TabIndex = 44
+        Me.Label2.Text = "Auto Sync"
+        '
         'RefreshCustomers
         '
         Me.RefreshCustomers.Image = CType(resources.GetObject("RefreshCustomers.Image"), System.Drawing.Image)
         Me.RefreshCustomers.Location = New System.Drawing.Point(368, 13)
         Me.RefreshCustomers.Name = "RefreshCustomers"
-        Me.RefreshCustomers.Size = New System.Drawing.Size(60, 58)
+        Me.RefreshCustomers.Size = New System.Drawing.Size(60, 51)
         Me.RefreshCustomers.TabIndex = 1
         Me.RefreshCustomers.TextAlign = System.Drawing.ContentAlignment.BottomCenter
         Me.RefreshCustomers.UseVisualStyleBackColor = True
@@ -545,6 +558,7 @@ Partial Class MAIN
         '
         'TabPageEmployees
         '
+        Me.TabPageEmployees.Controls.Add(Me.Label3)
         Me.TabPageEmployees.Controls.Add(Me.RefreshEmployees)
         Me.TabPageEmployees.Controls.Add(Me.EmployeeSyncDirection)
         Me.TabPageEmployees.Location = New System.Drawing.Point(4, 22)
@@ -555,12 +569,21 @@ Partial Class MAIN
         Me.TabPageEmployees.Text = "Employees Options"
         Me.TabPageEmployees.UseVisualStyleBackColor = True
         '
+        'Label3
+        '
+        Me.Label3.AutoSize = True
+        Me.Label3.Location = New System.Drawing.Point(372, 65)
+        Me.Label3.Name = "Label3"
+        Me.Label3.Size = New System.Drawing.Size(56, 13)
+        Me.Label3.TabIndex = 54
+        Me.Label3.Text = "Auto Sync"
+        '
         'RefreshEmployees
         '
         Me.RefreshEmployees.Image = CType(resources.GetObject("RefreshEmployees.Image"), System.Drawing.Image)
         Me.RefreshEmployees.Location = New System.Drawing.Point(368, 13)
         Me.RefreshEmployees.Name = "RefreshEmployees"
-        Me.RefreshEmployees.Size = New System.Drawing.Size(60, 58)
+        Me.RefreshEmployees.Size = New System.Drawing.Size(60, 50)
         Me.RefreshEmployees.TabIndex = 2
         Me.RefreshEmployees.UseVisualStyleBackColor = True
         '
@@ -600,6 +623,7 @@ Partial Class MAIN
         '
         'TabPageVendor
         '
+        Me.TabPageVendor.Controls.Add(Me.Label4)
         Me.TabPageVendor.Controls.Add(Me.RefreshVendors)
         Me.TabPageVendor.Controls.Add(Me.VendorSyncDirection)
         Me.TabPageVendor.Location = New System.Drawing.Point(4, 22)
@@ -610,12 +634,21 @@ Partial Class MAIN
         Me.TabPageVendor.Text = "Vendors Options"
         Me.TabPageVendor.UseVisualStyleBackColor = True
         '
+        'Label4
+        '
+        Me.Label4.AutoSize = True
+        Me.Label4.Location = New System.Drawing.Point(372, 62)
+        Me.Label4.Name = "Label4"
+        Me.Label4.Size = New System.Drawing.Size(56, 13)
+        Me.Label4.TabIndex = 45
+        Me.Label4.Text = "Auto Sync"
+        '
         'RefreshVendors
         '
         Me.RefreshVendors.Image = CType(resources.GetObject("RefreshVendors.Image"), System.Drawing.Image)
         Me.RefreshVendors.Location = New System.Drawing.Point(368, 13)
         Me.RefreshVendors.Name = "RefreshVendors"
-        Me.RefreshVendors.Size = New System.Drawing.Size(60, 58)
+        Me.RefreshVendors.Size = New System.Drawing.Size(60, 49)
         Me.RefreshVendors.TabIndex = 3
         Me.RefreshVendors.UseVisualStyleBackColor = True
         '
@@ -755,6 +788,7 @@ Partial Class MAIN
         '
         'TabPageExpenseReport
         '
+        Me.TabPageExpenseReport.Controls.Add(Me.Label6)
         Me.TabPageExpenseReport.Controls.Add(Me.refreshExpenseReport)
         Me.TabPageExpenseReport.Controls.Add(Me.expense_prevWeek)
         Me.TabPageExpenseReport.Controls.Add(Me.ToLabelExpenseReports)
@@ -771,12 +805,21 @@ Partial Class MAIN
         Me.TabPageExpenseReport.Text = "Expense Report Options"
         Me.TabPageExpenseReport.UseVisualStyleBackColor = True
         '
+        'Label6
+        '
+        Me.Label6.AutoSize = True
+        Me.Label6.Location = New System.Drawing.Point(285, 65)
+        Me.Label6.Name = "Label6"
+        Me.Label6.Size = New System.Drawing.Size(56, 13)
+        Me.Label6.TabIndex = 51
+        Me.Label6.Text = "Auto Sync"
+        '
         'refreshExpenseReport
         '
         Me.refreshExpenseReport.Image = CType(resources.GetObject("refreshExpenseReport.Image"), System.Drawing.Image)
         Me.refreshExpenseReport.Location = New System.Drawing.Point(281, 13)
         Me.refreshExpenseReport.Name = "refreshExpenseReport"
-        Me.refreshExpenseReport.Size = New System.Drawing.Size(60, 58)
+        Me.refreshExpenseReport.Size = New System.Drawing.Size(60, 50)
         Me.refreshExpenseReport.TabIndex = 50
         Me.refreshExpenseReport.UseVisualStyleBackColor = True
         '
@@ -866,7 +909,7 @@ Partial Class MAIN
         'btnNewEmployee
         '
         Me.btnNewEmployee.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
-        Me.btnNewEmployee.Location = New System.Drawing.Point(308, 580)
+        Me.btnNewEmployee.Location = New System.Drawing.Point(109, 579)
         Me.btnNewEmployee.Margin = New System.Windows.Forms.Padding(2)
         Me.btnNewEmployee.Name = "btnNewEmployee"
         Me.btnNewEmployee.Size = New System.Drawing.Size(93, 23)
@@ -877,10 +920,10 @@ Partial Class MAIN
         'btnNewVendor
         '
         Me.btnNewVendor.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
-        Me.btnNewVendor.Location = New System.Drawing.Point(209, 580)
+        Me.btnNewVendor.Location = New System.Drawing.Point(206, 582)
         Me.btnNewVendor.Margin = New System.Windows.Forms.Padding(2)
         Me.btnNewVendor.Name = "btnNewVendor"
-        Me.btnNewVendor.Size = New System.Drawing.Size(95, 22)
+        Me.btnNewVendor.Size = New System.Drawing.Size(93, 21)
         Me.btnNewVendor.TabIndex = 4
         Me.btnNewVendor.Text = "New Vendor"
         Me.btnNewVendor.UseVisualStyleBackColor = True
@@ -888,10 +931,10 @@ Partial Class MAIN
         'btnNewCustomer
         '
         Me.btnNewCustomer.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
-        Me.btnNewCustomer.Location = New System.Drawing.Point(7, 581)
+        Me.btnNewCustomer.Location = New System.Drawing.Point(13, 580)
         Me.btnNewCustomer.Margin = New System.Windows.Forms.Padding(2)
         Me.btnNewCustomer.Name = "btnNewCustomer"
-        Me.btnNewCustomer.Size = New System.Drawing.Size(98, 22)
+        Me.btnNewCustomer.Size = New System.Drawing.Size(92, 22)
         Me.btnNewCustomer.TabIndex = 2
         Me.btnNewCustomer.Text = "New  Customer"
         Me.btnNewCustomer.UseVisualStyleBackColor = True
@@ -932,9 +975,9 @@ Partial Class MAIN
         'btnCreateJobItem
         '
         Me.btnCreateJobItem.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
-        Me.btnCreateJobItem.Location = New System.Drawing.Point(110, 580)
+        Me.btnCreateJobItem.Location = New System.Drawing.Point(304, 581)
         Me.btnCreateJobItem.Name = "btnCreateJobItem"
-        Me.btnCreateJobItem.Size = New System.Drawing.Size(94, 23)
+        Me.btnCreateJobItem.Size = New System.Drawing.Size(92, 23)
         Me.btnCreateJobItem.TabIndex = 7
         Me.btnCreateJobItem.Text = "New Job/Items"
         Me.btnCreateJobItem.UseVisualStyleBackColor = True
@@ -983,14 +1026,18 @@ Partial Class MAIN
         Me.ToolStrip1.ResumeLayout(False)
         Me.ToolStrip1.PerformLayout()
         Me.TabPageJobsItems.ResumeLayout(False)
+        Me.TabPageJobsItems.PerformLayout()
         Me.AttributeTabControl.ResumeLayout(False)
         Me.TabPageCustomers.ResumeLayout(False)
+        Me.TabPageCustomers.PerformLayout()
         Me.CustomerSyncDirection.ResumeLayout(False)
         Me.CustomerSyncDirection.PerformLayout()
         Me.TabPageEmployees.ResumeLayout(False)
+        Me.TabPageEmployees.PerformLayout()
         Me.EmployeeSyncDirection.ResumeLayout(False)
         Me.EmployeeSyncDirection.PerformLayout()
         Me.TabPageVendor.ResumeLayout(False)
+        Me.TabPageVendor.PerformLayout()
         Me.VendorSyncDirection.ResumeLayout(False)
         Me.VendorSyncDirection.PerformLayout()
         Me.TabPageTimeTransfer.ResumeLayout(False)
@@ -1072,9 +1119,13 @@ Partial Class MAIN
     Friend WithEvents btnNewCustomer As Button
     Friend WithEvents btnNewEmployee As Button
     Friend WithEvents btnNewVendor As Button
-    Friend WithEvents btnTreeView As Button
     Friend WithEvents TabPage1 As TabPage
     Friend WithEvents btnServiceItemTreeView As Button
     Friend WithEvents btn_relationships As ToolStripButton
     Friend WithEvents btnCreateJobItem As Button
+    Friend WithEvents Label2 As Label
+    Friend WithEvents Label5 As Label
+    Friend WithEvents Label3 As Label
+    Friend WithEvents Label4 As Label
+    Friend WithEvents Label6 As Label
 End Class

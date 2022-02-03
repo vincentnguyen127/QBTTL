@@ -134,32 +134,32 @@
     <Setting Name="UnapprovedMessage" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
+    <Setting Name="UncompleteddMessage" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
     <Setting Name="TL_QB_RelationshipConnectionString" Type="(Connection string)" Scope="Application">
       <DesignTimeValue Profile="(Default)">&lt;?xml version="1.0" encoding="utf-16"?&gt;
 &lt;SerializableConnectionString xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"&gt;
-  &lt;ConnectionString&gt;Data Source=SQL01;Initial Catalog=TL_QB_Relationship_Dev;User ID=dev1teltrium@teltrium.com;Password=4April1983!&lt;/ConnectionString&gt;
+  &lt;ConnectionString&gt;Data Source=192.168.30.103;Initial Catalog=TL_QB_Relationship_Dev; persist security info=True; Integrated Security=SSPI;&lt;/ConnectionString&gt;
   &lt;ProviderName&gt;System.Data.SqlClient&lt;/ProviderName&gt;
 &lt;/SerializableConnectionString&gt;</DesignTimeValue>
-      <Value Profile="(Default)">Data Source=SQL01;Initial Catalog=TL_QB_Relationship_Dev;User ID=dev1teltrium@teltrium.com;Password=4April1983!</Value>
+      <Value Profile="(Default)">Data Source=192.168.30.103;Initial Catalog=TL_QB_Relationship_Dev; persist security info=True; Integrated Security=SSPI;</Value>
     </Setting>
     <Setting Name="TimeLiveDevConnectionString" Type="(Connection string)" Scope="Application">
       <DesignTimeValue Profile="(Default)">&lt;?xml version="1.0" encoding="utf-16"?&gt;
 &lt;SerializableConnectionString xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"&gt;
-  &lt;ConnectionString&gt;Data Source=teltriumsrv3;Initial Catalog=TimeLive;User ID=dev1teltrium@teltrium.com;Password=4April1983!&lt;/ConnectionString&gt;
+  &lt;ConnectionString&gt;Data Source=192.168.30.103;Initial Catalog=TimeLiveDev;persist security info=True; Integrated Security=SSPI;&lt;/ConnectionString&gt;
   &lt;ProviderName&gt;System.Data.SqlClient&lt;/ProviderName&gt;
 &lt;/SerializableConnectionString&gt;</DesignTimeValue>
-      <Value Profile="(Default)">Data Source=teltriumsrv3;Initial Catalog=TimeLive;User ID=dev1teltrium@teltrium.com;Password=4April1983!</Value>
-    </Setting>
-    <Setting Name="UncompleteddMessage" Type="System.String" Scope="User">
-      <Value Profile="(Default)" />
+      <Value Profile="(Default)">Data Source=192.168.30.103;Initial Catalog=TimeLiveDev;persist security info=True; Integrated Security=SSPI;</Value>
     </Setting>
     <Setting Name="TimeLiveDevConnectionString1" Type="(Connection string)" Scope="Application">
       <DesignTimeValue Profile="(Default)">&lt;?xml version="1.0" encoding="utf-16"?&gt;
 &lt;SerializableConnectionString xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"&gt;
-  &lt;ConnectionString&gt;Data Source=SQL01.teltrium.local;Initial Catalog=TimeLiveDev;Persist Security Info=True;User ID=dev1teltrium@teltrium.com;Password=4April1983!&lt;/ConnectionString&gt;
+  &lt;ConnectionString&gt;Data Source=192.168.30.103;Initial Catalog=TimeLiveDev;persist security info=True; Integrated Security=SSPI;&lt;/ConnectionString&gt;
   &lt;ProviderName&gt;System.Data.SqlClient&lt;/ProviderName&gt;
 &lt;/SerializableConnectionString&gt;</DesignTimeValue>
-      <Value Profile="(Default)">Data Source=SQL01.teltrium.local;Initial Catalog=TimeLiveDev;Persist Security Info=True;User ID=dev1teltrium@teltrium.com;Password=4April1983!</Value>
+      <Value Profile="(Default)">Data Source=192.168.30.103;Initial Catalog=TimeLiveDev;persist security info=True; Integrated Security=SSPI;</Value>
     </Setting>
   </Settings>
 </SettingsFile>

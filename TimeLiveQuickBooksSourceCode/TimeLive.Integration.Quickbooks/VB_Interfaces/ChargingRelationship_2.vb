@@ -10,6 +10,7 @@ Public Class ChargingRelationship_2
     Shared ItemsSubItemsQBData As New DataTable
     Shared PayrollItemsQBData As New DataTable
     Public Shared FormAddNewRelationship As New AddNewRelationship
+    Dim obj_main As New MAIN
 
     Public Class Job_Subjob
         Private _QBName As String = String.Empty
@@ -613,40 +614,9 @@ Public Class ChargingRelationship_2
                 ChargingRelationshipAdapter.Insert(employeeID, jobID, payrollId, itemID)
             End If
 
-
-            'RelationshipTreeView.Show()
-            'RelationshipTreeView.MdiParent = FormAddNewRelationship
-
-            'populate datagridview 
-            'DataGridView1.Rows(DataGridView1.Rows.Count - 1).Cells(1).Value = employeeID
-            'DataGridView1.Rows(DataGridView1.Rows.Count - 1).Cells(2).Value = jobID
-            'DataGridView1.Rows(DataGridView1.Rows.Count - 1).Cells(3).Value = payrollId
-            'DataGridView1.Rows(DataGridView1.Rows.Count - 1).Cells(4).Value = itemID
-
-            ' Int nRowIndex = DataGridView1.Rows.Count - 1;
-            '   Int nColumnIndex = 3;
-            ' DataGridView1.Rows.Add()
-            DataGridView1.Refresh()
-
-            'Try
-            '    DataGridView1.Update()
-            '    'Me.ChargingRelationshipsTableAdapter.Update(Me.QB_TL_IDs.ChargingRelationships)
-
-            'Catch ex As Exception
-            '    My.Forms.MAIN.History(ex.ToString, "C")
-            '    ' Before throwing exception, close the session manager if it is open
-            '    'MAIN.QUITQBSESSION()
-            '    Throw ex
-            'End Try
-
         End If
-
         Me.Close()
-
-
-        ' ChargingRelationship_2.Owner = Me
-
-        'ChargingRelationship_2.Show()
+        obj_main.handle_btn_relationship2_Click()
 
     End Sub
     Public Function generate_items_treeview()

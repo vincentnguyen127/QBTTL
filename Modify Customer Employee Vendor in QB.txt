@@ -1,0 +1,246 @@
+
+        Dim ChargingRelationsihpAdapter As New QB_TL_IDsTableAdapters.ChargingRelationshipsTableAdapter()
+        Dim CustomerAdapter As New QB_TL_IDsTableAdapters.CustomersTableAdapter()
+        Dim EmployeeAdapter As New QB_TL_IDsTableAdapters.EmployeesTableAdapter()
+        Dim VendorAdapter As New QB_TL_IDsTableAdapters.VendorsTableAdapter()
+
+        Dim chargingRelationshipTable As QB_TL_IDs.ChargingRelationshipsDataTable = ChargingRelationsihpAdapter.GetChargingRelationships()
+        If Type = 20 Then
+            Dim empName As String = DataGridView1.CurrentRow.Cells("Name").Value
+            Dim empObj = EmployeeAdapter.GetCorrespondingQB_IDbyQB_Name(empName)
+            Dim isLinked As Boolean
+            If empObj.Count > 0 Then
+                Dim empQuickBookID As String = empObj(0).QuickBookS_ID.trim()
+                For i As Integer = 0 To chargingRelationshipTable.Count - 1
+                    If chargingRelationshipTable(i).EmployeeQB_ID.Trim() = empQuickBookID Then
+                        isLinked = True
+                    End If
+                Next
+
+                If Not isLinked Then
+                    MsgBox("No Associated QuickBooks record.", MsgBoxStyle.Exclamation, "Alert")
+                    Exit Sub
+                End If
+
+                ChargingRelationship_2.EmployeeFilterBox.Text = empName
+                ChargingRelationship_2.EmployeeFilterBox.Enabled = False
+                ChargingRelationship_2.PayrollFilterBox.Enabled = False
+                ChargingRelationship_2.ItemFilterBox.Enabled = False
+                ChargingRelationship_2.JobFilterBox.Enabled = False
+                Dim sdfds As String = ChargingRelationship_2.EmployeeFilterBox.Text
+
+                ChargingRelationship_2.Show()
+
+                'Using chargingRelationship As New ChargingRelationship_2
+                '    chargingRelationship.EmployeeFilterBox.Text = empName
+                '    chargingRelationship.EmployeeFilterBox.Enabled = False
+                '    chargingRelationship.PayrollFilterBox.Enabled = False
+                '    chargingRelationship.ItemFilterBox.Enabled = False
+                '    chargingRelationship.JobFilterBox.Enabled = False
+
+                '    chargingRelationship.ShowDialog()
+                'End Using
+            Else
+                MsgBox("employee is not in employee table.", MsgBoxStyle.Exclamation, "Alert")
+                Exit Sub
+            End If
+        ElseIf Type = 13 Then
+            Dim formManualLink As New ManualLinkForm()
+            formManualLink.Label1.Text = "TimeLive"
+            For Each row As DataGridViewRow In DataGridView2.Rows
+                Dim Name As String = row.Cells("Name").Value
+                If Not String.IsNullOrEmpty(Name) Then
+                    formManualLink.ComboBox1.Items.Add(Name)
+                End If
+            Next
+            formManualLink.Label2.Text = "QuickBooks"
+            If DataGridView1.ColumnCount > 4 Then
+                For Each row As DataGridViewRow In DataGridView1.Rows
+                    Dim Name As String = row.Cells(1).Value
+                    If Not String.IsNullOrEmpty(Name) Then
+                        formManualLink.ComboBox2.Items.Add(Name)
+                    End If
+                Next
+                formManualLink.ComboBox2.Text = DataGridView1.CurrentRow.Cells(1).Value.ToString()
+                formManualLink.ComboBox2.Enabled = False
+            Else
+                For Each row As DataGridViewRow In DataGridView1.Rows
+                    Dim Name As String = row.Cells("Name").Value
+                    If Not String.IsNullOrEmpty(Name) Then
+                        formManualLink.ComboBox2.Items.Add(Name)
+                    End If
+                Next
+                formManualLink.ComboBox2.Text = DataGridView1.CurrentRow.Cells("Name").Value.ToString()
+                formManualLink.ComboBox2.Enabled = False
+            End If
+
+            If DataGridView1.CurrentRow.DefaultCellStyle.ForeColor = Color.Blue Or DataGridView1.CurrentRow.DefaultCellStyle.ForeColor = Nothing Then
+                formManualLink.ComboBox1.Text = formManualLink.ComboBox2.Text.Trim()
+            End If
+            Dim jobSubJobAdapter As New QB_TL_IDsTableAdapters.Jobs_SubJobsTableAdapter()
+            Dim objProjectServices As Services.TimeLive.Projects.Projects = MAIN.connect_TL_projects(p_token)
+            Dim objTaskServices As Services.TimeLive.Tasks.Tasks = MAIN.connect_TL_tasks(p_token)
+            If DialogResult.OK = formManualLink.ShowDialog Then
+                Dim tlName As String = formManualLink.ComboBox1.Text
+                Dim tlNameArray As Array = Split(tlName, " --> ")
+                Dim count As Integer = tlNameArray.Length
+                Dim newTlName As String = Replace(tlName, " --> ", ":")
+                'It's project in timelive
+                Dim tlID As String
+                If count = 2 Then
+                    tlID = objProjectServices.GetProjectId(tlNameArray(count - 1))
+                    'It's task in timelieve
+                Else
+                    Dim dffd = objTaskServices.GetTasks()
+                    tlID = objTaskServices.GetTaskId(tlNameArray(count - 1))
+                End If
+                Dim qbName As String = formManualLink.ComboBox2.Text
+                Dim qbNameArray As Array = Split(qbName, " --> ")
+                count = qbNameArray.Length
+                Dim newQBname As String = qbNameArray(count - 1)
+                Dim qbID As String
+                For Each job As QBtoTL_JobOrItem.Job_Subjob In JobData.DataArray
+                    If job.QB_Name = newQBname Then
+                        qbID = job.QB_ID
+                        Exit For
+                    End If
+                Next
+                Try
+                    jobSubJobAdapter.Insert(qbID, tlID, newQBname, newTlName)
+                Catch ex As Exception
+
+                End Try
+
+            End If
+
+        Else
+            Dim edit As Boolean = False
+            Dim link As Boolean = False
+
+            Using form As ManualLinkOrEditForm = New ManualLinkOrEditForm()
+                If DialogResult.OK = form.ShowDialog() Then
+                    edit = form.RadioButtonEdit.Checked
+                    link = form.RadioButtonManualLink.Checked
+                    'Edit option
+                    If edit Then
+                        If Type = 10 Then
+                            'get selected customer name
+                            Dim selectedCustomerName As String = DataGridView1.CurrentRow.Cells("Name").Value.ToString()
+                            'find and modify a customer in QB
+                            customer_qbtotl.ModifyCustomer(selectedCustomerName)
+                        ElseIf Type = 11 Then
+                            'get selected employee name
+                            Dim selectedEmployeeName As String = DataGridView1.CurrentRow.Cells("Name").Value.ToString()
+                            employee_qbtotl.ModifyEmployee(selectedEmployeeName)
+                        ElseIf Type = 12 Then
+                            'get selected vendor name 
+                            Dim selectedVendorName As String = DataGridView1.CurrentRow.Cells("Name").Value.ToString()
+                            vendor_qbtotl.ModifyVenfor(selectedVendorName)
+
+                        End If
+                        'Link option
+                    Else
+
+                        If Type = 10 Or Type = 11 Or Type = 12 Then
+                            Dim formManualLink As New ManualLinkForm()
+                            formManualLink.Label1.Text = "TimeLive"
+                            For Each row As DataGridViewRow In DataGridView2.Rows
+                                Dim Name As String = row.Cells("Name").Value
+                                If Not String.IsNullOrEmpty(Name) Then
+                                    formManualLink.ComboBox1.Items.Add(Name)
+                                End If
+                            Next
+                            formManualLink.Label2.Text = "QuickBooks"
+                            If DataGridView1.ColumnCount > 4 Then
+                                For Each row As DataGridViewRow In DataGridView1.Rows
+                                    Dim Name As String = row.Cells(1).Value
+                                    If Not String.IsNullOrEmpty(Name) Then
+                                        formManualLink.ComboBox2.Items.Add(Name)
+                                    End If
+                                Next
+                                formManualLink.ComboBox2.Text = DataGridView1.CurrentRow.Cells(1).Value.ToString()
+                                formManualLink.ComboBox2.Enabled = False
+                            Else
+                                For Each row As DataGridViewRow In DataGridView1.Rows
+                                    Dim Name As String = row.Cells("Name").Value
+                                    If Not String.IsNullOrEmpty(Name) Then
+                                        formManualLink.ComboBox2.Items.Add(Name)
+                                    End If
+                                Next
+                                formManualLink.ComboBox2.Text = DataGridView1.CurrentRow.Cells("Name").Value.ToString()
+                                formManualLink.ComboBox2.Enabled = False
+                            End If
+
+                            If DataGridView1.CurrentRow.DefaultCellStyle.ForeColor = Color.Blue Or DataGridView1.CurrentRow.DefaultCellStyle.ForeColor = Nothing Then
+                                formManualLink.ComboBox1.Text = formManualLink.ComboBox2.Text.Trim()
+                            End If
+                            'customer 
+                            If Type = 10 Then
+                                'connecting to timelive 
+                                Dim objClientServices As Services.TimeLive.Clients.Clients = MAIN.connect_TL_clients(p_token)
+                                ' get the current row of datagridview1 for the combobox2
+
+                                If DialogResult.OK = formManualLink.ShowDialog Then
+                                    'get all the input parameters to insert into the customer table
+                                    Dim tlName As String = formManualLink.ComboBox1.Text
+                                    Dim tlID As String = objClientServices.GetClientIdByName(tlName)
+                                    Dim qbName As String = formManualLink.ComboBox2.Text
+                                    Dim qbID As String
+                                    For Each customer As QBtoTL_Customer.Customer In customerData.DataArray
+                                        If customer.QB_Name = qbName Then
+                                            qbID = customer.QB_ID
+                                            Exit For
+                                        End If
+                                    Next
+                                    CustomerAdapter.Insert(qbID, tlID, qbName, tlName)
+                                End If
+                            ElseIf Type = 11 Then
+
+                                'Connecting to timelive
+                                Dim objEmployeeServices As Services.TimeLive.Employees.Employees = MAIN.connect_TL_employees(p_token)
+
+                                If DialogResult.OK = formManualLink.ShowDialog Then
+                                    'get all the input parameters to insert into the customer table
+                                    Dim tlName As String = formManualLink.ComboBox1.Text
+                                    Dim newTlName As String = ShowNamesWithoutComma(tlName).Trim()
+                                    Dim tlID As String = objEmployeeServices.GetEmployeeId(newTlName)
+                                    Dim qbName As String = formManualLink.ComboBox2.Text
+                                    Dim qbID As String
+                                    Dim newQbName As String = ShowNamesWithoutComma(qbName)
+                                    For Each employee As QBtoTL_Employee.Employee In employeeData.DataArray
+                                        If employee.QB_Name = newQbName Then
+                                            qbID = employee.QB_ID
+                                            Exit For
+                                        End If
+                                    Next
+                                    EmployeeAdapter.Insert(qbID, tlID, newQbName, newTlName)
+                                End If
+                            ElseIf Type = 12 Then
+
+                                Dim objVendorServices As Services.TimeLive.Employees.Employees = MAIN.connect_TL_employees(p_token)
+                                If DialogResult.OK = formManualLink.ShowDialog Then
+                                    Dim tlName As String = formManualLink.ComboBox1.Text
+                                    Dim newTlName As String = ShowNamesWithoutComma(tlName).Trim
+                                    Dim tlID As String = objVendorServices.GetEmployeeId(newTlName)
+                                    Dim qbName As String = formManualLink.ComboBox2.Text
+                                    Dim qbID As String
+                                    Dim newQbName As String = ShowNamesWithoutComma(qbName)
+                                    For Each vendor As QBtoTL_Vendor.Vendor In vendorData.DataArray
+                                        If vendor.QB_Name = newQbName Then
+                                            qbID = vendor.QB_ID
+                                            Exit For
+                                        End If
+                                    Next
+                                    VendorAdapter.Insert(qbID, tlID, newQbName, newTlName)
+                                End If
+                                'ElseIf Type = 13 Then
+
+                            End If
+                        End If
+
+                    End If
+
+                End If
+            End Using
+        End If
+

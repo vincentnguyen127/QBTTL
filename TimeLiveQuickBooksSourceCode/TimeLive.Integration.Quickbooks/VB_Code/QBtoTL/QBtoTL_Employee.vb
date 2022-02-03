@@ -26,6 +26,7 @@ Public Class QBtoTL_Employee
         Public HiredDate As Date
         Public Email As String
         Public Enabled As Boolean
+        Public EditSequence As String
 
 
         Sub New(ByVal NewlyAdded As String, ByVal QB_Name As String, ByVal Email As String, ByVal QB_ID As String, ByVal FirstName As String,
@@ -106,7 +107,7 @@ Public Class QBtoTL_Employee
 
                         ' will check which type data should be added 
                         EmployeeData.NoItems += 1
-                        EmployeeData.DataArray.Add(New Employee(NewlyAdd, .Name.GetValue, EmailAddress, .ListID.GetValue, FirstName, LastName, ModTime, CreateTime, HiredDate, .IsActive.GetValue))
+                        EmployeeData.DataArray.Add(New Employee(NewlyAdd, .Name.GetValue, EmailAddress, .ListID.GetValue, FirstName, LastName, HiredDate, ModTime, CreateTime, .IsActive.GetValue))
                     End With
                     If UI Then
                         My.Forms.MAIN.ProgressBar1.Value = i + 1
@@ -513,6 +514,66 @@ Public Class QBtoTL_Employee
 
         Return result
     End Function
+
+    Public Function ModifyEmployee(employeeName As String)
+        'find employee name in QB
+        Dim employeeFullName As String = MAIN.ShowNamesWithoutComma(employeeName)
+
+        Dim msgSetRq As IMsgSetRequest = MAIN.SESSMANAGER.CreateMsgSetRequest("US", 2, 0)
+        msgSetRq.Attributes.OnError = ENRqOnError.roeContinue
+
+        Dim EmployeeQueryRq As IEmployeeQuery = msgSetRq.AppendEmployeeQueryRq
+        EmployeeQueryRq.ORListQuery.FullNameList.Add(employeeFullName)
+        'sessManager.OpenConnection("App", "TimeLive Quickbooks")
+        'sessManager.BeginSession("", ENOpenMode.omDontCare)
+        Dim msgSetRs As IMsgSetResponse = MAIN.SESSMANAGER.DoRequests(msgSetRq)
+
+        Dim response As IResponse = msgSetRs.ResponseList.GetAt(0)
+        Dim empRetList As IEmployeeRetList = response.Detail
+
+        Dim empRet As IEmployeeRet = empRetList.GetAt(0)
+
+
+        Dim EmailAddress As String
+        Dim FirstName As String
+        Dim LastName As String
+        Dim HiredDate As String
+        Dim ModTime As String
+        Dim CreateTime As String
+        Dim NewlyAdd As String
+        Dim EditSequence As String
+
+        With empRet
+            EmailAddress = If(.Email Is Nothing, "", .Email.GetValue)
+            FirstName = If(.FirstName Is Nothing, "", .FirstName.GetValue)
+            LastName = If(.LastName Is Nothing, "", .LastName.GetValue)
+            HiredDate = If(.HiredDate Is Nothing, "", .HiredDate.GetValue)
+            CreateTime = If(.TimeCreated Is Nothing, "", .TimeCreated.GetValue.ToString)
+            ModTime = If(.TimeModified Is Nothing, CreateTime, .TimeModified.GetValue.ToString)
+        End With
+
+        Dim employee As QBtoTL_Employee.Employee = New QBtoTL_Employee.Employee(NewlyAdd, empRet.Name.GetValue, EmailAddress, empRet.ListID.GetValue, FirstName, LastName, HiredDate, ModTime, CreateTime, empRet.IsActive.GetValue)
+        employee.EditSequence = empRet.EditSequence.GetValue
+
+        MAIN.Get_Employee_Form(employee)
+
+        Try
+            Dim newMsgSetRq As IMsgSetRequest = MAIN.SESSMANAGER.CreateMsgSetRequest("US", 2, 0)
+            Dim employeeMod As IEmployeeMod = newMsgSetRq.AppendEmployeeModRq
+
+            employeeMod.FirstName.SetValue(employee.FirstName)
+            employeeMod.LastName.SetValue(employee.LastName)
+            employeeMod.ListID.SetValue(employee.QB_ID)
+            employeeMod.EditSequence.SetValue(employee.EditSequence)
+
+            msgSetRq = MAIN.SESSMANAGER.DoRequests(newMsgSetRq)
+            Dim res As IResponse = msgSetRq.ResponseList.GetAt(0)
+        Catch ex As Exception
+
+        End Try
+
+    End Function
+
 
     Public Function SetLength(ByVal str As String) As String
         Return str.Substring(0, Math.Min(50, str.Length))

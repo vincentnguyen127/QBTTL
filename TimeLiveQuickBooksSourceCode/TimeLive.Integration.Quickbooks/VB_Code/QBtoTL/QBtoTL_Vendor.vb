@@ -25,6 +25,7 @@ Public Class QBtoTL_Vendor
         Public Email As String
         Public IsVendorEligibleFor1099 As Boolean
         Public Enabled As Boolean
+        Public EditSequence As String
 
         Sub New(ByVal NewlyAdded As String, ByVal QB_Name As String, ByVal Email As String, ByVal QB_ID As String, ByVal FirstName As String, ByVal LastName As String,
                 ByVal HiredDate As String, ByVal QBModTime As String, ByVal QBCreateTime As String, ByVal IsVendorEligibleFor1099 As Boolean, ByVal Enabled As Boolean)
@@ -488,6 +489,90 @@ Public Class QBtoTL_Vendor
 
         Return NoRecordsCreatedorUpdated
 
+    End Function
+
+    Public Function ModifyVenfor(employeeName As String)
+
+        'EmailAddress = If(.Email Is Nothing, "", .Email.GetValue)
+        'FirstName = If(.FirstName Is Nothing, "", .FirstName.GetValue)
+        'LastName = If(.LastName Is Nothing, "", .LastName.GetValue)
+        'CreateTime = If(.TimeCreated Is Nothing, "", .TimeCreated.GetValue.ToString)
+        'ModTime = If(.TimeModified Is Nothing, CreateTime, .TimeModified.GetValue.ToString)
+
+        '' will check which type data should be added 
+        'If .IsVendorEligibleFor1099.GetValue Then
+        '    Dim TL_ID_Count = ISQBID_In_DataTable(.Name.GetValue, .ListID.GetValue)
+        '    NewlyAdd = If(TL_ID_Count, "", "N") ' N if new
+        '    VendorData.NoItems += 1
+        '    VendorData.DataArray.Add(New Vendor(NewlyAdd, .Name.GetValue, EmailAddress, .ListID.GetValue, FirstName, LastName, "", ModTime, CreateTime, .IsVendorEligibleFor1099.GetValue, .IsActive.GetValue))
+
+
+        'Dim msgSetRq As IMsgSetRequest = MAIN.SESSMANAGER.CreateMsgSetRequest("US", 2, 0)
+
+        'msgSetRq.Attributes.OnError = ENRqOnError.roeContinue
+        'Dim VendorQueryRq As IVendorQuery = msgSetRq.AppendVendorQueryRq
+
+        'VendorQueryRq.ORVendorListQuery.FullNameList.Add(TLEmployeeName)
+        'Dim msgSetRs As IMsgSetResponse = MAIN.SESSMANAGER.DoRequests(msgSetRq)
+
+        'Dim response As IResponse = msgSetRs.ResponseList.GetAt(0)
+        'Dim vendorRetList As IVendorRetList
+        'vendorRetList = response.Detail
+
+
+        'find employee name in QB
+        Dim employeeFullName As String = MAIN.ShowNamesWithoutComma(employeeName)
+
+        Dim msgSetRq As IMsgSetRequest = MAIN.SESSMANAGER.CreateMsgSetRequest("US", 2, 0)
+        msgSetRq.Attributes.OnError = ENRqOnError.roeContinue
+
+        Dim EmployeeQueryRq As IVendorQuery = msgSetRq.AppendVendorQueryRq
+
+        EmployeeQueryRq.ORVendorListQuery.FullNameList.Add(employeeFullName)
+        'sessManager.OpenConnection("App", "TimeLive Quickbooks")
+        'sessManager.BeginSession("", ENOpenMode.omDontCare)
+        Dim msgSetRs As IMsgSetResponse = MAIN.SESSMANAGER.DoRequests(msgSetRq)
+
+        Dim response As IResponse = msgSetRs.ResponseList.GetAt(0)
+        Dim empRetList As IVendorRetList = response.Detail
+
+        Dim empRet As IVendorRet = empRetList.GetAt(0)
+
+        Dim EmailAddress As String
+        Dim FirstName As String
+        Dim LastName As String
+        Dim IsVendorEligibleFor1099 As Boolean = False
+        Dim ModTime As String
+        Dim CreateTime As String
+            Dim NewlyAdd As String
+
+            With empRet
+                EmailAddress = If(.Email Is Nothing, "", .Email.GetValue)
+                FirstName = If(.FirstName Is Nothing, "", .FirstName.GetValue)
+                LastName = If(.LastName Is Nothing, "", .LastName.GetValue)
+                CreateTime = If(.TimeCreated Is Nothing, "", .TimeCreated.GetValue.ToString)
+                ModTime = If(.TimeModified Is Nothing, CreateTime, .TimeModified.GetValue.ToString)
+            End With
+            Dim vendor As QBtoTL_Vendor.Vendor = New QBtoTL_Vendor.Vendor(NewlyAdd, empRet.Name.GetValue, EmailAddress, empRet.ListID.GetValue, FirstName, LastName, "", ModTime, CreateTime, empRet.IsVendorEligibleFor1099.GetValue, empRet.IsActive.GetValue)
+            vendor.EditSequence = empRet.EditSequence.GetValue
+
+            MAIN.Get_Vendor_Form(vendor)
+
+
+            Try
+            Dim newMsgSetRq As IMsgSetRequest = MAIN.SESSMANAGER.CreateMsgSetRequest("US", 2, 0)
+                Dim employeeMod As IVendorMod = newMsgSetRq.AppendVendorModRq
+
+                employeeMod.FirstName.SetValue(vendor.FirstName)
+                employeeMod.LastName.SetValue(vendor.LastName)
+                employeeMod.ListID.SetValue(vendor.QB_ID)
+                employeeMod.EditSequence.SetValue(vendor.EditSequence)
+
+                msgSetRq = MAIN.SESSMANAGER.DoRequests(newMsgSetRq)
+            Dim res As IResponse = msgSetRq.ResponseList.GetAt(0)
+        Catch ex As Exception
+
+        End Try
     End Function
 
     ''' <summary>

@@ -419,7 +419,7 @@ Partial Class ChargingRelationship_2
         Me.Controls.Add(Me.btn_Delete)
         Me.Controls.Add(Me.btn_close)
         Me.Name = "ChargingRelationship_2"
-        Me.Text = "ChargingRelationship_2"
+        Me.Text = "Employee Charging Relationships"
         CType(Me.EmployeesBindingSource1, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.QB_TL_IDs, System.ComponentModel.ISupportInitialize).EndInit()
         Me.SplitContainer1.Panel1.ResumeLayout(False)

@@ -33,6 +33,8 @@ Partial Class VendorForm
         Me.RadioButtonBothQBTL = New System.Windows.Forms.RadioButton()
         Me.mTxtHiredDate = New System.Windows.Forms.MaskedTextBox()
         Me.lblPassword = New System.Windows.Forms.Label()
+        Me.GroupBox1 = New System.Windows.Forms.GroupBox()
+        Me.Label11 = New System.Windows.Forms.Label()
         Me.SuspendLayout()
         '
         'Label2
@@ -48,7 +50,7 @@ Partial Class VendorForm
         '
         Me.txtLastName.Location = New System.Drawing.Point(112, 83)
         Me.txtLastName.Name = "txtLastName"
-        Me.txtLastName.Size = New System.Drawing.Size(128, 20)
+        Me.txtLastName.Size = New System.Drawing.Size(229, 20)
         Me.txtLastName.TabIndex = 2
         '
         'lbName
@@ -64,12 +66,12 @@ Partial Class VendorForm
         '
         Me.txtFirstName.Location = New System.Drawing.Point(112, 58)
         Me.txtFirstName.Name = "txtFirstName"
-        Me.txtFirstName.Size = New System.Drawing.Size(128, 20)
+        Me.txtFirstName.Size = New System.Drawing.Size(229, 20)
         Me.txtFirstName.TabIndex = 1
         '
         'btnCancel
         '
-        Me.btnCancel.Location = New System.Drawing.Point(78, 152)
+        Me.btnCancel.Location = New System.Drawing.Point(222, 163)
         Me.btnCancel.Name = "btnCancel"
         Me.btnCancel.Size = New System.Drawing.Size(78, 30)
         Me.btnCancel.TabIndex = 6
@@ -78,7 +80,7 @@ Partial Class VendorForm
         '
         'btnOK
         '
-        Me.btnOK.Location = New System.Drawing.Point(162, 152)
+        Me.btnOK.Location = New System.Drawing.Point(306, 163)
         Me.btnOK.Name = "btnOK"
         Me.btnOK.Size = New System.Drawing.Size(78, 30)
         Me.btnOK.TabIndex = 5
@@ -88,7 +90,7 @@ Partial Class VendorForm
         'RadioButtonTimeLive
         '
         Me.RadioButtonTimeLive.AutoSize = True
-        Me.RadioButtonTimeLive.Location = New System.Drawing.Point(275, 12)
+        Me.RadioButtonTimeLive.Location = New System.Drawing.Point(292, 22)
         Me.RadioButtonTimeLive.Name = "RadioButtonTimeLive"
         Me.RadioButtonTimeLive.Size = New System.Drawing.Size(92, 17)
         Me.RadioButtonTimeLive.TabIndex = 64
@@ -99,7 +101,7 @@ Partial Class VendorForm
         'RadioButtonQuickBooks
         '
         Me.RadioButtonQuickBooks.AutoSize = True
-        Me.RadioButtonQuickBooks.Location = New System.Drawing.Point(162, 12)
+        Me.RadioButtonQuickBooks.Location = New System.Drawing.Point(179, 22)
         Me.RadioButtonQuickBooks.Name = "RadioButtonQuickBooks"
         Me.RadioButtonQuickBooks.Size = New System.Drawing.Size(107, 17)
         Me.RadioButtonQuickBooks.TabIndex = 63
@@ -111,7 +113,7 @@ Partial Class VendorForm
         '
         Me.RadioButtonBothQBTL.AutoSize = True
         Me.RadioButtonBothQBTL.Checked = True
-        Me.RadioButtonBothQBTL.Location = New System.Drawing.Point(6, 12)
+        Me.RadioButtonBothQBTL.Location = New System.Drawing.Point(23, 22)
         Me.RadioButtonBothQBTL.Name = "RadioButtonBothQBTL"
         Me.RadioButtonBothQBTL.Size = New System.Drawing.Size(150, 17)
         Me.RadioButtonBothQBTL.TabIndex = 62
@@ -125,7 +127,7 @@ Partial Class VendorForm
         Me.mTxtHiredDate.Margin = New System.Windows.Forms.Padding(2)
         Me.mTxtHiredDate.Mask = "00/00/0000"
         Me.mTxtHiredDate.Name = "mTxtHiredDate"
-        Me.mTxtHiredDate.Size = New System.Drawing.Size(128, 20)
+        Me.mTxtHiredDate.Size = New System.Drawing.Size(229, 20)
         Me.mTxtHiredDate.TabIndex = 65
         Me.mTxtHiredDate.ValidatingType = GetType(Date)
         '
@@ -138,11 +140,29 @@ Partial Class VendorForm
         Me.lblPassword.TabIndex = 66
         Me.lblPassword.Text = "* Hired Date:"
         '
+        'GroupBox1
+        '
+        Me.GroupBox1.Location = New System.Drawing.Point(12, 1)
+        Me.GroupBox1.Name = "GroupBox1"
+        Me.GroupBox1.Size = New System.Drawing.Size(372, 48)
+        Me.GroupBox1.TabIndex = 67
+        Me.GroupBox1.TabStop = False
+        '
+        'Label11
+        '
+        Me.Label11.AutoSize = True
+        Me.Label11.Location = New System.Drawing.Point(12, 163)
+        Me.Label11.Name = "Label11"
+        Me.Label11.Size = New System.Drawing.Size(195, 13)
+        Me.Label11.TabIndex = 68
+        Me.Label11.Text = "Note: Entered as consultant in Timelive."
+        '
         'VendorForm
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(362, 214)
+        Me.ClientSize = New System.Drawing.Size(396, 205)
+        Me.Controls.Add(Me.Label11)
         Me.Controls.Add(Me.mTxtHiredDate)
         Me.Controls.Add(Me.lblPassword)
         Me.Controls.Add(Me.RadioButtonTimeLive)
@@ -154,8 +174,9 @@ Partial Class VendorForm
         Me.Controls.Add(Me.txtLastName)
         Me.Controls.Add(Me.lbName)
         Me.Controls.Add(Me.txtFirstName)
+        Me.Controls.Add(Me.GroupBox1)
         Me.Name = "VendorForm"
-        Me.Text = "Vendor Entry"
+        Me.Text = "Create Vendor"
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -172,4 +193,6 @@ Partial Class VendorForm
     Friend WithEvents RadioButtonBothQBTL As RadioButton
     Friend WithEvents mTxtHiredDate As MaskedTextBox
     Friend WithEvents lblPassword As Label
+    Friend WithEvents GroupBox1 As GroupBox
+    Friend WithEvents Label11 As Label
 End Class

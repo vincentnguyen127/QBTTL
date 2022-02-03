@@ -136,6 +136,7 @@ Public Class JobSubJobTreeView
                 Dim res As IResponse
                 res = msgSetRs.ResponseList.GetAt(0)
             End If
+            Me.Close()
             Exit Sub
         End If
 

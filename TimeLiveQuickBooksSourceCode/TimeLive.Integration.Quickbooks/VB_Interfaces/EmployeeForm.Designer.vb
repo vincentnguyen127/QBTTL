@@ -53,11 +53,15 @@ Partial Class EmployeeForm
         Me.RadioButtonTimeLive = New System.Windows.Forms.RadioButton()
         Me.RadioButtonQuickBooks = New System.Windows.Forms.RadioButton()
         Me.RadioButtonBothQBTL = New System.Windows.Forms.RadioButton()
+        Me.GroupBox1 = New System.Windows.Forms.GroupBox()
+        Me.Label11 = New System.Windows.Forms.Label()
+        Me.GroupBox2 = New System.Windows.Forms.GroupBox()
+        Me.GroupBox1.SuspendLayout()
         Me.SuspendLayout()
         '
         'mTxtHiredDate
         '
-        Me.mTxtHiredDate.Location = New System.Drawing.Point(109, 109)
+        Me.mTxtHiredDate.Location = New System.Drawing.Point(109, 123)
         Me.mTxtHiredDate.Margin = New System.Windows.Forms.Padding(2)
         Me.mTxtHiredDate.Mask = "00/00/0000"
         Me.mTxtHiredDate.Name = "mTxtHiredDate"
@@ -68,7 +72,7 @@ Partial Class EmployeeForm
         'lbName
         '
         Me.lbName.AutoSize = True
-        Me.lbName.Location = New System.Drawing.Point(35, 61)
+        Me.lbName.Location = New System.Drawing.Point(36, 82)
         Me.lbName.Name = "lbName"
         Me.lbName.Size = New System.Drawing.Size(67, 13)
         Me.lbName.TabIndex = 34
@@ -76,14 +80,14 @@ Partial Class EmployeeForm
         '
         'txtFirstName
         '
-        Me.txtFirstName.Location = New System.Drawing.Point(109, 61)
+        Me.txtFirstName.Location = New System.Drawing.Point(109, 75)
         Me.txtFirstName.Name = "txtFirstName"
         Me.txtFirstName.Size = New System.Drawing.Size(128, 20)
         Me.txtFirstName.TabIndex = 0
         '
         'btnCancel
         '
-        Me.btnCancel.Location = New System.Drawing.Point(295, 194)
+        Me.btnCancel.Location = New System.Drawing.Point(326, 237)
         Me.btnCancel.Name = "btnCancel"
         Me.btnCancel.Size = New System.Drawing.Size(78, 30)
         Me.btnCancel.TabIndex = 13
@@ -93,7 +97,7 @@ Partial Class EmployeeForm
         'lblPassword
         '
         Me.lblPassword.AutoSize = True
-        Me.lblPassword.Location = New System.Drawing.Point(35, 109)
+        Me.lblPassword.Location = New System.Drawing.Point(35, 130)
         Me.lblPassword.Name = "lblPassword"
         Me.lblPassword.Size = New System.Drawing.Size(68, 13)
         Me.lblPassword.TabIndex = 31
@@ -101,7 +105,7 @@ Partial Class EmployeeForm
         '
         'btnOK
         '
-        Me.btnOK.Location = New System.Drawing.Point(379, 194)
+        Me.btnOK.Location = New System.Drawing.Point(410, 237)
         Me.btnOK.Name = "btnOK"
         Me.btnOK.Size = New System.Drawing.Size(78, 30)
         Me.btnOK.TabIndex = 12
@@ -111,7 +115,7 @@ Partial Class EmployeeForm
         'Label2
         '
         Me.Label2.AutoSize = True
-        Me.Label2.Location = New System.Drawing.Point(35, 86)
+        Me.Label2.Location = New System.Drawing.Point(35, 106)
         Me.Label2.Name = "Label2"
         Me.Label2.Size = New System.Drawing.Size(68, 13)
         Me.Label2.TabIndex = 38
@@ -119,7 +123,7 @@ Partial Class EmployeeForm
         '
         'txtLastName
         '
-        Me.txtLastName.Location = New System.Drawing.Point(109, 86)
+        Me.txtLastName.Location = New System.Drawing.Point(109, 99)
         Me.txtLastName.Name = "txtLastName"
         Me.txtLastName.Size = New System.Drawing.Size(128, 20)
         Me.txtLastName.TabIndex = 2
@@ -132,7 +136,7 @@ Partial Class EmployeeForm
         'Label1
         '
         Me.Label1.AutoSize = True
-        Me.Label1.Location = New System.Drawing.Point(244, 86)
+        Me.Label1.Location = New System.Drawing.Point(244, 100)
         Me.Label1.Name = "Label1"
         Me.Label1.Size = New System.Drawing.Size(83, 13)
         Me.Label1.TabIndex = 44
@@ -140,7 +144,7 @@ Partial Class EmployeeForm
         '
         'txtAdressLine1
         '
-        Me.txtAdressLine1.Location = New System.Drawing.Point(330, 86)
+        Me.txtAdressLine1.Location = New System.Drawing.Point(330, 99)
         Me.txtAdressLine1.Name = "txtAdressLine1"
         Me.txtAdressLine1.Size = New System.Drawing.Size(128, 20)
         Me.txtAdressLine1.TabIndex = 4
@@ -148,7 +152,7 @@ Partial Class EmployeeForm
         'Label3
         '
         Me.Label3.AutoSize = True
-        Me.Label3.Location = New System.Drawing.Point(255, 61)
+        Me.Label3.Location = New System.Drawing.Point(255, 75)
         Me.Label3.Name = "Label3"
         Me.Label3.Size = New System.Drawing.Size(72, 13)
         Me.Label3.TabIndex = 42
@@ -156,7 +160,7 @@ Partial Class EmployeeForm
         '
         'txtMiddleName
         '
-        Me.txtMiddleName.Location = New System.Drawing.Point(330, 61)
+        Me.txtMiddleName.Location = New System.Drawing.Point(330, 75)
         Me.txtMiddleName.Name = "txtMiddleName"
         Me.txtMiddleName.Size = New System.Drawing.Size(128, 20)
         Me.txtMiddleName.TabIndex = 1
@@ -164,7 +168,7 @@ Partial Class EmployeeForm
         'Label4
         '
         Me.Label4.AutoSize = True
-        Me.Label4.Location = New System.Drawing.Point(249, 116)
+        Me.Label4.Location = New System.Drawing.Point(249, 130)
         Me.Label4.Name = "Label4"
         Me.Label4.Size = New System.Drawing.Size(80, 13)
         Me.Label4.TabIndex = 41
@@ -173,7 +177,7 @@ Partial Class EmployeeForm
         'Label5
         '
         Me.Label5.AutoSize = True
-        Me.Label5.Location = New System.Drawing.Point(292, 159)
+        Me.Label5.Location = New System.Drawing.Point(292, 173)
         Me.Label5.Name = "Label5"
         Me.Label5.Size = New System.Drawing.Size(35, 13)
         Me.Label5.TabIndex = 50
@@ -181,7 +185,7 @@ Partial Class EmployeeForm
         '
         'txtState
         '
-        Me.txtState.Location = New System.Drawing.Point(330, 159)
+        Me.txtState.Location = New System.Drawing.Point(330, 171)
         Me.txtState.Name = "txtState"
         Me.txtState.Size = New System.Drawing.Size(44, 20)
         Me.txtState.TabIndex = 7
@@ -189,7 +193,7 @@ Partial Class EmployeeForm
         'Label6
         '
         Me.Label6.AutoSize = True
-        Me.Label6.Location = New System.Drawing.Point(299, 134)
+        Me.Label6.Location = New System.Drawing.Point(299, 148)
         Me.Label6.Name = "Label6"
         Me.Label6.Size = New System.Drawing.Size(27, 13)
         Me.Label6.TabIndex = 48
@@ -197,7 +201,7 @@ Partial Class EmployeeForm
         '
         'txtCity
         '
-        Me.txtCity.Location = New System.Drawing.Point(330, 134)
+        Me.txtCity.Location = New System.Drawing.Point(330, 147)
         Me.txtCity.Name = "txtCity"
         Me.txtCity.Size = New System.Drawing.Size(128, 20)
         Me.txtCity.TabIndex = 6
@@ -205,7 +209,7 @@ Partial Class EmployeeForm
         'Label7
         '
         Me.Label7.AutoSize = True
-        Me.Label7.Location = New System.Drawing.Point(384, 161)
+        Me.Label7.Location = New System.Drawing.Point(379, 175)
         Me.Label7.Name = "Label7"
         Me.Label7.Size = New System.Drawing.Size(27, 13)
         Me.Label7.TabIndex = 47
@@ -213,21 +217,21 @@ Partial Class EmployeeForm
         '
         'txtAddressLine2
         '
-        Me.txtAddressLine2.Location = New System.Drawing.Point(330, 111)
+        Me.txtAddressLine2.Location = New System.Drawing.Point(330, 123)
         Me.txtAddressLine2.Name = "txtAddressLine2"
         Me.txtAddressLine2.Size = New System.Drawing.Size(128, 20)
         Me.txtAddressLine2.TabIndex = 5
         '
         'txtZipCode
         '
-        Me.txtZipCode.Location = New System.Drawing.Point(414, 159)
+        Me.txtZipCode.Location = New System.Drawing.Point(403, 171)
         Me.txtZipCode.Name = "txtZipCode"
-        Me.txtZipCode.Size = New System.Drawing.Size(44, 20)
+        Me.txtZipCode.Size = New System.Drawing.Size(55, 20)
         Me.txtZipCode.TabIndex = 8
         '
         'txtHomePhone
         '
-        Me.txtHomePhone.Location = New System.Drawing.Point(109, 133)
+        Me.txtHomePhone.Location = New System.Drawing.Point(109, 147)
         Me.txtHomePhone.Name = "txtHomePhone"
         Me.txtHomePhone.Size = New System.Drawing.Size(128, 20)
         Me.txtHomePhone.TabIndex = 9
@@ -235,7 +239,7 @@ Partial Class EmployeeForm
         'Label8
         '
         Me.Label8.AutoSize = True
-        Me.Label8.Location = New System.Drawing.Point(36, 156)
+        Me.Label8.Location = New System.Drawing.Point(36, 178)
         Me.Label8.Name = "Label8"
         Me.Label8.Size = New System.Drawing.Size(67, 13)
         Me.Label8.TabIndex = 55
@@ -243,7 +247,7 @@ Partial Class EmployeeForm
         '
         'txtWorkPhone
         '
-        Me.txtWorkPhone.Location = New System.Drawing.Point(109, 156)
+        Me.txtWorkPhone.Location = New System.Drawing.Point(109, 171)
         Me.txtWorkPhone.Name = "txtWorkPhone"
         Me.txtWorkPhone.Size = New System.Drawing.Size(128, 20)
         Me.txtWorkPhone.TabIndex = 10
@@ -251,7 +255,7 @@ Partial Class EmployeeForm
         'Label9
         '
         Me.Label9.AutoSize = True
-        Me.Label9.Location = New System.Drawing.Point(30, 137)
+        Me.Label9.Location = New System.Drawing.Point(31, 154)
         Me.Label9.Name = "Label9"
         Me.Label9.Size = New System.Drawing.Size(72, 13)
         Me.Label9.TabIndex = 53
@@ -260,7 +264,7 @@ Partial Class EmployeeForm
         'Label10
         '
         Me.Label10.AutoSize = True
-        Me.Label10.Location = New System.Drawing.Point(28, 182)
+        Me.Label10.Location = New System.Drawing.Point(28, 202)
         Me.Label10.Name = "Label10"
         Me.Label10.Size = New System.Drawing.Size(75, 13)
         Me.Label10.TabIndex = 58
@@ -268,7 +272,7 @@ Partial Class EmployeeForm
         '
         'txtMobilePhone
         '
-        Me.txtMobilePhone.Location = New System.Drawing.Point(109, 182)
+        Me.txtMobilePhone.Location = New System.Drawing.Point(109, 195)
         Me.txtMobilePhone.Name = "txtMobilePhone"
         Me.txtMobilePhone.Size = New System.Drawing.Size(128, 20)
         Me.txtMobilePhone.TabIndex = 11
@@ -276,7 +280,7 @@ Partial Class EmployeeForm
         'RadioButtonTimeLive
         '
         Me.RadioButtonTimeLive.AutoSize = True
-        Me.RadioButtonTimeLive.Location = New System.Drawing.Point(317, 22)
+        Me.RadioButtonTimeLive.Location = New System.Drawing.Point(354, 20)
         Me.RadioButtonTimeLive.Name = "RadioButtonTimeLive"
         Me.RadioButtonTimeLive.Size = New System.Drawing.Size(92, 17)
         Me.RadioButtonTimeLive.TabIndex = 61
@@ -287,7 +291,7 @@ Partial Class EmployeeForm
         'RadioButtonQuickBooks
         '
         Me.RadioButtonQuickBooks.AutoSize = True
-        Me.RadioButtonQuickBooks.Location = New System.Drawing.Point(204, 22)
+        Me.RadioButtonQuickBooks.Location = New System.Drawing.Point(210, 20)
         Me.RadioButtonQuickBooks.Name = "RadioButtonQuickBooks"
         Me.RadioButtonQuickBooks.Size = New System.Drawing.Size(107, 17)
         Me.RadioButtonQuickBooks.TabIndex = 60
@@ -307,14 +311,45 @@ Partial Class EmployeeForm
         Me.RadioButtonBothQBTL.Text = "Both Quicks and TimeLive"
         Me.RadioButtonBothQBTL.UseVisualStyleBackColor = True
         '
+        'GroupBox1
+        '
+        Me.GroupBox1.Controls.Add(Me.RadioButtonTimeLive)
+        Me.GroupBox1.Controls.Add(Me.RadioButtonQuickBooks)
+        Me.GroupBox1.Location = New System.Drawing.Point(12, 2)
+        Me.GroupBox1.Name = "GroupBox1"
+        Me.GroupBox1.Size = New System.Drawing.Size(476, 53)
+        Me.GroupBox1.TabIndex = 62
+        Me.GroupBox1.TabStop = False
+        Me.GroupBox1.Text = "Application"
+        '
+        'Label11
+        '
+        Me.Label11.AutoSize = True
+        Me.Label11.Location = New System.Drawing.Point(28, 246)
+        Me.Label11.Name = "Label11"
+        Me.Label11.Size = New System.Drawing.Size(251, 13)
+        Me.Label11.TabIndex = 63
+        Me.Label11.Text = "Note: Hired date is used as the TimeLive Password."
+        '
+        'GroupBox2
+        '
+        Me.GroupBox2.Location = New System.Drawing.Point(12, 61)
+        Me.GroupBox2.Name = "GroupBox2"
+        Me.GroupBox2.Size = New System.Drawing.Size(476, 170)
+        Me.GroupBox2.TabIndex = 64
+        Me.GroupBox2.TabStop = False
+        Me.GroupBox2.Text = "Parameters"
+        '
         'EmployeeForm
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(500, 255)
-        Me.Controls.Add(Me.RadioButtonTimeLive)
-        Me.Controls.Add(Me.RadioButtonQuickBooks)
+        Me.ClientSize = New System.Drawing.Size(500, 279)
+        Me.Controls.Add(Me.Label11)
         Me.Controls.Add(Me.RadioButtonBothQBTL)
+        Me.Controls.Add(Me.btnCancel)
+        Me.Controls.Add(Me.btnOK)
+        Me.Controls.Add(Me.GroupBox1)
         Me.Controls.Add(Me.Label10)
         Me.Controls.Add(Me.txtMobilePhone)
         Me.Controls.Add(Me.txtHomePhone)
@@ -338,12 +373,13 @@ Partial Class EmployeeForm
         Me.Controls.Add(Me.mTxtHiredDate)
         Me.Controls.Add(Me.lbName)
         Me.Controls.Add(Me.txtFirstName)
-        Me.Controls.Add(Me.btnCancel)
         Me.Controls.Add(Me.lblPassword)
-        Me.Controls.Add(Me.btnOK)
+        Me.Controls.Add(Me.GroupBox2)
         Me.Margin = New System.Windows.Forms.Padding(2)
         Me.Name = "EmployeeForm"
-        Me.Text = "Employee Entry"
+        Me.Text = "Create Employee"
+        Me.GroupBox1.ResumeLayout(False)
+        Me.GroupBox1.PerformLayout()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -379,4 +415,7 @@ Partial Class EmployeeForm
     Friend WithEvents RadioButtonTimeLive As RadioButton
     Friend WithEvents RadioButtonQuickBooks As RadioButton
     Friend WithEvents RadioButtonBothQBTL As RadioButton
+    Friend WithEvents GroupBox1 As GroupBox
+    Friend WithEvents Label11 As Label
+    Friend WithEvents GroupBox2 As GroupBox
 End Class
