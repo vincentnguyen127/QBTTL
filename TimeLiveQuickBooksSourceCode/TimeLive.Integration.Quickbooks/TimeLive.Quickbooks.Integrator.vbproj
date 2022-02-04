@@ -224,6 +224,12 @@
     <Compile Include="VB_Interfaces\ManualLinkOrEditForm.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="VB_Interfaces\NewItemForm.Designer.vb">
+      <DependentUpon>NewItemForm.vb</DependentUpon>
+    </Compile>
+    <Compile Include="VB_Interfaces\NewItemForm.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="VB_Interfaces\RelationshipTreeView.Designer.vb">
       <DependentUpon>RelationshipTreeView.vb</DependentUpon>
     </Compile>
@@ -330,6 +336,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="VB_Interfaces\ManualLinkOrEditForm.resx">
       <DependentUpon>ManualLinkOrEditForm.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="VB_Interfaces\NewItemForm.resx">
+      <DependentUpon>NewItemForm.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="VB_Interfaces\RelationshipTreeView.resx">
       <DependentUpon>RelationshipTreeView.vb</DependentUpon>

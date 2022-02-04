@@ -3027,9 +3027,7 @@ Public Class MAIN
 
     Private Sub DataGridView1_DoubleClick(sender As Object, e As EventArgs) Handles DataGridView1.DoubleClick
 
-
-
-
+        ' this codes is used to modify customer, employee, vendro in QB. However, we don't need it any more
 
         'Dim edit As Boolean = False
         '    Dim link As Boolean = False
@@ -3090,15 +3088,6 @@ Public Class MAIN
 
                 ChargingRelationship_2.Show()
 
-                'Using chargingRelationship As New ChargingRelationship_2
-                '    chargingRelationship.EmployeeFilterBox.Text = empName
-                '    chargingRelationship.EmployeeFilterBox.Enabled = False
-                '    chargingRelationship.PayrollFilterBox.Enabled = False
-                '    chargingRelationship.ItemFilterBox.Enabled = False
-                '    chargingRelationship.JobFilterBox.Enabled = False
-
-                '    chargingRelationship.ShowDialog()
-                'End Using
             Else
                 MsgBox("employee is not in employee table.", MsgBoxStyle.Exclamation, "Alert")
                 Exit Sub
@@ -3393,7 +3382,7 @@ Public Class MAIN
 
         Using treeview As JobSubJobTreeView = New JobSubJobTreeView()
             With treeview
-
+                'get elements that are in both QB and Tl. used the blue color to identify  
                 Dim jobDataArray As New List(Of Array)
                 For Each row As DataGridViewRow In DataGridView1.Rows
                     If row.DefaultCellStyle.ForeColor = Color.Blue Then

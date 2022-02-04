@@ -51,7 +51,16 @@
         obj_ChargingRelationship_2.generate_jobs_treeview()
     End Sub
 
-    Private Sub btnItems_Click(sender As Object, e As EventArgs) Handles btnItems.Click
+    'Private Sub btnItems_Click(sender As Object, e As EventArgs) Handles btnItems.Click
+    '    obj_ChargingRelationship_2.generate_items_treeview()
+    'End Sub
+
+    Public Function btnItems_Click() Handles btnItems.Click
         obj_ChargingRelationship_2.generate_items_treeview()
+
+    End Function
+
+    Private Sub btnItems_Click(sender As Object, e As EventArgs) Handles btnItems.Click
+
     End Sub
 End Class

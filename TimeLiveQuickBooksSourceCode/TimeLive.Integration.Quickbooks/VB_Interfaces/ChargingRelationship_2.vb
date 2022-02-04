@@ -291,6 +291,7 @@ Public Class ChargingRelationship_2
                     msgSetRq.AppendCustomerQueryRq()
                 Case 5
                     msgSetRq.AppendItemServiceQueryRq()
+
             End Select
 
             'step2: send the request
@@ -620,6 +621,9 @@ Public Class ChargingRelationship_2
 
     End Sub
     Public Function generate_items_treeview()
+        'refresh item data after adding an entry 
+        ItemsSubItemsQBData = QBItemsSubItems()
+
         Dim itemData As List(Of Array) = New List(Of Array)
         For Each items As DataRow In ItemsSubItemsQBData.Rows
             itemData.Add(Split(items(0), "-->"))
@@ -640,7 +644,10 @@ Public Class ChargingRelationship_2
             End If
         Next
 
+
+
         Using form As RelationshipTreeView = New RelationshipTreeView
+            form.btnAdd.Visible = True
             form.LabelRelationshipTreeView.Text = "Items"
             For Each firstNode As String In firstNodes
                 form.TreeViewRelationship.Nodes.Add(firstNode, firstNode)
@@ -661,9 +668,7 @@ Public Class ChargingRelationship_2
             Next
             form.TreeViewRelationship.TabStop = False
 
-
             form.TreeViewRelationship.ExpandAll()
-
             form.ShowDialog()
         End Using
 

@@ -25,6 +25,7 @@ Partial Class RelationshipTreeView
         Me.TreeViewRelationship = New System.Windows.Forms.TreeView()
         Me.LabelRelationshipTreeView = New System.Windows.Forms.Label()
         Me.btnOK = New System.Windows.Forms.Button()
+        Me.btnAdd = New System.Windows.Forms.Button()
         Me.SuspendLayout()
         '
         'TreeViewRelationship
@@ -52,11 +53,22 @@ Partial Class RelationshipTreeView
         Me.btnOK.Text = "OK"
         Me.btnOK.UseVisualStyleBackColor = True
         '
+        'btnAdd
+        '
+        Me.btnAdd.Location = New System.Drawing.Point(84, 281)
+        Me.btnAdd.Name = "btnAdd"
+        Me.btnAdd.Size = New System.Drawing.Size(78, 30)
+        Me.btnAdd.TabIndex = 9
+        Me.btnAdd.Text = "Add"
+        Me.btnAdd.UseVisualStyleBackColor = True
+        Me.btnAdd.Visible = False
+        '
         'RelationshipTreeView
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(248, 322)
+        Me.ClientSize = New System.Drawing.Size(272, 326)
+        Me.Controls.Add(Me.btnAdd)
         Me.Controls.Add(Me.btnOK)
         Me.Controls.Add(Me.LabelRelationshipTreeView)
         Me.Controls.Add(Me.TreeViewRelationship)
@@ -72,4 +84,5 @@ Partial Class RelationshipTreeView
     Friend WithEvents TreeViewRelationship As TreeView
     Friend WithEvents LabelRelationshipTreeView As Label
     Friend WithEvents btnOK As Button
+    Friend WithEvents btnAdd As Button
 End Class

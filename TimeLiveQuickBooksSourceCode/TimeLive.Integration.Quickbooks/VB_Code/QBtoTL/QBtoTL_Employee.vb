@@ -541,7 +541,7 @@ Public Class QBtoTL_Employee
         Dim ModTime As String
         Dim CreateTime As String
         Dim NewlyAdd As String
-        Dim EditSequence As String
+
 
         With empRet
             EmailAddress = If(.Email Is Nothing, "", .Email.GetValue)

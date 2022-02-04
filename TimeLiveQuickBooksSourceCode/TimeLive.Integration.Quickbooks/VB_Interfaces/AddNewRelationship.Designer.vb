@@ -35,6 +35,7 @@ Partial Class AddNewRelationship
         Me.btnJobs = New System.Windows.Forms.Button()
         Me.btnItems = New System.Windows.Forms.Button()
         Me.GroupBox1 = New System.Windows.Forms.GroupBox()
+        Me.GroupBox1.SuspendLayout()
         Me.SuspendLayout()
         '
         'Label2
@@ -52,7 +53,7 @@ Partial Class AddNewRelationship
         Me.TextBoxJob.Location = New System.Drawing.Point(152, 68)
         Me.TextBoxJob.Name = "TextBoxJob"
         Me.TextBoxJob.RightToLeft = System.Windows.Forms.RightToLeft.No
-        Me.TextBoxJob.Size = New System.Drawing.Size(195, 20)
+        Me.TextBoxJob.Size = New System.Drawing.Size(257, 20)
         Me.TextBoxJob.TabIndex = 1
         '
         'Label1
@@ -69,7 +70,7 @@ Partial Class AddNewRelationship
         '
         Me.TextBoxItem.Location = New System.Drawing.Point(152, 146)
         Me.TextBoxItem.Name = "TextBoxItem"
-        Me.TextBoxItem.Size = New System.Drawing.Size(195, 20)
+        Me.TextBoxItem.Size = New System.Drawing.Size(257, 20)
         Me.TextBoxItem.TabIndex = 3
         '
         'Label3
@@ -94,7 +95,7 @@ Partial Class AddNewRelationship
         '
         'btnCancel
         '
-        Me.btnCancel.Location = New System.Drawing.Point(222, 198)
+        Me.btnCancel.Location = New System.Drawing.Point(269, 198)
         Me.btnCancel.Name = "btnCancel"
         Me.btnCancel.Size = New System.Drawing.Size(75, 23)
         Me.btnCancel.TabIndex = 5
@@ -103,7 +104,7 @@ Partial Class AddNewRelationship
         '
         'btnOK
         '
-        Me.btnOK.Location = New System.Drawing.Point(310, 198)
+        Me.btnOK.Location = New System.Drawing.Point(357, 198)
         Me.btnOK.Name = "btnOK"
         Me.btnOK.Size = New System.Drawing.Size(75, 23)
         Me.btnOK.TabIndex = 4
@@ -115,7 +116,7 @@ Partial Class AddNewRelationship
         Me.ComboBoxEmployee.FormattingEnabled = True
         Me.ComboBoxEmployee.Location = New System.Drawing.Point(152, 32)
         Me.ComboBoxEmployee.Name = "ComboBoxEmployee"
-        Me.ComboBoxEmployee.Size = New System.Drawing.Size(195, 21)
+        Me.ComboBoxEmployee.Size = New System.Drawing.Size(280, 21)
         Me.ComboBoxEmployee.TabIndex = 0
         '
         'ComboBoxPayroll
@@ -123,14 +124,14 @@ Partial Class AddNewRelationship
         Me.ComboBoxPayroll.FormattingEnabled = True
         Me.ComboBoxPayroll.Location = New System.Drawing.Point(152, 110)
         Me.ComboBoxPayroll.Name = "ComboBoxPayroll"
-        Me.ComboBoxPayroll.Size = New System.Drawing.Size(195, 21)
+        Me.ComboBoxPayroll.Size = New System.Drawing.Size(280, 21)
         Me.ComboBoxPayroll.TabIndex = 2
         '
         'btnJobs
         '
         Me.btnJobs.FlatAppearance.BorderColor = System.Drawing.Color.Black
         Me.btnJobs.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.btnJobs.Location = New System.Drawing.Point(322, 68)
+        Me.btnJobs.Location = New System.Drawing.Point(395, 55)
         Me.btnJobs.Name = "btnJobs"
         Me.btnJobs.Size = New System.Drawing.Size(25, 20)
         Me.btnJobs.TabIndex = 9
@@ -141,7 +142,7 @@ Partial Class AddNewRelationship
         '
         Me.btnItems.FlatAppearance.BorderColor = System.Drawing.Color.Black
         Me.btnItems.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.btnItems.Location = New System.Drawing.Point(322, 146)
+        Me.btnItems.Location = New System.Drawing.Point(395, 133)
         Me.btnItems.Name = "btnItems"
         Me.btnItems.Size = New System.Drawing.Size(25, 20)
         Me.btnItems.TabIndex = 10
@@ -150,9 +151,11 @@ Partial Class AddNewRelationship
         '
         'GroupBox1
         '
+        Me.GroupBox1.Controls.Add(Me.btnItems)
+        Me.GroupBox1.Controls.Add(Me.btnJobs)
         Me.GroupBox1.Location = New System.Drawing.Point(12, 13)
         Me.GroupBox1.Name = "GroupBox1"
-        Me.GroupBox1.Size = New System.Drawing.Size(373, 179)
+        Me.GroupBox1.Size = New System.Drawing.Size(457, 179)
         Me.GroupBox1.TabIndex = 11
         Me.GroupBox1.TabStop = False
         Me.GroupBox1.Text = "Options"
@@ -161,9 +164,7 @@ Partial Class AddNewRelationship
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(402, 241)
-        Me.Controls.Add(Me.btnItems)
-        Me.Controls.Add(Me.btnJobs)
+        Me.ClientSize = New System.Drawing.Size(499, 241)
         Me.Controls.Add(Me.ComboBoxPayroll)
         Me.Controls.Add(Me.ComboBoxEmployee)
         Me.Controls.Add(Me.btnOK)
@@ -178,6 +179,7 @@ Partial Class AddNewRelationship
         Me.Name = "AddNewRelationship"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent
         Me.Text = "Add New Relationship"
+        Me.GroupBox1.ResumeLayout(False)
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
