@@ -1,11 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.24720.0
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31727.386
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "TimeLive.Quickbooks.Integrator", "TimeLive.Integration.Quickbooks\TimeLive.Quickbooks.Integrator.vbproj", "{BCB9035A-7AE7-4326-96E1-0ADC9BAC8170}"
 EndProject
-Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "TeltriumTimeLiveToQuickBooks", "Installation\TeltriumTimeLiveToQuickBooks\TeltriumTimeLiveToQuickBooks.vdproj", "{08032F65-061B-4A0A-92EF-9870D2316CAE}"
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "TimeLive2QuickBooks", "TimeLive2QuickBooks\TimeLive2QuickBooks.vdproj", "{C37B0B83-343A-47F9-BBA4-761831A0E23F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -16,12 +16,15 @@ Global
 		{BCB9035A-7AE7-4326-96E1-0ADC9BAC8170}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{BCB9035A-7AE7-4326-96E1-0ADC9BAC8170}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BCB9035A-7AE7-4326-96E1-0ADC9BAC8170}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
-		{BCB9035A-7AE7-4326-96E1-0ADC9BAC8170}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{BCB9035A-7AE7-4326-96E1-0ADC9BAC8170}.Release|Any CPU.Build.0 = Release|Any CPU
-		{08032F65-061B-4A0A-92EF-9870D2316CAE}.Debug|Any CPU.ActiveCfg = Debug
-		{08032F65-061B-4A0A-92EF-9870D2316CAE}.Release|Any CPU.ActiveCfg = Release
+		{BCB9035A-7AE7-4326-96E1-0ADC9BAC8170}.Release|Any CPU.ActiveCfg = Debug|Any CPU
+		{BCB9035A-7AE7-4326-96E1-0ADC9BAC8170}.Release|Any CPU.Build.0 = Debug|Any CPU
+		{C37B0B83-343A-47F9-BBA4-761831A0E23F}.Debug|Any CPU.ActiveCfg = Debug
+		{C37B0B83-343A-47F9-BBA4-761831A0E23F}.Release|Any CPU.ActiveCfg = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {A6DCEED6-331C-4C66-A719-6C2B83EE72D3}
 	EndGlobalSection
 EndGlobal

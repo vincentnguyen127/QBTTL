@@ -15,9 +15,9 @@ Public Class ModifyForm
 
         'End If
 
-        'Dim phoneRegex As New Regex("\d{3}-\d{3}-\d{4}")
+        'Dim phoneRegex As New Regex("\d{3}-\d{3}-\d{4}")cc
         'Dim isPhoneValid As Boolean = phoneRegex.IsMatch(txtTelephone2.Text.Trim)
-        'If Not isPhoneValid Then
+        'If Not isPhoneValid Thenc
         '    MessageBox.Show("Invalid Phone" & vbCrLf & "Format ###-###-####")
         'End If
 

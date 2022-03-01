@@ -49,17 +49,17 @@ Public Class TLQBTreeView
 
         'Retreiving customers, projects, task from timelive 
         ' Connect to TimeLive Client
-        Dim objClientServices As Services.TimeLive.Clients.Clients = MAIN.connect_TL_clients(obj_main.p_token)
+        Dim objClientServices As Services.TimeLive.Clients.Clients = MAIN.connect_TL_clients(MAIN.p_token.ToString())
         Dim objClientArray() As Object = objClientServices.GetClients()
 
 
         ' Connect to TimeLive Tasks
-        Dim objTaskServices As Services.TimeLive.Tasks.Tasks = MAIN.connect_TL_tasks(obj_main.p_token)
+        Dim objTaskServices As Services.TimeLive.Tasks.Tasks = MAIN.connect_TL_tasks(MAIN.p_token.ToString())
         Dim objTaskArray() As Object = objTaskServices.GetTasks
         'Dim objTask As New Services.TimeLive.Tasks.Task
 
         'Connect to TimeLive Projects
-        Dim objProjectServices As Services.TimeLive.Projects.Projects = MAIN.connect_TL_projects(obj_main.p_token)
+        Dim objProjectServices As Services.TimeLive.Projects.Projects = MAIN.connect_TL_projects(MAIN.p_token.ToString())
         Dim objProjectArray() As Object = objProjectServices.GetProjects
 
         Dim obj_client As Services.TimeLive.Clients.Client
@@ -102,7 +102,7 @@ Public Class TLQBTreeView
                     jobOrItemform.txtJobtName.Text = selected_node
                     If DialogResult.OK = jobOrItemform.ShowDialog Then
                         nodes.Add(TextBoxFullNameTL.Text.Trim())
-                        job_TLSync.SyncJobsSubJobData(obj_main.p_token, obj_main, True, nodes)
+                        job_TLSync.SyncJobsSubJobData(MAIN.p_token.ToString(), obj_main, True, nodes)
                         Me.Close()
                     Else
                         Exit Sub
@@ -150,14 +150,15 @@ Public Class TLQBTreeView
         'connecting timelive
 
 
-        Dim objProjectServices As Services.TimeLive.Projects.Projects = MAIN.connect_TL_projects(obj_main.p_token)
-        Dim objTaskServices As Services.TimeLive.Tasks.Tasks = MAIN.connect_TL_tasks(obj_main.p_token)
-        Dim objClientServices As Services.TimeLive.Clients.Clients = MAIN.connect_TL_clients(obj_main.p_token)
+        Dim objProjectServices As Services.TimeLive.Projects.Projects = MAIN.connect_TL_projects(MAIN.p_token.ToString())
+        Dim objTaskServices As Services.TimeLive.Tasks.Tasks = MAIN.connect_TL_tasks(MAIN.p_token.ToString())
+        Dim objClientServices As Services.TimeLive.Clients.Clients = MAIN.connect_TL_clients(MAIN.p_token.ToString())
 
         Dim objServices As New Services.TimeLiveServices
         Dim authentication As New Services.SecuredWebServiceHeader
-        authentication.AuthenticatedToken = obj_main.p_token
+        authentication.AuthenticatedToken = MAIN.p_token.ToString()
         objServices.SecuredWebServiceHeaderValue = authentication
+
 
         'Open session for TL
         Dim nProjectTypeId As Integer = objProjectServices.GetProjectTypeId()
@@ -226,7 +227,7 @@ Public Class TLQBTreeView
 
 
         nodes.Add(fullname + ":" + new_node)
-        job_TLSync.SyncJobsSubJobData(obj_main.p_token, obj_main, True, nodes)
+        job_TLSync.SyncJobsSubJobData(MAIN.p_token.ToString(), obj_main, True, nodes)
         Me.Close()
     End Sub
 

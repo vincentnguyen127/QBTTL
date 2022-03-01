@@ -68,7 +68,7 @@ Partial Class ManualLinkForm
         '
         'btnCancel
         '
-        Me.btnCancel.Location = New System.Drawing.Point(430, 97)
+        Me.btnCancel.Location = New System.Drawing.Point(458, 84)
         Me.btnCancel.Name = "btnCancel"
         Me.btnCancel.Size = New System.Drawing.Size(75, 23)
         Me.btnCancel.TabIndex = 4
@@ -77,7 +77,7 @@ Partial Class ManualLinkForm
         '
         'btnOK
         '
-        Me.btnOK.Location = New System.Drawing.Point(511, 97)
+        Me.btnOK.Location = New System.Drawing.Point(539, 84)
         Me.btnOK.Name = "btnOK"
         Me.btnOK.Size = New System.Drawing.Size(75, 23)
         Me.btnOK.TabIndex = 5
@@ -100,7 +100,7 @@ Partial Class ManualLinkForm
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(626, 159)
+        Me.ClientSize = New System.Drawing.Size(626, 116)
         Me.Controls.Add(Me.btnOK)
         Me.Controls.Add(Me.btnCancel)
         Me.Controls.Add(Me.GroupBox1)

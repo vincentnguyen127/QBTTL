@@ -613,7 +613,7 @@ Namespace My
         <Global.System.Configuration.ApplicationScopedSettingAttribute(),  _
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.Configuration.SpecialSettingAttribute(Global.System.Configuration.SpecialSetting.ConnectionString),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("Data Source=192.168.30.103;Initial Catalog=TL_QB_Relationship_Dev; persist securi"& _ 
+         Global.System.Configuration.DefaultSettingValueAttribute("Data Source=192.168.10.103;Initial Catalog=TL_QB_Relationship_Dev; persist securi"& _ 
             "ty info=True; Integrated Security=SSPI;")>  _
         Public ReadOnly Property TL_QB_RelationshipConnectionString() As String
             Get
@@ -624,8 +624,8 @@ Namespace My
         <Global.System.Configuration.ApplicationScopedSettingAttribute(),  _
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.Configuration.SpecialSettingAttribute(Global.System.Configuration.SpecialSetting.ConnectionString),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("Data Source=192.168.30.103;Initial Catalog=TimeLiveDev;persist security info=True"& _ 
-            "; Integrated Security=SSPI;")>  _
+         Global.System.Configuration.DefaultSettingValueAttribute("Data Source=192.168.10.103;Initial Catalog=TimeLive;persist security info=True; I"& _ 
+            "ntegrated Security=SSPI;")>  _
         Public ReadOnly Property TimeLiveDevConnectionString() As String
             Get
                 Return CType(Me("TimeLiveDevConnectionString"),String)
@@ -635,8 +635,8 @@ Namespace My
         <Global.System.Configuration.ApplicationScopedSettingAttribute(),  _
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.Configuration.SpecialSettingAttribute(Global.System.Configuration.SpecialSetting.ConnectionString),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("Data Source=192.168.30.103;Initial Catalog=TimeLiveDev;persist security info=True"& _ 
-            "; Integrated Security=SSPI;")>  _
+         Global.System.Configuration.DefaultSettingValueAttribute("Data Source=192.168.10.103;Initial Catalog=TimeLive;persist security info=True; I"& _ 
+            "ntegrated Security=SSPI;")>  _
         Public ReadOnly Property TimeLiveDevConnectionString1() As String
             Get
                 Return CType(Me("TimeLiveDevConnectionString1"),String)

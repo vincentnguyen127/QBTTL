@@ -540,7 +540,8 @@ Public Class QBtoTL_Employee
         Dim HiredDate As String
         Dim ModTime As String
         Dim CreateTime As String
-        Dim NewlyAdd As String
+        Dim NewlyAdd As String = Nothing
+
 
 
         With empRet

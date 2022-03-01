@@ -544,9 +544,9 @@ Public Class QBtoTL_Vendor
         Dim IsVendorEligibleFor1099 As Boolean = False
         Dim ModTime As String
         Dim CreateTime As String
-            Dim NewlyAdd As String
+        Dim NewlyAdd As String = Nothing
 
-            With empRet
+        With empRet
                 EmailAddress = If(.Email Is Nothing, "", .Email.GetValue)
                 FirstName = If(.FirstName Is Nothing, "", .FirstName.GetValue)
                 LastName = If(.LastName Is Nothing, "", .LastName.GetValue)

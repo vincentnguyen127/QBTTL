@@ -9,8 +9,9 @@ Public Class JobSubJobTreeView
     Dim customer_qbtotl As QBtoTL_Customer = New QBtoTL_Customer
 
     Private Sub JobSubJobTreeView_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+
         customerData = customer_qbtotl.GetCustomerQBData(Nothing, False)
-        JobData = job_qbtotl.GetJobSubJobData(MAIN, obj_main.p_token, True)
+        JobData = job_qbtotl.GetJobSubJobData(MAIN, MAIN.p_token.ToString(), True)
     End Sub
 
     Private Sub TreeViewJobSubJob_AfterSelect(sender As Object, e As TreeViewEventArgs) Handles TreeViewJobSubJob.AfterSelect
@@ -23,17 +24,17 @@ Public Class JobSubJobTreeView
         If Me.RadioButtonBothQBTL.Checked Or Me.RadioButtonTimeLive.Checked Then
             'Retreiving customers, projects, task from timelive 
             ' Connect to TimeLive Client
-            Dim objClientServices As Services.TimeLive.Clients.Clients = MAIN.connect_TL_clients(obj_main.p_token)
+            Dim objClientServices As Services.TimeLive.Clients.Clients = MAIN.connect_TL_clients(MAIN.p_token.ToString())
             Dim objClientArray() As Object = objClientServices.GetClients()
 
 
             ' Connect to TimeLive Tasks
-            Dim objTaskServices As Services.TimeLive.Tasks.Tasks = MAIN.connect_TL_tasks(obj_main.p_token)
+            Dim objTaskServices As Services.TimeLive.Tasks.Tasks = MAIN.connect_TL_tasks(MAIN.p_token.ToString())
             Dim objTaskArray() As Object = objTaskServices.GetTasks
             'Dim objTask As New Services.TimeLive.Tasks.Task
 
             'Connect to TimeLive Projects
-            Dim objProjectServices As Services.TimeLive.Projects.Projects = MAIN.connect_TL_projects(obj_main.p_token)
+            Dim objProjectServices As Services.TimeLive.Projects.Projects = MAIN.connect_TL_projects(MAIN.p_token.ToString())
             Dim objProjectArray() As Object = objProjectServices.GetProjects
 
             Dim obj_client As Services.TimeLive.Clients.Client
@@ -142,13 +143,13 @@ Public Class JobSubJobTreeView
 
 
         'connecting timelive
-        Dim objProjectServices As Services.TimeLive.Projects.Projects = MAIN.connect_TL_projects(obj_main.p_token)
-        Dim objTaskServices As Services.TimeLive.Tasks.Tasks = MAIN.connect_TL_tasks(obj_main.p_token)
-        Dim objClientServices As Services.TimeLive.Clients.Clients = MAIN.connect_TL_clients(obj_main.p_token)
+        Dim objProjectServices As Services.TimeLive.Projects.Projects = MAIN.connect_TL_projects(MAIN.p_token.ToString())
+        Dim objTaskServices As Services.TimeLive.Tasks.Tasks = MAIN.connect_TL_tasks(MAIN.p_token.ToString())
+        Dim objClientServices As Services.TimeLive.Clients.Clients = MAIN.connect_TL_clients(MAIN.p_token.ToString())
 
         Dim objServices As New Services.TimeLiveServices
         Dim authentication As New Services.SecuredWebServiceHeader
-        authentication.AuthenticatedToken = obj_main.p_token
+        authentication.AuthenticatedToken = MAIN.p_token.ToString()
         objServices.SecuredWebServiceHeaderValue = authentication
 
         'Open session for TL
@@ -261,7 +262,7 @@ Public Class JobSubJobTreeView
                 End Try
             End If
             nodes.Add(fullname + ":" + new_node)
-            job_TLSync.SyncJobsSubJobData(obj_main.p_token, obj_main, True, nodes)
+            job_TLSync.SyncJobsSubJobData(MAIN.p_token.ToString(), obj_main, True, nodes)
         Else
 
 

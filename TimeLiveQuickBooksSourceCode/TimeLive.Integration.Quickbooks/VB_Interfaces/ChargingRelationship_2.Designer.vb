@@ -23,7 +23,7 @@ Partial Class ChargingRelationship_2
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
-        Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Me.EmployeesBindingSource1 = New System.Windows.Forms.BindingSource(Me.components)
         Me.QB_TL_IDs = New TimeLive.Quickbooks.Integrator.QB_TL_IDs()
         Me.EmployeeFilterLabel = New System.Windows.Forms.Label()
@@ -296,11 +296,11 @@ Partial Class ChargingRelationship_2
         'DataGridView1
         '
         Me.DataGridView1.AllowUserToResizeRows = False
-        DataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer))
-        DataGridViewCellStyle1.ForeColor = System.Drawing.Color.Black
-        DataGridViewCellStyle1.SelectionBackColor = System.Drawing.Color.White
-        DataGridViewCellStyle1.SelectionForeColor = System.Drawing.Color.Black
-        Me.DataGridView1.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle1
+        DataGridViewCellStyle2.BackColor = System.Drawing.Color.FromArgb(CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer))
+        DataGridViewCellStyle2.ForeColor = System.Drawing.Color.Black
+        DataGridViewCellStyle2.SelectionBackColor = System.Drawing.Color.White
+        DataGridViewCellStyle2.SelectionForeColor = System.Drawing.Color.Black
+        Me.DataGridView1.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle2
         Me.DataGridView1.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
             Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
@@ -400,6 +400,7 @@ Partial Class ChargingRelationship_2
         '
         'btnAddNew
         '
+        Me.btnAddNew.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
         Me.btnAddNew.Location = New System.Drawing.Point(14, 397)
         Me.btnAddNew.Name = "btnAddNew"
         Me.btnAddNew.Size = New System.Drawing.Size(75, 23)
@@ -418,6 +419,8 @@ Partial Class ChargingRelationship_2
         Me.Controls.Add(Me.btn_Save)
         Me.Controls.Add(Me.btn_Delete)
         Me.Controls.Add(Me.btn_close)
+        Me.MaximizeBox = False
+        Me.MinimizeBox = False
         Me.Name = "ChargingRelationship_2"
         Me.Text = "Employee Charging Relationships"
         CType(Me.EmployeesBindingSource1, System.ComponentModel.ISupportInitialize).EndInit()

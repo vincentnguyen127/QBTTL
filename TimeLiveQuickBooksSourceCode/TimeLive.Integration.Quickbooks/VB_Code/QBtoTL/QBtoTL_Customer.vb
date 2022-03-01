@@ -136,7 +136,7 @@ Public Class QBtoTL_Customer
         Dim CreateTime As String
         Dim CustomerData As New CustomerDataStructureQB
         Dim NewlyAdd As String
-        Dim EditSequence As Object
+        'Dim EditSequence As Object
 
 
         'step1: prepare the request
@@ -244,7 +244,7 @@ Public Class QBtoTL_Customer
         Dim Fax As String
         Dim ModTime As String
         Dim CreateTime As String
-        Dim NewlyAdd As String
+        Dim NewlyAdd As String = Nothing
 
 
         With custRet
