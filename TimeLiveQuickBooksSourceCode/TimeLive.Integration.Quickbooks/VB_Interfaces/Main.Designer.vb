@@ -417,10 +417,10 @@ Partial Class MAIN
         'btnNewEmployee
         '
         Me.btnNewEmployee.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
-        Me.btnNewEmployee.Location = New System.Drawing.Point(300, 580)
+        Me.btnNewEmployee.Location = New System.Drawing.Point(8, 583)
         Me.btnNewEmployee.Margin = New System.Windows.Forms.Padding(2)
         Me.btnNewEmployee.Name = "btnNewEmployee"
-        Me.btnNewEmployee.Size = New System.Drawing.Size(93, 23)
+        Me.btnNewEmployee.Size = New System.Drawing.Size(92, 23)
         Me.btnNewEmployee.TabIndex = 3
         Me.btnNewEmployee.Text = "New Employee"
         Me.btnNewEmployee.UseVisualStyleBackColor = True
@@ -428,10 +428,10 @@ Partial Class MAIN
         'btnNewVendor
         '
         Me.btnNewVendor.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
-        Me.btnNewVendor.Location = New System.Drawing.Point(203, 578)
+        Me.btnNewVendor.Location = New System.Drawing.Point(8, 583)
         Me.btnNewVendor.Margin = New System.Windows.Forms.Padding(2)
         Me.btnNewVendor.Name = "btnNewVendor"
-        Me.btnNewVendor.Size = New System.Drawing.Size(93, 21)
+        Me.btnNewVendor.Size = New System.Drawing.Size(92, 23)
         Me.btnNewVendor.TabIndex = 4
         Me.btnNewVendor.Text = "New Vendor"
         Me.btnNewVendor.UseVisualStyleBackColor = True
@@ -439,10 +439,10 @@ Partial Class MAIN
         'btnNewCustomer
         '
         Me.btnNewCustomer.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
-        Me.btnNewCustomer.Location = New System.Drawing.Point(397, 580)
+        Me.btnNewCustomer.Location = New System.Drawing.Point(8, 583)
         Me.btnNewCustomer.Margin = New System.Windows.Forms.Padding(2)
         Me.btnNewCustomer.Name = "btnNewCustomer"
-        Me.btnNewCustomer.Size = New System.Drawing.Size(92, 22)
+        Me.btnNewCustomer.Size = New System.Drawing.Size(92, 23)
         Me.btnNewCustomer.TabIndex = 2
         Me.btnNewCustomer.Text = "New  Customer"
         Me.btnNewCustomer.UseVisualStyleBackColor = True
@@ -472,9 +472,9 @@ Partial Class MAIN
         'SendEmailsButton
         '
         Me.SendEmailsButton.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
-        Me.SendEmailsButton.Location = New System.Drawing.Point(4, 580)
+        Me.SendEmailsButton.Location = New System.Drawing.Point(8, 583)
         Me.SendEmailsButton.Name = "SendEmailsButton"
-        Me.SendEmailsButton.Size = New System.Drawing.Size(75, 23)
+        Me.SendEmailsButton.Size = New System.Drawing.Size(92, 23)
         Me.SendEmailsButton.TabIndex = 52
         Me.SendEmailsButton.Text = "Send Emails"
         Me.SendEmailsButton.UseVisualStyleBackColor = True
@@ -483,7 +483,7 @@ Partial Class MAIN
         'btnCreateJobItem
         '
         Me.btnCreateJobItem.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
-        Me.btnCreateJobItem.Location = New System.Drawing.Point(106, 577)
+        Me.btnCreateJobItem.Location = New System.Drawing.Point(8, 583)
         Me.btnCreateJobItem.Name = "btnCreateJobItem"
         Me.btnCreateJobItem.Size = New System.Drawing.Size(92, 23)
         Me.btnCreateJobItem.TabIndex = 7
@@ -1017,7 +1017,6 @@ Partial Class MAIN
         Me.Controls.Add(Me.ProgressBar1)
         Me.Controls.Add(Me.AttributeTabControl)
         Me.Controls.Add(Me.btnTransfer)
-        Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.IsMdiContainer = True
         Me.Name = "MAIN"

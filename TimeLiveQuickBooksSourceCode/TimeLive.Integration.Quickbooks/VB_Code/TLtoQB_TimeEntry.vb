@@ -108,7 +108,7 @@ Public Class TLtoQB_TimeEntry
                 With objTimeEntry
                     TimeEntryData.NoItems += 1
 
-                    Dim empId As String = Get_QB_ID_ForTL_EmployeeName(.EmployeeName) ' EmployeeName)
+                    Dim empId As String = Get_QB_ID_ForTL_EmployeeName(.EmployeeName).Trim() ' EmployeeName)
 
                     ' Checks if the name is actually stored as "Last, First" instead of "First Last"
                     If empId = Nothing Then
@@ -126,7 +126,7 @@ Public Class TLtoQB_TimeEntry
                             EmployeeName = FirstMiddleLastName(0)
                         End If
 
-                        empId = Get_QB_ID_ForTL_EmployeeName(EmployeeName)
+                        empId = Get_QB_ID_ForTL_EmployeeName(EmployeeName).Trim()
                     End If
 
                     Dim fullName As String

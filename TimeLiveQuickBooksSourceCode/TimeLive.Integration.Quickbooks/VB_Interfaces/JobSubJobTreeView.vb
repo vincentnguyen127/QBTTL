@@ -343,6 +343,7 @@ Public Class JobSubJobTreeView
             ElseIf lengthArr = 2 Then
                 Me.TreeViewJobSubJob.Nodes(jobDataArray(i)(0)).Nodes.Add(jobDataArray(i)(1), jobDataArray(i)(1))
             ElseIf lengthArr = 3 Then
+                'MessageBox.Show("jobDataArray(i)(1): " + jobDataArray(i)(1) + "---> jobDataArray(i)(2): " + jobDataArray(i)(2))
                 Me.TreeViewJobSubJob.Nodes(jobDataArray(i)(0)).Nodes(jobDataArray(i)(1)).Nodes.Add(jobDataArray(i)(2), jobDataArray(i)(2))
             ElseIf lengthArr = 4 Then
                 Me.TreeViewJobSubJob.Nodes(jobDataArray(i)(0)).Nodes(jobDataArray(i)(1)).Nodes(jobDataArray(i)(2)).Nodes.Add(jobDataArray(i)(3), jobDataArray(i)(3))

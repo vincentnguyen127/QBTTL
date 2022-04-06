@@ -49,7 +49,7 @@ Partial Class JoborItemForm
         '
         'btnCancel
         '
-        Me.btnCancel.Location = New System.Drawing.Point(86, 92)
+        Me.btnCancel.Location = New System.Drawing.Point(232, 105)
         Me.btnCancel.Name = "btnCancel"
         Me.btnCancel.Size = New System.Drawing.Size(78, 30)
         Me.btnCancel.TabIndex = 3
@@ -58,7 +58,7 @@ Partial Class JoborItemForm
         '
         'btnOK
         '
-        Me.btnOK.Location = New System.Drawing.Point(170, 92)
+        Me.btnOK.Location = New System.Drawing.Point(316, 105)
         Me.btnOK.Name = "btnOK"
         Me.btnOK.Size = New System.Drawing.Size(78, 30)
         Me.btnOK.TabIndex = 2
@@ -110,6 +110,9 @@ Partial Class JoborItemForm
         Me.Controls.Add(Me.btnOK)
         Me.Controls.Add(Me.lbJobName)
         Me.Controls.Add(Me.txtJobtName)
+        Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
+        Me.MaximizeBox = False
+        Me.MinimizeBox = False
         Me.Name = "JoborItemForm"
         Me.Text = "Job or Item Entry"
         Me.ResumeLayout(False)

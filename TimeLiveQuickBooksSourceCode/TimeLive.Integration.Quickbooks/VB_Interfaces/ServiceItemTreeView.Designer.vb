@@ -64,7 +64,7 @@ Partial Class ServiceItemTreeView
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(800, 450)
+        Me.ClientSize = New System.Drawing.Size(752, 435)
         Me.Controls.Add(Me.Label2)
         Me.Controls.Add(Me.PayRollQbTreeView)
         Me.Controls.Add(Me.Label1)

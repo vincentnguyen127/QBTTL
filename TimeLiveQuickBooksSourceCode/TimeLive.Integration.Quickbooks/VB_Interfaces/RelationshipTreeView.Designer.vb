@@ -30,9 +30,9 @@ Partial Class RelationshipTreeView
         '
         'TreeViewRelationship
         '
-        Me.TreeViewRelationship.Location = New System.Drawing.Point(1, 28)
+        Me.TreeViewRelationship.Location = New System.Drawing.Point(9, 28)
         Me.TreeViewRelationship.Name = "TreeViewRelationship"
-        Me.TreeViewRelationship.Size = New System.Drawing.Size(245, 247)
+        Me.TreeViewRelationship.Size = New System.Drawing.Size(251, 247)
         Me.TreeViewRelationship.TabIndex = 0
         '
         'LabelRelationshipTreeView
@@ -46,7 +46,7 @@ Partial Class RelationshipTreeView
         '
         'btnOK
         '
-        Me.btnOK.Location = New System.Drawing.Point(168, 281)
+        Me.btnOK.Location = New System.Drawing.Point(182, 281)
         Me.btnOK.Name = "btnOK"
         Me.btnOK.Size = New System.Drawing.Size(78, 30)
         Me.btnOK.TabIndex = 8
@@ -55,7 +55,7 @@ Partial Class RelationshipTreeView
         '
         'btnAdd
         '
-        Me.btnAdd.Location = New System.Drawing.Point(84, 281)
+        Me.btnAdd.Location = New System.Drawing.Point(98, 281)
         Me.btnAdd.Name = "btnAdd"
         Me.btnAdd.Size = New System.Drawing.Size(78, 30)
         Me.btnAdd.TabIndex = 9

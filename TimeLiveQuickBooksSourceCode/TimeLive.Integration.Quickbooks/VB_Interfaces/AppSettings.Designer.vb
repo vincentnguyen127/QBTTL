@@ -661,6 +661,9 @@ Partial Class AppSettings
         Me.Controls.Add(Me.TabControl1)
         Me.Controls.Add(Me.Button1)
         Me.Controls.Add(Me.btnSave)
+        Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
+        Me.MaximizeBox = False
+        Me.MinimizeBox = False
         Me.Name = "AppSettings"
         Me.Text = "AppSettings"
         Me.Tab_HoursOptions.ResumeLayout(False)

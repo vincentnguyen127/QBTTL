@@ -1430,7 +1430,7 @@ Public Class MAIN
             ' Only show StatusWindow when in Debug Mode
             SplitContainer2.Panel2Collapsed = Not Convert.ToBoolean(My.Settings.DebugMode)
         End If
-
+        ' 
         If Type = 20 Then
             Reset_Checked_SelectedEmployee_Value(selectedEmployeeData)
             Set_Selected_SelectedEmployee()
@@ -3062,41 +3062,64 @@ Public Class MAIN
         Dim chargingRelationshipTable As QB_TL_IDs.ChargingRelationshipsDataTable = ChargingRelationsihpAdapter.GetChargingRelationships()
         'Time entries
         If Type = 20 Then
+            ChargingRelationship_2.Show()
             Dim empName As String = DataGridView1.CurrentRow.Cells("Name").Value
-            Dim empObj = EmployeeAdapter.GetCorrespondingQB_IDbyQB_Name(empName)
+            Dim empID As String = ChargingRelationship_2.ReturnIDByeName(empName, "employee")
+            ' If can't find employee ID in the employee table, continue to find it in the vendor table
+            If String.IsNullOrEmpty(empID) Then
+                empID = ChargingRelationship_2.ReturnIDByeName(empName, "vendor")
+            End If
             Dim isLinked As Boolean
-            If empObj.Count > 0 Then
-                Dim empQuickBookID As String = empObj(0).QuickBookS_ID.trim()
+            If Not String.IsNullOrEmpty(empID) Then
                 For i As Integer = 0 To chargingRelationshipTable.Count - 1
-                    If chargingRelationshipTable(i).EmployeeQB_ID.Trim() = empQuickBookID Then
+                    If chargingRelationshipTable(i).EmployeeQB_ID.Trim() = empID.Trim() Then
                         isLinked = True
+                        Exit For
                     End If
                 Next
-
                 If Not isLinked Then
+                    ChargingRelationship_2.Close()
                     MsgBox("No Associated QuickBooks record.", MsgBoxStyle.Exclamation, "Alert")
                     Exit Sub
                 End If
 
                 ChargingRelationship_2.EmployeeFilterBox.Text = empName
-                ChargingRelationship_2.EmployeeFilterBox.Enabled = False
-                ChargingRelationship_2.PayrollFilterBox.Enabled = False
-                ChargingRelationship_2.ItemFilterBox.Enabled = False
-                ChargingRelationship_2.JobFilterBox.Enabled = False
-                Dim sdfds As String = ChargingRelationship_2.EmployeeFilterBox.Text
-
-                ChargingRelationship_2.Show()
-
             Else
-                MsgBox("employee is not in employee table.", MsgBoxStyle.Exclamation, "Alert")
+                ChargingRelationship_2.Close()
+                MsgBox("Person does not have a relationship", MsgBoxStyle.Exclamation, "Alert")
                 Exit Sub
             End If
+
+            'Dim empObj = EmployeeAdapter.GetCorrespondingQB_IDbyQB_Name(empName)
+            'Dim isLinked As Boolean
+            'If empObj.Count > 0 Then
+            '    Dim empQuickBookID As String = empObj(0).QuickBookS_ID.trim()
+            '    For i As Integer = 0 To chargingRelationshipTable.Count - 1
+            '        If chargingRelationshipTable(i).EmployeeQB_ID.Trim() = empQuickBookID Then
+            '            isLinked = True
+            '        End If
+            '    Next
+
+            '    If Not isLinked Then
+            '        MsgBox("No Associated QuickBooks record.", MsgBoxStyle.Exclamation, "Alert")
+            '        Exit Sub
+            '    End If
+
+            '    'ChargingRelationship_2.EmployeeFilterBox.Text = empName
+            '    'ChargingRelationship_2.EmployeeFilterBox.Enabled = False
+            '    'ChargingRelationship_2.PayrollFilterBox.Enabled = False
+            '    'ChargingRelationship_2.ItemFilterBox.Enabled = False
+            '    'ChargingRelationship_2.JobFilterBox.Enabled = False
+            '    ChargingRelationship_2.Show()
+            '    ChargingRelationship_2.EmployeeFilterBox.Text = empName
+            'Else
+            '    MsgBox("employee is not in employee table.", MsgBoxStyle.Exclamation, "Alert")
+            '    Exit Sub
+            'End If
         End If
         '10 is cusotmer, 11 employees, 12 vendors , 13 jobs/ items 
         If Type = 10 Or Type = 11 Or Type = 12 Or Type = 13 Then
             Dim formManualLink As New ManualLinkForm()
-
-
             formManualLink.Label2.Text = If(QBtoTLCustomerRadioButton.Checked, "TimeLive", "QuickBook") 'formManualLink.Label1.Text = "TimeLive"
             For Each row As DataGridViewRow In DataGridView2.Rows
                 Dim Name As String = row.Cells("Name").Value
@@ -3593,9 +3616,7 @@ Public Class MAIN
 
     End Sub
 
-
-    Private Sub ContextMenuStrip1_Opening(sender As Object, e As System.ComponentModel.CancelEventArgs) Handles ContextMenuStrip1.Opening
+    Private Sub DataGridView1_CellContentClick(sender As Object, e As DataGridViewCellEventArgs) Handles DataGridView1.CellContentClick
 
     End Sub
-
 End Class

@@ -197,6 +197,9 @@ Partial Class JobSubJobTreeView
         Me.Controls.Add(Me.TreeViewJobSubJob)
         Me.Controls.Add(Me.GroupBox1)
         Me.Controls.Add(Me.GroupBox2)
+        Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
+        Me.MaximizeBox = False
+        Me.MinimizeBox = False
         Me.Name = "JobSubJobTreeView"
         Me.Text = "Jobs/Items Create"
         Me.GroupBox2.ResumeLayout(False)

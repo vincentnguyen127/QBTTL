@@ -49,6 +49,22 @@
         "PrivateKeyFile" = "8:"
         "TimeStampServer" = "8:"
         "InstallerBootstrapper" = "3:2"
+            "BootstrapperCfg:{63ACBE69-63AA-4F98-B2B6-99F9E24495F2}"
+            {
+            "Enabled" = "11:TRUE"
+            "PromptEnabled" = "11:TRUE"
+            "PrerequisitesLocation" = "2:1"
+            "Url" = "8:"
+            "ComponentsUrl" = "8:"
+                "Items"
+                {
+                    "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:.NETFramework,Version=v4.7.2"
+                    {
+                    "Name" = "8:Microsoft .NET Framework 4.7.2 (x86 and x64)"
+                    "ProductCode" = "8:.NETFramework,Version=v4.7.2"
+                    }
+                }
+            }
         }
         "Release"
         {
@@ -65,6 +81,14 @@
         "PrivateKeyFile" = "8:"
         "TimeStampServer" = "8:"
         "InstallerBootstrapper" = "3:2"
+            "BootstrapperCfg:{63ACBE69-63AA-4F98-B2B6-99F9E24495F2}"
+            {
+            "Enabled" = "11:TRUE"
+            "PromptEnabled" = "11:TRUE"
+            "PrerequisitesLocation" = "2:1"
+            "Url" = "8:"
+            "ComponentsUrl" = "8:"
+            }
         }
     }
     "Deployable"
@@ -86,7 +110,7 @@
                 {
                 "Name" = "8:.NET Framework"
                 "Message" = "8:[VSDNETMSG]"
-                "FrameworkVersion" = "8:.NETFramework,Version=v4.7.2"
+                "FrameworkVersion" = "8:.NETFramework,Version=v4.5"
                 "AllowLaterVersions" = "11:FALSE"
                 "InstallUrl" = "8:http://go.microsoft.com/fwlink/?LinkId=863262"
                 }
@@ -171,7 +195,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:TimeLive2QuickBooks"
         "ProductCode" = "8:{633F8E38-0B58-4CE1-AF82-11B960BC1FBE}"
-        "PackageCode" = "8:{56222BED-7A66-4A29-8D1E-FD320505F42E}"
+        "PackageCode" = "8:{C22191E6-D1E7-4D18-87B4-963A369BA228}"
         "UpgradeCode" = "8:{BAA92C85-8F5D-4674-AC9A-1655A0B7A58C}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
@@ -293,7 +317,7 @@
         {
             "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_72CE62E44C9B41F596658D81807DA296"
             {
-            "Name" = "8:TimeLive2QuickBooks"
+            "Name" = "8:TimeLive2QuickBooks V2.0"
             "Arguments" = "8:"
             "Description" = "8:"
             "ShowCmd" = "3:1"
@@ -307,7 +331,7 @@
             }
             "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_8D1361AF8EC148CE928FEA7B66CE6170"
             {
-            "Name" = "8:TimeLive2QuickBooks"
+            "Name" = "8:TimeLive2QuickBooks V2"
             "Arguments" = "8:"
             "Description" = "8:"
             "ShowCmd" = "3:1"
@@ -720,7 +744,7 @@
         {
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_66537F2AD40D4BE7A5EAAC56A9F3193C"
             {
-            "SourcePath" = "8:..\\TimeLive.Integration.Quickbooks\\obj\\Release\\TeltriumQBtoTL.exe"
+            "SourcePath" = "8:..\\TimeLive.Integration.Quickbooks\\obj\\Debug\\TeltriumQBtoTL.exe"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_B799E52BB1A541489A43DFAB60525438"

@@ -104,6 +104,9 @@ Partial Class ManualLinkForm
         Me.Controls.Add(Me.btnOK)
         Me.Controls.Add(Me.btnCancel)
         Me.Controls.Add(Me.GroupBox1)
+        Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
+        Me.MaximizeBox = False
+        Me.MinimizeBox = False
         Me.Name = "ManualLinkForm"
         Me.Text = "Manual Link"
         Me.GroupBox1.ResumeLayout(False)

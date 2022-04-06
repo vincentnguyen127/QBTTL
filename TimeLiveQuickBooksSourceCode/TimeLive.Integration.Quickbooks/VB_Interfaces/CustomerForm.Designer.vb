@@ -200,6 +200,9 @@ Partial Class ModifyForm
         Me.Controls.Add(Me.btnOK)
         Me.Controls.Add(Me.GroupBox1)
         Me.Controls.Add(Me.GroupBox2)
+        Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
+        Me.MaximizeBox = False
+        Me.MinimizeBox = False
         Me.Name = "ModifyForm"
         Me.Text = "Create Customer"
         CType(Me.ErrorProvider1, System.ComponentModel.ISupportInitialize).EndInit()

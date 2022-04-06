@@ -175,6 +175,9 @@ Partial Class VendorForm
         Me.Controls.Add(Me.lbName)
         Me.Controls.Add(Me.txtFirstName)
         Me.Controls.Add(Me.GroupBox1)
+        Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
+        Me.MaximizeBox = False
+        Me.MinimizeBox = False
         Me.Name = "VendorForm"
         Me.Text = "Create Vendor"
         Me.ResumeLayout(False)

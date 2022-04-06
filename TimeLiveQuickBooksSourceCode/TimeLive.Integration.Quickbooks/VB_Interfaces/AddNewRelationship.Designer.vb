@@ -95,7 +95,7 @@ Partial Class AddNewRelationship
         '
         'btnCancel
         '
-        Me.btnCancel.Location = New System.Drawing.Point(269, 198)
+        Me.btnCancel.Location = New System.Drawing.Point(313, 206)
         Me.btnCancel.Name = "btnCancel"
         Me.btnCancel.Size = New System.Drawing.Size(75, 23)
         Me.btnCancel.TabIndex = 5
@@ -104,7 +104,7 @@ Partial Class AddNewRelationship
         '
         'btnOK
         '
-        Me.btnOK.Location = New System.Drawing.Point(357, 198)
+        Me.btnOK.Location = New System.Drawing.Point(394, 206)
         Me.btnOK.Name = "btnOK"
         Me.btnOK.Size = New System.Drawing.Size(75, 23)
         Me.btnOK.TabIndex = 4
@@ -176,6 +176,9 @@ Partial Class AddNewRelationship
         Me.Controls.Add(Me.Label1)
         Me.Controls.Add(Me.Label2)
         Me.Controls.Add(Me.GroupBox1)
+        Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
+        Me.MaximizeBox = False
+        Me.MinimizeBox = False
         Me.Name = "AddNewRelationship"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent
         Me.Text = "Add New Relationship"

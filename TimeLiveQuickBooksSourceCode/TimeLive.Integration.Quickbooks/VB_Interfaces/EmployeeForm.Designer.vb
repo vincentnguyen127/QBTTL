@@ -160,6 +160,7 @@ Partial Class EmployeeForm
         '
         'txtMiddleName
         '
+        Me.txtMiddleName.Enabled = False
         Me.txtMiddleName.Location = New System.Drawing.Point(330, 75)
         Me.txtMiddleName.Name = "txtMiddleName"
         Me.txtMiddleName.Size = New System.Drawing.Size(128, 20)
@@ -375,7 +376,10 @@ Partial Class EmployeeForm
         Me.Controls.Add(Me.txtFirstName)
         Me.Controls.Add(Me.lblPassword)
         Me.Controls.Add(Me.GroupBox2)
+        Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
         Me.Margin = New System.Windows.Forms.Padding(2)
+        Me.MaximizeBox = False
+        Me.MinimizeBox = False
         Me.Name = "EmployeeForm"
         Me.Text = "Create Employee"
         Me.GroupBox1.ResumeLayout(False)

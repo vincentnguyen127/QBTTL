@@ -25,8 +25,8 @@ Partial Class ManualLinkOrEditForm
         Me.btnOK = New System.Windows.Forms.Button()
         Me.btnCancel = New System.Windows.Forms.Button()
         Me.GroupBox1 = New System.Windows.Forms.GroupBox()
-        Me.RadioButtonManualLink = New System.Windows.Forms.RadioButton()
         Me.RadioButtonEdit = New System.Windows.Forms.RadioButton()
+        Me.RadioButtonManualLink = New System.Windows.Forms.RadioButton()
         Me.GroupBox1.SuspendLayout()
         Me.SuspendLayout()
         '
@@ -59,17 +59,6 @@ Partial Class ManualLinkOrEditForm
         Me.GroupBox1.TabStop = False
         Me.GroupBox1.Text = "Options"
         '
-        'RadioButtonManualLink
-        '
-        Me.RadioButtonManualLink.AutoSize = True
-        Me.RadioButtonManualLink.Location = New System.Drawing.Point(24, 42)
-        Me.RadioButtonManualLink.Name = "RadioButtonManualLink"
-        Me.RadioButtonManualLink.Size = New System.Drawing.Size(83, 17)
-        Me.RadioButtonManualLink.TabIndex = 25
-        Me.RadioButtonManualLink.TabStop = True
-        Me.RadioButtonManualLink.Text = "Manual Link"
-        Me.RadioButtonManualLink.UseVisualStyleBackColor = True
-        '
         'RadioButtonEdit
         '
         Me.RadioButtonEdit.AutoSize = True
@@ -81,6 +70,17 @@ Partial Class ManualLinkOrEditForm
         Me.RadioButtonEdit.Text = "Edit"
         Me.RadioButtonEdit.UseVisualStyleBackColor = True
         '
+        'RadioButtonManualLink
+        '
+        Me.RadioButtonManualLink.AutoSize = True
+        Me.RadioButtonManualLink.Location = New System.Drawing.Point(24, 42)
+        Me.RadioButtonManualLink.Name = "RadioButtonManualLink"
+        Me.RadioButtonManualLink.Size = New System.Drawing.Size(83, 17)
+        Me.RadioButtonManualLink.TabIndex = 25
+        Me.RadioButtonManualLink.TabStop = True
+        Me.RadioButtonManualLink.Text = "Manual Link"
+        Me.RadioButtonManualLink.UseVisualStyleBackColor = True
+        '
         'ManualLinkOrEditForm
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -89,6 +89,9 @@ Partial Class ManualLinkOrEditForm
         Me.Controls.Add(Me.btnOK)
         Me.Controls.Add(Me.btnCancel)
         Me.Controls.Add(Me.GroupBox1)
+        Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
+        Me.MaximizeBox = False
+        Me.MinimizeBox = False
         Me.Name = "ManualLinkOrEditForm"
         Me.Text = "ManualLinkOrEditForm"
         Me.GroupBox1.ResumeLayout(False)

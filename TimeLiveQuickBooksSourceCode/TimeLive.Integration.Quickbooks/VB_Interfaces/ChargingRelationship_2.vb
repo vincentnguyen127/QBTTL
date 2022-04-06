@@ -387,7 +387,7 @@ Public Class ChargingRelationship_2
     ''' </summary>
     ''' <param name="sender"></param>
     ''' <param name="e"></param>
-    Private Sub Filter_SelectedIndexChanged(sender As Object, e As EventArgs) Handles EmployeeFilterBox.SelectedIndexChanged,
+    Public Sub Filter_SelectedIndexChanged(sender As Object, e As EventArgs) Handles EmployeeFilterBox.SelectedIndexChanged,
                                                                                       JobFilterBox.SelectedIndexChanged,
                                                                                       PayrollFilterBox.SelectedIndexChanged,
                                                                                       ItemFilterBox.SelectedIndexChanged
@@ -412,8 +412,8 @@ Public Class ChargingRelationship_2
         Dim search As String = ""
         ' Only check if name is not the empty string
         If name.Length Then
-            Dim Employee_ID As String = Me.EmployeesTableAdapter.Name_to_ID(name)
-
+            Dim Employee_ID As String = Me.ReturnIDByeName(name, "employee") 'Me.EmployeesTableAdapter.Name_to_ID(name)
+            'Dim Employee_ID As String = Me.EmployeesTableAdapter.Name_to_ID(name)
             If Employee_ID Is Nothing Then
                 Employee_ID = Me.VendorsTableAdapter.Name_to_ID(name)
             End If
@@ -448,7 +448,8 @@ Public Class ChargingRelationship_2
         Dim search As String = ""
         ' Only check if name is not the empty string
         If name.Length Then
-            Dim Job_ID As String = Me.Jobs_SubJobsTableAdapter.Name_to_ID(name)
+            Dim Job_ID As String = Me.ReturnIDByeName(name, "job") 'Me.Jobs_SubJobsTableAdapter.Name_to_ID(name)
+            'Dim Job_ID As String = Me.Jobs_SubJobsTableAdapter.Name_to_ID(name)
 
             ' Check if DB stores as "job_name"/"subjob_name", not "customer_name:job_name"/"customer_name:job_name:subjob_name"
             If Job_ID Is Nothing Then
@@ -498,7 +499,8 @@ Public Class ChargingRelationship_2
         Dim search As String = ""
         ' Only check if name is not the empty string
         If name.Length Then
-            Dim Item_ID As String = Me.Items_SubItemsTableAdapter.Name_to_ID(name)
+            Dim Item_ID As String = Me.ReturnIDByeName(name, "item")
+            'Dim Item_ID As String = Me.Items_SubItemsTableAdapter.Name_to_ID(name)
 
             ' Checks if DB stores as "subitem_name", not "service_name:subitem_name"
             If Item_ID Is Nothing Then
@@ -752,12 +754,19 @@ Public Class ChargingRelationship_2
 
     End Function
 
-    Private Function ReturnIDByeName(name As String, type As String) As String
+    Public Function ReturnIDByeName(name As String, type As String) As String
         type = type.Trim()
         If type = "employee" Then
             For Each employee As DataRow In EmployeesQBData.Rows
                 If employee(0) = name Then
                     Return employee(1)
+                End If
+            Next
+            Return String.Empty
+        ElseIf type = "vendor" Then
+            For Each vendor As DataRow In VendorsQBData.Rows
+                If vendor(0) = name Then
+                    Return vendor(1)
                 End If
             Next
             Return String.Empty

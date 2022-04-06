@@ -50,7 +50,7 @@ Partial Class Login
         '
         'btnLogin
         '
-        Me.btnLogin.Location = New System.Drawing.Point(74, 76)
+        Me.btnLogin.Location = New System.Drawing.Point(261, 76)
         Me.btnLogin.Name = "btnLogin"
         Me.btnLogin.Size = New System.Drawing.Size(78, 30)
         Me.btnLogin.TabIndex = 3
@@ -77,7 +77,7 @@ Partial Class Login
         '
         'btnCancel
         '
-        Me.btnCancel.Location = New System.Drawing.Point(152, 76)
+        Me.btnCancel.Location = New System.Drawing.Point(345, 76)
         Me.btnCancel.Name = "btnCancel"
         Me.btnCancel.Size = New System.Drawing.Size(78, 30)
         Me.btnCancel.TabIndex = 4
